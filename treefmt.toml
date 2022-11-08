@@ -1,0 +1,8 @@
+[formatter.alejandra]
+command = "alejandra"
+includes = ["*.nix"]
+
+[formatter.prettier]
+command = "prettier"
+options = ["--write"]
+includes = ["*.js", "*.jsx", "*.ts", "*.tsx", "*.css", "*.json", "*.md"]

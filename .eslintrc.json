@@ -1,0 +1,34 @@
+{
+  "root": true,
+  "extends": [
+    "plugin:eslint-comments/recommended",
+    "next/core-web-vitals"
+  ],
+  "plugins": [
+    "unused-imports",
+    "simple-import-sort",
+  ],
+  "rules": {
+    "prefer-spread": 2,
+    "prefer-template": 2,
+    "no-useless-rename": [
+      2
+    ],
+    "object-shorthand": [
+      2,
+      "always"
+    ],
+    "quote-props": [
+      2,
+      "consistent-as-needed"
+    ],
+    /* unused-imports */
+    "unused-imports/no-unused-imports": [
+      2
+    ],
+    /* simple-import-sort */
+    "sort-imports": 0,
+    "simple-import-sort/imports": 2,
+    "simple-import-sort/exports": 2,
+  },
+}

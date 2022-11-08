@@ -1,0 +1,9 @@
+{
+  "files.exclude": {
+    "**/.direnv": true,
+    "**/.next": true,
+    "**/node_modules": true
+  },
+  "nixEnvSelector.nixFile": "${workspaceRoot}/shell.nix",
+  "typescript.tsdk": "node_modules/typescript/lib",
+}
