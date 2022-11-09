@@ -2,7 +2,8 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  pageExtensions: ['page.tsx', 'page.ts'],
-  images: {},
+  experimental: {
+    appDir: true,
+  },
 }
 module.exports = nextConfig
