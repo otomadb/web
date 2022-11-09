@@ -2,6 +2,9 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  images: {
+    domains: ["nicovideo.cdn.nimg.jp"],
+  },
   experimental: {
     appDir: true,
   },
