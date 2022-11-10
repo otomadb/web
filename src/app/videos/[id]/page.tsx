@@ -4,8 +4,8 @@ import Image from "next/image";
 import { getData } from "./getData";
 import { Tag } from "./Tag";
 
-export const generateStaticParams = () => {
-  return [];
+export const generateStaticParams = (): { id: string }[] => {
+  return [{ id: "1" }, { id: "2" }];
 };
 
 const Page = async ({ params }: { params: { id: string } }) => {
@@ -62,6 +62,34 @@ const Page = async ({ params }: { params: { id: string } }) => {
             </div>
           </div>
         ))}
+      </div>
+      <div>
+        <span>関連</span>
+        <div className={clsx(["mt-4"], ["grid", ["grid-cols-4"]], ["gap-x-4"])}>
+          {details.related_videos.map(
+            ({ id, image_primary, title_primary }) => (
+              <a className={clsx(["block"])} key={id} href={`/videos/${id}`}>
+                <Image
+                  className={clsx(["object-scale-down"])}
+                  src={image_primary}
+                  width={180}
+                  height={140}
+                  alt={title_primary}
+                />
+                <span
+                  className={clsx(
+                    ["mt-1"],
+                    ["block"],
+                    ["text-xs"],
+                    ["truncate"]
+                  )}
+                >
+                  {title_primary}
+                </span>
+              </a>
+            )
+          )}
+        </div>
       </div>
     </main>
   );
