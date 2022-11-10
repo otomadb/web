@@ -38,8 +38,13 @@ export const getData = async (
     title_primary: string;
     image_primary: string;
   }[];
+  parent_videos: {
+    id: string;
+    title_primary: string;
+    image_primary: string;
+  }[];
 }> => {
   const res = await fetch(apiUrl(id), { cache: "default" });
-  const json = await res.json();
-  return json;
+  if (!res.ok) throw new Error(`${res.status}`);
+  return await res.json();
 };

@@ -21,10 +21,12 @@ export const Tag: React.FC<{
           [
             "border-l-4",
             {
-              "border-l-lime-400": type === "BACKGROUND_MUSIC",
-              "border-l-cyan-400": type === "MUSIC",
-              "border-l-pink-400": type === "ANIME",
-              "border-l-blue-400": type === "CHARACTER",
+              "border-l-class-400": type === "CLASS",
+              "border-l-background-music-400": type === "BACKGROUND_MUSIC",
+              "border-l-music-400": type === "MUSIC",
+              "border-l-anime-400": type === "ANIME",
+              "border-l-character-400": type === "CHARACTER",
+              "border-l-otomad-400": type === "OTOMAD",
             },
           ],
           "border-t-gray-200",
