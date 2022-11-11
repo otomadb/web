@@ -5,9 +5,9 @@ import React from "react";
 export const Tag: React.FC<{
   id: string;
   name_primary: string;
-  context: string | null;
+  context_name: string | null;
   type: string;
-}> = ({ id, name_primary, context, type }) => {
+}> = ({ id, name_primary, context_name: context, type }) => {
   return (
     <Link
       key={id}
@@ -21,12 +21,10 @@ export const Tag: React.FC<{
           [
             "border-l-4",
             {
-              "border-l-class-400": type === "CLASS",
-              "border-l-background-music-400": type === "BACKGROUND_MUSIC",
-              "border-l-music-400": type === "MUSIC",
-              "border-l-anime-400": type === "ANIME",
               "border-l-character-400": type === "CHARACTER",
-              "border-l-otomad-400": type === "OTOMAD",
+              "border-l-class-400": type === "CLASS",
+              "border-l-music-400": type === "MUSIC",
+              "border-l-work-400": type === "WORK",
             },
           ],
           "border-t-gray-200",

@@ -3,11 +3,12 @@ import Image from "next/image";
 
 import { getData } from "./getData";
 import { Tag } from "./Tag";
-import { VideoList } from "./VideoList";
 
+/*
 export const generateStaticParams = (): { id: string }[] => {
   return [{ id: "1" }, { id: "2" }];
 };
+*/
 
 const Page = async ({ params }: { params: { id: string } }) => {
   const details = await getData(params.id);
@@ -38,12 +39,10 @@ const Page = async ({ params }: { params: { id: string } }) => {
             <div key={type} className={clsx(["flex"])}>
               <span
                 className={clsx(["text-xs"], ["select-all"], {
-                  "text-class-400": type === "CLASS",
-                  "text-background-music-400": type === "BACKGROUND_MUSIC",
-                  "text-music-400": type === "MUSIC",
                   "text-character-400": type === "CHARACTER",
-                  "text-anime-400": type === "ANIME",
-                  "text-otomad-400": type === "OTOMAD",
+                  "text-class-400": type === "CLASS",
+                  "text-music-400": type === "MUSIC",
+                  "text-work-400": type === "WORK",
                 })}
               >
                 {type}
@@ -59,18 +58,21 @@ const Page = async ({ params }: { params: { id: string } }) => {
             ["gap-y-2"]
           )}
         >
-          {details.tags.map(({ id, name_primary, context, type }) => (
-            <Tag
-              key={id}
-              id={id}
-              name_primary={name_primary}
-              context={context}
-              type={type}
-            />
-          ))}
+          {details.tags.map(
+            ({ id, name_primary, context_name_primary, type }) => (
+              <Tag
+                key={id}
+                id={id}
+                name_primary={name_primary}
+                context_name={context_name_primary}
+                type={type}
+              />
+            )
+          )}
         </div>
       </div>
-      <div className={clsx(["mt-4"], ["flex", "flex-col"])}>
+
+      {/*   <div className={clsx(["mt-4"], ["flex", "flex-col"])}>
         <span>Niconico</span>
         {details.sources.niconico.map(({ id, link, title, upload_date }) => (
           <div key={`niconico-${id}`} className={clsx(["flex"])}>
@@ -88,6 +90,8 @@ const Page = async ({ params }: { params: { id: string } }) => {
           </div>
         ))}
       </div>
+    */}
+      {/*
       <div className={clsx(["mt-8"])}>
         <span>親作品</span>
         <VideoList className={clsx(["mt-4"])} videos={details.parent_videos} />
@@ -96,6 +100,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
         <span>関連</span>
         <VideoList className={clsx(["mt-4"])} videos={details.related_videos} />
       </div>
+    */}
     </main>
   );
 };

@@ -9,12 +9,10 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        "class": colors.violet,
-        "background-music": colors.blue,
-        "music": colors.cyan,
-        "anime": colors.pink,
-        "character": colors.green,
-        "otomad": colors.red,
+        character: colors.green,
+        class: colors.violet,
+        music: colors.cyan,
+        work: colors.pink,
       },
     },
   },

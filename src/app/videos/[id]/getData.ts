@@ -30,7 +30,7 @@ export const getData = async (
   tags: {
     id: string;
     name_primary: string;
-    context: string | null;
+    context_name_primary: string | null;
     type: string;
   }[];
   related_videos: {
