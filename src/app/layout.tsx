@@ -2,6 +2,8 @@ import "~/styles/globals.css";
 
 import React from "react";
 
+import { GlobalNav } from "~/components/GlobalNav";
+
 export default function RootLayout({
   children,
 }: {
@@ -9,7 +11,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ja">
-      <body>{children}</body>
+      <body>
+        <GlobalNav />
+        {children}
+      </body>
     </html>
   );
 }

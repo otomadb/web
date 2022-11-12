@@ -7,6 +7,11 @@ module.exports = {
     "./src/components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    zIndex: {
+      0: 0,
+      1: 1,
+      infinity: 2147483647,
+    },
     extend: {
       colors: {
         character: colors.green,
