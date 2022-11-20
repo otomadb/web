@@ -1,10 +1,35 @@
 "use client";
 
 import clsx from "clsx";
-import ky from "ky";
+import gqlRequest from "graphql-request";
 import Link from "next/link";
 import React from "react";
 import useSWR from "swr";
+
+import { graphql } from "~/gql";
+
+const SearchQueryDocument = graphql(`
+  query Search($query: String!) {
+    tags: searchTags(query: $query, limit: 3) {
+      result {
+        matchedName
+        tag {
+          id
+          name
+        }
+      }
+    }
+    videos: searchVideos(query: $query, limit: 3) {
+      result {
+        matchedTitle
+        video {
+          id
+          title
+        }
+      }
+    }
+  }
+`);
 
 export const SearchBox: React.FC<{
   classname?: string;
@@ -12,22 +37,14 @@ export const SearchBox: React.FC<{
   onRoute(): void;
 }> = ({ classname, query, onRoute }) => {
   const { data, isValidating } = useSWR(
-    query !== "" ? `http://localhost:8080/search?query=${query}` : null,
-    (url) =>
-      ky.get(url).json<{
-        videos: {
-          id: string;
-          title_search: string;
-          title_primary: string;
-        }[];
-        tags: {
-          id: string;
-          name_search: string;
-          name_primary: string;
-        }[];
-      }>(),
+    [SearchQueryDocument, query],
+    (query, v) =>
+      gqlRequest("http://localhost:8080/graphql", query, { query: v }),
     { suspense: false }
   );
+
+  if (isValidating) return <span>loading</span>;
+  if (!data) return null;
 
   return (
     <div
@@ -51,46 +68,42 @@ export const SearchBox: React.FC<{
             Videos
           </span>
         </div>
-        {data && (
-          <>
-            {data.videos.length === 0 && (
-              <div
-                className={clsx(["px-4", "py-1"], [["flex"], ["items-center"]])}
-              >
+        {data.videos.result.length === 0 && (
+          <div className={clsx(["px-4", "py-1"], [["flex"], ["items-center"]])}>
+            <span className={clsx(["text-slate-900"], ["text-sm"])}>
+              該当なし
+            </span>
+          </div>
+        )}
+        <div className={clsx(["divide-y", "divide-slate-400/75"])}>
+          {data.videos.result.map(({ matchedTitle, video }) => (
+            <Link
+              key={video.id}
+              href={`/videos/${video.id}`}
+              className={clsx(
+                ["px-4", "py-2"],
+                [["flex"], ["items-center"]],
+                ["bg-sky-100/50", "hover:bg-sky-300/50"]
+              )}
+              onClick={() => onRoute()}
+            >
+              <div className={clsx(["flex-grow"], ["truncate"])}>
                 <span className={clsx(["text-slate-900"], ["text-sm"])}>
-                  該当なし
+                  {video.title}
                 </span>
               </div>
-            )}
-            <div className={clsx(["divide-y", "divide-slate-400/75"])}>
-              {data.videos.map(({ id, title_primary, title_search }) => (
-                <Link
-                  key={id}
-                  href={`/videos/${id}`}
-                  className={clsx(
-                    ["px-4", "py-2"],
-                    [["flex"], ["items-center"]],
-                    ["bg-sky-100/50", "hover:bg-sky-300/50"]
-                  )}
-                  onClick={() => onRoute()}
-                >
-                  <div className={clsx(["flex-grow"], ["truncate"])}>
-                    <span className={clsx(["text-slate-900"], ["text-sm"])}>
-                      {title_search}
-                    </span>
-                  </div>
-                  {title_search !== title_primary && (
-                    <div className={clsx(["ml-4"], ["flex-shrink-0"])}>
-                      <span className={clsx(["text-xs"], ["text-slate-500"])}>
-                        {title_primary}
-                      </span>
-                    </div>
-                  )}
-                </Link>
-              ))}
-            </div>
-          </>
-        )}
+              {/*
+              title_search !== title_primary && (
+                <div className={clsx(["ml-4"], ["flex-shrink-0"])}>
+                  <span className={clsx(["text-xs"], ["text-slate-500"])}>
+                    {title_primary}
+                  </span>
+                </div>
+              )
+            */}
+            </Link>
+          ))}
+        </div>
       </div>
       <div className={clsx()}>
         <div
@@ -105,46 +118,42 @@ export const SearchBox: React.FC<{
             Tags
           </span>
         </div>
-        {data && (
-          <>
-            {data.tags.length === 0 && (
-              <div
-                className={clsx(["px-4", "py-1"], [["flex"], ["items-center"]])}
-              >
+        {data.tags.result.length === 0 && (
+          <div className={clsx(["px-4", "py-1"], [["flex"], ["items-center"]])}>
+            <span className={clsx(["text-slate-900"], ["text-sm"])}>
+              該当なし
+            </span>
+          </div>
+        )}
+        <div className={clsx(["divide-y", "divide-slate-400/75"])}>
+          {data.tags.result.map(({ tag, matchedName }) => (
+            <Link
+              key={tag.id}
+              href={`/tags/${tag.id}`}
+              className={clsx(
+                ["px-4", "py-2"],
+                [["flex"], ["items-center"]],
+                ["bg-sky-100/50", "hover:bg-sky-300/50"]
+              )}
+              onClick={() => onRoute()}
+            >
+              <div className={clsx(["flex-grow"], ["truncate"])}>
                 <span className={clsx(["text-slate-900"], ["text-sm"])}>
-                  該当なし
+                  {tag.name}
                 </span>
               </div>
-            )}
-            <div className={clsx(["divide-y", "divide-slate-400/75"])}>
-              {data.tags.map(({ id, name_primary, name_search }) => (
-                <Link
-                  key={id}
-                  href={`/tags/${id}`}
-                  className={clsx(
-                    ["px-4", "py-2"],
-                    [["flex"], ["items-center"]],
-                    ["bg-sky-100/50", "hover:bg-sky-300/50"]
-                  )}
-                  onClick={() => onRoute()}
-                >
-                  <div className={clsx(["flex-grow"], ["truncate"])}>
-                    <span className={clsx(["text-slate-900"], ["text-sm"])}>
-                      {name_search}
-                    </span>
-                  </div>
-                  {name_search !== name_primary && (
-                    <div className={clsx(["ml-4"], ["flex-shrink-0"])}>
-                      <span className={clsx(["text-xs"], ["text-slate-500"])}>
-                        {name_primary}
-                      </span>
-                    </div>
-                  )}
-                </Link>
-              ))}
-            </div>
-          </>
-        )}
+              {/*
+              name_search !== name_primary && (
+                <div className={clsx(["ml-4"], ["flex-shrink-0"])}>
+                  <span className={clsx(["text-xs"], ["text-slate-500"])}>
+                    {name_primary}
+                  </span>
+                </div>
+              )
+            */}
+            </Link>
+          ))}
+        </div>
       </div>
     </div>
   );
