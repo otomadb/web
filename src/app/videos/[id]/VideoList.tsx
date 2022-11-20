@@ -4,7 +4,7 @@ import React from "react";
 
 export const VideoList: React.FC<{
   className?: string;
-  videos: { id: string; image_primary: string; title_primary: string }[];
+  videos: { id: string; thumbnailUrl: string; title: string }[];
 }> = ({ className, videos }) => {
   return (
     <div className={clsx(className)}>
@@ -18,7 +18,7 @@ export const VideoList: React.FC<{
             ["gap-y-4"]
           )}
         >
-          {videos.map(({ id, image_primary, title_primary }) => (
+          {videos.map(({ id, thumbnailUrl, title }) => (
             <a
               className={clsx(
                 ["block"],
@@ -31,16 +31,17 @@ export const VideoList: React.FC<{
             >
               <div className={clsx(["py-2"])}>
                 <Image
-                  className={clsx(["object-scale-down"])}
-                  src={image_primary}
+                  className={clsx(["object-scale-down"], ["h-auto"])}
+                  src={thumbnailUrl}
                   width={180}
                   height={140}
-                  alt={title_primary}
+                  alt={title}
+                  priority={true}
                 />
               </div>
               <div className={clsx(["px-2"], ["py-1"])}>
                 <span className={clsx(["block"], ["text-xs"], ["truncate"])}>
-                  {title_primary}
+                  {title}
                 </span>
               </div>
             </a>

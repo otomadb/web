@@ -11,7 +11,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
     <main className={clsx(["container"], ["mx-auto"])}>
       <h1 className={clsx(["flex"], ["items-center"])}>
         <span className={clsx(["block"], ["text-2xl"], ["text-slate-800"])}>
-          {details.name_primary}
+          {details.name}
         </span>
         {details.context && (
           <span
@@ -27,7 +27,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
         )}
       </h1>
       <div className={clsx(["mt-4"])}>
-        <VideoList className={clsx()} videos={details.tagged_videos} />
+        <VideoList className={clsx()} videos={details.taggedVideos} />
       </div>
     </main>
   );

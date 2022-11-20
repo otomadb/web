@@ -7,7 +7,8 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "codegen": "graphql-codegen --config codegen.ts"
+    "codegen": "graphql-codegen --config codegen.ts",
+    "codegen:watch": "graphql-codegen --watch --config codegen.ts"
   },
   "engines": {
     "node": "^16"
@@ -15,6 +16,7 @@
   "dependencies": {
     "@heroicons/react": "^2.0.13",
     "clsx": "^1.2.1",
+    "graphql-request": "^5.0.0",
     "ky": "^0.32.2",
     "next": "latest",
     "react": "18.2.0",

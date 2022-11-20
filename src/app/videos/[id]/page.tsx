@@ -19,20 +19,23 @@ const Page = async ({ params }: { params: { id: string } }) => {
 
   return (
     <main className={clsx(["container"], ["mx-auto"], ["py-8"])}>
-      <div className={clsx(["flex"], ["gap-x-4"])}>
-        <div>
-          <Image
-            className={clsx(["object-scale-down"])}
-            src={details.image_primary}
-            width={240}
-            height={160}
-            alt={details.title_primary}
-          />
+      {
+        <div className={clsx(["flex"], ["gap-x-4"])}>
+          <div>
+            <Image
+              className={clsx(["object-scale-down"], ["h-auto"])}
+              src={details.thumbnailUrl}
+              width={240}
+              height={160}
+              alt={details.title}
+              priority={true}
+            />
+          </div>
+          <div className={clsx(["flex-grow"], ["py-4"])}>
+            <h1 className={clsx(["text-xl"])}>{details.title}</h1>
+          </div>
         </div>
-        <div className={clsx(["flex-grow"], ["py-4"])}>
-          <h1 className={clsx(["text-xl"])}>{details.title_primary}</h1>
-        </div>
-      </div>
+      }
       <div className={clsx(["mt-4"])}>
         <div className={clsx(["flex"], ["gap-x-2"], ["gap-y-2"])}>
           {types.map((type) => (
@@ -58,17 +61,15 @@ const Page = async ({ params }: { params: { id: string } }) => {
             ["gap-y-2"]
           )}
         >
-          {details.tags.map(
-            ({ id, name_primary, context_name_primary, type }) => (
-              <Tag
-                key={id}
-                id={id}
-                name_primary={name_primary}
-                context_name={context_name_primary}
-                type={type}
-              />
-            )
-          )}
+          {details.tags.map(({ id, name, type }) => (
+            <Tag
+              key={id}
+              id={id}
+              name_primary={name}
+              context_name={null}
+              type={type}
+            />
+          ))}
         </div>
       </div>
 

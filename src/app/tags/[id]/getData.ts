@@ -1,22 +1,54 @@
-export const apiUrl = (id: string) => `http://localhost:8080/tags/${id}`;
+import gqlRequest from "graphql-request";
+
+import { graphql } from "~/gql";
+
+const GetTagQueryDocument = graphql(`
+  query GetTag($id: ID!) {
+    tag(id: $id) {
+      id
+      name
+      type
+      taggedVideos {
+        id
+        title
+        thumbnailUrl
+        tags {
+          name
+        }
+      }
+    }
+  }
+`);
 
 export const getData = async (
   id: string
 ): Promise<{
   id: string;
-  name_primary: string;
+  name: string;
   context: {
     id: string;
     name_primary: string;
   } | null;
-  tagged_videos: {
+  taggedVideos: {
     id: string;
-    title_primary: string;
-    image_primary: string;
+    title: string;
+    thumbnailUrl: string;
   }[];
 }> => {
-  const res = await fetch(apiUrl(id), { cache: "default" });
-  if (!res.ok) throw new Error(`${res.status}`);
+  const { tag } = await gqlRequest(
+    "http://localhost:8080/graphql",
+    GetTagQueryDocument,
+    { id }
+  );
 
-  return res.json();
+  return {
+    id: tag.id,
+    name: tag.name,
+    context: null,
+    taggedVideos: tag.taggedVideos.map(({ id, title, thumbnailUrl }) => ({
+      id,
+      title,
+      thumbnailUrl,
+    })),
+  };
 };
