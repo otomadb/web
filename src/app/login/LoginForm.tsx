@@ -11,13 +11,15 @@ import { graphql } from "~/gql";
 export const localstorageEffect =
   (key: string): AtomEffect<string | null> =>
   ({ setSelf, onSet }) => {
-    const saved = localStorage.getItem(key);
+    if (typeof window === "undefined" || !window.localStorage) return;
+
+    const saved = window.localStorage.getItem(key);
     if (!!saved) setSelf(JSON.parse(saved));
 
     onSet((newValue, _, isReset) => {
       isReset
-        ? localStorage.removeItem(key)
-        : localStorage.setItem(key, JSON.stringify(newValue));
+        ? window.localStorage.removeItem(key)
+        : window.localStorage.setItem(key, JSON.stringify(newValue));
     });
   };
 
