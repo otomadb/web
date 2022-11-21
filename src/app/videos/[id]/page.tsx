@@ -18,7 +18,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
     .filter((v1, i, arr) => i === arr.findIndex((v2) => v1 === v2));
 
   return (
-    <main className={clsx(["container"], ["mx-auto"], ["py-8"])}>
+    <>
       {
         <div className={clsx(["flex"], ["gap-x-4"])}>
           <div>
@@ -102,7 +102,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
         <VideoList className={clsx(["mt-4"])} videos={details.related_videos} />
       </div>
     */}
-    </main>
+    </>
   );
 };
 

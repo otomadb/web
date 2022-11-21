@@ -10,7 +10,7 @@ export const GlobalNav: React.FC<{ className?: string }> = ({ className }) => {
       <div
         className={clsx(
           ["h-full"],
-          ["container"],
+          ["container", ["max-w-screen-xl"]],
           ["mx-auto"],
           ["flex", ["items-center"]]
         )}

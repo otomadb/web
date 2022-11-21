@@ -1,50 +1,23 @@
 "use client";
 
 import clsx from "clsx";
-import gqlRequest from "graphql-request";
 import Image from "next/image";
 import React from "react";
 import { useRecoilState } from "recoil";
-import useSWR from "swr";
 
-import { stateAccessToken } from "~/app/login/LoginForm";
-import { graphql } from "~/gql";
-
-const ProfileDocument = graphql(`
-  query Profile {
-    whoami {
-      id
-      name
-      displayName
-      icon
-    }
-  }
-`);
+import { stateWhoAmI } from "~/states/whoami";
 
 export const Profile: React.FC<{ className?: string }> = ({ className }) => {
-  const [accessToken] = useRecoilState(stateAccessToken);
-  const { data, isValidating, error } = useSWR(
-    accessToken !== null ? [ProfileDocument, accessToken] : null,
-    async (q, token) =>
-      gqlRequest(
-        "http://localhost:8080/graphql",
-        q,
-        {},
-        { Authorization: `Bearer ${token}` }
-      ),
-    { suspense: false }
-  );
+  const [whoami] = useRecoilState(stateWhoAmI);
 
-  if (!data)
+  if (!whoami)
     return (
       <a className={clsx(["bg-blue-400"])} href={"/login"}>
         Login
       </a>
     );
 
-  const {
-    whoami: { displayName, icon, id, name },
-  } = data;
+  const { displayName, icon, id, name } = whoami;
 
   return (
     <div className={clsx(className)}>
