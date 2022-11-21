@@ -1,8 +1,11 @@
+"use client";
+
 import "~/styles/globals.css";
 
 import React from "react";
+import { RecoilRoot } from "recoil";
 
-import { GlobalNav } from "~/components/GlobalNav";
+import { GlobalNav } from "~/components/GlobalNav/GlobalNav";
 
 export default function RootLayout({
   children,
@@ -10,11 +13,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ja">
-      <body>
-        <GlobalNav />
-        {children}
-      </body>
-    </html>
+    <RecoilRoot>
+      <html lang="ja">
+        <body>
+          <GlobalNav />
+          {children}
+        </body>
+      </html>
+    </RecoilRoot>
   );
 }

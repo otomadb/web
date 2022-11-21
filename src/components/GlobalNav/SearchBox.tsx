@@ -4,9 +4,51 @@ import clsx from "clsx";
 import gqlRequest from "graphql-request";
 import Link from "next/link";
 import React from "react";
+import { useEffect, useState } from "react";
+import { useDebounce } from "react-use";
 import useSWR from "swr";
 
 import { graphql } from "~/gql";
+
+export const QueryInput: React.FC<{
+  className?: string;
+  onUpdateQuery(value: string): void;
+  onFocus(): void;
+  debounce?: number;
+}> = ({ className, onUpdateQuery, onFocus, debounce = 250 }) => {
+  const [input, setInput] = useState("");
+  const [ime, setIME] = useState<boolean>(false);
+
+  useDebounce(
+    () => {
+      if (ime) return;
+      onUpdateQuery(input);
+    },
+    debounce,
+    [ime, input]
+  );
+
+  useEffect(() => {
+    if (!ime) onUpdateQuery(input);
+  });
+
+  return (
+    <input
+      className={clsx(className)}
+      value={input}
+      onChange={(e) => {
+        setInput(e.target.value);
+      }}
+      onCompositionStart={() => {
+        setIME(true);
+      }}
+      onCompositionEnd={() => {
+        setIME(false);
+      }}
+      onFocus={() => onFocus()}
+    ></input>
+  );
+};
 
 const SearchQueryDocument = graphql(`
   query Search($query: String!) {
@@ -31,7 +73,7 @@ const SearchQueryDocument = graphql(`
   }
 `);
 
-export const SearchBox: React.FC<{
+export const SearchResult: React.FC<{
   classname?: string;
   query: string;
   onRoute(): void;
@@ -43,7 +85,6 @@ export const SearchBox: React.FC<{
     { suspense: false }
   );
 
-  if (isValidating) return <span>loading</span>;
   if (!data) return null;
 
   return (
@@ -155,6 +196,35 @@ export const SearchBox: React.FC<{
           ))}
         </div>
       </div>
+    </div>
+  );
+};
+export const SearchBox: React.FC<{ className?: string }> = ({ className }) => {
+  const [query, setQuery] = useState<string>("");
+  const [focus, setFocus] = useState(false);
+
+  return (
+    <div className={clsx(className, ["relative"], ["flex-shrink-0"])}>
+      <div
+        onClick={() => setFocus(false)}
+        className={clsx(["z-0"], ["fixed"], ["inset-0"], {
+          hidden: !focus,
+        })}
+      />
+      <QueryInput
+        className={clsx(["relative"], ["w-full"], ["z-1"])}
+        onUpdateQuery={(v) => setQuery(v)}
+        onFocus={() => setFocus(true)}
+      />
+      <SearchResult
+        classname={clsx(["w-full"], ["z-1"], ["absolute"], ["top-full"], {
+          invisible: !focus,
+        })}
+        query={query}
+        onRoute={() => {
+          setFocus(false);
+        }}
+      />
     </div>
   );
 };
