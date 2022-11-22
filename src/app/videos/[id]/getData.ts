@@ -1,8 +1,6 @@
-// https://www.nicovideo.jp/user/86744605
-// https://www.nicovideo.jp/watch/sm41321355
-import gqlRequest from "graphql-request";
-
 import { graphql } from "~/gql";
+import { gqlClient } from "~/gql/client";
+
 const GetVideoQueryDocument = graphql(`
   query GetVideo($id: ID!) {
     video(id: $id) {
@@ -38,11 +36,8 @@ const GetVideoQueryDocument = graphql(`
 `);
 
 export const getData = async (id: string) => {
-  const { video } = await gqlRequest(
-    "http://localhost:8080/graphql",
-    GetVideoQueryDocument,
-    { id }
-  );
+  const { video } = await gqlClient.request(GetVideoQueryDocument, { id });
+
   return {
     id: video.id,
     title: video.title,

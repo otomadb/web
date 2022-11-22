@@ -2,6 +2,7 @@
 
 import clsx from "clsx";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 import { useRecoilState } from "recoil";
 
@@ -21,7 +22,10 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
 
   return (
     <div className={clsx(className)}>
-      <div className={clsx(["flex"], ["flex-row"], ["items-center"])}>
+      <Link
+        href={"/profile"}
+        className={clsx(["flex"], ["flex-row"], ["items-center"])}
+      >
         <Image
           className={clsx([""])}
           width={32}
@@ -30,7 +34,7 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
           alt={"icon"}
         />
         <span className={clsx(["ml-2"], ["text-white"])}>{displayName}</span>
-      </div>
+      </Link>
     </div>
   );
 };

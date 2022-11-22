@@ -1,6 +1,5 @@
-import gqlRequest from "graphql-request";
-
 import { graphql } from "~/gql";
+import { gqlClient } from "~/gql/client";
 
 const GetTagQueryDocument = graphql(`
   query GetTag($id: ID!) {
@@ -35,11 +34,7 @@ export const getData = async (
     thumbnailUrl: string;
   }[];
 }> => {
-  const { tag } = await gqlRequest(
-    "http://localhost:8080/graphql",
-    GetTagQueryDocument,
-    { id }
-  );
+  const { tag } = await gqlClient.request(GetTagQueryDocument, { id });
 
   return {
     id: tag.id,

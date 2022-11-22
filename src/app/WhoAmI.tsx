@@ -1,5 +1,4 @@
 "use client";
-import { GraphQLClient } from "graphql-request";
 import React from "react";
 import { useRecoilState } from "recoil";
 import useSWR from "swr";
@@ -8,7 +7,9 @@ import { graphql } from "~/gql";
 import { stateAccessToken } from "~/states/tokens";
 import { stateWhoAmI } from "~/states/whoami";
 
-const ProfileDocument = graphql(`
+import { gqlClient } from "../gql/client";
+
+const WhoAmIDocument = graphql(`
   query Profile {
     whoami {
       id
@@ -19,14 +20,12 @@ const ProfileDocument = graphql(`
   }
 `);
 
-export const gqlClient = new GraphQLClient("http://localhost:8080/graphql");
-
 export const WhoAmI: React.FC = () => {
   const [accessToken] = useRecoilState(stateAccessToken);
   const [, setWhoAmI] = useRecoilState(stateWhoAmI);
 
   useSWR(
-    accessToken !== null ? [ProfileDocument, accessToken] : null,
+    accessToken !== null ? [WhoAmIDocument, accessToken] : null,
     async (doc, token) =>
       gqlClient.request(doc, {}, { Authorization: `Bearer ${token}` }),
     {
