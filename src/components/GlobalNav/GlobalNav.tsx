@@ -12,6 +12,7 @@ export const GlobalNav: React.FC<{ className?: string }> = ({ className }) => {
           ["h-full"],
           ["container", ["max-w-screen-xl"]],
           ["mx-auto"],
+          ["px-4"],
           ["flex", ["items-center"]]
         )}
       >
