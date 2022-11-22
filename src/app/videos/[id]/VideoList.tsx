@@ -13,7 +13,7 @@ export const VideoList: React.FC<{
         <div
           className={clsx(
             ["w-full"],
-            ["grid", ["grid-cols-4", "md:grid-cols-6", "lg:grid-cols-8"]],
+            ["flex", ["justify-start"], ["flex-wrap"]],
             ["gap-x-4"],
             ["gap-y-4"]
           )}
@@ -31,7 +31,7 @@ export const VideoList: React.FC<{
             >
               <div className={clsx(["py-2"])}>
                 <Image
-                  className={clsx(["object-scale-down"], ["h-32"])}
+                  className={clsx(["object-scale-down"], ["w-auto"], ["h-32"])}
                   src={thumbnailUrl}
                   width={192}
                   height={128}
