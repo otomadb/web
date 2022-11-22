@@ -3,16 +3,18 @@ import Link from "next/link";
 import React from "react";
 
 export const Tag: React.FC<{
+  className?: string;
   id: string;
-  name_primary: string;
+  name: string;
   context_name: string | null;
   type: string;
-}> = ({ id, name_primary, context_name: context, type }) => {
+}> = ({ className, id, name, context_name: context, type }) => {
   return (
     <Link
       key={id}
       href={`/tags/${id}`}
       className={clsx(
+        className,
         ["flex"],
         ["items-center"],
         ["whitespace-nowrap"],
@@ -36,9 +38,7 @@ export const Tag: React.FC<{
         ["pr-2", "pl-2", "py-0.5"]
       )}
     >
-      <span className={clsx(["text-slate-800"], ["text-sm"])}>
-        {name_primary}
-      </span>
+      <span className={clsx(["text-slate-800"], ["text-sm"])}>{name}</span>
       {context && (
         <span className={clsx(["ml-0.5"], ["text-slate-500"], ["text-xs"])}>
           ({context})

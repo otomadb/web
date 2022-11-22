@@ -1,17 +1,14 @@
 import clsx from "clsx";
 import Image from "next/image";
+import { Fragment } from "react";
 
 import { getData } from "./getData";
+import { AddTag, RegisterHistory } from "./HistoryItem";
 import { Tag } from "./Tag";
-
-/*
-export const generateStaticParams = (): { id: string }[] => {
-  return [{ id: "1" }, { id: "2" }];
-};
-*/
 
 const Page = async ({ params }: { params: { id: string } }) => {
   const details = await getData(params.id);
+  const { history } = details;
 
   const types = details.tags
     .map(({ type }) => type)
@@ -60,14 +57,37 @@ const Page = async ({ params }: { params: { id: string } }) => {
           )}
         >
           {details.tags.map(({ id, name, type }) => (
-            <Tag
-              key={id}
-              id={id}
-              name_primary={name}
-              context_name={null}
-              type={type}
-            />
+            <Tag key={id} id={id} name={name} context_name={null} type={type} />
           ))}
+        </div>
+      </div>
+      <div className={clsx(["mt-4"])}>
+        <h2 className={clsx(["text-xl"])}>History</h2>
+        <div className={clsx(["mt-4"], ["flex", "flex-col"], ["space-y-2"])}>
+          {history.map((item) => {
+            const classNames = clsx();
+            return (
+              <Fragment key={item.id}>
+                {item.type === "REGSITER_VIDEO" && (
+                  <RegisterHistory
+                    classNames={classNames}
+                    id={item.id}
+                    user={item.user}
+                    createdAt={item.createdAt}
+                  />
+                )}
+                {item.type === "ADD_TAG" && (
+                  <AddTag
+                    classNames={classNames}
+                    id={item.id}
+                    user={item.user}
+                    tag={item.tag}
+                    createdAt={item.createdAt}
+                  />
+                )}
+              </Fragment>
+            );
+          })}
         </div>
       </div>
 
