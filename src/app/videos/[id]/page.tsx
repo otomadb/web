@@ -19,23 +19,21 @@ const Page = async ({ params }: { params: { id: string } }) => {
 
   return (
     <>
-      {
-        <div className={clsx(["flex"], ["gap-x-4"])}>
-          <div>
-            <Image
-              className={clsx(["object-scale-down"], ["h-auto"])}
-              src={details.thumbnailUrl}
-              width={240}
-              height={160}
-              alt={details.title}
-              priority={true}
-            />
-          </div>
-          <div className={clsx(["flex-grow"], ["py-4"])}>
-            <h1 className={clsx(["text-xl"])}>{details.title}</h1>
-          </div>
+      <div className={clsx(["flex"], ["gap-x-4"])}>
+        <div>
+          <Image
+            className={clsx(["object-scale-down"], ["h-40"])}
+            src={details.thumbnailUrl}
+            width={240}
+            height={160}
+            alt={details.title}
+            priority={true}
+          />
         </div>
-      }
+        <div className={clsx(["flex-grow"], ["py-4"])}>
+          <h1 className={clsx(["text-xl"])}>{details.title}</h1>
+        </div>
+      </div>
       <div className={clsx(["mt-4"])}>
         <div className={clsx(["flex"], ["gap-x-2"], ["gap-y-2"])}>
           {types.map((type) => (

@@ -31,10 +31,10 @@ export const VideoList: React.FC<{
             >
               <div className={clsx(["py-2"])}>
                 <Image
-                  className={clsx(["object-scale-down"], ["h-auto"])}
+                  className={clsx(["object-scale-down"], ["h-32"])}
                   src={thumbnailUrl}
-                  width={180}
-                  height={140}
+                  width={192}
+                  height={128}
                   alt={title}
                   priority={true}
                 />
