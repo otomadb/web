@@ -1,13 +1,21 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { useRecoilState } from "recoil";
 import useSWR from "swr";
 
 import { graphql } from "~/gql";
-import { stateAccessToken } from "~/states/tokens";
+import { gqlClient } from "~/gql/client";
+import { stateAccessToken, stateRefreshToken } from "~/states/tokens";
 import { stateWhoAmI } from "~/states/whoami";
 
-import { gqlClient } from "../gql/client";
+const RefreshTokenDocument = graphql(`
+  mutation RefreshToken($token: String!) {
+    refreshToken(token: $token) {
+      accessToken
+      refreshToken
+    }
+  }
+`);
 
 const WhoAmIDocument = graphql(`
   query Profile {
@@ -21,8 +29,26 @@ const WhoAmIDocument = graphql(`
 `);
 
 export const WhoAmI: React.FC = () => {
-  const [accessToken] = useRecoilState(stateAccessToken);
+  const [accessToken, setAccessToken] = useRecoilState(stateAccessToken);
+  const [refreshToken, setRefreshToken] = useRecoilState(stateRefreshToken);
   const [, setWhoAmI] = useRecoilState(stateWhoAmI);
+
+  useEffect(() => {
+    const refresh = async () => {
+      if (!accessToken && refreshToken) {
+        const { refreshToken: payload } = await gqlClient.request(
+          RefreshTokenDocument,
+          {
+            token: refreshToken,
+          }
+        );
+        if (!payload) return;
+        setAccessToken(payload.accessToken);
+        setRefreshToken(payload.refreshToken);
+      }
+    };
+    refresh();
+  }, [accessToken, refreshToken, setAccessToken, setRefreshToken]);
 
   useSWR(
     accessToken !== null ? [WhoAmIDocument, accessToken] : null,
@@ -33,13 +59,15 @@ export const WhoAmI: React.FC = () => {
         const {
           whoami: { id, name, displayName, icon },
         } = data;
-        console.dir(data);
         setWhoAmI({
           id,
           name,
           displayName,
           icon,
         });
+      },
+      onError() {
+        setAccessToken(null);
       },
     }
   );

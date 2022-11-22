@@ -1,32 +1,44 @@
 "use client";
 
 import clsx from "clsx";
-import gqlRequest from "graphql-request";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useRecoilState } from "recoil";
 
 import { graphql } from "~/gql";
+import { gqlClient } from "~/gql/client";
 import { stateAccessToken, stateRefreshToken } from "~/states/tokens";
+import { stateWhoAmI } from "~/states/whoami";
 
-const LoginSchema = graphql(`
-  mutation Login($input: SigninInput) {
-    signin(input: $input) {
+const LoginDocument = graphql(`
+  mutation Login($name: String!, $password: String!) {
+    signin(input: { name: $name, password: $password }) {
       accessToken
       refreshToken
       user {
         id
         name
         displayName
+        icon
       }
     }
   }
 `);
 
 export const LoginForm: React.FC<{ className?: string }> = ({ className }) => {
+  const router = useRouter();
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
-  const [, setAccessToken] = useRecoilState(stateAccessToken);
-  const [, setRefreshToken] = useRecoilState(stateRefreshToken);
+
+  const [storedAccessToken, setAccessToken] = useRecoilState(stateAccessToken);
+  const [storedRefreshToken, setRefreshToken] =
+    useRecoilState(stateRefreshToken);
+  const [, setWhoAmI] = useRecoilState(stateWhoAmI);
+
+  if (storedAccessToken !== null && storedRefreshToken !== null) {
+    router.replace("/");
+    return null;
+  }
 
   return (
     <form className={clsx(className, ["flex", "flex-col"])}>
@@ -56,17 +68,25 @@ export const LoginForm: React.FC<{ className?: string }> = ({ className }) => {
         onClick={async () => {
           if (!username) return;
           if (!password) return;
-
           try {
             const {
-              signin: { accessToken, refreshToken },
-            } = await gqlRequest("http://localhost:8080/graphql", LoginSchema, {
-              input: { name: username, password },
+              signin: { accessToken, refreshToken, user },
+            } = await gqlClient.request(LoginDocument, {
+              name: username,
+              password,
             });
-
             setAccessToken(accessToken);
             setRefreshToken(refreshToken);
-          } catch (e) {}
+            setWhoAmI({
+              id: user.id,
+              name: user.name,
+              displayName: user.displayName,
+              icon: user.icon,
+            });
+            router.replace("/");
+          } catch (e) {
+            console.error(e);
+          }
         }}
       >
         Signin
