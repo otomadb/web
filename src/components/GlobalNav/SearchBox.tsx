@@ -1,7 +1,6 @@
 "use client";
 
 import clsx from "clsx";
-import gqlRequest from "graphql-request";
 import Link from "next/link";
 import React from "react";
 import { useEffect, useState } from "react";
@@ -9,6 +8,7 @@ import { useDebounce } from "react-use";
 import useSWR from "swr";
 
 import { graphql } from "~/gql";
+import { gqlClient } from "~/gql/client";
 
 export const QueryInput: React.FC<{
   className?: string;
@@ -79,9 +79,8 @@ export const SearchResult: React.FC<{
   onRoute(): void;
 }> = ({ classname, query, onRoute }) => {
   const { data, isValidating } = useSWR(
-    [SearchQueryDocument, query],
-    (query, v) =>
-      gqlRequest("http://localhost:8080/graphql", query, { query: v }),
+    query !== "" ? [SearchQueryDocument, query] : null,
+    (doc, query) => gqlClient.request(doc, { query }),
     { suspense: false }
   );
 
