@@ -31,7 +31,7 @@ export const VideoList: React.FC<{
             >
               <div className={clsx(["py-2"])}>
                 <Image
-                  className={clsx(["object-scale-down"], ["w-auto"], ["h-32"])}
+                  className={clsx(["object-scale-down"], ["h-auto"], ["w-48"])}
                   src={thumbnailUrl}
                   width={192}
                   height={128}
@@ -39,10 +39,8 @@ export const VideoList: React.FC<{
                   priority={true}
                 />
               </div>
-              <div className={clsx(["px-2"], ["py-1"])}>
-                <span className={clsx(["block"], ["text-xs"], ["truncate"])}>
-                  {title}
-                </span>
+              <div className={clsx(["px-2"], ["py-1"], ["truncate"])}>
+                <span className={clsx(["block"], ["text-xs"])}>{title}</span>
               </div>
             </a>
           ))}
