@@ -94,7 +94,7 @@ export const getData = async (
             createdAt,
             user,
             type: "ADD_TAG",
-            tag: { id: tag.id, name: tag.name },
+            tag: { id: tag.id, name: tag.name, type: tag.type },
           };
         }
       }
