@@ -1,6 +1,10 @@
 {
   "root": true,
-  "extends": ["plugin:eslint-comments/recommended", "next/core-web-vitals"],
+  "extends": [
+    "plugin:eslint-comments/recommended",
+    "next",
+    "next/core-web-vitals"
+  ],
   "plugins": ["unused-imports", "simple-import-sort"],
   "rules": {
     "prefer-spread": 2,
