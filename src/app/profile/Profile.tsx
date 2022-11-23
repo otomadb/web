@@ -10,7 +10,6 @@ import useSWR from "swr";
 import { graphql } from "~/gql";
 import { gqlClient } from "~/gql/client";
 import { stateAccessToken, stateRefreshToken } from "~/states/tokens";
-import { stateWhoAmI } from "~/states/whoami";
 
 const ProfileDocument = graphql(`
   query Profile {
@@ -27,7 +26,6 @@ export const Logout: React.FC<{ className: string }> = ({ className }) => {
   const router = useRouter();
   const [, setAccessToken] = useRecoilState(stateAccessToken);
   const [, setRefreshToken] = useRecoilState(stateRefreshToken);
-  const [, setWhoAmI] = useRecoilState(stateWhoAmI);
 
   return (
     <button
@@ -42,7 +40,6 @@ export const Logout: React.FC<{ className: string }> = ({ className }) => {
       onClick={() => {
         setAccessToken(null);
         setRefreshToken(null);
-        setWhoAmI(null);
         router.push("/");
       }}
     >

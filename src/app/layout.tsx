@@ -8,7 +8,7 @@ import { RecoilRoot } from "recoil";
 
 import { GlobalNav } from "~/components/GlobalNav/GlobalNav";
 
-import { WhoAmI } from "./WhoAmI";
+import { TokenRefresher } from "./TokenRefresher";
 
 export default function RootLayout({
   children,
@@ -19,7 +19,7 @@ export default function RootLayout({
     <html lang="ja">
       <body>
         <RecoilRoot>
-          <WhoAmI />
+          <TokenRefresher />
           <GlobalNav className={clsx(["w-full"])} />
           <div className={clsx(["container"], ["mx-auto"], ["py-8"])}>
             {children}

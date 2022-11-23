@@ -3,13 +3,55 @@
 import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import { useRecoilState } from "recoil";
+import useSWR from "swr";
 
-import { stateWhoAmI } from "~/states/whoami";
+import { graphql } from "~/gql";
+import { gqlClient } from "~/gql/client";
+import { stateAccessToken } from "~/states/tokens";
+
+const GlobalNavProfileDocument = graphql(`
+  query Profile {
+    whoami {
+      id
+      name
+      displayName
+      icon
+    }
+  }
+`);
 
 export const Profile: React.FC<{ className?: string }> = ({ className }) => {
-  const [whoami] = useRecoilState(stateWhoAmI);
+  const [accessToken, setAccessToken] = useRecoilState(stateAccessToken);
+  const [whoami, setWhoAmI] = useState<null | {
+    id: string;
+    name: string;
+    displayName: string;
+    icon: string;
+  }>(null);
+
+  useSWR(
+    accessToken !== null ? [GlobalNavProfileDocument, accessToken] : null,
+    async (doc, token) =>
+      gqlClient.request(doc, {}, { Authorization: `Bearer ${token}` }),
+    {
+      onSuccess(data) {
+        const {
+          whoami: { id, name, displayName, icon },
+        } = data;
+        setWhoAmI({
+          id,
+          name,
+          displayName,
+          icon,
+        });
+      },
+      onError() {
+        setAccessToken(null);
+      },
+    }
+  );
 
   if (!whoami)
     return (
