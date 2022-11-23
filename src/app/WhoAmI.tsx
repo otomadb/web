@@ -38,17 +38,18 @@ export const WhoAmI: React.FC = () => {
       if (!accessToken && refreshToken) {
         const { refreshToken: payload } = await gqlClient.request(
           RefreshTokenDocument,
-          {
-            token: refreshToken,
-          }
+          { token: refreshToken }
         );
-        if (!payload) return;
+        if (!payload) {
+          setWhoAmI(null);
+          return;
+        }
         setAccessToken(payload.accessToken);
         setRefreshToken(payload.refreshToken);
       }
     };
     refresh();
-  }, [accessToken, refreshToken, setAccessToken, setRefreshToken]);
+  }, [accessToken, refreshToken, setAccessToken, setRefreshToken, setWhoAmI]);
 
   useSWR(
     accessToken !== null ? [WhoAmIDocument, accessToken] : null,
