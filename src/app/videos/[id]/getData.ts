@@ -1,8 +1,8 @@
 import { graphql } from "~/gql";
 import { gqlClient } from "~/gql/client";
 
-const GetVideoQueryDocument = graphql(`
-  query GetVideo($id: ID!) {
+const VideoPageQueryDocument = graphql(`
+  query VideoPage($id: ID!) {
     video(id: $id) {
       id
       title
@@ -55,7 +55,7 @@ export const getData = async (
     | { type: "ADD_TAG"; tag: { id: string; name: string; type: string } }
   ))[];
 }> => {
-  const { video } = await gqlClient.request(GetVideoQueryDocument, { id });
+  const { video } = await gqlClient.request(VideoPageQueryDocument, { id });
 
   return {
     id: video.id,

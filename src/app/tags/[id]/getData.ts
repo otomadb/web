@@ -1,8 +1,8 @@
 import { graphql } from "~/gql";
 import { gqlClient } from "~/gql/client";
 
-const GetTagQueryDocument = graphql(`
-  query GetTag($id: ID!) {
+const TagPageQueryDocument = graphql(`
+  query TagPage($id: ID!) {
     tag(id: $id) {
       id
       name
@@ -34,7 +34,7 @@ export const getData = async (
     thumbnailUrl: string;
   }[];
 }> => {
-  const { tag } = await gqlClient.request(GetTagQueryDocument, { id });
+  const { tag } = await gqlClient.request(TagPageQueryDocument, { id });
 
   return {
     id: tag.id,
