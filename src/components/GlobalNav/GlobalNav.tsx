@@ -1,8 +1,11 @@
 import clsx from "clsx";
+import Link from "next/link";
 import React from "react";
 
 import { Profile } from "./Profile";
 import { SearchBox } from "./SearchBox";
+
+export const revalidate = 120;
 
 export const GlobalNav: React.FC<{ className?: string }> = ({ className }) => {
   return (
@@ -16,8 +19,27 @@ export const GlobalNav: React.FC<{ className?: string }> = ({ className }) => {
           ["flex", ["items-center"]]
         )}
       >
-        <SearchBox className={clsx(["w-96"], ["flex-shrink-0"])} />
-        <div className={clsx(["flex-grow"], ["flex", ["justify-end"]])}>
+        <div
+          className={clsx(
+            ["w-36"],
+            ["flex-shrink-0"],
+            ["flex", ["justify-start"]]
+          )}
+        >
+          <Link href="/" className={clsx(["text-white"])}>
+            otomadb
+          </Link>
+        </div>
+        <div className={clsx(["flex-grow"], ["px-8"])}>
+          <SearchBox className={clsx(["mx-auto"], ["max-w-lg"])} />
+        </div>
+        <div
+          className={clsx(
+            ["w-36"],
+            ["flex-shrink-0"],
+            ["flex", ["justify-end"]]
+          )}
+        >
           <Profile />
         </div>
       </div>
