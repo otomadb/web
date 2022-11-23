@@ -8,19 +8,12 @@ import { useRecoilState } from "recoil";
 import { graphql } from "~/gql";
 import { gqlClient } from "~/gql/client";
 import { stateAccessToken, stateRefreshToken } from "~/states/tokens";
-import { stateWhoAmI } from "~/states/whoami";
 
 const LoginDocument = graphql(`
   mutation Login($name: String!, $password: String!) {
     signin(input: { name: $name, password: $password }) {
       accessToken
       refreshToken
-      user {
-        id
-        name
-        displayName
-        icon
-      }
     }
   }
 `);
@@ -33,7 +26,6 @@ export const LoginForm: React.FC<{ className?: string }> = ({ className }) => {
   const [storedAccessToken, setAccessToken] = useRecoilState(stateAccessToken);
   const [storedRefreshToken, setRefreshToken] =
     useRecoilState(stateRefreshToken);
-  const [, setWhoAmI] = useRecoilState(stateWhoAmI);
 
   if (storedAccessToken !== null && storedRefreshToken !== null) {
     router.replace("/");
@@ -70,19 +62,13 @@ export const LoginForm: React.FC<{ className?: string }> = ({ className }) => {
           if (!password) return;
           try {
             const {
-              signin: { accessToken, refreshToken, user },
+              signin: { accessToken, refreshToken },
             } = await gqlClient.request(LoginDocument, {
               name: username,
               password,
             });
             setAccessToken(accessToken);
             setRefreshToken(refreshToken);
-            setWhoAmI({
-              id: user.id,
-              name: user.name,
-              displayName: user.displayName,
-              icon: user.icon,
-            });
             router.replace("/");
           } catch (e) {
             console.error(e);
