@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 export const VideoList: React.FC<{
@@ -19,19 +20,20 @@ export const VideoList: React.FC<{
           )}
         >
           {videos.map(({ id, thumbnailUrl, title }) => (
-            <a
+            <Link
               className={clsx(
                 ["block"],
                 ["border"],
                 ["shadow-md"],
-                ["rounded-md"]
+                ["rounded-md"],
+                ["w-48"]
               )}
               key={id}
               href={`/videos/${id}`}
             >
               <div className={clsx(["py-2"])}>
                 <Image
-                  className={clsx(["object-scale-down"], ["h-auto"], ["w-48"])}
+                  className={clsx(["w-auto"], ["h-auto"])}
                   src={thumbnailUrl}
                   width={192}
                   height={128}
@@ -42,7 +44,7 @@ export const VideoList: React.FC<{
               <div className={clsx(["px-2"], ["py-1"], ["truncate"])}>
                 <span className={clsx(["block"], ["text-xs"])}>{title}</span>
               </div>
-            </a>
+            </Link>
           ))}
         </div>
       )}
