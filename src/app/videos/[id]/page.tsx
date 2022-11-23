@@ -5,6 +5,8 @@ import { getData } from "./getData";
 import { History } from "./HistoryItem";
 import { Tag } from "./Tag";
 
+export const revalidate = 60;
+
 export default async function Page({ params }: { params: { id: string } }) {
   const details = await getData(params.id);
   const { history } = details;

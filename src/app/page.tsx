@@ -1,11 +1,9 @@
 import React from "react";
 
-const Page: React.FC = ({}) => {
+export default async function Page() {
   return (
     <>
       <p>Test</p>
     </>
   );
-};
-
-export default Page;
+}

@@ -2,12 +2,10 @@ import clsx from "clsx";
 
 import { LoginForm } from "./LoginForm";
 
-const Page = async () => {
+export default async function Page() {
   return (
     <main className={clsx(["container"], ["mx-auto"])}>
       <LoginForm />
     </main>
   );
-};
-
-export default Page;
+}

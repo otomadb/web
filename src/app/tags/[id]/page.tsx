@@ -3,7 +3,9 @@ import clsx from "clsx";
 import { getData } from "./getData";
 import { VideoList } from "./VideoList";
 
-const Page = async ({ params }: { params: { id: string } }) => {
+export const revalidate = 60;
+
+export default async function Page({ params }: { params: { id: string } }) {
   const details = await getData(params.id);
 
   return (
@@ -30,6 +32,4 @@ const Page = async ({ params }: { params: { id: string } }) => {
       </div>
     </>
   );
-};
-
-export default Page;
+}

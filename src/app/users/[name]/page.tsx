@@ -2,7 +2,9 @@ import Image from "next/image";
 
 import { getData } from "./getData";
 
-const Page = async ({ params }: { params: { name: string } }) => {
+export const revalidate = 60;
+
+export default async function Page({ params }: { params: { name: string } }) {
   const details = await getData(params.name);
   const { icon, name, displayName } = details;
 
@@ -15,6 +17,4 @@ const Page = async ({ params }: { params: { name: string } }) => {
       </div>
     </>
   );
-};
-
-export default Page;
+}

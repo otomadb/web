@@ -1,13 +1,9 @@
-import { Profile, YouHaveToLogin } from "./Profile";
+import { Profile } from "./Profile";
 
-const Page = async () => {
+export default async function Page() {
   return (
     <>
-      <YouHaveToLogin>
-        <Profile />
-      </YouHaveToLogin>
+      <Profile />
     </>
   );
-};
-
-export default Page;
+}
