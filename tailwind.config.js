@@ -14,6 +14,7 @@ module.exports = {
     },
     extend: {
       colors: {
+        copyright: colors.pink,
         character: colors.green,
         class: colors.violet,
         music: colors.cyan,

@@ -20,18 +20,16 @@ export const Tag: React.FC<{
         ["whitespace-nowrap"],
         [
           "border",
+          "border-gray-200",
           [
             "border-l-4",
             {
               "border-l-character-400": type === "CHARACTER",
               "border-l-class-400": type === "CLASS",
               "border-l-music-400": type === "MUSIC",
-              "border-l-work-400": type === "WORK",
+              "border-l-copyright-400": type === "COPYRIGHT",
             },
           ],
-          "border-t-gray-200",
-          "border-b-gray-200",
-          "border-r-gray-200",
         ],
         ["shadow-sm"],
         ["rounded"],

@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
-import React, { ReactNode } from "react";
+import React, { Fragment, ReactNode } from "react";
 
 import { Tag } from "./Tag";
 
@@ -11,21 +11,17 @@ export const generateStaticParams = (): { id: string }[] => {
 };
 */
 
-export const HistItem: React.FC<{
-  classNames?: string;
+const HistItemTemplate: React.FC<{
+  className?: string;
   children?: ReactNode;
   id: string;
-  user: {
-    name: string;
-    displayName: string;
-    icon: string;
-  };
+  user: { name: string; displayName: string; icon: string };
   createdAt: Date;
-}> = ({ classNames, user, children, createdAt }) => {
+}> = ({ className, user, children, createdAt }) => {
   return (
     <div
       className={clsx(
-        classNames,
+        className,
         ["px-4"],
         ["py-1"],
         ["border", "border-gray-200"],
@@ -57,36 +53,48 @@ export const HistItem: React.FC<{
   );
 };
 
-export const RegisterHistory: React.FC<{
-  classNames?: string;
+type RegisterVideoItem = {
+  type: "REGSITER_VIDEO";
   id: string;
+  createdAt: any;
   user: {
+    id: string;
     name: string;
     displayName: string;
     icon: string;
   };
-  createdAt: Date;
-}> = (props) => (
-  <HistItem {...props}>
+};
+export const RegisterHistory: React.FC<
+  { className?: string } & Omit<RegisterVideoItem, "type">
+> = (props) => (
+  <HistItemTemplate {...props}>
     <div className={clsx(["flex"])}>
       <span>動画の追加</span>
     </div>
-  </HistItem>
+  </HistItemTemplate>
 );
 
-export const AddTag: React.FC<{
-  classNames?: string;
+type AddTagItem = {
+  type: "ADD_TAG";
   id: string;
+  createdAt: any;
   user: {
+    id: string;
     name: string;
     displayName: string;
     icon: string;
   };
-  tag: { id: string; name: string; type: string };
-  createdAt: Date;
-}> = ({ tag, ...rest }) => {
+  tag: {
+    id: string;
+    name: string;
+    type: string;
+  };
+};
+export const AddTag: React.FC<
+  { className?: string } & Omit<AddTagItem, "type">
+> = ({ tag, ...rest }) => {
   return (
-    <HistItem {...rest}>
+    <HistItemTemplate {...rest}>
       <div className={clsx(["flex"], ["items-center"])}>
         <span>タグの追加</span>
         <Tag
@@ -97,6 +105,20 @@ export const AddTag: React.FC<{
           context_name={null}
         />
       </div>
-    </HistItem>
+    </HistItemTemplate>
+  );
+};
+
+export const History: React.FC<{
+  className?: string;
+  item: RegisterVideoItem | AddTagItem;
+}> = ({ className, item }) => {
+  return (
+    <Fragment key={item.id}>
+      {item.type === "REGSITER_VIDEO" && (
+        <RegisterHistory className={className} {...item} />
+      )}
+      {item.type === "ADD_TAG" && <AddTag className={className} {...item} />}
+    </Fragment>
   );
 };

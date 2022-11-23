@@ -1,8 +1,7 @@
 import clsx from "clsx";
 
-import { VideoList } from "~/app/videos/[id]/VideoList";
-
 import { getData } from "./getData";
+import { VideoList } from "./VideoList";
 
 const Page = async ({ params }: { params: { id: string } }) => {
   const details = await getData(params.id);

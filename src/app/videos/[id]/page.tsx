@@ -1,18 +1,13 @@
 import clsx from "clsx";
 import Image from "next/image";
-import { Fragment } from "react";
 
 import { getData } from "./getData";
-import { AddTag, RegisterHistory } from "./HistoryItem";
+import { History } from "./HistoryItem";
 import { Tag } from "./Tag";
 
-const Page = async ({ params }: { params: { id: string } }) => {
+export default async function Page({ params }: { params: { id: string } }) {
   const details = await getData(params.id);
   const { history } = details;
-
-  const types = details.tags
-    .map(({ type }) => type)
-    .filter((v1, i, arr) => i === arr.findIndex((v2) => v1 === v2));
 
   return (
     <>
@@ -32,21 +27,25 @@ const Page = async ({ params }: { params: { id: string } }) => {
         </div>
       </div>
       <div className={clsx(["mt-4"])}>
-        <div className={clsx(["flex"], ["gap-x-2"], ["gap-y-2"])}>
-          {types.map((type) => (
-            <div key={type} className={clsx(["flex"])}>
-              <span
-                className={clsx(["text-xs"], ["select-all"], {
-                  "text-character-400": type === "CHARACTER",
-                  "text-class-400": type === "CLASS",
-                  "text-music-400": type === "MUSIC",
-                  "text-work-400": type === "WORK",
-                })}
-              >
-                {type}
-              </span>
-            </div>
-          ))}
+        <h2 className={clsx(["text-xl"])}>Tags</h2>
+        <div className={clsx(["mt-2"], ["flex"], ["gap-x-2"], ["gap-y-2"])}>
+          {details.tags
+            .map(({ type }) => type)
+            .filter((v1, i, arr) => i === arr.findIndex((v2) => v1 === v2))
+            .map((type) => (
+              <div key={type} className={clsx(["flex"])}>
+                <span
+                  className={clsx(["text-xs"], ["select-all"], {
+                    "text-copyright-400": type === "COPYRIGHT",
+                    "text-character-400": type === "CHARACTER",
+                    "text-class-400": type === "CLASS",
+                    "text-music-400": type === "MUSIC",
+                  })}
+                >
+                  {type}
+                </span>
+              </div>
+            ))}
         </div>
         <div
           className={clsx(
@@ -64,30 +63,9 @@ const Page = async ({ params }: { params: { id: string } }) => {
       <div className={clsx(["mt-4"])}>
         <h2 className={clsx(["text-xl"])}>History</h2>
         <div className={clsx(["mt-4"], ["flex", "flex-col"], ["space-y-2"])}>
-          {history.map((item) => {
-            const classNames = clsx();
-            return (
-              <Fragment key={item.id}>
-                {item.type === "REGSITER_VIDEO" && (
-                  <RegisterHistory
-                    classNames={classNames}
-                    id={item.id}
-                    user={item.user}
-                    createdAt={item.createdAt}
-                  />
-                )}
-                {item.type === "ADD_TAG" && (
-                  <AddTag
-                    classNames={classNames}
-                    id={item.id}
-                    user={item.user}
-                    tag={item.tag}
-                    createdAt={item.createdAt}
-                  />
-                )}
-              </Fragment>
-            );
-          })}
+          {history.map((item) => (
+            <History key={item.id} item={item} />
+          ))}
         </div>
       </div>
 
@@ -122,6 +100,4 @@ const Page = async ({ params }: { params: { id: string } }) => {
     */}
     </>
   );
-};
-
-export default Page;
+}
