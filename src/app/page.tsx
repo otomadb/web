@@ -4,6 +4,8 @@ import React from "react";
 import { getData } from "./getData";
 import { VideoList } from "./tags/[id]/VideoList";
 
+export const revalidate = 60;
+
 export default async function Page() {
   const { recentRegisteredVideos } = await getData();
 
