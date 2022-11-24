@@ -14,37 +14,32 @@ export const VideoList: React.FC<{
         <div
           className={clsx(
             ["w-full"],
-            ["flex", ["justify-start"], ["flex-wrap"]],
-            ["gap-x-4"],
-            ["gap-y-4"]
+            ["gap-x-8"],
+            ["gap-y-4"],
+            ["grid", ["grid-cols-3", "md:grid-cols-4", "lg:grid-cols-6"]]
           )}
         >
           {videos.map(({ id, thumbnailUrl, title }) => (
-            <Link
-              className={clsx(
-                ["block"],
-                ["border"],
-                ["shadow-md"],
-                ["rounded-md"],
-                ["w-48"]
-              )}
-              key={id}
-              href={`/videos/${id}`}
-            >
-              <div className={clsx(["py-2"])}>
+            <div key={id}>
+              <Link className={clsx(["block"])} href={`/videos/${id}`}>
                 <Image
-                  className={clsx(["w-auto"], ["h-auto"])}
+                  className={clsx(["w-full"], ["h-auto"], ["rounded-lg"])}
                   src={thumbnailUrl}
-                  width={192}
-                  height={128}
+                  width={256}
+                  height={192}
                   alt={title}
                   priority={true}
                 />
+              </Link>
+              <div className={clsx(["px-2"], ["py-2"])}>
+                <Link
+                  className={clsx(["block"], ["text-sm"], ["line-clamp-2"])}
+                  href={`/videos/${id}`}
+                >
+                  {title}
+                </Link>
               </div>
-              <div className={clsx(["px-2"], ["py-1"], ["truncate"])}>
-                <span className={clsx(["block"], ["text-xs"])}>{title}</span>
-              </div>
-            </Link>
+            </div>
           ))}
         </div>
       )}
