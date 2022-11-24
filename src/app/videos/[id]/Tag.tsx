@@ -33,10 +33,10 @@ export const Tag: React.FC<{
         ],
         ["shadow-sm"],
         ["rounded"],
-        ["pr-2", "pl-2", "py-0.5"]
+        ["pr-1", "pl-1.5", "py-0.5"]
       )}
     >
-      <span className={clsx(["text-slate-800"], ["text-sm"])}>{name}</span>
+      <span className={clsx(["text-slate-800"], ["text-xs"])}>{name}</span>
       {context && (
         <span className={clsx(["ml-0.5"], ["text-slate-500"], ["text-xs"])}>
           ({context})

@@ -10,7 +10,7 @@ const config: CodegenConfig = {
       plugins: [],
       config: {
         scalars: {
-          DateTime: "Date",
+          DateTime: "string",
         },
       },
     },

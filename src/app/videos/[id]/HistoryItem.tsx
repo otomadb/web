@@ -1,22 +1,22 @@
+import {
+  ArrowSmallRightIcon,
+  MinusSmallIcon,
+  PlusSmallIcon,
+} from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
 import React, { Fragment, ReactNode } from "react";
 
+import { DateTime } from "./DateTime";
 import { Tag } from "./Tag";
-
-/*
-export const generateStaticParams = (): { id: string }[] => {
-  return [{ id: "1" }, { id: "2" }];
-};
-*/
 
 const HistItemTemplate: React.FC<{
   className?: string;
   children?: ReactNode;
   id: string;
+  createdAt: string;
   user: { name: string; displayName: string; icon: string };
-  createdAt: Date;
 }> = ({ className, user, children, createdAt }) => {
   return (
     <div
@@ -38,16 +38,17 @@ const HistItemTemplate: React.FC<{
             src={user.icon}
             width={24}
             height={24}
-            className={clsx(["w-6"], ["h-6"])}
+            className={clsx(["w-4"], ["h-4"])}
             alt={user.name}
           />
-          <span className={clsx(["ml-2"], ["text-sm"])}>
+          <span className={clsx(["ml-1"], ["text-sm"])}>
             {user.displayName}
           </span>
         </Link>
-        <span className={clsx(["ml-2"], ["text-xs"], ["text-gray-600"])}>
-          {createdAt.toString()}
-        </span>
+        <DateTime
+          className={clsx(["ml-2"], ["text-xs"], ["text-gray-600"])}
+          date={createdAt}
+        />
       </div>
     </div>
   );
@@ -56,7 +57,7 @@ const HistItemTemplate: React.FC<{
 type Register = {
   type: "REGISTER";
   id: string;
-  createdAt: any;
+  createdAt: string;
   user: {
     id: string;
     name: string;
@@ -68,16 +69,14 @@ export const RegisterItem: React.FC<
   { className?: string } & Omit<Register, "type">
 > = (props) => (
   <HistItemTemplate {...props}>
-    <div className={clsx(["flex"])}>
-      <span className={clsx(["text-sm"])}>動画の追加</span>
-    </div>
+    <span className={clsx(["whitespace-nowrap"], ["text-sm"])}>動画の追加</span>
   </HistItemTemplate>
 );
 
 type AddTitle = {
   type: "ADD_TITLE";
   id: string;
-  createdAt: any;
+  createdAt: string;
   user: {
     id: string;
     name: string;
@@ -90,9 +89,19 @@ export const AddTitleItem: React.FC<
   { className?: string } & Omit<AddTitle, "type">
 > = ({ title, ...props }) => (
   <HistItemTemplate {...props}>
-    <div className={clsx(["flex", ["items-center"]])}>
-      <span className={clsx(["text-sm"])}>タイトルの追加</span>
-      <span className={clsx(["ml-2"], ["text-sm"], ["text-gray-700"])}>
+    <span className={clsx(["whitespace-nowrap"], ["text-sm"])}>
+      タイトルの追加
+    </span>
+    <div className={clsx(["mt-0.5"], ["flex"], ["flex-start"])}>
+      <PlusSmallIcon className={clsx(["w-4"], ["text-gray-500"])} />
+      <span
+        className={clsx(
+          ["ml-1"],
+          ["line-clamp-2"],
+          ["text-xs"],
+          ["text-gray-700"]
+        )}
+      >
         {title}
       </span>
     </div>
@@ -102,7 +111,7 @@ export const AddTitleItem: React.FC<
 type DeleteTitle = {
   type: "DELETE_TITLE";
   id: string;
-  createdAt: any;
+  createdAt: string;
   user: {
     id: string;
     name: string;
@@ -115,9 +124,19 @@ export const DeleteTitleItem: React.FC<
   { className?: string } & Omit<DeleteTitle, "type">
 > = ({ title, ...props }) => (
   <HistItemTemplate {...props}>
-    <div className={clsx(["flex", ["items-center"]])}>
-      <span className={clsx(["text-sm"])}>タイトルの削除</span>
-      <span className={clsx(["ml-2"], ["text-sm"], ["text-gray-700"])}>
+    <span className={clsx(["whitespace-nowrap"], ["text-sm"])}>
+      タイトルの削除
+    </span>
+    <div className={clsx(["mt-0.5"], ["flex"], ["flex-start"])}>
+      <MinusSmallIcon className={clsx(["w-4"], ["text-gray-500"])} />
+      <span
+        className={clsx(
+          ["ml-1"],
+          ["line-clamp-2"],
+          ["text-xs"],
+          ["text-gray-700"]
+        )}
+      >
         {title}
       </span>
     </div>
@@ -127,7 +146,7 @@ export const DeleteTitleItem: React.FC<
 type ChangePrimaryTitle = {
   type: "CHANGE_PRIMARY_TITLE";
   id: string;
-  createdAt: any;
+  createdAt: string;
   user: {
     id: string;
     name: string;
@@ -139,10 +158,38 @@ type ChangePrimaryTitle = {
 };
 export const ChangePrimaryTitleItem: React.FC<
   { className?: string } & Omit<ChangePrimaryTitle, "type">
-> = (props) => (
+> = ({ from, to, ...props }) => (
   <HistItemTemplate {...props}>
-    <div className={clsx(["flex"])}>
-      <span className={clsx(["text-sm"])}>主タイトルの変更</span>
+    <span className={clsx(["whitespace-nowrap"], ["text-sm"])}>
+      主タイトルの変更
+    </span>
+    {from && (
+      <div className={clsx(["mt-0.5"], ["flex"], ["flex-start"])}>
+        <MinusSmallIcon className={clsx(["w-4"], ["text-gray-500"])} />
+        <span
+          className={clsx(
+            ["ml-1"],
+            ["line-clamp-2"],
+            ["text-xs"],
+            ["text-gray-700"]
+          )}
+        >
+          {from}
+        </span>
+      </div>
+    )}
+    <div className={clsx(["mt-0.5"], ["flex"], ["flex-start"])}>
+      <ArrowSmallRightIcon className={clsx(["w-4"], ["text-gray-500"])} />
+      <span
+        className={clsx(
+          ["ml-1"],
+          ["line-clamp-2"],
+          ["text-xs"],
+          ["text-gray-700"]
+        )}
+      >
+        {to}
+      </span>
     </div>
   </HistItemTemplate>
 );
@@ -150,7 +197,7 @@ export const ChangePrimaryTitleItem: React.FC<
 type AddThumbnail = {
   type: "ADD_THUMBNAIL";
   id: string;
-  createdAt: any;
+  createdAt: string;
   user: {
     id: string;
     name: string;
@@ -163,16 +210,16 @@ export const AddThumbnailItem: React.FC<
   { className?: string } & Omit<AddThumbnail, "type">
 > = (props) => (
   <HistItemTemplate {...props}>
-    <div className={clsx(["flex"])}>
-      <span className={clsx(["text-sm"])}>サムネイルの追加</span>
-    </div>
+    <span className={clsx(["whitespace-nowrap"], ["text-sm"])}>
+      サムネイルの追加
+    </span>
   </HistItemTemplate>
 );
 
 type DeleteThumbnail = {
   type: "DELETE_THUMBNAIL";
   id: string;
-  createdAt: any;
+  createdAt: string;
   user: {
     id: string;
     name: string;
@@ -185,16 +232,16 @@ export const DeleteThumbnail: React.FC<
   { className?: string } & Omit<DeleteThumbnail, "type">
 > = (props) => (
   <HistItemTemplate {...props}>
-    <div className={clsx(["flex"])}>
-      <span className={clsx(["text-sm"])}>サムネイルの削除</span>
-    </div>
+    <span className={clsx(["whitespace-nowrap"], ["text-sm"])}>
+      サムネイルの削除
+    </span>
   </HistItemTemplate>
 );
 
 type ChangePrimaryThumbnail = {
   type: "CHANGE_PRIMARY_THUMBNAIL";
   id: string;
-  createdAt: any;
+  createdAt: string;
   user: {
     id: string;
     name: string;
@@ -208,16 +255,16 @@ export const ChangePrimaryThumbnailItem: React.FC<
   { className?: string } & Omit<ChangePrimaryThumbnail, "type">
 > = (props) => (
   <HistItemTemplate {...props}>
-    <div className={clsx(["flex"])}>
-      <span className={clsx(["text-sm"])}>主サムネイルの変更</span>
-    </div>
+    <span className={clsx(["whitespace-nowrap"], ["text-sm"])}>
+      主サムネイルの変更
+    </span>
   </HistItemTemplate>
 );
 
 type AddTagItem = {
   type: "ADD_TAG";
   id: string;
-  createdAt: any;
+  createdAt: string;
   user: {
     id: string;
     name: string;
@@ -235,8 +282,11 @@ export const AddTagItem: React.FC<
 > = ({ tag, ...rest }) => {
   return (
     <HistItemTemplate {...rest}>
-      <div className={clsx(["flex"], ["items-center"])}>
-        <span className={clsx(["text-sm"])}>タグの追加</span>
+      <span className={clsx(["whitespace-nowrap"], ["text-sm"])}>
+        タグの追加
+      </span>
+      <div className={clsx(["mt-0.5"], ["flex"], ["flex-start"])}>
+        <PlusSmallIcon className={clsx(["w-4"], ["text-gray-500"])} />
         <Tag
           className={clsx(["ml-2"])}
           id={tag.id}
@@ -252,7 +302,7 @@ export const AddTagItem: React.FC<
 type DeleteTagItem = {
   type: "DELETE_TAG";
   id: string;
-  createdAt: any;
+  createdAt: string;
   user: {
     id: string;
     name: string;
@@ -271,7 +321,9 @@ export const DeleteTagItem: React.FC<
   return (
     <HistItemTemplate {...rest}>
       <div className={clsx(["flex"], ["items-center"])}>
-        <span className={clsx(["text-sm"])}>タグの削除</span>
+        <span className={clsx(["whitespace-nowrap"], ["text-sm"])}>
+          タグの削除
+        </span>
         <Tag
           className={clsx(["ml-2"])}
           id={tag.id}

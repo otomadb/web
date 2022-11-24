@@ -75,7 +75,7 @@ export const getData = async (
   tags: { id: string; name: string; type: string }[];
   history: ({
     id: string;
-    createdAt: any;
+    createdAt: string;
     user: { id: string; name: string; displayName: string; icon: string };
   } & (
     | { type: "REGISTER" }
@@ -105,7 +105,7 @@ export const getData = async (
       type: type.toString(),
     })),
     history: video.history.map((item) => {
-      const { createdAt, id } = item;
+      const { id, createdAt } = item;
       const user = {
         id: item.user.id,
         name: item.user.name,

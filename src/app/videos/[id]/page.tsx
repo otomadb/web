@@ -13,61 +13,80 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   return (
     <>
-      <div className={clsx(["flex"], ["gap-x-4"])}>
-        <div>
-          <Image
-            className={clsx(["object-scale-down"], ["h-40"])}
-            src={details.thumbnailUrl}
-            width={240}
-            height={160}
-            alt={details.title}
-            priority={true}
-          />
-        </div>
-        <div className={clsx(["flex-grow"], ["py-4"])}>
-          <h1 className={clsx(["text-xl"])}>{details.title}</h1>
-        </div>
-      </div>
-      <div className={clsx(["mt-4"])}>
-        <h2 className={clsx(["text-xl"])}>Tags</h2>
-        <div className={clsx(["mt-2"], ["flex"], ["gap-x-2"], ["gap-y-2"])}>
-          {details.tags
-            .map(({ type }) => type)
-            .filter((v1, i, arr) => i === arr.findIndex((v2) => v1 === v2))
-            .map((type) => (
-              <div key={type} className={clsx(["flex"])}>
-                <span
-                  className={clsx(["text-xs"], ["select-all"], {
-                    "text-copyright-400": type === "COPYRIGHT",
-                    "text-character-400": type === "CHARACTER",
-                    "text-class-400": type === "CLASS",
-                    "text-music-400": type === "MUSIC",
-                  })}
-                >
-                  {type}
-                </span>
-              </div>
-            ))}
+      <div className={clsx(["flex"])}>
+        <div className={clsx(["flex-shrink-0"], ["w-80"])}>
+          <section>
+            <h2 className={clsx(["text-xl"])}>Tags</h2>
+            <div className={clsx(["mt-2"], ["flex"], ["gap-x-2"], ["gap-y-2"])}>
+              {details.tags
+                .map(({ type }) => type)
+                .filter((v1, i, arr) => i === arr.findIndex((v2) => v1 === v2))
+                .map((type) => (
+                  <div key={type} className={clsx(["flex"])}>
+                    <span
+                      className={clsx(["text-xs"], ["select-all"], {
+                        "text-copyright-400": type === "COPYRIGHT",
+                        "text-character-400": type === "CHARACTER",
+                        "text-class-400": type === "CLASS",
+                        "text-music-400": type === "MUSIC",
+                      })}
+                    >
+                      {type}
+                    </span>
+                  </div>
+                ))}
+            </div>
+            <div
+              className={clsx(
+                ["mt-2"],
+                ["flex", "flex-wrap"],
+                ["gap-x-2"],
+                ["gap-y-2"]
+              )}
+            >
+              {details.tags.map(({ id, name, type }) => (
+                <Tag
+                  key={id}
+                  id={id}
+                  name={name}
+                  context_name={null}
+                  type={type}
+                />
+              ))}
+            </div>
+          </section>
+          <section className={clsx(["mt-4"])}>
+            <h2 className={clsx(["text-xl"])}>History</h2>
+            <div
+              className={clsx(["mt-4"], ["flex", "flex-col"], ["space-y-2"])}
+            >
+              {history.map((item) => (
+                <History key={item.id} item={item} />
+              ))}
+            </div>
+          </section>
         </div>
         <div
           className={clsx(
-            ["mt-2"],
-            ["flex", "flex-wrap"],
-            ["gap-x-2"],
-            ["gap-y-2"]
+            ["flex-shrink-0"],
+            ["flex-grow"],
+            ["flex"],
+            ["gap-x-4"]
           )}
         >
-          {details.tags.map(({ id, name, type }) => (
-            <Tag key={id} id={id} name={name} context_name={null} type={type} />
-          ))}
-        </div>
-      </div>
-      <div className={clsx(["mt-4"])}>
-        <h2 className={clsx(["text-xl"])}>History</h2>
-        <div className={clsx(["mt-4"], ["flex", "flex-col"], ["space-y-2"])}>
-          {history.map((item) => (
-            <History key={item.id} item={item} />
-          ))}
+          <div>
+            <Image
+              className={clsx(["object-scale-down"], ["h-40"])}
+              src={details.thumbnailUrl}
+              width={240}
+              height={160}
+              alt={details.title}
+              priority={true}
+            />
+          </div>
+          <div className={clsx(["flex-grow"], ["py-4"])}>
+            <h1 className={clsx(["text-xl"])}>{details.title}</h1>
+          </div>
         </div>
       </div>
 
