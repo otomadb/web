@@ -9,7 +9,7 @@ export const revalidate = 120;
 
 export const GlobalNav: React.FC<{ className?: string }> = ({ className }) => {
   return (
-    <nav className={clsx(className, ["bg-slate-900"], ["h-16"], ["shadow-lg"])}>
+    <nav className={clsx(className, ["bg-slate-900"], ["shadow-lg"])}>
       <div
         className={clsx(
           ["h-full"],

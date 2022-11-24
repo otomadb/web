@@ -17,11 +17,21 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ja">
-      <body>
+      <body className={clsx(["relative"])}>
         <RecoilRoot>
           <TokenRefresher />
-          <GlobalNav className={clsx(["w-full"])} />
-          <div className={clsx(["container"], ["mx-auto"], ["py-8"])}>
+          <GlobalNav
+            className={clsx(
+              ["sticky"],
+              ["top-0"],
+              ["w-full"],
+              ["h-16"],
+              ["z-1"]
+            )}
+          />
+          <div
+            className={clsx(["relative"], ["container"], ["mx-auto"], ["py-8"])}
+          >
             {children}
           </div>
         </RecoilRoot>
