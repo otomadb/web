@@ -1,3 +1,5 @@
+import "server-only";
+
 import { graphql } from "~/gql";
 import { gqlClient } from "~/gql/client";
 
