@@ -41,7 +41,7 @@ const HistItemTemplate: React.FC<{
             className={clsx(["w-4"], ["h-4"])}
             alt={user.name}
           />
-          <span className={clsx(["ml-1"], ["text-sm"])}>
+          <span className={clsx(["ml-1"], ["text-sm"], ["text-gray-700"])}>
             {user.displayName}
           </span>
         </Link>
@@ -69,7 +69,16 @@ export const RegisterItem: React.FC<
   { className?: string } & Omit<Register, "type">
 > = (props) => (
   <HistItemTemplate {...props}>
-    <span className={clsx(["whitespace-nowrap"], ["text-sm"])}>動画の追加</span>
+    <span
+      className={clsx(
+        ["whitespace-nowrap"],
+        ["text-sm"],
+        ["font-bold"],
+        ["text-slate-800"]
+      )}
+    >
+      動画の追加
+    </span>
   </HistItemTemplate>
 );
 
@@ -89,7 +98,14 @@ export const AddTitleItem: React.FC<
   { className?: string } & Omit<AddTitle, "type">
 > = ({ title, ...props }) => (
   <HistItemTemplate {...props}>
-    <span className={clsx(["whitespace-nowrap"], ["text-sm"])}>
+    <span
+      className={clsx(
+        ["whitespace-nowrap"],
+        ["text-sm"],
+        ["font-bold"],
+        ["text-slate-800"]
+      )}
+    >
       タイトルの追加
     </span>
     <div className={clsx(["mt-0.5"], ["flex"], ["flex-start"])}>
@@ -124,7 +140,14 @@ export const DeleteTitleItem: React.FC<
   { className?: string } & Omit<DeleteTitle, "type">
 > = ({ title, ...props }) => (
   <HistItemTemplate {...props}>
-    <span className={clsx(["whitespace-nowrap"], ["text-sm"])}>
+    <span
+      className={clsx(
+        ["whitespace-nowrap"],
+        ["text-sm"],
+        ["font-bold"],
+        ["text-slate-800"]
+      )}
+    >
       タイトルの削除
     </span>
     <div className={clsx(["mt-0.5"], ["flex"], ["flex-start"])}>
@@ -160,7 +183,14 @@ export const ChangePrimaryTitleItem: React.FC<
   { className?: string } & Omit<ChangePrimaryTitle, "type">
 > = ({ from, to, ...props }) => (
   <HistItemTemplate {...props}>
-    <span className={clsx(["whitespace-nowrap"], ["text-sm"])}>
+    <span
+      className={clsx(
+        ["whitespace-nowrap"],
+        ["text-sm"],
+        ["font-bold"],
+        ["text-slate-800"]
+      )}
+    >
       主タイトルの変更
     </span>
     {from && (
@@ -210,7 +240,14 @@ export const AddThumbnailItem: React.FC<
   { className?: string } & Omit<AddThumbnail, "type">
 > = (props) => (
   <HistItemTemplate {...props}>
-    <span className={clsx(["whitespace-nowrap"], ["text-sm"])}>
+    <span
+      className={clsx(
+        ["whitespace-nowrap"],
+        ["text-sm"],
+        ["font-bold"],
+        ["text-slate-800"]
+      )}
+    >
       サムネイルの追加
     </span>
   </HistItemTemplate>
@@ -232,7 +269,14 @@ export const DeleteThumbnail: React.FC<
   { className?: string } & Omit<DeleteThumbnail, "type">
 > = (props) => (
   <HistItemTemplate {...props}>
-    <span className={clsx(["whitespace-nowrap"], ["text-sm"])}>
+    <span
+      className={clsx(
+        ["whitespace-nowrap"],
+        ["text-sm"],
+        ["font-bold"],
+        ["text-slate-800"]
+      )}
+    >
       サムネイルの削除
     </span>
   </HistItemTemplate>
@@ -255,7 +299,14 @@ export const ChangePrimaryThumbnailItem: React.FC<
   { className?: string } & Omit<ChangePrimaryThumbnail, "type">
 > = (props) => (
   <HistItemTemplate {...props}>
-    <span className={clsx(["whitespace-nowrap"], ["text-sm"])}>
+    <span
+      className={clsx(
+        ["whitespace-nowrap"],
+        ["text-sm"],
+        ["font-bold"],
+        ["text-slate-800"]
+      )}
+    >
       主サムネイルの変更
     </span>
   </HistItemTemplate>
@@ -282,7 +333,14 @@ export const AddTagItem: React.FC<
 > = ({ tag, ...rest }) => {
   return (
     <HistItemTemplate {...rest}>
-      <span className={clsx(["whitespace-nowrap"], ["text-sm"])}>
+      <span
+        className={clsx(
+          ["whitespace-nowrap"],
+          ["text-sm"],
+          ["font-bold"],
+          ["text-slate-700"]
+        )}
+      >
         タグの追加
       </span>
       <div className={clsx(["mt-0.5"], ["flex"], ["flex-start"])}>
@@ -321,7 +379,14 @@ export const DeleteTagItem: React.FC<
   return (
     <HistItemTemplate {...rest}>
       <div className={clsx(["flex"], ["items-center"])}>
-        <span className={clsx(["whitespace-nowrap"], ["text-sm"])}>
+        <span
+          className={clsx(
+            ["whitespace-nowrap"],
+            ["text-sm"],
+            ["font-bold"],
+            ["text-slate-700"]
+          )}
+        >
           タグの削除
         </span>
         <Tag
