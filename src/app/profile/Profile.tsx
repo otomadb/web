@@ -2,14 +2,15 @@
 
 import clsx from "clsx";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { ReactNode } from "react";
-import { useRecoilState } from "recoil";
 import useSWR from "swr";
 
 import { graphql } from "~/gql";
 import { gqlClient } from "~/gql/client";
-import { stateAccessToken, stateRefreshToken } from "~/states/tokens";
+import { useAccessToken } from "~/hooks/useAccessToken";
+import { useRefreshToken } from "~/hooks/useRefreshToken";
 
 const ProfileDocument = graphql(`
   query Profile {
@@ -24,8 +25,8 @@ const ProfileDocument = graphql(`
 
 export const Logout: React.FC<{ className: string }> = ({ className }) => {
   const router = useRouter();
-  const [, setAccessToken] = useRecoilState(stateAccessToken);
-  const [, setRefreshToken] = useRecoilState(stateRefreshToken);
+  const [, setAccessToken] = useAccessToken();
+  const [, setRefreshToken] = useRefreshToken();
 
   return (
     <button
@@ -49,12 +50,17 @@ export const Logout: React.FC<{ className: string }> = ({ className }) => {
 };
 
 export const Profile: React.FC<{ className?: string }> = ({ className }) => {
-  const [accessToken] = useRecoilState(stateAccessToken);
+  const [accessToken, setAccessToken] = useAccessToken();
   const { data } = useSWR(
     accessToken !== null ? [ProfileDocument, accessToken] : null,
     async (doc, token) =>
       gqlClient.request(doc, {}, { Authorization: `Bearer ${token}` }),
-    { suspense: true }
+    {
+      suspense: true,
+      onError() {
+        setAccessToken(null);
+      },
+    }
   );
 
   if (!data) return null;
@@ -67,7 +73,9 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
       <p>Profile</p>
       <div>
         <Image src={icon} width={128} height={128} alt={"icon"} />
-        <p>@{name}</p>
+        <p>
+          <Link href={`/users/${name}`}> @{name}</Link>
+        </p>
         <p>{displayName}</p>
       </div>
       <Logout className={clsx(["mt-1"])} />
@@ -79,7 +87,7 @@ export const YouHaveToLogin: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const router = useRouter();
-  const [accessToken] = useRecoilState(stateAccessToken);
+  const [accessToken] = useAccessToken();
   if (!accessToken) {
     router.push("/login");
     return null;

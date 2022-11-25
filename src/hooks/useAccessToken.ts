@@ -1,5 +1,6 @@
-"use client";
-import { atom, AtomEffect } from "recoil";
+import "client-only";
+
+import { atom, AtomEffect, useRecoilState } from "recoil";
 
 export const localstorageEffect =
   (key: string): AtomEffect<string | null> =>
@@ -22,8 +23,4 @@ export const stateAccessToken = atom<string | null>({
   effects: [localstorageEffect("access_token")],
 });
 
-export const stateRefreshToken = atom<string | null>({
-  key: "refreshToken",
-  default: null,
-  effects: [localstorageEffect("refresh_token")],
-});
+export const useAccessToken = () => useRecoilState(stateAccessToken);

@@ -1,12 +1,12 @@
 import "client-only";
 
 import { useState } from "react";
-import { useRecoilState } from "recoil";
 import useSWR from "swr";
 
 import { graphql } from "~/gql";
 import { gqlClient } from "~/gql/client";
-import { stateAccessToken } from "~/states/tokens";
+
+import { useAccessToken } from "./useAccessToken";
 
 const WhoamiDocument = graphql(`
   query WhoAmI {
@@ -17,7 +17,7 @@ const WhoamiDocument = graphql(`
 `);
 
 export const useLoggedIn = (): boolean => {
-  const [accessToken, setAccessToken] = useRecoilState(stateAccessToken);
+  const [accessToken, setAccessToken] = useAccessToken();
   const [whoami, setWhoAmI] = useState<null | {}>(null);
 
   useSWR(
@@ -25,7 +25,7 @@ export const useLoggedIn = (): boolean => {
     async (doc, token) =>
       gqlClient.request(doc, {}, { Authorization: `Bearer ${token}` }),
     {
-      refreshInterval: 10,
+      refreshInterval: 10000,
       onSuccess(data) {
         const { whoami } = data;
         setWhoAmI({ id: whoami.id });
@@ -36,5 +36,5 @@ export const useLoggedIn = (): boolean => {
     }
   );
 
-  return !!whoami;
+  return !!accessToken;
 };

@@ -1,10 +1,10 @@
 "use client";
 import React, { useEffect } from "react";
-import { useRecoilState } from "recoil";
 
 import { graphql } from "~/gql";
 import { gqlClient } from "~/gql/client";
-import { stateAccessToken, stateRefreshToken } from "~/states/tokens";
+import { useAccessToken } from "~/hooks/useAccessToken";
+import { useRefreshToken } from "~/hooks/useRefreshToken";
 
 const RefreshTokenDocument = graphql(`
   mutation RefreshToken($token: String!) {
@@ -16,8 +16,8 @@ const RefreshTokenDocument = graphql(`
 `);
 
 export const TokenRefresher: React.FC = () => {
-  const [accessToken, setAccessToken] = useRecoilState(stateAccessToken);
-  const [refreshToken, setRefreshToken] = useRecoilState(stateRefreshToken);
+  const [accessToken, setAccessToken] = useAccessToken();
+  const [refreshToken, setRefreshToken] = useRefreshToken();
 
   useEffect(() => {
     const refresh = async () => {

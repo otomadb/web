@@ -4,12 +4,12 @@ import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
 import useSWR from "swr";
 
 import { graphql } from "~/gql";
 import { gqlClient } from "~/gql/client";
-import { stateAccessToken, stateRefreshToken } from "~/states/tokens";
+import { useAccessToken } from "~/hooks/useAccessToken";
+import { useRefreshToken } from "~/hooks/useRefreshToken";
 
 const GlobalNavProfileDocument = graphql(`
   query Profile {
@@ -23,8 +23,8 @@ const GlobalNavProfileDocument = graphql(`
 `);
 
 export const Profile: React.FC<{ className?: string }> = ({ className }) => {
-  const [accessToken, setAccessToken] = useRecoilState(stateAccessToken);
-  const [refreshToken] = useRecoilState(stateRefreshToken);
+  const [accessToken, setAccessToken] = useAccessToken();
+  const [refreshToken] = useRefreshToken();
   const [whoami, setWhoAmI] = useState<null | {
     id: string;
     name: string;
