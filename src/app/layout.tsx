@@ -1,13 +1,11 @@
-"use client";
-
 import "~/styles/globals.css";
 
 import clsx from "clsx";
 import React from "react";
-import { RecoilRoot } from "recoil";
 
 import { GlobalNav } from "~/components/GlobalNav/GlobalNav";
 
+import Providers from "./providers";
 import { TokenRefresher } from "./TokenRefresher";
 
 export default function RootLayout({
@@ -18,7 +16,7 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body className={clsx(["relative"])}>
-        <RecoilRoot>
+        <Providers>
           <TokenRefresher />
           <GlobalNav
             className={clsx(
@@ -34,7 +32,7 @@ export default function RootLayout({
           >
             {children}
           </div>
-        </RecoilRoot>
+        </Providers>
       </body>
     </html>
   );
