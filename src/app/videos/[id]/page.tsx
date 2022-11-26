@@ -10,7 +10,7 @@ export const revalidate = 60;
 
 export default async function Page({ params }: { params: { id: string } }) {
   const details = await getData(params.id);
-  const { history } = details;
+  const { id: videoId, history } = details;
 
   return (
     <div className={clsx(["flex"])}>
@@ -54,7 +54,7 @@ export default async function Page({ params }: { params: { id: string } }) {
               />
             ))}
           </div>
-          <TagAdd className={clsx(["mt-2"], ["w-full"])} />
+          <TagAdd className={clsx(["mt-2"], ["w-full"])} videoId={videoId} />
         </section>
         <section className={clsx(["mt-4"])}>
           <h2 className={clsx(["text-xl"])}>History</h2>
