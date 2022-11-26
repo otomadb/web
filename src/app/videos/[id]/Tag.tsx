@@ -33,7 +33,7 @@ export const Tag: React.FC<{
         ],
         ["shadow-sm"],
         ["rounded"],
-        ["pr-1", "pl-1.5", "py-0.5"]
+        ["pr-2", "pl-1.5", "py-0.5"]
       )}
     >
       <span className={clsx(["text-slate-800"], ["text-xs"])}>{name}</span>

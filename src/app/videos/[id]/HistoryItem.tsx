@@ -378,17 +378,18 @@ export const DeleteTagItem: React.FC<
 > = ({ tag, ...rest }) => {
   return (
     <HistItemTemplate {...rest}>
-      <div className={clsx(["flex"], ["items-center"])}>
-        <span
-          className={clsx(
-            ["whitespace-nowrap"],
-            ["text-sm"],
-            ["font-bold"],
-            ["text-slate-700"]
-          )}
-        >
-          タグの削除
-        </span>
+      <span
+        className={clsx(
+          ["whitespace-nowrap"],
+          ["text-sm"],
+          ["font-bold"],
+          ["text-slate-700"]
+        )}
+      >
+        タグの削除
+      </span>
+      <div className={clsx(["mt-0.5"], ["flex"], ["flex-start"])}>
+        <MinusSmallIcon className={clsx(["w-4"], ["text-gray-500"])} />
         <Tag
           className={clsx(["ml-2"])}
           id={tag.id}

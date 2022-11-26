@@ -3,7 +3,7 @@
 import "client-only";
 
 import clsx from "clsx";
-import React, { useContext, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 
 import { useLoggedIn } from "~/hooks/useLoggedIn";
 
@@ -17,18 +17,19 @@ export const TagsSection: React.FC<{
 }> = ({ className, videoId }) => {
   const [edit, setEdit] = useState(false);
   const { tags, updateTags, updateHistory } = useContext(UpdateableContext);
+  const update = useCallback(() => {
+    updateTags();
+    updateHistory();
+  }, [updateHistory, updateTags]);
 
   return (
     <div className={clsx(className)}>
-      <TagsList tags={tags} edit={edit} />
+      <TagsList tags={tags} videoId={videoId} edit={edit} updateTags={update} />
       <EditToggle edit={edit} toggleEdit={(v) => setEdit(v)} />
       <TagsEditer
         className={clsx(["mt-2"], ["w-full"], { hidden: !edit })}
         videoId={videoId}
-        updateTags={() => {
-          updateTags();
-          updateHistory();
-        }}
+        updateTags={update}
       />
     </div>
   );
