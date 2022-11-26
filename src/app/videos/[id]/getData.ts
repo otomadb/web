@@ -3,6 +3,8 @@ import "server-only";
 import { graphql } from "~/gql";
 import { gqlClient } from "~/gql/client";
 
+import { HistoryItemType, TagType } from "./types";
+
 const VideoPageQueryDocument = graphql(`
   query VideoPage($id: ID!) {
     video(id: $id) {
@@ -74,22 +76,8 @@ export const getData = async (
   title: string;
   titles: { title: string; primary: boolean }[];
   thumbnailUrl: string;
-  tags: { id: string; name: string; type: string }[];
-  history: ({
-    id: string;
-    createdAt: string;
-    user: { id: string; name: string; displayName: string; icon: string };
-  } & (
-    | { type: "REGISTER" }
-    | { type: "ADD_TITLE"; title: string }
-    | { type: "DELETE_TITLE"; title: string }
-    | { type: "CHANGE_PRIMARY_TITLE"; from: string | null; to: string }
-    | { type: "ADD_THUMBNAIL"; thumbnail: string }
-    | { type: "DELETE_THUMBNAIL"; thumbnail: string }
-    | { type: "CHANGE_PRIMARY_THUMBNAIL"; from: string | null; to: string }
-    | { type: "ADD_TAG"; tag: { id: string; name: string; type: string } }
-    | { type: "DELETE_TAG"; tag: { id: string; name: string; type: string } }
-  ))[];
+  tags: TagType[];
+  history: HistoryItemType[];
 }> => {
   const { video } = await gqlClient.request(VideoPageQueryDocument, { id });
 

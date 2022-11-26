@@ -4,14 +4,13 @@ import "client-only";
 
 import { ArrowPathIcon, PlusIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import useSWR from "swr";
 
 import { DelayedInput } from "~/components/DelayedInput";
 import { graphql } from "~/gql";
 import { gqlClient } from "~/gql/client";
 import { useAccessToken } from "~/hooks/useAccessToken";
-import { useLoggedIn } from "~/hooks/useLoggedIn";
 
 const SearchTagsDocument = graphql(`
   query SearchTags($query: String!) {
@@ -109,8 +108,8 @@ export const RegisterButton: React.FC<{
   className?: string;
   tagId?: string;
   videoId: string;
-}> = ({ className, tagId, videoId }) => {
-  const [token] = useAccessToken();
+  onClick(tagId: string): void;
+}> = ({ className, tagId, videoId, onClick }) => {
   const [ensureTagId, setEnsureTagId] = useState<string | null>(null);
   const { isValidating } = useSWR(
     tagId ? [CanTagQueryDocument, tagId] : null,
@@ -144,13 +143,8 @@ export const RegisterButton: React.FC<{
         ["flex", ["justify-center"], ["items-center"]]
       )}
       disabled={!ensureTagId}
-      onClick={async () => {
-        if (!ensureTagId || !token) return;
-        const result = await gqlClient.request(
-          TagVideoMutationDocument,
-          { input: { tagId: ensureTagId, videoId } },
-          { Authorization: `Bearer ${token}` }
-        );
+      onClick={() => {
+        if (ensureTagId) onClick(ensureTagId);
       }}
     >
       {isValidating && (
@@ -161,17 +155,31 @@ export const RegisterButton: React.FC<{
   );
 };
 
-export const TagAdd: React.FC<{ className?: string; videoId: string }> = ({
-  className,
-  videoId,
-}) => {
+export const TagsEditer: React.FC<{
+  className?: string;
+  videoId: string;
+  updateTags(): void;
+}> = ({ className, videoId, updateTags }) => {
   const [selected, setSelected] = useState<{ id: string; name: string } | null>(
     null
   );
+  const [accessToken] = useAccessToken();
   const [query, setQuery] = useState<string>("");
-  const isLoggedIn = useLoggedIn();
 
-  if (!isLoggedIn) return null;
+  const handleAddTag = useCallback(
+    async (tagId: string) => {
+      if (!tagId || !accessToken) return;
+      const result = await gqlClient.request(
+        TagVideoMutationDocument,
+        { input: { tagId, videoId } },
+        { Authorization: `Bearer ${accessToken}` }
+      );
+      updateTags();
+    },
+    [accessToken, videoId, updateTags]
+  );
+
+  if (!accessToken) return null;
 
   return (
     <div className={clsx(className, ["relative"])}>
@@ -190,6 +198,7 @@ export const TagAdd: React.FC<{ className?: string; videoId: string }> = ({
           className={clsx(["w-12"], ["flex-shrink-0"])}
           tagId={selected?.id}
           videoId={videoId}
+          onClick={handleAddTag}
         />
       </div>
       <SearchBox
