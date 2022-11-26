@@ -1,9 +1,9 @@
 {
   "root": true,
   "extends": [
-    "plugin:eslint-comments/recommended",
-    "next",
-    "next/core-web-vitals"
+    "eslint:recommended",
+    "next/core-web-vitals",
+    "plugin:eslint-comments/recommended"
   ],
   "plugins": ["unused-imports", "simple-import-sort"],
   "rules": {
@@ -19,6 +19,17 @@
     "simple-import-sort/imports": 2,
     "simple-import-sort/exports": 2,
     /* react */
-    "react/self-closing-comp": [2, { "component": true, "html": false }]
-  }
+    "react/self-closing-comp": [2, { "component": true, "html": false }],
+    /* next.js */
+    "@next/next/no-html-link-for-pages": [0]
+  },
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "extends": ["plugin:@typescript-eslint/recommended"],
+      "plugins": ["@typescript-eslint"],
+      "parser": "@typescript-eslint/parser",
+      "rules": {}
+    }
+  ]
 }
