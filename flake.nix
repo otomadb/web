@@ -37,6 +37,10 @@
               name = "PATH";
               prefix = "$PRJ_ROOT/node_modules/.bin";
             }
+            {
+              name = "NODE_OPTIONS";
+              value = "--openssl-legacy-provider";
+            }
           ];
         };
       }
