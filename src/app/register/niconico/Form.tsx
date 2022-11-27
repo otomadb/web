@@ -7,8 +7,9 @@ import React, { ReactNode, useState } from "react";
 
 import { useAccessToken } from "~/hooks/useAccessToken";
 
-import { NiconicoSearcher } from "./NiconicoSearcher";
-import { Registration } from "./Registration";
+import { FormContext } from "./FormContext";
+import { RegisterForm } from "./Registration/Form";
+import { Searcher } from "./Search/Searcher";
 
 export const YouHaveToLogin: React.FC<{ children: ReactNode }> = ({
   children,
@@ -25,46 +26,6 @@ export const YouHaveToLogin: React.FC<{ children: ReactNode }> = ({
 
   return <>{children}</>;
 };
-
-/* eslint-disable @typescript-eslint/no-empty-function */
-export const FormContext = React.createContext<{
-  primaryTitle: string | null;
-  extraTitles: string[];
-  tags: string[];
-  primaryThumbnail: string | null;
-  extraThumbnail: string[];
-
-  changePrimaryTitle(title: string): void;
-  addExtraTitle(title: string): void;
-  deleteExtraTitle(title: string): void;
-
-  changePrimaryThumbnail(thumbnail: string): void;
-  addExtraThumbnail(thumbnail: string): void;
-  deleteExtraThumbnail(thumbnail: string): void;
-
-  addTag(id: string): void;
-  deleteTag(id: string): void;
-  clearTags(): void;
-}>({
-  primaryTitle: null,
-  extraTitles: [],
-  tags: [],
-  primaryThumbnail: null,
-  extraThumbnail: [],
-
-  changePrimaryTitle() {},
-  addExtraTitle() {},
-  deleteExtraTitle() {},
-
-  changePrimaryThumbnail() {},
-  addExtraThumbnail() {},
-  deleteExtraThumbnail() {},
-
-  addTag() {},
-  deleteTag() {},
-  clearTags() {},
-});
-/* eslint-enable @typescript-eslint/no-empty-function */
 
 export const Form: React.FC<{ className?: string }> = ({ className }) => {
   const [primaryTitle, setPrimaryTitle] = useState<string | null>(null);
@@ -126,8 +87,8 @@ export const Form: React.FC<{ className?: string }> = ({ className }) => {
       }}
     >
       <div className={clsx(className, ["grid", ["grid-cols-2"]])}>
-        <NiconicoSearcher className={clsx([])} />
-        <Registration className={clsx([])} />
+        <Searcher className={clsx([])} />
+        <RegisterForm className={clsx([])} />
       </div>
     </FormContext.Provider>
   );
