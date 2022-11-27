@@ -36,7 +36,7 @@ export const Searcher: React.FC<{
   const [nicovideoId, setNicovideoId] = useState("");
   const isValidId = useMemo(() => /(sm)\d+/.test(nicovideoId), [nicovideoId]);
 
-  const { isValidating } = useSWR(
+  useSWR(
     isValidId ? nicovideoId : null,
     async (id) => {
       const res = await ky.get(`https://nicovideo-gti-proxy.deno.dev/${id}`);

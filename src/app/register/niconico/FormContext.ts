@@ -10,7 +10,7 @@ export const FormContext = React.createContext<{
   primaryThumbnail: string | null;
   extraThumbnail: string[];
 
-  changeNiconicoId(id: string): void;
+  changeNiconicoId(id: string | null): void;
   changePrimaryTitle(title: string | null): void;
   addExtraTitle(title: string): void;
   deleteExtraTitle(title: string): void;
