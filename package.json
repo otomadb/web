@@ -8,11 +8,11 @@
     "lint": "eslint .",
     "tailwind": "tailwindcss -i src/styles/globals.css -o src/styles/dist.css",
     "tailwind:watch": "pnpm run tailwind --watch",
-    "typecheck": "tsc --noEmit",
     "codegen": "graphql-codegen --config codegen.ts",
-    "codegen:watch": "graphql-codegen --watch --config codegen.ts",
-    "storybook": "start-storybook -p 6006 --no-open",
-    "build-storybook": "build-storybook"
+    "codegen:watch": "pnpm run codegen --watch",
+    "typecheck": "tsc --noEmit",
+    "storybook": "NODE_OPTIONS=--openssl-legacy-provider start-storybook -p 6006 --no-open -s public",
+    "build-storybook": "NODE_OPTIONS=--openssl-legacy-provider build-storybook"
   },
   "engines": {
     "node": "^16"
