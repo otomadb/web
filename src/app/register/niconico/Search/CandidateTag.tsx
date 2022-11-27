@@ -27,7 +27,7 @@ export const SearchTagsQueryDocument = graphql(`
 `);
 
 export const excludeTagFromSearch = (v: string): boolean =>
-  ["音MAD"].includes(v);
+  ["音MAD", "音mad"].includes(v);
 
 export const CandidateTag: React.FC<{ className?: string; tag: string }> = ({
   className,
