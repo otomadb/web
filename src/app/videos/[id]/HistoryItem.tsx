@@ -402,6 +402,36 @@ export const DeleteTagItem: React.FC<
   );
 };
 
+type AddNiconcioSourceItem = {
+  type: "ADD_NICONICO_SOURCE";
+  id: string;
+  createdAt: string;
+  user: {
+    id: string;
+    name: string;
+    displayName: string;
+    icon: string;
+  };
+};
+export const AddNiconcioSourceItem: React.FC<
+  { className?: string } & Omit<AddNiconcioSourceItem, "type">
+> = ({ ...rest }) => {
+  return (
+    <HistItemTemplate {...rest}>
+      <span
+        className={clsx(
+          ["whitespace-nowrap"],
+          ["text-sm"],
+          ["font-bold"],
+          ["text-slate-700"]
+        )}
+      >
+        ニコニコ動画との紐付け
+      </span>
+    </HistItemTemplate>
+  );
+};
+
 export const History: React.FC<{
   className?: string;
   item:
@@ -413,7 +443,8 @@ export const History: React.FC<{
     | DeleteThumbnail
     | ChangePrimaryThumbnail
     | AddTagItem
-    | DeleteTagItem;
+    | DeleteTagItem
+    | AddNiconcioSourceItem;
 }> = ({ className, item }) => {
   return (
     <Fragment key={item.id}>
@@ -443,6 +474,9 @@ export const History: React.FC<{
       )}
       {item.type === "DELETE_TAG" && (
         <DeleteTagItem className={className} {...item} />
+      )}
+      {item.type === "ADD_NICONICO_SOURCE" && (
+        <AddNiconcioSourceItem className={className} {...item} />
       )}
     </Fragment>
   );

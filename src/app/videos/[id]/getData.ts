@@ -64,6 +64,11 @@ const VideoPageQueryDocument = graphql(`
             type
           }
         }
+        ... on VideoAddNiconicoSourceHistoryItem {
+          niconico {
+            id
+          }
+        }
       }
     }
   }
@@ -163,6 +168,17 @@ export const getData = async (
             type: "DELETE_TAG",
             tag: { id: tag.id, name: tag.name, type: tag.type },
           };
+        }
+        case "VideoAddNiconicoSourceHistoryItem": {
+          return {
+            id,
+            createdAt,
+            user,
+            type: "ADD_NICONICO_SOURCE",
+          };
+        }
+        default: {
+          throw new Error("wow");
         }
       }
     }),

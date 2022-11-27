@@ -71,11 +71,17 @@ const VideoPageRefreshHistoryQueryDocument = graphql(`
             type
           }
         }
+        ... on VideoAddNiconicoSourceHistoryItem {
+          niconico {
+            id
+          }
+        }
       }
     }
   }
 `);
 
+/* eslint-disable @typescript-eslint/no-empty-function */
 export const UpdateableContext = createContext<{
   tags: TagType[];
   updateTags(): void;
@@ -87,6 +93,7 @@ export const UpdateableContext = createContext<{
   history: [],
   updateHistory() {},
 });
+/* eslint-enable @typescript-eslint/no-empty-function */
 
 export const UpdateableProvider: React.FC<{
   children: ReactNode;
@@ -200,6 +207,14 @@ export const UpdateableProvider: React.FC<{
                   user,
                   type: "DELETE_TAG",
                   tag: { id: tag.id, name: tag.name, type: tag.type },
+                };
+              }
+              case "VideoAddNiconicoSourceHistoryItem": {
+                return {
+                  id,
+                  createdAt,
+                  user,
+                  type: "ADD_NICONICO_SOURCE",
                 };
               }
             }

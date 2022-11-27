@@ -15,4 +15,5 @@ export type HistoryItemType = {
   | { type: "CHANGE_PRIMARY_THUMBNAIL"; from: string | null; to: string }
   | { type: "ADD_TAG"; tag: { id: string; name: string; type: string } }
   | { type: "DELETE_TAG"; tag: { id: string; name: string; type: string } }
+  | { type: "ADD_NICONICO_SOURCE" }
 );

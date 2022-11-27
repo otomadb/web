@@ -12,6 +12,7 @@ export const HistorySection: React.FC<{ className?: string }> = ({
   className,
 }) => {
   const { history } = useContext(UpdateableContext);
+
   return (
     <div className={clsx(className, ["flex", "flex-col"], ["space-y-2"])}>
       {history.map((item) => (
