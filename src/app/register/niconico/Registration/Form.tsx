@@ -1,6 +1,8 @@
 "use client";
 import clsx from "clsx";
+import Link from "next/link";
 import React, { useCallback, useContext } from "react";
+import { toast } from "react-hot-toast";
 
 import { graphql } from "~/gql";
 import { gqlClient } from "~/gql/client";
@@ -43,7 +45,19 @@ export const RegisterForm: React.FC<{ className?: string }> = ({
         },
         { Authorization: `Bearer ${accessToken}` }
       );
-      console.log(result.registerVideo.video.id);
+
+      const { title, id } = result.registerVideo.video;
+      toast(() => (
+        <span className={clsx(["text-sm"], ["text-slate-700"])}>
+          <Link
+            className={clsx(["font-bold"], ["text-blue-500"])}
+            href={`/videos/${id}`}
+          >
+            {title}
+          </Link>
+          を登録しました．
+        </span>
+      ));
     } catch (e) {
       console.error(e);
     }
@@ -77,7 +91,7 @@ export const RegisterForm: React.FC<{ className?: string }> = ({
             ["rounded"],
             ["px-2", "py-1"],
             ["group"],
-            ["bg-blue-400", "hover:bg-blue-600", "disabled:bg-slate-300"]
+            ["bg-blue-400", "hover:bg-blue-600", "disabled:bg-slate-200"]
           )}
           disabled={!accessToken || !primaryTitle || !primaryThumbnail}
           onClick={() => {

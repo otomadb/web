@@ -4,6 +4,7 @@ import clsx from "clsx";
 import React from "react";
 
 import { GlobalNav } from "~/components/GlobalNav/GlobalNav";
+import { Toaster } from "~/components/Toaster";
 
 import Providers from "./providers";
 import { TokenRefresher } from "./TokenRefresher";
@@ -32,6 +33,7 @@ export default function RootLayout({
           >
             {children}
           </div>
+          <Toaster />
         </Providers>
       </body>
     </html>
