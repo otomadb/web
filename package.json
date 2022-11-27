@@ -5,7 +5,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
+    "lint": "eslint .",
     "tailwind": "tailwindcss -i src/styles/globals.css -o src/styles/dist.css",
     "tailwind:watch": "pnpm run tailwind --watch",
     "typecheck": "tsc --noEmit",
