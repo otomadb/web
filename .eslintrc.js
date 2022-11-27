@@ -14,6 +14,7 @@ module.exports = {
     "no-useless-rename": [2],
     "object-shorthand": [2, "always"],
     "quote-props": [2, "consistent"],
+    "eqeqeq": 2,
     /* unused-imports */
     "unused-imports/no-unused-imports": [2],
     /* simple-import-sort */
