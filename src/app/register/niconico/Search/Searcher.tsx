@@ -25,8 +25,12 @@ type Source = {
 export const Searcher: React.FC<{
   className?: string;
 }> = ({ className }) => {
-  const { clearTags, changePrimaryTitle, changePrimaryThumbnail } =
-    useContext(FormContext);
+  const {
+    clearTags,
+    changePrimaryTitle,
+    changePrimaryThumbnail,
+    changeNiconicoId,
+  } = useContext(FormContext);
   const [source, setSource] = useState<Source | null>(null);
 
   const [nicovideoId, setNicovideoId] = useState("");
@@ -63,6 +67,7 @@ export const Searcher: React.FC<{
           uploadedAt: new Date(uploaded_at),
           watchUrl: watch_url,
         });
+        changeNiconicoId(id);
         changePrimaryTitle(title);
       },
       onError() {

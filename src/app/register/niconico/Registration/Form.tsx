@@ -30,25 +30,33 @@ export const RegisterForm: React.FC<{ className?: string }> = ({
   className,
 }) => {
   const [accessToken] = useAccessToken();
-  const { tags, primaryTitle, primaryThumbnail } = useContext(FormContext);
+  const { niconicoId, tags, primaryTitle, primaryThumbnail } =
+    useContext(FormContext);
 
   const handleRegister = useCallback(async () => {
     if (!accessToken) return;
     if (!primaryTitle) return;
     if (!primaryThumbnail) return;
+    if (!niconicoId) return;
 
     try {
       const result = await gqlClient.request(
         RegisterVideoMutationDocument,
         {
-          input: { primaryTitle, primaryThumbnail, tags, extraTitles: [] },
+          input: {
+            primaryTitle,
+            primaryThumbnail,
+            tags,
+            extraTitles: [],
+            niconico: [niconicoId],
+          },
         },
         { Authorization: `Bearer ${accessToken}` }
       );
 
       const { title, id } = result.registerVideo.video;
       toast(() => (
-        <span className={clsx(["text-sm"], ["text-slate-700"])}>
+        <span className={clsx(["text-slate-700"])}>
           <Link
             className={clsx(["font-bold"], ["text-blue-500"])}
             href={`/videos/${id}`}
@@ -59,14 +67,24 @@ export const RegisterForm: React.FC<{ className?: string }> = ({
         </span>
       ));
     } catch (e) {
-      console.error(e);
+      toast.error(() => (
+        <span className={clsx(["text-slate-700"])}>
+          登録時に問題が発生しました
+        </span>
+      ));
     }
-  }, [accessToken, primaryThumbnail, primaryTitle, tags]);
+  }, [accessToken, niconicoId, primaryThumbnail, primaryTitle, tags]);
 
   return (
     <div className={clsx(className)}>
       <div>
-        <div className={clsx(["text-slate-700"], ["text-sm"])}>Title</div>
+        <div className={clsx(["text-slate-700"], ["text-sm"])}>niconico ID</div>
+        <div>{niconicoId}</div>
+      </div>
+      <div>
+        <div className={clsx(["mt-4"], ["text-slate-700"], ["text-sm"])}>
+          Title
+        </div>
         <div>{primaryTitle}</div>
       </div>
       <div className={clsx(["mt-4"])}>

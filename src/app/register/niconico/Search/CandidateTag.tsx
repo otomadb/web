@@ -101,7 +101,7 @@ export const CandidateTag: React.FC<{ className?: string; tag: string }> = ({
               }}
             >
               <div className={clsx(["text-slate-900"], ["text-xs"])}>
-                <span>{tag.type}</span>:<span>{tag.name}</span>
+                {tag.type}:{tag.name}
               </div>
             </button>
           </div>

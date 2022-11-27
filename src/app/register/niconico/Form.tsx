@@ -28,6 +28,7 @@ export const YouHaveToLogin: React.FC<{ children: ReactNode }> = ({
 };
 
 export const Form: React.FC<{ className?: string }> = ({ className }) => {
+  const [niconicoId, setNiconicoId] = useState<string | null>(null);
   const [primaryTitle, setPrimaryTitle] = useState<string | null>(null);
   const [extraTitles, setExtraTitles] = useState<string[]>([]);
   const [tags, setTags] = useState<string[]>([]);
@@ -37,11 +38,15 @@ export const Form: React.FC<{ className?: string }> = ({ className }) => {
   return (
     <FormContext.Provider
       value={{
+        niconicoId,
         primaryTitle,
         extraTitles,
         tags,
         primaryThumbnail,
         extraThumbnail,
+        changeNiconicoId(id) {
+          setNiconicoId(id);
+        },
         changePrimaryTitle(title) {
           setPrimaryTitle(title);
         },
