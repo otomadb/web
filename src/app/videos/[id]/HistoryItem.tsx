@@ -10,6 +10,7 @@ import React, { Fragment, ReactNode } from "react";
 
 import { DateTime } from "./DateTime";
 import { Tag } from "./Tag";
+import { TagType } from "./types";
 
 const HistItemTemplate: React.FC<{
   className?: string;
@@ -322,11 +323,7 @@ type AddTagItem = {
     displayName: string;
     icon: string;
   };
-  tag: {
-    id: string;
-    name: string;
-    type: string;
-  };
+  tag: TagType;
 };
 export const AddTagItem: React.FC<
   { className?: string } & Omit<AddTagItem, "type">
@@ -350,7 +347,7 @@ export const AddTagItem: React.FC<
           id={tag.id}
           name={tag.name}
           type={tag.type}
-          context_name={null}
+          contextName={tag.explicitParent?.name}
         />
       </div>
     </HistItemTemplate>
@@ -367,11 +364,7 @@ type DeleteTagItem = {
     displayName: string;
     icon: string;
   };
-  tag: {
-    id: string;
-    name: string;
-    type: string;
-  };
+  tag: TagType;
 };
 export const DeleteTagItem: React.FC<
   { className?: string } & Omit<DeleteTagItem, "type">
@@ -395,7 +388,7 @@ export const DeleteTagItem: React.FC<
           id={tag.id}
           name={tag.name}
           type={tag.type}
-          context_name={null}
+          contextName={tag.explicitParent?.name}
         />
       </div>
     </HistItemTemplate>

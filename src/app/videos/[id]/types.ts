@@ -1,6 +1,12 @@
 "use client";
 
-export type TagType = { id: string; name: string; type: string };
+export type TagType = {
+  id: string;
+  name: string;
+  type: string;
+  explicitParent: { id: string; name: string } | null;
+};
+
 export type HistoryItemType = {
   id: string;
   createdAt: string;
@@ -13,7 +19,7 @@ export type HistoryItemType = {
   | { type: "ADD_THUMBNAIL"; thumbnail: string }
   | { type: "DELETE_THUMBNAIL"; thumbnail: string }
   | { type: "CHANGE_PRIMARY_THUMBNAIL"; from: string | null; to: string }
-  | { type: "ADD_TAG"; tag: { id: string; name: string; type: string } }
-  | { type: "DELETE_TAG"; tag: { id: string; name: string; type: string } }
+  | { type: "ADD_TAG"; tag: TagType }
+  | { type: "DELETE_TAG"; tag: TagType }
   | { type: "ADD_NICONICO_SOURCE" }
 );

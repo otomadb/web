@@ -6,9 +6,9 @@ export const Tag: React.FC<{
   className?: string;
   id: string;
   name: string;
-  context_name: string | null;
   type: string;
-}> = ({ className, id, name, context_name: context, type }) => {
+  contextName?: string;
+}> = ({ className, id, name, contextName, type }) => {
   return (
     <Link
       key={id}
@@ -37,9 +37,9 @@ export const Tag: React.FC<{
       )}
     >
       <span className={clsx(["text-slate-800"], ["text-xs"])}>{name}</span>
-      {context && (
+      {contextName && (
         <span className={clsx(["ml-0.5"], ["text-slate-500"], ["text-xs"])}>
-          ({context})
+          ({contextName})
         </span>
       )}
     </Link>

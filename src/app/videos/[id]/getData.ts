@@ -18,6 +18,10 @@ const VideoPageQueryDocument = graphql(`
         id
         name
         type
+        explicitParent {
+          id
+          name
+        }
       }
       thumbnailUrl
       history(order: { createdAt: ASC }) {
@@ -55,6 +59,10 @@ const VideoPageQueryDocument = graphql(`
             id
             name
             type
+            explicitParent {
+              id
+              name
+            }
           }
         }
         ... on VideoDeleteTagHistoryItem {
@@ -62,6 +70,10 @@ const VideoPageQueryDocument = graphql(`
             id
             name
             type
+            explicitParent {
+              id
+              name
+            }
           }
         }
         ... on VideoAddNiconicoSourceHistoryItem {
@@ -94,11 +106,16 @@ export const getData = async (
       primary,
     })),
     thumbnailUrl: video.thumbnailUrl,
-    tags: video.tags.map(({ id, name, type }) => ({
-      id,
-      name,
-      type: type.toString(),
-    })),
+    tags: video.tags.map(({ id, name, type, explicitParent }) => {
+      return {
+        id,
+        name,
+        type: type.toString(),
+        explicitParent: explicitParent
+          ? { id: explicitParent.id, name: explicitParent.name }
+          : null,
+      };
+    }),
     history: video.history.map((item) => {
       const { id, createdAt } = item;
       const user = {
@@ -156,7 +173,17 @@ export const getData = async (
             createdAt,
             user,
             type: "ADD_TAG",
-            tag: { id: tag.id, name: tag.name, type: tag.type },
+            tag: {
+              id: tag.id,
+              name: tag.name,
+              type: tag.type,
+              explicitParent: tag.explicitParent
+                ? {
+                    id: tag.explicitParent.id,
+                    name: tag.explicitParent.name,
+                  }
+                : null,
+            },
           };
         }
         case "VideoDeleteTagHistoryItem": {
@@ -166,7 +193,17 @@ export const getData = async (
             createdAt,
             user,
             type: "DELETE_TAG",
-            tag: { id: tag.id, name: tag.name, type: tag.type },
+            tag: {
+              id: tag.id,
+              name: tag.name,
+              type: tag.type,
+              explicitParent: tag.explicitParent
+                ? {
+                    id: tag.explicitParent.id,
+                    name: tag.explicitParent.name,
+                  }
+                : null,
+            },
           };
         }
         case "VideoAddNiconicoSourceHistoryItem": {

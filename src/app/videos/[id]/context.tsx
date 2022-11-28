@@ -18,6 +18,10 @@ const VideoPageRefreshTagsQueryDocument = graphql(`
         id
         name
         type
+        explicitParent {
+          id
+          name
+        }
       }
     }
   }
@@ -62,6 +66,10 @@ const VideoPageRefreshHistoryQueryDocument = graphql(`
             id
             name
             type
+            explicitParent {
+              id
+              name
+            }
           }
         }
         ... on VideoDeleteTagHistoryItem {
@@ -69,6 +77,10 @@ const VideoPageRefreshHistoryQueryDocument = graphql(`
             id
             name
             type
+            explicitParent {
+              id
+              name
+            }
           }
         }
         ... on VideoAddNiconicoSourceHistoryItem {
@@ -111,7 +123,18 @@ export const UpdateableProvider: React.FC<{
         const {
           video: { tags },
         } = data;
-        setTags(tags.map(({ id, name, type }) => ({ id, name, type })));
+        setTags(
+          tags.map(({ id, name, type, explicitParent }) => {
+            return {
+              id,
+              name,
+              type,
+              explicitParent: explicitParent
+                ? { id: explicitParent.id, name: explicitParent.name }
+                : null,
+            };
+          })
+        );
       },
     }
   );
@@ -196,7 +219,17 @@ export const UpdateableProvider: React.FC<{
                   createdAt,
                   user,
                   type: "ADD_TAG",
-                  tag: { id: tag.id, name: tag.name, type: tag.type },
+                  tag: {
+                    id: tag.id,
+                    name: tag.name,
+                    type: tag.type,
+                    explicitParent: tag.explicitParent
+                      ? {
+                          id: tag.explicitParent.id,
+                          name: tag.explicitParent.name,
+                        }
+                      : null,
+                  },
                 };
               }
               case "VideoDeleteTagHistoryItem": {
@@ -206,7 +239,17 @@ export const UpdateableProvider: React.FC<{
                   createdAt,
                   user,
                   type: "DELETE_TAG",
-                  tag: { id: tag.id, name: tag.name, type: tag.type },
+                  tag: {
+                    id: tag.id,
+                    name: tag.name,
+                    type: tag.type,
+                    explicitParent: tag.explicitParent
+                      ? {
+                          id: tag.explicitParent.id,
+                          name: tag.explicitParent.name,
+                        }
+                      : null,
+                  },
                 };
               }
               case "VideoAddNiconicoSourceHistoryItem": {

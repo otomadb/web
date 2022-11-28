@@ -9,6 +9,7 @@ import { gqlClient } from "~/gql/client";
 import { useAccessToken } from "~/hooks/useAccessToken";
 
 import { Tag } from "./Tag";
+import { TagType } from "./types";
 
 const UntagVideoMutationDocument = graphql(`
   mutation UntagVideo($input: UntagVideoInput!) {
@@ -96,7 +97,7 @@ export const RemovableTag: React.FC<{
 
 export const TagsList: React.FC<{
   className?: string;
-  tags: { id: string; name: string; type: string }[];
+  tags: TagType[];
   edit: boolean;
   videoId: string;
   updateTags(): void;
@@ -132,10 +133,15 @@ export const TagsList: React.FC<{
           ["gap-y-1"]
         )}
       >
-        {tags.map(({ id, name, type }) => (
+        {tags.map(({ id, name, type, explicitParent }) => (
           <Fragment key={id}>
             {!edit && (
-              <Tag id={id} name={name} context_name={null} type={type} />
+              <Tag
+                id={id}
+                name={name}
+                type={type}
+                contextName={explicitParent?.name}
+              />
             )}
             {edit && (
               <RemovableTag
