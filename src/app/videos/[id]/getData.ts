@@ -17,7 +17,6 @@ const VideoPageQueryDocument = graphql(`
       tags {
         id
         name
-        type
         explicitParent {
           id
           name
@@ -58,7 +57,6 @@ const VideoPageQueryDocument = graphql(`
           tag {
             id
             name
-            type
             explicitParent {
               id
               name
@@ -69,7 +67,6 @@ const VideoPageQueryDocument = graphql(`
           tag {
             id
             name
-            type
             explicitParent {
               id
               name
@@ -106,11 +103,10 @@ export const getData = async (
       primary,
     })),
     thumbnailUrl: video.thumbnailUrl,
-    tags: video.tags.map(({ id, name, type, explicitParent }) => {
+    tags: video.tags.map(({ id, name, explicitParent }) => {
       return {
         id,
         name,
-        type: type.toString(),
         explicitParent: explicitParent
           ? { id: explicitParent.id, name: explicitParent.name }
           : null,
@@ -176,7 +172,6 @@ export const getData = async (
             tag: {
               id: tag.id,
               name: tag.name,
-              type: tag.type,
               explicitParent: tag.explicitParent
                 ? {
                     id: tag.explicitParent.id,
@@ -196,7 +191,6 @@ export const getData = async (
             tag: {
               id: tag.id,
               name: tag.name,
-              type: tag.type,
               explicitParent: tag.explicitParent
                 ? {
                     id: tag.explicitParent.id,

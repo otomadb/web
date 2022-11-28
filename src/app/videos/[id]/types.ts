@@ -3,7 +3,7 @@
 export type TagType = {
   id: string;
   name: string;
-  type: string;
+  // type: string;
   explicitParent: { id: string; name: string } | null;
 };
 

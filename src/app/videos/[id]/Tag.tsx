@@ -6,9 +6,9 @@ export const Tag: React.FC<{
   className?: string;
   id: string;
   name: string;
-  type: string;
+  // type: string;
   contextName?: string;
-}> = ({ className, id, name, contextName, type }) => {
+}> = ({ className, id, name, contextName }) => {
   return (
     <Link
       key={id}
@@ -21,7 +21,7 @@ export const Tag: React.FC<{
         [
           "border",
           "border-gray-200",
-          [
+          /* [
             "border-l-4",
             {
               "border-l-character-400": type === "CHARACTER",
@@ -30,6 +30,7 @@ export const Tag: React.FC<{
               "border-l-copyright-400": type === "COPYRIGHT",
             },
           ],
+          */
         ],
         ["shadow-sm"],
         ["rounded"],

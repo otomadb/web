@@ -31,9 +31,15 @@ export const RemovableTag: React.FC<{
   id: string;
   name: string;
   context: string | null;
-  type: string;
+  // type: string;
   handleRemove(): void;
-}> = ({ className, id, name, context, type, handleRemove }) => {
+}> = ({
+  className,
+  name,
+  context,
+  // type,
+  handleRemove,
+}) => {
   return (
     <div
       className={clsx(
@@ -42,7 +48,7 @@ export const RemovableTag: React.FC<{
         [
           "border",
           "border-gray-200",
-          [
+          /*[
             "border-l-4",
             {
               "border-l-character-400": type === "CHARACTER",
@@ -50,7 +56,7 @@ export const RemovableTag: React.FC<{
               "border-l-music-400": type === "MUSIC",
               "border-l-copyright-400": type === "COPYRIGHT",
             },
-          ],
+          ], */
         ],
         ["shadow-sm"],
         ["rounded"],
@@ -106,7 +112,7 @@ export const TagsList: React.FC<{
 
   return (
     <div className={className}>
-      <div className={clsx(["mt-2"], ["flex"], ["gap-x-2"], ["gap-y-2"])}>
+      {/*<div className={clsx(["mt-2"], ["flex"], ["gap-x-2"], ["gap-y-2"])}>
         {tags
           .map(({ type }) => type)
           .filter((v1, i, arr) => i === arr.findIndex((v2) => v1 === v2))
@@ -124,31 +130,25 @@ export const TagsList: React.FC<{
               </span>
             </div>
           ))}
-      </div>
+      </div>*/}
       <div
         className={clsx(
-          ["mt-2"],
+          // ["mt-2"],
           ["flex", "flex-wrap"],
           ["gap-x-1"],
           ["gap-y-1"]
         )}
       >
-        {tags.map(({ id, name, type, explicitParent }) => (
+        {tags.map(({ id, name, explicitParent }) => (
           <Fragment key={id}>
             {!edit && (
-              <Tag
-                id={id}
-                name={name}
-                type={type}
-                contextName={explicitParent?.name}
-              />
+              <Tag id={id} name={name} contextName={explicitParent?.name} />
             )}
             {edit && (
               <RemovableTag
                 id={id}
                 name={name}
                 context={null}
-                type={type}
                 handleRemove={async () => {
                   await gqlClient.request(
                     UntagVideoMutationDocument,

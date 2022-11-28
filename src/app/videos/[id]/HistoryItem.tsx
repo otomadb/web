@@ -346,7 +346,6 @@ export const AddTagItem: React.FC<
           className={clsx(["ml-2"])}
           id={tag.id}
           name={tag.name}
-          type={tag.type}
           contextName={tag.explicitParent?.name}
         />
       </div>
@@ -387,7 +386,6 @@ export const DeleteTagItem: React.FC<
           className={clsx(["ml-2"])}
           id={tag.id}
           name={tag.name}
-          type={tag.type}
           contextName={tag.explicitParent?.name}
         />
       </div>
