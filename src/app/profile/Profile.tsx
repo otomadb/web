@@ -4,13 +4,11 @@ import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { ReactNode } from "react";
+import React from "react";
 import useSWR from "swr";
 
 import { graphql } from "~/gql";
-import { useAccessToken } from "~/hooks/useAccessToken";
 import { useGraphQLClient } from "~/hooks/useGraphQLClient";
-import { useRefreshToken } from "~/hooks/useRefreshToken";
 
 const ProfileDocument = graphql(`
   query Profile {
@@ -25,8 +23,6 @@ const ProfileDocument = graphql(`
 
 export const Logout: React.FC<{ className: string }> = ({ className }) => {
   const router = useRouter();
-  const [, setAccessToken] = useAccessToken();
-  const [, setRefreshToken] = useRefreshToken();
 
   return (
     <button
@@ -39,8 +35,6 @@ export const Logout: React.FC<{ className: string }> = ({ className }) => {
         ["rounded"]
       )}
       onClick={() => {
-        setAccessToken(null);
-        setRefreshToken(null);
         router.push("/");
       }}
     >
@@ -51,17 +45,8 @@ export const Logout: React.FC<{ className: string }> = ({ className }) => {
 
 export const Profile: React.FC<{ className?: string }> = ({ className }) => {
   const gqlClient = useGraphQLClient();
-  const [accessToken, setAccessToken] = useAccessToken();
-  const { data } = useSWR(
-    accessToken !== null ? [ProfileDocument, accessToken] : null,
-    async (doc, token) =>
-      gqlClient.request(doc, {}, { Authorization: `Bearer ${token}` }),
-    {
-      suspense: true,
-      onError() {
-        setAccessToken(null);
-      },
-    }
+  const { data } = useSWR([ProfileDocument], async (doc) =>
+    gqlClient.request(doc)
   );
 
   if (!data) return null;
@@ -82,17 +67,4 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
       <Logout className={clsx(["mt-1"])} />
     </div>
   );
-};
-
-export const YouHaveToLogin: React.FC<{ children: ReactNode }> = ({
-  children,
-}) => {
-  const router = useRouter();
-  const [accessToken] = useAccessToken();
-  if (!accessToken) {
-    router.push("/login");
-    return null;
-  }
-
-  return <>{children}</>;
 };

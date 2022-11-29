@@ -5,7 +5,6 @@ import clsx from "clsx";
 import React, { Fragment } from "react";
 
 import { graphql } from "~/gql";
-import { useAccessToken } from "~/hooks/useAccessToken";
 import { useGraphQLClient } from "~/hooks/useGraphQLClient";
 
 import { Tag } from "./Tag";
@@ -109,7 +108,6 @@ export const TagsList: React.FC<{
   updateTags(): void;
 }> = ({ className, videoId, tags, edit, updateTags }) => {
   const gqlClient = useGraphQLClient();
-  const [accessToken] = useAccessToken();
 
   return (
     <div className={className}>
@@ -151,11 +149,9 @@ export const TagsList: React.FC<{
                 name={name}
                 context={null}
                 handleRemove={async () => {
-                  await gqlClient.request(
-                    UntagVideoMutationDocument,
-                    { input: { tagId: id, videoId } },
-                    { Authorization: `Bearer ${accessToken}` }
-                  );
+                  await gqlClient.request(UntagVideoMutationDocument, {
+                    input: { tagId: id, videoId },
+                  });
                   updateTags();
                 }}
               />

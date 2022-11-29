@@ -9,7 +9,6 @@ import useSWR from "swr";
 
 import { DelayedInput } from "~/components/DelayedInput";
 import { graphql } from "~/gql";
-import { useAccessToken } from "~/hooks/useAccessToken";
 import { useGraphQLClient } from "~/hooks/useGraphQLClient";
 
 const SearchTagsDocument = graphql(`
@@ -166,23 +165,18 @@ export const TagsEditer: React.FC<{
   const [selected, setSelected] = useState<{ id: string; name: string } | null>(
     null
   );
-  const [accessToken] = useAccessToken();
   const [query, setQuery] = useState<string>("");
 
   const handleAddTag = useCallback(
     async (tagId: string) => {
-      if (!tagId || !accessToken) return;
-      const result = await gqlClient.request(
-        TagVideoMutationDocument,
-        { input: { tagId, videoId } },
-        { Authorization: `Bearer ${accessToken}` }
-      );
+      if (!tagId) return;
+      const result = await gqlClient.request(TagVideoMutationDocument, {
+        input: { tagId, videoId },
+      });
       updateTags();
     },
-    [accessToken, videoId, updateTags]
+    [gqlClient, videoId, updateTags]
   );
-
-  if (!accessToken) return null;
 
   return (
     <div className={clsx(className, ["relative"])}>

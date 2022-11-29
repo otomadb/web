@@ -7,9 +7,9 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 import { graphql } from "~/gql";
-import { useAccessToken } from "~/hooks/useAccessToken";
 import { useGraphQLClient } from "~/hooks/useGraphQLClient";
-import { useRefreshToken } from "~/hooks/useRefreshToken";
+
+import { useLoggedIn } from "../../hooks/useLoggedIn";
 
 const LoginDocument = graphql(`
   mutation Login($name: String!, $password: String!) {
@@ -26,10 +26,9 @@ export const LoginForm: React.FC<{ className?: string }> = ({ className }) => {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
 
-  const [storedAccessToken, setAccessToken] = useAccessToken();
-  const [storedRefreshToken, setRefreshToken] = useRefreshToken();
+  const loggedIn = useLoggedIn();
 
-  if (storedAccessToken !== null && storedRefreshToken !== null) {
+  if (loggedIn) {
     router.replace("/");
     return null;
   }
@@ -69,8 +68,6 @@ export const LoginForm: React.FC<{ className?: string }> = ({ className }) => {
               name: username,
               password,
             });
-            setAccessToken(accessToken);
-            setRefreshToken(refreshToken);
           } catch (e) {
             console.error(e);
           }

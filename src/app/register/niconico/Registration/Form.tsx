@@ -13,8 +13,8 @@ import { toast } from "react-hot-toast";
 import useSWR from "swr";
 
 import { graphql } from "~/gql";
-import { useAccessToken } from "~/hooks/useAccessToken";
 import { useGraphQLClient } from "~/hooks/useGraphQLClient";
+import { useLoggedIn } from "~/hooks/useLoggedIn";
 
 import { FormContext } from "../FormContext";
 import { EditableTag } from "./EditableTag";
@@ -115,7 +115,6 @@ export const RegisterForm: React.FC<{ className?: string }> = ({
   className,
 }) => {
   const gqlClient = useGraphQLClient();
-  const [accessToken] = useAccessToken();
   const {
     niconicoId,
     primaryTitle,
@@ -126,27 +125,24 @@ export const RegisterForm: React.FC<{ className?: string }> = ({
     changePrimaryTitle,
     clearTags,
   } = useContext(FormContext);
+  const loggedIn = useLoggedIn();
 
   const handleRegister = useCallback(async () => {
-    if (!accessToken) return;
+    if (!loggedIn) return;
     if (!niconicoId) return;
     if (!primaryTitle) return;
     if (!primaryThumbnail) return;
 
     try {
-      const result = await gqlClient.request(
-        RegisterVideoMutationDocument,
-        {
-          input: {
-            primaryTitle,
-            primaryThumbnail,
-            tags,
-            extraTitles: [],
-            niconico: [niconicoId],
-          },
+      const result = await gqlClient.request(RegisterVideoMutationDocument, {
+        input: {
+          primaryTitle,
+          primaryThumbnail,
+          tags,
+          extraTitles: [],
+          niconico: [niconicoId],
         },
-        { Authorization: `Bearer ${accessToken}` }
-      );
+      });
 
       const { title, id } = result.registerVideo.video;
       toast(() => (
@@ -172,11 +168,11 @@ export const RegisterForm: React.FC<{ className?: string }> = ({
       ));
     }
   }, [
-    gqlClient,
-    accessToken,
+    loggedIn,
     niconicoId,
     primaryTitle,
     primaryThumbnail,
+    gqlClient,
     tags,
     changeNiconicoId,
     changePrimaryTitle,
@@ -223,7 +219,7 @@ export const RegisterForm: React.FC<{ className?: string }> = ({
               ["group"],
               ["bg-blue-400", "hover:bg-blue-600", "disabled:bg-slate-200"]
             )}
-            disabled={!accessToken || !primaryTitle || !primaryThumbnail}
+            disabled={!loggedIn || !primaryTitle || !primaryThumbnail}
             onClick={() => {
               handleRegister();
             }}
