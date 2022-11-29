@@ -14,7 +14,7 @@ export const VideoList: React.FC<{
         <div
           className={clsx(
             ["w-full"],
-            ["gap-x-8"],
+            ["gap-x-4"],
             ["gap-y-4"],
             ["grid", ["grid-cols-3", "md:grid-cols-4", "lg:grid-cols-6"]]
           )}
@@ -31,14 +31,18 @@ export const VideoList: React.FC<{
                   priority={true}
                 />
               </Link>
-              <div className={clsx(["px-2"], ["py-2"])}>
-                <Link
-                  className={clsx(["block"], ["text-sm"], ["line-clamp-2"])}
-                  href={`/videos/${id}`}
-                >
-                  {title}
-                </Link>
-              </div>
+              <Link
+                className={clsx(
+                  ["block"],
+                  ["px-1"],
+                  ["py-1"],
+                  ["text-sm"],
+                  ["line-clamp-2"]
+                )}
+                href={`/videos/${id}`}
+              >
+                {title}
+              </Link>
             </div>
           ))}
         </div>
