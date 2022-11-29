@@ -14,7 +14,7 @@ import useSWR from "swr";
 
 import { graphql } from "~/gql";
 import { useGraphQLClient } from "~/hooks/useGraphQLClient";
-import { useLoggedIn } from "~/hooks/useLoggedIn";
+import { useIsLoggedIn } from "~/hooks/useIsLoggedIn";
 
 import { FormContext } from "../FormContext";
 import { EditableTag } from "./EditableTag";
@@ -125,7 +125,7 @@ export const RegisterForm: React.FC<{ className?: string }> = ({
     changePrimaryTitle,
     clearTags,
   } = useContext(FormContext);
-  const loggedIn = useLoggedIn();
+  const loggedIn = useIsLoggedIn();
 
   const handleRegister = useCallback(async () => {
     if (!loggedIn) return;

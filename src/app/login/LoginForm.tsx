@@ -6,29 +6,22 @@ import clsx from "clsx";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
-import { graphql } from "~/gql";
-import { useGraphQLClient } from "~/hooks/useGraphQLClient";
-
-import { useLoggedIn } from "../../hooks/useLoggedIn";
-
-const LoginDocument = graphql(`
-  mutation Login($name: String!, $password: String!) {
-    signin(input: { name: $name, password: $password }) {
-      accessToken
-      refreshToken
-    }
-  }
-`);
+import { useIsLoggedIn } from "~/hooks/useIsLoggedIn";
+import { useLogin } from "~/hooks/useLogin";
 
 export const LoginForm: React.FC<{ className?: string }> = ({ className }) => {
-  const gqlClient = useGraphQLClient();
   const router = useRouter();
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
 
-  const loggedIn = useLoggedIn();
+  const isLoggedIn = useIsLoggedIn();
+  const login = useLogin({
+    onSuccess() {
+      router.replace("/");
+    },
+  });
 
-  if (loggedIn) {
+  if (isLoggedIn) {
     router.replace("/");
     return null;
   }
@@ -61,16 +54,7 @@ export const LoginForm: React.FC<{ className?: string }> = ({ className }) => {
         onClick={async () => {
           if (!username) return;
           if (!password) return;
-          try {
-            const {
-              signin: { accessToken, refreshToken },
-            } = await gqlClient.request(LoginDocument, {
-              name: username,
-              password,
-            });
-          } catch (e) {
-            console.error(e);
-          }
+          login({ username, password });
         }}
       >
         Signin

@@ -9,6 +9,7 @@ import useSWR from "swr";
 
 import { graphql } from "~/gql";
 import { useGraphQLClient } from "~/hooks/useGraphQLClient";
+import { useLogout } from "~/hooks/useLogout";
 
 const ProfileDocument = graphql(`
   query Profile {
@@ -23,6 +24,11 @@ const ProfileDocument = graphql(`
 
 export const Logout: React.FC<{ className: string }> = ({ className }) => {
   const router = useRouter();
+  const logout = useLogout({
+    onSuccess() {
+      router.push("/");
+    },
+  });
 
   return (
     <button
@@ -35,7 +41,7 @@ export const Logout: React.FC<{ className: string }> = ({ className }) => {
         ["rounded"]
       )}
       onClick={() => {
-        router.push("/");
+        logout();
       }}
     >
       Logout
