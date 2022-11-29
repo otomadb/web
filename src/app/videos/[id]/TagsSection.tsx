@@ -2,6 +2,7 @@
 
 import "client-only";
 
+import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import React, { useCallback, useContext, useState } from "react";
 
@@ -24,11 +25,19 @@ export const TagsSection: React.FC<{
 
   return (
     <div className={clsx(className)}>
-      <TagsList tags={tags} videoId={videoId} edit={edit} updateTags={update} />
-      <EditToggle edit={edit} toggleEdit={(v) => setEdit(v)} />
-      <TagsEditer
-        className={clsx(["mt-2"], ["w-full"], { hidden: !edit })}
+      <div className={clsx(["h-8"], ["flex", ["items-center"]])}>
+        <EditToggle edit={edit} toggleEdit={(v) => setEdit(v)} />
+        <TagsEditer
+          className={clsx(["ml-2"], ["w-full"], { hidden: !edit })}
+          videoId={videoId}
+          updateTags={update}
+        />
+      </div>
+      <TagsList
+        className={clsx(["mt-1"])}
+        tags={tags}
         videoId={videoId}
+        edit={edit}
         updateTags={update}
       />
     </div>
@@ -42,22 +51,20 @@ export const EditToggle: React.FC<{
 }> = ({ className, edit, toggleEdit }) => {
   const isLoggedIn = useLoggedIn();
 
+  if (!isLoggedIn) return null;
+
   return (
     <div className={clsx(className)}>
-      {!isLoggedIn && <span></span>}
-      {isLoggedIn && (
-        <label>
-          <input
-            type="checkbox"
-            value={edit ? "edit" : undefined}
-            onChange={(e) => {
-              toggleEdit(e.target.value !== "edit");
-            }}
-          />
-          {!edit && <span>not edit</span>}
-          {edit && <span>editing</span>}
-        </label>
-      )}
+      <label className={clsx(["flex"])}>
+        <PencilSquareIcon className={clsx(["w-4"], ["h-4"])} />
+        <input
+          type="checkbox"
+          value={edit ? "edit" : undefined}
+          onChange={(e) => {
+            toggleEdit(e.target.value !== "edit");
+          }}
+        />
+      </label>
     </div>
   );
 };

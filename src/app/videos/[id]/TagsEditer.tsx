@@ -162,6 +162,7 @@ export const TagsEditer: React.FC<{
   videoId: string;
   updateTags(): void;
 }> = ({ className, videoId, updateTags }) => {
+  const gqlClient = useGraphQLClient();
   const [selected, setSelected] = useState<{ id: string; name: string } | null>(
     null
   );
