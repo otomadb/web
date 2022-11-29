@@ -1,13 +1,24 @@
+"use client";
 import "client-only";
 
-import { atom, useRecoilState } from "recoil";
+import { useEffect, useState } from "react";
 
-import { localstorageEffect } from "./useAccessToken";
+export const useRefreshToken = (): [
+  string | null,
+  (token: string | null) => void
+] => {
+  const [token, setter] = useState<string | null>(null);
 
-const stateRefreshToken = atom<string | null>({
-  key: "refreshToken",
-  default: null,
-  effects: [localstorageEffect("refresh_token")],
-});
+  useEffect(() => {
+    if (typeof window === "undefined" || !window.localStorage) return;
 
-export const useRefreshToken = () => useRecoilState(stateRefreshToken);
+    if (token !== null) {
+      window.localStorage.setItem("refresh_token", JSON.stringify(token));
+    } else {
+      const saved = window.localStorage.getItem("refresh_token");
+      if (saved !== null) setter(JSON.parse(saved));
+    }
+  }, [token, setter]);
+
+  return [token, setter];
+};

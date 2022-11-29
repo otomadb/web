@@ -1,26 +1,24 @@
+"use client";
 import "client-only";
 
-import { atom, AtomEffect, useRecoilState } from "recoil";
+import { useEffect, useState } from "react";
 
-export const localstorageEffect =
-  (key: string): AtomEffect<string | null> =>
-  ({ setSelf, onSet }) => {
+export const useAccessToken = (): [
+  string | null,
+  (token: string | null) => void
+] => {
+  const [token, setter] = useState<string | null>(null);
+
+  useEffect(() => {
     if (typeof window === "undefined" || !window.localStorage) return;
 
-    const saved = window.localStorage.getItem(key);
-    if (!!saved) setSelf(JSON.parse(saved));
+    if (token !== null) {
+      window.localStorage.setItem("access_token", JSON.stringify(token));
+    } else {
+      const saved = window.localStorage.getItem("access_token");
+      if (saved !== null) setter(JSON.parse(saved));
+    }
+  }, [token, setter]);
 
-    onSet((newValue, _, isReset) => {
-      isReset
-        ? window.localStorage.removeItem(key)
-        : window.localStorage.setItem(key, JSON.stringify(newValue));
-    });
-  };
-
-export const stateAccessToken = atom<string | null>({
-  key: "accessToken",
-  default: null,
-  effects: [localstorageEffect("access_token")],
-});
-
-export const useAccessToken = () => useRecoilState(stateAccessToken);
+  return [token, setter];
+};
