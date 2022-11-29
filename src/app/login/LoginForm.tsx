@@ -7,8 +7,8 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 import { graphql } from "~/gql";
-import { gqlClient } from "~/gql/client";
 import { useAccessToken } from "~/hooks/useAccessToken";
+import { useGraphQLClient } from "~/hooks/useGraphQLClient";
 import { useRefreshToken } from "~/hooks/useRefreshToken";
 
 const LoginDocument = graphql(`
@@ -21,6 +21,7 @@ const LoginDocument = graphql(`
 `);
 
 export const LoginForm: React.FC<{ className?: string }> = ({ className }) => {
+  const gqlClient = useGraphQLClient();
   const router = useRouter();
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
@@ -70,7 +71,6 @@ export const LoginForm: React.FC<{ className?: string }> = ({ className }) => {
             });
             setAccessToken(accessToken);
             setRefreshToken(refreshToken);
-            router.replace("/");
           } catch (e) {
             console.error(e);
           }

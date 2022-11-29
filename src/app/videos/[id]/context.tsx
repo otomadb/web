@@ -6,7 +6,7 @@ import React, { createContext, ReactNode, useState } from "react";
 import useSWR from "swr";
 
 import { graphql } from "~/gql";
-import { gqlClient } from "~/gql/client";
+import { useGraphQLClient } from "~/hooks/useGraphQLClient";
 
 import { HistoryItemType, TagType } from "./types";
 
@@ -113,6 +113,7 @@ export const UpdateableProvider: React.FC<{
   initTags: TagType[];
   initHistory: HistoryItemType[];
 }> = ({ children, videoId, initTags, initHistory }) => {
+  const gqlClient = useGraphQLClient();
   const [tags, setTags] = useState(initTags);
   const { mutate: updateTags } = useSWR(
     [VideoPageRefreshTagsQueryDocument, videoId],

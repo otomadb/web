@@ -7,8 +7,8 @@ import React, { useEffect, useState } from "react";
 import useSWR from "swr";
 
 import { graphql } from "~/gql";
-import { gqlClient } from "~/gql/client";
 import { useAccessToken } from "~/hooks/useAccessToken";
+import { useGraphQLClient } from "~/hooks/useGraphQLClient";
 import { useRefreshToken } from "~/hooks/useRefreshToken";
 
 const GlobalNavProfileDocument = graphql(`
@@ -23,6 +23,7 @@ const GlobalNavProfileDocument = graphql(`
 `);
 
 export const Profile: React.FC<{ className?: string }> = ({ className }) => {
+  const gqlClient = useGraphQLClient();
   const [accessToken, setAccessToken] = useAccessToken();
   const [refreshToken] = useRefreshToken();
   const [whoami, setWhoAmI] = useState<null | {

@@ -9,8 +9,8 @@ import useSWR from "swr";
 
 import { DelayedInput } from "~/components/DelayedInput";
 import { graphql } from "~/gql";
-import { gqlClient } from "~/gql/client";
 import { useAccessToken } from "~/hooks/useAccessToken";
+import { useGraphQLClient } from "~/hooks/useGraphQLClient";
 
 const SearchTagsDocument = graphql(`
   query SearchTags($query: String!) {
@@ -59,6 +59,7 @@ export const SearchBox: React.FC<{
   classNames?: string;
   setTag(payload: { id: string; name: string }): void;
 }> = ({ query, classNames, setTag }) => {
+  const gqlClient = useGraphQLClient();
   const [tags, setTags] = useState<
     { matchedName: string; tag: { id: string; name: string; type: string } }[]
   >([]);
@@ -110,6 +111,7 @@ export const RegisterButton: React.FC<{
   videoId: string;
   onClick(tagId: string): void;
 }> = ({ className, tagId, videoId, onClick }) => {
+  const gqlClient = useGraphQLClient();
   const [ensureTagId, setEnsureTagId] = useState<string | null>(null);
   const { isValidating } = useSWR(
     tagId ? [CanTagQueryDocument, tagId] : null,

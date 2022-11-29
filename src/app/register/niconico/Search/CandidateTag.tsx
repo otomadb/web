@@ -7,7 +7,7 @@ import React, { useContext, useMemo, useState } from "react";
 import useSWR from "swr";
 
 import { graphql } from "~/gql";
-import { gqlClient } from "~/gql/client";
+import { useGraphQLClient } from "~/hooks/useGraphQLClient";
 
 import { FormContext } from "../FormContext";
 
@@ -33,6 +33,7 @@ export const CandidateTag: React.FC<{ className?: string; tag: string }> = ({
   className,
   tag,
 }) => {
+  const gqlClient = useGraphQLClient();
   const { addTag: addCandidateTag } = useContext(FormContext);
   const [tags, setTags] = useState<
     { matchedName: string; tag: { id: string; name: string; type: string } }[]

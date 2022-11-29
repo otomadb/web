@@ -13,8 +13,8 @@ import { toast } from "react-hot-toast";
 import useSWR from "swr";
 
 import { graphql } from "~/gql";
-import { gqlClient } from "~/gql/client";
 import { useAccessToken } from "~/hooks/useAccessToken";
+import { useGraphQLClient } from "~/hooks/useGraphQLClient";
 
 import { FormContext } from "../FormContext";
 import { EditableTag } from "./EditableTag";
@@ -113,6 +113,7 @@ export const AlreadyDetector: React.FC<{ children: ReactNode }> = ({
 export const RegisterForm: React.FC<{ className?: string }> = ({
   className,
 }) => {
+  const gqlClient = useGraphQLClient();
   const [accessToken] = useAccessToken();
   const {
     niconicoId,
@@ -170,6 +171,7 @@ export const RegisterForm: React.FC<{ className?: string }> = ({
       ));
     }
   }, [
+    gqlClient,
     accessToken,
     niconicoId,
     primaryTitle,

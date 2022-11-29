@@ -1,12 +1,13 @@
+"use client";
 import "client-only";
 
 import { useState } from "react";
 import useSWR from "swr";
 
 import { graphql } from "~/gql";
-import { gqlClient } from "~/gql/client";
 
 import { useAccessToken } from "./useAccessToken";
+import { useGraphQLClient } from "./useGraphQLClient";
 
 const WhoamiDocument = graphql(`
   query WhoAmI {
@@ -18,6 +19,7 @@ const WhoamiDocument = graphql(`
 
 export const useLoggedIn = (): boolean => {
   const [accessToken, setAccessToken] = useAccessToken();
+  const gqlClient = useGraphQLClient();
   const [whoami, setWhoAmI] = useState<null | {}>(null);
 
   useSWR(

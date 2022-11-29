@@ -8,7 +8,7 @@ import useSWR from "swr";
 
 import { DelayedInput } from "~/components/DelayedInput";
 import { graphql } from "~/gql";
-import { gqlClient } from "~/gql/client";
+import { useGraphQLClient } from "~/hooks/useGraphQLClient";
 
 const SearchQueryDocument = graphql(`
   query Search($query: String!) {
@@ -38,6 +38,7 @@ export const SearchResult: React.FC<{
   query: string;
   onRoute(): void;
 }> = ({ classname, query, onRoute }) => {
+  const gqlClient = useGraphQLClient();
   const [tags, setTags] = useState<
     { matchedName: string; tag: { id: string; name: string } }[]
   >([]);

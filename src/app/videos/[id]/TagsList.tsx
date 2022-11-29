@@ -5,8 +5,8 @@ import clsx from "clsx";
 import React, { Fragment } from "react";
 
 import { graphql } from "~/gql";
-import { gqlClient } from "~/gql/client";
 import { useAccessToken } from "~/hooks/useAccessToken";
+import { useGraphQLClient } from "~/hooks/useGraphQLClient";
 
 import { Tag } from "./Tag";
 import { TagType } from "./types";
@@ -108,6 +108,7 @@ export const TagsList: React.FC<{
   videoId: string;
   updateTags(): void;
 }> = ({ className, videoId, tags, edit, updateTags }) => {
+  const gqlClient = useGraphQLClient();
   const [accessToken] = useAccessToken();
 
   return (

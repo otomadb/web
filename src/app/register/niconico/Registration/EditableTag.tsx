@@ -7,7 +7,7 @@ import React, { useState } from "react";
 import useSWR from "swr";
 
 import { graphql } from "~/gql";
-import { gqlClient } from "~/gql/client";
+import { useGraphQLClient } from "~/hooks/useGraphQLClient";
 
 export const TagInfoQueryDocument = graphql(`
   query TagInfo($id: ID!) {
@@ -23,6 +23,7 @@ export const EditableTag: React.FC<{ className?: string; id: string }> = ({
   className,
   id,
 }) => {
+  const gqlClient = useGraphQLClient();
   const [tag, setTag] = useState<null | {
     id: string;
     name: string;

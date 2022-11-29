@@ -2,8 +2,8 @@
 import React, { useEffect } from "react";
 
 import { graphql } from "~/gql";
-import { gqlClient } from "~/gql/client";
 import { useAccessToken } from "~/hooks/useAccessToken";
+import { useGraphQLClient } from "~/hooks/useGraphQLClient";
 import { useRefreshToken } from "~/hooks/useRefreshToken";
 
 const RefreshTokenDocument = graphql(`
@@ -16,6 +16,7 @@ const RefreshTokenDocument = graphql(`
 `);
 
 export const TokenRefresher: React.FC = () => {
+  const gqlClient = useGraphQLClient();
   const [accessToken, setAccessToken] = useAccessToken();
   const [refreshToken, setRefreshToken] = useRefreshToken();
 
@@ -36,7 +37,7 @@ export const TokenRefresher: React.FC = () => {
       }
     };
     refresh();
-  }, [accessToken, refreshToken, setAccessToken, setRefreshToken]);
+  }, [gqlClient, accessToken, refreshToken, setAccessToken, setRefreshToken]);
 
   return null;
 };
