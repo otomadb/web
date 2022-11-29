@@ -3,62 +3,15 @@
 import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
-import useSWR from "swr";
+import React from "react";
 
-import { graphql } from "~/gql";
-import { useAccessToken } from "~/hooks/useAccessToken";
-import { useGraphQLClient } from "~/hooks/useGraphQLClient";
-import { useRefreshToken } from "~/hooks/useRefreshToken";
-
-const GlobalNavProfileDocument = graphql(`
-  query Profile {
-    whoami {
-      id
-      name
-      displayName
-      icon
-    }
-  }
-`);
+import { useWhoami } from "~/hooks/useWhoami";
 
 export const Profile: React.FC<{ className?: string }> = ({ className }) => {
-  const gqlClient = useGraphQLClient();
-  const [accessToken, setAccessToken] = useAccessToken();
-  const [refreshToken] = useRefreshToken();
-  const [whoami, setWhoAmI] = useState<null | {
-    id: string;
-    name: string;
-    displayName: string;
-    icon: string;
-  }>(null);
+  const whoami = useWhoami();
 
-  useEffect(() => {
-    if (!refreshToken) setWhoAmI(null);
-  }, [refreshToken]);
-  useSWR(
-    accessToken !== null ? [GlobalNavProfileDocument, accessToken] : null,
-    async (doc, token) =>
-      gqlClient.request(doc, {}, { Authorization: `Bearer ${token}` }),
-    {
-      onSuccess(data) {
-        const {
-          whoami: { id, name, displayName, icon },
-        } = data;
-        setWhoAmI({
-          id,
-          name,
-          displayName,
-          icon,
-        });
-      },
-      onError() {
-        setAccessToken(null);
-      },
-    }
-  );
-
-  if (!whoami)
+  if (whoami === undefined) return <span>loading</span>;
+  if (whoami === null)
     return (
       <a className={clsx(["bg-blue-400"])} href={"/login"}>
         Login

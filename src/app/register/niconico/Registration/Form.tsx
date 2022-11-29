@@ -50,6 +50,7 @@ export const FindNicoSource = graphql(`
 export const AlreadyDetector: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
+  const gqlClient = useGraphQLClient();
   const { niconicoId } = useContext(FormContext);
   const [already, setAlready] = useState<null | {
     id: string;
