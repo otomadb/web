@@ -6,7 +6,7 @@ import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import React, { useCallback, useContext, useState } from "react";
 
-import { useWhoami } from "~/hooks/useWhoami";
+import { useIsLoggedIn } from "~/hooks/useIsLoggedIn";
 
 import { UpdateableContext } from "./context";
 import { TagsEditer } from "./TagsEditer";
@@ -49,10 +49,9 @@ export const EditToggle: React.FC<{
   edit: boolean;
   toggleEdit(v: boolean): void;
 }> = ({ className, edit, toggleEdit }) => {
-  const whoami = useWhoami();
+  const login = useIsLoggedIn();
 
-  if (whoami === undefined) return <span>loading</span>;
-  if (whoami === null) return null;
+  if (!login) return null;
 
   return (
     <div className={clsx(className)}>

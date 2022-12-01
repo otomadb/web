@@ -4,7 +4,9 @@ import "client-only";
 
 import ky from "ky";
 import { rest } from "msw";
-import { useCallback } from "react";
+import { useCallback, useContext } from "react";
+
+import { WhoamiContext } from "./useIsLoggedIn/context";
 
 export const mockLoginHandler = rest.post(
   "/auth/login",
@@ -33,6 +35,7 @@ export const useLogin = ({
   onSuccess(): void;
   onError(status: "NO_USER" | "WRONG_PASSWORD" | "UNKNOWN"): void;
 }) => {
+  const { setId } = useContext(WhoamiContext);
   const handler = useCallback(
     async ({ name, password }: { name: string; password: string }) => {
       const result = await ky.post("/auth/login", {
@@ -40,6 +43,8 @@ export const useLogin = ({
         throwHttpErrors: false,
       });
       if (result.ok) {
+        const { id } = await result.json<{ id: string }>();
+        setId(id);
         onSuccess();
       } else {
         const { error } = await result.json<{ error: string }>();

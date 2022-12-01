@@ -1,27 +1,16 @@
 "use client";
 import "client-only";
 
-import React, { ReactNode, useContext, useState } from "react";
+import React, { ReactNode, useState } from "react";
 import useSWR from "swr";
 
 import { graphql } from "~/gql";
-
-import { useGraphQLClient } from "./useGraphQLClient";
-
-export type Whoami = {
-  id: string;
-  name: string;
-  displayName: string;
-  icon: string;
-};
+import { useGraphQLClient } from "~/hooks/useGraphQLClient";
 
 export const WhoamiDocument = graphql(`
   query WhoAmI {
     whoami {
       id
-      name
-      displayName
-      icon
     }
   }
 `);
@@ -29,13 +18,16 @@ export const WhoamiDocument = graphql(`
 export const WhoamiContext = React.createContext<{
   whoami:
     | { checking: true }
-    | { checking: false; whoami: Whoami }
+    | { checking: false; whoami: string }
     | { checking: false; whoami: null };
-  clear(): void;
+  removeId(): void;
+  setId(id: string): void;
 }>({
   whoami: { checking: true },
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  clear() {},
+  removeId() {},
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  setId() {},
 });
 
 export const WhoamiProvider: React.FC<{ children: ReactNode }> = ({
@@ -44,7 +36,7 @@ export const WhoamiProvider: React.FC<{ children: ReactNode }> = ({
   const gqlClient = useGraphQLClient();
   const [whoami, setWhoami] = useState<
     | { checking: true }
-    | { checking: false; whoami: Whoami }
+    | { checking: false; whoami: string }
     | { checking: false; whoami: null }
   >({ checking: true });
 
@@ -52,21 +44,10 @@ export const WhoamiProvider: React.FC<{ children: ReactNode }> = ({
     refreshInterval: 10000,
     onSuccess(data) {
       const { whoami } = data;
-      setWhoami({
-        checking: false,
-        whoami: {
-          id: whoami.id,
-          name: whoami.name,
-          displayName: whoami.displayName,
-          icon: whoami.icon,
-        },
-      });
+      setWhoami({ checking: false, whoami: whoami.id });
     },
     onError() {
-      setWhoami({
-        checking: false,
-        whoami: null,
-      });
+      setWhoami({ checking: false, whoami: null });
     },
   });
 
@@ -74,19 +55,15 @@ export const WhoamiProvider: React.FC<{ children: ReactNode }> = ({
     <WhoamiContext.Provider
       value={{
         whoami,
-        clear() {
+        removeId() {
           setWhoami({ checking: false, whoami: null });
+        },
+        setId(id) {
+          setWhoami({ checking: false, whoami: id });
         },
       }}
     >
       {children}
     </WhoamiContext.Provider>
   );
-};
-
-export const useWhoami = (): Whoami | null | undefined => {
-  const { whoami } = useContext(WhoamiContext);
-  if (whoami.checking) return undefined;
-  else if (whoami.whoami === null) return null;
-  else return whoami.whoami;
 };

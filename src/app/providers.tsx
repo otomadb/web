@@ -4,7 +4,7 @@ import { setupWorker } from "msw";
 import { ReactNode } from "react";
 
 import { GraphQLProvider } from "~/hooks/useGraphQLClient";
-import { WhoamiProvider } from "~/hooks/useWhoami";
+import { WhoamiProvider } from "~/hooks/useIsLoggedIn/context";
 import { handlers } from "~/mocks/browser";
 
 if (

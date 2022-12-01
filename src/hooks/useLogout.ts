@@ -6,7 +6,7 @@ import ky from "ky";
 import { rest } from "msw";
 import { useCallback, useContext } from "react";
 
-import { WhoamiContext } from "./useWhoami";
+import { WhoamiContext } from "./useIsLoggedIn/context";
 
 export const mockLogoutHandler = rest.post(
   "/auth/logout",
@@ -23,15 +23,15 @@ export const mockLogoutHandler = rest.post(
 );
 
 export const useLogout = ({ onSuccess }: { onSuccess(): void }) => {
-  const { clear } = useContext(WhoamiContext);
+  const { removeId } = useContext(WhoamiContext);
   const handler = useCallback(async () => {
     const result = await ky.post("/auth/logout", {
       throwHttpErrors: false,
     });
     if (result.ok) {
-      clear();
+      removeId();
       onSuccess();
     }
-  }, [clear, onSuccess]);
+  }, [removeId, onSuccess]);
   return handler;
 };
