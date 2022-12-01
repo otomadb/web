@@ -54,7 +54,7 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
     setProfile(null);
   }, [isLoggedIn]);
 
-  if (isValidating) return <span>loading</span>;
+  if (!profile && isValidating) return <span>loading</span>;
   if (!profile)
     return (
       <a className={clsx(["bg-blue-400"])} href={"/login"}>
@@ -62,7 +62,7 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
       </a>
     );
 
-  const { displayName, icon, id, name } = profile;
+  const { displayName, icon, name } = profile;
 
   return (
     <div className={clsx(className)}>
