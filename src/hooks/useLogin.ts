@@ -6,22 +6,25 @@ import ky from "ky";
 import { rest } from "msw";
 import { useCallback } from "react";
 
-export const mockHandler = rest.post("/auth/login", async (req, res, ctx) => {
-  const result = await req.json<{ name: string; password: string }>();
-  if (result.name !== "test")
-    return res(ctx.status(400), ctx.json({ error: "user not found" }));
-  if (result.password !== "pass")
-    return res(ctx.status(400), ctx.json({ error: "password wrong" }));
+export const mockLoginHandler = rest.post(
+  "/auth/login",
+  async (req, res, ctx) => {
+    const result = await req.json<{ name: string; password: string }>();
+    if (result.name !== "test")
+      return res(ctx.status(400), ctx.json({ error: "user not found" }));
+    if (result.password !== "pass")
+      return res(ctx.status(400), ctx.json({ error: "password wrong" }));
 
-  return res(
-    ctx.cookie("otmd-session", "1-secret", {
-      // httpOnly: true,
-      // sameSite: "strict",
-      // secure: false,
-    }),
-    ctx.json({ id: "1" })
-  );
-});
+    return res(
+      ctx.cookie("otmd-session", "1-secret", {
+        // httpOnly: true,
+        // sameSite: "strict",
+        // secure: false,
+      }),
+      ctx.json({ id: "1" })
+    );
+  }
+);
 
 export const useLogin = ({
   onSuccess,
