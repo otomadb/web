@@ -11,13 +11,17 @@ import { useLogin } from "~/hooks/useLogin";
 
 export const LoginForm: React.FC<{ className?: string }> = ({ className }) => {
   const router = useRouter();
-  const [username, setUserName] = useState("");
+
+  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
 
   const isLoggedIn = useIsLoggedIn();
   const login = useLogin({
     onSuccess() {
       router.replace("/");
+    },
+    onError(status) {
+      console.log(status);
     },
   });
 
@@ -31,9 +35,9 @@ export const LoginForm: React.FC<{ className?: string }> = ({ className }) => {
       <label>
         <span>Username</span>
         <input
-          value={username}
+          value={name}
           onChange={(e) => {
-            setUserName(e.target.value);
+            setName(e.target.value);
           }}
           className={clsx(["border"])}
         ></input>
@@ -52,9 +56,8 @@ export const LoginForm: React.FC<{ className?: string }> = ({ className }) => {
       <button
         type="button"
         onClick={async () => {
-          if (!username) return;
-          if (!password) return;
-          login({ username, password });
+          if (!name || !password) return;
+          login({ name, password });
         }}
       >
         Signin
