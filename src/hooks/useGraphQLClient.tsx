@@ -5,15 +5,22 @@ import "client-only";
 import { GraphQLClient } from "graphql-request";
 import React, { ReactNode, useContext } from "react";
 
-import { gqlClient } from "~/gql/client";
-
-const GraphQLContext = React.createContext({ client: gqlClient });
+const GraphQLContext = React.createContext<{ client: GraphQLClient }>({
+  client: {} as GraphQLClient,
+});
 
 export const GraphQLProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   return (
-    <GraphQLContext.Provider value={{ client: gqlClient }}>
+    <GraphQLContext.Provider
+      value={{
+        client: new GraphQLClient(
+          new URL("/graphql", process.env.NEXT_PUBLIC_API_ENDPOINT).toString(),
+          { credentials: "include", mode: "cors" }
+        ),
+      }}
+    >
       {children}
     </GraphQLContext.Provider>
   );
