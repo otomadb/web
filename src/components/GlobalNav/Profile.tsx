@@ -3,22 +3,66 @@
 import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import useSWR from "swr";
 
-import { useWhoami } from "~/hooks/useWhoami";
+import { graphql } from "~/gql";
+import { useGraphQLClient } from "~/hooks/useGraphQLClient";
+import { useIsLoggedIn } from "~/hooks/useIsLoggedIn";
+
+export const ProfileQueryDocument = graphql(`
+  query GlobalNavProfile {
+    whoami {
+      id
+      name
+      displayName
+      icon
+    }
+  }
+`);
 
 export const Profile: React.FC<{ className?: string }> = ({ className }) => {
-  const whoami = useWhoami();
+  const gqlClient = useGraphQLClient();
+  const isLoggedIn = useIsLoggedIn();
+  const [profile, setProfile] = useState<{
+    id: string;
+    name: string;
+    displayName: string;
+    icon: string;
+  } | null>();
 
-  if (whoami === undefined) return <span>loading</span>;
-  if (whoami === null)
+  const { isValidating } = useSWR(
+    isLoggedIn ? [ProfileQueryDocument] : null,
+    async (doc) => gqlClient.request(doc),
+    {
+      refreshInterval: 10000,
+      onSuccess(data) {
+        const { whoami } = data;
+        setProfile({
+          id: whoami.id,
+          name: whoami.name,
+          displayName: whoami.displayName,
+          icon: whoami.icon,
+        });
+      },
+      onError() {
+        setProfile(null);
+      },
+    }
+  );
+  useEffect(() => {
+    setProfile(null);
+  }, [isLoggedIn]);
+
+  if (isValidating) return <span>loading</span>;
+  if (!profile)
     return (
       <a className={clsx(["bg-blue-400"])} href={"/login"}>
         Login
       </a>
     );
 
-  const { displayName, icon, id, name } = whoami;
+  const { displayName, icon, id, name } = profile;
 
   return (
     <div className={clsx(className)}>
