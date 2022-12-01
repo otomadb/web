@@ -29,7 +29,7 @@ export const RemovableTag: React.FC<{
   className?: string;
   id: string;
   name: string;
-  context: string | null;
+  context?: string;
   // type: string;
   handleRemove(): void;
 }> = ({
@@ -147,7 +147,7 @@ export const TagsList: React.FC<{
               <RemovableTag
                 id={id}
                 name={name}
-                context={null}
+                context={explicitParent?.name}
                 handleRemove={async () => {
                   await gqlClient.request(UntagVideoMutationDocument, {
                     input: { tagId: id, videoId },
