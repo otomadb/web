@@ -7,7 +7,6 @@ import { GlobalNav } from "~/components/GlobalNav/GlobalNav";
 import { Toaster } from "~/components/Toaster";
 
 import Providers from "./providers";
-import { TokenRefresher } from "./TokenRefresher";
 
 export default function RootLayout({
   children,
@@ -18,7 +17,6 @@ export default function RootLayout({
     <html lang="ja">
       <body className={clsx(["relative"])}>
         <Providers>
-          <TokenRefresher />
           <GlobalNav
             className={clsx(
               ["sticky"],

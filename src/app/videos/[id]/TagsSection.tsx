@@ -6,7 +6,7 @@ import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import React, { useCallback, useContext, useState } from "react";
 
-import { useLoggedIn } from "~/hooks/useLoggedIn";
+import { useIsLoggedIn } from "~/hooks/useIsLoggedIn";
 
 import { UpdateableContext } from "./context";
 import { TagsEditer } from "./TagsEditer";
@@ -49,9 +49,9 @@ export const EditToggle: React.FC<{
   edit: boolean;
   toggleEdit(v: boolean): void;
 }> = ({ className, edit, toggleEdit }) => {
-  const isLoggedIn = useLoggedIn();
+  const login = useIsLoggedIn();
 
-  if (!isLoggedIn) return null;
+  if (!login) return null;
 
   return (
     <div className={clsx(className)}>

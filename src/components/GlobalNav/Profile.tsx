@@ -7,12 +7,11 @@ import React, { useEffect, useState } from "react";
 import useSWR from "swr";
 
 import { graphql } from "~/gql";
-import { useAccessToken } from "~/hooks/useAccessToken";
 import { useGraphQLClient } from "~/hooks/useGraphQLClient";
-import { useRefreshToken } from "~/hooks/useRefreshToken";
+import { useIsLoggedIn } from "~/hooks/useIsLoggedIn";
 
-const GlobalNavProfileDocument = graphql(`
-  query Profile {
+export const ProfileQueryDocument = graphql(`
+  query GlobalNavProfile {
     whoami {
       id
       name
@@ -24,48 +23,46 @@ const GlobalNavProfileDocument = graphql(`
 
 export const Profile: React.FC<{ className?: string }> = ({ className }) => {
   const gqlClient = useGraphQLClient();
-  const [accessToken, setAccessToken] = useAccessToken();
-  const [refreshToken] = useRefreshToken();
-  const [whoami, setWhoAmI] = useState<null | {
+  const isLoggedIn = useIsLoggedIn();
+  const [profile, setProfile] = useState<{
     id: string;
     name: string;
     displayName: string;
     icon: string;
-  }>(null);
+  } | null>();
 
-  useEffect(() => {
-    if (!refreshToken) setWhoAmI(null);
-  }, [refreshToken]);
-  useSWR(
-    accessToken !== null ? [GlobalNavProfileDocument, accessToken] : null,
-    async (doc, token) =>
-      gqlClient.request(doc, {}, { Authorization: `Bearer ${token}` }),
+  const { isValidating } = useSWR(
+    isLoggedIn ? [ProfileQueryDocument] : null,
+    async (doc) => gqlClient.request(doc),
     {
+      refreshInterval: 10000,
       onSuccess(data) {
-        const {
-          whoami: { id, name, displayName, icon },
-        } = data;
-        setWhoAmI({
-          id,
-          name,
-          displayName,
-          icon,
+        const { whoami } = data;
+        setProfile({
+          id: whoami.id,
+          name: whoami.name,
+          displayName: whoami.displayName,
+          icon: whoami.icon,
         });
       },
       onError() {
-        setAccessToken(null);
+        setProfile(null);
       },
     }
   );
+  useEffect(() => {
+    setProfile(null);
+  }, [isLoggedIn]);
 
-  if (!whoami)
+  if (isValidating) return <span>loading</span>;
+  if (!profile)
     return (
       <a className={clsx(["bg-blue-400"])} href={"/login"}>
         Login
       </a>
     );
 
-  const { displayName, icon, id, name } = whoami;
+  const { displayName, icon, id, name } = profile;
 
   return (
     <div className={clsx(className)}>

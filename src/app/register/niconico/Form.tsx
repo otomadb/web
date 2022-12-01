@@ -3,29 +3,11 @@
 import "client-only";
 
 import clsx from "clsx";
-import React, { ReactNode, useState } from "react";
-
-import { useAccessToken } from "~/hooks/useAccessToken";
+import React, { useState } from "react";
 
 import { FormContext } from "./FormContext";
 import { RegisterForm } from "./Registration/Form";
 import { Searcher } from "./Search/Searcher";
-
-export const YouHaveToLogin: React.FC<{ children: ReactNode }> = ({
-  children,
-}) => {
-  const [accessToken] = useAccessToken();
-
-  if (!accessToken) {
-    return (
-      <div>
-        <span>you must login</span>
-      </div>
-    );
-  }
-
-  return <>{children}</>;
-};
 
 export const Form: React.FC<{ className?: string }> = ({ className }) => {
   const [niconicoId, setNiconicoId] = useState<string | null>(null);
