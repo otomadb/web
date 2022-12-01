@@ -4,8 +4,8 @@ import { LoginForm } from "./LoginForm";
 
 export default async function Page() {
   return (
-    <main className={clsx(["container"], ["mx-auto"])}>
-      <LoginForm />
-    </main>
+    <div className={clsx(["flex", ["justify-center"], ["items-center"]])}>
+      <LoginForm className={clsx(["w-full", "md:w-96"])} />
+    </div>
   );
 }
