@@ -48,7 +48,7 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
     name: string;
     displayName: string;
     icon: string;
-  } | null>();
+  } | null>(null);
 
   const { isValidating } = useSWR(
     isLoggedIn ? [ProfileQueryDocument] : null,
