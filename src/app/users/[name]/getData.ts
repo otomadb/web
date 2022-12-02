@@ -1,7 +1,8 @@
 import "server-only";
 
+import gqlRequest from "graphql-request";
+
 import { graphql } from "~/gql";
-import { gqlClient } from "~/gql/client";
 
 const UserPageQueryDocument = graphql(`
   query UserPage($name: String!) {
@@ -15,7 +16,11 @@ const UserPageQueryDocument = graphql(`
 `);
 
 export const getData = async (name: string) => {
-  const { user } = await gqlClient.request(UserPageQueryDocument, { name });
+  const { user } = await gqlRequest(
+    new URL("/graphql", process.env.NEXT_PUBLIC_API_ENDPOINT).toString(),
+    UserPageQueryDocument,
+    { name }
+  );
 
   return {
     id: user.id,
