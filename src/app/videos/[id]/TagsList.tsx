@@ -29,13 +29,13 @@ export const RemovableTag: React.FC<{
   className?: string;
   id: string;
   name: string;
-  context: string | null;
+  parentName?: string;
   // type: string;
   handleRemove(): void;
 }> = ({
   className,
   name,
-  context,
+  parentName,
   // type,
   handleRemove,
 }) => {
@@ -71,9 +71,9 @@ export const RemovableTag: React.FC<{
         )}
       >
         <span className={clsx(["text-slate-800"], ["text-xs"])}>{name}</span>
-        {context && (
+        {parentName && (
           <span className={clsx(["ml-0.5"], ["text-slate-500"], ["text-xs"])}>
-            ({context})
+            ({parentName})
           </span>
         )}
       </div>
@@ -147,7 +147,7 @@ export const TagsList: React.FC<{
               <RemovableTag
                 id={id}
                 name={name}
-                context={null}
+                parentName={explicitParent?.name}
                 handleRemove={async () => {
                   await gqlClient.request(UntagVideoMutationDocument, {
                     input: { tagId: id, videoId },
