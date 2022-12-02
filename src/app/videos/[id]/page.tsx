@@ -50,7 +50,7 @@ export default async function Page({ params }: { params: { id: string } }) {
           </section>
           <div className={clsx(["w-full"], ["flex"], ["mt-4"])}>
             <section className={clsx(["flex-shrink-0"], ["flex-grow"])}>
-              <h2 className={clsx(["text-xl"])}>Events</h2>
+              <h2 className={clsx(["text-xl"])}>History</h2>
               <HistorySection className={clsx(["mt-4"])} />
             </section>
             <div className={clsx(["w-96"])}></div>
