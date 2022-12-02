@@ -1,7 +1,8 @@
 import "server-only";
 
+import gqlRequest from "graphql-request";
+
 import { graphql } from "~/gql";
-import { gqlClient } from "~/gql/client";
 
 const TagPageQueryDocument = graphql(`
   query TagPage($id: ID!) {
@@ -36,7 +37,11 @@ export const getData = async (
     thumbnailUrl: string;
   }[];
 }> => {
-  const { tag } = await gqlClient.request(TagPageQueryDocument, { id });
+  const { tag } = await gqlRequest(
+    new URL("/graphql", process.env.NEXT_PUBLIC_API_ENDPOINT).toString(),
+    TagPageQueryDocument,
+    { id }
+  );
 
   return {
     id: tag.id,

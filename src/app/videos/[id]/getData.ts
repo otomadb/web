@@ -1,7 +1,8 @@
 import "server-only";
 
+import gqlRequest from "graphql-request";
+
 import { graphql } from "~/gql";
-import { gqlClient } from "~/gql/client";
 
 import { HistoryItemType, TagType } from "./types";
 
@@ -93,7 +94,11 @@ export const getData = async (
   tags: TagType[];
   history: HistoryItemType[];
 }> => {
-  const { video } = await gqlClient.request(VideoPageQueryDocument, { id });
+  const { video } = await gqlRequest(
+    new URL("/graphql", process.env.NEXT_PUBLIC_API_ENDPOINT).toString(),
+    VideoPageQueryDocument,
+    { id }
+  );
 
   return {
     id: video.id,
