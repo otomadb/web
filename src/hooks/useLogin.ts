@@ -9,7 +9,7 @@ import { useCallback, useContext } from "react";
 import { WhoamiContext } from "./useIsLoggedIn/context";
 
 export const mockLoginHandler = rest.post(
-  "/auth/login",
+  new URL("/auth/login", process.env.NEXT_PUBLIC_API_ENDPOINT).toString(),
   async (req, res, ctx) => {
     const result = await req.json<{ name: string; password: string }>();
     if (result.name !== "test")
@@ -38,10 +38,13 @@ export const useLogin = ({
   const { setId } = useContext(WhoamiContext);
   const handler = useCallback(
     async ({ name, password }: { name: string; password: string }) => {
-      const result = await ky.post("/auth/login", {
-        body: JSON.stringify({ name, password }),
-        throwHttpErrors: false,
-      });
+      const result = await ky.post(
+        new URL("/auth/login", process.env.NEXT_PUBLIC_API_ENDPOINT).toString(),
+        {
+          body: JSON.stringify({ name, password }),
+          throwHttpErrors: false,
+        }
+      );
       if (result.ok) {
         const { id } = await result.json<{ id: string }>();
         setId(id);
