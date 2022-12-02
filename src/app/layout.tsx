@@ -15,19 +15,27 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ja">
-      <body className={clsx(["relative"])}>
+      <body
+        className={clsx(["relative"], ["bg-slate-50", "dark:bg-slate-800"])}
+      >
         <Providers>
           <GlobalNav
             className={clsx(
               ["sticky"],
               ["top-0"],
               ["w-full"],
-              ["h-16"],
+              ["h-[64px]"],
               ["z-1"]
             )}
           />
           <div
-            className={clsx(["relative"], ["container"], ["mx-auto"], ["py-8"])}
+            className={clsx(
+              ["relative"],
+              ["min-h-[calc(100vh-64px)]"],
+              ["container"],
+              ["mx-auto"],
+              ["py-8"]
+            )}
           >
             {children}
           </div>
