@@ -30,6 +30,9 @@
               nodejs = nodejs-16_x;
               pm = "pnpm";
             })
+            httpie
+            act
+            actionlint
           ];
           devshell.startup.pnpm_install.text = "pnpm install";
           env = [

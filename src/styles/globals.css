@@ -5,3 +5,7 @@
 :root {
   overflow-y: scroll;
 }
+
+[data-nextjs-scroll-focus-boundary] {
+  display: contents;
+}
