@@ -5,7 +5,7 @@ import "client-only";
 import { GraphQLClient } from "graphql-request";
 import React, { ReactNode, useContext } from "react";
 
-const GraphQLContext = React.createContext<{ client: GraphQLClient }>({
+export const GraphQLContext = React.createContext<{ client: GraphQLClient }>({
   client: {} as GraphQLClient,
 });
 
