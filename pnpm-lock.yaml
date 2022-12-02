@@ -4,6 +4,7 @@ specifiers:
   '@babel/core': ^7.20.2
   '@graphql-codegen/cli': ^2.13.12
   '@graphql-codegen/client-preset': ^1.1.5
+  '@graphql-codegen/schema-ast': ^2.5.1
   '@graphql-typed-document-node/core': ^3.1.1
   '@heroicons/react': ^2.0.13
   '@storybook/addon-actions': ^6.5.13
@@ -69,6 +70,7 @@ devDependencies:
   '@babel/core': 7.20.2
   '@graphql-codegen/cli': 2.13.12_2m2ekwqdvhgvv6j4ocd22m5c2u
   '@graphql-codegen/client-preset': 1.1.5_rjjjs2nwgns3bcvnnqb5eu5nry
+  '@graphql-codegen/schema-ast': 2.5.1_graphql@16.6.0
   '@graphql-typed-document-node/core': 3.1.1_graphql@16.6.0
   '@storybook/addon-actions': 6.5.13_biqbaboplfbrettd7655fr4n2y
   '@storybook/addon-essentials': 6.5.13_gfeskznvl6oz6i7voqpdbhf2xy
