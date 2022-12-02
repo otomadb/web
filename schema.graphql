@@ -1,0 +1,300 @@
+scalar DateTime
+
+input GetVideosInput {
+  limit: Int
+  skip: Int
+}
+
+type Mutation {
+  refreshToken(token: String!): RefreshTokenPayload
+  registerTag(input: RegisterTagInput!): RegisterTagPayload!
+  registerVideo(input: RegisterVideoInput!): RegisterVideoPayload!
+  signin(input: SigninInput): SigninPayload!
+  tagVideo(input: TagVideoInput!): VideoAddTagHistoryItem!
+  untagVideo(input: UntagVideoInput!): VideoDeleteTagHistoryItem!
+}
+
+type NiconicoSource {
+  id: ID!
+  video: Video
+}
+
+type Query {
+  findNiconicoSource(id: ID!): NiconicoSource
+  niconicoSource(id: ID!): NiconicoSource!
+  searchTags(limit: Int! = 10, query: String!, skip: Int! = 0): SearchTagsResult!
+  searchVideos(limit: Int! = 10, query: String!, skip: Int! = 0): SearchVideosResult!
+  tag(id: ID!): Tag!
+  user(name: String!): User!
+  video(id: ID!): Video!
+  videos(input: GetVideosInput = {limit: 10, skip: 0}): VideoCollection!
+  whoami: User!
+}
+
+type RefreshTokenPayload {
+  accessToken: String!
+  refreshToken: String!
+}
+
+input RegisterTagInput {
+  explicitParent: ID
+  extraNames: [String!]
+  implicitParents: [ID!]
+  primaryName: String!
+}
+
+type RegisterTagPayload {
+  tag: Tag!
+}
+
+input RegisterVideoInput {
+  extraTitles: [String!]
+  niconico: [String!]
+  primaryThumbnail: String!
+  primaryTitle: String!
+  tags: [ID!]!
+}
+
+type RegisterVideoPayload {
+  video: Video!
+}
+
+type SearchTagsResult {
+  result: [SearchTagsResultItem!]!
+}
+
+type SearchTagsResultItem {
+  matchedName: String!
+  tag: Tag!
+}
+
+type SearchVideosResult {
+  result: [SearchVideosResultItem!]!
+}
+
+type SearchVideosResultItem {
+  matchedTitle: String!
+  video: Video!
+}
+
+input SigninInput {
+  name: String!
+  password: String!
+}
+
+type SigninPayload {
+  accessToken: String!
+  refreshToken: String!
+  user: User!
+}
+
+enum SortOrder {
+  ASC
+  DESC
+}
+
+type Tag {
+  explicitParent: Tag
+  history: [TagHistoryItem!]!
+  id: ID!
+  meaningless: Boolean!
+  name: String!
+  names: [TagName!]!
+  parents: [TagParent!]!
+  taggedVideos: [Video!]!
+  type: TagType! @deprecated
+}
+
+type TagAddNameHistoryItem implements TagHistoryItem {
+  createdAt: DateTime!
+  id: ID!
+  name: String!
+  tag: Tag!
+  user: User!
+}
+
+type TagChangePrimaryNameHistoryItem implements TagHistoryItem {
+  createdAt: DateTime!
+  from: String
+  id: ID!
+  tag: Tag!
+  to: String!
+  user: User!
+}
+
+type TagDeleteNameHistoryItem implements TagHistoryItem {
+  createdAt: DateTime!
+  id: ID!
+  name: String!
+  tag: Tag!
+  user: User!
+}
+
+interface TagHistoryItem {
+  createdAt: DateTime!
+  id: ID!
+  user: User!
+}
+
+type TagName {
+  name: String!
+  primary: Boolean!
+}
+
+type TagParent {
+  explicit: Boolean!
+  tag: Tag!
+}
+
+type TagRegisterHistoryItem implements TagHistoryItem {
+  createdAt: DateTime!
+  id: ID!
+  tag: Tag!
+  user: User!
+}
+
+enum TagType {
+  CLASS
+  COPYRIGHT
+  EVENT
+  IMAGE
+  MATERIAL
+  MUSIC
+  SERIES
+  TACTICS
+}
+
+input TagVideoInput {
+  tagId: ID!
+  videoId: ID!
+}
+
+input UntagVideoInput {
+  tagId: ID!
+  videoId: ID!
+}
+
+type User {
+  displayName: String!
+  icon: String!
+  id: ID!
+  name: String!
+}
+
+type Video {
+  hasTag(id: ID!): Boolean!
+  history(limit: Int! = 10, order: VideoHistoryOrder! = {createdAt: DESC}, skip: Int! = 0): [VideoHistoryItem!]!
+  id: ID!
+  registeredAt: DateTime!
+  tags: [Tag!]!
+  thumbnailUrl: String!
+  thumbnails: [VideoThumbnail!]!
+  title: String!
+  titles: [VideoTitle!]!
+}
+
+type VideoAddNiconicoSourceHistoryItem implements VideoHistoryItem {
+  createdAt: DateTime!
+  id: ID!
+  niconico: NiconicoSource!
+  user: User!
+  video: Video!
+}
+
+type VideoAddTagHistoryItem implements VideoHistoryItem {
+  createdAt: DateTime!
+  id: ID!
+  tag: Tag!
+  user: User!
+  video: Video!
+}
+
+type VideoAddThumbnailHistoryItem implements VideoHistoryItem {
+  createdAt: DateTime!
+  id: ID!
+  thumbnail: String!
+  user: User!
+  video: Video!
+}
+
+type VideoAddTitleHistoryItem implements VideoHistoryItem {
+  createdAt: DateTime!
+  id: ID!
+  title: String!
+  user: User!
+  video: Video!
+}
+
+type VideoChangePrimaryThumbnailHistoryItem implements VideoHistoryItem {
+  createdAt: DateTime!
+  from: String
+  id: ID!
+  to: String!
+  user: User!
+  video: Video!
+}
+
+type VideoChangePrimaryTitleHistoryItem implements VideoHistoryItem {
+  createdAt: DateTime!
+  from: String
+  id: ID!
+  to: String!
+  user: User!
+  video: Video!
+}
+
+type VideoCollection {
+  nodes: [Video!]!
+}
+
+type VideoDeleteTagHistoryItem implements VideoHistoryItem {
+  createdAt: DateTime!
+  id: ID!
+  tag: Tag!
+  user: User!
+  video: Video!
+}
+
+type VideoDeleteThumbnailHistoryItem implements VideoHistoryItem {
+  createdAt: DateTime!
+  id: ID!
+  thumbnail: String!
+  user: User!
+  video: Video!
+}
+
+type VideoDeleteTitleHistoryItem implements VideoHistoryItem {
+  createdAt: DateTime!
+  id: ID!
+  title: String!
+  user: User!
+  video: Video!
+}
+
+interface VideoHistoryItem {
+  createdAt: DateTime!
+  id: ID!
+  user: User!
+  video: Video!
+}
+
+input VideoHistoryOrder {
+  createdAt: SortOrder
+}
+
+type VideoRegisterHistoryItem implements VideoHistoryItem {
+  createdAt: DateTime!
+  id: ID!
+  user: User!
+  video: Video!
+}
+
+type VideoThumbnail {
+  imageUrl: String!
+  primary: Boolean!
+}
+
+type VideoTitle {
+  primary: Boolean!
+  title: String!
+}
