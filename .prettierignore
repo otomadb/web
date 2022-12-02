@@ -1,0 +1,6 @@
+.next
+storybook-static
+
+src/gql
+
+public/mockServiceWorker.js
