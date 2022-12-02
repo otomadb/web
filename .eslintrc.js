@@ -29,8 +29,8 @@ module.exports = {
         html: false,
       },
     ],
-    /* next.js */
-    "@next/next/no-html-link-for-pages": [0],
+    /* next.js  */
+    "@next/next/no-html-link-for-pages": [0], // https://github.com/vercel/next.js/issues/42448
   },
   overrides: [
     {
