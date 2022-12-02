@@ -1,5 +1,6 @@
 "use client";
 
+import { ArrowPathIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
@@ -20,6 +21,14 @@ export const ProfileQueryDocument = graphql(`
     }
   }
 `);
+
+export const Loading: React.FC<{ className?: string }> = ({ className }) => {
+  return (
+    <ArrowPathIcon
+      className={clsx(className, ["text-white"], ["animate-spin"])}
+    />
+  );
+};
 
 export const LoginLink: React.FC<{ className?: string }> = ({ className }) => {
   return (
@@ -70,7 +79,13 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
     setProfile(null);
   }, [isLoggedIn]);
 
-  if (!profile && isValidating) return <span>loading</span>;
+  if (isLoggedIn === undefined || (!profile && isValidating))
+    return (
+      <div className={clsx(className)}>
+        <Loading className={clsx(["w-6"], ["h-6"])} />
+      </div>
+    );
+
   if (!profile)
     return (
       <div className={clsx(className)}>
