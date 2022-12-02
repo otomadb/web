@@ -21,6 +21,25 @@ export const ProfileQueryDocument = graphql(`
   }
 `);
 
+export const LoginLink: React.FC<{ className?: string }> = ({ className }) => {
+  return (
+    <Link
+      className={clsx(
+        className,
+        ["rounded"],
+        ["px-4", "py-2"],
+        ["transition-colors", "duration-75"],
+        ["border", ["border-sky-400", "hover:border-sky-300"]],
+        ["bg-sky-400", ["bg-opacity-25", "hover:bg-opacity-40"]],
+        ["text-sky-400", "hover:text-sky-300"]
+      )}
+      href={"/login"}
+    >
+      Login
+    </Link>
+  );
+};
+
 export const Profile: React.FC<{ className?: string }> = ({ className }) => {
   const gqlClient = useGraphQLClient();
   const isLoggedIn = useIsLoggedIn();
@@ -37,13 +56,10 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
     {
       refreshInterval: 10000,
       onSuccess(data) {
-        const { whoami } = data;
-        setProfile({
-          id: whoami.id,
-          name: whoami.name,
-          displayName: whoami.displayName,
-          icon: whoami.icon,
-        });
+        const {
+          whoami: { id, name, displayName, icon },
+        } = data;
+        setProfile({ id, name, displayName, icon });
       },
       onError() {
         setProfile(null);
@@ -57,9 +73,9 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
   if (!profile && isValidating) return <span>loading</span>;
   if (!profile)
     return (
-      <a className={clsx(["bg-blue-400"])} href={"/login"}>
-        Login
-      </a>
+      <div className={clsx(className)}>
+        <LoginLink />
+      </div>
     );
 
   const { displayName, icon, name } = profile;
