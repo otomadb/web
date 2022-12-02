@@ -61,7 +61,7 @@ export const useLogin = ({
         }
       }
     },
-    [onError, onSuccess]
+    [onError, onSuccess, setId]
   );
   return handler;
 };
