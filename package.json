@@ -17,6 +17,7 @@
     "node": "^16"
   },
   "dependencies": {
+    "@emotion/css": "^11.10.5",
     "@heroicons/react": "^2.0.13",
     "client-only": "^0.0.1",
     "clsx": "^1.2.1",
