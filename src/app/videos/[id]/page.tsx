@@ -7,7 +7,7 @@ import { HistorySection } from "./HistorySection";
 import { LikeButton } from "./LikeButton";
 import { TagsSection } from "./TagsSection";
 
-export const revalidate = 60;
+export const revalidate = 0;
 
 export default async function Page({ params }: { params: { id: string } }) {
   const details = await getData(params.id);
