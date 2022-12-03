@@ -48,7 +48,7 @@ const HistItemTemplate: React.FC<{
             {title}
           </div>
         </div>
-        <div className={clsx(["ml-4"])}>{children}</div>
+        <div className={clsx(["ml-2"])}>{children}</div>
       </div>
       <div
         className={clsx(
