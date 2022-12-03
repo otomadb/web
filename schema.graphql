@@ -1,3 +1,32 @@
+input AddLikeInput {
+  videoId: ID!
+}
+
+type AddLikePayload {
+  id: ID!
+  registration: MylistRegistration!
+}
+
+input AddToMylistInput {
+  mylistId: ID!
+  note: String
+  videoId: ID!
+}
+
+type AddToMylistPayload {
+  id: ID!
+  registration: MylistRegistration!
+}
+
+input CreateMylistInput {
+  range: MylistShareRange!
+  title: String!
+}
+
+type CreateMylistPayload {
+  mylist: Mylist!
+}
+
 scalar DateTime
 
 input GetVideosInput {
@@ -6,12 +35,60 @@ input GetVideosInput {
 }
 
 type Mutation {
+  addLike(input: AddLikeInput!): AddLikePayload!
+  addToMylist(input: AddToMylistInput!): AddToMylistPayload!
+  createMylist(input: CreateMylistInput!): CreateMylistPayload!
   refreshToken(token: String!): RefreshTokenPayload
   registerTag(input: RegisterTagInput!): RegisterTagPayload!
   registerVideo(input: RegisterVideoInput!): RegisterVideoPayload!
+  removeFromMylist(input: RemoveFromMylistInput!): RemoveFromMylistPayload!
+  removeLike(input: RemoveLikeInput!): RemoveLikePayload!
   signin(input: SigninInput): SigninPayload!
   tagVideo(input: TagVideoInput!): VideoAddTagHistoryItem!
   untagVideo(input: UntagVideoInput!): VideoDeleteTagHistoryItem!
+}
+
+type Mylist {
+  createdAt: DateTime!
+  holder: User!
+  id: ID!
+
+  """マイリストの中にビデオが追加されているか．"""
+  includes(videoId: ID!): Boolean!
+  range: MylistShareRange!
+  registrations(input: MylistRegistrationsInput!): MylistRegistrationCollection!
+  title: String!
+  updatedAt: DateTime!
+}
+
+type MylistRegistration {
+  createdAt: DateTime!
+  id: ID!
+  mylist: Mylist!
+  note: String
+  updatedAt: DateTime!
+  video: Video!
+}
+
+type MylistRegistrationCollection {
+  nodes: [MylistRegistration!]!
+}
+
+input MylistRegistrationsInput {
+  limit: Int
+  order: MylistRegistrationsInputOrder = {}
+  skip: Int
+}
+
+input MylistRegistrationsInputOrder {
+  createdAt: SortOrder
+  updatedAt: SortOrder
+}
+
+enum MylistShareRange {
+  KNOW_LINK
+  PRIVATE
+  PUBLIC
 }
 
 type NiconicoSource {
@@ -21,6 +98,7 @@ type NiconicoSource {
 
 type Query {
   findNiconicoSource(id: ID!): NiconicoSource
+  mylist(id: ID!): Mylist!
   niconicoSource(id: ID!): NiconicoSource!
   searchTags(limit: Int! = 10, query: String!, skip: Int! = 0): SearchTagsResult!
   searchVideos(limit: Int! = 10, query: String!, skip: Int! = 0): SearchVideosResult!
@@ -57,6 +135,23 @@ input RegisterVideoInput {
 
 type RegisterVideoPayload {
   video: Video!
+}
+
+input RemoveFromMylistInput {
+  mylistId: ID!
+  videoId: ID!
+}
+
+type RemoveFromMylistPayload {
+  id: ID!
+}
+
+input RemoveLikeInput {
+  videoId: ID!
+}
+
+type RemoveLikePayload {
+  id: ID!
 }
 
 type SearchTagsResult {
@@ -176,9 +271,27 @@ input UntagVideoInput {
 
 type User {
   displayName: String!
+  favorites: Mylist!
   icon: String!
   id: ID!
+  mylists(input: UserMylistsInput!): UserMylistsConnection!
   name: String!
+}
+
+type UserMylistsConnection {
+  nodes: [Mylist!]!
+}
+
+input UserMylistsInput {
+  limit: Int
+  order: UserMylistsInputOrder = {createdAt: ASC}
+  range: [MylistShareRange!] = [PUBLIC]
+  skip: Int
+}
+
+input UserMylistsInputOrder {
+  createdAt: SortOrder
+  updatedAt: SortOrder
 }
 
 type Video {
