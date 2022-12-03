@@ -1,4 +1,4 @@
-import "~/styles/globals.css";
+import "~/styles/dist.css";
 
 import clsx from "clsx";
 import React from "react";
