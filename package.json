@@ -20,6 +20,7 @@
     "@heroicons/react": "^2.0.13",
     "client-only": "^0.0.1",
     "clsx": "^1.2.1",
+    "date-fns": "^2.29.3",
     "graphql-request": "^5.0.0",
     "ky": "^0.32.2",
     "next": "^13.0.5",

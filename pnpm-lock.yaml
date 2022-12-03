@@ -26,6 +26,7 @@ specifiers:
   babel-loader: ^8.3.0
   client-only: ^0.0.1
   clsx: ^1.2.1
+  date-fns: ^2.29.3
   encoding: ^0.1.13
   eslint: 8.28.0
   eslint-config-next: 13.0.5
@@ -56,6 +57,7 @@ dependencies:
   '@heroicons/react': 2.0.13_react@18.2.0
   client-only: 0.0.1
   clsx: 1.2.1
+  date-fns: 2.29.3
   graphql-request: 5.0.0_rjjjs2nwgns3bcvnnqb5eu5nry
   ky: 0.32.2
   next: 13.0.5_mqvh5p7ejg4taogoj6tpk3gd5a
@@ -6858,6 +6860,11 @@ packages:
   /dataloader/2.1.0:
     resolution: {integrity: sha512-qTcEYLen3r7ojZNgVUaRggOI+KM7jrKxXeSHhogh/TWxYMeONEMqY+hmkobiYQozsGIyg9OYVzO4ZIfoB4I0pQ==}
     dev: true
+
+  /date-fns/2.29.3:
+    resolution: {integrity: sha512-dDCnyH2WnnKusqvZZ6+jA1O51Ibt8ZMRNkDZdyAyK4YfbDwa/cEmuztzG5pk6hqlp9aSBPYcjOlktquahGwGeA==}
+    engines: {node: '>=0.11'}
+    dev: false
 
   /debounce/1.2.1:
     resolution: {integrity: sha512-XRRe6Glud4rd/ZGQfiV1ruXSfbvfJedlV9Y6zOlP+2K04vBYiJEte6stfFkCP03aMnY5tsipamumUjL14fofug==}
