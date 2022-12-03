@@ -10,8 +10,6 @@
     "lint:prettier": "prettier --check ./**/*.{js,ts,tsx,css,json,yml,md}",
     "codegen": "graphql-codegen --config codegen.ts",
     "codegen:watch": "pnpm run codegen --watch",
-    "tailwind": "tailwindcss -i src/styles/globals.css -o src/styles/dist.css",
-    "tailwind:watch": "pnpm run tailwind --watch",
     "storybook": "NODE_OPTIONS=--openssl-legacy-provider start-storybook -p 6006 --no-open -s public",
     "build-storybook": "NODE_OPTIONS=--openssl-legacy-provider build-storybook"
   },
