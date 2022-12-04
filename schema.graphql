@@ -1,15 +1,30 @@
 scalar DateTime
 
-input GetVideosInput {
+input GetTagsInput {
   limit: Int
+  order: GetTagsInputOrder = {updatedAt: DESC}
   skip: Int
 }
 
+input GetTagsInputOrder {
+  createdAt: SortOrder
+  updatedAt: SortOrder
+}
+
+input GetVideosInput {
+  limit: Int = 10
+  order: GetVideosInputOrder = {createdAt: DESC}
+  skip: Int = 0
+}
+
+input GetVideosInputOrder {
+  createdAt: SortOrder
+  updatedAt: SortOrder
+}
+
 type Mutation {
-  refreshToken(token: String!): RefreshTokenPayload
   registerTag(input: RegisterTagInput!): RegisterTagPayload!
   registerVideo(input: RegisterVideoInput!): RegisterVideoPayload!
-  signin(input: SigninInput): SigninPayload!
   tagVideo(input: TagVideoInput!): VideoAddTagHistoryItem!
   untagVideo(input: UntagVideoInput!): VideoDeleteTagHistoryItem!
 }
@@ -19,21 +34,22 @@ type NiconicoSource {
   video: Video
 }
 
+type NiconicoVideoSource implements VideoSource {
+  url: String!
+  videoId: String!
+}
+
 type Query {
   findNiconicoSource(id: ID!): NiconicoSource
   niconicoSource(id: ID!): NiconicoSource!
   searchTags(limit: Int! = 10, query: String!, skip: Int! = 0): SearchTagsResult!
   searchVideos(limit: Int! = 10, query: String!, skip: Int! = 0): SearchVideosResult!
   tag(id: ID!): Tag!
+  tags(input: GetTagsInput): TagCollection!
   user(name: String!): User!
   video(id: ID!): Video!
-  videos(input: GetVideosInput = {limit: 10, skip: 0}): VideoCollection!
+  videos(input: GetVideosInput): VideoCollection!
   whoami: User!
-}
-
-type RefreshTokenPayload {
-  accessToken: String!
-  refreshToken: String!
 }
 
 input RegisterTagInput {
@@ -49,10 +65,19 @@ type RegisterTagPayload {
 
 input RegisterVideoInput {
   extraTitles: [String!]
-  niconico: [String!]
   primaryThumbnail: String!
   primaryTitle: String!
+  sources: [RegisterVideoInputSource!]!
   tags: [ID!]!
+}
+
+input RegisterVideoInputSource {
+  sourceId: String!
+  type: RegisterVideoInputSourceType!
+}
+
+enum RegisterVideoInputSourceType {
+  NICOVIDEO
 }
 
 type RegisterVideoPayload {
@@ -75,17 +100,6 @@ type SearchVideosResult {
 type SearchVideosResultItem {
   matchedTitle: String!
   video: Video!
-}
-
-input SigninInput {
-  name: String!
-  password: String!
-}
-
-type SigninPayload {
-  accessToken: String!
-  refreshToken: String!
-  user: User!
 }
 
 enum SortOrder {
@@ -120,6 +134,10 @@ type TagChangePrimaryNameHistoryItem implements TagHistoryItem {
   tag: Tag!
   to: String!
   user: User!
+}
+
+type TagCollection {
+  nodes: [Tag!]!
 }
 
 type TagDeleteNameHistoryItem implements TagHistoryItem {
@@ -289,6 +307,11 @@ type VideoRegisterHistoryItem implements VideoHistoryItem {
   video: Video!
 }
 
+interface VideoSource {
+  url: String!
+  videoId: String!
+}
+
 type VideoThumbnail {
   imageUrl: String!
   primary: Boolean!
@@ -297,4 +320,9 @@ type VideoThumbnail {
 type VideoTitle {
   primary: Boolean!
   title: String!
+}
+
+type YoutubeVideoSource implements VideoSource {
+  url: String!
+  videoId: String!
 }

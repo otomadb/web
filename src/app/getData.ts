@@ -6,7 +6,7 @@ import { graphql } from "~/gql";
 
 const IndexPageQueryDocument = graphql(`
   query IndexPage {
-    recentRegisteredVideos: videos(input: { limit: 12 }) {
+    recentRegisteredVideos: videos(input: { limit: 100 }) {
       nodes {
         id
         title
@@ -21,10 +21,12 @@ export const getData = async () => {
     new URL("/graphql", process.env.NEXT_PUBLIC_API_ENDPOINT).toString(),
     IndexPageQueryDocument
   );
+
   return {
     recentRegisteredVideos: recentRegisteredVideos.nodes.map(
       ({ id, title, thumbnailUrl }) => ({
-        id,
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        id: id.split(":").at(1)!,
         title,
         thumbnailUrl,
       })

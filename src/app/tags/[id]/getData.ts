@@ -40,7 +40,7 @@ export const getData = async (
   const { tag } = await gqlRequest(
     new URL("/graphql", process.env.NEXT_PUBLIC_API_ENDPOINT).toString(),
     TagPageQueryDocument,
-    { id }
+    { id: `tag:${id}` }
   );
 
   return {

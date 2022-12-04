@@ -97,7 +97,7 @@ export const getData = async (
   const { video } = await gqlRequest(
     new URL("/graphql", process.env.NEXT_PUBLIC_API_ENDPOINT).toString(),
     VideoPageQueryDocument,
-    { id }
+    { id: `video:${id}` }
   );
 
   return {
@@ -110,7 +110,8 @@ export const getData = async (
     thumbnailUrl: video.thumbnailUrl,
     tags: video.tags.map(({ id, name, explicitParent }) => {
       return {
-        id,
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        id: id.split(":").at(1)!,
         name,
         explicitParent: explicitParent
           ? { id: explicitParent.id, name: explicitParent.name }
