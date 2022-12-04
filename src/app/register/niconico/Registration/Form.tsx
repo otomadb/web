@@ -140,7 +140,7 @@ export const RegisterForm: React.FC<{ className?: string }> = ({
           primaryThumbnail,
           tags,
           extraTitles: [],
-          niconico: [niconicoId],
+          sources: [],
         },
       });
 
