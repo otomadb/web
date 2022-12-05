@@ -127,8 +127,7 @@ export const UpdateableProvider: React.FC<{
         setTags(
           tags.map(({ id, name, type, explicitParent }) => {
             return {
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              id: id.split(":").at(1)!,
+              id,
               name,
               type,
               explicitParent: explicitParent
@@ -222,8 +221,7 @@ export const UpdateableProvider: React.FC<{
                   user,
                   type: "ADD_TAG",
                   tag: {
-                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                    id: tag.id.split(":").at(1)!,
+                    id: tag.id,
                     name: tag.name,
                     type: tag.type,
                     explicitParent: tag.explicitParent
@@ -243,8 +241,7 @@ export const UpdateableProvider: React.FC<{
                   user,
                   type: "DELETE_TAG",
                   tag: {
-                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                    id: tag.id.split(":").at(1)!,
+                    id: tag.id,
                     name: tag.name,
                     type: tag.type,
                     explicitParent: tag.explicitParent

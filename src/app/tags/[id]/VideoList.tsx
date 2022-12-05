@@ -21,7 +21,11 @@ export const VideoList: React.FC<{
         >
           {videos.map(({ id, thumbnailUrl, title }) => (
             <div key={id}>
-              <Link className={clsx(["block"])} href={`/videos/${id}`}>
+              <Link
+                className={clsx(["block"])}
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                href={`/videos/${id.split(":").at(1)!}`}
+              >
                 <Image
                   className={clsx(["w-full"], ["h-auto"], ["rounded-lg"])}
                   src={thumbnailUrl}

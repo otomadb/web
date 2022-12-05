@@ -110,8 +110,7 @@ export const getData = async (
     thumbnailUrl: video.thumbnailUrl,
     tags: video.tags.map(({ id, name, explicitParent }) => {
       return {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        id: id.split(":").at(1)!,
+        id,
         name,
         explicitParent: explicitParent
           ? { id: explicitParent.id, name: explicitParent.name }

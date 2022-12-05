@@ -12,7 +12,8 @@ export const Tag: React.FC<{
   return (
     <Link
       key={id}
-      href={`/tags/${id}`}
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      href={`/tags/${id.split(":").at(1)!}`}
       className={clsx(
         className,
         ["flex"],
