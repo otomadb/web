@@ -43,7 +43,8 @@ export const VideoList: React.FC<{
                   ["text-sm"],
                   ["line-clamp-2"]
                 )}
-                href={`/videos/${id}`}
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                href={`/videos/${id.split(":").at(1)!}`}
               >
                 {title}
               </Link>
