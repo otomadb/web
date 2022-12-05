@@ -48,7 +48,8 @@ export const getData = async (
     name: tag.name,
     context: null,
     taggedVideos: tag.taggedVideos.map(({ id, title, thumbnailUrl }) => ({
-      id,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      id: id.split(":").at(1)!,
       title,
       thumbnailUrl,
     })),
