@@ -204,6 +204,7 @@ type Video {
   history(limit: Int! = 10, order: VideoHistoryOrder! = {createdAt: DESC}, skip: Int! = 0): [VideoHistoryItem!]!
   id: ID!
   registeredAt: DateTime!
+  similarVideos(input: VideoSimilarVideosInput): VideoSimilarVideosPayload!
   tags: [Tag!]!
   thumbnailUrl: String!
   thumbnails: [VideoThumbnail!]!
@@ -305,6 +306,19 @@ type VideoRegisterHistoryItem implements VideoHistoryItem {
   id: ID!
   user: User!
   video: Video!
+}
+
+type VideoSimilarVideoItem {
+  score: Float!
+  video: Video!
+}
+
+input VideoSimilarVideosInput {
+  limit: Int = 10
+}
+
+type VideoSimilarVideosPayload {
+  items: [VideoSimilarVideoItem!]!
 }
 
 interface VideoSource {
