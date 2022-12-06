@@ -9,7 +9,7 @@ import { TagsSection } from "./TagsSection";
 export const revalidate = 0;
 
 export default async function Page({ params }: { params: { id: string } }) {
-  const details = await getData(params.id);
+  const details = await getData(`video:${params.id}`);
   const { id: videoId } = details;
 
   return (
