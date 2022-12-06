@@ -6,7 +6,7 @@ import React, { useState } from "react";
 import useSWR from "swr";
 
 import { DelayedInput } from "~/components/DelayedInput";
-import { VideoLink } from "~/components/VideoLink";
+import { TagLink, VideoLink } from "~/components/Link";
 import { graphql } from "~/gql";
 import { useGraphQLClient } from "~/hooks/useGraphQLClient";
 
@@ -149,9 +149,9 @@ export const SearchResult: React.FC<{
         )}
         <div className={clsx(["divide-y", "divide-slate-400/75"])}>
           {tags.map(({ tag, matchedName }) => (
-            <Link
+            <TagLink
               key={tag.id}
-              href={`/tags/${tag.id}`}
+              tagId={tag.id}
               className={clsx(
                 ["px-4", "py-1"],
                 [["flex"], ["items-center"]],
@@ -173,7 +173,7 @@ export const SearchResult: React.FC<{
                 </div>
               )
             */}
-            </Link>
+            </TagLin>
           ))}
         </div>
       </div>

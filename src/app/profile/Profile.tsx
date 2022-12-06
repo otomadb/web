@@ -1,11 +1,11 @@
 "use client";
 
 import clsx from "clsx";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 import useSWR from "swr";
 
+import { UserLink } from "~/components/Link";
 import { UserIcon } from "~/components/UserIcon";
 import { graphql } from "~/gql";
 import { useGraphQLClient } from "~/hooks/useGraphQLClient";
@@ -66,7 +66,7 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
       <div>
         <UserIcon className={clsx([])} src={icon} name={name} />
         <p>
-          <Link href={`/users/${name}`}> @{name}</Link>
+          <UserLink name={name}>@{name}</UserLink>
         </p>
         <p>{displayName}</p>
       </div>

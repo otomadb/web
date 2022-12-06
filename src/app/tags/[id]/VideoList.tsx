@@ -2,7 +2,7 @@ import clsx from "clsx";
 import Image from "next/image";
 import React from "react";
 
-import { VideoLink } from "~/components/VideoLink";
+import { VideoLink } from "~/components/Link";
 
 export const VideoList: React.FC<{
   className?: string;

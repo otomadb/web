@@ -11,7 +11,7 @@ import React, {
 import { toast } from "react-hot-toast";
 import useSWR from "swr";
 
-import { VideoLink } from "~/components/VideoLink";
+import { VideoLink } from "~/components/Link";
 import { graphql } from "~/gql";
 import { useGraphQLClient } from "~/hooks/useGraphQLClient";
 import { useIsLoggedIn } from "~/hooks/useIsLoggedIn";

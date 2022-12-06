@@ -1,6 +1,7 @@
 import clsx from "clsx";
-import Link from "next/link";
 import React from "react";
+
+import { TagLink } from "~/components/Link";
 
 export const Tag: React.FC<{
   className?: string;
@@ -10,10 +11,9 @@ export const Tag: React.FC<{
   contextName?: string;
 }> = ({ className, id, name, contextName }) => {
   return (
-    <Link
+    <TagLink
       key={id}
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      href={`/tags/${id.split(":").at(1)!}`}
+      tagId={id}
       className={clsx(
         className,
         ["flex"],
@@ -44,6 +44,6 @@ export const Tag: React.FC<{
           ({contextName})
         </span>
       )}
-    </Link>
+    </TagLink>
   );
 };
