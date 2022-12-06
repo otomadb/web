@@ -1,11 +1,12 @@
 import clsx from "clsx";
 import Link from "next/link";
-import React, { ReactNode } from "react";
+import React, { ComponentProps, ReactNode } from "react";
 
 export const VideoLink: React.FC<{
   videoId: string;
   className?: string;
   children?: ReactNode;
+  onClick?: ComponentProps<typeof Link>["onClick"];
 }> = ({ className, children, videoId }) => (
   <Link
     className={clsx(className)}

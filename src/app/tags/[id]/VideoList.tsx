@@ -1,7 +1,8 @@
 import clsx from "clsx";
 import Image from "next/image";
-import Link from "next/link";
 import React from "react";
+
+import { VideoLink } from "~/components/VideoLink";
 
 export const VideoList: React.FC<{
   className?: string;
@@ -21,11 +22,7 @@ export const VideoList: React.FC<{
         >
           {videos.map(({ id, thumbnailUrl, title }) => (
             <div key={id}>
-              <Link
-                className={clsx(["block"])}
-                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                href={`/videos/${id.split(":").at(1)!}`}
-              >
+              <VideoLink videoId={id} className={clsx(["block"])}>
                 <Image
                   className={clsx(["w-full"], ["h-auto"], ["rounded-lg"])}
                   src={thumbnailUrl}
@@ -34,8 +31,9 @@ export const VideoList: React.FC<{
                   alt={title}
                   priority={true}
                 />
-              </Link>
-              <Link
+              </VideoLink>
+              <VideoLink
+                videoId={id}
                 className={clsx(
                   ["block"],
                   ["px-1"],
@@ -43,11 +41,9 @@ export const VideoList: React.FC<{
                   ["text-sm"],
                   ["line-clamp-2"]
                 )}
-                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                href={`/videos/${id.split(":").at(1)!}`}
               >
                 {title}
-              </Link>
+              </VideoLink>
             </div>
           ))}
         </div>

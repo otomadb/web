@@ -2,11 +2,11 @@
 
 import clsx from "clsx";
 import Link from "next/link";
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import useSWR from "swr";
 
 import { DelayedInput } from "~/components/DelayedInput";
+import { VideoLink } from "~/components/VideoLink";
 import { graphql } from "~/gql";
 import { useGraphQLClient } from "~/hooks/useGraphQLClient";
 
@@ -99,9 +99,9 @@ export const SearchResult: React.FC<{
         )}
         <div className={clsx(["divide-y", "divide-slate-400/75"])}>
           {videos.map(({ matchedTitle, video }) => (
-            <Link
+            <VideoLink
               key={video.id}
-              href={`/videos/${video.id}`}
+              videoId={video.id}
               className={clsx(
                 ["px-4", "py-1"],
                 [["flex"], ["items-center"]],
@@ -123,7 +123,7 @@ export const SearchResult: React.FC<{
                 </div>
               )
             */}
-            </Link>
+            </VideoLink>
           ))}
         </div>
       </div>
