@@ -1,7 +1,6 @@
 "use client";
 
 import clsx from "clsx";
-import Link from "next/link";
 import React, { useState } from "react";
 import useSWR from "swr";
 
@@ -173,7 +172,7 @@ export const SearchResult: React.FC<{
                 </div>
               )
             */}
-            </TagLin>
+            </TagLink>
           ))}
         </div>
       </div>
