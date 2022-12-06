@@ -85,7 +85,7 @@ const VideoPageQueryDocument = graphql(`
 `);
 
 export const getData = async (
-  id: string
+  videoId: string
 ): Promise<{
   id: string;
   title: string;
@@ -97,7 +97,7 @@ export const getData = async (
   const { video } = await gqlRequest(
     new URL("/graphql", process.env.NEXT_PUBLIC_API_ENDPOINT).toString(),
     VideoPageQueryDocument,
-    { id: `video:${id}` }
+    { id: videoId }
   );
 
   return {
