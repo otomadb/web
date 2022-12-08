@@ -1,17 +1,107 @@
+input AddVideoToMylistInput {
+  mylistId: ID!
+  note: String
+  videoId: ID!
+}
+
+type AddVideoToMylistPayload {
+  registration: MylistRegistration!
+}
+
+input CreateMylistInput {
+  range: MylistShareRange!
+  title: String!
+}
+
+type CreateMylistPayload {
+  mylist: Mylist!
+}
+
 scalar DateTime
 
-input GetVideosInput {
+input GetTagsInput {
   limit: Int
+  order: GetTagsInputOrder = {updatedAt: DESC}
   skip: Int
 }
 
+input GetTagsInputOrder {
+  createdAt: SortOrder
+  updatedAt: SortOrder
+}
+
+input GetVideosInput {
+  limit: Int = 10
+  order: GetVideosInputOrder = {createdAt: DESC}
+  skip: Int = 0
+}
+
+input GetVideosInputOrder {
+  createdAt: SortOrder
+  updatedAt: SortOrder
+}
+
+input LikeVideoInput {
+  videoId: ID!
+}
+
+type LikeVideoPayload {
+  registration: MylistRegistration!
+}
+
 type Mutation {
-  refreshToken(token: String!): RefreshTokenPayload
+  addVideoToMylist(input: AddVideoToMylistInput!): AddVideoToMylistPayload!
+  createMylist(input: CreateMylistInput!): CreateMylistPayload!
+  likeVideo(input: LikeVideoInput!): LikeVideoPayload!
   registerTag(input: RegisterTagInput!): RegisterTagPayload!
   registerVideo(input: RegisterVideoInput!): RegisterVideoPayload!
-  signin(input: SigninInput): SigninPayload!
+  removeVideoFromMylist(input: RemoveVideoFromMylistInput!): RemoveVideoFromMylistPayload!
   tagVideo(input: TagVideoInput!): VideoAddTagHistoryItem!
+  undoLikeVideo(input: UndoLikeVideoInput!): UndoLikeVideoPayload!
   untagVideo(input: UntagVideoInput!): VideoDeleteTagHistoryItem!
+}
+
+type Mylist {
+  createdAt: DateTime!
+  holder: User!
+  id: ID!
+
+  """マイリストの中にビデオが追加されているか．"""
+  includes(videoId: ID!): Boolean!
+  range: MylistShareRange!
+  registrations(input: MylistRegistrationsInput!): MylistRegistrationCollection!
+  title: String!
+  updatedAt: DateTime!
+}
+
+type MylistRegistration {
+  createdAt: DateTime!
+  id: ID!
+  mylist: Mylist!
+  note: String
+  updatedAt: DateTime!
+  video: Video!
+}
+
+type MylistRegistrationCollection {
+  nodes: [MylistRegistration!]!
+}
+
+input MylistRegistrationsInput {
+  limit: Int
+  order: MylistRegistrationsInputOrder = {}
+  skip: Int
+}
+
+input MylistRegistrationsInputOrder {
+  createdAt: SortOrder
+  updatedAt: SortOrder
+}
+
+enum MylistShareRange {
+  KNOW_LINK
+  PRIVATE
+  PUBLIC
 }
 
 type NiconicoSource {
@@ -19,21 +109,23 @@ type NiconicoSource {
   video: Video
 }
 
+type NiconicoVideoSource implements VideoSource {
+  url: String!
+  videoId: String!
+}
+
 type Query {
   findNiconicoSource(id: ID!): NiconicoSource
+  mylist(id: ID!): Mylist!
   niconicoSource(id: ID!): NiconicoSource!
   searchTags(limit: Int! = 10, query: String!, skip: Int! = 0): SearchTagsResult!
   searchVideos(limit: Int! = 10, query: String!, skip: Int! = 0): SearchVideosResult!
   tag(id: ID!): Tag!
+  tags(input: GetTagsInput): TagCollection!
   user(name: String!): User!
   video(id: ID!): Video!
-  videos(input: GetVideosInput = {limit: 10, skip: 0}): VideoCollection!
+  videos(input: GetVideosInput): VideoCollection!
   whoami: User!
-}
-
-type RefreshTokenPayload {
-  accessToken: String!
-  refreshToken: String!
 }
 
 input RegisterTagInput {
@@ -49,13 +141,32 @@ type RegisterTagPayload {
 
 input RegisterVideoInput {
   extraTitles: [String!]
-  niconico: [String!]
   primaryThumbnail: String!
   primaryTitle: String!
+  sources: [RegisterVideoInputSource!]!
   tags: [ID!]!
 }
 
+input RegisterVideoInputSource {
+  sourceId: String!
+  type: RegisterVideoInputSourceType!
+}
+
+enum RegisterVideoInputSourceType {
+  NICOVIDEO
+}
+
 type RegisterVideoPayload {
+  video: Video!
+}
+
+input RemoveVideoFromMylistInput {
+  mylistId: ID!
+  videoId: ID!
+}
+
+type RemoveVideoFromMylistPayload {
+  mylist: Mylist!
   video: Video!
 }
 
@@ -75,17 +186,6 @@ type SearchVideosResult {
 type SearchVideosResultItem {
   matchedTitle: String!
   video: Video!
-}
-
-input SigninInput {
-  name: String!
-  password: String!
-}
-
-type SigninPayload {
-  accessToken: String!
-  refreshToken: String!
-  user: User!
 }
 
 enum SortOrder {
@@ -120,6 +220,10 @@ type TagChangePrimaryNameHistoryItem implements TagHistoryItem {
   tag: Tag!
   to: String!
   user: User!
+}
+
+type TagCollection {
+  nodes: [Tag!]!
 }
 
 type TagDeleteNameHistoryItem implements TagHistoryItem {
@@ -169,6 +273,15 @@ input TagVideoInput {
   videoId: ID!
 }
 
+input UndoLikeVideoInput {
+  videoId: ID!
+}
+
+type UndoLikeVideoPayload {
+  mylist: Mylist!
+  video: Video!
+}
+
 input UntagVideoInput {
   tagId: ID!
   videoId: ID!
@@ -176,9 +289,27 @@ input UntagVideoInput {
 
 type User {
   displayName: String!
+  favorites: Mylist!
   icon: String!
   id: ID!
+  mylists(input: UserMylistsInput!): UserMylistsConnection!
   name: String!
+}
+
+type UserMylistsConnection {
+  nodes: [Mylist!]!
+}
+
+input UserMylistsInput {
+  limit: Int
+  order: UserMylistsInputOrder = {createdAt: ASC}
+  range: [MylistShareRange!] = [PUBLIC]
+  skip: Int
+}
+
+input UserMylistsInputOrder {
+  createdAt: SortOrder
+  updatedAt: SortOrder
 }
 
 type Video {
@@ -289,6 +420,11 @@ type VideoRegisterHistoryItem implements VideoHistoryItem {
   video: Video!
 }
 
+interface VideoSource {
+  url: String!
+  videoId: String!
+}
+
 type VideoThumbnail {
   imageUrl: String!
   primary: Boolean!
@@ -297,4 +433,9 @@ type VideoThumbnail {
 type VideoTitle {
   primary: Boolean!
   title: String!
+}
+
+type YoutubeVideoSource implements VideoSource {
+  url: String!
+  videoId: String!
 }

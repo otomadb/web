@@ -1,6 +1,7 @@
 "use client";
 
 import clsx from "clsx";
+import { formatDistance } from "date-fns";
 import React from "react";
 
 export const DateTime: React.FC<{ className?: string; date: string }> = ({
@@ -8,11 +9,8 @@ export const DateTime: React.FC<{ className?: string; date: string }> = ({
   date,
 }) => {
   return (
-    <time className={clsx(className)}>
-      {new Intl.DateTimeFormat("ja", {
-        dateStyle: "short",
-        timeStyle: "medium",
-      }).format(new Date(date))}
+    <time className={clsx(className)} dateTime={date}>
+      {formatDistance(new Date(date), new Date(), { addSuffix: true })}
     </time>
   );
 };

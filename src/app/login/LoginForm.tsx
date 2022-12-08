@@ -5,7 +5,7 @@ import "client-only";
 import { LockClosedIcon, UserIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useIsLoggedIn } from "~/hooks/useIsLoggedIn";
 import { useLogin } from "~/hooks/useLogin";
@@ -30,10 +30,9 @@ export const LoginForm: React.FC<{ className?: string }> = ({ className }) => {
     },
   });
 
-  if (isLoggedIn) {
-    router.replace("/");
-    return null;
-  }
+  useEffect(() => {
+    if (isLoggedIn) router.replace("/");
+  }, [isLoggedIn, router]);
 
   return (
     <form
