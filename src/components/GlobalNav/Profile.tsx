@@ -64,7 +64,6 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
     isLoggedIn ? [ProfileQueryDocument] : null,
     async (doc) => gqlClient.request(doc),
     {
-      refreshInterval: 10000,
       onSuccess(data) {
         const {
           whoami: { id, name, displayName, icon },

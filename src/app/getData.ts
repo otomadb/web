@@ -6,7 +6,7 @@ import { graphql } from "~/gql";
 
 const IndexPageQueryDocument = graphql(`
   query IndexPage {
-    recentRegisteredVideos: videos(input: { limit: 100 }) {
+    recentRegisteredVideos: videos(input: { limit: 18 }) {
       nodes {
         id
         title

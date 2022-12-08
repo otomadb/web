@@ -1,7 +1,6 @@
 "use client";
 import clsx from "clsx";
 import Image from "next/image";
-import Link from "next/link";
 import React, {
   ReactNode,
   useCallback,
@@ -12,6 +11,7 @@ import React, {
 import { toast } from "react-hot-toast";
 import useSWR from "swr";
 
+import { VideoLink } from "~/components/Link";
 import { graphql } from "~/gql";
 import { useGraphQLClient } from "~/hooks/useGraphQLClient";
 import { useIsLoggedIn } from "~/hooks/useIsLoggedIn";
@@ -89,14 +89,14 @@ export const AlreadyDetector: React.FC<{ children: ReactNode }> = ({
     <>
       <div className={clsx(["px-2"])}>
         <p className={clsx(["text-lg"], ["text-slate-900"])}>
-          <Link className={clsx(["font-bold"])} href={`/videos/${id}`}>
+          <VideoLink videoId={id} className={clsx(["font-bold"])}>
             {title}
-          </Link>
+          </VideoLink>
           では？
         </p>
       </div>
       <div className={clsx(["mt-2"])}>
-        <Link href={`/videos/${id}`}>
+        <VideoLink videoId={id}>
           <Image
             className={clsx(["object-scale-down"], ["h-40"])}
             src={thumbnailUrl}
@@ -105,7 +105,7 @@ export const AlreadyDetector: React.FC<{ children: ReactNode }> = ({
             alt={title}
             priority={true}
           />
-        </Link>
+        </VideoLink>
       </div>
     </>
   );
@@ -147,12 +147,12 @@ export const RegisterForm: React.FC<{ className?: string }> = ({
       const { title, id } = result.registerVideo.video;
       toast(() => (
         <span className={clsx(["text-slate-700"])}>
-          <Link
+          <VideoLink
+            videoId={id}
             className={clsx(["font-bold"], ["text-blue-500"])}
-            href={`/videos/${id}`}
           >
             {title}
-          </Link>
+          </VideoLink>
           を登録しました．
         </span>
       ));

@@ -4,6 +4,7 @@ import Image from "next/image";
 import { UpdateableProvider } from "./context";
 import { getData } from "./getData";
 import { HistorySection } from "./HistorySection";
+import { LikeButton } from "./LikeButton";
 import { SimilarVideos } from "./SimilarVideos";
 import { TagsSection } from "./TagsSection";
 
@@ -40,6 +41,7 @@ export default async function Page({ params }: { params: { id: string } }) {
             </div>
             <div className={clsx(["flex-grow"], ["py-4"])}>
               <h1 className={clsx(["text-xl"])}>{details.title}</h1>
+              <LikeButton className={clsx(["mt-2"])} videoId={videoId} />
             </div>
           </section>
           <div className={clsx(["flex", "flex-col"], ["mt-4"])}>
