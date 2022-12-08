@@ -1,4 +1,6 @@
-import Image from "next/image";
+import clsx from "clsx";
+
+import { UserIcon } from "~/components/UserIcon";
 
 import { getData } from "./getData";
 
@@ -11,7 +13,7 @@ export default async function Page({ params }: { params: { name: string } }) {
   return (
     <>
       <div>
-        <Image src={icon} width={128} height={128} alt={"icon"} />
+        <UserIcon className={clsx([])} src={icon} name={name} />
         <p>@{name}</p>
         <p>{displayName}</p>
       </div>

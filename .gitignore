@@ -20,6 +20,9 @@ node_modules/
 # log
 .pnpm-debug.log
 
+# VSCode
+.vscode/settings.json
+
 # typescript
 *.tsbuildinfo
 
