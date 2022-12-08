@@ -150,7 +150,10 @@ export const TagsList: React.FC<{
                 parentName={explicitParent?.name}
                 handleRemove={async () => {
                   await gqlClient.request(UntagVideoMutationDocument, {
-                    input: { tagId: id, videoId },
+                    input: {
+                      tagId: id,
+                      videoId,
+                    },
                   });
                   updateTags();
                 }}

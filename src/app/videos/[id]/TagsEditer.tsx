@@ -171,7 +171,10 @@ export const TagsEditer: React.FC<{
     async (tagId: string) => {
       if (!tagId) return;
       const result = await gqlClient.request(TagVideoMutationDocument, {
-        input: { tagId, videoId },
+        input: {
+          tagId,
+          videoId,
+        },
       });
       updateTags();
     },

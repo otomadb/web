@@ -7,9 +7,10 @@ import {
   TagIcon,
 } from "@heroicons/react/24/outline";
 import clsx from "clsx";
-import Image from "next/image";
 import Link from "next/link";
 import React, { Fragment, ReactNode } from "react";
+
+import { UserIcon } from "~/components/UserIcon";
 
 import { DateTime } from "./DateTime";
 import { Tag } from "./Tag";
@@ -61,12 +62,10 @@ const HistItemTemplate: React.FC<{
           href={`/users/${user.name}`}
           className={clsx(["flex", ["items-center"]])}
         >
-          <Image
-            src={user.icon}
-            width={24}
-            height={24}
+          <UserIcon
             className={clsx(["w-4"], ["h-4"])}
-            alt={user.name}
+            src={user.icon}
+            name={user.name}
           />
           <span className={clsx(["ml-1"], ["text-xs"], ["text-slate-700"])}>
             {user.displayName}

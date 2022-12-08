@@ -40,7 +40,7 @@ export const getData = async (
   const { tag } = await gqlRequest(
     new URL("/graphql", process.env.NEXT_PUBLIC_API_ENDPOINT).toString(),
     TagPageQueryDocument,
-    { id }
+    { id: `tag:${id}` }
   );
 
   return {
@@ -48,6 +48,7 @@ export const getData = async (
     name: tag.name,
     context: null,
     taggedVideos: tag.taggedVideos.map(({ id, title, thumbnailUrl }) => ({
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       id,
       title,
       thumbnailUrl,

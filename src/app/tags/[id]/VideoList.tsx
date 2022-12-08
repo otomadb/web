@@ -1,7 +1,8 @@
 import clsx from "clsx";
 import Image from "next/image";
-import Link from "next/link";
 import React from "react";
+
+import { VideoLink } from "~/components/Link";
 
 export const VideoList: React.FC<{
   className?: string;
@@ -21,7 +22,7 @@ export const VideoList: React.FC<{
         >
           {videos.map(({ id, thumbnailUrl, title }) => (
             <div key={id}>
-              <Link className={clsx(["block"])} href={`/videos/${id}`}>
+              <VideoLink videoId={id} className={clsx(["block"])}>
                 <Image
                   className={clsx(["w-full"], ["h-auto"], ["rounded-lg"])}
                   src={thumbnailUrl}
@@ -30,8 +31,9 @@ export const VideoList: React.FC<{
                   alt={title}
                   priority={true}
                 />
-              </Link>
-              <Link
+              </VideoLink>
+              <VideoLink
+                videoId={id}
                 className={clsx(
                   ["block"],
                   ["px-1"],
@@ -39,10 +41,9 @@ export const VideoList: React.FC<{
                   ["text-sm"],
                   ["line-clamp-2"]
                 )}
-                href={`/videos/${id}`}
               >
                 {title}
-              </Link>
+              </VideoLink>
             </div>
           ))}
         </div>
