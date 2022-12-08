@@ -11,6 +11,8 @@ import { graphql } from "~/gql";
 import { useGraphQLClient } from "~/hooks/useGraphQLClient";
 import { useLogout } from "~/hooks/useLogout";
 
+import { VideoList } from "../tags/[id]/VideoList";
+
 const ProfileDocument = graphql(`
   query Profile {
     whoami {
@@ -18,6 +20,17 @@ const ProfileDocument = graphql(`
       name
       displayName
       icon
+      favorites {
+        registrations(input: { limit: 12 }) {
+          nodes {
+            video {
+              id
+              title
+              thumbnailUrl
+            }
+          }
+        }
+      }
     }
   }
 `);
@@ -58,7 +71,7 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
   if (!data) return null;
 
   const {
-    whoami: { id, name, displayName, icon },
+    whoami: { id, name, displayName, icon, favorites },
   } = data;
   return (
     <div className={clsx(className)}>
@@ -70,7 +83,17 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
         </p>
         <p>{displayName}</p>
       </div>
-      <Logout className={clsx(["mt-1"])} />
+      <section className={clsx(["mt-2"])}>
+        <h2 className={clsx(["text-lg"])}>いいねした動画</h2>
+        <VideoList
+          className={clsx(["mt-2"])}
+          videos={favorites.registrations.nodes.map(({ video }) => ({
+            id: video.id,
+            title: video.title,
+            thumbnailUrl: video.thumbnailUrl,
+          }))}
+        />
+      </section>
     </div>
   );
 };
