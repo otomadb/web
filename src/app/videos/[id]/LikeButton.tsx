@@ -53,8 +53,8 @@ export const LikeButton: React.FC<{ className?: string; videoId: string }> = ({
   const [liked, setLiked] = useState<boolean | undefined>();
 
   const { mutate } = useSWR(
-    isLoggedIn ? [LikeButtonQueryDocument] : null,
-    (doc) => gqlClient.request(doc, { videoId }),
+    isLoggedIn ? [LikeButtonQueryDocument, videoId] : null,
+    (doc, id) => gqlClient.request(doc, { videoId: id }),
     {
       onSuccess(data) {
         setLiked(data.whoami.favorites.includes);
