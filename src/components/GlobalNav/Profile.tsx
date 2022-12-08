@@ -2,7 +2,6 @@
 
 import { ArrowPathIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
-import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import useSWR from "swr";
@@ -10,6 +9,8 @@ import useSWR from "swr";
 import { graphql } from "~/gql";
 import { useGraphQLClient } from "~/hooks/useGraphQLClient";
 import { useIsLoggedIn } from "~/hooks/useIsLoggedIn";
+
+import { UserIcon } from "../UserIcon";
 
 export const ProfileQueryDocument = graphql(`
   query GlobalNavProfile {
@@ -63,7 +64,6 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
     isLoggedIn ? [ProfileQueryDocument] : null,
     async (doc) => gqlClient.request(doc),
     {
-      refreshInterval: 10000,
       onSuccess(data) {
         const {
           whoami: { id, name, displayName, icon },
@@ -101,13 +101,7 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
         href={"/profile"}
         className={clsx(["flex"], ["flex-row"], ["items-center"])}
       >
-        <Image
-          className={clsx([""])}
-          width={32}
-          height={32}
-          src={icon}
-          alt={"icon"}
-        />
+        <UserIcon className={clsx(["w-8"], ["h-8"])} src={icon} name={name} />
         <span className={clsx(["ml-2"], ["text-white"])}>{displayName}</span>
       </Link>
     </div>

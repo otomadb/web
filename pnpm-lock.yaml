@@ -27,6 +27,7 @@ specifiers:
   babel-loader: ^8.3.0
   client-only: ^0.0.1
   clsx: ^1.2.1
+  date-fns: ^2.29.3
   encoding: ^0.1.13
   eslint: 8.28.0
   eslint-config-next: 13.0.5
@@ -35,6 +36,7 @@ specifiers:
   eslint-plugin-storybook: ^0.6.7
   eslint-plugin-unused-imports: 2.0.0
   graphql-request: ^5.0.0
+  jdenticon: ^3.2.0
   ky: ^0.32.2
   msw: ^0.49.0
   msw-storybook-addon: ^1.6.3
@@ -58,7 +60,9 @@ dependencies:
   '@heroicons/react': 2.0.13_react@18.2.0
   client-only: 0.0.1
   clsx: 1.2.1
+  date-fns: 2.29.3
   graphql-request: 5.0.0_rjjjs2nwgns3bcvnnqb5eu5nry
+  jdenticon: 3.2.0
   ky: 0.32.2
   next: 13.0.5_mqvh5p7ejg4taogoj6tpk3gd5a
   react: 18.2.0
@@ -4495,7 +4499,6 @@ packages:
 
   /@types/node/18.11.9:
     resolution: {integrity: sha512-CRpX21/kGdzjOpFsZSkcrXMGIBWMGNIHXXBVFSH+ggkftxg+XYP20TESbh+zFvFj3EQOl5byk0HTRn1IL6hbqg==}
-    dev: true
 
   /@types/normalize-package-data/2.4.1:
     resolution: {integrity: sha512-Gj7cI7z+98M282Tqmp2K5EIsoouUEzbBJhQQzDE3jSIRk6r9gsz0oUokqIUR4u1R3dMHo0pDHM7sNOHyhulypw==}
@@ -6185,6 +6188,12 @@ packages:
   /caniuse-lite/1.0.30001434:
     resolution: {integrity: sha512-aOBHrLmTQw//WFa2rcF1If9fa3ypkC1wzqqiKHgfdrXTWcU8C4gKVZT77eQAPWN1APys3+uQ0Df07rKauXGEYA==}
 
+  /canvas-renderer/2.2.1:
+    resolution: {integrity: sha512-RrBgVL5qCEDIXpJ6NrzyRNoTnXxYarqm/cS/W6ERhUJts5UQtt/XPEosGN3rqUkZ4fjBArlnCbsISJ+KCFnIAg==}
+    dependencies:
+      '@types/node': 18.11.9
+    dev: false
+
   /capital-case/1.0.4:
     resolution: {integrity: sha512-ds37W8CytHgwnhGGTi88pcPyR15qoNkOpYwmMMfnWqqWgESapLqvDx6huFjQ5vqWSn2Z06173XNA7LtMOeUh1A==}
     dependencies:
@@ -6934,6 +6943,11 @@ packages:
   /dataloader/2.1.0:
     resolution: {integrity: sha512-qTcEYLen3r7ojZNgVUaRggOI+KM7jrKxXeSHhogh/TWxYMeONEMqY+hmkobiYQozsGIyg9OYVzO4ZIfoB4I0pQ==}
     dev: true
+
+  /date-fns/2.29.3:
+    resolution: {integrity: sha512-dDCnyH2WnnKusqvZZ6+jA1O51Ibt8ZMRNkDZdyAyK4YfbDwa/cEmuztzG5pk6hqlp9aSBPYcjOlktquahGwGeA==}
+    engines: {node: '>=0.11'}
+    dev: false
 
   /debounce/1.2.1:
     resolution: {integrity: sha512-XRRe6Glud4rd/ZGQfiV1ruXSfbvfJedlV9Y6zOlP+2K04vBYiJEte6stfFkCP03aMnY5tsipamumUjL14fofug==}
@@ -10072,6 +10086,14 @@ packages:
       es-get-iterator: 1.1.2
       iterate-iterator: 1.0.2
     dev: true
+
+  /jdenticon/3.2.0:
+    resolution: {integrity: sha512-z6Iq3fTODUMSOiR2nNYrqigS6Y0GvdXfyQWrUby7htDHvX7GNEwaWR4hcaL+FmhEgBe08Xkup/BKxXQhDJByPA==}
+    engines: {node: '>=6.4.0'}
+    hasBin: true
+    dependencies:
+      canvas-renderer: 2.2.1
+    dev: false
 
   /jest-haste-map/26.6.2:
     resolution: {integrity: sha512-easWIJXIw71B2RdR8kgqpjQrbMRWQBgiBwXYEhtGUTaX+doCjBheluShdDMeR8IMfJiTqH4+zfhtg29apJf/8w==}

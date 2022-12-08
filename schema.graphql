@@ -1,20 +1,10 @@
-input AddLikeInput {
-  videoId: ID!
-}
-
-type AddLikePayload {
-  id: ID!
-  registration: MylistRegistration!
-}
-
-input AddToMylistInput {
+input AddVideoToMylistInput {
   mylistId: ID!
   note: String
   videoId: ID!
 }
 
-type AddToMylistPayload {
-  id: ID!
+type AddVideoToMylistPayload {
   registration: MylistRegistration!
 }
 
@@ -29,22 +19,45 @@ type CreateMylistPayload {
 
 scalar DateTime
 
-input GetVideosInput {
+input GetTagsInput {
   limit: Int
+  order: GetTagsInputOrder = {updatedAt: DESC}
   skip: Int
 }
 
+input GetTagsInputOrder {
+  createdAt: SortOrder
+  updatedAt: SortOrder
+}
+
+input GetVideosInput {
+  limit: Int = 10
+  order: GetVideosInputOrder = {createdAt: DESC}
+  skip: Int = 0
+}
+
+input GetVideosInputOrder {
+  createdAt: SortOrder
+  updatedAt: SortOrder
+}
+
+input LikeVideoInput {
+  videoId: ID!
+}
+
+type LikeVideoPayload {
+  registration: MylistRegistration!
+}
+
 type Mutation {
-  addLike(input: AddLikeInput!): AddLikePayload!
-  addToMylist(input: AddToMylistInput!): AddToMylistPayload!
+  addVideoToMylist(input: AddVideoToMylistInput!): AddVideoToMylistPayload!
   createMylist(input: CreateMylistInput!): CreateMylistPayload!
-  refreshToken(token: String!): RefreshTokenPayload
+  likeVideo(input: LikeVideoInput!): LikeVideoPayload!
   registerTag(input: RegisterTagInput!): RegisterTagPayload!
   registerVideo(input: RegisterVideoInput!): RegisterVideoPayload!
-  removeFromMylist(input: RemoveFromMylistInput!): RemoveFromMylistPayload!
-  removeLike(input: RemoveLikeInput!): RemoveLikePayload!
-  signin(input: SigninInput): SigninPayload!
+  removeVideoFromMylist(input: RemoveVideoFromMylistInput!): RemoveVideoFromMylistPayload!
   tagVideo(input: TagVideoInput!): VideoAddTagHistoryItem!
+  undoLikeVideo(input: UndoLikeVideoInput!): UndoLikeVideoPayload!
   untagVideo(input: UntagVideoInput!): VideoDeleteTagHistoryItem!
 }
 
@@ -96,6 +109,11 @@ type NiconicoSource {
   video: Video
 }
 
+type NiconicoVideoSource implements VideoSource {
+  url: String!
+  videoId: String!
+}
+
 type Query {
   findNiconicoSource(id: ID!): NiconicoSource
   mylist(id: ID!): Mylist!
@@ -103,15 +121,11 @@ type Query {
   searchTags(limit: Int! = 10, query: String!, skip: Int! = 0): SearchTagsResult!
   searchVideos(limit: Int! = 10, query: String!, skip: Int! = 0): SearchVideosResult!
   tag(id: ID!): Tag!
+  tags(input: GetTagsInput): TagCollection!
   user(name: String!): User!
   video(id: ID!): Video!
-  videos(input: GetVideosInput = {limit: 10, skip: 0}): VideoCollection!
+  videos(input: GetVideosInput): VideoCollection!
   whoami: User!
-}
-
-type RefreshTokenPayload {
-  accessToken: String!
-  refreshToken: String!
 }
 
 input RegisterTagInput {
@@ -127,31 +141,33 @@ type RegisterTagPayload {
 
 input RegisterVideoInput {
   extraTitles: [String!]
-  niconico: [String!]
   primaryThumbnail: String!
   primaryTitle: String!
+  sources: [RegisterVideoInputSource!]!
   tags: [ID!]!
+}
+
+input RegisterVideoInputSource {
+  sourceId: String!
+  type: RegisterVideoInputSourceType!
+}
+
+enum RegisterVideoInputSourceType {
+  NICOVIDEO
 }
 
 type RegisterVideoPayload {
   video: Video!
 }
 
-input RemoveFromMylistInput {
+input RemoveVideoFromMylistInput {
   mylistId: ID!
   videoId: ID!
 }
 
-type RemoveFromMylistPayload {
-  id: ID!
-}
-
-input RemoveLikeInput {
-  videoId: ID!
-}
-
-type RemoveLikePayload {
-  id: ID!
+type RemoveVideoFromMylistPayload {
+  mylist: Mylist!
+  video: Video!
 }
 
 type SearchTagsResult {
@@ -170,17 +186,6 @@ type SearchVideosResult {
 type SearchVideosResultItem {
   matchedTitle: String!
   video: Video!
-}
-
-input SigninInput {
-  name: String!
-  password: String!
-}
-
-type SigninPayload {
-  accessToken: String!
-  refreshToken: String!
-  user: User!
 }
 
 enum SortOrder {
@@ -215,6 +220,10 @@ type TagChangePrimaryNameHistoryItem implements TagHistoryItem {
   tag: Tag!
   to: String!
   user: User!
+}
+
+type TagCollection {
+  nodes: [Tag!]!
 }
 
 type TagDeleteNameHistoryItem implements TagHistoryItem {
@@ -262,6 +271,15 @@ enum TagType {
 input TagVideoInput {
   tagId: ID!
   videoId: ID!
+}
+
+input UndoLikeVideoInput {
+  videoId: ID!
+}
+
+type UndoLikeVideoPayload {
+  mylist: Mylist!
+  video: Video!
 }
 
 input UntagVideoInput {
@@ -402,6 +420,11 @@ type VideoRegisterHistoryItem implements VideoHistoryItem {
   video: Video!
 }
 
+interface VideoSource {
+  url: String!
+  videoId: String!
+}
+
 type VideoThumbnail {
   imageUrl: String!
   primary: Boolean!
@@ -410,4 +433,9 @@ type VideoThumbnail {
 type VideoTitle {
   primary: Boolean!
   title: String!
+}
+
+type YoutubeVideoSource implements VideoSource {
+  url: String!
+  videoId: String!
 }

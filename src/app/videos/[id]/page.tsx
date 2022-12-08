@@ -10,7 +10,7 @@ import { TagsSection } from "./TagsSection";
 export const revalidate = 0;
 
 export default async function Page({ params }: { params: { id: string } }) {
-  const details = await getData(params.id);
+  const details = await getData(`video:${params.id}`);
   const { id: videoId } = details;
 
   return (
@@ -25,34 +25,40 @@ export default async function Page({ params }: { params: { id: string } }) {
             <h2 className={clsx(["text-xl"])}>Tags</h2>
             <TagsSection className={clsx(["mt-2"])} videoId={videoId} />
           </section>
-          <section className={clsx(["mt-4"])}>
-            <h2 className={clsx(["text-xl"])}>History</h2>
-            <HistorySection className={clsx(["mt-4"])} />
-          </section>
         </div>
-        <section
-          className={clsx(
-            ["flex-shrink-0"],
-            ["flex-grow"],
-            ["flex"],
-            ["gap-x-4"]
-          )}
-        >
-          <div>
-            <Image
-              className={clsx(["object-scale-down"], ["h-40"])}
-              src={details.thumbnailUrl}
-              width={260}
-              height={200}
-              alt={details.title}
-              priority={true}
-            />
+        <div className={clsx(["flex-shrink-0"], ["flex-grow"])}>
+          <section
+            className={clsx(
+              ["flex-shrink-0"],
+              ["flex-grow"],
+              ["flex"],
+              ["gap-x-4"]
+            )}
+          >
+            <div>
+              <Image
+                className={clsx(["object-scale-down"], ["h-40"])}
+                src={details.thumbnailUrl}
+                width={260}
+                height={200}
+                alt={details.title}
+                priority={true}
+              />
+            </div>
+            <div className={clsx(["flex-grow"], ["py-4"])}>
+              <h1 className={clsx(["text-xl"])}>{details.title}</h1>
+              <LikeButton className={clsx(["mt-2"])} videoId={videoId} />
+            </div>
+          </section>
+          <div className={clsx(["w-full"], ["flex"], ["mt-4"])}>
+            <section
+              className={clsx(["flex-shrink-0"], ["flex-grow"], ["max-w-lg"])}
+            >
+              <h2 className={clsx(["text-xl"])}>History</h2>
+              <HistorySection className={clsx(["mt-4"])} />
+            </section>
           </div>
-          <div className={clsx(["flex-grow"], ["py-4"])}>
-            <h1 className={clsx(["text-xl"])}>{details.title}</h1>
-            <LikeButton className={clsx(["mt-2"])} videoId={videoId} />
-          </div>
-        </section>
+        </div>
       </div>
     </UpdateableProvider>
   );

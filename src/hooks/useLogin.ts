@@ -41,8 +41,9 @@ export const useLogin = ({
       const result = await ky.post(
         new URL("/auth/login", process.env.NEXT_PUBLIC_API_ENDPOINT).toString(),
         {
-          body: JSON.stringify({ name, password }),
+          json: { name, password },
           throwHttpErrors: false,
+          credentials: "include",
         }
       );
       if (result.ok) {

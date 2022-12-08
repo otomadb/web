@@ -1,12 +1,12 @@
 "use client";
 
 import clsx from "clsx";
-import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 import useSWR from "swr";
 
+import { UserLink } from "~/components/Link";
+import { UserIcon } from "~/components/UserIcon";
 import { graphql } from "~/gql";
 import { useGraphQLClient } from "~/hooks/useGraphQLClient";
 import { useLogout } from "~/hooks/useLogout";
@@ -74,17 +74,14 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
     whoami: { id, name, displayName, icon, favorites },
   } = data;
   return (
-    <>
-      <div className={clsx(className)}>
-        <p>Profile</p>
-        <div>
-          <Image src={icon} width={128} height={128} alt={"icon"} />
-          <p>
-            <Link href={`/users/${name}`}> @{name}</Link>
-          </p>
-          <p>{displayName}</p>
-        </div>
-        <Logout className={clsx(["mt-1"])} />
+    <div className={clsx(className)}>
+      <p>Profile</p>
+      <div>
+        <UserIcon className={clsx([])} src={icon} name={name} />
+        <p>
+          <UserLink name={name}>@{name}</UserLink>
+        </p>
+        <p>{displayName}</p>
       </div>
       <section className={clsx(["mt-2"])}>
         <h2 className={clsx(["text-lg"])}>いいねした動画</h2>
@@ -97,6 +94,6 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
           }))}
         />
       </section>
-    </>
+    </div>
   );
 };

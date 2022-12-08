@@ -26,16 +26,20 @@ const LikeButtonQueryDocument = graphql(`
 
 const LikeButtonAddLikeMutationDocument = graphql(`
   mutation LikeButtonAddLike($videoId: ID!) {
-    addLike(input: { videoId: $videoId }) {
-      id
+    likeVideo(input: { videoId: $videoId }) {
+      registration {
+        id
+      }
     }
   }
 `);
 
 const LikeButtonRemoveLikeMutationDocument = graphql(`
   mutation LikeButtonRemoveLike($videoId: ID!) {
-    removeLike(input: { videoId: $videoId }) {
-      id
+    undoLikeVideo(input: { videoId: $videoId }) {
+      video {
+        id
+      }
     }
   }
 `);
