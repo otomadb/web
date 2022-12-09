@@ -5,6 +5,7 @@ import { UpdateableProvider } from "./context";
 import { getData } from "./getData";
 import { HistorySection } from "./HistorySection";
 import { LikeButton } from "./LikeButton";
+import { SimilarVideos } from "./SimilarVideos";
 import { TagsSection } from "./TagsSection";
 
 export const revalidate = 0;
@@ -26,15 +27,8 @@ export default async function Page({ params }: { params: { id: string } }) {
             <TagsSection className={clsx(["mt-2"])} videoId={videoId} />
           </section>
         </div>
-        <div className={clsx(["flex-shrink-0"], ["flex-grow"])}>
-          <section
-            className={clsx(
-              ["flex-shrink-0"],
-              ["flex-grow"],
-              ["flex"],
-              ["gap-x-4"]
-            )}
-          >
+        <div className={clsx(["flex-grow"])}>
+          <section className={clsx(["flex"], ["gap-x-4"])}>
             <div>
               <Image
                 className={clsx(["object-scale-down"], ["h-40"])}
@@ -50,7 +44,14 @@ export default async function Page({ params }: { params: { id: string } }) {
               <LikeButton className={clsx(["mt-2"])} videoId={videoId} />
             </div>
           </section>
-          <div className={clsx(["w-full"], ["flex"], ["mt-4"])}>
+          <div className={clsx(["flex", "flex-col"], ["mt-4"])}>
+            <section className={clsx()}>
+              <h2 className={clsx(["text-xl"])}>似ている動画</h2>
+              <div className={clsx()}>
+                {/* @ts-expect-error Server Component */}
+                <SimilarVideos id={videoId} className={clsx(["mt-4"])} />
+              </div>
+            </section>
             <section
               className={clsx(["flex-shrink-0"], ["flex-grow"], ["max-w-lg"])}
             >
