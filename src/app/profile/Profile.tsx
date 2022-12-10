@@ -30,6 +30,16 @@ const ProfileDocument = graphql(`
             }
           }
         }
+        recommendedVideos(input: { limit: 12 }) {
+          items {
+            video {
+              id
+              title
+              thumbnailUrl
+            }
+            score
+          }
+        }
       }
     }
   }
@@ -88,6 +98,19 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
         <VideoList
           className={clsx(["mt-2"])}
           videos={favorites.registrations.nodes.map(({ video }) => ({
+            id: video.id,
+            title: video.title,
+            thumbnailUrl: video.thumbnailUrl,
+          }))}
+        />
+      </section>
+      <section className={clsx(["mt-2"])}>
+        <h2 className={clsx(["text-lg"])}>
+          あなたのいいねした動画からのオススメ
+        </h2>
+        <VideoList
+          className={clsx(["mt-2"])}
+          videos={favorites.recommendedVideos.items.map(({ video }) => ({
             id: video.id,
             title: video.title,
             thumbnailUrl: video.thumbnailUrl,
