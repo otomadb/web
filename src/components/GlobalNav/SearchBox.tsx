@@ -11,7 +11,7 @@ import { useGraphQLClient } from "~/hooks/useGraphQLClient";
 
 const SearchQueryDocument = graphql(`
   query Search($query: String!) {
-    tags: searchTags(query: $query, limit: 5) {
+    tags: searchTags(input: { query: $query, limit: 5 }) {
       result {
         matchedName
         tag {
@@ -20,7 +20,7 @@ const SearchQueryDocument = graphql(`
         }
       }
     }
-    videos: searchVideos(query: $query, limit: 5) {
+    videos: searchVideos(input: { query: $query, limit: 5 }) {
       result {
         matchedTitle
         video {

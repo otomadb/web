@@ -13,7 +13,7 @@ import { useGraphQLClient } from "~/hooks/useGraphQLClient";
 
 const SearchTagsDocument = graphql(`
   query SearchTags($query: String!) {
-    tags: searchTags(query: $query, limit: 5) {
+    tags: searchTags(input: { query: $query, limit: 5 }) {
       result {
         matchedName
         tag {
