@@ -69,9 +69,23 @@ type Mylist {
   """マイリストの中にビデオが追加されているか．"""
   includes(videoId: ID!): Boolean!
   range: MylistShareRange!
+  recommendedVideos(input: MylistRecommendedVideosInput): MylistRecommendedVideosPayload!
   registrations(input: MylistRegistrationsInput!): MylistRegistrationCollection!
   title: String!
   updatedAt: DateTime!
+}
+
+input MylistRecommendedVideosInput {
+  limit: Int = 10
+}
+
+type MylistRecommendedVideosItem {
+  score: Float!
+  video: Video!
+}
+
+type MylistRecommendedVideosPayload {
+  items: [MylistRecommendedVideosItem!]!
 }
 
 type MylistRegistration {
