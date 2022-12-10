@@ -18,7 +18,7 @@ const LikeButtonQueryDocument = graphql(`
       id
       favorites {
         id
-        includes(videoId: $videoId)
+        isIncludesVideo(id: $videoId)
       }
     }
   }
@@ -57,7 +57,7 @@ export const LikeButton: React.FC<{ className?: string; videoId: string }> = ({
     (doc, id) => gqlClient.request(doc, { videoId: id }),
     {
       onSuccess(data) {
-        setLiked(data.whoami.favorites.includes);
+        setLiked(data.whoami.favorites.isIncludesVideo);
       },
     }
   );

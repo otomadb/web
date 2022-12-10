@@ -67,7 +67,7 @@ type Mylist {
   id: ID!
 
   """マイリストの中にビデオが追加されているか．"""
-  includes(videoId: ID!): Boolean!
+  isIncludesVideo(id: ID!): Boolean!
   range: MylistShareRange!
   registrations(input: MylistRegistrationsInput!): MylistRegistrationCollection!
   title: String!
