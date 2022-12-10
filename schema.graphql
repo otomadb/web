@@ -65,6 +65,7 @@ type Mylist {
   createdAt: DateTime!
   holder: User!
   id: ID!
+  includeTags(input: MylistIncludeTagsInput!): MylistIncludeTagsPayload!
 
   """マイリストの中にビデオが追加されているか．"""
   isIncludesVideo(id: ID!): Boolean!
@@ -73,6 +74,19 @@ type Mylist {
   registrations(input: MylistRegistrationsInput!): MylistRegistrationCollection!
   title: String!
   updatedAt: DateTime!
+}
+
+input MylistIncludeTagsInput {
+  limit: Int = 10
+}
+
+type MylistIncludeTagsItem {
+  count: Int!
+  tag: Tag!
+}
+
+type MylistIncludeTagsPayload {
+  items: [MylistIncludeTagsItem!]!
 }
 
 input MylistRecommendedVideosInput {
@@ -221,7 +235,7 @@ enum SortOrder {
 
 type Tag {
   explicitParent: Tag
-  history: [TagHistoryItem!]!
+  history(input: TagHistoryInput!): TagHistoryCollection!
   id: ID!
   meaningless: Boolean!
   name: String!
@@ -260,10 +274,24 @@ type TagDeleteNameHistoryItem implements TagHistoryItem {
   user: User!
 }
 
+type TagHistoryCollection {
+  nodes: [VideoHistoryItem!]!
+}
+
+input TagHistoryInput {
+  limit: Int = 10
+  order: TagHistoryOrder = {createdAt: DESC}
+  skip: Int = 0
+}
+
 interface TagHistoryItem {
   createdAt: DateTime!
   id: ID!
   user: User!
+}
+
+input TagHistoryOrder {
+  createdAt: SortOrder
 }
 
 type TagName {
@@ -340,10 +368,10 @@ input UserMylistsInputOrder {
 
 type Video {
   hasTag(id: ID!): Boolean!
-  history(limit: Int! = 10, order: VideoHistoryOrder! = {createdAt: DESC}, skip: Int! = 0): [VideoHistoryItem!]!
+  history(input: VideoHistoryInput!): VideoHistoryCollection!
   id: ID!
   registeredAt: DateTime!
-  similarVideos(input: VideoSimilarVideosInput): VideoSimilarVideosPayload!
+  similarVideos(input: VideoSimilarVideosInput!): VideoSimilarVideosPayload!
   tags: [Tag!]!
   thumbnailUrl: String!
   thumbnails: [VideoThumbnail!]!
@@ -427,6 +455,16 @@ type VideoDeleteTitleHistoryItem implements VideoHistoryItem {
   title: String!
   user: User!
   video: Video!
+}
+
+type VideoHistoryCollection {
+  nodes: [VideoHistoryItem!]!
+}
+
+input VideoHistoryInput {
+  limit: Int = 10
+  order: VideoHistoryOrder = {createdAt: DESC}
+  skip: Int = 0
 }
 
 interface VideoHistoryItem {
