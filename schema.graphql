@@ -132,13 +132,13 @@ type Query {
   findNiconicoSource(id: ID!): NiconicoSource
   mylist(id: ID!): Mylist!
   niconicoSource(id: ID!): NiconicoSource!
-  searchTags(limit: Int! = 10, query: String!, skip: Int! = 0): SearchTagsResult!
-  searchVideos(limit: Int! = 10, query: String!, skip: Int! = 0): SearchVideosResult!
+  searchTags(input: SearchTagInput!): SearchTagsPayload!
+  searchVideos(input: SearchVideoInput!): SearchVideosPayload!
   tag(id: ID!): Tag!
-  tags(input: GetTagsInput): TagCollection!
+  tags(input: GetTagsInput!): TagCollection!
   user(name: String!): User!
   video(id: ID!): Video!
-  videos(input: GetVideosInput): VideoCollection!
+  videos(input: GetVideosInput!): VideoCollection!
   whoami: User!
 }
 
@@ -184,7 +184,13 @@ type RemoveVideoFromMylistPayload {
   video: Video!
 }
 
-type SearchTagsResult {
+input SearchTagInput {
+  limit: Int = 10
+  query: String!
+  skip: Int = 0
+}
+
+type SearchTagsPayload {
   result: [SearchTagsResultItem!]!
 }
 
@@ -193,7 +199,13 @@ type SearchTagsResultItem {
   tag: Tag!
 }
 
-type SearchVideosResult {
+input SearchVideoInput {
+  limit: Int = 10
+  query: String!
+  skip: Int = 0
+}
+
+type SearchVideosPayload {
   result: [SearchVideosResultItem!]!
 }
 
