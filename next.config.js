@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ["nicovideo.cdn.nimg.jp"],
+    domains: ["nicovideo.cdn.nimg.jp", "img.cdn.nimg.jp"],
   },
   experimental: {
     appDir: true,
