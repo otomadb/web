@@ -31,61 +31,63 @@ const VideoPageRefreshHistoryQueryDocument = graphql(`
   query VideoPageRefreshHistory($id: ID!) {
     video(id: $id) {
       id
-      history(order: { createdAt: ASC }) {
-        type: __typename
-        id
-        createdAt
-        user {
+      history(input: { order: { createdAt: ASC } }) {
+        nodes {
+          type: __typename
           id
-          name
-          displayName
-          icon
-        }
-        ... on VideoAddTitleHistoryItem {
-          title
-        }
-        ... on VideoDeleteTitleHistoryItem {
-          title
-        }
-        ... on VideoChangePrimaryTitleHistoryItem {
-          from
-          to
-        }
-        ... on VideoAddThumbnailHistoryItem {
-          thumbnail
-        }
-        ... on VideoDeleteThumbnailHistoryItem {
-          thumbnail
-        }
-        ... on VideoChangePrimaryThumbnailHistoryItem {
-          from
-          to
-        }
-        ... on VideoAddTagHistoryItem {
-          tag {
+          createdAt
+          user {
             id
             name
-            type
-            explicitParent {
+            displayName
+            icon
+          }
+          ... on VideoAddTitleHistoryItem {
+            title
+          }
+          ... on VideoDeleteTitleHistoryItem {
+            title
+          }
+          ... on VideoChangePrimaryTitleHistoryItem {
+            from
+            to
+          }
+          ... on VideoAddThumbnailHistoryItem {
+            thumbnail
+          }
+          ... on VideoDeleteThumbnailHistoryItem {
+            thumbnail
+          }
+          ... on VideoChangePrimaryThumbnailHistoryItem {
+            from
+            to
+          }
+          ... on VideoAddTagHistoryItem {
+            tag {
               id
               name
+              type
+              explicitParent {
+                id
+                name
+              }
             }
           }
-        }
-        ... on VideoDeleteTagHistoryItem {
-          tag {
-            id
-            name
-            type
-            explicitParent {
+          ... on VideoDeleteTagHistoryItem {
+            tag {
               id
               name
+              type
+              explicitParent {
+                id
+                name
+              }
             }
           }
-        }
-        ... on VideoAddNiconicoSourceHistoryItem {
-          niconico {
-            id
+          ... on VideoAddNiconicoSourceHistoryItem {
+            niconico {
+              id
+            }
           }
         }
       }
@@ -151,7 +153,7 @@ export const UpdateableProvider: React.FC<{
           video: { history },
         } = data;
         setHistory(
-          history.map((item) => {
+          history.nodes.map((item) => {
             const { id, createdAt } = item;
             const user = {
               id: item.user.id,

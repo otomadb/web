@@ -13,7 +13,7 @@ import { FormContext } from "../FormContext";
 
 export const SearchTagsQueryDocument = graphql(`
   query SearchTags3($query: String!) {
-    searchTags(query: $query, limit: 2) {
+    searchTags(input: { query: $query, limit: 2 }) {
       result {
         matchedName
         tag {
