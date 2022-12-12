@@ -1,10 +1,13 @@
 "use client";
 
+import { PseudoTagType } from "~/gql/graphql";
+
 export type TagType = {
   id: string;
   name: string;
   // type: string;
   explicitParent: { id: string; name: string } | null;
+  type: PseudoTagType;
 };
 
 export type HistoryItemType = {

@@ -16,9 +16,9 @@ module.exports = {
       colors: {
         copyright: colors.pink,
         character: colors.green,
-        class: colors.violet,
-        music: colors.cyan,
-        work: colors.pink,
+        music: colors.sky,
+        event: colors.teal,
+        series: colors.purple,
       },
     },
   },

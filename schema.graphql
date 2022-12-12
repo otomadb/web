@@ -142,6 +142,41 @@ type NiconicoVideoSource implements VideoSource {
   videoId: String!
 }
 
+enum PseudoTagType {
+  """キャラクター"""
+  CHARACTER
+
+  """動画の内容に依らない情報，分類など"""
+  CLASS
+
+  """作品名"""
+  COPYRIGHT
+
+  """合作などのイベント"""
+  EVENT
+
+  """曲"""
+  MUSIC
+
+  """特徴的なセリフなど"""
+  PHRASE
+
+  """シリーズ"""
+  SERIES
+
+  """動画そのものに対しての性質，作風など"""
+  STYLE
+
+  """2つ以上のタイプが算出された場合"""
+  SUBTLE
+
+  """戦法"""
+  TACTICS
+
+  """タイプを算出できなかった場合"""
+  UNKNOWN
+}
+
 type Query {
   findNiconicoSource(id: ID!): NiconicoSource
   mylist(id: ID!): Mylist!
@@ -240,7 +275,8 @@ type Tag {
   meaningless: Boolean!
   name: String!
   names: [TagName!]!
-  parents: [TagParent!]!
+  parents(meaningless: Boolean): [TagParent!]!
+  pseudoType: PseudoTagType!
   taggedVideos: [Video!]!
   type: TagType! @deprecated
 }
