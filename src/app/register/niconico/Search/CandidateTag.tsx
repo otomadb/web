@@ -41,7 +41,7 @@ export const CandidateTag: React.FC<{ className?: string; tag: string }> = ({
   const exclude = useMemo(() => excludeTagFromSearch(tag), [tag]);
   const { isValidating } = useSWR(
     !exclude ? [SearchTagsQueryDocument, tag] : null,
-    (doc, query) => gqlClient.request(doc, { query }),
+    ([doc, query]) => gqlClient.request(doc, { query }),
     {
       onSuccess(data) {
         const { searchTags } = data;
