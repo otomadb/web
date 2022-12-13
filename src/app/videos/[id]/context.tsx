@@ -84,8 +84,8 @@ const VideoPageRefreshHistoryQueryDocument = graphql(`
               }
             }
           }
-          ... on VideoAddNiconicoSourceHistoryItem {
-            niconico {
+          ... on VideoAddNicovideoVideoSourceHistoryItem {
+            source {
               id
             }
           }
@@ -255,7 +255,7 @@ export const UpdateableProvider: React.FC<{
                   },
                 };
               }
-              case "VideoAddNiconicoSourceHistoryItem": {
+              case "VideoAddNicovideoVideoSourceHistoryItem": {
                 return {
                   id,
                   createdAt,

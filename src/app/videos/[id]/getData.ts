@@ -75,8 +75,8 @@ const VideoPageQueryDocument = graphql(`
               }
             }
           }
-          ... on VideoAddNiconicoSourceHistoryItem {
-            niconico {
+          ... on VideoAddNicovideoVideoSourceHistoryItem {
+            source {
               id
             }
           }
@@ -207,7 +207,7 @@ export const getData = async (
             },
           };
         }
-        case "VideoAddNiconicoSourceHistoryItem": {
+        case "VideoAddNicovideoVideoSourceHistoryItem": {
           return {
             id,
             createdAt,

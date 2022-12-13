@@ -132,9 +132,11 @@ enum MylistShareRange {
   PUBLIC
 }
 
-type NiconicoSource {
-  id: ID!
-  video: Video
+type NicovideoVideoSource implements VideoSource {
+  id: String!
+  sourceId: String!
+  url: String!
+  video: Video!
 }
 
 type NiconicoVideoSource implements VideoSource {
@@ -143,9 +145,9 @@ type NiconicoVideoSource implements VideoSource {
 }
 
 type Query {
-  findNiconicoSource(id: ID!): NiconicoSource
+  findNicovideoVideoSource(sourceId: ID!): NicovideoVideoSource
   mylist(id: ID!): Mylist!
-  niconicoSource(id: ID!): NiconicoSource!
+  nicovideoVideoSource(sourceId: ID!): NicovideoVideoSource!
   searchTags(input: SearchTagInput!): SearchTagsPayload!
   searchVideos(input: SearchVideoInput!): SearchVideosPayload!
   tag(id: ID!): Tag!
@@ -370,6 +372,7 @@ type Video {
   hasTag(id: ID!): Boolean!
   history(input: VideoHistoryInput!): VideoHistoryCollection!
   id: ID!
+  nicovideoSources: [NicovideoVideoSource!]!
   registeredAt: DateTime!
   similarVideos(input: VideoSimilarVideosInput!): VideoSimilarVideosPayload!
   tags: [Tag!]!
@@ -379,10 +382,10 @@ type Video {
   titles: [VideoTitle!]!
 }
 
-type VideoAddNiconicoSourceHistoryItem implements VideoHistoryItem {
+type VideoAddNicovideoVideoSourceHistoryItem implements VideoHistoryItem {
   createdAt: DateTime!
   id: ID!
-  niconico: NiconicoSource!
+  source: NicovideoVideoSource!
   user: User!
   video: Video!
 }
@@ -499,8 +502,10 @@ type VideoSimilarVideosPayload {
 }
 
 interface VideoSource {
+  id: String!
+  sourceId: String!
   url: String!
-  videoId: String!
+  video: Video!
 }
 
 type VideoThumbnail {
@@ -514,6 +519,8 @@ type VideoTitle {
 }
 
 type YoutubeVideoSource implements VideoSource {
+  id: String!
+  sourceId: String!
   url: String!
-  videoId: String!
+  video: Video!
 }
