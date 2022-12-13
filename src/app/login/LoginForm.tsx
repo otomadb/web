@@ -67,7 +67,7 @@ export const LoginForm: React.FC<{ className?: string }> = ({ className }) => {
         </div>
         <input
           value={name}
-          placeholder={"Username"}
+          placeholder={"ユーザーネーム"}
           onChange={(e) => {
             setName(e.target.value);
           }}
@@ -111,7 +111,7 @@ export const LoginForm: React.FC<{ className?: string }> = ({ className }) => {
         </div>
         <input
           type="password"
-          placeholder={"Password"}
+          placeholder={"パスワード"}
           value={password}
           onChange={(e) => {
             setPassword(e.target.value);
@@ -158,7 +158,7 @@ export const LoginForm: React.FC<{ className?: string }> = ({ className }) => {
             ]
           )}
         >
-          Sign in
+          ログイン
         </span>
       </button>
       <div
