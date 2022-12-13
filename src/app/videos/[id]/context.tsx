@@ -119,7 +119,7 @@ export const UpdateableProvider: React.FC<{
   const [tags, setTags] = useState(initTags);
   const { mutate: updateTags } = useSWR(
     [VideoPageRefreshTagsQueryDocument, videoId],
-    (doc, vid) => gqlClient.request(doc, { id: vid }),
+    ([doc, vid]) => gqlClient.request(doc, { id: vid }),
     {
       suspense: false,
       onSuccess(data) {
@@ -145,7 +145,7 @@ export const UpdateableProvider: React.FC<{
   const [history, setHistory] = useState<HistoryItemType[]>(initHistory);
   const { mutate: updateHistory } = useSWR(
     [VideoPageRefreshHistoryQueryDocument, videoId],
-    (doc, vid) => gqlClient.request(doc, { id: vid }),
+    ([doc, vid]) => gqlClient.request(doc, { id: vid }),
     {
       suspense: false,
       onSuccess(data) {

@@ -62,9 +62,9 @@ export const SearchBox: React.FC<{
   const [tags, setTags] = useState<
     { matchedName: string; tag: { id: string; name: string; type: string } }[]
   >([]);
-  const { isValidating } = useSWR(
+  useSWR(
     query !== "" ? [SearchTagsDocument, query] : null,
-    (doc, query) => gqlClient.request(doc, { query }),
+    ([doc, query]) => gqlClient.request(doc, { query }),
     {
       suspense: false,
       onSuccess(data) {
@@ -114,7 +114,7 @@ export const RegisterButton: React.FC<{
   const [ensureTagId, setEnsureTagId] = useState<string | null>(null);
   const { isValidating } = useSWR(
     tagId ? [CanTagQueryDocument, tagId] : null,
-    (doc, tagId) => gqlClient.request(doc, { tagId, videoId }),
+    ([doc, tagId]) => gqlClient.request(doc, { tagId, videoId }),
     {
       onSuccess(data) {
         const {

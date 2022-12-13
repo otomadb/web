@@ -31,7 +31,7 @@ export const EditableTag: React.FC<{ className?: string; id: string }> = ({
   }>(null);
   const { isValidating } = useSWR(
     [TagInfoQueryDocument, id],
-    (doc, id) => gqlClient.request(doc, { id }),
+    ([doc, id]) => gqlClient.request(doc, { id }),
     {
       onSuccess(data) {
         const { tag } = data;

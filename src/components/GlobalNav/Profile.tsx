@@ -62,7 +62,7 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
 
   const { isValidating } = useSWR(
     isLoggedIn ? [ProfileQueryDocument] : null,
-    async (doc) => gqlClient.request(doc),
+    async ([doc]) => gqlClient.request(doc),
     {
       onSuccess(data) {
         const {
