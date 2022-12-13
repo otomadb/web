@@ -13,6 +13,7 @@ import useSWR from "swr";
 
 import { VideoLink } from "~/components/Link";
 import { graphql } from "~/gql";
+import { RegisterVideoInputSourceType } from "~/gql/graphql";
 import { useGraphQLClient } from "~/hooks/useGraphQLClient";
 import { useIsLoggedIn } from "~/hooks/useIsLoggedIn";
 
@@ -36,7 +37,7 @@ export const RegisterVideoMutationDocument = graphql(`
 
 export const FindNicoSource = graphql(`
   query FindNiconico($id: ID!) {
-    findNiconicoSource(id: $id) {
+    findNicovideoVideoSource(sourceId: $id) {
       id
       video {
         id
@@ -63,9 +64,9 @@ export const AlreadyDetector: React.FC<{ children: ReactNode }> = ({
     ([doc, id]) => gqlClient.request(doc, { id }),
     {
       onSuccess(data) {
-        const { findNiconicoSource } = data;
-        if (findNiconicoSource && findNiconicoSource.video) {
-          const { video } = findNiconicoSource;
+        const { findNicovideoVideoSource } = data;
+        if (findNicovideoVideoSource && findNicovideoVideoSource.video) {
+          const { video } = findNicovideoVideoSource;
           setAlready({
             id: video.id,
             title: video.title,
@@ -140,7 +141,12 @@ export const RegisterForm: React.FC<{ className?: string }> = ({
           primaryThumbnail,
           tags,
           extraTitles: [],
-          sources: [],
+          sources: [
+            {
+              type: RegisterVideoInputSourceType.Nicovideo,
+              sourceId: niconicoId,
+            },
+          ],
         },
       });
 
