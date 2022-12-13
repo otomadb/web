@@ -7,7 +7,7 @@ import clsx from "clsx";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
-import { useLogin } from "~/hooks/useLogin";
+import { useLogin } from "~/app/login/useLogin";
 
 export const LoginForm: React.FC<{ className?: string }> = ({ className }) => {
   const router = useRouter();

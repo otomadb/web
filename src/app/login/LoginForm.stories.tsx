@@ -1,8 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 
-import { mockLoginHandler } from "~/hooks/useLogin";
-
 import { LoginForm } from "./LoginForm";
+import { mockLoginHandler } from "./useLogin";
 
 export default {
   component: LoginForm,

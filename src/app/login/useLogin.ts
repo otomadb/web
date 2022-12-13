@@ -18,11 +18,7 @@ export const mockLoginHandler = rest.post(
       return res(ctx.status(400), ctx.json({ error: "password wrong" }));
 
     return res(
-      ctx.cookie("otmd-session", "1-secret", {
-        // httpOnly: true,
-        // sameSite: "strict",
-        // secure: false,
-      }),
+      ctx.cookie("otmd-session", "sessionid-secret", {}),
       ctx.json({ id: "1" })
     );
   }

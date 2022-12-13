@@ -5,7 +5,11 @@ import { ReactNode } from "react";
 
 import { GraphQLProvider } from "~/hooks/useGraphQLClient";
 import { WhoamiProvider } from "~/hooks/useIsLoggedIn/context";
-import { handlers } from "~/mocks/browser";
+import { mockLogoutHandler } from "~/hooks/useLogout";
+
+import { mockLoginHandler } from "./login/useLogin";
+
+export const handlers = [mockLoginHandler, mockLogoutHandler];
 
 if (
   process.env.NEXT_PUBLIC_MSW_ENABLE === "true" &&
