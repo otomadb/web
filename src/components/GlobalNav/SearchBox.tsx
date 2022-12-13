@@ -44,9 +44,9 @@ export const SearchResult: React.FC<{
   const [videos, setVideos] = useState<
     { matchedTitle: string; video: { id: string; title: string } }[]
   >([]);
-  const { isValidating } = useSWR(
+  useSWR(
     query !== "" ? [SearchQueryDocument, query] : null,
-    (doc, query) => gqlClient.request(doc, { query }),
+    ([doc, query]) => gqlClient.request(doc, { query }),
     {
       suspense: false,
       onSuccess(data) {
@@ -97,7 +97,7 @@ export const SearchResult: React.FC<{
           </div>
         )}
         <div className={clsx(["divide-y", "divide-slate-400/75"])}>
-          {videos.map(({ matchedTitle, video }) => (
+          {videos.map(({ video }) => (
             <VideoLink
               key={video.id}
               videoId={video.id}

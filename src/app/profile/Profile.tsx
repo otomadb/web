@@ -74,7 +74,7 @@ export const Logout: React.FC<{ className: string }> = ({ className }) => {
 
 export const Profile: React.FC<{ className?: string }> = ({ className }) => {
   const gqlClient = useGraphQLClient();
-  const { data } = useSWR([ProfileDocument], async (doc) =>
+  const { data } = useSWR([ProfileDocument], async ([doc]) =>
     gqlClient.request(doc)
   );
 

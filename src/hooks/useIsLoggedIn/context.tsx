@@ -40,7 +40,7 @@ export const WhoamiProvider: React.FC<{ children: ReactNode }> = ({
     | { checking: false; whoami: null }
   >({ checking: true });
 
-  useSWR([WhoamiDocument], async (doc) => gqlClient.request(doc), {
+  useSWR([WhoamiDocument], async ([doc]) => gqlClient.request(doc), {
     refreshInterval: 10000,
     onSuccess(data) {
       const { whoami } = data;

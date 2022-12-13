@@ -61,7 +61,7 @@ export const AlreadyDetector: React.FC<{ children: ReactNode }> = ({
 
   useSWR(
     niconicoId ? [FindNicoSource, niconicoId] : null,
-    (doc, id) => gqlClient.request(doc, { id }),
+    ([doc, id]) => gqlClient.request(doc, { id }),
     {
       onSuccess(data) {
         const { findNicovideoVideoSource } = data;
