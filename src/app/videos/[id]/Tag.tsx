@@ -2,14 +2,15 @@ import clsx from "clsx";
 import React from "react";
 
 import { TagLink } from "~/components/Link";
+import { PseudoTagType } from "~/gql/graphql";
 
 export const Tag: React.FC<{
   className?: string;
   id: string;
   name: string;
-  // type: string;
+  type: PseudoTagType;
   contextName?: string;
-}> = ({ className, id, name, contextName }) => {
+}> = ({ className, id, name, contextName, type }) => {
   return (
     <TagLink
       key={id}
@@ -22,16 +23,16 @@ export const Tag: React.FC<{
         [
           "border",
           "border-gray-200",
-          /* [
+          [
             "border-l-4",
             {
-              "border-l-character-400": type === "CHARACTER",
-              "border-l-class-400": type === "CLASS",
-              "border-l-music-400": type === "MUSIC",
-              "border-l-copyright-400": type === "COPYRIGHT",
+              "border-l-character-400": type === PseudoTagType.Character,
+              "border-l-music-400": type === PseudoTagType.Music,
+              "border-l-copyright-400": type === PseudoTagType.Copyright,
+              "border-l-event-400": type === PseudoTagType.Event,
+              "border-l-series-400": type === PseudoTagType.Series,
             },
           ],
-          */
         ],
         ["shadow-sm"],
         ["rounded"],

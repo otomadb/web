@@ -320,7 +320,12 @@ export const AddTagItem: React.FC<
         <TagIcon className={clsx(className, ["text-teal-400"])} />
       )}
     >
-      <Tag id={tag.id} name={tag.name} contextName={tag.explicitParent?.name} />
+      <Tag
+        id={tag.id}
+        name={tag.name}
+        contextName={tag.explicitParent?.name}
+        type={tag.type}
+      />
     </HistItemTemplate>
   );
 };
@@ -348,7 +353,12 @@ export const DeleteTagItem: React.FC<
         <MinusIcon className={clsx(className, ["text-red-400"])} />
       )}
     >
-      <Tag id={tag.id} name={tag.name} contextName={tag.explicitParent?.name} />
+      <Tag
+        id={tag.id}
+        name={tag.name}
+        contextName={tag.explicitParent?.name}
+        type={tag.type}
+      />
     </HistItemTemplate>
   );
 };

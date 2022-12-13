@@ -138,10 +138,15 @@ export const TagsList: React.FC<{
           ["gap-y-1"]
         )}
       >
-        {tags.map(({ id, name, explicitParent }) => (
+        {tags.map(({ id, name, explicitParent, type }) => (
           <Fragment key={id}>
             {!edit && (
-              <Tag id={id} name={name} contextName={explicitParent?.name} />
+              <Tag
+                id={id}
+                name={name}
+                contextName={explicitParent?.name}
+                type={type}
+              />
             )}
             {edit && (
               <RemovableTag

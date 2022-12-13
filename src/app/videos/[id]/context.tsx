@@ -17,7 +17,7 @@ const VideoPageRefreshTagsQueryDocument = graphql(`
       tags {
         id
         name
-        type
+        type: pseudoType
         explicitParent {
           id
           name
@@ -66,7 +66,7 @@ const VideoPageRefreshHistoryQueryDocument = graphql(`
             tag {
               id
               name
-              type
+              type: pseudoType
               explicitParent {
                 id
                 name
@@ -77,7 +77,7 @@ const VideoPageRefreshHistoryQueryDocument = graphql(`
             tag {
               id
               name
-              type
+              type: pseudoType
               explicitParent {
                 id
                 name
