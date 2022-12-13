@@ -13,10 +13,10 @@ export const mockLogoutHandler = rest.post(
   async (req, res, ctx) => {
     return res(
       ctx.cookie("otmd-session", "", {
-        expires: new Date(Date.now() - 60),
-        // httpOnly: true,
-        // sameSite: "strict",
-        // secure: false,
+        httpOnly: true,
+        sameSite: "strict",
+        secure: false,
+        expires: new Date(Date.now() - 1),
       })
     );
   }
@@ -27,8 +27,12 @@ export const useLogout = ({ onSuccess }: { onSuccess(): void }) => {
   const handler = useCallback(async () => {
     const result = await ky.post(
       new URL("/auth/logout", process.env.NEXT_PUBLIC_API_ENDPOINT).toString(),
-      { throwHttpErrors: false }
+      {
+        throwHttpErrors: false,
+        credentials: "include",
+      }
     );
+    console.dir(result);
     if (result.ok) {
       removeId();
       onSuccess();
