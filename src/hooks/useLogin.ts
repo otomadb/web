@@ -6,7 +6,7 @@ import ky from "ky";
 import { rest } from "msw";
 import { useCallback, useContext } from "react";
 
-import { WhoamiContext } from "./useIsLoggedIn/context";
+import { WhoamiContext } from "~/hooks/useIsLoggedIn/context";
 
 export const mockLoginHandler = rest.post(
   new URL("/auth/login", process.env.NEXT_PUBLIC_API_ENDPOINT).toString(),
