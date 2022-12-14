@@ -2,7 +2,8 @@ import clsx from "clsx";
 import React from "react";
 
 import { TagLink } from "~/components/Link";
-import { PseudoTagType } from "~/gql/graphql";
+
+import { PseudoTagType } from "./types";
 
 export const Tag: React.FC<{
   className?: string;
@@ -26,11 +27,11 @@ export const Tag: React.FC<{
           [
             "border-l-4",
             {
-              "border-l-character-400": type === PseudoTagType.Character,
-              "border-l-music-400": type === PseudoTagType.Music,
-              "border-l-copyright-400": type === PseudoTagType.Copyright,
-              "border-l-event-400": type === PseudoTagType.Event,
-              "border-l-series-400": type === PseudoTagType.Series,
+              "border-l-character-400": type === "CHARACTER",
+              "border-l-music-400": type === "MUSIC",
+              "border-l-copyright-400": type === "COPYRIGHT",
+              "border-l-event-400": type === "EVENT",
+              "border-l-series-400": type === "SERIES",
             },
           ],
         ],
