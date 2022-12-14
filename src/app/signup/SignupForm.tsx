@@ -18,7 +18,7 @@ import * as z from "zod";
 import { useSignup } from "./useSignup";
 
 const formSchema = z.object({
-  name: z.string().min(3, { message: "3文字以上" }),
+  name: z.string().min(3, { message: "ユーザーネームは3文字以上です" }),
   displayName: z.string().min(1, { message: "1文字以上" }),
   email: z.string().email({ message: "メールアドレスの形式でない" }),
   password: z.string().min(8, { message: "パスワードは8文字以上" }),
@@ -29,22 +29,35 @@ type FormSchema = z.infer<typeof formSchema>;
 export const SignupForm: React.FC<{ className?: string }> = ({ className }) => {
   const router = useRouter();
 
-  const trySignup = useSignup({
-    onSuccess() {
-      router.replace("/");
-    },
-    onError(status) {
-      console.log(status);
-    },
-  });
-
   const {
     register,
     handleSubmit,
     formState: { errors },
     getValues,
+    setError,
   } = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
+  });
+  const trySignup = useSignup({
+    onSuccess() {
+      router.replace("/");
+    },
+    onError(status) {
+      switch (status) {
+        case "USER_NAME_ALREADY_REGISTERED":
+          setError("name", {
+            message: "既に登録されているユーザーネームです",
+          });
+          break;
+        case "EMAIL_ALREADY_REGISTERED":
+          setError("email", {
+            message: "既に登録されているメールアドレスです",
+          });
+          break;
+        case "UNKNOWN":
+          break;
+      }
+    },
   });
   const onSubmit: SubmitHandler<FormSchema> = async ({
     name,
@@ -114,7 +127,7 @@ export const SignupForm: React.FC<{ className?: string }> = ({ className }) => {
             />
           </label>
           {errors.name && (
-            <p className={clsx(["text-sm"], ["text-red-600"])}>
+            <p className={clsx(["mt-1"], ["text-xs"], ["text-red-600"])}>
               {errors.name.message}
             </p>
           )}
@@ -164,7 +177,7 @@ export const SignupForm: React.FC<{ className?: string }> = ({ className }) => {
             />
           </label>
           {errors.displayName && (
-            <p className={clsx(["text-sm"], ["text-red-600"])}>
+            <p className={clsx(["mt-1"], ["text-xs"], ["text-red-600"])}>
               {errors.displayName.message}
             </p>
           )}
@@ -214,7 +227,7 @@ export const SignupForm: React.FC<{ className?: string }> = ({ className }) => {
             />
           </label>
           {errors.email && (
-            <p className={clsx(["text-sm"], ["text-red-600"])}>
+            <p className={clsx(["mt-1"], ["text-xs"], ["text-red-600"])}>
               {errors.email.message}
             </p>
           )}
@@ -264,7 +277,7 @@ export const SignupForm: React.FC<{ className?: string }> = ({ className }) => {
             />
           </label>
           {errors.password && (
-            <p className={clsx(["text-sm"], ["text-red-600"])}>
+            <p className={clsx(["mt-1"], ["text-xs"], ["text-red-600"])}>
               {errors.password.message}
             </p>
           )}
@@ -322,7 +335,7 @@ export const SignupForm: React.FC<{ className?: string }> = ({ className }) => {
             />
           </label>
           {errors.passwordRepeat && (
-            <p className={clsx(["text-sm"], ["text-red-600"])}>
+            <p className={clsx(["mt-1"], ["text-xs"], ["text-red-600"])}>
               {errors.passwordRepeat.message}
             </p>
           )}

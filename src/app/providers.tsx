@@ -8,8 +8,13 @@ import { WhoamiProvider } from "~/hooks/useIsLoggedIn/context";
 import { mockLogoutHandler } from "~/hooks/useLogout";
 
 import { mockLoginHandler } from "./login/useLogin";
+import { mockSignupHandler } from "./signup/useSignup";
 
-export const handlers = [mockLoginHandler, mockLogoutHandler];
+export const handlers = [
+  mockLoginHandler,
+  mockLogoutHandler,
+  mockSignupHandler,
+];
 
 if (
   process.env.NEXT_PUBLIC_MSW_ENABLE === "true" &&

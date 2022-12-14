@@ -21,13 +21,13 @@ export const mockSignupHandler = rest.post(
     if (result.name === "already")
       return res(
         ctx.status(400),
-        ctx.json({ error: "USER_NAME_ALREADY_REGISTERED" })
+        ctx.json({ code: "USER_NAME_ALREADY_REGISTERED" })
       );
 
     if (result.email === "already@example.com")
       return res(
         ctx.status(400),
-        ctx.json({ error: "EMAIL_ALREADY_REGISTERED" })
+        ctx.json({ code: "EMAIL_ALREADY_REGISTERED" })
       );
 
     return res(
@@ -82,8 +82,8 @@ export const useSignup = ({
         setId(id);
         onSuccess();
       } else {
-        const { error } = await result.json<{ error: string }>();
-        switch (error) {
+        const { code } = await result.json<{ code: string }>();
+        switch (code) {
           case "USER_NAME_ALREADY_REGISTERED":
             onError("USER_NAME_ALREADY_REGISTERED");
             break;
