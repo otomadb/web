@@ -3,8 +3,9 @@ import "server-only";
 import gqlRequest from "graphql-request";
 
 import { graphql } from "~/gql";
+import { PseudoTagType } from "~/gql/graphql";
 
-import { HistoryItemType, TagType } from "./types";
+import { HistoryItemType } from "./types";
 
 const VideoPageQueryDocument = graphql(`
   query VideoPage($id: ID!) {
@@ -96,8 +97,18 @@ export const getData = async (
   title: string;
   titles: { title: string; primary: boolean }[];
   thumbnailUrl: string;
-  tags: TagType[];
   history: HistoryItemType[];
+
+  tags: {
+    __typename?: "Tag" | undefined;
+    id: string;
+    name: string;
+    type: PseudoTagType;
+    explicitParent?:
+      | { __typename?: "Tag" | undefined; id: string; name: string }
+      | null
+      | undefined;
+  }[]; // TODO: use Fragment
 }> => {
   const { video } = await gqlRequest(
     new URL("/graphql", process.env.NEXT_PUBLIC_API_ENDPOINT).toString(),
@@ -112,6 +123,8 @@ export const getData = async (
       primary,
     })),
     thumbnailUrl: video.thumbnailUrl,
+    tags: video.tags,
+    /*
     tags: video.tags.map(({ id, name, explicitParent, type }) => {
       return {
         id,
@@ -122,6 +135,7 @@ export const getData = async (
         type,
       };
     }),
+    */
     history: video.history.nodes.map((item) => {
       const { id, createdAt } = item;
       const user = {

@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import Image from "next/image";
 
-import { UpdateableProvider } from "./context";
+import { UpdateableProvider, WholeProvider } from "./context";
 import { getData } from "./getData";
 import { HistorySection } from "./HistorySection";
 import { LikeButton } from "./LikeButton";
@@ -12,55 +12,53 @@ export const revalidate = 0;
 
 export default async function Page({ params }: { params: { id: string } }) {
   const details = await getData(`video:${params.id}`);
-  const { id: videoId } = details;
+  const { id: videoId, tags } = details;
 
   return (
-    <UpdateableProvider
-      videoId={details.id}
-      initTags={details.tags}
-      initHistory={details.history}
-    >
-      <div className={clsx(["flex"])}>
-        <div className={clsx(["flex-shrink-0"], ["w-80"])}>
-          <section>
-            <h2 className={clsx(["text-xl"])}>Tags</h2>
-            <TagsSection className={clsx(["mt-2"])} videoId={videoId} />
-          </section>
-        </div>
-        <div className={clsx(["flex-grow"])}>
-          <section className={clsx(["flex"], ["gap-x-4"])}>
-            <div>
-              <Image
-                className={clsx(["object-scale-down"], ["h-40"])}
-                src={details.thumbnailUrl}
-                width={260}
-                height={200}
-                alt={details.title}
-                priority={true}
-              />
-            </div>
-            <div className={clsx(["flex-grow"], ["py-4"])}>
-              <h1 className={clsx(["text-xl"])}>{details.title}</h1>
-              <LikeButton className={clsx(["mt-2"])} videoId={videoId} />
-            </div>
-          </section>
-          <div className={clsx(["flex", "flex-col"], ["mt-4"])}>
-            <section className={clsx()}>
-              <h2 className={clsx(["text-xl"])}>似ている動画</h2>
-              <div className={clsx()}>
-                {/* @ts-expect-error Server Component */}
-                <SimilarVideos id={videoId} className={clsx(["mt-4"])} />
-              </div>
-            </section>
-            <section
-              className={clsx(["flex-shrink-0"], ["flex-grow"], ["max-w-lg"])}
-            >
-              <h2 className={clsx(["text-xl"])}>History</h2>
-              <HistorySection className={clsx(["mt-4"])} />
+    <UpdateableProvider videoId={details.id} initHistory={details.history}>
+      <WholeProvider videoId={videoId} tags={tags}>
+        <div className={clsx(["flex"], ["gap-x-4"])}>
+          <div className={clsx(["flex-shrink-0"], ["w-80"])}>
+            <section>
+              <h2 className={clsx(["text-xl"])}>Tags</h2>
+              <TagsSection className={clsx(["mt-2"])} />
             </section>
           </div>
+          <div className={clsx(["flex-grow"])}>
+            <section className={clsx(["flex"], ["gap-x-4"])}>
+              <div>
+                <Image
+                  className={clsx(["object-scale-down"], ["h-40"])}
+                  src={details.thumbnailUrl}
+                  width={260}
+                  height={200}
+                  alt={details.title}
+                  priority={true}
+                />
+              </div>
+              <div className={clsx(["flex-grow"], ["py-4"])}>
+                <h1 className={clsx(["text-xl"])}>{details.title}</h1>
+                <LikeButton className={clsx(["mt-2"])} videoId={videoId} />
+              </div>
+            </section>
+            <div className={clsx(["flex", "flex-col"], ["mt-4"])}>
+              <section className={clsx()}>
+                <h2 className={clsx(["text-xl"])}>似ている動画</h2>
+                <div className={clsx()}>
+                  {/* @ts-expect-error Server Component */}
+                  <SimilarVideos id={videoId} className={clsx(["mt-4"])} />
+                </div>
+              </section>
+              <section
+                className={clsx(["flex-shrink-0"], ["flex-grow"], ["max-w-lg"])}
+              >
+                <h2 className={clsx(["text-xl"])}>History</h2>
+                <HistorySection className={clsx(["mt-4"])} />
+              </section>
+            </div>
+          </div>
         </div>
-      </div>
+      </WholeProvider>
     </UpdateableProvider>
   );
 

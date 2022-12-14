@@ -2,13 +2,21 @@
 
 import "client-only";
 
-import React, { createContext, ReactNode, useState } from "react";
+import React, {
+  createContext,
+  ReactNode,
+  useContext,
+  useMemo,
+  useState,
+} from "react";
 import useSWR from "swr";
+import useSWRMutation from "swr/mutation";
 
 import { graphql } from "~/gql";
+import { PseudoTagType } from "~/gql/graphql";
 import { useGraphQLClient } from "~/hooks/useGraphQLClient";
 
-import { HistoryItemType, TagType } from "./types";
+import { HistoryItemType, parsePseudoTagType, TagType } from "./types";
 
 const VideoPageRefreshTagsQueryDocument = graphql(`
   query VideoPageRefreshTags($id: ID!) {
@@ -112,35 +120,10 @@ export const UpdateableContext = createContext<{
 export const UpdateableProvider: React.FC<{
   children: ReactNode;
   videoId: string;
-  initTags: TagType[];
   initHistory: HistoryItemType[];
-}> = ({ children, videoId, initTags, initHistory }) => {
+}> = ({ children, videoId, initHistory }) => {
   const gqlClient = useGraphQLClient();
-  const [tags, setTags] = useState(initTags);
-  const { mutate: updateTags } = useSWR(
-    [VideoPageRefreshTagsQueryDocument, videoId],
-    ([doc, vid]) => gqlClient.request(doc, { id: vid }),
-    {
-      suspense: false,
-      onSuccess(data) {
-        const {
-          video: { tags },
-        } = data;
-        setTags(
-          tags.map(({ id, name, type, explicitParent }) => {
-            return {
-              id,
-              name,
-              type,
-              explicitParent: explicitParent
-                ? { id: explicitParent.id, name: explicitParent.name }
-                : null,
-            };
-          })
-        );
-      },
-    }
-  );
+  const [tags] = useState([]);
 
   const [history, setHistory] = useState<HistoryItemType[]>(initHistory);
   const { mutate: updateHistory } = useSWR(
@@ -275,9 +258,7 @@ export const UpdateableProvider: React.FC<{
       value={{
         tags,
         history,
-        updateTags() {
-          updateTags();
-        },
+        updateTags() {},
         updateHistory() {
           updateHistory();
         },
@@ -286,4 +267,142 @@ export const UpdateableProvider: React.FC<{
       {children}
     </UpdateableContext.Provider>
   );
+};
+
+type WholeContextValue = {
+  videoId: string;
+  tags: TagType[] | null;
+  refreshTags(t: WTF): void;
+};
+export const WholeContext = createContext<WholeContextValue>(
+  {} as WholeContextValue
+);
+
+type WTF = {
+  __typename?: "Tag" | undefined;
+  id: string;
+  name: string;
+  type: PseudoTagType;
+  explicitParent?:
+    | { __typename?: "Tag" | undefined; id: string; name: string }
+    | null
+    | undefined;
+}[];
+
+export const WholeProvider: React.FC<{
+  children: ReactNode;
+  videoId: string;
+  tags: WTF; // TODO: use Fragment
+}> = ({ children, videoId, tags: fallbackTags }) => {
+  const gqlClient = useGraphQLClient();
+  const { data: rawTags, mutate: refreshTags } = useSWR(
+    [VideoPageRefreshTagsQueryDocument, videoId],
+    ([doc, vid]) =>
+      gqlClient.request(doc, { id: vid }).then((v) => v.video.tags),
+    { fallbackData: fallbackTags }
+  );
+
+  const tags = useMemo<TagType[] | null>(() => {
+    if (!rawTags) return null;
+    return rawTags.map(({ id, name, type, explicitParent }) => ({
+      id,
+      name,
+      type: parsePseudoTagType(type),
+      explicitParent: explicitParent
+        ? { id: explicitParent.id, name: explicitParent.name }
+        : null,
+    }));
+  }, [rawTags]);
+
+  return (
+    <WholeContext.Provider value={{ videoId, tags, refreshTags }}>
+      {children}
+    </WholeContext.Provider>
+  );
+};
+
+/**
+ * @returns video id in the form `video:foobar`
+ */
+export const useVideoId = () => {
+  const { videoId } = useContext(WholeContext);
+  return videoId;
+};
+
+export const useTags = () => {
+  const { tags } = useContext(WholeContext);
+  return tags;
+};
+
+export const UntagVideoMutationDocument = graphql(`
+  mutation UntagVideo($input: UntagVideoInput!) {
+    untagVideo(input: $input) {
+      video {
+        id
+        tags {
+          id
+          name
+          type: pseudoType
+          explicitParent {
+            id
+            name
+          }
+        }
+      }
+    }
+  }
+`);
+
+export const useUntagVideo = (tagId: string) => {
+  const { videoId, refreshTags } = useContext(WholeContext);
+  const gqlClient = useGraphQLClient();
+
+  const { trigger } = useSWRMutation(
+    [UntagVideoMutationDocument, tagId, videoId],
+    ([doc, tagId, videoId]) =>
+      gqlClient.request(doc, { input: { tagId, videoId } }),
+    {
+      onSuccess(data) {
+        refreshTags(data.untagVideo.video.tags);
+      },
+    }
+  );
+
+  return trigger;
+};
+
+const TagVideoMutationDocument = graphql(`
+  mutation TagVideo($input: TagVideoInput!) {
+    tagVideo(input: $input) {
+      video {
+        id
+        tags {
+          id
+          name
+          type: pseudoType
+          explicitParent {
+            id
+            name
+          }
+        }
+      }
+    }
+  }
+`);
+export const useTagVideo = (tagId: string | null) => {
+  const { videoId, refreshTags } = useContext(WholeContext);
+  const gqlClient = useGraphQLClient();
+
+  const { trigger } = useSWRMutation(
+    tagId ? [TagVideoMutationDocument, tagId, videoId] : null,
+    ([doc, tagId, videoId]) =>
+      gqlClient.request(doc, { input: { tagId, videoId } }),
+    {
+      onSuccess(data) {
+        refreshTags(data.tagVideo.video.tags);
+      },
+    }
+  );
+
+  return trigger;
 };

@@ -1,31 +1,13 @@
 "use client";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
-import React, { Fragment, useCallback } from "react";
+import React, { Fragment } from "react";
 
-import { graphql } from "~/gql";
-import { useGraphQLClient } from "~/hooks/useGraphQLClient";
-
-import { useVideoId } from "./context";
+import { useUntagVideo } from "./context";
 import { Tag } from "./Tag";
 import { TagType } from "./types";
 
-export const UntagVideoMutationDocument = graphql(`
-  mutation UntagVideo($input: UntagVideoInput!) {
-    untagVideo(input: $input) {
-      video {
-        id
-        title
-      }
-      tag {
-        id
-        name
-      }
-    }
-  }
-`);
-
-export const TagTypes: React.FC<{
+export const TagTypesList: React.FC<{
   className?: string;
   tags: TagType[];
 }> = ({ className, tags }) => {
@@ -52,26 +34,21 @@ export const TagTypes: React.FC<{
   );
 };
 
-export const RemoveButton: React.FC<{ tagId: string }> = ({ tagId }) => {
-  const gqlClient = useGraphQLClient();
-  const videoId = useVideoId();
-  const handleRemove = useCallback(async () => {
-    await gqlClient.request(UntagVideoMutationDocument, {
-      input: { tagId, videoId },
-    });
-  }, [gqlClient, tagId, videoId]);
-
+export const RemoveButton: React.FC<{ className?: string; tagId: string }> = ({
+  className,
+  tagId,
+}) => {
+  const untag = useUntagVideo(tagId);
   return (
     <button
+      onClick={() => untag()}
       className={clsx(
+        className,
         ["rounded"],
         ["group"],
         ["bg-red-400", "hover:bg-red-600"],
         [["px-0.5"], ["py-0.5"]]
       )}
-      onClick={() => {
-        handleRemove();
-      }}
     >
       <XMarkIcon
         className={clsx(
@@ -86,12 +63,13 @@ export const RemoveButton: React.FC<{ tagId: string }> = ({ tagId }) => {
 
 export const TagsList: React.FC<{
   className?: string;
-  tags: TagType[];
+  tags: TagType[] | null;
   edit: boolean;
 }> = ({ className, tags, edit }) => {
+  if (!tags) return <div>LOADING</div>;
   return (
     <div className={className}>
-      <TagTypes tags={tags} />
+      <TagTypesList tags={tags} />
       <div className={clsx(["mt-2"], ["flex", "flex-col"], ["gap-y-2"])}>
         {tags.map(({ id, name, explicitParent, type }) => (
           <Fragment key={id}>

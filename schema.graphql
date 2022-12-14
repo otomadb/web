@@ -267,6 +267,7 @@ enum SortOrder {
 }
 
 type Tag {
+  canTagTo(id: ID!): Boolean!
   explicitParent: Tag
   history(input: TagHistoryInput!): TagHistoryCollection!
   id: ID!
