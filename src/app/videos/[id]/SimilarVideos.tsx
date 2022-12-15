@@ -6,9 +6,10 @@ import Image from "next/image";
 
 import { VideoLink } from "~/components/VideoLink";
 import { graphql } from "~/gql";
+import { VideoPage_SimilarVideosDocument } from "~/gql/graphql";
 
-export const VideoPageSimilarVideosQueryDocument = graphql(`
-  query VideoPageSimilarVideos($id: ID!) {
+graphql(`
+  query VideoPage_SimilarVideos($id: ID!) {
     video(id: $id) {
       similarVideos(input: { limit: 12 }) {
         items {
@@ -32,7 +33,7 @@ export const getSimilarVideos = async (
     },
   } = await gqlRequest(
     new URL("/graphql", process.env.NEXT_PUBLIC_API_ENDPOINT).toString(),
-    VideoPageSimilarVideosQueryDocument,
+    VideoPage_SimilarVideosDocument,
     { id }
   );
   return {

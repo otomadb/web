@@ -8,20 +8,89 @@ import {
 } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import Link from "next/link";
-import React, { Fragment, ReactNode } from "react";
+import React, { ReactNode } from "react";
 
 import { DateTime } from "~/components/DateTime";
 import { UserIcon } from "~/components/UserIcon";
+import { getFragment, graphql } from "~/gql";
+import {
+  VideoPage_HistoryItemFragment,
+  VideoPage_HistoryItemUserFragment,
+  VideoPage_HistoryItemUserFragmentDoc,
+  VideoPage_TagFragment,
+  VideoPage_TagFragmentDoc,
+} from "~/gql/graphql";
 
 import { Tag } from "./Tag";
-import { TagType } from "./types";
+
+graphql(`
+  fragment VideoPage_VideoHistory on Video {
+    id
+    history(input: { order: { createdAt: DESC } }) {
+      nodes {
+        ...VideoPage_HistoryItem
+      }
+    }
+  }
+
+  fragment VideoPage_HistoryItemUser on User {
+    id
+    name
+    displayName
+    icon
+  }
+
+  fragment VideoPage_HistoryItem on VideoHistoryItem {
+    type: __typename
+    id
+    createdAt
+    user {
+      ...VideoPage_HistoryItemUser
+    }
+    ... on VideoAddTitleHistoryItem {
+      title
+    }
+    ... on VideoDeleteTitleHistoryItem {
+      title
+    }
+    ... on VideoChangePrimaryTitleHistoryItem {
+      from
+      to
+    }
+    ... on VideoAddThumbnailHistoryItem {
+      thumbnail
+    }
+    ... on VideoDeleteThumbnailHistoryItem {
+      thumbnail
+    }
+    ... on VideoChangePrimaryThumbnailHistoryItem {
+      from
+      to
+    }
+    ... on VideoAddTagHistoryItem {
+      tag {
+        ...VideoPage_Tag
+      }
+    }
+    ... on VideoDeleteTagHistoryItem {
+      tag {
+        ...VideoPage_Tag
+      }
+    }
+    ... on VideoAddNicovideoVideoSourceHistoryItem {
+      source {
+        id
+      }
+    }
+  }
+`);
 
 const HistItemTemplate: React.FC<{
   className?: string;
   children?: ReactNode;
   id: string;
   createdAt: string;
-  user: { name: string; displayName: string; icon: string };
+  user: VideoPage_HistoryItemUserFragment;
   icon: React.FC<{ className?: string | undefined }>;
   title: string;
 }> = ({ className, user, children, createdAt, icon: Icon, title }) => {
@@ -87,22 +156,19 @@ const HistItemTemplate: React.FC<{
   );
 };
 
-type Register = {
-  type: "REGISTER";
-  id: string;
-  createdAt: string;
-  user: {
+export const RegisterItem: React.FC<{
+  className?: string;
+  item: {
     id: string;
-    name: string;
-    displayName: string;
-    icon: string;
+    createdAt: string;
+    user: VideoPage_HistoryItemUserFragment;
   };
-};
-export const RegisterItem: React.FC<
-  { className?: string } & Omit<Register, "type">
-> = (props) => (
+}> = ({ className, item: { id, createdAt, user } }) => (
   <HistItemTemplate
-    {...props}
+    className={className}
+    id={id}
+    createdAt={createdAt}
+    user={user}
     title={"動画の追加"}
     icon={({ className }) => (
       <DocumentPlusIcon className={clsx(className, ["text-teal-500"])} />
@@ -110,24 +176,20 @@ export const RegisterItem: React.FC<
   />
 );
 
-type AddTitle = {
-  type: "ADD_TITLE";
-  id: string;
-  createdAt: string;
-  user: {
+export const AddTitleItem: React.FC<{
+  className?: string;
+  item: {
     id: string;
-    name: string;
-    displayName: string;
-    icon: string;
+    createdAt: string;
+    title: string;
+    user: VideoPage_HistoryItemUserFragment;
   };
-  title: string;
-};
-export const AddTitleItem: React.FC<
-  { className?: string } & Omit<AddTitle, "type">
-> = ({ title, ...props }) => (
+}> = ({ item: { id, createdAt, title, user } }) => (
   <HistItemTemplate
-    {...props}
+    id={id}
     title={"タイトルの追加"}
+    createdAt={createdAt}
+    user={user}
     icon={({ className }) => (
       <PlusSmallIcon className={clsx(className, ["text-teal-500"])} />
     )}
@@ -145,23 +207,20 @@ export const AddTitleItem: React.FC<
   </HistItemTemplate>
 );
 
-type DeleteTitle = {
-  type: "DELETE_TITLE";
-  id: string;
-  createdAt: string;
-  user: {
+export const DeleteTitleItem: React.FC<{
+  className?: string;
+  item: {
     id: string;
-    name: string;
-    displayName: string;
-    icon: string;
+    createdAt: string;
+    title: string;
+    user: VideoPage_HistoryItemUserFragment;
   };
-  title: string;
-};
-export const DeleteTitleItem: React.FC<
-  { className?: string } & Omit<DeleteTitle, "type">
-> = ({ title, ...props }) => (
+}> = ({ className, item: { id, createdAt, title, user } }) => (
   <HistItemTemplate
-    {...props}
+    className={className}
+    id={id}
+    createdAt={createdAt}
+    user={user}
     title={"タイトルの削除"}
     icon={({ className }) => (
       <MinusIcon className={clsx(className, ["text-red-500"])} />
@@ -180,24 +239,21 @@ export const DeleteTitleItem: React.FC<
   </HistItemTemplate>
 );
 
-type ChangePrimaryTitle = {
-  type: "CHANGE_PRIMARY_TITLE";
-  id: string;
-  createdAt: string;
-  user: {
+export const ChangePrimaryTitleItem: React.FC<{
+  className?: string;
+  item: {
     id: string;
-    name: string;
-    displayName: string;
-    icon: string;
+    createdAt: string;
+    from: string | null;
+    to: string;
+    user: VideoPage_HistoryItemUserFragment;
   };
-  from: string | null;
-  to: string;
-};
-export const ChangePrimaryTitleItem: React.FC<
-  { className?: string } & Omit<ChangePrimaryTitle, "type">
-> = ({ from, to, ...props }) => (
+}> = ({ className, item: { id, createdAt, from, to, user } }) => (
   <HistItemTemplate
-    {...props}
+    className={className}
+    id={id}
+    createdAt={createdAt}
+    user={user}
     title={"主タイトルの変更"}
     icon={({ className }) => (
       <ArrowPathRoundedSquareIcon
@@ -222,23 +278,20 @@ export const ChangePrimaryTitleItem: React.FC<
   </HistItemTemplate>
 );
 
-type AddThumbnail = {
-  type: "ADD_THUMBNAIL";
-  id: string;
-  createdAt: string;
-  user: {
+export const AddThumbnailItem: React.FC<{
+  className?: string;
+  item: {
     id: string;
-    name: string;
-    displayName: string;
-    icon: string;
+    createdAt: string;
+    thumbnail: string;
+    user: VideoPage_HistoryItemUserFragment;
   };
-  thumbnail: string;
-};
-export const AddThumbnailItem: React.FC<
-  { className?: string } & Omit<AddThumbnail, "type">
-> = (props) => (
+}> = ({ className, item: { id, createdAt, user } }) => (
   <HistItemTemplate
-    {...props}
+    className={className}
+    id={id}
+    createdAt={createdAt}
+    user={user}
     title={"サムネイルの追加"}
     icon={({ className }) => (
       <PlusSmallIcon className={clsx(className, ["text-teal-500"])} />
@@ -246,23 +299,20 @@ export const AddThumbnailItem: React.FC<
   />
 );
 
-type DeleteThumbnail = {
-  type: "DELETE_THUMBNAIL";
-  id: string;
-  createdAt: string;
-  user: {
+export const DeleteThumbnail: React.FC<{
+  className?: string;
+  item: {
     id: string;
-    name: string;
-    displayName: string;
-    icon: string;
+    createdAt: string;
+    thumbnail: string;
+    user: VideoPage_HistoryItemUserFragment;
   };
-  thumbnail: string;
-};
-export const DeleteThumbnail: React.FC<
-  { className?: string } & Omit<DeleteThumbnail, "type">
-> = (props) => (
+}> = ({ className, item: { id, createdAt, user } }) => (
   <HistItemTemplate
-    {...props}
+    className={className}
+    id={id}
+    createdAt={createdAt}
+    user={user}
     title={"サムネイルの削除"}
     icon={({ className }) => (
       <MinusIcon className={clsx(className, ["text-red-400"])} />
@@ -270,24 +320,21 @@ export const DeleteThumbnail: React.FC<
   />
 );
 
-type ChangePrimaryThumbnail = {
-  type: "CHANGE_PRIMARY_THUMBNAIL";
-  id: string;
-  createdAt: string;
-  user: {
+export const ChangePrimaryThumbnailItem: React.FC<{
+  className?: string;
+  item: {
     id: string;
-    name: string;
-    displayName: string;
-    icon: string;
+    createdAt: string;
+    user: VideoPage_HistoryItemUserFragment;
+    from: string | null;
+    to: string;
   };
-  from: string | null;
-  to: string;
-};
-export const ChangePrimaryThumbnailItem: React.FC<
-  { className?: string } & Omit<ChangePrimaryThumbnail, "type">
-> = (props) => (
+}> = ({ className, item: { id, createdAt, from, to, user } }) => (
   <HistItemTemplate
-    {...props}
+    className={className}
+    id={id}
+    createdAt={createdAt}
+    user={user}
     title={"主サムネイルの変更"}
     icon={({ className }) => (
       <ArrowPathRoundedSquareIcon
@@ -297,89 +344,70 @@ export const ChangePrimaryThumbnailItem: React.FC<
   />
 );
 
-type AddTagItem = {
-  type: "ADD_TAG";
-  id: string;
-  createdAt: string;
-  user: {
+export const AddTagItem: React.FC<{
+  className?: string;
+  item: {
     id: string;
-    name: string;
-    displayName: string;
-    icon: string;
+    createdAt: string;
+    user: VideoPage_HistoryItemUserFragment;
+    tag: VideoPage_TagFragment;
   };
-  tag: TagType;
-};
-export const AddTagItem: React.FC<
-  { className?: string } & Omit<AddTagItem, "type">
-> = ({ tag, ...rest }) => {
+}> = ({ className, item: { id, createdAt, user, tag } }) => {
   return (
     <HistItemTemplate
-      {...rest}
+      className={className}
+      id={id}
+      createdAt={createdAt}
+      user={user}
       title={"タグの追加"}
       icon={({ className }) => (
         <TagIcon className={clsx(className, ["text-teal-400"])} />
       )}
     >
-      <Tag
-        id={tag.id}
-        name={tag.name}
-        contextName={tag.explicitParent?.name}
-        type={tag.type}
-      />
+      <Tag tag={tag} />
     </HistItemTemplate>
   );
 };
 
-type DeleteTagItem = {
-  type: "DELETE_TAG";
-  id: string;
-  createdAt: string;
-  user: {
+export const DeleteTagItem: React.FC<{
+  className?: string;
+  item: {
     id: string;
-    name: string;
-    displayName: string;
-    icon: string;
+    createdAt: string;
+    user: VideoPage_HistoryItemUserFragment;
+    tag: VideoPage_TagFragment;
   };
-  tag: TagType;
-};
-export const DeleteTagItem: React.FC<
-  { className?: string } & Omit<DeleteTagItem, "type">
-> = ({ tag, ...rest }) => {
+}> = ({ className, item: { id, createdAt, user, tag } }) => {
   return (
     <HistItemTemplate
-      {...rest}
+      className={className}
+      id={id}
+      createdAt={createdAt}
+      user={user}
       title={"タグの削除"}
       icon={({ className }) => (
         <MinusIcon className={clsx(className, ["text-red-400"])} />
       )}
     >
-      <Tag
-        id={tag.id}
-        name={tag.name}
-        contextName={tag.explicitParent?.name}
-        type={tag.type}
-      />
+      <Tag tag={tag} />
     </HistItemTemplate>
   );
 };
 
-type AddNiconcioSourceItem = {
-  type: "ADD_NICONICO_SOURCE";
-  id: string;
-  createdAt: string;
-  user: {
+export const AddNiconcioSourceItem: React.FC<{
+  className?: string;
+  item: {
     id: string;
-    name: string;
-    displayName: string;
-    icon: string;
+    createdAt: string;
+    user: VideoPage_HistoryItemUserFragment;
   };
-};
-export const AddNiconcioSourceItem: React.FC<
-  { className?: string } & Omit<AddNiconcioSourceItem, "type">
-> = ({ ...rest }) => {
+}> = ({ className, item: { id, createdAt, user } }) => {
   return (
     <HistItemTemplate
-      {...rest}
+      className={className}
+      id={id}
+      createdAt={createdAt}
+      user={user}
       title={"ニコニコ動画との紐付け"}
       icon={({ className }) => (
         <LinkIcon className={clsx(className, ["text-teal-500"])} />
@@ -390,50 +418,127 @@ export const AddNiconcioSourceItem: React.FC<
 
 export const History: React.FC<{
   className?: string;
-  item:
-    | Register
-    | AddTitle
-    | DeleteTitle
-    | ChangePrimaryTitle
-    | AddThumbnail
-    | DeleteThumbnail
-    | ChangePrimaryThumbnail
-    | AddTagItem
-    | DeleteTagItem
-    | AddNiconcioSourceItem;
+  item: VideoPage_HistoryItemFragment;
 }> = ({ className, item }) => {
-  return (
-    <Fragment key={item.id}>
-      {item.type === "REGISTER" && (
-        <RegisterItem className={className} {...item} />
-      )}
-      {item.type === "ADD_TITLE" && (
-        <AddTitleItem className={className} {...item} />
-      )}
-      {item.type === "DELETE_TITLE" && (
-        <DeleteTitleItem className={className} {...item} />
-      )}
-      {item.type === "CHANGE_PRIMARY_TITLE" && (
-        <ChangePrimaryTitleItem className={className} {...item} />
-      )}
-      {item.type === "ADD_THUMBNAIL" && (
-        <AddThumbnailItem className={className} {...item} />
-      )}
-      {item.type === "DELETE_THUMBNAIL" && (
-        <DeleteThumbnail className={className} {...item} />
-      )}
-      {item.type === "CHANGE_PRIMARY_THUMBNAIL" && (
-        <ChangePrimaryThumbnailItem className={className} {...item} />
-      )}
-      {item.type === "ADD_TAG" && (
-        <AddTagItem className={className} {...item} />
-      )}
-      {item.type === "DELETE_TAG" && (
-        <DeleteTagItem className={className} {...item} />
-      )}
-      {item.type === "ADD_NICONICO_SOURCE" && (
-        <AddNiconcioSourceItem className={className} {...item} />
-      )}
-    </Fragment>
-  );
+  if (item.type === "VideoRegisterHistoryItem")
+    return (
+      <RegisterItem
+        className={className}
+        item={{
+          id: item.id,
+          createdAt: item.createdAt,
+          user: getFragment(VideoPage_HistoryItemUserFragmentDoc, item.user),
+        }}
+      />
+    );
+  if (item.type === "VideoAddTitleHistoryItem")
+    return (
+      <AddTitleItem
+        className={className}
+        item={{
+          id: item.id,
+          createdAt: item.createdAt,
+          title: item.title,
+          user: getFragment(VideoPage_HistoryItemUserFragmentDoc, item.user),
+        }}
+      />
+    );
+  if (item.type === "VideoDeleteTitleHistoryItem")
+    return (
+      <DeleteTitleItem
+        className={className}
+        item={{
+          id: item.id,
+          createdAt: item.createdAt,
+          title: item.title,
+          user: getFragment(VideoPage_HistoryItemUserFragmentDoc, item.user),
+        }}
+      />
+    );
+  if (item.type === "VideoChangePrimaryTitleHistoryItem")
+    return (
+      <ChangePrimaryTitleItem
+        className={className}
+        item={{
+          id: item.id,
+          createdAt: item.createdAt,
+          from: item.from || null,
+          to: item.to,
+          user: getFragment(VideoPage_HistoryItemUserFragmentDoc, item.user),
+        }}
+      />
+    );
+  if (item.type === "VideoAddThumbnailHistoryItem")
+    return (
+      <AddThumbnailItem
+        className={className}
+        item={{
+          id: item.id,
+          createdAt: item.createdAt,
+          user: getFragment(VideoPage_HistoryItemUserFragmentDoc, item.user),
+          thumbnail: item.thumbnail,
+        }}
+      />
+    );
+  if (item.type === "VideoDeleteThumbnailHistoryItem")
+    return (
+      <DeleteThumbnail
+        className={className}
+        item={{
+          id: item.id,
+          createdAt: item.createdAt,
+          user: getFragment(VideoPage_HistoryItemUserFragmentDoc, item.user),
+          thumbnail: item.thumbnail,
+        }}
+      />
+    );
+  if (item.type === "VideoChangePrimaryThumbnailHistoryItem")
+    return (
+      <ChangePrimaryThumbnailItem
+        className={className}
+        item={{
+          id: item.id,
+          createdAt: item.createdAt,
+          user: getFragment(VideoPage_HistoryItemUserFragmentDoc, item.user),
+          from: item.from || null,
+          to: item.to,
+        }}
+      />
+    );
+  if (item.type === "VideoAddTagHistoryItem")
+    return (
+      <AddTagItem
+        className={className}
+        item={{
+          id: item.id,
+          createdAt: item.createdAt,
+          user: getFragment(VideoPage_HistoryItemUserFragmentDoc, item.user),
+          tag: getFragment(VideoPage_TagFragmentDoc, item.tag),
+        }}
+      />
+    );
+  if (item.type === "VideoDeleteTagHistoryItem")
+    return (
+      <DeleteTagItem
+        className={className}
+        item={{
+          id: item.id,
+          createdAt: item.createdAt,
+          user: getFragment(VideoPage_HistoryItemUserFragmentDoc, item.user),
+          tag: getFragment(VideoPage_TagFragmentDoc, item.tag),
+        }}
+      />
+    );
+  if (item.type === "VideoAddNicovideoVideoSourceHistoryItem")
+    return (
+      <AddNiconcioSourceItem
+        className={className}
+        item={{
+          id: item.id,
+          createdAt: item.createdAt,
+          user: getFragment(VideoPage_HistoryItemUserFragmentDoc, item.user),
+        }}
+      />
+    );
+  else return null;
 };

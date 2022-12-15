@@ -1,65 +1,92 @@
 import clsx from "clsx";
+import gqlRequest from "graphql-request";
 import Image from "next/image";
 
-import { UpdateableProvider, WholeProvider } from "./context";
-import { getData } from "./getData";
-import { HistorySection } from "./HistorySection";
+import { getFragment, graphql } from "~/gql";
+import {
+  VideoPage_VideoHistoryFragmentDoc,
+  VideoPage_VideoTagsFragmentDoc,
+  VideoPageDocument,
+} from "~/gql/graphql";
+
+import { WholeProvider } from "./context";
 import { LikeButton } from "./LikeButton";
 import { SimilarVideos } from "./SimilarVideos";
 import { TagsSection } from "./TagsSection";
 
 export const revalidate = 0;
 
+graphql(`
+  query VideoPage($id: ID!) {
+    video(id: $id) {
+      id
+      ...VideoPage_VideoTags
+      ...VideoPage_VideoHistory
+      title
+      titles {
+        title
+        primary
+      }
+      thumbnailUrl
+    }
+  }
+`);
+
 export default async function Page({ params }: { params: { id: string } }) {
-  const details = await getData(`video:${params.id}`);
-  const { id: videoId, tags } = details;
+  const { video } = await gqlRequest(
+    new URL("/graphql", process.env.NEXT_PUBLIC_API_ENDPOINT).toString(),
+    VideoPageDocument,
+    { id: `video:${params.id}` }
+  );
+
+  const { id: videoId, thumbnailUrl, title } = video;
+  const { tags } = getFragment(VideoPage_VideoTagsFragmentDoc, video);
+  const { history } = getFragment(VideoPage_VideoHistoryFragmentDoc, video);
 
   return (
-    <UpdateableProvider videoId={details.id} initHistory={details.history}>
-      <WholeProvider videoId={videoId} tags={tags}>
-        <div className={clsx(["flex"], ["gap-x-4"])}>
-          <div className={clsx(["flex-shrink-0"], ["w-80"])}>
-            <section>
-              <h2 className={clsx(["text-xl"])}>Tags</h2>
-              <TagsSection className={clsx(["mt-2"])} />
-            </section>
-          </div>
-          <div className={clsx(["flex-grow"])}>
-            <section className={clsx(["flex"], ["gap-x-4"])}>
-              <div>
-                <Image
-                  className={clsx(["object-scale-down"], ["h-40"])}
-                  src={details.thumbnailUrl}
-                  width={260}
-                  height={200}
-                  alt={details.title}
-                  priority={true}
-                />
-              </div>
-              <div className={clsx(["flex-grow"], ["py-4"])}>
-                <h1 className={clsx(["text-xl"])}>{details.title}</h1>
-                <LikeButton className={clsx(["mt-2"])} videoId={videoId} />
-              </div>
-            </section>
-            <div className={clsx(["flex", "flex-col"], ["mt-4"])}>
-              <section className={clsx()}>
-                <h2 className={clsx(["text-xl"])}>似ている動画</h2>
-                <div className={clsx()}>
-                  {/* @ts-expect-error Server Component */}
-                  <SimilarVideos id={videoId} className={clsx(["mt-4"])} />
-                </div>
-              </section>
-              <section
-                className={clsx(["flex-shrink-0"], ["flex-grow"], ["max-w-lg"])}
-              >
-                <h2 className={clsx(["text-xl"])}>History</h2>
-                <HistorySection className={clsx(["mt-4"])} />
-              </section>
+    <WholeProvider videoId={videoId} tags={tags} history={history}>
+      <div className={clsx(["flex"], ["gap-x-4"])}>
+        <div className={clsx(["flex-shrink-0"], ["w-80"])}>
+          <section>
+            <h2 className={clsx(["text-xl"])}>Tags</h2>
+            <TagsSection className={clsx(["mt-2"])} />
+          </section>
+        </div>
+        <div className={clsx(["flex-grow"])}>
+          <section className={clsx(["flex"], ["gap-x-4"])}>
+            <div>
+              <Image
+                className={clsx(["object-scale-down"], ["h-40"])}
+                src={thumbnailUrl}
+                width={260}
+                height={200}
+                alt={title}
+                priority={true}
+              />
             </div>
+            <div className={clsx(["flex-grow"], ["py-4"])}>
+              <h1 className={clsx(["text-xl"])}>{title}</h1>
+              <LikeButton className={clsx(["mt-2"])} videoId={videoId} />
+            </div>
+          </section>
+          <div className={clsx(["flex", "flex-col"], ["mt-4"])}>
+            <section className={clsx()}>
+              <h2 className={clsx(["text-xl"])}>似ている動画</h2>
+              <div className={clsx()}>
+                {/* @ts-expect-error Server Component */}
+                {<SimilarVideos id={videoId} className={clsx(["mt-4"])} />}
+              </div>
+            </section>
+            <section
+              className={clsx(["flex-shrink-0"], ["flex-grow"], ["max-w-lg"])}
+            >
+              <h2 className={clsx(["text-xl"])}>History</h2>
+              {/*              <HistorySection className={clsx(["mt-4"])} /> */}
+            </section>
           </div>
         </div>
-      </WholeProvider>
-    </UpdateableProvider>
+      </div>
+    </WholeProvider>
   );
 
   /*   <div className={clsx(["mt-4"], ["flex", "flex-col"])}>

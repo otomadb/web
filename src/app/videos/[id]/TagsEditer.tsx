@@ -9,12 +9,13 @@ import useSWR from "swr";
 
 import { DelayedInput } from "~/components/DelayedInput";
 import { graphql } from "~/gql";
+import { VideoPage_TagEditor_SearchBoxDocument } from "~/gql/graphql";
 import { useGraphQLClient } from "~/hooks/useGraphQLClient";
 
 import { useTagVideo, useVideoId } from "./context";
 
-export const SearchTagsDocument = graphql(`
-  query SearchTags($query: String!, $videoId: ID!) {
+graphql(`
+  query VideoPage_TagEditor_SearchBox($query: String!, $videoId: ID!) {
     searchTags(input: { query: $query, limit: 5 }) {
       result {
         matchedName
@@ -32,6 +33,7 @@ export const SearchTagsDocument = graphql(`
     }
   }
 `);
+
 export const SearchBox: React.FC<{
   query: string;
   classNames?: string;
@@ -40,7 +42,7 @@ export const SearchBox: React.FC<{
   const gqlClient = useGraphQLClient();
   const videoId = useVideoId();
   const { data } = useSWR(
-    query !== "" ? [SearchTagsDocument, query] : null,
+    query !== "" ? [VideoPage_TagEditor_SearchBoxDocument, query] : null,
     ([doc, query]) => gqlClient.request(doc, { query, videoId })
   );
   return (

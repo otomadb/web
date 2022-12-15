@@ -3,19 +3,19 @@
 import "client-only";
 
 import clsx from "clsx";
-import { useContext } from "react";
 
-import { UpdateableContext } from "./context";
+import { useHistory } from "./context";
 import { History } from "./HistoryItem";
 
 export const HistorySection: React.FC<{ className?: string }> = ({
   className,
 }) => {
-  const { history } = useContext(UpdateableContext);
+  const events = useHistory();
+  if (!events) return <span>LOADING</span>;
   return (
     <div className={clsx(className, ["flex", "flex-col"], ["space-y-1"])}>
-      {history.map((item) => (
-        <History key={item.id} item={item} />
+      {events.map((event) => (
+        <History key={event.id} item={event} />
       ))}
     </div>
   );

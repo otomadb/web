@@ -1,5 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 
+import { PseudoTagType } from "~/gql/graphql";
+
 import { Tag } from "./Tag";
 
 export default {
@@ -9,40 +11,55 @@ export default {
 
 export const Character: StoryObj<typeof Tag> = {
   args: {
-    id: "tag:1",
-    name: "キャラクター",
-    type: "CHARACTER",
+    tag: {
+      id: "tag:1",
+      name: "キャラクター",
+      type: PseudoTagType.Character,
+      explicitParent: undefined,
+    },
   },
 };
 
 export const Class: StoryObj<typeof Tag> = {
   args: {
-    id: "tag:1",
-    name: "クラス",
-    type: "CLASS",
+    tag: {
+      id: "tag:1",
+      name: "クラス",
+      type: PseudoTagType.Class,
+      explicitParent: undefined,
+    },
   },
 };
 
 export const Copyright: StoryObj<typeof Tag> = {
   args: {
-    id: "tag:1",
-    name: "作品",
-    type: "COPYRIGHT",
+    tag: {
+      id: "tag:1",
+      name: "作品",
+      type: PseudoTagType.Copyright,
+      explicitParent: undefined,
+    },
   },
 };
 
 export const Event: StoryObj<typeof Tag> = {
   args: {
-    id: "tag:1",
-    name: "イベント",
-    type: "EVENT",
+    tag: {
+      id: "tag:1",
+      name: "イベント",
+      type: PseudoTagType.Event,
+      explicitParent: undefined,
+    },
   },
 };
 
 export const Music: StoryObj<typeof Tag> = {
   args: {
-    id: "tag:1",
-    name: "曲",
-    type: "MUSIC",
+    tag: {
+      id: "tag:1",
+      name: "曲",
+      type: PseudoTagType.Music,
+      explicitParent: undefined,
+    },
   },
 };

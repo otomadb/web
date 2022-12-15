@@ -14,8 +14,14 @@ const config: CodegenConfig = {
       preset: "client",
       plugins: [],
       config: {
+        dedupeFragments: true,
         scalars: {
           DateTime: "string",
+        },
+      },
+      presetConfig: {
+        fragmentMasking: {
+          unmaskFunctionName: "getFragment",
         },
       },
     },

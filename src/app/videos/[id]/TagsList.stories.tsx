@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 
-import { TagsList } from "./TagsList";
+import { TagsList } from "./TagsSection";
 
 export default {
   component: TagsList,
@@ -13,20 +13,6 @@ export default {
 
 export const Primary: StoryObj<typeof TagsList> = {
   args: {
-    tags: [
-      {
-        id: "tag1",
-        name: "タグ1",
-        type: "CHARACTER",
-        explicitParent: null,
-      },
-      {
-        id: "tag2",
-        name: "タグ2",
-        type: "MUSIC",
-        explicitParent: null,
-      },
-    ],
     edit: false,
   },
 };
