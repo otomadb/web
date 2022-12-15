@@ -8,7 +8,6 @@ specifiers:
   '@graphql-codegen/schema-ast': ^2.5.1
   '@graphql-typed-document-node/core': ^3.1.1
   '@heroicons/react': ^2.0.13
-  '@homebound/graphql-typescript-factories': ^2.51.0
   '@storybook/addon-essentials': ^7.0.0-beta.4
   '@storybook/addon-interactions': ^7.0.0-beta.4
   '@storybook/addon-links': ^7.0.0-beta.4
@@ -81,7 +80,6 @@ devDependencies:
   '@graphql-codegen/client-preset': 1.1.5_rjjjs2nwgns3bcvnnqb5eu5nry
   '@graphql-codegen/schema-ast': 2.5.1_graphql@16.6.0
   '@graphql-typed-document-node/core': 3.1.1_graphql@16.6.0
-  '@homebound/graphql-typescript-factories': 2.51.0_graphql@16.6.0
   '@storybook/addon-essentials': 7.0.0-beta.4_lb6du3saekb5anf2gjv3wxj3oq
   '@storybook/addon-interactions': 7.0.0-beta.4_lb6du3saekb5anf2gjv3wxj3oq
   '@storybook/addon-links': 7.0.0-beta.4_biqbaboplfbrettd7655fr4n2y
@@ -1537,14 +1535,6 @@ packages:
     engines: {node: '>=10.0.0'}
     dev: true
 
-  /@dprint/formatter/0.2.0:
-    resolution: {integrity: sha512-E1q1JaOPeEUBhG//IUayqJQvNpqprZ0OCF8B/bIhUqSsMIp0Y74PgF8JPvDCrOdq43qiGUYAavVO8iCBHOoU/A==}
-    dev: true
-
-  /@dprint/typescript/0.71.2:
-    resolution: {integrity: sha512-QpQJiJMxSMhqqOgVk1zrh+2ueQnZmBQ6aCtVgXKd3zxyVOEIj5CLarfDmza/9KFOU+5lKsprbGAQBskC+xODkw==}
-    dev: true
-
   /@emotion/babel-plugin/11.10.5_@babel+core@7.20.2:
     resolution: {integrity: sha512-xE7/hyLHJac7D2Ve9dKroBBZqBT7WuPQmWcq7HSGb84sUuP4mlOWoB8dvVfD9yk5DHkU1m6RW7xSoDtnQHNQeA==}
     peerDependencies:
@@ -2474,17 +2464,6 @@ packages:
     dependencies:
       react: 18.2.0
     dev: false
-
-  /@homebound/graphql-typescript-factories/2.51.0_graphql@16.6.0:
-    resolution: {integrity: sha512-pK02+Ns0MU6x5PBGNQKTgReLJSYFspRSkagELdOnc8DZQM/eQXt/nue0NxSowPFX6v6rK8i68fKSxO4MeZ6+Ow==}
-    peerDependencies:
-      graphql: ^15.0.0 || ^16.0.0
-    dependencies:
-      '@graphql-codegen/plugin-helpers': 2.7.2_graphql@16.6.0
-      change-case: 4.1.2
-      graphql: 16.6.0
-      ts-poet: 5.2.0
-    dev: true
 
   /@humanwhocodes/config-array/0.11.7:
     resolution: {integrity: sha512-kBbPWzN8oVMLb0hOUYXhmxggL/1cJE6ydvjDIGi9EnAGUyA7cLVKQg+d/Dsm+KZwx2czGHrCmMVLiyg8s5JPKw==}
@@ -12746,13 +12725,6 @@ packages:
         optional: true
     dependencies:
       typescript: 4.9.3
-    dev: true
-
-  /ts-poet/5.2.0:
-    resolution: {integrity: sha512-2YOgli1AwPk+S1youa6cm0XfQUZpFQNCkKpEvuegO/7vRPYkgxi7LIDtYfofUXqsy/GQUoOV4h6NlgTgoEtPfg==}
-    dependencies:
-      '@dprint/formatter': 0.2.0
-      '@dprint/typescript': 0.71.2
     dev: true
 
   /tsconfig-paths-webpack-plugin/3.5.2:
