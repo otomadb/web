@@ -1,8 +1,10 @@
 import gqlRequest from "graphql-request";
 
+import { CommonHead } from "~/app/CommonHead";
 import { graphql } from "~/gql";
+import { VideoPageTitleDocument } from "~/gql/graphql";
 
-export const VideoPageTitleQueryDocument = graphql(`
+graphql(`
   query VideoPageTitle($id: ID!) {
     video(id: $id) {
       id
@@ -16,13 +18,14 @@ export default async function Head({ params }: { params: { id: string } }) {
     video: { title },
   } = await gqlRequest(
     new URL("/graphql", process.env.NEXT_PUBLIC_API_ENDPOINT).toString(),
-    VideoPageTitleQueryDocument,
+    VideoPageTitleDocument,
     { id: `video:${params.id}` }
   );
 
   return (
     <>
-      <title>{title}</title>
+      <CommonHead />
+      <title>{title} - otomad database</title>
     </>
   );
 }

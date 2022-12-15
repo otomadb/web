@@ -34,6 +34,7 @@ specifiers:
   eslint-plugin-simple-import-sort: 8.0.0
   eslint-plugin-storybook: ^0.6.7
   eslint-plugin-unused-imports: 2.0.0
+  graphql-codegen-typescript-mock-data: ^2.7.0
   graphql-request: ^5.0.0
   jdenticon: ^3.2.0
   ky: ^0.32.2
@@ -102,6 +103,7 @@ devDependencies:
   eslint-plugin-simple-import-sort: 8.0.0_eslint@8.28.0
   eslint-plugin-storybook: 0.6.8_hsf322ms6xhhd4b5ne6lb74y4a
   eslint-plugin-unused-imports: 2.0.0_aucl44mjeutxyzmt4nvo2cczya
+  graphql-codegen-typescript-mock-data: 2.7.0_graphql@16.6.0
   msw: 0.49.0_h4etdup2fzeludhsifzedqfzpq
   msw-storybook-addon: 1.6.3_qawx5bivyvyfvgygxsrypczwka
   npm-run-all: 4.1.5
@@ -1845,6 +1847,11 @@ packages:
       - supports-color
     dev: true
 
+  /@faker-js/faker/7.6.0:
+    resolution: {integrity: sha512-XK6BTq1NDMo9Xqw/YkYyGjSsg44fbNwYRx7QK2CuoQgyy+f1rrTDHoExVM5PsyXCtfl2vs2vVJ0MN0yN6LppRw==}
+    engines: {node: '>=14.0.0', npm: '>=6.0.0'}
+    dev: true
+
   /@fal-works/esbuild-plugin-global-externals/2.1.2:
     resolution: {integrity: sha512-cEee/Z+I12mZcFJshKcCqC8tuX5hG3s+d+9nZ3LabqKF1vKdF41B92pJVCBggjAGORAeOzyyDDKrZwIkLffeOQ==}
     dev: true
@@ -2981,7 +2988,7 @@ packages:
       '@storybook/components': 7.0.0-beta.4_biqbaboplfbrettd7655fr4n2y
       '@storybook/csf-plugin': 7.0.0-beta.4
       '@storybook/csf-tools': 7.0.0-beta.4
-      '@storybook/mdx2-csf': 0.1.0-next.8
+      '@storybook/mdx2-csf': 1.0.0-next.2
       '@storybook/node-logger': 7.0.0-beta.4
       '@storybook/postinstall': 7.0.0-beta.4
       '@storybook/preview-api': 7.0.0-beta.4
@@ -3860,10 +3867,8 @@ packages:
     resolution: {integrity: sha512-8eAZAhaGfUPNG055BD+dc4eDGG9pkdvvQQD1Ed/BEPOygaeo7f+YH2sgHXpjt7RuyU2VpT+yc188AoGcxyBMpg==}
     dev: true
 
-  /@storybook/mdx2-csf/0.1.0-next.8:
-    resolution: {integrity: sha512-fl8BxHzkypAaFYjBkbYfiDUy/3bzPaSXsDTCuPTBIVu8CwkVntpFrjSujZH/pgJig8/9P4VdUJw0H+beMXpktg==}
-    dependencies:
-      loader-utils: 2.0.4
+  /@storybook/mdx2-csf/1.0.0-next.2:
+    resolution: {integrity: sha512-Mg6pYKhuuMrzF/DcCI5dEA36jx7156bBnCk9uFInthFrr1sLYlj+HfRMibFa/VdJx8L0Wsf/15cIu3xPWriinA==}
     dev: true
 
   /@storybook/nextjs/7.0.0-beta.4_vfqvkuqy3rovsoilsqm4k7v5j4:
@@ -5885,6 +5890,13 @@ packages:
     engines: {node: '>=4'}
     dev: true
 
+  /casual/1.6.2:
+    resolution: {integrity: sha512-NQObL800rg32KZ9bBajHbyDjxLXxxuShChQg7A4tbSeG3n1t7VYGOSkzFSI9gkSgOHp+xilEJ7G0L5l6M30KYA==}
+    dependencies:
+      mersenne-twister: 1.1.0
+      moment: 2.29.4
+    dev: true
+
   /chalk-template/0.4.0:
     resolution: {integrity: sha512-/ghrgmhfY8RaSdeo43hNXxpoHAtxdbskUHjPpfqUWGttFgycUhYPGx3YZBCnUCvOa7Doivn1IZec3DEGFoMgLg==}
     engines: {node: '>=12'}
@@ -5923,6 +5935,21 @@ packages:
 
   /change-case-all/1.0.14:
     resolution: {integrity: sha512-CWVm2uT7dmSHdO/z1CXT/n47mWonyypzBbuCy5tN7uMg22BsfkhwT6oHmFCAk+gL1LOOxhdbB9SZz3J1KTY3gA==}
+    dependencies:
+      change-case: 4.1.2
+      is-lower-case: 2.0.2
+      is-upper-case: 2.0.2
+      lower-case: 2.0.2
+      lower-case-first: 2.0.2
+      sponge-case: 1.0.1
+      swap-case: 2.0.2
+      title-case: 3.0.3
+      upper-case: 2.0.2
+      upper-case-first: 2.0.2
+    dev: true
+
+  /change-case-all/1.0.15:
+    resolution: {integrity: sha512-3+GIFhk3sNuvFAJKU46o26OdzudQlPNBCu1ZQi3cMeMHhty1bhDxu2WrEilVNYaGvqUtR1VSigFcJOiS13dRhQ==}
     dependencies:
       change-case: 4.1.2
       is-lower-case: 2.0.2
@@ -8342,6 +8369,23 @@ packages:
     resolution: {integrity: sha512-bzh50DW9kTPM00T8y4o8vQg89Di9oLJVLW/KaOGIXJWP/iqCN6WKYkbNOF04vFLJhwcpYUh9ydh/+5vpOqV4YQ==}
     dev: true
 
+  /graphql-codegen-typescript-mock-data/2.7.0_graphql@16.6.0:
+    resolution: {integrity: sha512-9qUerzAex0Jvv4hFV2Le0LxztfPzcp9AjLb5NMnwYFCVi0Xs8OCZlJ1JDZUn4tEAB+k+vfLc/QPQ4Lj10oZZtQ==}
+    peerDependencies:
+      graphql: ^14.6.0 || ^15.0.0 || ^16.0.0
+    dependencies:
+      '@faker-js/faker': 7.6.0
+      '@graphql-codegen/plugin-helpers': 2.7.2_graphql@16.6.0
+      casual: 1.6.2
+      change-case-all: 1.0.15
+      graphql: 16.6.0
+      indefinite: 2.4.2
+      pascal-case: 3.1.2
+      sentence-case: 3.0.4
+      tslib: 2.4.1
+      upper-case: 2.0.2
+    dev: true
+
   /graphql-config/4.3.6_rqjlw7vynvrdxkczmtjek63zxa:
     resolution: {integrity: sha512-i7mAPwc0LAZPnYu2bI8B6yXU5820Wy/ArvmOseDLZIu0OU1UTULEuexHo6ZcHXeT9NvGGaUPQZm8NV3z79YydA==}
     engines: {node: '>= 10.0.0'}
@@ -8695,6 +8739,11 @@ packages:
   /imurmurhash/0.1.4:
     resolution: {integrity: sha512-JmXMZ6wuvDmLiHEml9ykzqO6lwFbof0GG4IkcGaENdCRDDmMVnny7s5HsIgHCbaq0w2MyPhDqkhTUgS2LU2PHA==}
     engines: {node: '>=0.8.19'}
+    dev: true
+
+  /indefinite/2.4.2:
+    resolution: {integrity: sha512-z8fxRTYuBwocAax4kokd5QXxNLbsifh4feUr0CJjTnGtH7H3NF0XRXQYrQsTs0D1WZCqpqtqNz3ouab9oDkcpw==}
+    engines: {node: '>=6.0.0'}
     dev: true
 
   /indent-string/4.0.0:
@@ -9858,6 +9907,10 @@ packages:
       '@types/node': 18.11.9
     dev: true
 
+  /mersenne-twister/1.1.0:
+    resolution: {integrity: sha512-mUYWsMKNrm4lfygPkL3OfGzOPTR2DBlTkBNHM//F6hGp8cLThY897crAlk3/Jo17LEOOjQUrNAx6DvgO77QJkA==}
+    dev: true
+
   /methods/1.1.2:
     resolution: {integrity: sha512-iclAHeNqNm68zFtnZ0e+1L2yUIdvzNoauKU4WBA3VvH/vPFieF7qfRlwUZU+DA9P9bPXIS90ulxoUoCH23sV2w==}
     engines: {node: '>= 0.6'}
@@ -10017,6 +10070,10 @@ packages:
     resolution: {integrity: sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==}
     engines: {node: '>=10'}
     hasBin: true
+    dev: true
+
+  /moment/2.29.4:
+    resolution: {integrity: sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==}
     dev: true
 
   /mri/1.2.0:

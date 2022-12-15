@@ -139,11 +139,6 @@ type NicovideoVideoSource implements VideoSource {
   video: Video!
 }
 
-type NiconicoVideoSource implements VideoSource {
-  url: String!
-  videoId: String!
-}
-
 enum PseudoTagType {
   """キャラクター"""
   CHARACTER
@@ -195,8 +190,9 @@ type Query {
 
 input RegisterTagInput {
   explicitParent: ID
-  extraNames: [String!]
-  implicitParents: [ID!]
+  extraNames: [String!] = []
+  implicitParents: [ID!] = []
+  meaningless: Boolean = false
   primaryName: String!
 }
 
@@ -271,6 +267,7 @@ enum SortOrder {
 }
 
 type Tag {
+  canTagTo(id: ID!): Boolean!
   explicitParent: Tag
   history(input: TagHistoryInput!): TagHistoryCollection!
   id: ID!

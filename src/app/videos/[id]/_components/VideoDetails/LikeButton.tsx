@@ -9,11 +9,18 @@ import React, { useCallback, useState } from "react";
 import useSWR from "swr";
 
 import { graphql } from "~/gql";
+import {
+  VideoPage_LikeButtonAddLikeDocument,
+  VideoPage_LikeButtonCurrentLikeDocument,
+  VideoPage_LikeButtonRemoveLikeDocument,
+} from "~/gql/graphql";
 import { useGraphQLClient } from "~/hooks/useGraphQLClient";
 import { useIsLoggedIn } from "~/hooks/useIsLoggedIn";
 
-const LikeButtonQueryDocument = graphql(`
-  query LikeButtonCurrentLike($videoId: ID!) {
+import { useVideoId } from "../../context";
+
+graphql(`
+  query VideoPage_LikeButtonCurrentLike($videoId: ID!) {
     whoami {
       id
       favorites {
@@ -22,20 +29,16 @@ const LikeButtonQueryDocument = graphql(`
       }
     }
   }
-`);
 
-const LikeButtonAddLikeMutationDocument = graphql(`
-  mutation LikeButtonAddLike($videoId: ID!) {
+  mutation VideoPage_LikeButtonAddLike($videoId: ID!) {
     likeVideo(input: { videoId: $videoId }) {
       registration {
         id
       }
     }
   }
-`);
 
-const LikeButtonRemoveLikeMutationDocument = graphql(`
-  mutation LikeButtonRemoveLike($videoId: ID!) {
+  mutation VideoPage_LikeButtonRemoveLike($videoId: ID!) {
     undoLikeVideo(input: { videoId: $videoId }) {
       video {
         id
@@ -44,16 +47,14 @@ const LikeButtonRemoveLikeMutationDocument = graphql(`
   }
 `);
 
-export const LikeButton: React.FC<{ className?: string; videoId: string }> = ({
-  className,
-  videoId,
-}) => {
+export const LikeButton: React.FC<{ className?: string }> = ({ className }) => {
   const isLoggedIn = useIsLoggedIn();
   const gqlClient = useGraphQLClient();
   const [liked, setLiked] = useState<boolean | undefined>();
+  const videoId = useVideoId();
 
   const { mutate } = useSWR(
-    isLoggedIn ? [LikeButtonQueryDocument, videoId] : null,
+    isLoggedIn ? [VideoPage_LikeButtonCurrentLikeDocument, videoId] : null,
     ([doc, id]) => gqlClient.request(doc, { videoId: id }),
     {
       onSuccess(data) {
@@ -69,8 +70,8 @@ export const LikeButton: React.FC<{ className?: string; videoId: string }> = ({
 
     await gqlClient.request(
       liked
-        ? LikeButtonRemoveLikeMutationDocument
-        : LikeButtonAddLikeMutationDocument,
+        ? VideoPage_LikeButtonRemoveLikeDocument
+        : VideoPage_LikeButtonAddLikeDocument,
       { videoId }
     );
     setLiked((prev) => !prev);
