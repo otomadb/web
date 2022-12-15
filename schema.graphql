@@ -185,7 +185,7 @@ type Query {
   user(name: String!): User!
   video(id: ID!): Video!
   videos(input: GetVideosInput!): VideoCollection!
-  whoami: User!
+  whoami: User
 }
 
 input RegisterTagInput {

@@ -23,9 +23,10 @@ graphql(`
 
 export const Profile: React.FC<{ className?: string }> = ({ className }) => {
   const [result] = useQuery({ query: GlobalNav_ProfileDocument });
-  const { data, error } = result;
+  const { data } = result;
 
-  if (error) {
+  const whoami = data?.whoami;
+  if (whoami === null) {
     return (
       <div className={clsx(className)}>
         <Link
@@ -52,7 +53,7 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
         className={clsx(["flex"], ["flex-row"], ["items-center"])}
       >
         <div className={clsx(["w-8"], ["h-8"])}>
-          {!data?.whoami && (
+          {!whoami && (
             <div
               className={clsx(
                 ["rounded-sm"],
@@ -62,11 +63,11 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
               )}
             ></div>
           )}
-          {data?.whoami && (
+          {whoami && (
             <UserIcon
               className={clsx(["w-full"], ["h-full"])}
-              src={data.whoami.icon}
-              name={data.whoami.name}
+              src={whoami.icon}
+              name={whoami.name}
             />
           )}
         </div>

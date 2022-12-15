@@ -43,8 +43,8 @@ export const NotLogin: StoryObj<typeof Profile> = {
   parameters: {
     msw: {
       handlers: [
-        graphql.query(ProfilePageDocument, (req, res, ctx) => {
-          return res(ctx.errors([{ message: "Not Login" }]));
+        graphql.query(GlobalNav_ProfileDocument, (req, res, ctx) => {
+          return res(ctx.data({ whoami: null }));
         }),
       ],
     },
@@ -56,7 +56,7 @@ export const Loading: StoryObj<typeof Profile> = {
   parameters: {
     msw: {
       handlers: [
-        graphql.query(ProfilePageDocument, async (req, res, ctx) => {
+        graphql.query(GlobalNav_ProfileDocument, async (req, res, ctx) => {
           await new Promise((resolve) => setTimeout(() => resolve({}), 10000));
           return res(
             ctx.data({
