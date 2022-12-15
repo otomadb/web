@@ -5,8 +5,8 @@ import { css, keyframes } from "@emotion/css";
 import { HeartIcon as OutlikeHeartIcon } from "@heroicons/react/24/outline";
 import { HeartIcon as SolidHeartIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
-import React, { useCallback, useState } from "react";
-import useSWR from "swr";
+import React, { useCallback, useMemo } from "react";
+import { useMutation, useQuery } from "urql";
 
 import { graphql } from "~/gql";
 import {
@@ -14,8 +14,6 @@ import {
   VideoPage_LikeButtonCurrentLikeDocument,
   VideoPage_LikeButtonRemoveLikeDocument,
 } from "~/gql/graphql";
-import { useGraphQLClient } from "~/hooks/useGraphQLClient";
-import { useIsLoggedIn } from "~/hooks/useIsLoggedIn";
 
 import { useVideoId } from "../../context";
 
@@ -34,6 +32,10 @@ graphql(`
     likeVideo(input: { videoId: $videoId }) {
       registration {
         id
+        mylist {
+          id
+          isIncludesVideo(id: $videoId)
+        }
       }
     }
   }
@@ -43,40 +45,42 @@ graphql(`
       video {
         id
       }
+      mylist {
+        id
+        isIncludesVideo(id: $videoId)
+      }
     }
   }
 `);
 
 export const LikeButton: React.FC<{ className?: string }> = ({ className }) => {
-  const isLoggedIn = useIsLoggedIn();
-  const gqlClient = useGraphQLClient();
-  const [liked, setLiked] = useState<boolean | undefined>();
   const videoId = useVideoId();
 
-  const { mutate } = useSWR(
-    isLoggedIn ? [VideoPage_LikeButtonCurrentLikeDocument, videoId] : null,
-    ([doc, id]) => gqlClient.request(doc, { videoId: id }),
-    {
-      onSuccess(data) {
-        setLiked(data.whoami.favorites.isIncludesVideo);
-      },
-    }
+  const [currentResult] = useQuery({
+    query: VideoPage_LikeButtonCurrentLikeDocument,
+    variables: { videoId },
+  });
+
+  const liked = useMemo(() => {
+    const { data } = currentResult;
+    if (!data?.whoami) return undefined;
+    return data.whoami.favorites.isIncludesVideo;
+  }, [currentResult]);
+
+  const [, triggerAddLike] = useMutation(VideoPage_LikeButtonAddLikeDocument);
+  const [, triggerRemoveLike] = useMutation(
+    VideoPage_LikeButtonRemoveLikeDocument
   );
 
   const handleClicked = useCallback(async () => {
-    if (liked === undefined) {
-      return;
-    }
+    if (liked === undefined) return;
 
-    await gqlClient.request(
-      liked
-        ? VideoPage_LikeButtonRemoveLikeDocument
-        : VideoPage_LikeButtonAddLikeDocument,
-      { videoId }
-    );
-    setLiked((prev) => !prev);
-    mutate();
-  }, [gqlClient, liked, mutate, videoId]);
+    if (liked) {
+      await triggerRemoveLike({ videoId });
+    } else {
+      await triggerAddLike({ videoId });
+    }
+  }, [liked, videoId, triggerAddLike, triggerRemoveLike]);
 
   return (
     <button
