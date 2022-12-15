@@ -30,6 +30,7 @@ export const Tag: React.FC<{
         ["flex"],
         ["items-center"],
         ["whitespace-nowrap"],
+        ["bg-white"],
         [
           "border",
           "border-gray-200",
@@ -52,7 +53,7 @@ export const Tag: React.FC<{
       <span className={clsx(["text-slate-800"], ["text-xs"])}>{name}</span>
       {explicitParent?.name && (
         <span className={clsx(["ml-0.5"], ["text-slate-500"], ["text-xs"])}>
-          {explicitParent.name}
+          ({explicitParent.name})
         </span>
       )}
     </TagLink>

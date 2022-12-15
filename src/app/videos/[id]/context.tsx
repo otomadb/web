@@ -8,6 +8,8 @@ import useSWRMutation from "swr/mutation";
 
 import { getFragment, graphql } from "~/gql";
 import {
+  TagVideoDocument,
+  UntagVideoDocument,
   VideoPage_HistoryItemFragmentDoc,
   VideoPage_RefreshHistoryDocument,
   VideoPage_RefreshTagsDocument,
@@ -107,7 +109,7 @@ export const useHistory = () => {
   );
 };
 
-export const UntagVideoMutationDocument = graphql(`
+graphql(`
   mutation UntagVideo($input: UntagVideoInput!) {
     untagVideo(input: $input) {
       video {
@@ -119,13 +121,12 @@ export const UntagVideoMutationDocument = graphql(`
     }
   }
 `);
-
 export const useUntagVideo = (tagId: string) => {
   const { videoId, refreshTags } = useContext(WholeContext);
   const gqlClient = useGraphQLClient();
 
   const { trigger } = useSWRMutation(
-    [UntagVideoMutationDocument, tagId, videoId],
+    [UntagVideoDocument, tagId, videoId],
     ([doc, tagId, videoId]) =>
       gqlClient.request(doc, { input: { tagId, videoId } }),
     {
@@ -138,7 +139,7 @@ export const useUntagVideo = (tagId: string) => {
   return trigger;
 };
 
-const TagVideoMutationDocument = graphql(`
+graphql(`
   mutation TagVideo($input: TagVideoInput!) {
     tagVideo(input: $input) {
       video {
@@ -155,7 +156,7 @@ export const useTagVideo = (tagId: string | null) => {
   const gqlClient = useGraphQLClient();
 
   const { trigger } = useSWRMutation(
-    tagId ? [TagVideoMutationDocument, tagId, videoId] : null,
+    tagId ? [TagVideoDocument, tagId, videoId] : null,
     ([doc, tagId, videoId]) =>
       gqlClient.request(doc, { input: { tagId, videoId } }),
     {

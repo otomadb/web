@@ -12,7 +12,7 @@ import { graphql } from "~/gql";
 import { VideoPage_TagEditor_SearchBoxDocument } from "~/gql/graphql";
 import { useGraphQLClient } from "~/hooks/useGraphQLClient";
 
-import { useTagVideo, useVideoId } from "./context";
+import { useTagVideo, useVideoId } from "../../context";
 
 graphql(`
   query VideoPage_TagEditor_SearchBox($query: String!, $videoId: ID!) {

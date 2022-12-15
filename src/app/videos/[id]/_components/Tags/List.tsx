@@ -1,69 +1,12 @@
 "use client";
-
-import "client-only";
-
-import { PencilSquareIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
-import React, { Fragment, useState } from "react";
+import React, { Fragment } from "react";
 
-import { graphql } from "~/gql";
 import { VideoPage_TagFragment } from "~/gql/graphql";
-import { useIsLoggedIn } from "~/hooks/useIsLoggedIn";
 
-import { useTags, useUntagVideo } from "./context";
-import { Tag } from "./Tag";
-import { TagsEditer } from "./TagsEditer";
-
-graphql(`
-  fragment VideoPage_VideoTags on Video {
-    id
-    tags {
-      ...VideoPage_Tag
-    }
-  }
-`);
-
-export const TagsSection: React.FC<{
-  className?: string;
-}> = ({ className }) => {
-  const [edit, setEdit] = useState(false);
-  const tags = useTags();
-
-  if (!tags) return <span>LOADIGN</span>;
-
-  return (
-    <div className={clsx(className)}>
-      <div className={clsx(["h-8"], ["flex", ["items-center"]])}>
-        <EditToggle edit={edit} toggleEdit={(v) => setEdit(v)} />
-        <TagsEditer className={clsx(["ml-2"], ["w-full"], { hidden: !edit })} />
-      </div>
-      <TagsList className={clsx(["mt-1"])} tags={tags} edit={edit} />
-    </div>
-  );
-};
-
-export const EditToggle: React.FC<{
-  className?: string;
-  edit: boolean;
-  toggleEdit(v: boolean): void;
-}> = ({ className, edit, toggleEdit }) => {
-  const login = useIsLoggedIn();
-  if (!login) return null;
-  return (
-    <div className={clsx(className)}>
-      <label className={clsx(["flex"])}>
-        <PencilSquareIcon className={clsx(["w-4"], ["h-4"])} />
-        <input
-          type="checkbox"
-          value={edit ? "edit" : undefined}
-          onChange={(e) => {
-            toggleEdit(e.target.value !== "edit");
-          }}
-        />
-      </label>
-    </div>
-  );
-};
+import { useUntagVideo } from "../../context";
+import { Tag } from "../../Tag";
 
 export const TagTypesList: React.FC<{
   className?: string;

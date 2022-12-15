@@ -17,6 +17,8 @@ import {
 import { useGraphQLClient } from "~/hooks/useGraphQLClient";
 import { useIsLoggedIn } from "~/hooks/useIsLoggedIn";
 
+import { useVideoId } from "../../context";
+
 graphql(`
   query VideoPage_LikeButtonCurrentLike($videoId: ID!) {
     whoami {
@@ -45,13 +47,11 @@ graphql(`
   }
 `);
 
-export const LikeButton: React.FC<{ className?: string; videoId: string }> = ({
-  className,
-  videoId,
-}) => {
+export const LikeButton: React.FC<{ className?: string }> = ({ className }) => {
   const isLoggedIn = useIsLoggedIn();
   const gqlClient = useGraphQLClient();
   const [liked, setLiked] = useState<boolean | undefined>();
+  const videoId = useVideoId();
 
   const { mutate } = useSWR(
     isLoggedIn ? [VideoPage_LikeButtonCurrentLikeDocument, videoId] : null,
