@@ -10,7 +10,15 @@ export const DelayedInput: React.FC<{
   onFocus?(): void;
   inject?: string;
   debounce?: number;
-}> = ({ className, onUpdateQuery, onFocus, debounce = 100, inject }) => {
+  disabled?: boolean;
+}> = ({
+  className,
+  onUpdateQuery,
+  onFocus,
+  debounce = 100,
+  inject,
+  disabled,
+}) => {
   const [input, setInput] = useState("");
   const [ime, setIME] = useState<boolean>(false);
 
@@ -35,6 +43,7 @@ export const DelayedInput: React.FC<{
     <input
       className={clsx(className)}
       value={input}
+      disabled={disabled ?? false}
       onChange={(e) => {
         setInput(e.target.value);
       }}

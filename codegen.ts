@@ -12,7 +12,13 @@ const config: CodegenConfig = {
     }),
     "src/gql/": {
       preset: "client",
-      plugins: [],
+      plugins: [
+        {
+          "graphql-codegen-typescript-mock-data": {
+            terminateCircularRelationships: true,
+          },
+        },
+      ],
       config: {
         dedupeFragments: true,
         scalars: {

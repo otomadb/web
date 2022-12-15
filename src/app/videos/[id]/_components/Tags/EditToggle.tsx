@@ -11,19 +11,19 @@ export const EditToggle: React.FC<{
   toggleEdit(v: boolean): void;
 }> = ({ className, edit, toggleEdit }) => {
   const login = useIsLoggedIn();
-  if (!login) return null;
+
   return (
-    <div className={clsx(className)}>
-      <label className={clsx(["flex"])}>
-        <PencilSquareIcon className={clsx(["w-4"], ["h-4"])} />
-        <input
-          type="checkbox"
-          value={edit ? "edit" : undefined}
-          onChange={(e) => {
-            toggleEdit(e.target.value !== "edit");
-          }}
-        />
-      </label>
-    </div>
+    <label className={clsx(className, ["flex"], ["items-center"])}>
+      <PencilSquareIcon className={clsx(["w-4"], ["h-4"])} />
+      <input
+        disabled={!login}
+        type="checkbox"
+        value={edit ? "edit" : undefined}
+        onChange={(e) => {
+          if (!login) return;
+          toggleEdit(e.target.value !== "edit");
+        }}
+      />
+    </label>
   );
 };

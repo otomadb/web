@@ -3,9 +3,7 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import React, { Fragment } from "react";
 
-import { VideoPage_TagFragment } from "~/gql/graphql";
-
-import { useUntagVideo } from "../../context";
+import { useTags, useUntagVideo } from "../../context";
 import { Tag } from "../../Tag";
 
 export const TagTypesList: React.FC<{
@@ -38,8 +36,11 @@ export const TagTypesList: React.FC<{
 export const TagsList: React.FC<{
   className?: string;
   edit: boolean;
-  tags: VideoPage_TagFragment[];
-}> = ({ className, edit, tags }) => {
+}> = ({ className, edit }) => {
+  const tags = useTags();
+
+  if (!tags) return <span>LOADING</span>;
+
   return (
     <div className={className}>
       <TagTypesList tags={tags} />

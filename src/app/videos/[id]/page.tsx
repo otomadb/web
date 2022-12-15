@@ -42,8 +42,6 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   const { id: videoId, thumbnailUrl, title } = video;
 
-  console.log(thumbnailUrl);
-
   const { tags } = getFragment(VideoPage_VideoTagsFragmentDoc, video);
   const { history } = getFragment(VideoPage_VideoHistoryFragmentDoc, video);
 
