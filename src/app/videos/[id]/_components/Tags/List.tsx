@@ -1,10 +1,17 @@
 "use client";
-import { XMarkIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import React, { Fragment } from "react";
+import { useQuery } from "urql";
 
-import { useTags, useUntagVideo } from "../../context";
+import { getFragment } from "~/gql";
+import {
+  VideoPage_RefreshTagsDocument,
+  VideoPage_TagFragmentDoc,
+  VideoPage_VideoTagsFragmentDoc,
+} from "~/gql/graphql";
+
 import { Tag } from "../../Tag";
+import { UntagButton } from "./UntagButton";
 
 export const TagTypesList: React.FC<{
   className?: string;
@@ -36,54 +43,38 @@ export const TagTypesList: React.FC<{
 export const TagsList: React.FC<{
   className?: string;
   edit: boolean;
-}> = ({ className, edit }) => {
-  const tags = useTags();
+  videoId: string;
+}> = ({ className, edit, videoId }) => {
+  const [result] = useQuery({
+    query: VideoPage_RefreshTagsDocument,
+    variables: { id: videoId },
+  });
+  const { data } = result;
+  if (!data) return <span>LOADING</span>;
 
-  if (!tags) return <span>LOADING</span>;
+  const { video } = data;
+  const fs = getFragment(VideoPage_VideoTagsFragmentDoc, video);
 
   return (
     <div className={className}>
-      <TagTypesList tags={tags} />
+      <TagTypesList
+        tags={fs.tags.map((t) => getFragment(VideoPage_TagFragmentDoc, t))}
+      />
       <div className={clsx(["mt-2"], ["flex", "flex-col"], ["gap-y-2"])}>
-        {tags.map((tag) => (
-          <Fragment key={tag.id}>
-            {!edit && <Tag className={clsx(["self-start"])} tag={tag} />}
-            {edit && (
-              <div className={clsx(["flex"])}>
-                <RemoveButton tagId={tag.id} />
-                <Tag className={clsx(["ml-2"])} tag={tag} />
-              </div>
-            )}
-          </Fragment>
-        ))}
+        {fs.tags
+          .map((t) => getFragment(VideoPage_TagFragmentDoc, t))
+          .map((tag) => (
+            <Fragment key={tag.id}>
+              {!edit && <Tag className={clsx(["self-start"])} tag={tag} />}
+              {edit && (
+                <div className={clsx(["flex"])}>
+                  <UntagButton tagId={tag.id} videoId={videoId} />
+                  <Tag className={clsx(["ml-2"])} tag={tag} />
+                </div>
+              )}
+            </Fragment>
+          ))}
       </div>
     </div>
-  );
-};
-
-export const RemoveButton: React.FC<{ className?: string; tagId: string }> = ({
-  className,
-  tagId,
-}) => {
-  const untag = useUntagVideo(tagId);
-  return (
-    <button
-      onClick={() => untag()}
-      className={clsx(
-        className,
-        ["rounded"],
-        ["group"],
-        ["bg-red-400", "hover:bg-red-600"],
-        [["px-0.5"], ["py-0.5"]]
-      )}
-    >
-      <XMarkIcon
-        className={clsx(
-          ["w-4"],
-          ["h-4"],
-          ["text-red-50", "group-hover:text-red-100"]
-        )}
-      />
-    </button>
   );
 };

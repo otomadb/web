@@ -2,13 +2,10 @@
 
 import clsx from "clsx";
 import React from "react";
-import useSWR from "swr";
+import { useQuery } from "urql";
 
 import { graphql } from "~/gql";
 import { VideoPage_TagEditor_SearchBoxDocument } from "~/gql/graphql";
-import { useGraphQLClient } from "~/hooks/useGraphQLClient";
-
-import { useVideoId } from "../../context";
 
 graphql(`
   query VideoPage_TagEditor_SearchBox($query: String!, $videoId: ID!) {
@@ -31,16 +28,17 @@ graphql(`
 `);
 
 export const SearchBox: React.FC<{
-  query: string;
   classNames?: string;
+  query: string;
   setTag(payload: { id: string; name: string }): void;
-}> = ({ query, classNames, setTag }) => {
-  const gqlClient = useGraphQLClient();
-  const videoId = useVideoId();
-  const { data } = useSWR(
-    query !== "" ? [VideoPage_TagEditor_SearchBoxDocument, query] : null,
-    ([doc, query]) => gqlClient.request(doc, { query, videoId })
-  );
+  videoId: string;
+}> = ({ query, classNames, setTag, videoId }) => {
+  const [result] = useQuery({
+    query: VideoPage_TagEditor_SearchBoxDocument,
+    variables: { query, videoId },
+  });
+  const { data } = result;
+
   return (
     <div className={clsx(classNames, ["divide-y", ["border-gray-300"]])}>
       {data &&

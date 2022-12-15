@@ -15,8 +15,6 @@ import {
   VideoPage_LikeButtonRemoveLikeDocument,
 } from "~/gql/graphql";
 
-import { useVideoId } from "../../context";
-
 graphql(`
   query VideoPage_LikeButtonCurrentLike($videoId: ID!) {
     whoami {
@@ -53,9 +51,10 @@ graphql(`
   }
 `);
 
-export const LikeButton: React.FC<{ className?: string }> = ({ className }) => {
-  const videoId = useVideoId();
-
+export const LikeButton: React.FC<{ className?: string; videoId: string }> = ({
+  className,
+  videoId,
+}) => {
   const [currentResult] = useQuery({
     query: VideoPage_LikeButtonCurrentLikeDocument,
     variables: { videoId },

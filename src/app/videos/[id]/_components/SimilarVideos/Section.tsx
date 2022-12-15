@@ -46,10 +46,10 @@ export const getSimilarVideos = async (
 };
 
 export async function SimilarVideosSection({
-  id,
+  videoId: id,
   className,
 }: {
-  id: string;
+  videoId: string;
   className?: string;
 }) {
   const similar = await getSimilarVideos(id);

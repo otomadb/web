@@ -15,6 +15,8 @@ const config: CodegenConfig = {
       plugins: [
         {
           "@graphql-codegen/typescript-urql-graphcache": {},
+        },
+        {
           "graphql-codegen-typescript-mock-data": {
             terminateCircularRelationships: true,
           },

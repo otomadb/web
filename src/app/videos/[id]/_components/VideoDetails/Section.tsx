@@ -7,7 +7,8 @@ import { LikeButton } from "./LikeButton";
 export const VideoDetailsSection: React.FC<{
   title: string;
   thumbnailUrl: string;
-}> = ({ title, thumbnailUrl }) => {
+  videoId: string;
+}> = ({ title, thumbnailUrl, videoId }) => {
   return (
     <section
       className={clsx(["flex", ["flex-col", "lg:flex-row"]], ["gap-x-4"])}
@@ -32,7 +33,7 @@ export const VideoDetailsSection: React.FC<{
         >
           {title}
         </h1>
-        <LikeButton className={clsx(["mt-2"])} />
+        <LikeButton className={clsx(["mt-2"])} videoId={videoId} />
       </div>
     </section>
   );

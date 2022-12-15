@@ -1,11 +1,9 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { graphql } from "msw";
-import { ContextType } from "react";
 
 import { aTag, VideoPage_TagEditor_SearchBoxDocument } from "~/gql/graphql";
 import { GraphQLProvider } from "~/hooks/useGraphQLClient";
 
-import { WholeContext } from "../../context";
 import { TagsList } from "./List";
 import { SearchBox } from "./SearchBox";
 
@@ -54,11 +52,7 @@ export default {
   render(args) {
     return (
       <GraphQLProvider>
-        <WholeContext.Provider
-          value={{ videoId: "video:1" } as ContextType<typeof WholeContext>}
-        >
-          <SearchBox {...args} />
-        </WholeContext.Provider>
+        <SearchBox {...args} />
       </GraphQLProvider>
     );
   },
