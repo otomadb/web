@@ -3,64 +3,62 @@ import "client-only";
 
 import { ArrowPathIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
-import React, { useContext, useMemo, useState } from "react";
-import useSWR from "swr";
+import React, { useContext, useMemo } from "react";
+import { useQuery } from "urql";
 
 import { graphql } from "~/gql";
-import { useGraphQLClient } from "~/hooks/useGraphQLClient";
+import { RegisterNiconicoPage_SearchTagsFromNicovideoTagDocument } from "~/gql/graphql";
 
 import { FormContext } from "../FormContext";
 
-export const SearchTagsQueryDocument = graphql(`
-  query SearchTags3($query: String!) {
+graphql(`
+  query RegisterNiconicoPage_SearchTagsFromNicovideoTag($query: String!) {
     searchTags(input: { query: $query, limit: 2 }) {
       result {
         matchedName
         tag {
           id
           name
-          type
+          type: pseudoType
         }
       }
     }
   }
 `);
 
-export const excludeTagFromSearch = (v: string): boolean =>
+export const isExcludeTagFromSearch = (v: string): boolean =>
   ["音MAD", "音mad"].includes(v);
 
 export const CandidateTag: React.FC<{ className?: string; tag: string }> = ({
   className,
   tag,
 }) => {
-  const gqlClient = useGraphQLClient();
   const { addTag: addCandidateTag } = useContext(FormContext);
-  const [tags, setTags] = useState<
-    { matchedName: string; tag: { id: string; name: string; type: string } }[]
-  >([]);
-  const exclude = useMemo(() => excludeTagFromSearch(tag), [tag]);
-  const { isValidating } = useSWR(
-    !exclude ? [SearchTagsQueryDocument, tag] : null,
-    ([doc, query]) => gqlClient.request(doc, { query }),
-    {
-      onSuccess(data) {
-        const { searchTags } = data;
-        setTags(
-          searchTags.result.map(({ matchedName, tag: { id, name, type } }) => ({
-            matchedName,
-            tag: { id, name, type },
-          }))
-        );
-      },
-    }
-  );
+  const excludeFromSearch = useMemo(() => isExcludeTagFromSearch(tag), [tag]);
+  const [result] = useQuery({
+    query: RegisterNiconicoPage_SearchTagsFromNicovideoTagDocument,
+    pause: excludeFromSearch,
+    variables: {
+      query: tag,
+    },
+  });
+
+  const { fetching, data } = result;
+  const tags = useMemo(() => {
+    if (!data?.searchTags) return [];
+    return data.searchTags.result.map(({ matchedName, tag }) => ({
+      matchedName,
+      tag: { id: tag.id, name: tag.name, type: tag.type },
+    }));
+  }, [data]);
+
   return (
     <div className={clsx(className, ["flex"], ["items-center"])}>
       <div className={clsx(["flex-shrink-0"], ["w-40"], ["px-2"])}>
         <span
           className={clsx(
-            !exclude && ["text-slate-900"],
-            exclude && ["text-slate-500"],
+            !excludeFromSearch && ["text-slate-900"],
+            excludeFromSearch && ["text-slate-500"],
             ["line-clamp-2"],
             ["text-xs"]
           )}
@@ -77,12 +75,12 @@ export const CandidateTag: React.FC<{ className?: string; tag: string }> = ({
           ["items-center"]
         )}
       >
-        {exclude && (
+        {excludeFromSearch && (
           <div className={clsx(["text-xs"], ["text-slate-400"])}>
             検索対象外のタグです
           </div>
         )}
-        {!exclude && tags.length === 0 && (
+        {!excludeFromSearch && tags.length === 0 && (
           <div className={clsx(["text-xs"], ["text-slate-400"])}>
             候補のタグが存在しません
           </div>
@@ -107,7 +105,7 @@ export const CandidateTag: React.FC<{ className?: string; tag: string }> = ({
             </button>
           </div>
         ))}
-        {isValidating && (
+        {fetching && (
           <div>
             <ArrowPathIcon
               className={clsx(["animate-spin"], ["w-3"], ["h-3"])}
