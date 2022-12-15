@@ -1,52 +1,75 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
-import { GraphQLClient } from "graphql-request";
+import { Meta, StoryObj } from "@storybook/react";
 import { graphql } from "msw";
+import { createClient, Provider } from "urql";
 
-import { GraphQLContext } from "~/hooks/useGraphQLClient";
-import { WhoamiContext } from "~/hooks/useIsLoggedIn/context";
+import { GlobalNav_ProfileDocument } from "~/gql/graphql";
 
-import { Profile, ProfileQueryDocument } from "./Profile";
+import { Profile } from "./Profile";
 
 export default {
-  title: "GlobalNav/Profile",
   component: Profile,
-  parameters: {},
-} as ComponentMeta<typeof Profile>;
-
-const Template: ComponentStory<typeof Profile> = (args) => (
-  <GraphQLContext.Provider
-    value={{
-      client: new GraphQLClient("/graphql"),
-    }}
-  >
-    <WhoamiContext.Provider
-      value={{
-        whoami: { checking: false, whoami: "1" },
-        setId() {}, // eslint-disable-line @typescript-eslint/no-empty-function
-        removeId() {}, // eslint-disable-line @typescript-eslint/no-empty-function
-      }}
-    >
+  args: {},
+  render: (args) => (
+    <Provider value={createClient({ url: "/graphql" })}>
       <Profile {...args} />
-    </WhoamiContext.Provider>
-  </GraphQLContext.Provider>
-);
+    </Provider>
+  ),
+} as Meta<typeof Profile>;
 
-export const Successful = Template.bind({});
-Successful.parameters = {
-  msw: {
-    handlers: [
-      graphql.query(ProfileQueryDocument, (req, res, ctx) => {
-        return res(
-          ctx.data({
-            whoami: {
-              id: "1",
-              name: "SnO2WMaN",
-              displayName: "SnO2WMaN",
-              icon: "/icon",
-            },
-          })
-        );
-      }),
-    ],
+export const Successful: StoryObj<typeof Profile> = {
+  args: {},
+  parameters: {
+    msw: {
+      handlers: [
+        graphql.query(GlobalNav_ProfileDocument, (req, res, ctx) => {
+          return res(
+            ctx.data({
+              whoami: {
+                id: "1",
+                name: "SnO2WMaN",
+                displayName: "SnO2WMaN",
+                icon: "/storybook/512x512.png",
+              },
+            })
+          );
+        }),
+      ],
+    },
+  },
+};
+
+export const NotLogin: StoryObj<typeof Profile> = {
+  args: {},
+  parameters: {
+    msw: {
+      handlers: [
+        graphql.query(ProfilePageDocument, (req, res, ctx) => {
+          return res(ctx.errors([{ message: "Not Login" }]));
+        }),
+      ],
+    },
+  },
+};
+
+export const Loading: StoryObj<typeof Profile> = {
+  args: {},
+  parameters: {
+    msw: {
+      handlers: [
+        graphql.query(ProfilePageDocument, async (req, res, ctx) => {
+          await new Promise((resolve) => setTimeout(() => resolve({}), 10000));
+          return res(
+            ctx.data({
+              whoami: {
+                id: "1",
+                name: "SnO2WMaN",
+                displayName: "SnO2WMaN",
+                icon: "/storybook/512x512.png",
+              },
+            })
+          );
+        }),
+      ],
+    },
   },
 };

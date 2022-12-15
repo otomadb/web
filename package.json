@@ -23,6 +23,7 @@
   "dependencies": {
     "@emotion/css": "^11.10.5",
     "@heroicons/react": "^2.0.13",
+    "@urql/exchange-graphcache": "^5.0.8",
     "client-only": "^0.0.1",
     "clsx": "^1.2.1",
     "date-fns": "^2.29.3",
@@ -35,13 +36,15 @@
     "react-hot-toast": "^2.4.0",
     "react-use": "^17.4.0",
     "server-only": "^0.0.1",
-    "swr": "^2.0.0"
+    "swr": "^2.0.0",
+    "urql": "^3.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.20.2",
     "@graphql-codegen/cli": "^2.13.12",
     "@graphql-codegen/client-preset": "^1.1.5",
     "@graphql-codegen/schema-ast": "^2.5.1",
+    "@graphql-codegen/typescript-urql-graphcache": "^2.4.3",
     "@graphql-typed-document-node/core": "^3.1.1",
     "@storybook/addon-essentials": "^7.0.0-beta.4",
     "@storybook/addon-interactions": "^7.0.0-beta.4",

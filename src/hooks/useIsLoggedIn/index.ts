@@ -10,6 +10,6 @@ export const useIsLoggedIn = (): boolean | undefined => {
   const { whoami } = useContext(WhoamiContext);
   return useMemo(() => {
     if (whoami.checking) return undefined;
-    else return !!whoami.whoami;
+    else return !!whoami.user;
   }, [whoami]);
 };

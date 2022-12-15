@@ -35,7 +35,8 @@ export const useLogin = ({
   onSuccess(): void;
   onError(status: "NO_USER" | "WRONG_PASSWORD" | "UNKNOWN"): void;
 }) => {
-  const { setId } = useContext(WhoamiContext);
+  const { rexecute } = useContext(WhoamiContext);
+
   const handler = useCallback(
     async ({ name, password }: { name: string; password: string }) => {
       const result = await ky.post(
@@ -48,8 +49,8 @@ export const useLogin = ({
       );
       if (result.ok) {
         const { id } = await result.json<{ id: string }>();
-        setId(id);
         onSuccess();
+        rexecute();
       } else {
         const { error } = await result.json<{ error: string }>();
         switch (error) {
@@ -65,7 +66,7 @@ export const useLogin = ({
         }
       }
     },
-    [onError, onSuccess, setId]
+    [onError, onSuccess, rexecute]
   );
   return handler;
 };

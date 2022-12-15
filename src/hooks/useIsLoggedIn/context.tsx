@@ -1,13 +1,13 @@
 "use client";
 import "client-only";
 
-import React, { ReactNode, useState } from "react";
-import useSWR from "swr";
+import React, { ReactNode, useMemo } from "react";
+import { useQuery } from "urql";
 
 import { graphql } from "~/gql";
-import { useGraphQLClient } from "~/hooks/useGraphQLClient";
+import { WhoAmIDocument } from "~/gql/graphql";
 
-export const WhoamiDocument = graphql(`
+graphql(`
   query WhoAmI {
     whoami {
       id
@@ -18,51 +18,39 @@ export const WhoamiDocument = graphql(`
 export const WhoamiContext = React.createContext<{
   whoami:
     | { checking: true }
-    | { checking: false; whoami: string }
-    | { checking: false; whoami: null };
-  removeId(): void;
-  setId(id: string): void;
+    | { checking: false; user: null }
+    | { checking: false; user: { id: string } };
+  rexecute(): void;
 }>({
-  whoami: { checking: true },
+  whoami: { checking: false, user: null },
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  removeId() {},
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  setId() {},
+  rexecute() {},
 });
 
 export const WhoamiProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const gqlClient = useGraphQLClient();
-  const [whoami, setWhoami] = useState<
-    | { checking: true }
-    | { checking: false; whoami: string }
-    | { checking: false; whoami: null }
-  >({ checking: true });
-
-  useSWR([WhoamiDocument], async ([doc]) => gqlClient.request(doc), {
-    refreshInterval: 10000,
-    onSuccess(data) {
-      const { whoami } = data;
-      setWhoami({ checking: false, whoami: whoami.id });
-    },
-    onError() {
-      setWhoami({ checking: false, whoami: null });
-    },
+  const [result, rexecute] = useQuery({
+    query: WhoAmIDocument,
   });
+  const { data, fetching } = result;
+
+  const whoami = useMemo<
+    | { checking: true }
+    | { checking: false; user: { id: string } }
+    | { checking: false; user: null }
+  >(() => {
+    if (fetching) return { checking: true };
+    if (!data) return { checking: false, user: null };
+    const { id } = data.whoami;
+    return {
+      checking: false,
+      user: { id },
+    };
+  }, [data, fetching]);
 
   return (
-    <WhoamiContext.Provider
-      value={{
-        whoami,
-        removeId() {
-          setWhoami({ checking: false, whoami: null });
-        },
-        setId(id) {
-          setWhoami({ checking: false, whoami: id });
-        },
-      }}
-    >
+    <WhoamiContext.Provider value={{ whoami, rexecute: () => rexecute({}) }}>
       {children}
     </WhoamiContext.Provider>
   );
