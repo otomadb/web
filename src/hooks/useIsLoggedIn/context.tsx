@@ -41,12 +41,10 @@ export const WhoamiProvider: React.FC<{ children: ReactNode }> = ({
     | { checking: false; user: null }
   >(() => {
     if (fetching) return { checking: true };
-    if (!data) return { checking: false, user: null };
-    const { id } = data.whoami;
-    return {
-      checking: false,
-      user: { id },
-    };
+    if (data?.whoami) {
+      const { id } = data.whoami;
+      return { checking: false, user: { id } };
+    } else return { checking: false, user: null };
   }, [data, fetching]);
 
   return (

@@ -17,7 +17,22 @@ const client = createClient({
   },
   exchanges: [
     dedupExchange,
-    cacheExchange<GraphCacheConfig>({}),
+    cacheExchange<GraphCacheConfig>({
+      keys: {
+        SearchTagsPayload() {
+          return null;
+        },
+        SearchTagsResultItem() {
+          return null;
+        },
+        SearchVideosPayload() {
+          return null;
+        },
+        SearchVideosResultItem() {
+          return null;
+        },
+      },
+    }),
     fetchExchange,
   ],
 });

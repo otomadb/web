@@ -3,6 +3,7 @@ import { graphql } from "msw";
 import { createClient, Provider } from "urql";
 
 import { GlobalNav_ProfileDocument } from "~/gql/graphql";
+import { delay } from "~/utils/delay";
 
 import { Profile } from "./Profile";
 
@@ -57,7 +58,7 @@ export const Loading: StoryObj<typeof Profile> = {
     msw: {
       handlers: [
         graphql.query(GlobalNav_ProfileDocument, async (req, res, ctx) => {
-          await new Promise((resolve) => setTimeout(() => resolve({}), 10000));
+          await delay(10000);
           return res(
             ctx.data({
               whoami: {
