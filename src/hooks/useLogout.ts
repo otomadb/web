@@ -5,9 +5,8 @@ import "client-only";
 import ky from "ky";
 import { rest } from "msw";
 import { useCallback } from "react";
-import { useQuery } from "urql";
 
-import { WhoamiDocument } from "~/gql/graphql";
+import { useViewer } from "./useViewer";
 
 export const mockLogoutHandler = rest.post(
   new URL("/auth/logout", process.env.NEXT_PUBLIC_API_ENDPOINT).toString(),
@@ -24,21 +23,17 @@ export const mockLogoutHandler = rest.post(
 );
 
 export const useLogout = ({ onSuccess }: { onSuccess(): void }) => {
-  const [, updateGql] = useQuery({
-    query: WhoamiDocument,
-    requestPolicy: "network-only",
-  });
+  const [, update] = useViewer();
 
   const handler = useCallback(async () => {
     const result = await ky.post(
       new URL("/auth/logout", process.env.NEXT_PUBLIC_API_ENDPOINT).toString(),
       { throwHttpErrors: false, credentials: "include" }
     );
-    console.dir(result);
     if (result.ok) {
       onSuccess();
-      updateGql();
+      update({ requestPolicy: "network-only" });
     }
-  }, [onSuccess, updateGql]);
+  }, [onSuccess, update]);
   return handler;
 };

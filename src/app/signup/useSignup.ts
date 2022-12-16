@@ -4,9 +4,9 @@ import "client-only";
 
 import ky from "ky";
 import { rest } from "msw";
-import { useCallback, useContext } from "react";
+import { useCallback } from "react";
 
-import { WhoamiContext } from "../../hooks/useIsLoggedIn/context";
+import { useViewer } from "~/hooks/useViewer";
 
 export const mockSignupHandler = rest.post(
   new URL("/auth/signup", process.env.NEXT_PUBLIC_API_ENDPOINT).toString(),
@@ -53,7 +53,8 @@ export const useSignup = ({
   onSuccess(): void;
   onError(status: SignupErrorStatus): void;
 }) => {
-  const { setId } = useContext(WhoamiContext);
+  const [, update] = useViewer();
+
   const handler = useCallback(
     async ({
       name,
@@ -79,7 +80,7 @@ export const useSignup = ({
       );
       if (result.ok) {
         const { id } = await result.json<{ id: string }>();
-        setId(id);
+        update();
         onSuccess();
       } else {
         const { code } = await result.json<{ code: string }>();
@@ -96,7 +97,7 @@ export const useSignup = ({
         }
       }
     },
-    [onError, onSuccess, setId]
+    [onError, onSuccess, update]
   );
   return handler;
 };

@@ -5,17 +5,17 @@ import "client-only";
 import { useRouter } from "next/navigation";
 import React, { ReactNode, useEffect } from "react";
 
-import { useIsLoggedIn } from "~/hooks/useIsLoggedIn";
+import { useIsLogin } from "~/hooks/useIsLogin";
 
 export const SkipIfLoggedin: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const router = useRouter();
-  const isLoggedIn = useIsLoggedIn();
+  const isLogin = useIsLogin();
 
   useEffect(() => {
-    if (isLoggedIn) router.replace("/");
-  }, [isLoggedIn, router]);
+    if (typeof isLogin === "boolean" && isLogin) router.replace("/");
+  }, [isLogin, router]);
 
   return <>{children}</>;
 };

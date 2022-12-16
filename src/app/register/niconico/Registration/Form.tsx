@@ -12,7 +12,7 @@ import {
   RegisterNiconicoPage_RegisterVideoDocument,
   RegisterVideoInputSourceType,
 } from "~/gql/graphql";
-import { useIsLoggedIn } from "~/hooks/useIsLoggedIn";
+import { useIsLogin } from "~/hooks/useIsLogin";
 
 import { FormContext } from "../FormContext";
 import { EditableTag } from "./EditableTag";
@@ -101,12 +101,12 @@ export const RegisterForm: React.FC<{ className?: string }> = ({
     changePrimaryTitle,
     clearTags,
   } = useContext(FormContext);
-  const loggedIn = useIsLoggedIn();
+  const isLogin = useIsLogin();
 
   const [, trigger] = useMutation(RegisterNiconicoPage_RegisterVideoDocument);
 
   const handleRegister = useCallback(async () => {
-    if (!loggedIn) return;
+    if (!isLogin) return;
     if (!niconicoId) return;
     if (!primaryTitle) return;
     if (!primaryThumbnail) return;
@@ -153,7 +153,7 @@ export const RegisterForm: React.FC<{ className?: string }> = ({
     changePrimaryThumbnail(null);
     clearTags();
   }, [
-    loggedIn,
+    isLogin,
     niconicoId,
     primaryTitle,
     primaryThumbnail,
@@ -206,7 +206,7 @@ export const RegisterForm: React.FC<{ className?: string }> = ({
               ["group"],
               ["bg-blue-400", "hover:bg-blue-600", "disabled:bg-slate-200"]
             )}
-            disabled={!loggedIn || !primaryTitle || !primaryThumbnail}
+            disabled={!isLogin || !primaryTitle || !primaryThumbnail}
             onClick={() => {
               handleRegister();
             }}

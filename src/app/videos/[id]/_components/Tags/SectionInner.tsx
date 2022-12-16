@@ -15,7 +15,7 @@ import {
   VideoPage_TagVideoDocument,
   VideoPage_VideoTagsFragmentDoc,
 } from "~/gql/graphql";
-import { useIsLoggedIn } from "~/hooks/useIsLoggedIn";
+import { useViewer } from "~/hooks/useViewer";
 
 import { EditToggle } from "./EditToggle";
 import { TagsList } from "./List";
@@ -39,7 +39,7 @@ export const SectionInner: React.FC<{
   videoId: string;
   fallback: VideoPage_TagsSectionQuery;
 }> = ({ className, videoId, fallback }) => {
-  const isLoggedIn = useIsLoggedIn();
+  const isLoggedIn = useViewer();
 
   const [result] = useQuery({
     query: VideoPage_TagsSectionDocument,

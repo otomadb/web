@@ -3,12 +3,10 @@
 import clsx from "clsx";
 import Link from "next/link";
 import React from "react";
-import { useQuery } from "urql";
 
+import { UserIcon } from "~/components/UserIcon";
 import { graphql } from "~/gql";
-import { GlobalNav_ProfileDocument } from "~/gql/graphql";
-
-import { UserIcon } from "../UserIcon";
+import { useViewer } from "~/hooks/useViewer";
 
 graphql(`
   query GlobalNav_Profile {
@@ -22,7 +20,7 @@ graphql(`
 `);
 
 export const Profile: React.FC<{ className?: string }> = ({ className }) => {
-  const [result] = useQuery({ query: GlobalNav_ProfileDocument });
+  const [result] = useViewer();
   const { data } = result;
 
   const whoami = data?.whoami;
