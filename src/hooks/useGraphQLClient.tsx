@@ -3,8 +3,7 @@
 import "client-only";
 
 import { cacheExchange } from "@urql/exchange-graphcache";
-import { GraphQLClient } from "graphql-request";
-import React, { ReactNode, useContext } from "react";
+import React, { ReactNode } from "react";
 import { createClient, dedupExchange, fetchExchange, Provider } from "urql";
 
 import { GraphCacheConfig } from "~/gql/graphql";
@@ -31,39 +30,41 @@ const client = createClient({
         SearchVideosResultItem() {
           return null;
         },
+        TagVideoPayload() {
+          return null;
+        },
+        UntagVideoPayload() {
+          return null;
+        },
+        TagCollection() {
+          return null;
+        },
+        TagHistoryCollection() {
+          return null;
+        },
+        VideoCollection() {
+          return null;
+        },
+        VideoHistoryCollection() {
+          return null;
+        },
+        MylistRegistrationCollection() {
+          return null;
+        },
+        VideoSimilarVideosPayload() {
+          return null;
+        },
+        VideoSimilarVideoItem() {
+          return null;
+        },
       },
     }),
     fetchExchange,
   ],
 });
 
-export const GraphQLContext = React.createContext<{ client: GraphQLClient }>({
-  client: {} as GraphQLClient,
-});
-
 export const GraphQLProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  return (
-    <Provider value={client}>
-      <GraphQLContext.Provider
-        value={{
-          client: new GraphQLClient(
-            new URL(
-              "/graphql",
-              process.env.NEXT_PUBLIC_API_ENDPOINT
-            ).toString(),
-            { credentials: "include", mode: "cors" }
-          ),
-        }}
-      >
-        {children}
-      </GraphQLContext.Provider>
-    </Provider>
-  );
-};
-
-export const useGraphQLClient = (): GraphQLClient => {
-  const { client } = useContext(GraphQLContext);
-  return client;
+  return <Provider value={client}>{children}</Provider>;
 };
