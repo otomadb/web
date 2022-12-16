@@ -1,10 +1,16 @@
 "use client";
 
+import { cacheExchange } from "@urql/exchange-graphcache";
 import { setupWorker } from "msw";
 import { ReactNode } from "react";
+import {
+  createClient as createUrqlClient,
+  dedupExchange,
+  fetchExchange,
+  Provider,
+} from "urql";
 
-import { GraphQLProvider } from "~/hooks/useGraphQLClient";
-import { WhoamiProvider } from "~/hooks/useIsLoggedIn/context";
+import { GraphCacheConfig } from "~/gql/graphql";
 import { handlers } from "~/mocks/browser";
 
 if (
@@ -31,10 +37,67 @@ if (
   });
 }
 
+const urqlClient = createUrqlClient({
+  url: new URL("/graphql", process.env.NEXT_PUBLIC_API_ENDPOINT).toString(),
+  fetchOptions: {
+    credentials: "include",
+    mode: "cors",
+  },
+  exchanges: [
+    dedupExchange,
+    cacheExchange<GraphCacheConfig>({
+      keys: {
+        SearchTagsPayload() {
+          return null;
+        },
+        SearchTagsResultItem() {
+          return null;
+        },
+        SearchVideosPayload() {
+          return null;
+        },
+        SearchVideosResultItem() {
+          return null;
+        },
+        TagVideoPayload() {
+          return null;
+        },
+        UntagVideoPayload() {
+          return null;
+        },
+        TagCollection() {
+          return null;
+        },
+        TagHistoryCollection() {
+          return null;
+        },
+        VideoCollection() {
+          return null;
+        },
+        VideoHistoryCollection() {
+          return null;
+        },
+        MylistRegistrationCollection() {
+          return null;
+        },
+        VideoSimilarVideosPayload() {
+          return null;
+        },
+        VideoSimilarVideoItem() {
+          return null;
+        },
+        MylistRecommendedVideosPayload() {
+          return null;
+        },
+        MylistRecommendedVideosItem() {
+          return null;
+        },
+      },
+    }),
+    fetchExchange,
+  ],
+});
+
 export default function Providers({ children }: { children: ReactNode }) {
-  return (
-    <GraphQLProvider>
-      <WhoamiProvider>{children}</WhoamiProvider>
-    </GraphQLProvider>
-  );
+  return <Provider value={urqlClient}>{children}</Provider>;
 }

@@ -3,26 +3,27 @@
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
 import React from "react";
-import useSWR from "swr";
+import { useQuery } from "urql";
 
-import { UserLink } from "~/components/Link";
 import { UserIcon } from "~/components/UserIcon";
 import { graphql } from "~/gql";
-import { useGraphQLClient } from "~/hooks/useGraphQLClient";
+import { ProfilePageDocument } from "~/gql/graphql";
 import { useLogout } from "~/hooks/useLogout";
 
 import { VideoList } from "../tags/[id]/VideoList";
 
-const ProfileDocument = graphql(`
-  query Profile {
+graphql(`
+  query ProfilePage {
     whoami {
       id
       name
       displayName
       icon
       favorites {
+        id
         registrations(input: { limit: 12 }) {
           nodes {
+            id
             video {
               id
               title
@@ -73,50 +74,106 @@ export const Logout: React.FC<{ className: string }> = ({ className }) => {
 };
 
 export const Profile: React.FC<{ className?: string }> = ({ className }) => {
-  const gqlClient = useGraphQLClient();
-  const { data } = useSWR([ProfileDocument], async ([doc]) =>
-    gqlClient.request(doc)
-  );
+  const [result] = useQuery({ query: ProfilePageDocument });
+  const { data } = result;
 
-  if (!data) return null;
-
-  const {
-    whoami: { id, name, displayName, icon, favorites },
-  } = data;
-  return (
-    <div className={clsx(className)}>
-      <p>Profile</p>
-      <div>
-        <UserIcon className={clsx([])} src={icon} name={name} />
-        <p>
-          <UserLink name={name}>@{name}</UserLink>
-        </p>
-        <p>{displayName}</p>
+  if (data?.whoami === null) {
+    return (
+      <div className={clsx(className)}>
+        <p>You have to login</p>
       </div>
-      <section className={clsx(["mt-2"])}>
-        <h2 className={clsx(["text-lg"])}>いいねした動画</h2>
-        <VideoList
-          className={clsx(["mt-2"])}
-          videos={favorites.registrations.nodes.map(({ video }) => ({
-            id: video.id,
-            title: video.title,
-            thumbnailUrl: video.thumbnailUrl,
-          }))}
-        />
+    );
+  }
+
+  const whoami = data?.whoami;
+  return (
+    <main className={clsx(className)}>
+      <h1 className={clsx(["text-xl"])}>Profile</h1>
+      <section className={clsx(["mt-4"])}>
+        <div className={clsx(["w-24"], ["h-24"])}>
+          {!whoami && (
+            <div
+              className={clsx(
+                ["rounded-lg"],
+                [["w-full"], ["h-full"]],
+                ["bg-slate-200"],
+                ["animate-pulse"]
+              )}
+            ></div>
+          )}
+          {whoami && (
+            <UserIcon
+              className={clsx(["w-full"], ["h-full"], ["rounded-md"])}
+              src={whoami.icon}
+              name={whoami.name}
+            />
+          )}
+        </div>
+        <div className={clsx(["mt-2"], ["flex", "items-center"])}>
+          <div
+            className={clsx(
+              !whoami && ["w-32", "bg-slate-200", "animate-pulse"]
+            )}
+          >
+            {!whoami && (
+              <span className={clsx(["text-transparent"])}>LOADING</span>
+            )}
+            {whoami && (
+              <span className={clsx(["text-lg"], ["text-slate-900"])}>
+                {whoami.displayName}
+              </span>
+            )}
+          </div>
+          <div
+            className={clsx(
+              ["ml-1"],
+              !whoami && ["w-24", "bg-slate-200", "animate-pulse"]
+            )}
+          >
+            {!whoami && (
+              <span className={clsx(["text-transparent"])}>LOADING</span>
+            )}
+            {whoami && (
+              <span
+                className={clsx(["text-sm"], ["text-slate-500"], ["font-mono"])}
+              >
+                @{whoami.name}
+              </span>
+            )}
+          </div>
+        </div>
+        <Logout className={clsx(["mt-2"])} />
       </section>
-      <section className={clsx(["mt-2"])}>
+      <section className={clsx(["mt-4"])}>
+        <h2 className={clsx(["text-lg"])}>いいねした動画</h2>
+        {whoami && (
+          <VideoList
+            className={clsx(["mt-2"])}
+            videos={whoami.favorites.registrations.nodes.map(({ video }) => ({
+              id: video.id,
+              title: video.title,
+              thumbnailUrl: video.thumbnailUrl,
+            }))}
+          />
+        )}
+      </section>
+      <section className={clsx(["mt-4"])}>
         <h2 className={clsx(["text-lg"])}>
           あなたのいいねした動画からのオススメ
         </h2>
-        <VideoList
-          className={clsx(["mt-2"])}
-          videos={favorites.recommendedVideos.items.map(({ video }) => ({
-            id: video.id,
-            title: video.title,
-            thumbnailUrl: video.thumbnailUrl,
-          }))}
-        />
+        {whoami && (
+          <VideoList
+            className={clsx(["mt-2"])}
+            videos={whoami.favorites.recommendedVideos.items.map(
+              ({ video }) => ({
+                id: video.id,
+                title: video.title,
+                thumbnailUrl: video.thumbnailUrl,
+              })
+            )}
+          />
+        )}
       </section>
-    </div>
+    </main>
   );
 };

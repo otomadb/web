@@ -2,15 +2,15 @@
 
 import clsx from "clsx";
 import React, { useState } from "react";
-import useSWR from "swr";
+import { useQuery } from "urql";
 
 import { DelayedInput } from "~/components/DelayedInput";
 import { TagLink, VideoLink } from "~/components/Link";
 import { graphql } from "~/gql";
-import { useGraphQLClient } from "~/hooks/useGraphQLClient";
+import { GlobalNav_SearchBoxDocument } from "~/gql/graphql";
 
-const SearchQueryDocument = graphql(`
-  query Search($query: String!) {
+graphql(`
+  query GlobalNav_SearchBox($query: String!) {
     tags: searchTags(input: { query: $query, limit: 5 }) {
       result {
         matchedName
@@ -37,35 +37,20 @@ export const SearchResult: React.FC<{
   query: string;
   onRoute(): void;
 }> = ({ classname, query, onRoute }) => {
-  const gqlClient = useGraphQLClient();
-  const [tags, setTags] = useState<
-    { matchedName: string; tag: { id: string; name: string } }[]
-  >([]);
-  const [videos, setVideos] = useState<
-    { matchedTitle: string; video: { id: string; title: string } }[]
-  >([]);
-  useSWR(
-    query !== "" ? [SearchQueryDocument, query] : null,
-    ([doc, query]) => gqlClient.request(doc, { query }),
-    {
-      suspense: false,
-      onSuccess(data) {
-        const { tags, videos } = data;
-        setTags(
-          tags.result.map(({ matchedName, tag: { id, name } }) => ({
-            matchedName,
-            tag: { id, name },
-          }))
-        );
-        setVideos(
-          videos.result.map(({ matchedTitle, video: { id, title } }) => ({
-            matchedTitle,
-            video: { id, title },
-          }))
-        );
-      },
-    }
-  );
+  const [result] = useQuery({
+    query: GlobalNav_SearchBoxDocument,
+    variables: { query },
+    pause: query === "",
+    requestPolicy: "network-only",
+  });
+  const { data, fetching } = result;
+
+  if (!data) return <></>;
+
+  const {
+    videos: { result: resultVideos },
+    tags: { result: resultTags },
+  } = data;
 
   return (
     <div
@@ -89,15 +74,17 @@ export const SearchResult: React.FC<{
             Videos
           </span>
         </div>
-        {videos.length === 0 && (
-          <div className={clsx(["px-4", "py-1"], [["flex"], ["items-center"]])}>
-            <span className={clsx(["text-slate-900"], ["text-sm"])}>
-              該当なし
-            </span>
-          </div>
-        )}
         <div className={clsx(["divide-y", "divide-slate-400/75"])}>
-          {videos.map(({ video }) => (
+          {resultVideos.length === 0 && (
+            <div
+              className={clsx(["px-4", "py-1"], [["flex"], ["items-center"]])}
+            >
+              <span className={clsx(["text-slate-900"], ["text-sm"])}>
+                該当なし
+              </span>
+            </div>
+          )}
+          {resultVideos.map(({ video }) => (
             <VideoLink
               key={video.id}
               videoId={video.id}
@@ -113,15 +100,6 @@ export const SearchResult: React.FC<{
                   {video.title}
                 </span>
               </div>
-              {/*
-              title_search !== title_primary && (
-                <div className={clsx(["ml-4"], ["flex-shrink-0"])}>
-                  <span className={clsx(["text-xs"], ["text-slate-500"])}>
-                    {title_primary}
-                  </span>
-                </div>
-              )
-            */}
             </VideoLink>
           ))}
         </div>
@@ -139,15 +117,17 @@ export const SearchResult: React.FC<{
             Tags
           </span>
         </div>
-        {tags.length === 0 && (
-          <div className={clsx(["px-4", "py-1"], [["flex"], ["items-center"]])}>
-            <span className={clsx(["text-slate-900"], ["text-sm"])}>
-              該当なし
-            </span>
-          </div>
-        )}
         <div className={clsx(["divide-y", "divide-slate-400/75"])}>
-          {tags.map(({ tag, matchedName }) => (
+          {resultTags.length === 0 && (
+            <div
+              className={clsx(["px-4", "py-1"], [["flex"], ["items-center"]])}
+            >
+              <span className={clsx(["text-slate-900"], ["text-sm"])}>
+                該当なし
+              </span>
+            </div>
+          )}
+          {resultTags.map(({ tag, matchedName }) => (
             <TagLink
               key={tag.id}
               tagId={tag.id}
@@ -163,15 +143,6 @@ export const SearchResult: React.FC<{
                   {tag.name}
                 </span>
               </div>
-              {/*
-              name_search !== name_primary && (
-                <div className={clsx(["ml-4"], ["flex-shrink-0"])}>
-                  <span className={clsx(["text-xs"], ["text-slate-500"])}>
-                    {name_primary}
-                  </span>
-                </div>
-              )
-            */}
             </TagLink>
           ))}
         </div>
@@ -179,6 +150,7 @@ export const SearchResult: React.FC<{
     </div>
   );
 };
+
 export const SearchBox: React.FC<{ className?: string }> = ({ className }) => {
   const [query, setQuery] = useState<string>("");
   const [focus, setFocus] = useState(false);

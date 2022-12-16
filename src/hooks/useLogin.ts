@@ -4,9 +4,10 @@ import "client-only";
 
 import ky from "ky";
 import { rest } from "msw";
-import { useCallback, useContext } from "react";
+import { useCallback } from "react";
+import { useQuery } from "urql";
 
-import { WhoamiContext } from "./useIsLoggedIn/context";
+import { WhoamiDocument } from "~/gql/graphql";
 
 export const mockLoginHandler = rest.post(
   new URL("/auth/login", process.env.NEXT_PUBLIC_API_ENDPOINT).toString(),
@@ -35,7 +36,11 @@ export const useLogin = ({
   onSuccess(): void;
   onError(status: "NO_USER" | "WRONG_PASSWORD" | "UNKNOWN"): void;
 }) => {
-  const { setId } = useContext(WhoamiContext);
+  const [, updateGql] = useQuery({
+    query: WhoamiDocument,
+    requestPolicy: "network-only",
+  });
+
   const handler = useCallback(
     async ({ name, password }: { name: string; password: string }) => {
       const result = await ky.post(
@@ -48,7 +53,7 @@ export const useLogin = ({
       );
       if (result.ok) {
         const { id } = await result.json<{ id: string }>();
-        setId(id);
+        updateGql();
         onSuccess();
       } else {
         const { error } = await result.json<{ error: string }>();
@@ -65,7 +70,7 @@ export const useLogin = ({
         }
       }
     },
-    [onError, onSuccess, setId]
+    [onError, onSuccess, updateGql]
   );
   return handler;
 };

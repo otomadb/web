@@ -1,25 +1,31 @@
-"use client";
-
-import "client-only";
+import "server-only";
 
 import clsx from "clsx";
 
-import { useHistory } from "../../context";
-import { History } from "./Item";
+import { VideoPage_HistorySectionDocument } from "~/gql/graphql";
+import { createGqlClient } from "~/utils/createGqlClient";
 
-export const HistorySection: React.FC<{ className?: string }> = ({
+import { SectionInner } from "./SectionInner";
+
+export async function HistorySection({
   className,
-}) => {
-  const events = useHistory();
-  if (!events) return <span>LOADING</span>;
+  videoId,
+}: {
+  className?: string;
+  videoId: string;
+}) {
+  const fallback = await createGqlClient().request(
+    VideoPage_HistorySectionDocument,
+    { id: videoId }
+  );
   return (
-    <section className={clsx(["flex-shrink-0"], ["flex-grow"], ["max-w-lg"])}>
+    <section className={clsx(className)}>
       <h2 className={clsx(["text-xl"], ["text-slate-900"])}>動画情報の変移</h2>
-      <div className={clsx(className, ["flex", "flex-col"], ["space-y-1"])}>
-        {events.map((event) => (
-          <History key={event.id} item={event} />
-        ))}
-      </div>
+      <SectionInner
+        className={clsx(["mt-2"])}
+        videoId={videoId}
+        fallback={fallback}
+      />
     </section>
   );
-};
+}

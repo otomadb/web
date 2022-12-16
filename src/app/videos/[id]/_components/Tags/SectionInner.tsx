@@ -4,36 +4,65 @@ import "client-only";
 
 import { PlusIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
-import React, { useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
+import { useMutation, useQuery } from "urql";
 
 import { DelayedInput } from "~/components/DelayedInput";
-import { graphql } from "~/gql";
+import { getFragment, graphql } from "~/gql";
+import {
+  VideoPage_TagsSectionDocument,
+  VideoPage_TagsSectionQuery,
+  VideoPage_TagVideoDocument,
+  VideoPage_VideoTagsFragmentDoc,
+} from "~/gql/graphql";
 import { useIsLoggedIn } from "~/hooks/useIsLoggedIn";
 
-import { useTagVideo } from "../../context";
 import { EditToggle } from "./EditToggle";
 import { TagsList } from "./List";
 import { SearchBox } from "./SearchBox";
 
 graphql(`
-  fragment VideoPage_VideoTags on Video {
-    id
-    tags {
-      ...VideoPage_Tag
+  mutation VideoPage_TagVideo($input: TagVideoInput!) {
+    tagVideo(input: $input) {
+      video {
+        id
+        ...VideoPage_VideoTags
+        ...VideoPage_VideoHistory
+        ...VideoPage_VideoSimilarVideos
+      }
     }
   }
 `);
 
 export const SectionInner: React.FC<{
   className?: string;
-}> = ({ className }) => {
+  videoId: string;
+  fallback: VideoPage_TagsSectionQuery;
+}> = ({ className, videoId, fallback }) => {
+  const isLoggedIn = useIsLoggedIn();
+
+  const [result] = useQuery({
+    query: VideoPage_TagsSectionDocument,
+    variables: { id: videoId },
+  });
+  const { video } = useMemo(() => {
+    return result.data || fallback;
+  }, [result, fallback]);
+  const tags = getFragment(VideoPage_VideoTagsFragmentDoc, video);
+
   const [edit, setEdit] = useState(false);
   const [query, setQuery] = useState<string>("");
   const [selected, setSelected] = useState<{ id: string; name: string } | null>(
     null
   );
-  const tag = useTagVideo(selected?.id || null);
-  const login = useIsLoggedIn();
+
+  const [, exec] = useMutation(VideoPage_TagVideoDocument);
+  const handleTagAdd = useCallback(
+    (tagId: string) => {
+      exec({ input: { tagId, videoId } });
+    },
+    [exec, videoId]
+  );
 
   return (
     <div className={clsx(className, ["mt-2"])}>
@@ -59,7 +88,7 @@ export const SectionInner: React.FC<{
                 ["border", "border-slate-200"]
               )}
               inject={selected?.name}
-              disabled={!login || !edit}
+              disabled={!isLoggedIn || !edit}
               onUpdateQuery={(q) => {
                 setQuery(q);
                 if (q !== selected?.name) setSelected(null);
@@ -74,6 +103,7 @@ export const SectionInner: React.FC<{
                 ["border"]
               )}
               query={query}
+              videoId={videoId}
               setTag={(v) => {
                 setSelected(v);
               }}
@@ -86,7 +116,7 @@ export const SectionInner: React.FC<{
               ["disabled:bg-slate-300", ["bg-blue-400"]],
               ["disabled:text-slate-100", ["text-slate-100"]]
             )}
-            onClick={() => tag()}
+            onClick={() => selected?.id && handleTagAdd(selected?.id)}
           >
             <PlusIcon
               className={clsx(["place-content-center"], [["w-4"], ["h-4"]])}
@@ -94,7 +124,12 @@ export const SectionInner: React.FC<{
           </button>
         </div>
       </div>
-      <TagsList className={clsx(["mt-1"])} edit={edit} />
+      <TagsList
+        className={clsx(["mt-1"])}
+        edit={edit}
+        videoId={videoId}
+        tags={tags}
+      />
     </div>
   );
 };

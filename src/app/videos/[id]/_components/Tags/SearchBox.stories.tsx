@@ -1,11 +1,12 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { graphql } from "msw";
-import { ContextType } from "react";
+import {
+  createClient as createUrqlClient,
+  Provider as UrqlProvider,
+} from "urql";
 
 import { aTag, VideoPage_TagEditor_SearchBoxDocument } from "~/gql/graphql";
-import { GraphQLProvider } from "~/hooks/useGraphQLClient";
 
-import { WholeContext } from "../../context";
 import { TagsList } from "./List";
 import { SearchBox } from "./SearchBox";
 
@@ -53,13 +54,9 @@ export default {
   },
   render(args) {
     return (
-      <GraphQLProvider>
-        <WholeContext.Provider
-          value={{ videoId: "video:1" } as ContextType<typeof WholeContext>}
-        >
-          <SearchBox {...args} />
-        </WholeContext.Provider>
-      </GraphQLProvider>
+      <UrqlProvider value={createUrqlClient({ url: "/graphql" })}>
+        <SearchBox {...args} />
+      </UrqlProvider>
     );
   },
 } as Meta<typeof SearchBox>;

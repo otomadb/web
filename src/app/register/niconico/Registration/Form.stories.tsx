@@ -2,10 +2,9 @@ import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { graphql } from "msw";
 import React from "react";
 
-import { TagType } from "~/gql/graphql";
+import { RegisterNiconicoPage_TagInfoDocument, TagType } from "~/gql/graphql";
 
 import { FormContext } from "../FormContext";
-import { TagInfoQueryDocument } from "./EditableTag";
 import { RegisterForm } from "./Form";
 
 export default {
@@ -30,7 +29,7 @@ export const Successful = Template.bind({});
 Successful.parameters = {
   msw: {
     handlers: [
-      graphql.query(TagInfoQueryDocument, (req, res, ctx) => {
+      graphql.query(RegisterNiconicoPage_TagInfoDocument, (req, res, ctx) => {
         return res(
           ctx.data({
             tag: {

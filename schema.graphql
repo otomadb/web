@@ -56,9 +56,9 @@ type Mutation {
   registerTag(input: RegisterTagInput!): RegisterTagPayload!
   registerVideo(input: RegisterVideoInput!): RegisterVideoPayload!
   removeVideoFromMylist(input: RemoveVideoFromMylistInput!): RemoveVideoFromMylistPayload!
-  tagVideo(input: TagVideoInput!): VideoAddTagHistoryItem!
+  tagVideo(input: TagVideoInput!): TagVideoPayload!
   undoLikeVideo(input: UndoLikeVideoInput!): UndoLikeVideoPayload!
-  untagVideo(input: UntagVideoInput!): VideoDeleteTagHistoryItem!
+  untagVideo(input: UntagVideoInput!): UntagVideoPayload!
 }
 
 type Mylist {
@@ -185,7 +185,7 @@ type Query {
   user(name: String!): User!
   video(id: ID!): Video!
   videos(input: GetVideosInput!): VideoCollection!
-  whoami: User!
+  whoami: User
 }
 
 input RegisterTagInput {
@@ -362,6 +362,11 @@ input TagVideoInput {
   videoId: ID!
 }
 
+type TagVideoPayload {
+  tag: Tag!
+  video: Video!
+}
+
 input UndoLikeVideoInput {
   videoId: ID!
 }
@@ -374,6 +379,11 @@ type UndoLikeVideoPayload {
 input UntagVideoInput {
   tagId: ID!
   videoId: ID!
+}
+
+type UntagVideoPayload {
+  tag: Tag!
+  video: Video!
 }
 
 type User {

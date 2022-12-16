@@ -1,27 +1,24 @@
 "use client";
 import clsx from "clsx";
 import Image from "next/image";
-import React, {
-  ReactNode,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import React, { ReactNode, useCallback, useContext, useMemo } from "react";
 import { toast } from "react-hot-toast";
-import useSWR from "swr";
+import { useMutation, useQuery } from "urql";
 
 import { VideoLink } from "~/components/Link";
 import { graphql } from "~/gql";
-import { RegisterVideoInputSourceType } from "~/gql/graphql";
-import { useGraphQLClient } from "~/hooks/useGraphQLClient";
+import {
+  RegisterNiconicoPage_FindNicovideoSourceDocument,
+  RegisterNiconicoPage_RegisterVideoDocument,
+  RegisterVideoInputSourceType,
+} from "~/gql/graphql";
 import { useIsLoggedIn } from "~/hooks/useIsLoggedIn";
 
 import { FormContext } from "../FormContext";
 import { EditableTag } from "./EditableTag";
 
-export const RegisterVideoMutationDocument = graphql(`
-  mutation RegisterVideo($input: RegisterVideoInput!) {
+graphql(`
+  mutation RegisterNiconicoPage_RegisterVideo($input: RegisterVideoInput!) {
     registerVideo(input: $input) {
       video {
         id
@@ -33,10 +30,8 @@ export const RegisterVideoMutationDocument = graphql(`
       }
     }
   }
-`);
 
-export const FindNicoSource = graphql(`
-  query FindNiconico($id: ID!) {
+  query RegisterNiconicoPage_FindNicovideoSource($id: ID!) {
     findNicovideoVideoSource(sourceId: $id) {
       id
       video {
@@ -48,40 +43,21 @@ export const FindNicoSource = graphql(`
   }
 `);
 
-export const AlreadyDetector: React.FC<{ children: ReactNode }> = ({
-  children,
-}) => {
-  const gqlClient = useGraphQLClient();
-  const { niconicoId } = useContext(FormContext);
-  const [already, setAlready] = useState<null | {
-    id: string;
-    title: string;
-    thumbnailUrl: string;
-  }>(null);
+export const AlreadyDetector: React.FC<{
+  children: ReactNode;
+  nicovideoId: string;
+}> = ({ children, nicovideoId }) => {
+  const [result] = useQuery({
+    query: RegisterNiconicoPage_FindNicovideoSourceDocument,
+    variables: { id: nicovideoId },
+  });
+  const { data } = result;
 
-  useSWR(
-    niconicoId ? [FindNicoSource, niconicoId] : null,
-    ([doc, id]) => gqlClient.request(doc, { id }),
-    {
-      onSuccess(data) {
-        const { findNicovideoVideoSource } = data;
-        if (findNicovideoVideoSource && findNicovideoVideoSource.video) {
-          const { video } = findNicovideoVideoSource;
-          setAlready({
-            id: video.id,
-            title: video.title,
-            thumbnailUrl: video.thumbnailUrl,
-          });
-        } else {
-          setAlready(null);
-        }
-      },
-    }
-  );
-
-  useEffect(() => {
-    setAlready(null);
-  }, [niconicoId]);
+  const already = useMemo(() => {
+    if (!data?.findNicovideoVideoSource?.video) return null;
+    const { id, thumbnailUrl, title } = data.findNicovideoVideoSource.video;
+    return { id, title, thumbnailUrl };
+  }, [data]);
 
   if (!already) return <>{children}</>;
 
@@ -115,7 +91,6 @@ export const AlreadyDetector: React.FC<{ children: ReactNode }> = ({
 export const RegisterForm: React.FC<{ className?: string }> = ({
   className,
 }) => {
-  const gqlClient = useGraphQLClient();
   const {
     niconicoId,
     primaryTitle,
@@ -128,29 +103,39 @@ export const RegisterForm: React.FC<{ className?: string }> = ({
   } = useContext(FormContext);
   const loggedIn = useIsLoggedIn();
 
+  const [, trigger] = useMutation(RegisterNiconicoPage_RegisterVideoDocument);
+
   const handleRegister = useCallback(async () => {
     if (!loggedIn) return;
     if (!niconicoId) return;
     if (!primaryTitle) return;
     if (!primaryThumbnail) return;
 
-    try {
-      const result = await gqlClient.request(RegisterVideoMutationDocument, {
-        input: {
-          primaryTitle,
-          primaryThumbnail,
-          tags,
-          extraTitles: [],
-          sources: [
-            {
-              type: RegisterVideoInputSourceType.Nicovideo,
-              sourceId: niconicoId,
-            },
-          ],
-        },
-      });
+    const result = await trigger({
+      input: {
+        primaryTitle,
+        primaryThumbnail,
+        tags,
+        extraTitles: [],
+        sources: [
+          {
+            type: RegisterVideoInputSourceType.Nicovideo,
+            sourceId: niconicoId,
+          },
+        ],
+      },
+    });
+    if (result.error) {
+      toast.error(() => (
+        <span className={clsx(["text-slate-700"])}>
+          登録時に問題が発生しました
+        </span>
+      ));
+      return;
+    }
 
-      const { title, id } = result.registerVideo.video;
+    if (result.data) {
+      const { title, id } = result.data.registerVideo.video;
       toast(() => (
         <span className={clsx(["text-slate-700"])}>
           <VideoLink
@@ -162,23 +147,17 @@ export const RegisterForm: React.FC<{ className?: string }> = ({
           を登録しました．
         </span>
       ));
-      changeNiconicoId(null);
-      changePrimaryTitle(null);
-      changePrimaryThumbnail(null);
-      clearTags();
-    } catch (e) {
-      toast.error(() => (
-        <span className={clsx(["text-slate-700"])}>
-          登録時に問題が発生しました
-        </span>
-      ));
     }
+    changeNiconicoId(null);
+    changePrimaryTitle(null);
+    changePrimaryThumbnail(null);
+    clearTags();
   }, [
     loggedIn,
     niconicoId,
     primaryTitle,
     primaryThumbnail,
-    gqlClient,
+    trigger,
     tags,
     changeNiconicoId,
     changePrimaryTitle,
@@ -186,9 +165,11 @@ export const RegisterForm: React.FC<{ className?: string }> = ({
     clearTags,
   ]);
 
+  if (!niconicoId) return null;
+
   return (
     <div className={clsx(className)}>
-      <AlreadyDetector>
+      <AlreadyDetector nicovideoId={niconicoId}>
         <div>
           <div className={clsx(["text-slate-700"], ["text-sm"])}>
             niconico ID
