@@ -1,52 +1,31 @@
-"use client";
-
-import "client-only";
+import "server-only";
 
 import clsx from "clsx";
-import { useQuery } from "urql";
 
-import { getFragment, graphql } from "~/gql";
-import {
-  VideoPage_HistoryItemFragmentDoc,
-  VideoPage_RefreshHistoryDocument,
-  VideoPage_VideoHistoryFragmentDoc,
-} from "~/gql/graphql";
+import { VideoPage_HistorySectionDocument } from "~/gql/graphql";
+import { createGqlClient } from "~/utils/createGqlClient";
 
-import { History } from "./Item";
+import { SectionInner } from "./SectionInner";
 
-graphql(`
-  query VideoPage_RefreshHistory($id: ID!) {
-    video(id: $id) {
-      id
-      ...VideoPage_VideoHistory
-    }
-  }
-`);
-
-export const HistorySection: React.FC<{
+export async function HistorySection({
+  className,
+  videoId,
+}: {
   className?: string;
   videoId: string;
-}> = ({ className, videoId }) => {
-  const [result] = useQuery({
-    query: VideoPage_RefreshHistoryDocument,
-    variables: { id: videoId },
-  });
-  const { data } = result;
-
-  if (!data) return <span>LOADING</span>;
-
-  const fs = getFragment(VideoPage_VideoHistoryFragmentDoc, data.video);
-
+}) {
+  const fallback = await createGqlClient().request(
+    VideoPage_HistorySectionDocument,
+    { id: videoId }
+  );
   return (
-    <section className={clsx(["flex-shrink-0"], ["flex-grow"], ["max-w-lg"])}>
+    <section className={clsx(className)}>
       <h2 className={clsx(["text-xl"], ["text-slate-900"])}>動画情報の変移</h2>
-      <div className={clsx(className, ["flex", "flex-col"], ["space-y-1"])}>
-        {fs.history.nodes
-          .map((e) => getFragment(VideoPage_HistoryItemFragmentDoc, e))
-          .map((event) => (
-            <History key={event.id} item={event} />
-          ))}
-      </div>
+      <SectionInner
+        className={clsx(["mt-2"])}
+        videoId={videoId}
+        fallback={fallback}
+      />
     </section>
   );
-};
+}

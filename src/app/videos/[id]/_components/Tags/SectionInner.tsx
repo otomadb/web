@@ -4,14 +4,16 @@ import "client-only";
 
 import { PlusIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { useMutation, useQuery } from "urql";
 
 import { DelayedInput } from "~/components/DelayedInput";
-import { graphql } from "~/gql";
+import { getFragment, graphql } from "~/gql";
 import {
-  VideoPage_RefreshTagsDocument,
+  VideoPage_TagsSectionDocument,
+  VideoPage_TagsSectionQuery,
   VideoPage_TagVideoDocument,
+  VideoPage_VideoTagsFragmentDoc,
 } from "~/gql/graphql";
 import { useIsLoggedIn } from "~/hooks/useIsLoggedIn";
 
@@ -20,20 +22,6 @@ import { TagsList } from "./List";
 import { SearchBox } from "./SearchBox";
 
 graphql(`
-  fragment VideoPage_VideoTags on Video {
-    id
-    tags {
-      ...VideoPage_Tag
-    }
-  }
-
-  query VideoPage_RefreshTags($id: ID!) {
-    video(id: $id) {
-      id
-      ...VideoPage_VideoTags
-    }
-  }
-
   mutation VideoPage_TagVideo($input: TagVideoInput!) {
     tagVideo(input: $input) {
       video {
@@ -48,13 +36,18 @@ graphql(`
 export const SectionInner: React.FC<{
   className?: string;
   videoId: string;
-}> = ({ className, videoId }) => {
+  fallback: VideoPage_TagsSectionQuery;
+}> = ({ className, videoId, fallback }) => {
   const isLoggedIn = useIsLoggedIn();
 
-  const [result, reexecute] = useQuery({
-    query: VideoPage_RefreshTagsDocument,
+  const [result] = useQuery({
+    query: VideoPage_TagsSectionDocument,
     variables: { id: videoId },
   });
+  const { video } = useMemo(() => {
+    return result.data || fallback;
+  }, [result, fallback]);
+  const tags = getFragment(VideoPage_VideoTagsFragmentDoc, video);
 
   const [edit, setEdit] = useState(false);
   const [query, setQuery] = useState<string>("");
@@ -130,7 +123,12 @@ export const SectionInner: React.FC<{
           </button>
         </div>
       </div>
-      <TagsList className={clsx(["mt-1"])} edit={edit} videoId={videoId} />
+      <TagsList
+        className={clsx(["mt-1"])}
+        edit={edit}
+        videoId={videoId}
+        tags={tags}
+      />
     </div>
   );
 };

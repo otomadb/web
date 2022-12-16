@@ -1,17 +1,23 @@
 "use client";
 import clsx from "clsx";
 import React, { Fragment } from "react";
-import { useQuery } from "urql";
 
-import { getFragment } from "~/gql";
+import { getFragment, graphql } from "~/gql";
 import {
-  VideoPage_RefreshTagsDocument,
   VideoPage_TagFragmentDoc,
-  VideoPage_VideoTagsFragmentDoc,
+  VideoPage_VideoTagsFragment,
 } from "~/gql/graphql";
 
 import { Tag } from "../../Tag";
 import { UntagButton } from "./UntagButton";
+
+graphql(`
+  fragment VideoPage_VideoTags on Video {
+    tags {
+      ...VideoPage_Tag
+    }
+  }
+`);
 
 export const TagTypesList: React.FC<{
   className?: string;
@@ -44,24 +50,15 @@ export const TagsList: React.FC<{
   className?: string;
   edit: boolean;
   videoId: string;
-}> = ({ className, edit, videoId }) => {
-  const [result] = useQuery({
-    query: VideoPage_RefreshTagsDocument,
-    variables: { id: videoId },
-  });
-  const { data } = result;
-  if (!data) return <span>LOADING</span>;
-
-  const { video } = data;
-  const fs = getFragment(VideoPage_VideoTagsFragmentDoc, video);
-
+  tags: VideoPage_VideoTagsFragment;
+}> = ({ className, tags, edit, videoId }) => {
   return (
     <div className={className}>
       <TagTypesList
-        tags={fs.tags.map((t) => getFragment(VideoPage_TagFragmentDoc, t))}
+        tags={tags.tags.map((t) => getFragment(VideoPage_TagFragmentDoc, t))}
       />
       <div className={clsx(["mt-2"], ["flex", "flex-col"], ["gap-y-2"])}>
-        {fs.tags
+        {tags.tags
           .map((t) => getFragment(VideoPage_TagFragmentDoc, t))
           .map((tag) => (
             <Fragment key={tag.id}>

@@ -63,6 +63,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         <div className={clsx(["flex", "flex-col"], ["mt-4"])}>
           {/* @ts-expect-error Server Component */}
           <SimilarVideosSection videoId={videoId} />
+          {/* @ts-expect-error Server Component */}
           <HistorySection videoId={videoId} />
         </div>
       </div>
