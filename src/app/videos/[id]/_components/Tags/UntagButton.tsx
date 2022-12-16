@@ -14,6 +14,7 @@ graphql(`
         id
         ...VideoPage_VideoTags
         ...VideoPage_VideoHistory
+        ...VideoPage_VideoSimilarVideos
       }
     }
   }

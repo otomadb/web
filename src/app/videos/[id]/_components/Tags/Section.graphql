@@ -2,5 +2,6 @@ query VideoPage_TagsSection($id: ID!) {
   video(id: $id) {
     id
     ...VideoPage_VideoTags
+    ...VideoPage_VideoSimilarVideos
   }
 }

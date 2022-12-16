@@ -8,10 +8,26 @@ import { useMemo } from "react";
 import { useQuery } from "urql";
 
 import { VideoLink } from "~/components/Link";
+import { getFragment, graphql } from "~/gql";
 import {
   VideoPage_SimilarVideosSectionDocument,
   VideoPage_SimilarVideosSectionQuery,
+  VideoPage_VideoSimilarVideosFragmentDoc,
 } from "~/gql/graphql";
+
+graphql(`
+  fragment VideoPage_VideoSimilarVideos on Video {
+    similarVideos(input: { limit: 12 }) {
+      items {
+        video {
+          id
+          title
+          thumbnailUrl
+        }
+      }
+    }
+  }
+`);
 
 export const SectionInner: React.FC<{
   className?: string;
@@ -26,6 +42,8 @@ export const SectionInner: React.FC<{
     return result.data || fallback;
   }, [result, fallback]);
 
+  const similar = getFragment(VideoPage_VideoSimilarVideosFragmentDoc, video);
+
   return (
     <div
       className={clsx(
@@ -36,7 +54,7 @@ export const SectionInner: React.FC<{
         ["gap-y-2"]
       )}
     >
-      {video.similarVideos.items.map(
+      {similar.similarVideos.items.map(
         ({ video: { id, title, thumbnailUrl } }) => (
           <div key={id}>
             <VideoLink videoId={id} className={clsx(["block"])}>

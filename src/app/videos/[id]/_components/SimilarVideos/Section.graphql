@@ -1,13 +1,6 @@
 query VideoPage_SimilarVideosSection($id: ID!) {
   video(id: $id) {
-    similarVideos(input: { limit: 12 }) {
-      items {
-        video {
-          id
-          title
-          thumbnailUrl
-        }
-      }
-    }
+    id
+    ...VideoPage_VideoSimilarVideos
   }
 }
