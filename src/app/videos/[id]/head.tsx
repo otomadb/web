@@ -2,6 +2,7 @@ import gqlRequest from "graphql-request";
 
 import { CommonHead } from "~/app/CommonHead";
 import { graphql } from "~/gql";
+import { VideoPageTitleDocument } from "~/gql/graphql";
 
 export default async function Head({ params }: { params: { id: string } }) {
   const { video } = await gqlRequest(
