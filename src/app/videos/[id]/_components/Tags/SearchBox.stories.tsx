@@ -1,8 +1,11 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { graphql } from "msw";
+import {
+  createClient as createUrqlClient,
+  Provider as UrqlProvider,
+} from "urql";
 
 import { aTag, VideoPage_TagEditor_SearchBoxDocument } from "~/gql/graphql";
-import { GraphQLProvider } from "~/hooks/useGraphQLClient";
 
 import { TagsList } from "./List";
 import { SearchBox } from "./SearchBox";
@@ -51,9 +54,9 @@ export default {
   },
   render(args) {
     return (
-      <GraphQLProvider>
+      <UrqlProvider value={createUrqlClient({ url: "/graphql" })}>
         <SearchBox {...args} />
-      </GraphQLProvider>
+      </UrqlProvider>
     );
   },
 } as Meta<typeof SearchBox>;

@@ -26,11 +26,12 @@ export const Successful: StoryObj<typeof Profile> = {
           return res(
             ctx.data({
               whoami: {
-                id: "1",
+                id: "user:1",
                 name: "sno2wman",
                 displayName: "SnO2WMaN",
                 icon: "/storybook/512x512.png",
                 favorites: {
+                  id: "mylist:1",
                   recommendedVideos: { items: [] },
                   registrations: { nodes: [] },
                 },
@@ -53,11 +54,12 @@ export const Slow: StoryObj<typeof Profile> = {
           return res(
             ctx.data({
               whoami: {
-                id: "1",
+                id: "user:1",
                 name: "sno2wman",
                 displayName: "SnO2WMaN",
                 icon: "/storybook/512x512.png",
                 favorites: {
+                  id: "mylist:1",
                   recommendedVideos: { items: [] },
                   registrations: { nodes: [] },
                 },
