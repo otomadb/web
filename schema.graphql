@@ -56,9 +56,9 @@ type Mutation {
   registerTag(input: RegisterTagInput!): RegisterTagPayload!
   registerVideo(input: RegisterVideoInput!): RegisterVideoPayload!
   removeVideoFromMylist(input: RemoveVideoFromMylistInput!): RemoveVideoFromMylistPayload!
-  tagVideo(input: TagVideoInput!): VideoAddTagHistoryItem!
+  tagVideo(input: TagVideoInput!): TagVideoPayload!
   undoLikeVideo(input: UndoLikeVideoInput!): UndoLikeVideoPayload!
-  untagVideo(input: UntagVideoInput!): VideoDeleteTagHistoryItem!
+  untagVideo(input: UntagVideoInput!): UntagVideoPayload!
 }
 
 type Mylist {
@@ -139,11 +139,6 @@ type NicovideoVideoSource implements VideoSource {
   video: Video!
 }
 
-type NiconicoVideoSource implements VideoSource {
-  url: String!
-  videoId: String!
-}
-
 enum PseudoTagType {
   """キャラクター"""
   CHARACTER
@@ -190,13 +185,14 @@ type Query {
   user(name: String!): User!
   video(id: ID!): Video!
   videos(input: GetVideosInput!): VideoCollection!
-  whoami: User!
+  whoami: User
 }
 
 input RegisterTagInput {
   explicitParent: ID
-  extraNames: [String!]
-  implicitParents: [ID!]
+  extraNames: [String!] = []
+  implicitParents: [ID!] = []
+  meaningless: Boolean = false
   primaryName: String!
 }
 
@@ -271,6 +267,7 @@ enum SortOrder {
 }
 
 type Tag {
+  canTagTo(id: ID!): Boolean!
   explicitParent: Tag
   history(input: TagHistoryInput!): TagHistoryCollection!
   id: ID!
@@ -365,6 +362,11 @@ input TagVideoInput {
   videoId: ID!
 }
 
+type TagVideoPayload {
+  tag: Tag!
+  video: Video!
+}
+
 input UndoLikeVideoInput {
   videoId: ID!
 }
@@ -377,6 +379,11 @@ type UndoLikeVideoPayload {
 input UntagVideoInput {
   tagId: ID!
   videoId: ID!
+}
+
+type UntagVideoPayload {
+  tag: Tag!
+  video: Video!
 }
 
 type User {

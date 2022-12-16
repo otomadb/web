@@ -3,14 +3,14 @@ import "client-only";
 
 import { ArrowPathIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
-import React, { useState } from "react";
-import useSWR from "swr";
+import React from "react";
+import { useQuery } from "urql";
 
 import { graphql } from "~/gql";
-import { useGraphQLClient } from "~/hooks/useGraphQLClient";
+import { RegisterNiconicoPage_TagInfoDocument } from "~/gql/graphql";
 
-export const TagInfoQueryDocument = graphql(`
-  query TagInfo($id: ID!) {
+graphql(`
+  query RegisterNiconicoPage_TagInfo($id: ID!) {
     tag(id: $id) {
       id
       name
@@ -23,35 +23,23 @@ export const EditableTag: React.FC<{ className?: string; id: string }> = ({
   className,
   id,
 }) => {
-  const gqlClient = useGraphQLClient();
-  const [tag, setTag] = useState<null | {
-    id: string;
-    name: string;
-    type: string;
-  }>(null);
-  const { isValidating } = useSWR(
-    [TagInfoQueryDocument, id],
-    ([doc, id]) => gqlClient.request(doc, { id }),
-    {
-      onSuccess(data) {
-        const { tag } = data;
-        setTag({ id: tag.id, name: tag.name, type: tag.type });
-      },
-    }
-  );
-
-  if (!tag && isValidating)
-    return (
-      <div className={clsx(className)}>
-        <ArrowPathIcon className={clsx(["animate-spin"], ["w-4"], ["h-4"])} />
-      </div>
-    );
-  if (!tag) return <span>???</span>;
+  const [result] = useQuery({
+    query: RegisterNiconicoPage_TagInfoDocument,
+    variables: { id },
+  });
+  const { data, fetching } = result;
 
   return (
     <div className={clsx(className)}>
-      <span>{tag.name}</span>
-      <span>{tag.type}</span>
+      {data && (
+        <>
+          <span>{data.tag.name}</span>
+          <span>{data.tag.type}</span>
+        </>
+      )}
+      {fetching && (
+        <ArrowPathIcon className={clsx(["animate-spin"], ["w-4"], ["h-4"])} />
+      )}
     </div>
   );
 };
