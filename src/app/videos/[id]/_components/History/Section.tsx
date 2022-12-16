@@ -3,7 +3,7 @@ import "server-only";
 import clsx from "clsx";
 
 import { VideoPage_HistorySectionDocument } from "~/gql/graphql";
-import { createGqlClient } from "~/utils/createGqlClient";
+import { gqlRequest } from "~/utils/gqlRequest";
 
 import { SectionInner } from "./SectionInner";
 
@@ -14,10 +14,9 @@ export async function HistorySection({
   className?: string;
   videoId: string;
 }) {
-  const fallback = await createGqlClient().request(
-    VideoPage_HistorySectionDocument,
-    { id: videoId }
-  );
+  const fallback = await gqlRequest(VideoPage_HistorySectionDocument, {
+    id: videoId,
+  });
   return (
     <section className={clsx(className)}>
       <h2 className={clsx(["text-xl"], ["text-slate-900"])}>動画情報の変移</h2>

@@ -1,13 +1,24 @@
-import { getData } from "./getData";
+import { CommonHead } from "~/app/CommonHead";
+import { graphql } from "~/gql";
+import { gqlRequest } from "~/utils/gqlRequest";
 
 export default async function Head({ params }: { params: { name: string } }) {
-  const { name, displayName } = await getData(params.name);
+  const { user } = await gqlRequest(
+    graphql(`
+      query UserPage_Title($name: String!) {
+        user(name: $name) {
+          name
+          displayName
+        }
+      }
+    `),
+    { name: params.name }
+  );
 
   return (
     <>
-      <title>
-        {displayName}(@{name})
-      </title>
+      <CommonHead />
+      <title>{`${user.displayName}(@${user.name}) - Otomad Database`}</title>
     </>
   );
 }

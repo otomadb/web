@@ -1,9 +1,8 @@
 import clsx from "clsx";
-import gqlRequest from "graphql-request";
 import React from "react";
 
 import { graphql } from "~/gql";
-import { VideoPageDocument } from "~/gql/graphql";
+import { gqlRequest } from "~/utils/gqlRequest";
 
 import { HistorySection } from "./_components/History/Section";
 import { SimilarVideosSection } from "./_components/SimilarVideos/Section";
@@ -12,25 +11,24 @@ import { VideoDetailsSection } from "./_components/VideoDetails/Section";
 
 export const revalidate = 0;
 
-graphql(`
-  query VideoPage($id: ID!) {
-    video(id: $id) {
-      id
-      title
-      titles {
-        title
-        primary
-      }
-      thumbnailUrl
-    }
-  }
-`);
-
 export default async function Page({ params }: { params: { id: string } }) {
   const { video } = await gqlRequest(
-    new URL("/graphql", process.env.NEXT_PUBLIC_API_ENDPOINT).toString(),
-    VideoPageDocument,
-    { id: `video:${params.id}` }
+    graphql(`
+      query VideoPage($id: ID!) {
+        video(id: $id) {
+          id
+          title
+          titles {
+            title
+            primary
+          }
+          thumbnailUrl
+        }
+      }
+    `),
+    {
+      id: `video:${params.id}`,
+    }
   );
 
   const { id: videoId, thumbnailUrl, title } = video;
