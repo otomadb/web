@@ -17,7 +17,7 @@ export default async function Head({ params }: { params: { id: string } }) {
   return (
     <>
       <CommonHead />
-      <title>{`${video.title} - otomad database`}</title>
+      <title>{`${video.title} - 動画 - Otomad Database`}</title>
     </>
   );
 }

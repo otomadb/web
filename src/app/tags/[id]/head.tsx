@@ -1,11 +1,23 @@
-import { getData } from "./getData";
+import { CommonHead } from "~/app/CommonHead";
+import { graphql } from "~/gql";
+import { gqlRequest } from "~/utils/gqlRequest";
 
 export default async function Head({ params }: { params: { id: string } }) {
-  const { name } = await getData(params.id);
+  const { tag } = await gqlRequest(
+    graphql(`
+      query TagPage_Title($id: ID!) {
+        tag(id: $id) {
+          name
+        }
+      }
+    `),
+    { id: `tag:${params.id}` }
+  );
 
   return (
     <>
-      <title>{name}</title>
+      <CommonHead />
+      <title>{`${tag.name} - タグ - Otomad Database`}</title>
     </>
   );
 }

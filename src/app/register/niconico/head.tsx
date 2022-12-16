@@ -4,7 +4,7 @@ export default async function Head() {
   return (
     <>
       <CommonHead />
-      <title>{`あなたのページ - Otomad Database`}</title>
+      <title>{`ニコニコ動画からの登録 - Otomad Database`}</title>
     </>
   );
 }
