@@ -3,7 +3,7 @@ import "server-only";
 import clsx from "clsx";
 
 import { VideoPage_SimilarVideosSectionDocument } from "~/gql/graphql";
-import { createGqlClient } from "~/utils/createGqlClient";
+import { gqlRequest } from "~/utils/gqlRequest";
 
 import { SectionInner } from "./SectionInner";
 
@@ -14,10 +14,9 @@ export async function SimilarVideosSection({
   className?: string;
   videoId: string;
 }) {
-  const fallback = await createGqlClient().request(
-    VideoPage_SimilarVideosSectionDocument,
-    { id: videoId }
-  );
+  const fallback = await gqlRequest(VideoPage_SimilarVideosSectionDocument, {
+    id: videoId,
+  });
 
   return (
     <section className={clsx(className)}>

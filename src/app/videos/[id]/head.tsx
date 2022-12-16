@@ -1,11 +1,9 @@
-import gqlRequest from "graphql-request";
-
 import { CommonHead } from "~/app/CommonHead";
 import { graphql } from "~/gql";
+import { gqlRequest } from "~/utils/gqlRequest";
 
 export default async function Head({ params }: { params: { id: string } }) {
   const { video } = await gqlRequest(
-    new URL("/graphql", process.env.NEXT_PUBLIC_API_ENDPOINT).toString(),
     graphql(`
       query VideoPage_Title($id: ID!) {
         video(id: $id) {

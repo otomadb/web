@@ -1,14 +1,26 @@
 import clsx from "clsx";
 
 import { UserIcon } from "~/components/UserIcon";
-
-import { getData } from "./getData";
+import { graphql } from "~/gql";
+import { gqlRequest } from "~/utils/gqlRequest";
 
 export const revalidate = 60;
 
 export default async function Page({ params }: { params: { name: string } }) {
-  const details = await getData(params.name);
-  const { icon, name, displayName } = details;
+  const { user } = await gqlRequest(
+    graphql(`
+      query UserPage($name: String!) {
+        user(name: $name) {
+          id
+          name
+          displayName
+          icon
+        }
+      }
+    `),
+    { name: params.name }
+  );
+  const { icon, name, displayName } = user;
 
   return (
     <>
