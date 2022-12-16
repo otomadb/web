@@ -16,8 +16,6 @@ graphql(`
   query VideoPage($id: ID!) {
     video(id: $id) {
       id
-      ...VideoPage_VideoTags
-      ...VideoPage_VideoHistory
       title
       titles {
         title
