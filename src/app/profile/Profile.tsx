@@ -20,8 +20,10 @@ graphql(`
       displayName
       icon
       favorites {
+        id
         registrations(input: { limit: 12 }) {
           nodes {
+            id
             video {
               id
               title

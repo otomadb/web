@@ -4,9 +4,10 @@ import "client-only";
 
 import ky from "ky";
 import { rest } from "msw";
-import { useCallback, useContext } from "react";
+import { useCallback } from "react";
+import { useQuery } from "urql";
 
-import { WhoamiContext } from "./useIsLoggedIn/context";
+import { WhoamiDocument } from "~/gql/graphql";
 
 export const mockLogoutHandler = rest.post(
   new URL("/auth/logout", process.env.NEXT_PUBLIC_API_ENDPOINT).toString(),
@@ -23,16 +24,20 @@ export const mockLogoutHandler = rest.post(
 );
 
 export const useLogout = ({ onSuccess }: { onSuccess(): void }) => {
-  const { removeId } = useContext(WhoamiContext);
+  const [, updateGql] = useQuery({
+    query: WhoamiDocument,
+    requestPolicy: "network-only",
+  });
+
   const handler = useCallback(async () => {
     const result = await ky.post(
       new URL("/auth/logout", process.env.NEXT_PUBLIC_API_ENDPOINT).toString(),
-      { throwHttpErrors: false }
+      { throwHttpErrors: false, credentials: "include" }
     );
     if (result.ok) {
-      removeId();
       onSuccess();
+      updateGql();
     }
-  }, [removeId, onSuccess]);
+  }, [onSuccess, updateGql]);
   return handler;
 };

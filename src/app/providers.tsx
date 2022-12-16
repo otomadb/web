@@ -86,6 +86,12 @@ const urqlClient = createUrqlClient({
         VideoSimilarVideoItem() {
           return null;
         },
+        MylistRecommendedVideosPayload() {
+          return null;
+        },
+        MylistRecommendedVideosItem() {
+          return null;
+        },
       },
     }),
     fetchExchange,
