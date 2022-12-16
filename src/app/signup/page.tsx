@@ -2,13 +2,13 @@ import clsx from "clsx";
 
 import { SkipIfLoggedin } from "~/components/SkipIfLoggedin";
 
-import { LoginForm } from "./LoginForm";
+import { SignupForm } from "./SignupForm";
 
 export default async function Page() {
   return (
     <SkipIfLoggedin>
       <div className={clsx(["flex", ["justify-center"], ["items-center"]])}>
-        <LoginForm className={clsx(["w-full", "md:w-96"])} />
+        <SignupForm className={clsx(["w-full", "md:w-96"])} />
       </div>
     </SkipIfLoggedin>
   );

@@ -1,16 +1,15 @@
 "use client";
 
 import clsx from "clsx";
-import { useRouter } from "next/navigation";
 import React from "react";
 import { useQuery } from "urql";
 
 import { UserIcon } from "~/components/UserIcon";
 import { graphql } from "~/gql";
 import { ProfilePageDocument } from "~/gql/graphql";
-import { useLogout } from "~/hooks/useLogout";
 
 import { VideoList } from "../tags/[id]/VideoList";
+import { Logout } from "./Logout";
 
 graphql(`
   query ProfilePage {
@@ -45,33 +44,6 @@ graphql(`
     }
   }
 `);
-
-export const Logout: React.FC<{ className: string }> = ({ className }) => {
-  const router = useRouter();
-  const logout = useLogout({
-    onSuccess() {
-      router.push("/");
-    },
-  });
-
-  return (
-    <button
-      className={clsx(
-        className,
-        ["px-2"],
-        ["py-1"],
-        ["bg-blue-400"],
-        ["text-white"],
-        ["rounded"]
-      )}
-      onClick={() => {
-        logout();
-      }}
-    >
-      Logout
-    </button>
-  );
-};
 
 export const Profile: React.FC<{ className?: string }> = ({ className }) => {
   const [result] = useQuery({ query: ProfilePageDocument });

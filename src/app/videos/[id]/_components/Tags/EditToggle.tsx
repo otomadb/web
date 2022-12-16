@@ -3,14 +3,14 @@ import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import React from "react";
 
-import { useIsLoggedIn } from "~/hooks/useIsLoggedIn";
+import { useIsLogin } from "~/hooks/useIsLogin";
 
 export const EditToggle: React.FC<{
   className?: string;
   edit: boolean;
   toggleEdit(v: boolean): void;
 }> = ({ className, edit, toggleEdit }) => {
-  const login = useIsLoggedIn();
+  const login = useIsLogin();
 
   return (
     <label className={clsx(className, ["flex"], ["items-center"])}>

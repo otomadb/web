@@ -9,6 +9,8 @@ specifiers:
   '@graphql-codegen/typescript-urql-graphcache': ^2.4.3
   '@graphql-typed-document-node/core': ^3.1.1
   '@heroicons/react': ^2.0.13
+  '@hookform/resolvers': ^2.9.10
+  '@storybook/addon-actions': ^7.0.0-beta.4
   '@storybook/addon-essentials': ^7.0.0-beta.4
   '@storybook/addon-interactions': ^7.0.0-beta.4
   '@storybook/addon-links': ^7.0.0-beta.4
@@ -49,6 +51,7 @@ specifiers:
   prettier: ^2.8.0
   react: 18.2.0
   react-dom: 18.2.0
+  react-hook-form: ^7.40.0
   react-hot-toast: ^2.4.0
   react-use: ^17.4.0
   serve: ^14.1.2
@@ -59,10 +62,12 @@ specifiers:
   tailwindcss: 3.2.4
   typescript: 4.9.3
   urql: ^3.0.3
+  zod: ^3.20.2
 
 dependencies:
   '@emotion/css': 11.10.5_@babel+core@7.20.2
   '@heroicons/react': 2.0.13_react@18.2.0
+  '@hookform/resolvers': 2.9.10_react-hook-form@7.40.0
   '@urql/exchange-graphcache': 5.0.8_graphql@16.6.0
   client-only: 0.0.1
   clsx: 1.2.1
@@ -73,11 +78,13 @@ dependencies:
   next: 13.0.5_mqvh5p7ejg4taogoj6tpk3gd5a
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
+  react-hook-form: 7.40.0_react@18.2.0
   react-hot-toast: 2.4.0_owo25xnefcwdq3zjgtohz6dbju
   react-use: 17.4.0_biqbaboplfbrettd7655fr4n2y
   server-only: 0.0.1
   swr: 2.0.0_react@18.2.0
   urql: 3.0.3_onqnqwb3ubg5opvemcqf7c2qhy
+  zod: 3.20.2
 
 devDependencies:
   '@babel/core': 7.20.2
@@ -86,10 +93,11 @@ devDependencies:
   '@graphql-codegen/schema-ast': 2.5.1_graphql@16.6.0
   '@graphql-codegen/typescript-urql-graphcache': 2.4.3_jsirp76eh34tie6gaisksz4eju
   '@graphql-typed-document-node/core': 3.1.1_graphql@16.6.0
+  '@storybook/addon-actions': 7.0.0-beta.4_biqbaboplfbrettd7655fr4n2y
   '@storybook/addon-essentials': 7.0.0-beta.4_lb6du3saekb5anf2gjv3wxj3oq
   '@storybook/addon-interactions': 7.0.0-beta.4_lb6du3saekb5anf2gjv3wxj3oq
   '@storybook/addon-links': 7.0.0-beta.4_biqbaboplfbrettd7655fr4n2y
-  '@storybook/nextjs': 7.0.0-beta.4_vfqvkuqy3rovsoilsqm4k7v5j4
+  '@storybook/nextjs': 7.0.0-beta.4_gv3y6qqlcmesp5ln6txgh462mm
   '@storybook/react': 7.0.0-beta.6_lb6du3saekb5anf2gjv3wxj3oq
   '@storybook/testing-library': 0.0.14-next.0_biqbaboplfbrettd7655fr4n2y
   '@tailwindcss/line-clamp': 0.4.2_tailwindcss@3.2.4
@@ -2512,6 +2520,14 @@ packages:
       react: 18.2.0
     dev: false
 
+  /@hookform/resolvers/2.9.10_react-hook-form@7.40.0:
+    resolution: {integrity: sha512-JIL1DgJIlH9yuxcNGtyhsWX/PgNltz+5Gr6+8SX9fhXc/hPbEIk6wPI82nhgvp3uUb6ZfAM5mqg/x7KR7NAb+A==}
+    peerDependencies:
+      react-hook-form: ^7.0.0
+    dependencies:
+      react-hook-form: 7.40.0_react@18.2.0
+    dev: false
+
   /@humanwhocodes/config-array/0.11.7:
     resolution: {integrity: sha512-kBbPWzN8oVMLb0hOUYXhmxggL/1cJE6ydvjDIGi9EnAGUyA7cLVKQg+d/Dsm+KZwx2czGHrCmMVLiyg8s5JPKw==}
     engines: {node: '>=10.10.0'}
@@ -3918,7 +3934,7 @@ packages:
     resolution: {integrity: sha512-Mg6pYKhuuMrzF/DcCI5dEA36jx7156bBnCk9uFInthFrr1sLYlj+HfRMibFa/VdJx8L0Wsf/15cIu3xPWriinA==}
     dev: true
 
-  /@storybook/nextjs/7.0.0-beta.4_vfqvkuqy3rovsoilsqm4k7v5j4:
+  /@storybook/nextjs/7.0.0-beta.4_gv3y6qqlcmesp5ln6txgh462mm:
     resolution: {integrity: sha512-FBFmT80mKUi0UwwR8EBkREizQZr7iQev4ihhFHB6Zq1/+gnt9CginjoMfKnQinA5ZkPd+pKpIA0g3EFIGQy0rA==}
     engines: {node: '>=16.0.0'}
     peerDependencies:
@@ -3938,6 +3954,7 @@ packages:
         optional: true
     dependencies:
       '@babel/core': 7.20.2
+      '@storybook/addon-actions': 7.0.0-beta.4_biqbaboplfbrettd7655fr4n2y
       '@storybook/builder-webpack5': 7.0.0-beta.4_qa5regghkhxgmrjkimcnrsc2vm
       '@storybook/core-common': 7.0.0-beta.4_typescript@4.9.3
       '@storybook/node-logger': 7.0.0-beta.4
@@ -11325,6 +11342,15 @@ packages:
       react-is: 18.1.0
     dev: true
 
+  /react-hook-form/7.40.0_react@18.2.0:
+    resolution: {integrity: sha512-0rokdxMPJs0k9bvFtY6dbcSydyNhnZNXCR49jgDr/aR03FDHFOK6gfh8ccqB3fl696Mk7lqh04xdm+agqWXKSw==}
+    engines: {node: '>=12.22.0'}
+    peerDependencies:
+      react: ^16.8.0 || ^17 || ^18
+    dependencies:
+      react: 18.2.0
+    dev: false
+
   /react-hot-toast/2.4.0_owo25xnefcwdq3zjgtohz6dbju:
     resolution: {integrity: sha512-qnnVbXropKuwUpriVVosgo8QrB+IaPJCpL8oBI6Ov84uvHZ5QQcTp2qg6ku2wNfgJl6rlQXJIQU5q+5lmPOutA==}
     engines: {node: '>=10'}
@@ -13584,3 +13610,7 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
     dev: true
+
+  /zod/3.20.2:
+    resolution: {integrity: sha512-1MzNQdAvO+54H+EaK5YpyEy0T+Ejo/7YLHS93G3RnYWh5gaotGHwGeN/ZO687qEDU2y4CdStQYXVHIgrUl5UVQ==}
+    dev: false

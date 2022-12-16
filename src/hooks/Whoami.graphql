@@ -1,5 +1,0 @@
-query Whoami {
-  whoami {
-    id
-  }
-}

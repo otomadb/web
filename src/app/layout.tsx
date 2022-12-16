@@ -15,9 +15,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ja">
-      <body
-        className={clsx(["relative"], ["bg-slate-50", "dark:bg-slate-800"])}
-      >
+      <body className={clsx(["relative"], ["bg-slate-50"])}>
         <Providers>
           <GlobalNav
             className={clsx(
