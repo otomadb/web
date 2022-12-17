@@ -69,6 +69,7 @@ type Mylist {
 
   """マイリストの中にビデオが追加されているか．"""
   isIncludesVideo(id: ID!): Boolean!
+  isLikeList: Boolean!
   range: MylistShareRange!
   recommendedVideos(input: MylistRecommendedVideosInput): MylistRecommendedVideosPayload!
   registrations(input: MylistRegistrationsInput!): MylistRegistrationCollection!
