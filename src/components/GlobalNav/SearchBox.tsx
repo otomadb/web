@@ -206,7 +206,7 @@ export const SearchResult: React.FC<{
     variables: { query },
     pause: isQueryEmpty,
   });
-  const { data, fetching } = result;
+  const { data } = result;
 
   const videos = getFragment(
     GlobalNav_SearchBox_SearchVideosFragmentDoc,
@@ -216,6 +216,8 @@ export const SearchResult: React.FC<{
     GlobalNav_SearchBox_SearchTagsFragmentDoc,
     data?.tags
   );
+
+  if (isQueryEmpty) return null;
 
   return (
     <div
@@ -229,43 +231,34 @@ export const SearchResult: React.FC<{
         ["py-3"]
       )}
     >
-      {isQueryEmpty && (
-        <div className={clsx(["px-4", "py-2"])}>
-          <p className={clsx(["text-xs"], ["text-slate-500"])}>
-            なにか入力してください
-          </p>
-        </div>
-      )}
-      {!isQueryEmpty && (
-        <div className={clsx(["space-y-2"])}>
-          <div className={clsx()}>
-            <div
-              className={clsx(
-                ["text-xs"],
-                ["px-4", "py-1"],
-                ["text-slate-600"],
-                ["border-b", "border-slate-300/75"]
-              )}
-            >
-              タグ
-            </div>
-            {tags && <TagsSect className={clsx()} fragment={tags} />}
+      <div className={clsx(["space-y-2"])}>
+        <div className={clsx()}>
+          <div
+            className={clsx(
+              ["text-xs"],
+              ["px-4", "py-1"],
+              ["text-slate-600"],
+              ["border-b", "border-slate-300/75"]
+            )}
+          >
+            タグ
           </div>
-          <div className={clsx()}>
-            <div
-              className={clsx(
-                ["text-xs"],
-                ["px-4", "py-1"],
-                ["text-slate-600"],
-                ["border-b", "border-slate-300/75"]
-              )}
-            >
-              動画
-            </div>
-            {videos && <VideosSect className={clsx()} fragment={videos} />}
-          </div>
+          {tags && <TagsSect className={clsx()} fragment={tags} />}
         </div>
-      )}
+        <div className={clsx()}>
+          <div
+            className={clsx(
+              ["text-xs"],
+              ["px-4", "py-1"],
+              ["text-slate-600"],
+              ["border-b", "border-slate-300/75"]
+            )}
+          >
+            動画
+          </div>
+          {videos && <VideosSect className={clsx()} fragment={videos} />}
+        </div>
+      </div>
     </div>
   );
 };
@@ -274,10 +267,14 @@ export const SearchBox: React.FC<{ className?: string }> = ({ className }) => {
   const [query, setQuery] = useState<string>("");
 
   return (
-    <div
+    <form
       className={clsx(
         className,
+        ["group"],
         ["relative"],
+        ["w-full"],
+        ["border"],
+        ["bg-white"],
         css`
           &:focus-within {
             box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.125);
@@ -285,48 +282,38 @@ export const SearchBox: React.FC<{ className?: string }> = ({ className }) => {
         `
       )}
     >
-      <form
+      <div
         className={clsx(
-          ["relative"],
-          ["w-full"],
-          ["peer"],
-          ["border"],
-          ["bg-white"]
+          ["absolute"],
+          ["pl-4"],
+          ["inset-y-0"],
+          ["flex", "items-center"],
+          ["pointer-events-none"]
         )}
       >
-        <div
-          className={clsx(
-            ["absolute"],
-            ["pl-4"],
-            ["inset-y-0"],
-            ["flex", "items-center"],
-            ["pointer-events-none"]
-          )}
-        >
-          <MagnifyingGlassIcon className={clsx(["w-4"], ["h-4"])} />
-        </div>
-        <DelayedInput
-          className={clsx(
-            ["w-full"],
-            [["pl-10"], ["pr-4"], ["py-3"]],
-            ["text-sm"],
-            ["text-slate-900"]
-          )}
-          type="search"
-          aria-label="Search box input"
-          debounce={50}
-          onUpdateQuery={(v) => setQuery(v)}
-          placeholder="何かしらを検索"
-        />
-      </form>
+        <MagnifyingGlassIcon className={clsx(["w-4"], ["h-4"])} />
+      </div>
+      <DelayedInput
+        className={clsx(
+          ["w-full"],
+          [["pl-10"], ["pr-4"], ["py-3"]],
+          ["text-sm"],
+          ["text-slate-900"]
+        )}
+        type="search"
+        aria-label="Search box input"
+        debounce={50}
+        onUpdateQuery={(v) => setQuery(v)}
+        placeholder="何かしらを検索"
+      />
       <SearchResult
         classname={clsx(
-          ["peer-focus-within:visible"],
+          ["invisible", "group-focus-within:visible"],
           ["w-full"],
           [["absolute"], ["z-infinity"], ["top-full"]]
         )}
         query={query}
       />
-    </div>
+    </form>
   );
 };
