@@ -175,6 +175,7 @@ enum PseudoTagType {
 }
 
 type Query {
+  findMylist(id: ID!): Mylist
   findNicovideoVideoSource(sourceId: ID!): NicovideoVideoSource
   mylist(id: ID!): Mylist!
   nicovideoVideoSource(sourceId: ID!): NicovideoVideoSource!

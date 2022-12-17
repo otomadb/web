@@ -1,0 +1,9 @@
+fragment MylistPage_Root on Mylist {
+  id
+}
+
+query MylistPage($id: ID!) {
+  findMylist(id: $id) {
+    ...MylistPage_Root
+  }
+}
