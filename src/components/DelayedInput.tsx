@@ -1,24 +1,20 @@
 "use client";
-import clsx from "clsx";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { useDebounce } from "react-use";
 
-export const DelayedInput: React.FC<{
-  className?: string;
-  onUpdateQuery(value: string): void;
-  onFocus?(): void;
-  inject?: string;
-  debounce?: number;
-  disabled?: boolean;
-}> = ({
-  className,
-  onUpdateQuery,
-  onFocus,
-  debounce = 100,
-  inject,
-  disabled,
-}) => {
+export const DelayedInput: React.FC<
+  Omit<
+    React.DetailedHTMLProps<
+      React.InputHTMLAttributes<HTMLInputElement>,
+      HTMLInputElement
+    >,
+    "onChange"
+  > & {
+    onUpdateQuery(value: string): void;
+    debounce?: number;
+  }
+> = ({ onUpdateQuery, debounce = 100, ...props }) => {
   const [input, setInput] = useState("");
   const [ime, setIME] = useState<boolean>(false);
 
@@ -35,15 +31,8 @@ export const DelayedInput: React.FC<{
     if (input === "") onUpdateQuery("");
   }, [input, onUpdateQuery]);
 
-  useEffect(() => {
-    if (inject) setInput(inject);
-  }, [inject]);
-
   return (
     <input
-      className={clsx(className)}
-      value={input}
-      disabled={disabled ?? false}
       onChange={(e) => {
         setInput(e.target.value);
       }}
@@ -53,9 +42,7 @@ export const DelayedInput: React.FC<{
       onCompositionEnd={() => {
         setIME(false);
       }}
-      onFocus={() => {
-        if (onFocus) onFocus();
-      }}
+      {...props}
     ></input>
   );
 };

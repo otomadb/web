@@ -232,9 +232,9 @@ type RemoveVideoFromMylistPayload {
 }
 
 input SearchTagInput {
-  limit: Int = 10
+  limit: Int! = 10
   query: String!
-  skip: Int = 0
+  skip: Int! = 0
 }
 
 type SearchTagsPayload {
@@ -247,9 +247,9 @@ type SearchTagsResultItem {
 }
 
 input SearchVideoInput {
-  limit: Int = 10
+  limit: Int! = 10
   query: String!
-  skip: Int = 0
+  skip: Int! = 0
 }
 
 type SearchVideosPayload {

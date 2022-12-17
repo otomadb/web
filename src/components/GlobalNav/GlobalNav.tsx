@@ -19,27 +19,15 @@ export const GlobalNav: React.FC<{ className?: string }> = ({ className }) => {
           ["flex", ["items-center"]]
         )}
       >
-        <div
-          className={clsx(
-            ["w-36"],
-            ["flex-shrink-0"],
-            ["flex", ["justify-start"]]
-          )}
-        >
+        <div className={clsx(["flex-shrink-0"], ["flex", ["justify-start"]])}>
           <Link href="/" className={clsx(["text-white"])}>
             otomadb
           </Link>
         </div>
         <div className={clsx(["flex-grow"], ["px-8"])}>
-          <SearchBox className={clsx(["mx-auto"], ["max-w-lg"])} />
+          <SearchBox className={clsx(["mx-auto"], ["max-w-xl"])} />
         </div>
-        <div
-          className={clsx(
-            ["w-36"],
-            ["flex-shrink-0"],
-            ["flex", ["justify-end"]]
-          )}
-        >
+        <div className={clsx(["flex-shrink-0"], ["flex", ["justify-end"]])}>
           <Profile />
         </div>
       </div>

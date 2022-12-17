@@ -19,6 +19,7 @@ module.exports = {
         music: colors.sky,
         event: colors.teal,
         series: colors.purple,
+        phrase: colors.gray,
       },
     },
   },
