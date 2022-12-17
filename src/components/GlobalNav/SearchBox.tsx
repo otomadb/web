@@ -1,6 +1,8 @@
 "use client";
 
+import { css } from "@emotion/css";
 import clsx from "clsx";
+import Image from "next/image";
 import React, { useMemo, useState } from "react";
 import { useQuery } from "urql";
 
@@ -37,15 +39,16 @@ graphql(`
       video {
         id
         title
+        thumbnailUrl
       }
     }
   }
 
   query GlobalNav_SearchBox($query: String!) {
-    tags: searchTags(input: { query: $query, limit: 8 }) {
+    tags: searchTags(input: { query: $query, limit: 6 }) {
       ...GlobalNav_SearchBox_SearchTags
     }
-    videos: searchVideos(input: { query: $query, limit: 4 }) {
+    videos: searchVideos(input: { query: $query, limit: 3 }) {
       ...GlobalNav_SearchBox_SearchVideos
     }
   }
@@ -58,7 +61,7 @@ export const VideosSect: React.FC<{
   const { result } = fragment;
 
   return (
-    <div className={clsx(className, ["divide-y", "divide-slate-400/75"])}>
+    <div className={clsx(className, ["py-2"])}>
       {result.length === 0 && (
         <div className={clsx(["px-4", "py-1"], [["flex"], ["items-center"]])}>
           <span className={clsx(["text-slate-900"], ["text-sm"])}>
@@ -66,24 +69,60 @@ export const VideosSect: React.FC<{
           </span>
         </div>
       )}
-      {result.map(({ video }) => (
-        <VideoLink
-          key={video.id}
-          videoId={video.id}
-          tabIndex={0}
-          className={clsx(
-            ["px-4", "py-1"],
-            [["flex"], ["items-center"]],
-            ["bg-sky-100/50", "hover:bg-sky-300/50", "focus:bg-sky-400/50"]
-          )}
-        >
-          <div className={clsx(["flex-grow"], ["truncate"])}>
-            <span className={clsx(["text-slate-900"], ["text-sm"])}>
-              {video.title}
-            </span>
-          </div>
-        </VideoLink>
-      ))}
+      <div className={clsx(["divide-y", "divide-slate-400/75"])}>
+        {result.map(({ video, matchedTitle }) => (
+          <VideoLink
+            key={video.id}
+            videoId={video.id}
+            tabIndex={0}
+            className={clsx(
+              ["py-2"],
+              ["flex", ["items-stretch"]],
+              ["hover:bg-sky-300/50", "focus:bg-sky-400/50"],
+              ["divide-x", "border-slate-300/75"],
+              ["rounded"]
+            )}
+          >
+            <div
+              className={clsx(
+                ["flex-shrink-0"],
+                ["w-32"],
+                ["flex", ["justify-center"]]
+              )}
+            >
+              <Image
+                className={clsx(
+                  ["h-16"],
+                  ["rounded-lg"],
+                  ["object-scale-down"]
+                )}
+                src={video.thumbnailUrl}
+                alt={video.title}
+                width={96}
+                height={64}
+                quality={50}
+                priority={true}
+              />
+            </div>
+            <div
+              className={clsx(
+                ["flex-grow"],
+                ["flex", "flex-col", "justify-center"],
+                ["px-2"]
+              )}
+            >
+              <div
+                className={clsx(["text-slate-900"], ["text-sm"], ["font-bold"])}
+              >
+                {matchedTitle}
+              </div>
+              <div className={clsx(["text-slate-500"], ["text-xs"])}>
+                {video.title}
+              </div>
+            </div>
+          </VideoLink>
+        ))}
+      </div>
     </div>
   );
 };
@@ -111,7 +150,7 @@ export const TagsSect: React.FC<{
           className={clsx(
             [["flex"], ["items-center"]],
             ["divide-x", "border-slate-300/75"],
-            ["hover:bg-sky-300/50", "focus:bg-sky-300/50"],
+            ["hover:bg-sky-300/50", "focus:bg-sky-4 00/50"],
             ["py-2"]
           )}
         >
@@ -236,14 +275,12 @@ export const SearchBox: React.FC<{ className?: string }> = ({ className }) => {
     <div className={clsx(className, ["relative"])}>
       <div
         className={clsx(
-          ["flex-shrink-0"]
-          /*
+          ["flex-shrink-0"],
           css`
             &:focus-within {
               box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.125);
             }
           `
-          */
         )}
       >
         <DelayedInput
@@ -256,6 +293,7 @@ export const SearchBox: React.FC<{ className?: string }> = ({ className }) => {
             ["text-sm"],
             ["text-slate-900"]
           )}
+          debounce={50}
           onUpdateQuery={(v) => setQuery(v)}
         />
         <SearchResult
