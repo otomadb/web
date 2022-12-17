@@ -1,6 +1,7 @@
 "use client";
 
 import { css } from "@emotion/css";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import Image from "next/image";
 import React, { useMemo, useState } from "react";
@@ -61,12 +62,10 @@ export const VideosSect: React.FC<{
   const { result } = fragment;
 
   return (
-    <div className={clsx(className, ["py-2"])}>
+    <div className={clsx(className)}>
       {result.length === 0 && (
-        <div className={clsx(["px-4", "py-1"], [["flex"], ["items-center"]])}>
-          <span className={clsx(["text-slate-900"], ["text-sm"])}>
-            該当なし
-          </span>
+        <div className={clsx(["px-4", "py-2"])}>
+          <p className={clsx(["text-xs"], ["text-slate-500"])}>該当なし</p>
         </div>
       )}
       <div className={clsx(["divide-y", "divide-slate-400/75"])}>
@@ -79,8 +78,7 @@ export const VideosSect: React.FC<{
               ["py-2"],
               ["flex", ["items-stretch"]],
               ["hover:bg-sky-300/50", "focus:bg-sky-400/50"],
-              ["divide-x", "border-slate-300/75"],
-              ["rounded"]
+              ["divide-x", "border-slate-300/75"]
             )}
           >
             <div
@@ -134,62 +132,66 @@ export const TagsSect: React.FC<{
   const { result } = fragment;
 
   return (
-    <div className={clsx(className, ["divide-y", "divide-slate-400/75"])}>
+    <div className={clsx(className)}>
       {result.length === 0 && (
-        <div className={clsx(["px-4", "py-1"], [["flex"], ["items-center"]])}>
-          <span className={clsx(["text-slate-900"], ["text-sm"])}>
-            該当なし
-          </span>
+        <div className={clsx(["px-4", "py-2"])}>
+          <p className={clsx(["text-xs"], ["text-slate-500"])}>該当なし</p>
         </div>
       )}
-      {result.map(({ tag, matchedName }) => (
-        <TagLink
-          key={tag.id}
-          tagId={tag.id}
-          tabIndex={0}
-          className={clsx(
-            [["flex"], ["items-center"]],
-            ["divide-x", "border-slate-300/75"],
-            ["hover:bg-sky-300/50", "focus:bg-sky-4 00/50"],
-            ["py-2"]
-          )}
-        >
-          <div className={clsx(["flex-shrink-0"], ["w-36"], ["px-2"])}>
-            <div
-              className={clsx(["text-slate-500"], ["text-xs"], ["text-right"])}
-            >
-              {matchedName}
-            </div>
-          </div>
-          <div
+      <div className={clsx(["divide-y", "divide-slate-400/75"])}>
+        {result.map(({ tag, matchedName }) => (
+          <TagLink
+            key={tag.id}
+            tagId={tag.id}
+            tabIndex={0}
             className={clsx(
-              ["flex-grow"],
-              ["flex", "flex-col", "justify-start"],
-              ["px-2"]
+              [["flex"], ["items-center"]],
+              ["divide-x", "border-slate-300/75"],
+              ["hover:bg-sky-300/50", "focus:bg-sky-4 00/50"],
+              ["py-2"]
             )}
           >
-            <div
-              className={clsx(["text-slate-900"], ["text-sm"], ["font-bold"])}
-            >
-              {tag.name}
-            </div>
-            <div className={clsx(["flex"])}>
+            <div className={clsx(["flex-shrink-0"], ["w-36"], ["px-2"])}>
               <div
-                className={clsx(["text-xs"], ["italic"], {
-                  "text-copyright-500": tag.pseudoType === "COPYRIGHT",
-                  "text-character-500": tag.pseudoType === "CHARACTER",
-                  "text-class-500": tag.pseudoType === "CLASS",
-                  "text-music-500": tag.pseudoType === "MUSIC",
-                  "text-series-500": tag.pseudoType === "SERIES",
-                  "text-phrase-500": tag.pseudoType === "PHRASE",
-                })}
+                className={clsx(
+                  ["text-slate-500"],
+                  ["text-xs"],
+                  ["text-right"]
+                )}
               >
-                {tag.pseudoType}
+                {matchedName}
               </div>
             </div>
-          </div>
-        </TagLink>
-      ))}
+            <div
+              className={clsx(
+                ["flex-grow"],
+                ["flex", "flex-col", "justify-start"],
+                ["px-2"]
+              )}
+            >
+              <div
+                className={clsx(["text-slate-900"], ["text-sm"], ["font-bold"])}
+              >
+                {tag.name}
+              </div>
+              <div className={clsx(["flex"])}>
+                <div
+                  className={clsx(["text-xs"], ["italic"], {
+                    "text-copyright-500": tag.pseudoType === "COPYRIGHT",
+                    "text-character-500": tag.pseudoType === "CHARACTER",
+                    "text-class-500": tag.pseudoType === "CLASS",
+                    "text-music-500": tag.pseudoType === "MUSIC",
+                    "text-series-500": tag.pseudoType === "SERIES",
+                    "text-phrase-500": tag.pseudoType === "PHRASE",
+                  })}
+                >
+                  {tag.pseudoType}
+                </div>
+              </div>
+            </div>
+          </TagLink>
+        ))}
+      </div>
     </div>
   );
 };
@@ -272,39 +274,59 @@ export const SearchBox: React.FC<{ className?: string }> = ({ className }) => {
   const [query, setQuery] = useState<string>("");
 
   return (
-    <div className={clsx(className, ["relative"])}>
-      <div
+    <div
+      className={clsx(
+        className,
+        ["relative"],
+        css`
+          &:focus-within {
+            box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.125);
+          }
+        `
+      )}
+    >
+      <form
         className={clsx(
-          ["flex-shrink-0"],
-          css`
-            &:focus-within {
-              box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.125);
-            }
-          `
+          ["relative"],
+          ["w-full"],
+          ["peer"],
+          ["border"],
+          ["bg-white"]
         )}
       >
-        <DelayedInput
-          aria-label="Search box input"
+        <div
           className={clsx(
-            ["peer"],
-            ["relative"],
+            ["absolute"],
+            ["pl-4"],
+            ["inset-y-0"],
+            ["flex", "items-center"],
+            ["pointer-events-none"]
+          )}
+        >
+          <MagnifyingGlassIcon className={clsx(["w-4"], ["h-4"])} />
+        </div>
+        <DelayedInput
+          className={clsx(
             ["w-full"],
-            [["px-4"], ["py-2"]],
+            [["pl-10"], ["pr-4"], ["py-3"]],
             ["text-sm"],
             ["text-slate-900"]
           )}
+          type="search"
+          aria-label="Search box input"
           debounce={50}
           onUpdateQuery={(v) => setQuery(v)}
+          placeholder="何かしらを検索"
         />
-        <SearchResult
-          classname={clsx(
-            ["peer-focus:visible", "focus-within:visible"],
-            ["w-full"],
-            [["absolute"], ["z-infinity"], ["top-full"]]
-          )}
-          query={query}
-        />
-      </div>
+      </form>
+      <SearchResult
+        classname={clsx(
+          ["peer-focus-within:visible"],
+          ["w-full"],
+          [["absolute"], ["z-infinity"], ["top-full"]]
+        )}
+        query={query}
+      />
     </div>
   );
 };

@@ -78,6 +78,37 @@ export const Click: StoryObj<typeof SearchBox> = {
   },
 };
 
+export const Nothing: StoryObj<typeof SearchBox> = {
+  args: {},
+  render(args) {
+    return (
+      <UrqlProvider value={createUrqlClient({ url: "/graphql" })}>
+        <SearchBox {...args} />
+      </UrqlProvider>
+    );
+  },
+  play: async () => {
+    await userEvent.type(
+      screen.getByLabelText("Search box input"),
+      "ぼっち・ざ・ろっく！"
+    );
+  },
+  parameters: {
+    msw: {
+      handlers: [
+        graphql.query(GlobalNav_SearchBoxDocument, (req, res, ctx) =>
+          res(
+            ctx.data({
+              tags: aSearchTagsPayload({ result: [] }),
+              videos: aSearchVideosPayload({ result: [] }),
+            })
+          )
+        ),
+      ],
+    },
+  },
+};
+
 export const Type: StoryObj<typeof SearchBox> = {
   args: {},
   render(args) {
