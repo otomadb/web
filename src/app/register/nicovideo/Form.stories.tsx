@@ -18,6 +18,7 @@ import {
   RegisterNicovideoPage_ExactTagDocument,
   RegisterNicovideoPage_RegisterVideoDocument,
   RegisterNicovideoPage_SearchTagCandidatesDocument,
+  RegisterNicovideoPage_SearchTagsDocument,
   ViewerDocument,
 } from "~/gql/graphql";
 
@@ -101,6 +102,35 @@ const mockYetUnregistered = graphql.query(
     )
 );
 
+const mockSearchTag = graphql.query(
+  RegisterNicovideoPage_SearchTagsDocument,
+  (req, res, ctx) =>
+    res(
+      ctx.data({
+        searchTags: aSearchTagsPayload({
+          result: [
+            aSearchTagsResultItem({
+              matchedName: req.variables.query,
+              tag: aTag({
+                id: `tag:1:${req.variables.query}`,
+                name: req.variables.query,
+                explicitParent: null,
+              }),
+            }),
+            aSearchTagsResultItem({
+              matchedName: req.variables.query,
+              tag: aTag({
+                id: `tag:2:${req.variables.query}`,
+                name: req.variables.query,
+                explicitParent: null,
+              }),
+            }),
+          ],
+        }),
+      })
+    )
+);
+
 export default {
   component: Form,
   render(args) {
@@ -171,6 +201,7 @@ export default {
               })
             )
         ),
+        mockSearchTag,
       ],
     },
   },

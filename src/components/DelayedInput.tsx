@@ -9,12 +9,13 @@ export const DelayedInput: React.FC<
       React.InputHTMLAttributes<HTMLInputElement>,
       HTMLInputElement
     >,
-    "onChange" | "value"
+    "onChange"
   > & {
+    value?: string;
     onUpdateQuery(value: string): void;
     debounce?: number;
   }
-> = ({ onUpdateQuery, debounce = 100, ...props }) => {
+> = ({ onUpdateQuery, debounce = 100, value, ...props }) => {
   const [input, setInput] = useState("");
   const [ime, setIME] = useState<boolean>(false);
 
@@ -30,6 +31,10 @@ export const DelayedInput: React.FC<
   useEffect(() => {
     if (input === "") onUpdateQuery("");
   }, [input, onUpdateQuery]);
+
+  useEffect(() => {
+    if (typeof value === "string") setInput(value);
+  }, [value]);
 
   return (
     <input

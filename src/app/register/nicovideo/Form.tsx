@@ -20,6 +20,7 @@ import { RegisterButton, SendData } from "./RegisterButton";
 import { RegisterTag } from "./RegisterTag";
 import { SourceIDInput } from "./SourceIDInput";
 import { NicovideoTag } from "./SourceTag";
+import { TagAdder } from "./TagAdder";
 
 graphql(`
   query RegisterNicovideoPage_AlreadyCheck($id: ID!) {
@@ -59,9 +60,13 @@ export const Form: React.FC<{ className?: string }> = ({ className }) => {
       }
   >(undefined);
 
-  const [id, setId] = useState<undefined | string>(undefined);
-  const [title, setTitle] = useState<undefined | string>(undefined);
-  const [picktags, updateTags] = useReducer(
+  const [registerNicovideoId, setRegisterNicovideoId] = useState<
+    undefined | string
+  >(undefined);
+  const [registerTitle, setRegisterTitle] = useState<undefined | string>(
+    undefined
+  );
+  const [registerTags, updateRegisterTags] = useReducer(
     (
       state: string[],
       action:
@@ -83,26 +88,28 @@ export const Form: React.FC<{ className?: string }> = ({ className }) => {
     },
     []
   );
-  const [thumbnail, setThumbnail] = useState<string | undefined>();
+  const [registerThumbnail, setRegisterThumbnail] = useState<
+    string | undefined
+  >();
 
   const [{ data: alreadyCheckData }] = useQuery({
     query: RegisterNicovideoPage_AlreadyCheckDocument,
-    pause: !id,
-    variables: id ? { id } : undefined,
+    pause: !registerNicovideoId,
+    variables: registerNicovideoId ? { id: registerNicovideoId } : undefined,
     requestPolicy: "network-only",
   });
 
-  const senddata = useMemo<SendData | undefined>(() => {
-    if (typeof id === "undefined") return undefined;
-    if (typeof title === "undefined") return undefined;
-    if (typeof thumbnail === "undefined") return undefined;
+  const registerData = useMemo<SendData | undefined>(() => {
+    if (typeof registerNicovideoId === "undefined") return undefined;
+    if (typeof registerTitle === "undefined") return undefined;
+    if (typeof registerThumbnail === "undefined") return undefined;
     return {
-      nicovideoId: id,
-      title,
-      tags: picktags,
-      thumbnail,
+      nicovideoId: registerNicovideoId,
+      title: registerTitle,
+      tags: registerTags,
+      thumbnail: registerThumbnail,
     };
-  }, [id, picktags, thumbnail, title]);
+  }, [registerNicovideoId, registerTags, registerThumbnail, registerTitle]);
 
   return (
     <div className={clsx(className)}>
@@ -111,8 +118,8 @@ export const Form: React.FC<{ className?: string }> = ({ className }) => {
           setRemote={(data) => {
             setRemote(data);
             if (data) {
-              setId(data.id);
-              setTitle(data.title);
+              setRegisterNicovideoId(data.id);
+              setRegisterTitle(data.title);
             }
           }}
         />
@@ -186,8 +193,8 @@ export const Form: React.FC<{ className?: string }> = ({ className }) => {
                         <NicovideoTag
                           key={i}
                           sourceTagName={tag}
-                          currentTags={picktags}
-                          reducer={updateTags}
+                          currentTags={registerTags}
+                          reducer={updateRegisterTags}
                         />
                       ))}
                     </div>
@@ -206,7 +213,7 @@ export const Form: React.FC<{ className?: string }> = ({ className }) => {
                           role="button"
                           className={clsx(["block"], ["mt-2"])}
                           onClick={() =>
-                            setThumbnail(remote.thumbnails.original)
+                            setRegisterThumbnail(remote.thumbnails.original)
                           }
                         >
                           <Image
@@ -223,7 +230,9 @@ export const Form: React.FC<{ className?: string }> = ({ className }) => {
                         <div
                           role="button"
                           className={clsx(["block"], ["mt-2"])}
-                          onClick={() => setThumbnail(remote.thumbnails.large)}
+                          onClick={() =>
+                            setRegisterThumbnail(remote.thumbnails.large)
+                          }
                         >
                           <Image
                             className={clsx(["object-scale-down"], ["h-32"])}
@@ -298,14 +307,14 @@ export const Form: React.FC<{ className?: string }> = ({ className }) => {
                           ["font-bold"]
                         )}
                       >
-                        {id}
+                        {registerNicovideoId}
                       </p>
                     </div>
                     <div>
                       <p>タイトル</p>
                       <input
                         type={"text"}
-                        value={title}
+                        value={registerTitle}
                         className={clsx(
                           ["mt-1"],
                           ["px-2"],
@@ -318,37 +327,50 @@ export const Form: React.FC<{ className?: string }> = ({ className }) => {
                           ["rounded"]
                         )}
                         onChange={(e) => {
-                          setTitle(e.target.value);
+                          setRegisterTitle(e.target.value);
                         }}
                       ></input>
                     </div>
                     <div>
                       <p>タグ</p>
-                      <div className={clsx(["mt-1"], ["flex"], ["gap-2"])}>
-                        {Array.from(picktags).map((id) => (
-                          <RegisterTag
-                            key={id}
-                            tagId={id}
-                            currentTags={picktags}
-                            reducer={updateTags}
+                      <div className={clsx(["mt-1"])}>
+                        <div
+                          className={clsx(
+                            ["flex", ["items-center"], ["flex-wrap"]],
+                            ["gap-2"]
+                          )}
+                        >
+                          {Array.from(registerTags).map((id) => (
+                            <RegisterTag
+                              key={id}
+                              tagId={id}
+                              currentTags={registerTags}
+                              reducer={updateRegisterTags}
+                            />
+                          ))}
+                          <TagAdder
+                            className={clsx(["w-48"])}
+                            select={(id) =>
+                              updateRegisterTags({ type: "add", id })
+                            }
                           />
-                        ))}
+                        </div>
                       </div>
                     </div>
                     <div>
                       <p>サムネイル</p>
 
                       <div className={clsx(["mt-1"])}>
-                        {thumbnail && (
+                        {registerThumbnail && (
                           <Image
                             className={clsx(["object-scale-down"], ["h-32"])}
-                            src={thumbnail}
+                            src={registerThumbnail}
                             width={260}
                             height={200}
                             alt={`${remote.id}のサムネイル候補`}
                           />
                         )}
-                        {!thumbnail && (
+                        {!registerThumbnail && (
                           <p className={clsx(["text-sm"], ["text-slate-500"])}>
                             サムネイル画像を指定してください．
                           </p>
@@ -357,7 +379,7 @@ export const Form: React.FC<{ className?: string }> = ({ className }) => {
                     </div>
                     <div>
                       <RegisterButton
-                        senddata={senddata}
+                        senddata={registerData}
                         onSuccess={() => {
                           setRemote(undefined);
                         }}
