@@ -4,6 +4,7 @@ import clsx from "clsx";
 import React from "react";
 import { useQuery } from "urql";
 
+import { MylistLink } from "~/components/Link";
 import { UserIcon } from "~/components/UserIcon";
 import { graphql } from "~/gql";
 import { ProfilePageDocument } from "~/gql/graphql";
@@ -119,14 +120,17 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
       <section className={clsx(["mt-4"])}>
         <h2 className={clsx(["text-lg"])}>いいねした動画</h2>
         {whoami && (
-          <VideoList
-            className={clsx(["mt-2"])}
-            videos={whoami.favorites.registrations.nodes.map(({ video }) => ({
-              id: video.id,
-              title: video.title,
-              thumbnailUrl: video.thumbnailUrl,
-            }))}
-          />
+          <>
+            <MylistLink mylistId={whoami.favorites.id}>ページ</MylistLink>
+            <VideoList
+              className={clsx(["mt-2"])}
+              videos={whoami.favorites.registrations.nodes.map(({ video }) => ({
+                id: video.id,
+                title: video.title,
+                thumbnailUrl: video.thumbnailUrl,
+              }))}
+            />
+          </>
         )}
       </section>
       <section className={clsx(["mt-4"])}>

@@ -17,6 +17,7 @@ specifiers:
   '@storybook/nextjs': 7.0.0-beta.4
   '@storybook/react': 7.0.0-beta.6
   '@storybook/testing-library': ^0.0.14-next.0
+  '@tailwindcss/container-queries': ^0.1.0
   '@tailwindcss/line-clamp': ^0.4.2
   '@tsconfig/node16': 1.0.3
   '@types/node': 18.11.9
@@ -100,6 +101,7 @@ devDependencies:
   '@storybook/nextjs': 7.0.0-beta.4_gv3y6qqlcmesp5ln6txgh462mm
   '@storybook/react': 7.0.0-beta.6_lb6du3saekb5anf2gjv3wxj3oq
   '@storybook/testing-library': 0.0.14-next.0_biqbaboplfbrettd7655fr4n2y
+  '@tailwindcss/container-queries': 0.1.0_tailwindcss@3.2.4
   '@tailwindcss/line-clamp': 0.4.2_tailwindcss@3.2.4
   '@tsconfig/node16': 1.0.3
   '@types/node': 18.11.9
@@ -4349,6 +4351,14 @@ packages:
     engines: {node: '>=14.16'}
     dependencies:
       defer-to-connect: 2.0.1
+    dev: true
+
+  /@tailwindcss/container-queries/0.1.0_tailwindcss@3.2.4:
+    resolution: {integrity: sha512-t1GeJ9P8ual160BvKy6Y1sG7bjChArMaK6iRXm3ZYjZGN2FTzmqb5ztsTDb9AsTSJD4NMHtsnaI2ielrXEk+hw==}
+    peerDependencies:
+      tailwindcss: '>=3.2.0'
+    dependencies:
+      tailwindcss: 3.2.4_ts-node@10.9.1
     dev: true
 
   /@tailwindcss/line-clamp/0.4.2_tailwindcss@3.2.4:

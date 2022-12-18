@@ -69,6 +69,7 @@ type Mylist {
 
   """マイリストの中にビデオが追加されているか．"""
   isIncludesVideo(id: ID!): Boolean!
+  isLikeList: Boolean!
   range: MylistShareRange!
   recommendedVideos(input: MylistRecommendedVideosInput): MylistRecommendedVideosPayload!
   registrations(input: MylistRegistrationsInput!): MylistRegistrationCollection!
@@ -175,6 +176,7 @@ enum PseudoTagType {
 }
 
 type Query {
+  findMylist(id: ID!): Mylist
   findNicovideoVideoSource(sourceId: ID!): NicovideoVideoSource
   mylist(id: ID!): Mylist!
   nicovideoVideoSource(sourceId: ID!): NicovideoVideoSource!
