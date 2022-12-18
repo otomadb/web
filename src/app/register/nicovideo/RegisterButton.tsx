@@ -1,8 +1,10 @@
 "use client";
 import clsx from "clsx";
 import React from "react";
+import { toast } from "react-hot-toast";
 import { useMutation } from "urql";
 
+import { VideoLink } from "~/components/Link";
 import { graphql } from "~/gql";
 import {
   RegisterNicovideoPage_RegisterVideoDocument,
@@ -15,10 +17,6 @@ graphql(`
       video {
         id
         title
-        tags {
-          id
-          name
-        }
       }
     }
   }
@@ -33,40 +31,63 @@ export type SendData = {
 
 export const RegisterButton: React.FC<{
   className?: string;
-  data: SendData | undefined;
-}> = ({ className, data }) => {
+  senddata: SendData | undefined;
+}> = ({ className, senddata }) => {
   const [, trigger] = useMutation(RegisterNicovideoPage_RegisterVideoDocument);
 
   return (
     <input
       type="button"
+      disabled={!senddata}
       className={clsx(
         className,
         ["rounded"],
         ["px-6", "py-2"],
         ["disabled:bg-slate-300", "bg-blue-400", "hover:bg-blue-500"],
-        ["disabled:text-slate-500", "text-blue-50", "hover:text-blue-100"],
-        ["text-blue-50", "group-hover:text-blue-100"],
-        ["group-disabled:text-slate-400"],
+        ["disabled:text-slate-100", "text-blue-50", "hover:text-blue-100"],
         ["text-sm"],
         ["cursor-pointer"]
       )}
-      onClick={() => {
-        if (!data) return;
-        trigger({
+      onClick={async () => {
+        if (!senddata) return;
+        const { error, data: payload } = await trigger({
           input: {
-            primaryTitle: data.title,
+            primaryTitle: senddata.title,
             extraTitles: [],
-            primaryThumbnail: data.thumbnail,
-            tags: data.tags,
+            primaryThumbnail: senddata.thumbnail,
+            tags: senddata.tags,
             sources: [
               {
                 type: RegisterVideoInputSourceType.Nicovideo,
-                sourceId: data.nicovideoId,
+                sourceId: senddata.nicovideoId,
               },
             ],
           },
         });
+
+        if (error) {
+          toast.error(() => (
+            <span className={clsx(["text-slate-700"])}>
+              登録時に問題が発生しました
+            </span>
+          ));
+          return;
+        }
+
+        if (payload) {
+          const { id, title } = payload.registerVideo.video;
+          toast(() => (
+            <span className={clsx(["text-slate-700"])}>
+              <VideoLink
+                videoId={id}
+                className={clsx(["font-bold"], ["text-blue-500"])}
+              >
+                {title}
+              </VideoLink>
+              を登録しました．
+            </span>
+          ));
+        }
       }}
       value="登録"
     />

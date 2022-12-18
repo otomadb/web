@@ -7,11 +7,16 @@ import {
 } from "urql";
 
 import {
+  aNicovideoVideoSource,
+  aRegisterVideoPayload,
   aSearchTagsPayload,
   aSearchTagsResultItem,
   aTag,
   aUser,
+  aVideo,
+  RegisterNicovideoPage_AlreadyCheckDocument,
   RegisterNicovideoPage_ExactTagDocument,
+  RegisterNicovideoPage_RegisterVideoDocument,
   RegisterNicovideoPage_SearchTagCandidatesDocument,
   ViewerDocument,
 } from "~/gql/graphql";
@@ -39,6 +44,63 @@ const mockUnlogin = graphql.query(ViewerDocument, (req, res, ctx) =>
   )
 );
 
+const mockRemoteSuccess = rest.get(
+  "https://nicovideo-gti-proxy.deno.dev/:id",
+  (req, res, ctx) =>
+    res(
+      ctx.json({
+        id: req.params["id"],
+        title: "M.C.ドナルドはダンスに夢中なのか？最終鬼畜道化師ドナルド・Ｍ",
+        tags: [
+          { value: "ドナルド" },
+          { value: "U.N.オーエンは彼女なのか？" },
+          { value: "最終鬼畜妹フランドール・Ｓ" },
+          { value: "エンターテイメント" },
+          { value: "東方乱々流" },
+          { value: "音mad" },
+          { value: "ドナルド教" },
+        ],
+        thumbnail_url: {
+          original: "/storybook/960x540.jpg",
+          large: "/storybook/960x540.jpg",
+        },
+      })
+    )
+);
+
+const mockRemoteFailed = rest.get(
+  "https://nicovideo-gti-proxy.deno.dev/:id",
+  (req, res, ctx) => res(ctx.status(404))
+);
+
+const mockAlreadyRegistered = graphql.query(
+  RegisterNicovideoPage_AlreadyCheckDocument,
+  (req, res, ctx) =>
+    res(
+      ctx.data({
+        findNicovideoVideoSource: aNicovideoVideoSource({
+          sourceId: "sm2057168",
+          video: aVideo({
+            id: "video:1",
+            title:
+              "M.C.ドナルドはダンスに夢中なのか？最終鬼畜道化師ドナルド・Ｍ",
+            thumbnailUrl: "/storybook/960x540.jpg",
+          }),
+        }),
+      })
+    )
+);
+
+const mockYetUnregistered = graphql.query(
+  RegisterNicovideoPage_AlreadyCheckDocument,
+  (req, res, ctx) =>
+    res(
+      ctx.data({
+        findNicovideoVideoSource: null,
+      })
+    )
+);
+
 export default {
   component: Form2,
   render(args) {
@@ -57,28 +119,7 @@ export default {
     msw: {
       handlers: [
         mockLogin,
-        rest.get("https://nicovideo-gti-proxy.deno.dev/:id", (req, res, ctx) =>
-          res(
-            ctx.json({
-              id: req.params["id"],
-              title:
-                "M.C.ドナルドはダンスに夢中なのか？最終鬼畜道化師ドナルド・Ｍ",
-              tags: [
-                { value: "ドナルド" },
-                { value: "U.N.オーエンは彼女なのか？" },
-                { value: "最終鬼畜妹フランドール・Ｓ" },
-                { value: "エンターテイメント" },
-                { value: "東方乱々流" },
-                { value: "音mad" },
-                { value: "ドナルド教" },
-              ],
-              thumbnail_url: {
-                original: "/storybook/960x540.jpg",
-                large: "/storybook/960x540.jpg",
-              },
-            })
-          )
-        ),
+        mockRemoteSuccess,
         graphql.query(
           RegisterNicovideoPage_SearchTagCandidatesDocument,
           (req, res, ctx) =>
@@ -115,6 +156,21 @@ export default {
             })
           )
         ),
+        mockYetUnregistered,
+        graphql.mutation(
+          RegisterNicovideoPage_RegisterVideoDocument,
+          (req, res, ctx) =>
+            res(
+              ctx.data({
+                registerVideo: aRegisterVideoPayload({
+                  video: aVideo({
+                    id: "video:1",
+                    title: req.variables.input.primaryTitle,
+                  }),
+                }),
+              })
+            )
+        ),
       ],
     },
   },
@@ -139,12 +195,21 @@ export const NoRemote: StoryObj<typeof Form2> = {
   args: {},
   parameters: {
     msw: {
-      handlers: [
-        mockLogin,
-        rest.get("https://nicovideo-gti-proxy.deno.dev/:id", (req, res, ctx) =>
-          res(ctx.status(404))
-        ),
-      ],
+      handlers: [mockLogin, mockRemoteFailed],
+    },
+  },
+  play: async () => {
+    await userEvent.type(screen.getByLabelText("ID入力"), "sm2057168");
+    await userEvent.click(screen.getByLabelText("検索"));
+  },
+};
+
+export const Already: StoryObj<typeof Form2> = {
+  name: "既にある",
+  args: {},
+  parameters: {
+    msw: {
+      handlers: [mockLogin, mockRemoteSuccess, mockAlreadyRegistered],
     },
   },
   play: async () => {

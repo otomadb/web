@@ -4,8 +4,8 @@ import { useQuery } from "urql";
 
 import { getFragment as useFragment, graphql } from "~/gql";
 import {
-  RegisterNicovideoPage_CandidateTagFragmentDoc,
   RegisterNicovideoPage_ExactTagDocument,
+  RegisterNicovideoPage_InnerTagFragmentDoc,
 } from "~/gql/graphql";
 
 import { TagInner } from "./TagInner";
@@ -29,9 +29,9 @@ export const RegisterTag: React.FC<
     query: RegisterNicovideoPage_ExactTagDocument,
     variables: { id: props.tagId },
   });
-  const fragment = useFragment(
-    RegisterNicovideoPage_CandidateTagFragmentDoc,
+  const tag = useFragment(
+    RegisterNicovideoPage_InnerTagFragmentDoc,
     result.data?.tag
   );
-  return <TagInner tag={fragment || undefined} {...props} />;
+  return <TagInner tag={tag || undefined} {...props} />;
 };

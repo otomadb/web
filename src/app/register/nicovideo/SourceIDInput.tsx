@@ -3,7 +3,7 @@
 import clsx from "clsx";
 import React, { useState } from "react";
 
-export const InputID: React.FC<{
+export const SourceIDInput: React.FC<{
   className?: string;
   handleClick(id: string): void;
 }> = ({ className, handleClick }) => {
@@ -17,6 +17,7 @@ export const InputID: React.FC<{
           ["px-2"],
           ["py-1"],
           ["text-sm"],
+          ["font-mono"],
           ["bg-white"],
           ["border", "border-gray-300"],
           ["rounded"]

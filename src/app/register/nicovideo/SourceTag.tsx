@@ -1,6 +1,7 @@
 "use client";
 import clsx from "clsx";
 import React, { ComponentProps, Fragment } from "react";
+import { useMemo } from "react";
 import { useQuery } from "urql";
 
 import { getFragment as useFragment, graphql } from "~/gql";
@@ -12,7 +13,9 @@ import {
 } from "~/gql/graphql";
 
 import { TagInner } from "./TagInner";
-import { useIfSkipTag } from "./useIfSkipTag";
+
+export const isUnnecessarySearch = (tag: string) =>
+  tag.toLowerCase() === "音mad";
 
 graphql(`
   fragment RegisterNicovideoPage_Result on SearchTagsResultItem {
@@ -50,16 +53,19 @@ export const Candidate: React.FC<
 
 export const NicovideoTag: React.FC<{
   className?: string;
-  tag: string;
-  picktags: string[];
+  sourceTagName: string;
+  currentTags: string[];
   reducer(v: { type: "add" | "remove"; id: string }): void;
-}> = ({ className, tag, ...props }) => {
-  const unneccesary = useIfSkipTag(tag);
+}> = ({ className, sourceTagName, ...props }) => {
+  const unneccesary = useMemo(
+    () => isUnnecessarySearch(sourceTagName),
+    [sourceTagName]
+  );
 
   const [result] = useQuery({
     query: RegisterNicovideoPage_SearchTagCandidatesDocument,
     pause: unneccesary,
-    variables: { query: tag },
+    variables: { query: sourceTagName },
   });
   const a = useFragment(
     RegisterNicovideoPage_ResultFragmentDoc,
@@ -70,7 +76,7 @@ export const NicovideoTag: React.FC<{
     <div className={clsx(className)}>
       <div>
         <div className={clsx(["text-sm"], ["text-slate-900"], ["font-bold"])}>
-          {tag}
+          {sourceTagName}
         </div>
       </div>
       {unneccesary && (
