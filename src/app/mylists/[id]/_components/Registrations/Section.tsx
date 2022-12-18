@@ -75,15 +75,7 @@ export const RegistrationsSection: React.FC<{
           ["mt-1"],
           [
             "grid",
-            [
-              "grid-cols-1",
-              "md:grid-cols-2",
-              "xl:grid-cols-3",
-              {
-                "2xl:grid-cols-4": true,
-                // "xl:grid-cols-6": true,
-              },
-            ],
+            ["grid-cols-1", "lg:grid-cols-2", "xl:grid-cols-3"],
             ["gap-x-2"],
             ["gap-y-2"],
           ]

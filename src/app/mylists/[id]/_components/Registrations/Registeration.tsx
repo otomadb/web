@@ -1,5 +1,6 @@
 "use client";
-import { PencilIcon } from "@heroicons/react/24/outline";
+
+import { PencilIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 import Image from "next/image";
 import React from "react";
@@ -55,8 +56,7 @@ export const Registeration: React.FC<{
           priority={true}
         />
       </VideoLink>
-      <VideoLink
-        videoId={videoId}
+      <div
         className={clsx(
           ["flex-grow"],
           ["px-2"],
@@ -66,32 +66,41 @@ export const Registeration: React.FC<{
       >
         <div
           className={clsx(
-            ["text-base", "xl:text-sm", "2xl:text-xs"],
+            ["text-base", "lg:text-sm", "2xl:text-xs"],
             ["font-bold"],
             ["text-slate-900"]
           )}
         >
-          {title}
+          <VideoLink videoId={videoId} className={clsx()}>
+            {title}
+          </VideoLink>
         </div>
-        {!!note && note !== "" && (
+        <div
+          className={clsx(
+            ["mt-2"],
+            ["px-2", "md:px-1"],
+            ["py-2", "md:py-1"],
+            ["rounded"],
+            ["bg-slate-100"]
+          )}
+        >
           <div
-            className={clsx(
-              ["mt-1"],
-              ["px-2", "md:px-1"],
-              ["py-2", "md:py-1"],
-              ["text-sm", "md:text-xs"],
-              ["rounded"],
-              ["bg-slate-100"],
-              ["text-slate-700"]
-            )}
+            className={clsx(["float-left"], ["place-items-center"], ["mr-1"])}
           >
-            <div className={clsx(["float-left"], ["px-1"])}>
-              <PencilIcon className={clsx(["w-4"], ["h-4"])} />
-            </div>
-            {note}
+            <PencilIcon
+              className={clsx(["w-4"], ["h-4"], ["text-slate-500"])}
+            />
           </div>
-        )}
-      </VideoLink>
+          <div
+            className={clsx(["text-sm", "md:text-xs"], {
+              "text-slate-700": !(!note || note === ""),
+              "text-slate-500": !note || note === "",
+            })}
+          >
+            {!note || note === "" ? "記載なし" : note}
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
