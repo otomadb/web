@@ -1,13 +1,66 @@
 "use client";
 
 import clsx from "clsx";
-import React, { useState } from "react";
+import ky from "ky";
+import React, { useCallback, useMemo, useState } from "react";
 
 export const SourceIDInput: React.FC<{
   className?: string;
-  handleClick(id: string): void;
-}> = ({ className, handleClick }) => {
-  const [input, setInput] = useState("");
+  setRemote(
+    data:
+      | undefined
+      | null
+      | {
+          id: string;
+          title: string;
+          tags: string[];
+          thumbnails: { original: string; large: string };
+        }
+  ): void;
+}> = ({ className, setRemote }) => {
+  const [sourceId, setSourceId] = useState<string>("");
+  const [updatable, setUpdatable] = useState(false);
+  const apiUrl = useMemo(() => {
+    if (!sourceId || !/(sm)\d+/.test(sourceId)) return undefined;
+    const url = new URL(
+      `/${sourceId}`,
+      "https://nicovideo-gti-proxy.deno.dev/"
+    );
+    return url.toString();
+  }, [sourceId]);
+
+  const handleClick = useCallback(async () => {
+    if (!updatable) return;
+    if (!apiUrl) return;
+
+    setRemote(undefined);
+    const result = await ky.get(apiUrl);
+    if (!result.ok) {
+      setRemote(null);
+      return;
+    }
+
+    const { id, title, tags, thumbnails } = await result
+      .json<{
+        id: string;
+        title: string;
+        tags: { value: string }[];
+        watch_url: string;
+        uploaded_at: string;
+        thumbnail_url: { original: string; large: string };
+      }>()
+      .then(({ id, title, tags, thumbnail_url }) => ({
+        id,
+        title,
+        tags: tags.map((v) => v.value),
+        thumbnails: {
+          original: thumbnail_url.original,
+          large: thumbnail_url.large,
+        },
+      }));
+    setRemote({ id, title, tags, thumbnails });
+    setUpdatable(false);
+  }, [apiUrl, setRemote]);
 
   return (
     <form className={clsx(className, ["flex", ["items-stretch"]])}>
@@ -22,14 +75,14 @@ export const SourceIDInput: React.FC<{
           ["border", "border-gray-300"],
           ["rounded"]
         )}
-        value={input}
+        value={sourceId}
         onChange={(e) => {
-          setInput(e.target.value);
+          setSourceId(e.target.value);
+          setUpdatable(true);
         }}
         placeholder="sm2057168"
       />
-      <input
-        type="button"
+      <div
         aria-label="検索"
         className={clsx(
           ["ml-1"],
@@ -38,13 +91,15 @@ export const SourceIDInput: React.FC<{
           ["px-4"],
           ["rounded"],
           ["text-sm"],
-          "cursor-pointer"
+          "cursor-pointer",
+          ["flex", "items-center"]
         )}
         onClick={() => {
-          handleClick(input);
+          handleClick();
         }}
-        value="検索"
-      />
+      >
+        <div>検索</div>
+      </div>
     </form>
   );
 };

@@ -20,7 +20,6 @@ import { RegisterButton, SendData } from "./RegisterButton";
 import { RegisterTag } from "./RegisterTag";
 import { SourceIDInput } from "./SourceIDInput";
 import { NicovideoTag } from "./SourceTag";
-import { useNicovideoAPI } from "./useNicovideoAPI";
 
 graphql(`
   query RegisterNicovideoPage_AlreadyCheck($id: ID!) {
@@ -49,7 +48,6 @@ export const tagtypestyle = (type: PseudoTagType, prefix: string, s = 400) => [
 export const Form2: React.FC<{ className?: string }> = ({ className }) => {
   const islogin = useIsLogin();
 
-  const [input, setInput] = useState<string | undefined>();
   const [remote, setRemote] = useState<
     | null
     | undefined
@@ -60,24 +58,6 @@ export const Form2: React.FC<{ className?: string }> = ({ className }) => {
         thumbnails: { original: string; large: string };
       }
   >(undefined);
-  const { isLoading: remoteLoading } = useNicovideoAPI(input, {
-    onSuccess({ id, title, tags, thumbnail_url }) {
-      setRemote({
-        id,
-        title,
-        tags: tags.map((v) => v.value),
-        thumbnails: {
-          original: thumbnail_url.original,
-          large: thumbnail_url.large,
-        },
-      });
-      setTitle(title);
-      setId(id);
-    },
-    onError() {
-      setRemote(null);
-    },
-  });
 
   const [id, setId] = useState<undefined | string>(undefined);
   const [title, setTitle] = useState<undefined | string>(undefined);
@@ -109,6 +89,7 @@ export const Form2: React.FC<{ className?: string }> = ({ className }) => {
     query: RegisterNicovideoPage_AlreadyCheckDocument,
     pause: !id,
     variables: id ? { id } : undefined,
+    requestPolicy: "network-only",
   });
 
   const senddata = useMemo<SendData | undefined>(() => {
@@ -127,12 +108,12 @@ export const Form2: React.FC<{ className?: string }> = ({ className }) => {
     <div className={clsx(className)}>
       <div>
         <SourceIDInput
-          handleClick={(i) => {
-            setId(undefined);
-            setTitle(undefined);
-            updateTags({ type: "clean" });
-            setThumbnail(undefined);
-            setInput(i);
+          setRemote={(data) => {
+            setRemote(data);
+            if (data) {
+              setId(data.id);
+              setTitle(data.title);
+            }
           }}
         />
       </div>
@@ -147,7 +128,7 @@ export const Form2: React.FC<{ className?: string }> = ({ className }) => {
         )}
       >
         {typeof islogin === "boolean" && !islogin && (
-          <div className={clsx(["flex", "flex-col"])}>
+          <div className={clsx(["mt-4"], ["flex", "flex-col"])}>
             <p className={clsx(["text-md"], ["text-gray-500"], ["font-bold"])}>
               ログインしてください
             </p>
@@ -172,23 +153,21 @@ export const Form2: React.FC<{ className?: string }> = ({ className }) => {
           <div className={clsx(["grid", ["grid-cols-2"]])}>
             <div>
               <p>ニコニコ動画からの情報</p>
-              <div>{remoteLoading && <p>データ取得中</p>}</div>
-              {remote === undefined && (
-                <div className={clsx(["mt-1"])}>
-                  <p className={clsx(["text-sm"], ["text-slate-500"])}>
-                    IDを入力してください
-                  </p>
-                </div>
-              )}
               {remote === null && (
-                <div className={clsx(["mt-1"])}>
+                <div className={clsx(["mt-4"])}>
                   <p className={clsx(["text-sm"], ["text-red-500"])}>
                     動画データの取得に失敗しました。動画は存在しますか？
                   </p>
                 </div>
               )}
               {remote && (
-                <div className={clsx(["flex", ["flex-col"]], ["gap-y-4"])}>
+                <div
+                  className={clsx(
+                    ["mt-4"],
+                    ["flex", ["flex-col"]],
+                    ["gap-y-4"]
+                  )}
+                >
                   <div>
                     <p className={clsx()}>タイトル</p>
                     <p className={clsx(["mt-1"], ["text-sm"], ["font-bold"])}>
@@ -358,14 +337,31 @@ export const Form2: React.FC<{ className?: string }> = ({ className }) => {
                     </div>
                     <div>
                       <p>サムネイル</p>
-                      {thumbnail && (
-                        <div className={clsx(["mt-1"])}>
-                          <img className={clsx(["h-32"])} src={thumbnail} />
-                        </div>
-                      )}
+
+                      <div className={clsx(["mt-1"])}>
+                        {thumbnail && (
+                          <Image
+                            className={clsx(["object-scale-down"], ["h-32"])}
+                            src={thumbnail}
+                            width={260}
+                            height={200}
+                            alt={`${remote.id}のサムネイル候補`}
+                          />
+                        )}
+                        {!thumbnail && (
+                          <p className={clsx(["text-sm"], ["text-slate-500"])}>
+                            サムネイル画像を指定してください．
+                          </p>
+                        )}
+                      </div>
                     </div>
                     <div>
-                      <RegisterButton senddata={senddata} />
+                      <RegisterButton
+                        senddata={senddata}
+                        onSuccess={() => {
+                          setRemote(undefined);
+                        }}
+                      />
                     </div>
                   </div>
                 )}

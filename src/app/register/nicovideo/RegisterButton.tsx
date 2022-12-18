@@ -32,7 +32,8 @@ export type SendData = {
 export const RegisterButton: React.FC<{
   className?: string;
   senddata: SendData | undefined;
-}> = ({ className, senddata }) => {
+  onSuccess(): void;
+}> = ({ className, senddata, onSuccess }) => {
   const [, trigger] = useMutation(RegisterNicovideoPage_RegisterVideoDocument);
 
   return (
@@ -87,6 +88,7 @@ export const RegisterButton: React.FC<{
               を登録しました．
             </span>
           ));
+          onSuccess();
         }
       }}
       value="登録"
