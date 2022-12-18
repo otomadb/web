@@ -21,7 +21,7 @@ import {
   ViewerDocument,
 } from "~/gql/graphql";
 
-import { Form2 } from "./Form2";
+import { Form } from "./Form";
 
 const mockLogin = graphql.query(ViewerDocument, (req, res, ctx) =>
   res(
@@ -102,7 +102,7 @@ const mockYetUnregistered = graphql.query(
 );
 
 export default {
-  component: Form2,
+  component: Form,
   render(args) {
     return (
       <UrqlProvider
@@ -111,7 +111,7 @@ export default {
           requestPolicy: "network-only",
         })}
       >
-        <Form2 {...args} />
+        <Form {...args} />
       </UrqlProvider>
     );
   },
@@ -174,13 +174,13 @@ export default {
       ],
     },
   },
-} as Meta<typeof Form2>;
+} as Meta<typeof Form>;
 
-export const Primary: StoryObj<typeof Form2> = {
+export const Primary: StoryObj<typeof Form> = {
   args: {},
 };
 
-export const Unlogin: StoryObj<typeof Form2> = {
+export const Unlogin: StoryObj<typeof Form> = {
   name: "未ログイン",
   args: {},
   parameters: {
@@ -190,7 +190,7 @@ export const Unlogin: StoryObj<typeof Form2> = {
   },
 };
 
-export const NoRemote: StoryObj<typeof Form2> = {
+export const NoRemote: StoryObj<typeof Form> = {
   name: "リモートからの取得に失敗",
   args: {},
   parameters: {
@@ -204,7 +204,7 @@ export const NoRemote: StoryObj<typeof Form2> = {
   },
 };
 
-export const Already: StoryObj<typeof Form2> = {
+export const Already: StoryObj<typeof Form> = {
   name: "既にある",
   args: {},
   parameters: {
@@ -218,7 +218,7 @@ export const Already: StoryObj<typeof Form2> = {
   },
 };
 
-export const ValidId: StoryObj<typeof Form2> = {
+export const ValidId: StoryObj<typeof Form> = {
   name: "正しいnicovideoのIDを入力",
   args: {},
   play: async () => {

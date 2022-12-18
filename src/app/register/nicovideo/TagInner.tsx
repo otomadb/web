@@ -5,7 +5,7 @@ import React from "react";
 import { graphql } from "~/gql";
 import { RegisterNicovideoPage_InnerTagFragment } from "~/gql/graphql";
 
-import { tagtypestyle } from "./Form2";
+import { tagtypestyle } from "./Form";
 
 graphql(`
   fragment RegisterNicovideoPage_InnerTag on Tag {
