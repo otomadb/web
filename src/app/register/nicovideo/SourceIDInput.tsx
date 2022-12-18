@@ -60,7 +60,7 @@ export const SourceIDInput: React.FC<{
       }));
     setRemote({ id, title, tags, thumbnails });
     setUpdatable(false);
-  }, [apiUrl, setRemote]);
+  }, [apiUrl, setRemote, updatable]);
 
   return (
     <form className={clsx(className, ["flex", ["items-stretch"]])}>

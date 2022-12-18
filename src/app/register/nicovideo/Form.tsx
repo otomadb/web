@@ -128,7 +128,7 @@ export const Form: React.FC<{ className?: string }> = ({ className }) => {
         )}
       >
         {typeof islogin === "boolean" && !islogin && (
-          <div className={clsx(["mt-4"], ["flex", "flex-col"])}>
+          <div className={clsx(["flex", "flex-col"])}>
             <p className={clsx(["text-md"], ["text-gray-500"], ["font-bold"])}>
               ログインしてください
             </p>
