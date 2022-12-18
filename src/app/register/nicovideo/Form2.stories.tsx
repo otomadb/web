@@ -10,11 +10,34 @@ import {
   aSearchTagsPayload,
   aSearchTagsResultItem,
   aTag,
+  aUser,
   RegisterNicovideoPage_ExactTagDocument,
   RegisterNicovideoPage_SearchTagCandidatesDocument,
+  ViewerDocument,
 } from "~/gql/graphql";
 
 import { Form2 } from "./Form2";
+
+const mockLogin = graphql.query(ViewerDocument, (req, res, ctx) =>
+  res(
+    ctx.data({
+      whoami: aUser({
+        id: "user:1",
+        name: "Name",
+        displayName: "Displayname",
+        icon: "/storybook/512x512.png",
+      }),
+    })
+  )
+);
+
+const mockUnlogin = graphql.query(ViewerDocument, (req, res, ctx) =>
+  res(
+    ctx.data({
+      whoami: null,
+    })
+  )
+);
 
 export default {
   component: Form2,
@@ -33,6 +56,7 @@ export default {
   parameters: {
     msw: {
       handlers: [
+        mockLogin,
         rest.get("https://nicovideo-gti-proxy.deno.dev/:id", (req, res, ctx) =>
           res(
             ctx.json({
@@ -100,10 +124,40 @@ export const Primary: StoryObj<typeof Form2> = {
   args: {},
 };
 
+export const Unlogin: StoryObj<typeof Form2> = {
+  name: "未ログイン",
+  args: {},
+  parameters: {
+    msw: {
+      handlers: [mockUnlogin],
+    },
+  },
+};
+
+export const NoRemote: StoryObj<typeof Form2> = {
+  name: "リモートからの取得に失敗",
+  args: {},
+  parameters: {
+    msw: {
+      handlers: [
+        mockLogin,
+        rest.get("https://nicovideo-gti-proxy.deno.dev/:id", (req, res, ctx) =>
+          res(ctx.status(404))
+        ),
+      ],
+    },
+  },
+  play: async () => {
+    await userEvent.type(screen.getByLabelText("ID入力"), "sm2057168");
+    await userEvent.click(screen.getByLabelText("検索"));
+  },
+};
+
 export const ValidId: StoryObj<typeof Form2> = {
   name: "正しいnicovideoのIDを入力",
   args: {},
   play: async () => {
     await userEvent.type(screen.getByLabelText("ID入力"), "sm2057168");
+    await userEvent.click(screen.getByLabelText("検索"));
   },
 };

@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import useSWR from "swr";
 
 export const useNicovideoAPI = (
-  videoId: string | null,
+  videoId: string | undefined,
   {
     onSuccess,
     onError,
@@ -18,13 +18,13 @@ export const useNicovideoAPI = (
   }
 ) => {
   const url = useMemo(() => {
-    if (!videoId || !/(sm)\d+/.test(videoId)) return null;
+    if (!videoId || !/(sm)\d+/.test(videoId)) return undefined;
     const url = new URL(`/${videoId}`, "https://nicovideo-gti-proxy.deno.dev/");
     return url.toString();
   }, [videoId]);
 
   return useSWR(
-    url ? url : null,
+    url,
     (u) =>
       ky.get(u).json<{
         id: string;
@@ -36,6 +36,7 @@ export const useNicovideoAPI = (
       }>(),
     {
       dedupingInterval: 0,
+      errorRetryCount: 1,
       onSuccess(d) {
         onSuccess(d);
       },
