@@ -87,7 +87,6 @@ export const SectionInner: React.FC<{
                 ["text-xs"],
                 ["border", "border-slate-200"]
               )}
-              value={selected?.name}
               disabled={!isLoggedIn || !edit}
               onUpdateQuery={(q) => {
                 setQuery(q);

@@ -9,7 +9,7 @@ export const DelayedInput: React.FC<
       React.InputHTMLAttributes<HTMLInputElement>,
       HTMLInputElement
     >,
-    "onChange"
+    "onChange" | "value"
   > & {
     onUpdateQuery(value: string): void;
     debounce?: number;
@@ -33,6 +33,7 @@ export const DelayedInput: React.FC<
 
   return (
     <input
+      value={input}
       onChange={(e) => {
         setInput(e.target.value);
       }}
