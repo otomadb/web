@@ -20,9 +20,9 @@ type CreateMylistPayload {
 scalar DateTime
 
 input GetTagsInput {
-  limit: Int
-  order: GetTagsInputOrder = {updatedAt: DESC}
-  skip: Int
+  limit: Int! = 10
+  order: GetTagsInputOrder! = {updatedAt: DESC}
+  skip: Int! = 0
 }
 
 input GetTagsInputOrder {
@@ -31,9 +31,9 @@ input GetTagsInputOrder {
 }
 
 input GetVideosInput {
-  limit: Int = 10
-  order: GetVideosInputOrder = {createdAt: DESC}
-  skip: Int = 0
+  limit: Int! = 10
+  order: GetVideosInputOrder! = {createdAt: DESC}
+  skip: Int! = 0
 }
 
 input GetVideosInputOrder {
@@ -71,14 +71,14 @@ type Mylist {
   isIncludesVideo(id: ID!): Boolean!
   isLikeList: Boolean!
   range: MylistShareRange!
-  recommendedVideos(input: MylistRecommendedVideosInput): MylistRecommendedVideosPayload!
+  recommendedVideos(input: MylistRecommendedVideosInput!): MylistRecommendedVideosPayload!
   registrations(input: MylistRegistrationsInput!): MylistRegistrationCollection!
   title: String!
   updatedAt: DateTime!
 }
 
 input MylistIncludeTagsInput {
-  limit: Int = 10
+  limit: Int! = 10
 }
 
 type MylistIncludeTagsItem {
@@ -91,7 +91,7 @@ type MylistIncludeTagsPayload {
 }
 
 input MylistRecommendedVideosInput {
-  limit: Int = 10
+  limit: Int! = 10
 }
 
 type MylistRecommendedVideosItem {
@@ -118,7 +118,7 @@ type MylistRegistrationCollection {
 
 input MylistRegistrationsInput {
   limit: Int
-  order: MylistRegistrationsInputOrder = {}
+  order: MylistRegistrationsInputOrder! = {}
   skip: Int
 }
 
@@ -192,9 +192,9 @@ type Query {
 
 input RegisterTagInput {
   explicitParent: ID
-  extraNames: [String!] = []
-  implicitParents: [ID!] = []
-  meaningless: Boolean = false
+  extraNames: [String!]! = []
+  implicitParents: [ID!]! = []
+  meaningless: Boolean! = false
   primaryName: String!
 }
 
@@ -316,9 +316,9 @@ type TagHistoryCollection {
 }
 
 input TagHistoryInput {
-  limit: Int = 10
-  order: TagHistoryOrder = {createdAt: DESC}
-  skip: Int = 0
+  limit: Int! = 10
+  order: TagHistoryOrder! = {createdAt: DESC}
+  skip: Int! = 0
 }
 
 interface TagHistoryItem {
@@ -402,10 +402,10 @@ type UserMylistsConnection {
 }
 
 input UserMylistsInput {
-  limit: Int
-  order: UserMylistsInputOrder = {createdAt: ASC}
-  range: [MylistShareRange!] = [PUBLIC]
-  skip: Int
+  limit: Int! = 10
+  order: UserMylistsInputOrder! = {createdAt: ASC}
+  range: [MylistShareRange!]! = [PUBLIC]
+  skip: Int! = 0
 }
 
 input UserMylistsInputOrder {
@@ -510,9 +510,9 @@ type VideoHistoryCollection {
 }
 
 input VideoHistoryInput {
-  limit: Int = 10
-  order: VideoHistoryOrder = {createdAt: DESC}
-  skip: Int = 0
+  limit: Int! = 10
+  order: VideoHistoryOrder! = {createdAt: DESC}
+  skip: Int! = 0
 }
 
 interface VideoHistoryItem {
@@ -539,7 +539,7 @@ type VideoSimilarVideoItem {
 }
 
 input VideoSimilarVideosInput {
-  limit: Int = 10
+  limit: Int! = 10
 }
 
 type VideoSimilarVideosPayload {

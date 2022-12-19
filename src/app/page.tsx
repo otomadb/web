@@ -42,7 +42,7 @@ export default async function Page() {
         <VideoList className={clsx(["mt-4"])} videos={recentVideos} />
       </section>
       <section>
-        <Link href={"/register/niconico"}>ニコニコから追加</Link>
+        <Link href={"/register/nicovideo"}>ニコニコ動画から追加</Link>
       </section>
     </>
   );
