@@ -1,4 +1,6 @@
 flake.lock linguist-generated=true
+
+package-lock.json linguist-generated=true
 pnpm-lock.yaml linguist-generated=true
 
 public/mockServiceWorker.js linguist-generated=true

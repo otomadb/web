@@ -12,9 +12,9 @@
     "lint:eslint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:prettier": "prettier --check ./**/*.{js,ts,tsx,css,json,yml,md}",
     "lintfix": "run-s 'lintfix:*' 'fmt'",
-    "lintfix:eslint": "pnpm run lint:eslint --fix",
+    "lintfix:eslint": "npm run lint:eslint --fix",
     "codegen": "graphql-codegen --config codegen.ts",
-    "codegen:watch": "pnpm run codegen --watch",
+    "codegen:watch": "npm run codegen --watch",
     "storybook": "NODE_OPTIONS=--openssl-legacy-provider storybook dev -p 6006 --no-open -s public",
     "build-storybook": "NODE_OPTIONS=--openssl-legacy-provider storybook build",
     "serve-storybook": "serve storybook-static",
@@ -94,10 +94,5 @@
   },
   "msw": {
     "workerDirectory": "public"
-  },
-  "pnpm": {
-    "patchedDependencies": {
-      "@cloudflare/next-on-pages@0.2.0": "patches/@cloudflare__next-on-pages@0.2.0.patch"
-    }
   }
 }
