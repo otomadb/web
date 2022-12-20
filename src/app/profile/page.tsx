@@ -1,6 +1,5 @@
+import { Profile } from "~/components/profile/Profile";
 import { YouMustLogin } from "~/components/YouMustLogin";
-
-import { Profile } from "./Profile";
 
 export const dynamic = "force-dynamic";
 
