@@ -18,7 +18,7 @@ export const isUnnecessarySearch = (tag: string) =>
   tag.toLowerCase() === "音mad";
 
 graphql(`
-  fragment RegisterNicovideoPage_Result on SearchTagsResultItem {
+  fragment RegisterNicovideoPage_Result on SearchTagsItem {
     matchedName
     tag {
       id
@@ -28,7 +28,7 @@ graphql(`
 
   query RegisterNicovideoPage_SearchTagCandidates($query: String!) {
     searchTags(input: { query: $query, limit: 2 }) {
-      result {
+      items {
         ...RegisterNicovideoPage_Result
       }
     }
@@ -69,7 +69,7 @@ export const NicovideoTag: React.FC<{
   });
   const a = useFragment(
     RegisterNicovideoPage_ResultFragmentDoc,
-    result.data?.searchTags.result
+    result.data?.searchTags.items
   );
 
   return (
@@ -84,9 +84,9 @@ export const NicovideoTag: React.FC<{
           検索対象外のタグです
         </p>
       )}
-      {result.data?.searchTags.result && (
+      {result.data?.searchTags.items && (
         <div className={clsx(["mt-1"])}>
-          {result.data.searchTags.result.length === 0 && (
+          {result.data.searchTags.items.length === 0 && (
             <p className={clsx(["text-xs"], ["text-slate-500"])}>
               候補が見つかりませんでした
             </p>

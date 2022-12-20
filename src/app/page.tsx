@@ -15,7 +15,7 @@ export default async function Page() {
   const result = await gqlRequest(
     graphql(`
       query IndexPage {
-        recentRegisteredVideos: videos(input: { limit: 18 }) {
+        recentRegisteredVideos: findVideos(input: { limit: 18 }) {
           nodes {
             id
             title

@@ -1,6 +1,5 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { userEvent } from "@storybook/testing-library";
-import { screen } from "@storybook/testing-library";
+import { screen, userEvent } from "@storybook/testing-library";
 import { graphql } from "msw";
 import {
   createClient as createUrqlClient,
@@ -8,10 +7,10 @@ import {
 } from "urql";
 
 import {
+  aSearchTagsItem,
   aSearchTagsPayload,
-  aSearchTagsResultItem,
+  aSearchVideosItem,
   aSearchVideosPayload,
-  aSearchVideosResultItem,
   aTag,
   aVideo,
   GlobalNav_SearchBoxDocument,
@@ -29,8 +28,8 @@ export default {
         graphql.query(GlobalNav_SearchBoxDocument, (req, res, ctx) =>
           res(
             ctx.data({
-              tags: aSearchTagsPayload({ result: [] }),
-              videos: aSearchVideosPayload({ result: [] }),
+              tags: aSearchTagsPayload({ items: [] }),
+              videos: aSearchVideosPayload({ items: [] }),
             })
           )
         ),
@@ -54,8 +53,8 @@ export const Primary: StoryObj<typeof SearchBox> = {
         graphql.query(GlobalNav_SearchBoxDocument, (req, res, ctx) =>
           res(
             ctx.data({
-              tags: aSearchTagsPayload({ result: [] }),
-              videos: aSearchVideosPayload({ result: [] }),
+              tags: aSearchTagsPayload({ items: [] }),
+              videos: aSearchVideosPayload({ items: [] }),
             })
           )
         ),
@@ -99,8 +98,8 @@ export const Nothing: StoryObj<typeof SearchBox> = {
         graphql.query(GlobalNav_SearchBoxDocument, (req, res, ctx) =>
           res(
             ctx.data({
-              tags: aSearchTagsPayload({ result: [] }),
-              videos: aSearchVideosPayload({ result: [] }),
+              tags: aSearchTagsPayload({ items: [] }),
+              videos: aSearchVideosPayload({ items: [] }),
             })
           )
         ),
@@ -131,8 +130,8 @@ export const Type: StoryObj<typeof SearchBox> = {
           res(
             ctx.data({
               tags: aSearchTagsPayload({
-                result: [
-                  aSearchTagsResultItem({
+                items: [
+                  aSearchTagsItem({
                     matchedName: "ぼっち・ざ・ろっく！",
                     tag: aTag({
                       id: "tag:1",
@@ -140,7 +139,7 @@ export const Type: StoryObj<typeof SearchBox> = {
                       pseudoType: PseudoTagType.Character,
                     }),
                   }),
-                  aSearchTagsResultItem({
+                  aSearchTagsItem({
                     matchedName: "後藤ひとり",
                     tag: aTag({
                       id: "tag:2",
@@ -148,7 +147,7 @@ export const Type: StoryObj<typeof SearchBox> = {
                       pseudoType: PseudoTagType.Character,
                     }),
                   }),
-                  aSearchTagsResultItem({
+                  aSearchTagsItem({
                     matchedName: "伊地知虹夏",
                     tag: aTag({
                       id: "tag:3",
@@ -156,7 +155,7 @@ export const Type: StoryObj<typeof SearchBox> = {
                       pseudoType: PseudoTagType.Character,
                     }),
                   }),
-                  aSearchTagsResultItem({
+                  aSearchTagsItem({
                     matchedName: "山田リョウ",
                     tag: aTag({
                       id: "tag:4",
@@ -164,7 +163,7 @@ export const Type: StoryObj<typeof SearchBox> = {
                       pseudoType: PseudoTagType.Character,
                     }),
                   }),
-                  aSearchTagsResultItem({
+                  aSearchTagsItem({
                     matchedName: "喜多郁代",
                     tag: aTag({
                       id: "tag:5",
@@ -172,7 +171,7 @@ export const Type: StoryObj<typeof SearchBox> = {
                       pseudoType: PseudoTagType.Character,
                     }),
                   }),
-                  aSearchTagsResultItem({
+                  aSearchTagsItem({
                     matchedName: "草を食べて生きていきます",
                     tag: aTag({
                       id: "tag:6",
@@ -183,8 +182,8 @@ export const Type: StoryObj<typeof SearchBox> = {
                 ],
               }),
               videos: aSearchVideosPayload({
-                result: [
-                  aSearchVideosResultItem({
+                items: [
+                  aSearchVideosItem({
                     matchedTitle: "この音、フラットゾーンで使えるかな",
                     video: aVideo({
                       id: "video:1",
@@ -192,7 +191,7 @@ export const Type: StoryObj<typeof SearchBox> = {
                       thumbnailUrl: "/storybook/960x540.jpg",
                     }),
                   }),
-                  aSearchVideosResultItem({
+                  aSearchVideosItem({
                     matchedTitle: "スーパー社会が怖いブラザーズ3",
                     video: aVideo({
                       id: "video:2",
@@ -200,7 +199,7 @@ export const Type: StoryObj<typeof SearchBox> = {
                       thumbnailUrl: "/storybook/960x540.jpg",
                     }),
                   }),
-                  aSearchVideosResultItem({
+                  aSearchVideosItem({
                     matchedTitle: "ぼっち　ろっく",
                     video: aVideo({
                       id: "video:3",

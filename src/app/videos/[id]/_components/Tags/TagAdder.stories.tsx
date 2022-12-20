@@ -8,7 +8,11 @@ import {
   Provider as UrqlProvider,
 } from "urql";
 
-import { aTag, VideoPage_TagEditor_SearchBoxDocument } from "~/gql/graphql";
+import {
+  aSearchTagsItem,
+  aTag,
+  VideoPage_TagEditor_SearchBoxDocument,
+} from "~/gql/graphql";
 
 import { TagAdder } from "./TagAdder";
 
@@ -39,16 +43,16 @@ export const Primary: StoryObj<typeof TagAdder> = {
           res(
             ctx.data({
               searchTags: {
-                result: [
-                  {
+                items: [
+                  aSearchTagsItem({
                     matchedName: "タグ1",
                     tag: aTag({
                       id: "tag:1",
                       name: "タグ1",
                       explicitParent: undefined,
                     }),
-                  },
-                  {
+                  }),
+                  aSearchTagsItem({
                     matchedName: "タグ2",
                     tag: aTag({
                       id: "tag:2",
@@ -56,23 +60,23 @@ export const Primary: StoryObj<typeof TagAdder> = {
                       canTagTo: false,
                       explicitParent: undefined,
                     }),
-                  },
-                  {
+                  }),
+                  aSearchTagsItem({
                     matchedName: "タグ3",
                     tag: aTag({
                       id: "tag:3",
                       name: "Tag3",
                       explicitParent: undefined,
                     }),
-                  },
-                  {
+                  }),
+                  aSearchTagsItem({
                     matchedName: "後藤ひとり",
                     tag: aTag({
                       id: "tag:4",
                       name: "後藤ひとり",
                       explicitParent: aTag({ name: "ぼっち・ざ・ろっく！" }),
                     }),
-                  },
+                  }),
                 ],
               },
             })

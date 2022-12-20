@@ -9,8 +9,8 @@ import {
 import {
   aNicovideoVideoSource,
   aRegisterVideoPayload,
+  aSearchTagsItem,
   aSearchTagsPayload,
-  aSearchTagsResultItem,
   aTag,
   aUser,
   aVideo,
@@ -108,8 +108,8 @@ const mockSearchTag = graphql.query(
     res(
       ctx.data({
         searchTags: aSearchTagsPayload({
-          result: [
-            aSearchTagsResultItem({
+          items: [
+            aSearchTagsItem({
               matchedName: req.variables.query,
               tag: aTag({
                 id: `tag:1:${req.variables.query}`,
@@ -117,7 +117,7 @@ const mockSearchTag = graphql.query(
                 explicitParent: null,
               }),
             }),
-            aSearchTagsResultItem({
+            aSearchTagsItem({
               matchedName: req.variables.query,
               tag: aTag({
                 id: `tag:2:${req.variables.query}`,
@@ -156,8 +156,8 @@ export default {
             res(
               ctx.data({
                 searchTags: aSearchTagsPayload({
-                  result: [
-                    aSearchTagsResultItem({
+                  items: [
+                    aSearchTagsItem({
                       matchedName: req.variables.query,
                       tag: aTag({
                         id: `tag:1:${req.variables.query}`,
@@ -165,7 +165,7 @@ export default {
                         explicitParent: null,
                       }),
                     }),
-                    aSearchTagsResultItem({
+                    aSearchTagsItem({
                       tag: aTag({
                         id: `tag:2:${req.variables.query}`,
                         explicitParent: null,

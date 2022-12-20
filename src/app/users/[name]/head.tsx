@@ -1,12 +1,14 @@
+import { notFound } from "next/navigation";
+
 import { CommonHead } from "~/app/CommonHead";
 import { graphql } from "~/gql";
 import { gqlRequest } from "~/utils/gqlRequest";
 
 export default async function Head({ params }: { params: { name: string } }) {
-  const { user } = await gqlRequest(
+  const { findUser } = await gqlRequest(
     graphql(`
       query UserPage_Title($name: String!) {
-        user(name: $name) {
+        findUser(input: { name: $name }) {
           name
           displayName
         }
@@ -15,10 +17,16 @@ export default async function Head({ params }: { params: { name: string } }) {
     { name: params.name }
   );
 
+  if (!findUser) {
+    notFound();
+  }
+
+  const { name, displayName } = findUser;
+
   return (
     <>
       <CommonHead />
-      <title>{`${user.displayName}(@${user.name}) - Otomad Database`}</title>
+      <title>{`${displayName}(@${name}) - Otomad Database`}</title>
     </>
   );
 }

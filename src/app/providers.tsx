@@ -59,13 +59,13 @@ const urqlClient = createUrqlClient({
         SearchTagsPayload() {
           return null;
         },
-        SearchTagsResultItem() {
+        SearchTagsItem() {
           return null;
         },
         SearchVideosPayload() {
           return null;
         },
-        SearchVideosResultItem() {
+        SearchVideosItem() {
           return null;
         },
         TagVideoPayload() {
