@@ -5,7 +5,11 @@ import {
   Provider as UrqlProvider,
 } from "urql";
 
-import { aTag, VideoPage_TagEditor_SearchBoxDocument } from "~/gql/graphql";
+import {
+  aSearchTagsItem,
+  aTag,
+  VideoPage_TagEditor_SearchBoxDocument,
+} from "~/gql/graphql";
 
 import { TagsList } from "./List";
 import { SearchBox } from "./SearchBox";
@@ -20,30 +24,30 @@ export default {
           res(
             ctx.data({
               searchTags: {
-                result: [
-                  {
+                items: [
+                  aSearchTagsItem({
                     matchedName: "タグ1",
                     tag: aTag({ name: "タグ1", explicitParent: undefined }),
-                  },
-                  {
+                  }),
+                  aSearchTagsItem({
                     matchedName: "タグ2",
                     tag: aTag({
                       name: "タグ2",
                       canTagTo: false,
                       explicitParent: undefined,
                     }),
-                  },
-                  {
+                  }),
+                  aSearchTagsItem({
                     matchedName: "タグ3",
                     tag: aTag({ name: "Tag3", explicitParent: undefined }),
-                  },
-                  {
+                  }),
+                  aSearchTagsItem({
                     matchedName: "後藤ひとり",
                     tag: aTag({
                       name: "後藤ひとり",
                       explicitParent: aTag({ name: "ぼっち・ざ・ろっく！" }),
                     }),
-                  },
+                  }),
                 ],
               },
             })

@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import { notFound } from "next/navigation";
 
 import { UserIcon } from "~/components/UserIcon";
 import { graphql } from "~/gql";
@@ -7,10 +8,10 @@ import { gqlRequest } from "~/utils/gqlRequest";
 export const revalidate = 60;
 
 export default async function Page({ params }: { params: { name: string } }) {
-  const { user } = await gqlRequest(
+  const { findUser } = await gqlRequest(
     graphql(`
       query UserPage($name: String!) {
-        user(name: $name) {
+        findUser(input: { name: $name }) {
           id
           name
           displayName
@@ -20,7 +21,12 @@ export default async function Page({ params }: { params: { name: string } }) {
     `),
     { name: params.name }
   );
-  const { icon, name, displayName } = user;
+
+  if (!findUser) {
+    notFound();
+  }
+
+  const { icon, name, displayName } = findUser;
 
   return (
     <>

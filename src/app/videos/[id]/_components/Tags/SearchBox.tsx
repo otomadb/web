@@ -10,13 +10,13 @@ import { VideoPage_TagEditor_SearchBoxDocument } from "~/gql/graphql";
 graphql(`
   query VideoPage_TagEditor_SearchBox($query: String!, $videoId: ID!) {
     searchTags(input: { query: $query, limit: 5 }) {
-      result {
+      items {
         matchedName
         tag {
           id
           name
           pseudoType
-          canTagTo(id: $videoId)
+          canTagTo(videoId: $videoId)
           explicitParent {
             id
             name
@@ -42,7 +42,7 @@ export const SearchBox: React.FC<{
   return (
     <div className={clsx(classNames, ["divide-y", ["border-gray-300"]])}>
       {data &&
-        data.searchTags.result.map(({ matchedName, tag }) => (
+        data.searchTags.items.map(({ matchedName, tag }) => (
           <button
             key={tag.id}
             className={clsx(

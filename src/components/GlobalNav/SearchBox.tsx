@@ -20,7 +20,7 @@ import {
 
 graphql(`
   fragment GlobalNav_SearchBox_SearchTags on SearchTagsPayload {
-    result {
+    items {
       matchedName
       tag {
         id
@@ -35,7 +35,7 @@ graphql(`
   }
 
   fragment GlobalNav_SearchBox_SearchVideos on SearchVideosPayload {
-    result {
+    items {
       matchedTitle
       video {
         id
@@ -59,17 +59,17 @@ export const VideosSect: React.FC<{
   className?: string;
   fragment: GlobalNav_SearchBox_SearchVideosFragment;
 }> = ({ className, fragment }) => {
-  const { result } = fragment;
+  const { items } = fragment;
 
   return (
     <div className={clsx(className)}>
-      {result.length === 0 && (
+      {items.length === 0 && (
         <div className={clsx(["px-4", "py-2"])}>
           <p className={clsx(["text-xs"], ["text-slate-500"])}>該当なし</p>
         </div>
       )}
       <div className={clsx(["divide-y", "divide-slate-400/75"])}>
-        {result.map(({ video, matchedTitle }) => (
+        {items.map(({ video, matchedTitle }) => (
           <VideoLink
             key={video.id}
             videoId={video.id}
@@ -129,17 +129,17 @@ export const TagsSect: React.FC<{
   className?: string;
   fragment: GlobalNav_SearchBox_SearchTagsFragment;
 }> = ({ className, fragment }) => {
-  const { result } = fragment;
+  const { items } = fragment;
 
   return (
     <div className={clsx(className)}>
-      {result.length === 0 && (
+      {items.length === 0 && (
         <div className={clsx(["px-4", "py-2"])}>
           <p className={clsx(["text-xs"], ["text-slate-500"])}>該当なし</p>
         </div>
       )}
       <div className={clsx(["divide-y", "divide-slate-400/75"])}>
-        {result.map(({ tag, matchedName }) => (
+        {items.map(({ tag, matchedName }) => (
           <TagLink
             key={tag.id}
             tagId={tag.id}

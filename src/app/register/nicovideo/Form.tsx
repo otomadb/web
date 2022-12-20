@@ -23,8 +23,8 @@ import { NicovideoTag } from "./SourceTag";
 import { TagAdder } from "./TagAdder";
 
 graphql(`
-  query RegisterNicovideoPage_AlreadyCheck($id: ID!) {
-    findNicovideoVideoSource(sourceId: $id) {
+  query RegisterNicovideoPage_AlreadyCheck($id: String!) {
+    findNicovideoVideoSource(input: { sourceId: $id }) {
       id
       sourceId
       video {
