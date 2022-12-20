@@ -3,34 +3,16 @@
 import "client-only";
 
 import clsx from "clsx";
-import { notFound } from "next/navigation";
-import React, { useEffect } from "react";
-import { useQuery } from "urql";
+import React from "react";
 
 import { FragmentType, getFragment as useFragment } from "~/gql";
 import {
   MylistPage_RegistrationsSectionFragmentDoc,
   MylistPage_RootFragmentDoc,
-  MylistPageDocument,
 } from "~/gql/graphql";
 
 import { DetailsSection } from "./Details";
 import { RegistrationsSection } from "./Registrations";
-
-export const CheckPrivate: React.FC<{ mylistId: string }> = ({ mylistId }) => {
-  const [result] = useQuery({
-    query: MylistPageDocument,
-    variables: { id: `mylist:${mylistId}` },
-  });
-  const { data } = result;
-
-  useEffect(() => {
-    if (data && data.findMylist === null) notFound();
-  }, [data]);
-
-  if (!data || !data.findMylist) return <div>Checking</div>;
-  return <PageInner mylistId={mylistId} fragment={data.findMylist} />;
-};
 
 export const PageInner: React.FC<{
   mylistId: string;
