@@ -13,11 +13,6 @@ import {
   aTag,
   VideoPage_TagEditor_SearchBoxDocument,
 } from "~/gql/graphql";
-import {
-  aSearchTagsItem,
-  aTag,
-  VideoPage_TagEditor_SearchBoxDocument,
-} from "~/gql/graphql";
 
 import { TagAdder } from "./TagAdder";
 
