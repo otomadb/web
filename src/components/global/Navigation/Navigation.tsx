@@ -7,7 +7,9 @@ import { SearchBox } from "./SearchBox";
 
 export const revalidate = 120;
 
-export const GlobalNav: React.FC<{ className?: string }> = ({ className }) => {
+export const GlobalNavigation: React.FC<{ className?: string }> = ({
+  className,
+}) => {
   return (
     <nav className={clsx(className, ["bg-slate-900"], ["shadow-lg"])}>
       <div

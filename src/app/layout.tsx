@@ -4,7 +4,7 @@ import clsx from "clsx";
 import React from "react";
 
 import { Toaster } from "~/components/common/Toaster";
-import { GlobalNav } from "~/components/global/GlobalNav/GlobalNav";
+import { GlobalNavigation } from "~/components/global/Navigation/Navigation";
 
 import Providers from "./providers";
 
@@ -17,7 +17,7 @@ export default function RootLayout({
     <html lang="ja">
       <body className={clsx(["relative"], ["bg-slate-50"])}>
         <Providers>
-          <GlobalNav
+          <GlobalNavigation
             className={clsx(
               ["sticky"],
               ["top-0"],
