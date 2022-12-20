@@ -13,7 +13,7 @@ import {
   MylistPage_RegistrationsSectionDocument,
 } from "~/gql/graphql";
 
-import { RegistrationsSection } from "./Section";
+import { RegistrationsSection } from "./Registrations";
 
 export default {
   component: RegistrationsSection,

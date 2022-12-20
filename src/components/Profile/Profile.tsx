@@ -9,7 +9,7 @@ import { UserIcon } from "~/components/UserIcon";
 import { graphql } from "~/gql";
 import { ProfilePageDocument } from "~/gql/graphql";
 
-import { VideoList } from "../tags/[id]/VideoList";
+import { VideoList } from "../VideoList";
 import { Logout } from "./Logout";
 
 graphql(`

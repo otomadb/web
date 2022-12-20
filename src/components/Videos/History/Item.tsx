@@ -21,7 +21,7 @@ import {
   VideoPage_TagFragmentDoc,
 } from "~/gql/graphql";
 
-import { Tag } from "../../Tag";
+import { Tag } from "../Tag";
 
 graphql(`
   fragment VideoPage_VideoHistory on Video {

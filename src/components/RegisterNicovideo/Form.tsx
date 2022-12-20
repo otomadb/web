@@ -46,7 +46,9 @@ export const tagtypestyle = (type: PseudoTagType, prefix: string, s = 400) => [
   },
 ];
 
-export const Form: React.FC<{ className?: string }> = ({ className }) => {
+export const RegisterNicovideoForm: React.FC<{ className?: string }> = ({
+  className,
+}) => {
   const islogin = useIsLogin();
 
   const [remote, setRemote] = useState<

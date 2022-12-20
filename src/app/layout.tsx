@@ -3,7 +3,7 @@ import "~/styles/globals.css";
 import clsx from "clsx";
 import React from "react";
 
-import { GlobalNav } from "~/components/GlobalNav/GlobalNav";
+import { GlobalNav } from "~/components/global/GlobalNav/GlobalNav";
 import { Toaster } from "~/components/Toaster";
 
 import Providers from "./providers";

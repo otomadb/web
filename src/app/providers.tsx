@@ -10,17 +10,16 @@ import {
   Provider,
 } from "urql";
 
+import { mockLoginHandler } from "~/components/Login/useLogin";
+import { mockSignupHandler } from "~/components/Signup/useSignup";
+import { GraphCacheConfig } from "~/gql/graphql";
 import { mockLogoutHandler } from "~/hooks/useLogout";
-
-import { mockLoginHandler } from "./login/useLogin";
-import { mockSignupHandler } from "./signup/useSignup";
 
 export const handlers = [
   mockLoginHandler,
   mockLogoutHandler,
   mockSignupHandler,
 ];
-import { GraphCacheConfig } from "~/gql/graphql";
 
 if (
   process.env.NEXT_PUBLIC_MSW_ENABLE === "true" &&

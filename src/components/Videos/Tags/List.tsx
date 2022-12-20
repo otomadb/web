@@ -8,7 +8,7 @@ import {
   VideoPage_VideoTagsFragment,
 } from "~/gql/graphql";
 
-import { Tag } from "../../Tag";
+import { Tag } from "../Tag";
 import { UntagButton } from "./UntagButton";
 
 graphql(`

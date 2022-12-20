@@ -14,8 +14,8 @@ import {
   MylistPageDocument,
 } from "~/gql/graphql";
 
-import { DetailsSection } from "./_components/Details/Section";
-import { RegistrationsSection } from "./_components/Registrations/Section";
+import { DetailsSection } from "./Details";
+import { RegistrationsSection } from "./Registrations";
 
 export const CheckPrivate: React.FC<{ mylistId: string }> = ({ mylistId }) => {
   const [result] = useQuery({

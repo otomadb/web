@@ -6,6 +6,7 @@ import clsx from "clsx";
 import React, { useMemo } from "react";
 import { useQuery } from "urql";
 
+import { Registeration } from "~/components/Mylists/Registrations/Registeration";
 import { getFragment as useFragment, graphql } from "~/gql";
 import {
   MylistPage_RegistrationsSection_RegistrationFragmentDoc,
@@ -13,8 +14,6 @@ import {
   MylistPage_RegistrationsSectionFragment,
   MylistPage_RegistrationsSectionFragmentDoc,
 } from "~/gql/graphql";
-
-import { Registeration } from "./Registeration";
 
 graphql(`
   fragment MylistPage_RegistrationsSection on Mylist {

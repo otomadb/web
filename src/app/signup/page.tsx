@@ -1,8 +1,7 @@
 import clsx from "clsx";
 
+import { SignupForm } from "~/components/Signup/SignupForm";
 import { SkipIfLoggedin } from "~/components/SkipIfLoggedin";
-
-import { SignupForm } from "./SignupForm";
 
 export default async function Page() {
   return (

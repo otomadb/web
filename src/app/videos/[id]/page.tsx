@@ -1,13 +1,12 @@
 import clsx from "clsx";
 import React from "react";
 
+import { HistorySection } from "~/components/Videos/History/Section";
+import { SimilarVideosSection } from "~/components/Videos/SimilarVideos/Section";
+import { TagsSection } from "~/components/Videos/Tags/Section";
+import { VideoDetailsSection } from "~/components/Videos/VideoDetails/Section";
 import { graphql } from "~/gql";
 import { gqlRequest } from "~/utils/gqlRequest";
-
-import { HistorySection } from "./_components/History/Section";
-import { SimilarVideosSection } from "./_components/SimilarVideos/Section";
-import { TagsSection } from "./_components/Tags/Section";
-import { VideoDetailsSection } from "./_components/VideoDetails/Section";
 
 export const revalidate = 0;
 
