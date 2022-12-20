@@ -19,24 +19,32 @@ type CreateMylistPayload {
 
 scalar DateTime
 
-input GetTagsInput {
+input FindMylistInput {
+  id: ID
+}
+
+input FindNicovideoVideoSourceInput {
+  sourceId: String
+}
+
+input FindTagsInput {
   limit: Int! = 10
-  order: GetTagsInputOrder! = {updatedAt: DESC}
+  order: FindTagsInputOrder! = {updatedAt: DESC}
   skip: Int! = 0
 }
 
-input GetTagsInputOrder {
+input FindTagsInputOrder {
   createdAt: SortOrder
   updatedAt: SortOrder
 }
 
-input GetVideosInput {
+input FindVideosInput {
   limit: Int! = 10
-  order: GetVideosInputOrder! = {createdAt: DESC}
+  order: FindVideosInputOrder! = {createdAt: DESC}
   skip: Int! = 0
 }
 
-input GetVideosInputOrder {
+input FindVideosInputOrder {
   createdAt: SortOrder
   updatedAt: SortOrder
 }
@@ -61,7 +69,7 @@ type Mutation {
   untagVideo(input: UntagVideoInput!): UntagVideoPayload!
 }
 
-type Mylist {
+type Mylist implements Node {
   createdAt: DateTime!
   holder: User!
   id: ID!
@@ -103,7 +111,7 @@ type MylistRecommendedVideosPayload {
   items: [MylistRecommendedVideosItem!]!
 }
 
-type MylistRegistration {
+type MylistRegistration implements Node {
   createdAt: DateTime!
   id: ID!
   mylist: Mylist!
@@ -133,11 +141,19 @@ enum MylistShareRange {
   PUBLIC
 }
 
-type NicovideoVideoSource implements VideoSource {
-  id: String!
+type MylistsConnection {
+  nodes: [Mylist!]!
+}
+
+type NicovideoVideoSource implements Node & VideoSource {
+  id: ID!
   sourceId: String!
   url: String!
   video: Video!
+}
+
+interface Node {
+  id: ID!
 }
 
 enum PseudoTagType {
@@ -176,17 +192,17 @@ enum PseudoTagType {
 }
 
 type Query {
-  findMylist(id: ID!): Mylist
-  findNicovideoVideoSource(sourceId: ID!): NicovideoVideoSource
+  findMylist(input: FindMylistInput!): Mylist
+  findNicovideoVideoSource(input: FindNicovideoVideoSourceInput!): NicovideoVideoSource
+  findTags(input: FindTagsInput!): TagCollection!
+  findVideos(input: FindVideosInput!): VideoCollection!
   mylist(id: ID!): Mylist!
-  nicovideoVideoSource(sourceId: ID!): NicovideoVideoSource!
+  nicovideoVideoSource(id: ID!): NicovideoVideoSource!
   searchTags(input: SearchTagInput!): SearchTagsPayload!
   searchVideos(input: SearchVideoInput!): SearchVideosPayload!
   tag(id: ID!): Tag!
-  tags(input: GetTagsInput!): TagCollection!
   user(name: String!): User!
   video(id: ID!): Video!
-  videos(input: GetVideosInput!): VideoCollection!
   whoami: User
 }
 
@@ -268,8 +284,12 @@ enum SortOrder {
   DESC
 }
 
-type Tag {
-  canTagTo(id: ID!): Boolean!
+type Tag implements Node {
+  """動画に対してタグを付けることができるか"""
+  canTagTo(
+    """動画のID"""
+    videoId: ID!
+  ): Boolean!
   explicitParent: Tag
   history(input: TagHistoryInput!): TagHistoryCollection!
   id: ID!
@@ -388,17 +408,13 @@ type UntagVideoPayload {
   video: Video!
 }
 
-type User {
+type User implements Node {
   displayName: String!
   favorites: Mylist!
   icon: String!
   id: ID!
-  mylists(input: UserMylistsInput!): UserMylistsConnection!
+  mylists(input: UserMylistsInput!): MylistsConnection!
   name: String!
-}
-
-type UserMylistsConnection {
-  nodes: [Mylist!]!
 }
 
 input UserMylistsInput {
@@ -413,7 +429,7 @@ input UserMylistsInputOrder {
   updatedAt: SortOrder
 }
 
-type Video {
+type Video implements Node {
   hasTag(id: ID!): Boolean!
   history(input: VideoHistoryInput!): VideoHistoryCollection!
   id: ID!
@@ -547,7 +563,7 @@ type VideoSimilarVideosPayload {
 }
 
 interface VideoSource {
-  id: String!
+  id: ID!
   sourceId: String!
   url: String!
   video: Video!
@@ -563,8 +579,8 @@ type VideoTitle {
   title: String!
 }
 
-type YoutubeVideoSource implements VideoSource {
-  id: String!
+type YoutubeVideoSource implements Node & VideoSource {
+  id: ID!
   sourceId: String!
   url: String!
   video: Video!

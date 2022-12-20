@@ -16,7 +16,7 @@ graphql(`
           id
           name
           pseudoType
-          canTagTo(id: $videoId)
+          canTagTo(videoId: $videoId)
           explicitParent {
             id
             name
