@@ -1,21 +1,8 @@
-# direnv
 .direnv
-
-# deps
-package-lock.json
-
-# codegen
-schema.graphql
-src/gql
-
-# public
-public/mockServiceWorker.js
-
-# Vercel
-.vercel
-
-# Next.js
 .next
-
-# storybook
 storybook-static
+
+src/gql
+src/stories
+
+public/mockServiceWorker.js
