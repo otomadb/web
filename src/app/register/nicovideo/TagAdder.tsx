@@ -11,7 +11,7 @@ import { RegisterNicovideoPage_SearchTagsDocument } from "~/gql/graphql";
 graphql(`
   query RegisterNicovideoPage_SearchTags($query: String!) {
     searchTags(input: { query: $query, limit: 5 }) {
-      result {
+      items {
         matchedName
         tag {
           id
@@ -42,7 +42,7 @@ export const SearchBox: React.FC<{
     <div className={clsx(className, ["divide-y", ["border-gray-300"]])}>
       {query !== "" &&
         data &&
-        data.searchTags.result.map(({ matchedName, tag }) => (
+        data.searchTags.items.map(({ matchedName, tag }) => (
           <button
             key={tag.id}
             className={clsx(

@@ -38,6 +38,10 @@ input FindTagsInputOrder {
   updatedAt: SortOrder
 }
 
+input FindUserInput {
+  name: String
+}
+
 input FindVideosInput {
   limit: Int! = 10
   order: FindVideosInputOrder! = {createdAt: DESC}
@@ -195,13 +199,14 @@ type Query {
   findMylist(input: FindMylistInput!): Mylist
   findNicovideoVideoSource(input: FindNicovideoVideoSourceInput!): NicovideoVideoSource
   findTags(input: FindTagsInput!): TagCollection!
+  findUser(input: FindUserInput!): User
   findVideos(input: FindVideosInput!): VideoCollection!
   mylist(id: ID!): Mylist!
   nicovideoVideoSource(id: ID!): NicovideoVideoSource!
   searchTags(input: SearchTagInput!): SearchTagsPayload!
   searchVideos(input: SearchVideoInput!): SearchVideosPayload!
   tag(id: ID!): Tag!
-  user(name: String!): User!
+  user(id: ID!): User!
   video(id: ID!): Video!
   whoami: User
 }
@@ -255,13 +260,13 @@ input SearchTagInput {
   skip: Int! = 0
 }
 
-type SearchTagsPayload {
-  result: [SearchTagsResultItem!]!
-}
-
-type SearchTagsResultItem {
+type SearchTagsItem {
   matchedName: String!
   tag: Tag!
+}
+
+type SearchTagsPayload {
+  items: [SearchTagsItem!]!
 }
 
 input SearchVideoInput {
@@ -270,13 +275,13 @@ input SearchVideoInput {
   skip: Int! = 0
 }
 
-type SearchVideosPayload {
-  result: [SearchVideosResultItem!]!
-}
-
-type SearchVideosResultItem {
+type SearchVideosItem {
   matchedTitle: String!
   video: Video!
+}
+
+type SearchVideosPayload {
+  items: [SearchVideosItem!]!
 }
 
 enum SortOrder {
