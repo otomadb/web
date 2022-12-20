@@ -7,8 +7,8 @@ import Image from "next/image";
 import React, { useMemo, useState } from "react";
 import { useQuery } from "urql";
 
-import { DelayedInput } from "~/components/DelayedInput";
-import { TagLink, VideoLink } from "~/components/Link";
+import { DelayedInput } from "~/components/common/DelayedInput";
+import { TagLink, VideoLink } from "~/components/common/Link";
 import { getFragment, graphql } from "~/gql";
 import {
   GlobalNav_SearchBox_SearchTagsFragment,

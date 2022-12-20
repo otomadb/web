@@ -4,7 +4,7 @@ import clsx from "clsx";
 import Link from "next/link";
 import React from "react";
 
-import { UserIcon } from "~/components/UserIcon";
+import { UserIcon } from "~/components/common/UserIcon";
 import { graphql } from "~/gql";
 import { useViewer } from "~/hooks/useViewer";
 

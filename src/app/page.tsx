@@ -4,7 +4,7 @@ import clsx from "clsx";
 import Link from "next/link";
 import React from "react";
 
-import { VideoList } from "~/components/VideoList";
+import { VideoList } from "~/components/common/VideoList";
 import { graphql } from "~/gql";
 import { gqlRequest } from "~/utils/gqlRequest";
 

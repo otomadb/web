@@ -1,6 +1,6 @@
 import clsx from "clsx";
 
-import { VideoList } from "~/components/VideoList";
+import { VideoList } from "~/components/common/VideoList";
 import { graphql } from "~/gql";
 import { gqlRequest } from "~/utils/gqlRequest";
 

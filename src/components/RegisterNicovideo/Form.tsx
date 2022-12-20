@@ -8,7 +8,7 @@ import Link from "next/link";
 import React, { useMemo, useReducer, useState } from "react";
 import { useQuery } from "urql";
 
-import { VideoLink } from "~/components/Link";
+import { VideoLink } from "~/components/common/Link";
 import { graphql } from "~/gql";
 import {
   PseudoTagType,

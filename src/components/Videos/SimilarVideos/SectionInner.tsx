@@ -7,7 +7,7 @@ import Image from "next/image";
 import { useMemo } from "react";
 import { useQuery } from "urql";
 
-import { VideoLink } from "~/components/Link";
+import { VideoLink } from "~/components/common/Link";
 import { getFragment, graphql } from "~/gql";
 import {
   VideoPage_SimilarVideosSectionDocument,

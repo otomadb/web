@@ -10,8 +10,8 @@ import clsx from "clsx";
 import Link from "next/link";
 import React, { ReactNode } from "react";
 
-import { DateTime } from "~/components/DateTime";
-import { UserIcon } from "~/components/UserIcon";
+import { DateTime } from "~/components/common/DateTime";
+import { UserIcon } from "~/components/common/UserIcon";
 import { getFragment, graphql } from "~/gql";
 import {
   VideoPage_HistoryItemFragment,

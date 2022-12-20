@@ -4,12 +4,12 @@ import clsx from "clsx";
 import React from "react";
 import { useQuery } from "urql";
 
-import { MylistLink } from "~/components/Link";
-import { UserIcon } from "~/components/UserIcon";
+import { MylistLink } from "~/components/common/Link";
+import { UserIcon } from "~/components/common/UserIcon";
+import { VideoList } from "~/components/common/VideoList";
 import { graphql } from "~/gql";
 import { ProfilePageDocument } from "~/gql/graphql";
 
-import { VideoList } from "../VideoList";
 import { Logout } from "./Logout";
 
 graphql(`

@@ -4,7 +4,7 @@ import React from "react";
 import { toast } from "react-hot-toast";
 import { useMutation } from "urql";
 
-import { VideoLink } from "~/components/Link";
+import { VideoLink } from "~/components/common/Link";
 import { graphql } from "~/gql";
 import {
   RegisterNicovideoPage_RegisterVideoDocument,

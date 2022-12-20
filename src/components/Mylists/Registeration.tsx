@@ -5,7 +5,7 @@ import clsx from "clsx";
 import Image from "next/image";
 import React from "react";
 
-import { VideoLink } from "~/components/Link";
+import { VideoLink } from "~/components/common/Link";
 import { graphql } from "~/gql";
 import { MylistPage_RegistrationsSection_RegistrationFragment } from "~/gql/graphql";
 

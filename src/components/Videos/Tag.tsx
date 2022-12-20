@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import React from "react";
 
-import { TagLink } from "~/components/Link";
+import { TagLink } from "~/components/common/Link";
 import { graphql } from "~/gql";
 import { PseudoTagType, VideoPage_TagFragment } from "~/gql/graphql";
 

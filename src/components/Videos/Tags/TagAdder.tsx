@@ -4,7 +4,7 @@ import clsx from "clsx";
 import React, { useState } from "react";
 import { useQuery } from "urql";
 
-import { DelayedInput } from "~/components/DelayedInput";
+import { DelayedInput } from "~/components/common/DelayedInput";
 import { graphql } from "~/gql";
 import { VideoPage_TagEditor_SearchBoxDocument } from "~/gql/graphql";
 

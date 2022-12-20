@@ -3,8 +3,8 @@ import "~/styles/globals.css";
 import clsx from "clsx";
 import React from "react";
 
+import { Toaster } from "~/components/common/Toaster";
 import { GlobalNav } from "~/components/global/GlobalNav/GlobalNav";
-import { Toaster } from "~/components/Toaster";
 
 import Providers from "./providers";
 

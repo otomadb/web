@@ -6,7 +6,7 @@ import clsx from "clsx";
 import React, { useMemo } from "react";
 import { useQuery } from "urql";
 
-import { UserIcon } from "~/components/UserIcon";
+import { UserIcon } from "~/components/common/UserIcon";
 import { FragmentType, getFragment as useFragment, graphql } from "~/gql";
 import {
   MylistPage_DetailsSectionDocument,
