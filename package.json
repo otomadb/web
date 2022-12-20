@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
-    "fmt": "prettier --write \"./**/*.{js,ts,json,yml,md}\"",
+    "fmt": "prettier --write \"./**/*.{js,ts,tsx,css,json,yml,md}\"",
     "lint:eslint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:prettier": "prettier --check ./**/*.{js,ts,tsx,css,json,yml,md}",
     "lintfix": "run-s 'lintfix:*' 'fmt'",
