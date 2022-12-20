@@ -1,9 +1,21 @@
+# direnv
 .direnv
-.next
-storybook-static
 
+# deps
+package-lock.json
+
+# codegen
+schema.graphql
 src/gql
 
+# public
 public/mockServiceWorker.js
 
-schema.graphql
+# Vercel
+.vercel
+
+# Next.js
+.next
+
+# storybook
+storybook-static
