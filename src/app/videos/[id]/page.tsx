@@ -2,11 +2,12 @@ import clsx from "clsx";
 import React from "react";
 
 import { HistorySection } from "~/components/Videos/History/Section";
-import { SimilarVideosSection } from "~/components/Videos/SimilarVideos/Section";
-import { TagsSection } from "~/components/Videos/Tags/Section";
+import { SectionInner } from "~/components/Videos/SimilarVideos/SectionInner";
 import { VideoDetailsSection } from "~/components/Videos/VideoDetails/Section";
 import { graphql } from "~/gql";
 import { gqlRequest } from "~/utils/gqlRequest";
+
+import { Tags } from "./Tags";
 
 export const revalidate = 0;
 
@@ -22,6 +23,8 @@ export default async function Page({ params }: { params: { id: string } }) {
             primary
           }
           thumbnailUrl
+          ...VideoPage_VideoTags
+          ...VideoPage_VideoSimilarVideos
         }
       }
     `),
@@ -41,8 +44,7 @@ export default async function Page({ params }: { params: { id: string } }) {
           ["w-60", "lg:w-80"]
         )}
       >
-        {/* @ts-expect-error Server Component */}
-        <TagsSection className={clsx(["w-full"])} videoId={videoId} />
+        <Tags className={clsx(["w-full"])} videoId={videoId} fallback={video} />
       </div>
       <div className={clsx(["flex-grow"])}>
         <VideoDetailsSection
@@ -51,13 +53,21 @@ export default async function Page({ params }: { params: { id: string } }) {
           videoId={videoId}
         />
         {/* @ts-expect-error Server Component */}
-        <TagsSection
-          className={clsx(["md:hidden"], ["w-full"])}
-          videoId={videoId}
-        />
+        <section className={clsx(className)}>
+          <h2 className={clsx(["text-xl"], ["text-slate-900"])}>タグ</h2>
+          <Tags className={clsx(["mt-2"])} videoId={videoId} fallback={video} />
+        </section>
         <div className={clsx(["flex", "flex-col"], ["mt-4"])}>
-          {/* @ts-expect-error Server Component */}
-          <SimilarVideosSection videoId={videoId} />
+          <section className={clsx()}>
+            <h2 className={clsx(["text-xl"], ["text-slate-900"])}>
+              似ている動画
+            </h2>
+            <SectionInner
+              videoId={videoId}
+              className={clsx(["mt-2"])}
+              fallback={video}
+            />
+          </section>
           {/* @ts-expect-error Server Component */}
           <HistorySection videoId={videoId} />
         </div>

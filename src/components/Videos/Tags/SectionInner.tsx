@@ -3,15 +3,13 @@
 import "client-only";
 
 import clsx from "clsx";
-import React, { useCallback, useMemo, useState } from "react";
-import { useMutation, useQuery } from "urql";
+import React, { useCallback, useState } from "react";
+import { useMutation } from "urql";
 
-import { getFragment as useFragment, graphql } from "~/gql";
+import { graphql } from "~/gql";
 import {
-  VideoPage_TagsSectionDocument,
-  VideoPage_TagsSectionQuery,
   VideoPage_TagVideoDocument,
-  VideoPage_VideoTagsFragmentDoc,
+  VideoPage_VideoTagsFragment,
 } from "~/gql/graphql";
 import { useViewer } from "~/hooks/useViewer";
 
@@ -35,19 +33,9 @@ graphql(`
 export const SectionInner: React.FC<{
   className?: string;
   videoId: string;
-  fallback: VideoPage_TagsSectionQuery;
-}> = ({ className, videoId, fallback }) => {
+  tags: VideoPage_VideoTagsFragment;
+}> = ({ className, videoId, tags }) => {
   const isLoggedIn = useViewer();
-
-  const [result] = useQuery({
-    query: VideoPage_TagsSectionDocument,
-    variables: { id: videoId },
-  });
-  const { video } = useMemo(() => {
-    return result.data || fallback;
-  }, [result, fallback]);
-  const tags = useFragment(VideoPage_VideoTagsFragmentDoc, video);
-
   const [edit, setEdit] = useState(false);
 
   const [, triggerTagVideo] = useMutation(VideoPage_TagVideoDocument);

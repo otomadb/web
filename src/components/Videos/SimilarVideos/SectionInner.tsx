@@ -4,15 +4,16 @@ import "client-only";
 
 import clsx from "clsx";
 import Image from "next/image";
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 import { useQuery } from "urql";
 
 import { VideoLink } from "~/components/common/Link";
 import { getFragment, graphql } from "~/gql";
 import {
   VideoPage_SimilarVideosSectionDocument,
-  VideoPage_SimilarVideosSectionQuery,
+  VideoPage_VideoSimilarVideosFragment,
   VideoPage_VideoSimilarVideosFragmentDoc,
+  VideoPageQuery,
 } from "~/gql/graphql";
 
 graphql(`
@@ -29,21 +30,32 @@ graphql(`
   }
 `);
 
-export const SectionInner: React.FC<{
+export const Sct: React.FC<{
   className?: string;
   videoId: string;
-  fallback: VideoPage_SimilarVideosSectionQuery;
-}> = ({ className, videoId, fallback }) => {
-  const [result] = useQuery({
+  fallback: VideoPageQuery["video"];
+}> = ({ className, fallback, videoId }) => {
+  const [{ data }] = useQuery({
     query: VideoPage_SimilarVideosSectionDocument,
     variables: { id: videoId },
   });
-  const { video } = useMemo(() => {
-    return result.data || fallback;
-  }, [result, fallback]);
 
-  const similar = getFragment(VideoPage_VideoSimilarVideosFragmentDoc, video);
+  const similar = getFragment(
+    VideoPage_VideoSimilarVideosFragmentDoc,
+    useMemo(() => {
+      return data?.video || fallback;
+    }, [data, fallback])
+  );
+  return (
+    <SectionInner className={clsx(className)} videoId={videoId} tags={tags} />
+  );
+};
 
+export const SectionInner: React.FC<{
+  className?: string;
+  videoId: string;
+  videos: VideoPage_VideoSimilarVideosFragment;
+}> = ({ className, videoId, videos }) => {
   return (
     <div
       className={clsx(
@@ -54,7 +66,7 @@ export const SectionInner: React.FC<{
         ["gap-y-2"]
       )}
     >
-      {similar.similarVideos.items.map(
+      {videos.similarVideos.items.map(
         ({ video: { id, title, thumbnailUrl } }) => (
           <div key={id}>
             <VideoLink videoId={id} className={clsx(["block"])}>

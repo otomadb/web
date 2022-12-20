@@ -14,7 +14,7 @@
     "lintfix": "run-s 'lintfix:*' 'fmt'",
     "lintfix:eslint": "npm run lint:eslint --fix",
     "codegen": "graphql-codegen --config codegen.ts",
-    "codegen:watch": "npm run codegen --watch",
+    "codegen:watch": "pnpm run codegen --watch",
     "storybook": "NODE_OPTIONS=--openssl-legacy-provider storybook dev -p 6006 --no-open -s public",
     "build-storybook": "NODE_OPTIONS=--openssl-legacy-provider storybook build",
     "serve-storybook": "serve storybook-static",
