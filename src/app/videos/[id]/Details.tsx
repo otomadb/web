@@ -5,7 +5,7 @@ import "client-only";
 import React, { useMemo } from "react";
 import { useQuery } from "urql";
 
-import { Inner } from "~/components/Videos/VideoDetails/Inner";
+import { Inner } from "~/components/Videos/Details/Inner";
 import { getFragment as useFragment, graphql } from "~/gql";
 import {
   VideoPage_DetailsFragmentDoc,
@@ -24,12 +24,11 @@ graphql(`
 
 export const Details: React.FC<{
   className?: string;
-  videoId: string;
   fallback: VideoPageQuery["video"];
-}> = ({ fallback, videoId, ...props }) => {
+}> = ({ fallback, ...props }) => {
   const [{ data }] = useQuery({
     query: VideoPage_DetailsSectionDocument,
-    variables: { id: videoId },
+    variables: { id: fallback.id },
   });
   const details = useFragment(
     VideoPage_DetailsFragmentDoc,
@@ -37,5 +36,5 @@ export const Details: React.FC<{
       return data?.video || fallback;
     }, [data, fallback])
   );
-  return <Inner {...props} videoId={videoId} details={details} />;
+  return <Inner {...props} videoId={fallback.id} details={details} />;
 };

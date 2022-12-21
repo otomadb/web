@@ -24,12 +24,11 @@ graphql(`
 
 export const SimilarVideos: React.FC<{
   className?: string;
-  videoId: string;
   fallback: VideoPageQuery["video"];
-}> = ({ fallback, videoId, ...props }) => {
+}> = ({ fallback, ...props }) => {
   const [{ data }] = useQuery({
     query: VideoPage_SimilarVideosSectionDocument,
-    variables: { id: videoId },
+    variables: { id: fallback.id },
   });
   const similar = useFragment(
     VideoPage_SimilarVideosFragmentDoc,
@@ -37,5 +36,5 @@ export const SimilarVideos: React.FC<{
       return data?.video || fallback;
     }, [data, fallback])
   );
-  return <Inner {...props} videoId={videoId} videos={similar} />;
+  return <Inner {...props} videoId={fallback.id} videos={similar} />;
 };

@@ -21,17 +21,16 @@ graphql(`
 
 export const History: React.FC<{
   className?: string;
-  videoId: string;
   fallback: VideoPageQuery["video"];
-}> = ({ videoId, fallback, ...props }) => {
+}> = ({ fallback, ...props }) => {
   const [{ data }] = useQuery({
     query: VideoPage_HistorySectionDocument,
-    variables: { id: videoId },
+    variables: { id: fallback.id },
   });
 
   const history = useFragment(
     VideoPage_HistoryFragmentDoc,
     useMemo(() => data?.video || fallback, [data, fallback])
   );
-  return <Inner {...props} videoId={videoId} history={history} />;
+  return <Inner {...props} videoId={fallback.id} history={history} />;
 };

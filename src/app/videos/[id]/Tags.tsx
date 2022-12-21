@@ -24,16 +24,15 @@ graphql(`
 
 export const Tags: React.FC<{
   className?: string;
-  videoId: string;
   fallback: VideoPageQuery["video"];
-}> = ({ videoId, fallback, ...props }) => {
+}> = ({ fallback, ...props }) => {
   const [{ data }] = useQuery({
     query: VideoPage_TagsSectionDocument,
-    variables: { id: videoId },
+    variables: { id: fallback.id },
   });
   const tags = useFragment(
     VideoPage_TagsFragmentDoc,
     useMemo(() => data?.video || fallback, [data?.video, fallback])
   );
-  return <Inner {...props} videoId={videoId} tags={tags} />;
+  return <Inner {...props} videoId={fallback.id} tags={tags} />;
 };
