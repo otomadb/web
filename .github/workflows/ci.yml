@@ -11,22 +11,28 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-          cache: npm
-      - run: npm install
-      - run: npm run lint:eslint
-      - run: npm run lint:prettier
+          cache: pnpm
+      - run: pnpm install
+      - run: pnpm run lint:eslint
+      - run: pnpm run lint:prettier
 
   typecheck:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-          cache: npm
-      - run: npm install
-      - run: npm run codegen
-      - run: npm run typecheck
+          cache: pnpm
+      - run: pnpm install
+      - run: pnpm run codegen
+      - run: pnpm run typecheck

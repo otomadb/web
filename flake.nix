@@ -26,11 +26,15 @@
             alejandra
             treefmt
             nodejs-16_x
+            (mkCorepack {
+              nodejs = nodejs-16_x;
+              pm = "pnpm";
+            })
             httpie
             act
             actionlint
           ];
-          devshell.startup.npm_install.text = "npm install";
+          devshell.startup.pnpm_install.text = "pnpm install";
           env = [
             {
               name = "PATH";
