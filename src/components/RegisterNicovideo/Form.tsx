@@ -384,6 +384,10 @@ export const RegisterNicovideoForm: React.FC<{ className?: string }> = ({
                         senddata={registerData}
                         onSuccess={() => {
                           setRemote(undefined);
+                          setRegisterNicovideoId(undefined);
+                          setRegisterTitle(undefined);
+                          updateRegisterTags({ type: "clean" });
+                          setRegisterThumbnail(undefined);
                         }}
                       />
                     </div>
