@@ -36,28 +36,14 @@ export default async function Page({ params }: { params: { id: string } }) {
           ["w-60", "lg:w-80"]
         )}
       >
-        <h2 className={clsx(["text-xl"], ["text-slate-900"])}>タグ</h2>
         <Tags className={clsx(["w-full"])} fallback={video} />
       </div>
       <div className={clsx(["flex-grow"])}>
         <Details fallback={video} />
-        <section className={clsx(["block", "md:hidden"])}>
-          <h2 className={clsx(["text-xl"], ["text-slate-900"])}>タグ</h2>
-          <Tags className={clsx(["mt-2"])} fallback={video} />
-        </section>
-        <div className={clsx(["flex", "flex-col"], ["mt-4"])}>
-          <section className={clsx()}>
-            <h2 className={clsx(["text-xl"], ["text-slate-900"])}>
-              似ている動画
-            </h2>
-            <SimilarVideos className={clsx(["mt-2"])} fallback={video} />
-          </section>
-          <section className={clsx()}>
-            <h2 className={clsx(["text-xl"], ["text-slate-900"])}>
-              動画の更新履歴
-            </h2>
-            <History fallback={video} />
-          </section>
+        <div className={clsx(["mt-4"], ["space-y-2"])}>
+          <Tags className={clsx(["block", "md:hidden"])} fallback={video} />
+          <SimilarVideos className={clsx()} fallback={video} />
+          <History className={clsx()} fallback={video} />
         </div>
       </div>
     </div>

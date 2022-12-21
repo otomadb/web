@@ -30,43 +30,46 @@ export const Inner: React.FC<{
   videos: VideoPage_SimilarVideosFragment;
 }> = ({ className, videos }) => {
   return (
-    <div
-      className={clsx(
-        className,
-        ["grid"],
-        ["grid-cols-2", "md:grid-cols-3", "lg:grid-cols-6"],
-        ["gap-x-4"],
-        ["gap-y-2"]
-      )}
-    >
-      {videos.similarVideos.items.map(
-        ({ video: { id, title, thumbnailUrl } }) => (
-          <div key={id}>
-            <VideoLink videoId={id} className={clsx(["block"])}>
-              <Image
-                className={clsx(["w-full"], ["h-auto"], ["rounded-lg"])}
-                src={thumbnailUrl}
-                width={256}
-                height={192}
-                alt={title}
-                priority={true}
-              />
-            </VideoLink>
-            <VideoLink
-              videoId={id}
-              className={clsx(
-                ["block"],
-                ["px-1"],
-                ["py-1"],
-                ["text-xs"],
-                ["line-clamp-2"]
-              )}
-            >
-              {title}
-            </VideoLink>
-          </div>
-        )
-      )}
-    </div>
+    <section className={clsx(className)}>
+      <h2 className={clsx(["text-xl"], ["text-slate-900"])}>似ている動画</h2>
+      <div
+        className={clsx(
+          ["mt-2"],
+          ["grid"],
+          ["grid-cols-2", "md:grid-cols-3", "lg:grid-cols-6"],
+          ["gap-x-4"],
+          ["gap-y-2"]
+        )}
+      >
+        {videos.similarVideos.items.map(
+          ({ video: { id, title, thumbnailUrl } }) => (
+            <div key={id}>
+              <VideoLink videoId={id} className={clsx(["block"])}>
+                <Image
+                  className={clsx(["w-full"], ["h-auto"], ["rounded-lg"])}
+                  src={thumbnailUrl}
+                  width={256}
+                  height={192}
+                  alt={title}
+                  priority={true}
+                />
+              </VideoLink>
+              <VideoLink
+                videoId={id}
+                className={clsx(
+                  ["block"],
+                  ["px-1"],
+                  ["py-1"],
+                  ["text-xs"],
+                  ["line-clamp-2"]
+                )}
+              >
+                {title}
+              </VideoLink>
+            </div>
+          )
+        )}
+      </div>
+    </section>
   );
 };

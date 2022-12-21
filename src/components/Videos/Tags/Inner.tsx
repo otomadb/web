@@ -55,32 +55,35 @@ export const Inner: React.FC<{
   );
 
   return (
-    <div className={clsx(className, ["mt-2"])}>
-      <div
-        className={clsx([
-          "flex",
-          ["flex-col"],
-          ["lg:flex-row", "lg:items-center", "lg:gap-x-2"],
-        ])}
-      >
-        <EditToggle
-          className={clsx(["flex-shrink-0"])}
+    <section className={clsx(className, ["mt-2"])}>
+      <h2 className={clsx(["text-xl"], ["text-slate-900"])}>タグ</h2>
+      <div className={clsx(["mt-2"])}>
+        <div
+          className={clsx([
+            "flex",
+            ["flex-col"],
+            ["lg:flex-row", "lg:items-center", "lg:gap-x-2"],
+          ])}
+        >
+          <EditToggle
+            className={clsx(["flex-shrink-0"])}
+            edit={edit}
+            toggleEdit={(v) => setEdit(v)}
+          />
+          <TagAdder
+            className={clsx(["flex-grow"])}
+            videoId={videoId}
+            disabled={!isLoggedIn || !edit}
+            handleSelect={handleTagVideo}
+          />
+        </div>
+        <TagsList
+          className={clsx(["mt-1"])}
           edit={edit}
-          toggleEdit={(v) => setEdit(v)}
-        />
-        <TagAdder
-          className={clsx(["flex-grow"])}
           videoId={videoId}
-          disabled={!isLoggedIn || !edit}
-          handleSelect={handleTagVideo}
+          tags={taglist}
         />
       </div>
-      <TagsList
-        className={clsx(["mt-1"])}
-        edit={edit}
-        videoId={videoId}
-        tags={taglist}
-      />
-    </div>
+    </section>
   );
 };

@@ -34,10 +34,13 @@ export const Inner: React.FC<{
   );
 
   return (
-    <div className={clsx(className, ["flex", "flex-col"], ["space-y-1"])}>
-      {nodes.map((event) => (
-        <History key={event.id} item={event} />
-      ))}
-    </div>
+    <section className={clsx(className)}>
+      <h2 className={clsx(["text-xl"], ["text-slate-900"])}>動画の更新履歴</h2>
+      <div className={clsx(["mt-2"], ["flex", "flex-col"], ["space-y-1"])}>
+        {nodes.map((event) => (
+          <History key={event.id} item={event} />
+        ))}
+      </div>
+    </section>
   );
 };
