@@ -24,15 +24,6 @@ import {
 import { Tag } from "../Tag";
 
 graphql(`
-  fragment VideoPage_VideoHistory on Video {
-    id
-    history(input: { order: { createdAt: DESC } }) {
-      nodes {
-        ...VideoPage_HistoryItem
-      }
-    }
-  }
-
   fragment VideoPage_HistoryItemUser on User {
     id
     name

@@ -12,9 +12,9 @@ graphql(`
     untagVideo(input: $input) {
       video {
         id
-        ...VideoPage_VideoTags
-        ...VideoPage_VideoHistory
-        ...VideoPage_VideoSimilarVideos
+        ...VideoPage_Tags
+        ...VideoPage_History
+        ...VideoPage_SimilarVideos
       }
     }
   }

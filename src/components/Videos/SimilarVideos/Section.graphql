@@ -1,6 +1,0 @@
-query VideoPage_SimilarVideosSection($id: ID!) {
-  video(id: $id) {
-    id
-    ...VideoPage_VideoSimilarVideos
-  }
-}

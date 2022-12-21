@@ -5,14 +5,14 @@ import React, { Fragment } from "react";
 import { getFragment, graphql } from "~/gql";
 import {
   VideoPage_TagFragmentDoc,
-  VideoPage_VideoTagsFragment,
+  VideoPage_TagsListFragment,
 } from "~/gql/graphql";
 
 import { Tag } from "../Tag";
 import { UntagButton } from "./UntagButton";
 
 graphql(`
-  fragment VideoPage_VideoTags on Video {
+  fragment VideoPage_TagsList on Video {
     tags {
       ...VideoPage_Tag
     }
@@ -50,7 +50,7 @@ export const TagsList: React.FC<{
   className?: string;
   edit: boolean;
   videoId: string;
-  tags: VideoPage_VideoTagsFragment;
+  tags: VideoPage_TagsListFragment;
 }> = ({ className, tags, edit, videoId }) => {
   return (
     <div className={className}>

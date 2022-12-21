@@ -2,16 +2,32 @@ import clsx from "clsx";
 import Image from "next/image";
 import React from "react";
 
+import { graphql } from "~/gql";
+import { VideoPage_DetailsFragment } from "~/gql/graphql";
+
 import { LikeButton } from "./LikeButton";
 
-export const VideoDetailsSection: React.FC<{
-  title: string;
-  thumbnailUrl: string;
+graphql(`
+  fragment VideoPage_Details on Video {
+    title
+    thumbnailUrl
+  }
+`);
+
+export const Inner: React.FC<{
+  className?: string;
   videoId: string;
-}> = ({ title, thumbnailUrl, videoId }) => {
+  details: VideoPage_DetailsFragment;
+}> = ({ className, videoId, details }) => {
+  const { thumbnailUrl, title } = details;
+
   return (
     <section
-      className={clsx(["flex", ["flex-col", "lg:flex-row"]], ["gap-x-4"])}
+      className={clsx(
+        className,
+        ["flex", ["flex-col", "lg:flex-row"]],
+        ["gap-x-4"]
+      )}
     >
       <div>
         <Image
