@@ -1,9 +1,8 @@
 import clsx from "clsx";
 
+import { VideoList } from "~/components/common/VideoList";
 import { graphql } from "~/gql";
 import { gqlRequest } from "~/utils/gqlRequest";
-
-import { VideoList } from "./VideoList";
 
 export const revalidate = 60;
 

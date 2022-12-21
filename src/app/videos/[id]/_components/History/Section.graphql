@@ -1,6 +1,0 @@
-query VideoPage_HistorySection($id: ID!) {
-  video(id: $id) {
-    id
-    ...VideoPage_VideoHistory
-  }
-}

@@ -1,8 +1,7 @@
 import clsx from "clsx";
 
-import { SkipIfLoggedin } from "~/components/SkipIfLoggedin";
-
-import { LoginForm } from "./LoginForm";
+import { SkipIfLoggedin } from "~/components/common/SkipIfLoggedin";
+import { LoginForm } from "~/components/Login/LoginForm";
 
 export default async function Page() {
   return (

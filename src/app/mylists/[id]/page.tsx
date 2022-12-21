@@ -1,7 +1,8 @@
+import { PageInner } from "~/components/Mylists/PageInner";
 import { MylistPageDocument } from "~/gql/graphql";
 import { gqlRequest } from "~/utils/gqlRequest";
 
-import { CheckPrivate, PageInner } from "./PageInner";
+import { CheckPrivate } from "./CheckPrivate";
 
 export const revalidate = 0;
 

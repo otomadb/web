@@ -4,10 +4,10 @@ import React from "react";
 import { graphql } from "~/gql";
 import { gqlRequest } from "~/utils/gqlRequest";
 
-import { HistorySection } from "./_components/History/Section";
-import { SimilarVideosSection } from "./_components/SimilarVideos/Section";
-import { TagsSection } from "./_components/Tags/Section";
-import { VideoDetailsSection } from "./_components/VideoDetails/Section";
+import { Details } from "./Details";
+import { History } from "./History";
+import { SimilarVideos } from "./SimilarVideos";
+import { Tags } from "./Tags";
 
 export const revalidate = 0;
 
@@ -17,21 +17,15 @@ export default async function Page({ params }: { params: { id: string } }) {
       query VideoPage($id: ID!) {
         video(id: $id) {
           id
-          title
-          titles {
-            title
-            primary
-          }
-          thumbnailUrl
+          ...VideoPage_Details
+          ...VideoPage_Tags
+          ...VideoPage_SimilarVideos
+          ...VideoPage_History
         }
       }
     `),
-    {
-      id: `video:${params.id}`,
-    }
+    { id: `video:${params.id}` }
   );
-
-  const { id: videoId, thumbnailUrl, title } = video;
 
   return (
     <div className={clsx(["flex"], ["gap-x-4"], ["px-2"])}>
@@ -42,25 +36,14 @@ export default async function Page({ params }: { params: { id: string } }) {
           ["w-60", "lg:w-80"]
         )}
       >
-        {/* @ts-expect-error Server Component */}
-        <TagsSection className={clsx(["w-full"])} videoId={videoId} />
+        <Tags className={clsx(["w-full"])} fallback={video} />
       </div>
       <div className={clsx(["flex-grow"])}>
-        <VideoDetailsSection
-          title={title}
-          thumbnailUrl={thumbnailUrl}
-          videoId={videoId}
-        />
-        {/* @ts-expect-error Server Component */}
-        <TagsSection
-          className={clsx(["md:hidden"], ["w-full"])}
-          videoId={videoId}
-        />
-        <div className={clsx(["flex", "flex-col"], ["mt-4"])}>
-          {/* @ts-expect-error Server Component */}
-          <SimilarVideosSection videoId={videoId} />
-          {/* @ts-expect-error Server Component */}
-          <HistorySection videoId={videoId} />
+        <Details fallback={video} />
+        <div className={clsx(["mt-4"], ["space-y-2"])}>
+          <Tags className={clsx(["block", "md:hidden"])} fallback={video} />
+          <SimilarVideos className={clsx()} fallback={video} />
+          <History className={clsx()} fallback={video} />
         </div>
       </div>
     </div>

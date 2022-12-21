@@ -1,12 +1,12 @@
 import clsx from "clsx";
 
-import { Form } from "./Form";
+import { RegisterNicovideoForm } from "~/components/RegisterNicovideo/Form";
 
 export default async function Page() {
   return (
     <main>
       <h1>Register</h1>
-      <Form className={clsx(["mt-4"])} />
+      <RegisterNicovideoForm className={clsx(["mt-4"])} />
     </main>
   );
 }

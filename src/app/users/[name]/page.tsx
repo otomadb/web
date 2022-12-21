@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { notFound } from "next/navigation";
 
-import { UserIcon } from "~/components/UserIcon";
+import { UserIcon } from "~/components/common/UserIcon";
 import { graphql } from "~/gql";
 import { gqlRequest } from "~/utils/gqlRequest";
 

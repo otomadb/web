@@ -4,10 +4,9 @@ import clsx from "clsx";
 import Link from "next/link";
 import React from "react";
 
+import { VideoList } from "~/components/common/VideoList";
 import { graphql } from "~/gql";
 import { gqlRequest } from "~/utils/gqlRequest";
-
-import { VideoList } from "./tags/[id]/VideoList";
 
 export const revalidate = 0;
 
