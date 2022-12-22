@@ -7,8 +7,8 @@ import { useQuery } from "urql";
 import { getFragment as useFragment, graphql } from "~/gql";
 import {
   RegisterNicovideoPage_InnerTagFragmentDoc,
-  RegisterNicovideoPage_ResultFragment,
-  RegisterNicovideoPage_ResultFragmentDoc,
+  RegisterNicovideoPage_SearchItemFragment,
+  RegisterNicovideoPage_SearchItemFragmentDoc,
   RegisterNicovideoPage_SearchTagCandidatesDocument,
 } from "~/gql/graphql";
 
@@ -37,7 +37,7 @@ graphql(`
 
 export const Candidate: React.FC<{
   className?: string;
-  item: RegisterNicovideoPage_ResultFragment;
+  item: RegisterNicovideoPage_SearchItemFragment;
   isSelected(id: string): boolean;
   select(id: string): void;
   deselect(id: string): void;
@@ -74,7 +74,7 @@ export const SourceTag: React.FC<{
     requestPolicy: "cache-and-network",
   });
   const items = useFragment(
-    RegisterNicovideoPage_ResultFragmentDoc,
+    RegisterNicovideoPage_SearchItemFragmentDoc,
     result.data?.searchTags.items
   );
 

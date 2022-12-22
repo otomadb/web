@@ -24,7 +24,7 @@ export const useIsAlready = (sourceId: string | undefined) => {
   const [{ data: alreadyCheckData }] = useQuery({
     query: RegisterNicovideoPage_AlreadyCheckDocument,
     pause: !sourceId,
-    variables: sourceId ? { id: sourceId } : undefined,
+    variables: sourceId ? { sourceId } : undefined,
     requestPolicy: "network-only",
   });
   return useMemo(
