@@ -1,3 +1,23 @@
+input AddSemitagToVideoInput {
+  name: String!
+  videoId: ID!
+}
+
+type AddSemitagToVideoPayload {
+  semitag: Semitag!
+  video: Video!
+}
+
+input AddTagToVideoInput {
+  tagId: ID!
+  videoId: ID!
+}
+
+type AddTagToVideoPayload {
+  tag: Tag!
+  video: Video!
+}
+
 input AddVideoToMylistInput {
   mylistId: ID!
   note: String
@@ -62,16 +82,17 @@ type LikeVideoPayload {
 }
 
 type Mutation {
+  addSemitagToVideo(input: AddSemitagToVideoInput!): AddSemitagToVideoPayload!
+  addTagToVideo(input: AddTagToVideoInput!): AddTagToVideoPayload!
   addVideoToMylist(input: AddVideoToMylistInput!): AddVideoToMylistPayload!
   createMylist(input: CreateMylistInput!): CreateMylistPayload!
   likeVideo(input: LikeVideoInput!): LikeVideoPayload!
   registerTag(input: RegisterTagInput!): RegisterTagPayload!
   registerVideo(input: RegisterVideoInput!): RegisterVideoPayload!
+  removeTagFromVideo(input: RemoveTagFromVideoInput!): RemoveTagFromVideoPayload!
   removeVideoFromMylist(input: RemoveVideoFromMylistInput!): RemoveVideoFromMylistPayload!
   resovleSemitag(input: ResolveSemitagInput!): ResolveSemitagPayload!
-  tagVideo(input: TagVideoInput!): TagVideoPayload!
   undoLikeVideo(input: UndoLikeVideoInput!): UndoLikeVideoPayload!
-  untagVideo(input: UntagVideoInput!): UntagVideoPayload!
 }
 
 type Mylist implements Node {
@@ -247,6 +268,16 @@ type RegisterVideoPayload {
   video: Video!
 }
 
+input RemoveTagFromVideoInput {
+  tagId: ID!
+  videoId: ID!
+}
+
+type RemoveTagFromVideoPayload {
+  tag: Tag!
+  video: Video!
+}
+
 input RemoveVideoFromMylistInput {
   mylistId: ID!
   videoId: ID!
@@ -404,32 +435,12 @@ enum TagType {
   TACTICS
 }
 
-input TagVideoInput {
-  tagId: ID!
-  videoId: ID!
-}
-
-type TagVideoPayload {
-  tag: Tag!
-  video: Video!
-}
-
 input UndoLikeVideoInput {
   videoId: ID!
 }
 
 type UndoLikeVideoPayload {
   mylist: Mylist!
-  video: Video!
-}
-
-input UntagVideoInput {
-  tagId: ID!
-  videoId: ID!
-}
-
-type UntagVideoPayload {
-  tag: Tag!
   video: Video!
 }
 
