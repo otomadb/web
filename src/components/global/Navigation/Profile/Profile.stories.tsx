@@ -19,6 +19,7 @@ export default {
     </Provider>
   ),
   parameters: {
+    layout: "centered",
     msw: {
       handlers: [
         graphql.query(ViewerDocument, (req, res, ctx) => {

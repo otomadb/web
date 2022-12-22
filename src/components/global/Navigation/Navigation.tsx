@@ -2,7 +2,7 @@ import clsx from "clsx";
 import Link from "next/link";
 import React from "react";
 
-import { Profile } from "./Profile";
+import { Profile } from "./Profile/Profile";
 import { SearchBox } from "./SearchBox";
 
 export const revalidate = 120;
@@ -15,7 +15,7 @@ export const GlobalNavigation: React.FC<{ className?: string }> = ({
       <div
         className={clsx(
           ["h-full"],
-          ["container", ["max-w-screen-xl"]],
+          ["container", ["max-w-screen-lg"]],
           ["mx-auto"],
           ["px-4"],
           ["flex", ["items-center"]]

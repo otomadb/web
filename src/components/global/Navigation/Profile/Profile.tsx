@@ -1,12 +1,13 @@
 "use client";
 
 import clsx from "clsx";
-import Link from "next/link";
 import React from "react";
 
 import { SigninLink } from "~/components/common/Link";
 import { UserIcon } from "~/components/common/UserIcon";
 import { useViewer } from "~/hooks/useViewer";
+
+import { Accordion } from "./Accordion";
 
 export const Profile: React.FC<{ className?: string }> = ({ className }) => {
   const [{ data }] = useViewer();
@@ -43,16 +44,30 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
         </SigninLink>
       )}
       {whoami && (
-        <Link
-          href={"/profile"}
-          className={clsx(["flex"], ["flex-row"], ["items-center"])}
-        >
-          <UserIcon
-            className={clsx(["w-8"], ["h-8"])}
-            src={whoami.icon}
-            name={whoami.name}
+        <div className={clsx(["relative"], ["group"], ["flex"])}>
+          <div tabIndex={0}>
+            <UserIcon
+              className={clsx(["w-[2rem]"], ["h-[2rem]"])}
+              src={whoami.icon}
+              name={whoami.name}
+            />
+          </div>
+          <Accordion
+            className={clsx(
+              ["w-[16rem]"],
+              [
+                "invisible",
+                "group-focus-within:visible",
+                "group-hover:visible",
+              ],
+              ["absolute"],
+              ["top-full"],
+              ["-left-[7rem]"],
+              ["mx-auto"]
+            )}
+            user={whoami}
           />
-        </Link>
+        </div>
       )}
     </div>
   );
