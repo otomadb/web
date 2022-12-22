@@ -6,7 +6,6 @@ import clsx from "clsx";
 import Link from "next/link";
 import React, { useReducer, useState } from "react";
 
-import { PseudoTagType } from "~/gql/graphql";
 import { useIsLogin } from "~/hooks/useIsLogin";
 
 import { Already } from "./Already";
@@ -14,16 +13,6 @@ import { SourceData, SourceIDInput } from "./FetchSource";
 import { RegisterForm } from "./Register/RegisterForm";
 import { SourceForm } from "./Source/SourceForm";
 import { useIsAlready } from "./useIsAlready";
-
-export const tagtypestyle = (type: PseudoTagType, prefix: string, s = 400) => [
-  {
-    [`${prefix}-character-${s}`]: type === PseudoTagType.Character,
-    [`${prefix}-music-${s}`]: type === PseudoTagType.Music,
-    [`${prefix}-copyright-${s}`]: type === PseudoTagType.Copyright,
-    [`${prefix}-event-${s}`]: type === PseudoTagType.Event,
-    [`${prefix}-series-${s}`]: type === PseudoTagType.Series,
-  },
-];
 
 export const RegisterNicovideoForm: React.FC<{ className?: string }> = ({
   className,

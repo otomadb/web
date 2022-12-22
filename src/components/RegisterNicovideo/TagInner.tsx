@@ -4,8 +4,7 @@ import React from "react";
 
 import { graphql } from "~/gql";
 import { RegisterNicovideoPage_InnerTagFragment } from "~/gql/graphql";
-
-import { tagtypestyle } from "./Form";
+import { styleByTagType } from "~/utils/styleByTagType";
 
 graphql(`
   fragment RegisterNicovideoPage_InnerTag on Tag {
@@ -41,7 +40,7 @@ export const TagInner: React.FC<{
           "border",
           "border-slate-300",
           "border-l-4",
-          tag && tagtypestyle(tag.pseudoType, "border-l", 400),
+          tag && styleByTagType(tag.pseudoType, "border-l", 400),
         ],
         ["aria-checked:bg-sky-100", ["bg-gray-50", "hover:bg-sky-50"]],
         ["cursor-pointer"]
