@@ -68,6 +68,7 @@ type Mutation {
   registerTag(input: RegisterTagInput!): RegisterTagPayload!
   registerVideo(input: RegisterVideoInput!): RegisterVideoPayload!
   removeVideoFromMylist(input: RemoveVideoFromMylistInput!): RemoveVideoFromMylistPayload!
+  resovleSemitag(input: ResolveSemitagInput!): ResolveSemitagPayload!
   tagVideo(input: TagVideoInput!): TagVideoPayload!
   undoLikeVideo(input: UndoLikeVideoInput!): UndoLikeVideoPayload!
   untagVideo(input: UntagVideoInput!): UntagVideoPayload!
@@ -205,6 +206,7 @@ type Query {
   nicovideoVideoSource(id: ID!): NicovideoVideoSource!
   searchTags(input: SearchTagInput!): SearchTagsPayload!
   searchVideos(input: SearchVideoInput!): SearchVideosPayload!
+  semitag(id: ID!): Semitag!
   tag(id: ID!): Tag!
   user(id: ID!): User!
   video(id: ID!): Video!
@@ -224,9 +226,10 @@ type RegisterTagPayload {
 }
 
 input RegisterVideoInput {
-  extraTitles: [String!]
+  extraTitles: [String!]! = []
   primaryThumbnail: String!
   primaryTitle: String!
+  semitags: [String!]! = []
   sources: [RegisterVideoInputSource!]!
   tags: [ID!]!
 }
@@ -252,6 +255,15 @@ input RemoveVideoFromMylistInput {
 type RemoveVideoFromMylistPayload {
   mylist: Mylist!
   video: Video!
+}
+
+input ResolveSemitagInput {
+  id: ID!
+  tagId: ID
+}
+
+type ResolveSemitagPayload {
+  semitag: Semitag!
 }
 
 input SearchTagInput {
@@ -282,6 +294,14 @@ type SearchVideosItem {
 
 type SearchVideosPayload {
   items: [SearchVideosItem!]!
+}
+
+type Semitag implements Node {
+  id: ID!
+  name: String!
+  resolved: Boolean!
+  resolvedTag: Tag
+  video: Video!
 }
 
 enum SortOrder {
@@ -440,6 +460,7 @@ type Video implements Node {
   id: ID!
   nicovideoSources: [NicovideoVideoSource!]!
   registeredAt: DateTime!
+  semitags(resolved: Boolean): [Semitag!]!
   similarVideos(input: VideoSimilarVideosInput!): VideoSimilarVideosPayload!
   tags: [Tag!]!
   thumbnailUrl: String!

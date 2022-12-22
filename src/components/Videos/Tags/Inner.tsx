@@ -55,7 +55,7 @@ export const Inner: React.FC<{
   );
 
   return (
-    <section className={clsx(className, ["mt-2"])}>
+    <section className={clsx(className)}>
       <h2 className={clsx(["text-xl"], ["text-slate-900"])}>タグ</h2>
       <div className={clsx(["mt-2"])}>
         <div

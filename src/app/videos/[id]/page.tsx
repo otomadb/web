@@ -6,6 +6,7 @@ import { gqlRequest } from "~/utils/gqlRequest";
 
 import { Details } from "./Details";
 import { History } from "./History";
+import { Semitags } from "./Semitags";
 import { SimilarVideos } from "./SimilarVideos";
 import { Tags } from "./Tags";
 
@@ -19,6 +20,7 @@ export default async function Page({ params }: { params: { id: string } }) {
           id
           ...VideoPage_Details
           ...VideoPage_Tags
+          ...VideoPage_Semitags
           ...VideoPage_SimilarVideos
           ...VideoPage_History
         }
@@ -33,15 +35,20 @@ export default async function Page({ params }: { params: { id: string } }) {
         className={clsx(
           ["flex-shrink-0"],
           ["hidden", "md:block"],
-          ["w-60", "lg:w-80"]
+          ["w-60", "lg:w-80"],
+          ["space-y-4"]
         )}
       >
         <Tags className={clsx(["w-full"])} fallback={video} />
+        <Semitags className={clsx(["w-full"])} fallback={video} />
       </div>
       <div className={clsx(["flex-grow"])}>
         <Details fallback={video} />
         <div className={clsx(["mt-4"], ["space-y-2"])}>
-          <Tags className={clsx(["block", "md:hidden"])} fallback={video} />
+          <div className={clsx(["block", "md:hidden"], ["space-y-2"])}>
+            <Tags fallback={video} />
+            <Semitags fallback={video} />
+          </div>
           <SimilarVideos className={clsx()} fallback={video} />
           <History className={clsx()} fallback={video} />
         </div>
