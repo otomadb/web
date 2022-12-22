@@ -1,3 +1,4 @@
+import { css } from "@emotion/css";
 import { Meta, StoryObj } from "@storybook/react";
 import { screen, userEvent } from "@storybook/testing-library";
 
@@ -6,6 +7,11 @@ import { mockSignupHandler } from "./useSignup";
 
 export default {
   component: SignupForm,
+  args: {
+    className: css`
+      width: 400px;
+    `,
+  },
   parameters: {
     msw: {
       handlers: [mockSignupHandler],
