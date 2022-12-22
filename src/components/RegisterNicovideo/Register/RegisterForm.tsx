@@ -146,7 +146,8 @@ export const RegisterForm: React.FC<{
                     "aria-checked:bg-sky-100",
                     ["bg-gray-50", "hover:bg-sky-50"],
                   ],
-                  ["cursor-pointer"]
+                  ["cursor-pointer"],
+                  ["text-xs"]
                 )}
                 onClick={() =>
                   updateSemitags({ type: "remove", name: semitag })
