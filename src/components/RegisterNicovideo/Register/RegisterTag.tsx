@@ -8,7 +8,7 @@ import {
   RegisterNicovideoPage_InnerTagFragmentDoc,
 } from "~/gql/graphql";
 
-import { TagInner } from "./TagInner";
+import { TagInner } from "../TagInner";
 
 graphql(`
   query RegisterNicovideoPage_ExactTag($id: ID!) {

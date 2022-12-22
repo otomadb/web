@@ -22,13 +22,15 @@ graphql(`
 export const TagInner: React.FC<{
   className?: string;
   tag?: RegisterNicovideoPage_InnerTagFragment;
-  currentTags: string[];
-  reducer(v: { type: "add" | "remove"; id: string }): void;
-}> = ({ className, tag, currentTags, reducer }) => {
+
+  selected: boolean;
+  select(): void;
+  deselect(): void;
+}> = ({ className, tag, selected, select: add, deselect: remove }) => {
   return (
     <div
       tabIndex={0}
-      aria-checked={tag && currentTags.includes(tag?.id)}
+      aria-checked={tag && selected}
       className={clsx(
         className,
         ["group"],
@@ -45,11 +47,9 @@ export const TagInner: React.FC<{
         ["cursor-pointer"]
       )}
       onClick={() => {
-        if (tag)
-          reducer({
-            type: currentTags.includes(tag.id) ? "remove" : "add",
-            id: tag.id,
-          });
+        if (!tag) return;
+        if (selected) remove();
+        else add();
       }}
     >
       {tag && (

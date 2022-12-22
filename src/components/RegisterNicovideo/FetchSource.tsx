@@ -4,22 +4,21 @@ import clsx from "clsx";
 import ky from "ky";
 import React, { useCallback, useMemo, useState } from "react";
 
+export type SourceData = {
+  id: string;
+  title: string;
+  tags: string[];
+  thumbnails: {
+    type: string;
+    url: string;
+  }[];
+};
+
 export const SourceIDInput: React.FC<{
   className?: string;
-  setRemote(
-    data:
-      | undefined
-      | null
-      | {
-          id: string;
-          title: string;
-          tags: string[];
-          thumbnails: { original: string; large: string };
-        }
-  ): void;
-}> = ({ className, setRemote }) => {
+  setSource(data: undefined | null | SourceData): void;
+}> = ({ className, setSource: setRemote }) => {
   const [sourceId, setSourceId] = useState<string>("");
-  const [updatable, setUpdatable] = useState(false);
   const apiUrl = useMemo(() => {
     if (!sourceId || !/(sm)\d+/.test(sourceId)) return undefined;
     const url = new URL(
@@ -30,7 +29,6 @@ export const SourceIDInput: React.FC<{
   }, [sourceId]);
 
   const handleClick = useCallback(async () => {
-    if (!updatable) return;
     if (!apiUrl) return;
 
     setRemote(undefined);
@@ -53,14 +51,13 @@ export const SourceIDInput: React.FC<{
         id,
         title,
         tags: tags.map((v) => v.value),
-        thumbnails: {
-          original: thumbnail_url.original,
-          large: thumbnail_url.large,
-        },
+        thumbnails: [
+          { type: "original", url: thumbnail_url.original },
+          { type: "large", url: thumbnail_url.large },
+        ],
       }));
     setRemote({ id, title, tags, thumbnails });
-    setUpdatable(false);
-  }, [apiUrl, setRemote, updatable]);
+  }, [apiUrl, setRemote]);
 
   return (
     <form className={clsx(className, ["flex", ["items-stretch"]])}>
@@ -78,7 +75,6 @@ export const SourceIDInput: React.FC<{
         value={sourceId}
         onChange={(e) => {
           setSourceId(e.target.value);
-          setUpdatable(true);
         }}
         placeholder="sm2057168"
       />
