@@ -27,6 +27,7 @@ export type SendData = {
   tags: string[];
   thumbnail: string;
   nicovideoId: string;
+  semitags: string[];
 };
 
 export const RegisterButton: React.FC<{
@@ -63,6 +64,7 @@ export const RegisterButton: React.FC<{
                 sourceId: senddata.nicovideoId,
               },
             ],
+            semitags: senddata.semitags,
           },
         });
 

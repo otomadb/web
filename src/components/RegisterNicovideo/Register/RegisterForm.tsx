@@ -1,10 +1,25 @@
+"use client";
+
+import "client-only";
+
 import clsx from "clsx";
 import Image from "next/image";
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useReducer, useState } from "react";
 
 import { RegisterButton, SendData } from "./RegisterButton";
 import { RegisterTag } from "./RegisterTag";
+import { SemitagAdder } from "./SemitagAdder";
 import { TagAdder } from "./TagAdder";
+
+export type SourceData = {
+  id: string;
+  title: string;
+  tags: string[];
+  thumbnails: {
+    type: string;
+    url: string;
+  }[];
+};
 
 export const RegisterForm: React.FC<{
   className?: string;
@@ -32,6 +47,22 @@ export const RegisterForm: React.FC<{
 
   const thumbnailUrl = useMemo(() => init.thumbnailUrl, [init.thumbnailUrl]);
 
+  const [semitags, updateSemitags] = useReducer(
+    (
+      state: string[],
+      action: { type: "add"; name: string } | { type: "remove"; name: string }
+    ) => {
+      switch (action.type) {
+        case "add":
+          if (state.includes(action.name)) return state;
+          return [...state, action.name];
+        case "remove":
+          return state.filter((n) => n !== action.name);
+      }
+    },
+    []
+  );
+
   const registerData = useMemo<SendData | undefined>(() => {
     if (typeof nicovideoId === "undefined") return undefined;
     if (typeof title === "undefined") return undefined;
@@ -41,8 +72,9 @@ export const RegisterForm: React.FC<{
       title,
       tags: selectedTags,
       thumbnail: thumbnailUrl,
+      semitags,
     };
-  }, [nicovideoId, selectedTags, thumbnailUrl, title]);
+  }, [nicovideoId, selectedTags, thumbnailUrl, title, semitags]);
 
   return (
     <div className={clsx(className, ["flex", ["flex-col"]], ["gap-y-4"])}>
@@ -88,6 +120,43 @@ export const RegisterForm: React.FC<{
             <TagAdder
               className={clsx(["w-48"])}
               select={(id) => selectTag(id)}
+            />
+          </div>
+        </div>
+      </div>
+      <div>
+        <p>仮タグ</p>
+        <div className={clsx(["mt-1"])}>
+          <div
+            className={clsx(
+              ["flex", ["items-center"], ["flex-wrap"]],
+              ["gap-2"]
+            )}
+          >
+            {semitags.map((semitag) => (
+              <div
+                key={semitag}
+                className={clsx(
+                  ["group"],
+                  ["rounded"],
+                  ["px-2"],
+                  ["py-0.5"],
+                  ["border", "border-slate-300"],
+                  [
+                    "aria-checked:bg-sky-100",
+                    ["bg-gray-50", "hover:bg-sky-50"],
+                  ],
+                  ["cursor-pointer"]
+                )}
+                onClick={() =>
+                  updateSemitags({ type: "remove", name: semitag })
+                }
+              >
+                {semitag}
+              </div>
+            ))}
+            <SemitagAdder
+              addTag={(name) => updateSemitags({ type: "add", name })}
             />
           </div>
         </div>
