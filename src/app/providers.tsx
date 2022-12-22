@@ -67,10 +67,10 @@ const urqlClient = createUrqlClient({
         SearchVideosItem() {
           return null;
         },
-        TagVideoPayload() {
+        AddTagToVideoPayload() {
           return null;
         },
-        UntagVideoPayload() {
+        RemoveTagFromVideoPayload() {
           return null;
         },
         TagCollection() {
