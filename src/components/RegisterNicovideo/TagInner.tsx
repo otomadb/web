@@ -23,9 +23,9 @@ export const TagInner: React.FC<{
   tag?: RegisterNicovideoPage_InnerTagFragment;
 
   selected: boolean;
-  select(): void;
+  select?(): void;
   deselect(): void;
-}> = ({ className, tag, selected, select: add, deselect: remove }) => {
+}> = ({ className, tag, selected, select, deselect }) => {
   return (
     <div
       tabIndex={0}
@@ -47,8 +47,8 @@ export const TagInner: React.FC<{
       )}
       onClick={() => {
         if (!tag) return;
-        if (selected) remove();
-        else add();
+        if (selected) deselect();
+        else select?.();
       }}
     >
       {tag && (

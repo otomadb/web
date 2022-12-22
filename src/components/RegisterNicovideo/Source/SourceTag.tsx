@@ -71,6 +71,7 @@ export const SourceTag: React.FC<{
     query: RegisterNicovideoPage_SearchTagCandidatesDocument,
     pause: unneccesary,
     variables: { query: sourceTag },
+    requestPolicy: "cache-and-network",
   });
   const items = useFragment(
     RegisterNicovideoPage_ResultFragmentDoc,

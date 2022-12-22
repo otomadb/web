@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import Image from "next/image";
-import React, { useMemo, useReducer, useState } from "react";
+import React, { useMemo, useState } from "react";
 
 import { RegisterButton, SendData } from "./RegisterButton";
 import { RegisterTag } from "./RegisterTag";
@@ -13,35 +13,25 @@ export const RegisterForm: React.FC<{
     title: string;
     thumbnailUrl: string | undefined;
   };
+
+  selectedTags: string[];
+  selectTag(id: string): void;
+  deselectTag(id: string): void;
+
   onRegistered(): void;
-}> = ({ className, init, onRegistered: clearRemote }) => {
+}> = ({
+  className,
+  init,
+  selectedTags,
+  deselectTag,
+  selectTag,
+  onRegistered,
+}) => {
   const nicovideoId = useMemo(() => init.sourceId, [init.sourceId]);
   const [title, setTitle] = useState(init.title);
 
   const thumbnailUrl = useMemo(() => init.thumbnailUrl, [init.thumbnailUrl]);
 
-  const [registerTags, updateRegisterTags] = useReducer(
-    (
-      state: string[],
-      action:
-        | { type: "add"; id: string }
-        | { type: "remove"; id: string }
-        | { type: "clean" }
-    ) => {
-      switch (action.type) {
-        case "add":
-          if (state.includes(action.id)) return state;
-          return [...state, action.id];
-        case "remove":
-          return state.filter((a) => a !== action.id);
-        case "clean":
-          return [];
-        default:
-          return state;
-      }
-    },
-    []
-  );
   const registerData = useMemo<SendData | undefined>(() => {
     if (typeof nicovideoId === "undefined") return undefined;
     if (typeof title === "undefined") return undefined;
@@ -49,10 +39,10 @@ export const RegisterForm: React.FC<{
     return {
       nicovideoId,
       title,
-      tags: registerTags,
+      tags: selectedTags,
       thumbnail: thumbnailUrl,
     };
-  }, [nicovideoId, registerTags, thumbnailUrl, title]);
+  }, [nicovideoId, selectedTags, thumbnailUrl, title]);
 
   return (
     <div className={clsx(className, ["flex", ["flex-col"]], ["gap-y-4"])}>
@@ -92,17 +82,12 @@ export const RegisterForm: React.FC<{
               ["gap-2"]
             )}
           >
-            {Array.from(registerTags).map((id) => (
-              <RegisterTag
-                key={id}
-                tagId={id}
-                currentTags={registerTags}
-                reducer={updateRegisterTags}
-              />
+            {selectedTags.map((id) => (
+              <RegisterTag key={id} id={id} deselect={() => deselectTag(id)} />
             ))}
             <TagAdder
               className={clsx(["w-48"])}
-              select={(id) => updateRegisterTags({ type: "add", id })}
+              select={(id) => selectTag(id)}
             />
           </div>
         </div>
@@ -130,7 +115,7 @@ export const RegisterForm: React.FC<{
         <RegisterButton
           senddata={registerData}
           onSuccess={() => {
-            clearRemote();
+            onRegistered();
           }}
         />
       </div>

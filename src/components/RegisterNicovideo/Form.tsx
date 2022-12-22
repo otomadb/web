@@ -53,7 +53,13 @@ export const RegisterNicovideoForm: React.FC<{ className?: string }> = ({
   return (
     <div className={clsx(className)}>
       <div>
-        <SourceIDInput setSource={(data) => setSource(data)} />
+        <SourceIDInput
+          setSource={(data) => {
+            setSource(data);
+            updateSelectedTags({ type: "clean" });
+            setSelectedThumbnail(undefined);
+          }}
+        />
       </div>
       <div
         className={clsx(
@@ -124,6 +130,11 @@ export const RegisterNicovideoForm: React.FC<{ className?: string }> = ({
                     title: source.title,
                     thumbnailUrl: selectedThumbnail,
                   }}
+                  selectedTags={selectedTags}
+                  selectTag={(id) => updateSelectedTags({ type: "add", id })}
+                  deselectTag={(id) =>
+                    updateSelectedTags({ type: "remove", id })
+                  }
                   onRegistered={() => {
                     setSource(undefined);
                     updateSelectedTags({ type: "clean" });
