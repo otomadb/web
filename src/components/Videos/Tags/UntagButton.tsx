@@ -8,8 +8,8 @@ import { graphql } from "~/gql";
 import { VideoPage_UntagVideoDocument } from "~/gql/graphql";
 
 graphql(`
-  mutation VideoPage_UntagVideo($input: UntagVideoInput!) {
-    untagVideo(input: $input) {
+  mutation VideoPage_UntagVideo($input: RemoveTagFromVideoInput!) {
+    removeTagFromVideo(input: $input) {
       video {
         id
         ...VideoPage_Tags

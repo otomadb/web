@@ -24,8 +24,8 @@ graphql(`
     ...VideoPage_TagsList
   }
 
-  mutation VideoPage_TagVideo($input: TagVideoInput!) {
-    tagVideo(input: $input) {
+  mutation VideoPage_TagVideo($input: AddTagToVideoInput!) {
+    addTagToVideo(input: $input) {
       video {
         id
         ...VideoPage_Tags
