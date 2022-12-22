@@ -2,8 +2,11 @@ import { Meta, StoryObj } from "@storybook/react";
 import { graphql } from "msw";
 import { createClient, Provider } from "urql";
 
-import { GlobalNav_ProfileDocument } from "~/gql/graphql";
-import { delay } from "~/utils/delay";
+import {
+  aUser,
+  GlobalNav_ProfileDocument,
+  ViewerDocument,
+} from "~/gql/graphql";
 
 import { Profile } from "./Profile";
 
@@ -15,37 +18,43 @@ export default {
       <Profile {...args} />
     </Provider>
   ),
-} as Meta<typeof Profile>;
-
-export const Successful: StoryObj<typeof Profile> = {
-  args: {},
   parameters: {
     msw: {
       handlers: [
-        graphql.query(GlobalNav_ProfileDocument, (req, res, ctx) => {
+        graphql.query(ViewerDocument, (req, res, ctx) => {
           return res(
             ctx.data({
-              whoami: {
+              whoami: aUser({
                 id: "1",
                 name: "SnO2WMaN",
                 displayName: "SnO2WMaN",
                 icon: "/storybook/512x512.png",
-              },
+              }),
             })
           );
         }),
       ],
     },
   },
+} as Meta<typeof Profile>;
+
+export const Primary: StoryObj<typeof Profile> = {
+  args: {},
+};
+
+export const LoggedIn: StoryObj<typeof Profile> = {
+  name: "ログイン済み",
+  args: {},
 };
 
 export const NotLogin: StoryObj<typeof Profile> = {
+  name: "未ログイン",
   args: {},
   parameters: {
     msw: {
       handlers: [
-        graphql.query(GlobalNav_ProfileDocument, (req, res, ctx) => {
-          return res(ctx.data({ whoami: null }));
+        graphql.query(ViewerDocument, (req, res, ctx) => {
+          return res(ctx.delay(500), ctx.data({ whoami: null }));
         }),
       ],
     },
@@ -53,22 +62,13 @@ export const NotLogin: StoryObj<typeof Profile> = {
 };
 
 export const Loading: StoryObj<typeof Profile> = {
+  name: "ユーザーをロード中",
   args: {},
   parameters: {
     msw: {
       handlers: [
         graphql.query(GlobalNav_ProfileDocument, async (req, res, ctx) => {
-          await delay(10000);
-          return res(
-            ctx.data({
-              whoami: {
-                id: "1",
-                name: "SnO2WMaN",
-                displayName: "SnO2WMaN",
-                icon: "/storybook/512x512.png",
-              },
-            })
-          );
+          return res(ctx.delay("infinite"));
         }),
       ],
     },

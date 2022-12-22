@@ -1,8 +1,10 @@
 import "../src/styles/globals.css";
 
-import { initialize, mswDecorator } from "msw-storybook-addon";
+import { initialize as initializeMSW, mswDecorator } from "msw-storybook-addon";
 
-initialize();
+initializeMSW({
+  onUnhandledRequest: "bypass",
+});
 
 export const decorators = [mswDecorator];
 
