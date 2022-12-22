@@ -15,6 +15,7 @@ import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as z from "zod";
 
+import { SigninLink } from "../common/Link";
 import { useSignup } from "./useSignup";
 
 const formSchema = z.object({
@@ -371,6 +372,18 @@ export const SignupForm: React.FC<{ className?: string }> = ({ className }) => {
           登録
         </span>
       </button>
+      <div className={clsx(["mt-4"])}>
+        <p>
+          <SigninLink
+            className={clsx(
+              ["text-blue-400", "hover:text-blue-500"],
+              ["text-sm"]
+            )}
+          >
+            ユーザー登録が既に済んでいるなら
+          </SigninLink>
+        </p>
+      </div>
     </form>
   );
 };

@@ -7,6 +7,7 @@ import clsx from "clsx";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
+import { SignupLink } from "../common/Link";
 import { useLogin } from "./useLogin";
 
 export const LoginForm: React.FC<{ className?: string }> = ({ className }) => {
@@ -173,6 +174,18 @@ export const LoginForm: React.FC<{ className?: string }> = ({ className }) => {
           {errorStatus === "WRONG_PASSWORD" && <>誤ったパスワード</>}
           {errorStatus === "UNKNOWN" && <>不明なエラー</>}
         </span>
+      </div>
+      <div className={clsx(["mt-4"])}>
+        <p>
+          <SignupLink
+            className={clsx(
+              ["text-blue-400", "hover:text-blue-500"],
+              ["text-sm"]
+            )}
+          >
+            ユーザー登録をしていないなら
+          </SignupLink>
+        </p>
       </div>
     </form>
   );

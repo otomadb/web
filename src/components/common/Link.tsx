@@ -44,3 +44,19 @@ export const MylistLink: React.FC<
     {children}
   </Link>
 );
+
+export const SignupLink: React.FC<
+  Omit<ComponentProps<typeof Link>, "href">
+> = ({ children, ...props }) => (
+  <Link href={"/signup"} {...props}>
+    {children}
+  </Link>
+);
+
+export const SigninLink: React.FC<
+  Omit<ComponentProps<typeof Link>, "href">
+> = ({ children, ...props }) => (
+  <Link href={"/login"} {...props}>
+    {children}
+  </Link>
+);
