@@ -2,11 +2,7 @@ import { Meta, StoryObj } from "@storybook/react";
 import { graphql } from "msw";
 import { createClient, Provider } from "urql";
 
-import {
-  aUser,
-  GlobalNav_ProfileDocument,
-  ViewerDocument,
-} from "~/gql/graphql";
+import { aUser, ViewerDocument } from "~/gql/graphql";
 
 import { Profile } from "./Profile";
 
@@ -68,7 +64,7 @@ export const Loading: StoryObj<typeof Profile> = {
   parameters: {
     msw: {
       handlers: [
-        graphql.query(GlobalNav_ProfileDocument, async (req, res, ctx) => {
+        graphql.query(ViewerDocument, async (req, res, ctx) => {
           return res(ctx.delay("infinite"));
         }),
       ],
