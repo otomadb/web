@@ -4,8 +4,7 @@ import React from "react";
 
 import { graphql } from "~/gql";
 import { RegisterNicovideoPage_InnerTagFragment } from "~/gql/graphql";
-
-import { tagtypestyle } from "./Form";
+import { styleByTagType } from "~/utils/styleByTagType";
 
 graphql(`
   fragment RegisterNicovideoPage_InnerTag on Tag {
@@ -22,13 +21,15 @@ graphql(`
 export const TagInner: React.FC<{
   className?: string;
   tag?: RegisterNicovideoPage_InnerTagFragment;
-  currentTags: string[];
-  reducer(v: { type: "add" | "remove"; id: string }): void;
-}> = ({ className, tag, currentTags, reducer }) => {
+
+  selected: boolean;
+  select?(): void;
+  deselect(): void;
+}> = ({ className, tag, selected, select, deselect }) => {
   return (
     <div
       tabIndex={0}
-      aria-checked={tag && currentTags.includes(tag?.id)}
+      aria-checked={tag && selected}
       className={clsx(
         className,
         ["group"],
@@ -39,17 +40,15 @@ export const TagInner: React.FC<{
           "border",
           "border-slate-300",
           "border-l-4",
-          tag && tagtypestyle(tag.pseudoType, "border-l", 400),
+          tag && styleByTagType(tag.pseudoType, "border-l", 400),
         ],
         ["aria-checked:bg-sky-100", ["bg-gray-50", "hover:bg-sky-50"]],
         ["cursor-pointer"]
       )}
       onClick={() => {
-        if (tag)
-          reducer({
-            type: currentTags.includes(tag.id) ? "remove" : "add",
-            id: tag.id,
-          });
+        if (!tag) return;
+        if (selected) deselect();
+        else select?.();
       }}
     >
       {tag && (

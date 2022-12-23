@@ -1,3 +1,4 @@
+import { css } from "@emotion/css";
 import { Meta, StoryObj } from "@storybook/react";
 import { screen, userEvent } from "@storybook/testing-library";
 import { graphql, rest } from "msw";
@@ -69,35 +70,33 @@ const mockRemoteSuccess = rest.get(
     )
 );
 
-const mockRemoteFailed = rest.get(
-  "https://nicovideo-gti-proxy.deno.dev/:id",
-  (req, res, ctx) => res(ctx.status(404))
-);
-
-const mockAlreadyRegistered = graphql.query(
-  RegisterNicovideoPage_AlreadyCheckDocument,
-  (req, res, ctx) =>
-    res(
-      ctx.data({
-        findNicovideoVideoSource: aNicovideoVideoSource({
-          sourceId: "sm2057168",
-          video: aVideo({
-            id: "video:1",
-            title:
-              "M.C.ドナルドはダンスに夢中なのか？最終鬼畜道化師ドナルド・Ｍ",
-            thumbnailUrl: "/storybook/960x540.jpg",
-          }),
-        }),
-      })
-    )
-);
-
 const mockYetUnregistered = graphql.query(
   RegisterNicovideoPage_AlreadyCheckDocument,
   (req, res, ctx) =>
     res(
       ctx.data({
         findNicovideoVideoSource: null,
+      })
+    )
+);
+
+const mockSearchCandidates = graphql.query(
+  RegisterNicovideoPage_SearchTagCandidatesDocument,
+  (req, res, ctx) =>
+    res(
+      ctx.data({
+        searchTags: aSearchTagsPayload({
+          items: [
+            aSearchTagsItem({
+              matchedName: req.variables.query,
+              tag: aTag({
+                id: `tag:1:${req.variables.query}`,
+                name: req.variables.query,
+                explicitParent: null,
+              }),
+            }),
+          ],
+        }),
       })
     )
 );
@@ -133,6 +132,11 @@ const mockSearchTag = graphql.query(
 
 export default {
   component: RegisterNicovideoForm,
+  args: {
+    className: css`
+      width: 1280px;
+    `,
+  },
   render(args) {
     return (
       <UrqlProvider
@@ -146,36 +150,12 @@ export default {
     );
   },
   parameters: {
+    layout: "centered",
     msw: {
       handlers: [
         mockLogin,
         mockRemoteSuccess,
-        graphql.query(
-          RegisterNicovideoPage_SearchTagCandidatesDocument,
-          (req, res, ctx) =>
-            res(
-              ctx.data({
-                searchTags: aSearchTagsPayload({
-                  items: [
-                    aSearchTagsItem({
-                      matchedName: req.variables.query,
-                      tag: aTag({
-                        id: `tag:1:${req.variables.query}`,
-                        name: req.variables.query,
-                        explicitParent: null,
-                      }),
-                    }),
-                    aSearchTagsItem({
-                      tag: aTag({
-                        id: `tag:2:${req.variables.query}`,
-                        explicitParent: null,
-                      }),
-                    }),
-                  ],
-                }),
-              })
-            )
-        ),
+        mockSearchCandidates,
         graphql.query(RegisterNicovideoPage_ExactTagDocument, (req, res, ctx) =>
           res(
             ctx.data({
@@ -226,7 +206,12 @@ export const NoRemote: StoryObj<typeof RegisterNicovideoForm> = {
   args: {},
   parameters: {
     msw: {
-      handlers: [mockLogin, mockRemoteFailed],
+      handlers: [
+        mockLogin,
+        rest.get("https://nicovideo-gti-proxy.deno.dev/:id", (req, res, ctx) =>
+          res(ctx.status(404))
+        ),
+      ],
     },
   },
   play: async () => {
@@ -240,7 +225,28 @@ export const Already: StoryObj<typeof RegisterNicovideoForm> = {
   args: {},
   parameters: {
     msw: {
-      handlers: [mockLogin, mockRemoteSuccess, mockAlreadyRegistered],
+      handlers: [
+        mockLogin,
+        mockRemoteSuccess,
+        mockSearchCandidates,
+        graphql.query(
+          RegisterNicovideoPage_AlreadyCheckDocument,
+          (req, res, ctx) =>
+            res(
+              ctx.data({
+                findNicovideoVideoSource: aNicovideoVideoSource({
+                  sourceId: "sm2057168",
+                  video: aVideo({
+                    id: "video:1",
+                    title:
+                      "M.C.ドナルドはダンスに夢中なのか？最終鬼畜道化師ドナルド・Ｍ",
+                    thumbnailUrl: "/storybook/960x540.jpg",
+                  }),
+                }),
+              })
+            )
+        ),
+      ],
     },
   },
   play: async () => {
