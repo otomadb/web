@@ -67,7 +67,7 @@ export const Accordion: React.FC<{
           <div className={clsx(["grid"], ["grid-cols-1"])}>
             <Link
               className={clsx(
-                ["group"],
+                ["group/link"],
                 ["block"],
                 ["py-2"],
                 ["px-4"],
@@ -77,7 +77,7 @@ export const Accordion: React.FC<{
             >
               <div
                 className={clsx(
-                  ["text-slate-900", "group-hover:text-sky-900"],
+                  ["text-slate-900", "group-hover/link:text-sky-900"],
                   ["text-xs"]
                 )}
               >
@@ -86,7 +86,7 @@ export const Accordion: React.FC<{
             </Link>
             <Link
               className={clsx(
-                ["group"],
+                ["group/link"],
                 ["block"],
                 ["py-2"],
                 ["px-4"],
@@ -96,7 +96,7 @@ export const Accordion: React.FC<{
             >
               <div
                 className={clsx(
-                  ["text-slate-900", "group-hover:text-sky-900"],
+                  ["text-slate-900", "group-hover/link:text-sky-900"],
                   ["text-xs"]
                 )}
               >
@@ -105,7 +105,7 @@ export const Accordion: React.FC<{
             </Link>
             <Link
               className={clsx(
-                ["group"],
+                ["group/link"],
                 ["block"],
                 ["py-2"],
                 ["px-4"],
@@ -115,7 +115,7 @@ export const Accordion: React.FC<{
             >
               <div
                 className={clsx(
-                  ["text-slate-900", "group-hover:text-sky-900"],
+                  ["text-slate-900", "group-hover/link:text-sky-900"],
                   ["text-xs"]
                 )}
               >
@@ -139,7 +139,7 @@ export const Accordion: React.FC<{
             <Link
               className={clsx(
                 ["col-span-2"],
-                ["group"],
+                ["group/link"],
                 ["block"],
                 ["py-2"],
                 ["px-4"],
@@ -149,7 +149,7 @@ export const Accordion: React.FC<{
             >
               <div
                 className={clsx(
-                  ["text-slate-900", "group-hover:text-sky-900"],
+                  ["text-slate-900", "group-hover/link:text-sky-900"],
                   ["text-xs"]
                 )}
               >
@@ -158,7 +158,7 @@ export const Accordion: React.FC<{
             </Link>
             <Link
               className={clsx(
-                ["group"],
+                ["group/link"],
                 ["block"],
                 ["py-2"],
                 ["px-4"],
@@ -168,7 +168,7 @@ export const Accordion: React.FC<{
             >
               <div
                 className={clsx(
-                  ["text-slate-900", "group-hover:text-sky-900"],
+                  ["text-slate-900", "group-hover/link:text-sky-900"],
                   ["text-xs"]
                 )}
               >
@@ -177,7 +177,7 @@ export const Accordion: React.FC<{
             </Link>
             <Link
               className={clsx(
-                ["group"],
+                ["group/link"],
                 ["block"],
                 ["py-2"],
                 ["px-4"],
@@ -187,7 +187,7 @@ export const Accordion: React.FC<{
             >
               <div
                 className={clsx(
-                  ["text-slate-900", "group-hover:text-sky-900"],
+                  ["text-slate-900", "group-hover/link:text-sky-900"],
                   ["text-xs"]
                 )}
               >
