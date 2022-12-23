@@ -3,7 +3,7 @@
 import clsx from "clsx";
 import ky from "ky";
 import React, { useMemo, useState } from "react";
-import useSWR from "swr";
+import useSWRImmutable from "swr/immutable";
 
 export type SourceData = {
   id: string;
@@ -30,7 +30,7 @@ export const FetchSource: React.FC<{
     );
     return url.toString();
   }, [sourceId]);
-  useSWR(
+  useSWRImmutable(
     apiUrl,
     (url) =>
       ky
