@@ -2,28 +2,28 @@
 
 import "client-only";
 
-import { AtSymbolIcon, LockClosedIcon } from "@heroicons/react/24/outline";
+import { AtSymbolIcon, LockClosedIcon } from "@heroicons/react/24/solid";
 import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useCallback } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as z from "zod";
 
 import { AuthFormButton } from "~/components/common/AuthForm/Button";
 import { AuthFormInput } from "~/components/common/AuthForm/FormInput";
 import { SignupLink } from "~/components/common/Link";
-
-import { useLogin } from "./useLogin";
+import { usePostAuthLogin } from "~/rest";
 
 const formSchema = z.object({
-  name: z.string(),
-  password: z.string(),
+  name: z.string({ required_error: "ユーザーネームを入力してください" }),
+  password: z.string({ required_error: "パスワードを入力してください" }),
 });
 type FormSchema = z.infer<typeof formSchema>;
 
 export const LoginForm: React.FC<{ className?: string }> = ({ className }) => {
   const router = useRouter();
+  const triggerLogin = usePostAuthLogin();
 
   const {
     register,
@@ -34,26 +34,27 @@ export const LoginForm: React.FC<{ className?: string }> = ({ className }) => {
     resolver: zodResolver(formSchema),
   });
 
-  const tryLogin = useLogin({
-    onSuccess() {
-      router.replace("/");
-    },
-    onError(status) {
-      switch (status) {
-        case "NO_USER":
-          setError("name", { message: "存在しないユーザーです" });
-          break;
-        case "WRONG_PASSWORD":
-          setError("password", { message: "誤ったパスワード" });
-          break;
-        case "UNKNOWN":
-          break;
+  const onSubmit: SubmitHandler<FormSchema> = useCallback(
+    async ({ name, password }) => {
+      const result = await triggerLogin({ name, password });
+      if (result.ok) {
+        router.replace("/");
+      } else {
+        const { error } = await result.json<{ error: string }>();
+        switch (error) {
+          case "user not found":
+            setError("name", { message: "存在しないユーザーです" });
+            break;
+          case "password wrong":
+            setError("password", { message: "誤ったパスワード" });
+            break;
+          default:
+            break;
+        }
       }
     },
-  });
-  const onSubmit: SubmitHandler<FormSchema> = async ({ name, password }) => {
-    await tryLogin({ name, password });
-  };
+    [router, setError, triggerLogin]
+  );
 
   return (
     <form
@@ -70,25 +71,31 @@ export const LoginForm: React.FC<{ className?: string }> = ({ className }) => {
     >
       <div className={clsx(["grid"], ["grid-cols-1"], ["gap-y-4"])}>
         <AuthFormInput
-          {...register("name")}
+          Input={(props) => (
+            <input
+              {...register("name")}
+              {...props}
+              type={"text"}
+              placeholder="ユーザーネーム"
+            ></input>
+          )}
           Icon={(props) => <AtSymbolIcon {...props} />}
-          type={"text"}
-          placeholder="ユーザーネーム"
           error={errors.name}
         />
         <AuthFormInput
-          {...register("name")}
           Icon={(props) => <LockClosedIcon {...props} />}
-          type={"password"}
-          placeholder="パスワード"
+          Input={(props) => (
+            <input
+              {...register("password")}
+              {...props}
+              type={"password"}
+              placeholder="パスワード"
+            ></input>
+          )}
           error={errors.password}
         />
       </div>
-      <AuthFormButton
-        className={clsx("mt-6")}
-        aria-label="ログイン"
-        text="ログイン"
-      />
+      <AuthFormButton className={clsx("mt-6")} text="ログイン" />
       <div className={clsx(["mt-4"])}>
         <p>
           <SignupLink
