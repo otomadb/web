@@ -8,7 +8,7 @@ import React, { useMemo, useReducer, useState } from "react";
 
 import { RegisterButton, SendData } from "./RegisterButton";
 import { RegisterTag } from "./RegisterTag";
-import { SemitagAdder } from "./SemitagAdder";
+import { Semitag } from "./Semitag";
 import { TagAdder } from "./TagAdder";
 
 export type SourceData = {
@@ -23,29 +23,27 @@ export type SourceData = {
 
 export const RegisterForm: React.FC<{
   className?: string;
-  init: {
-    sourceId: string;
-    title: string;
-    thumbnailUrl: string | undefined;
-  };
 
-  selectedTags: string[];
+  sourceId: string;
+  title: string;
+  thumbnailUrl: string | undefined;
+  tags: string[];
   selectTag(id: string): void;
   deselectTag(id: string): void;
 
   onRegistered(): void;
 }> = ({
   className,
-  init,
-  selectedTags,
+  sourceId,
+  title: initTitle,
+  thumbnailUrl,
+  tags: selectedTags,
   deselectTag,
   selectTag,
   onRegistered,
 }) => {
-  const nicovideoId = useMemo(() => init.sourceId, [init.sourceId]);
-  const [title, setTitle] = useState(init.title);
-
-  const thumbnailUrl = useMemo(() => init.thumbnailUrl, [init.thumbnailUrl]);
+  const nicovideoId = useMemo(() => sourceId, [sourceId]);
+  const [title, setTitle] = useState(initTitle);
 
   const [semitags, updateSemitags] = useReducer(
     (
@@ -106,63 +104,6 @@ export const RegisterForm: React.FC<{
         ></input>
       </div>
       <div>
-        <p>タグ</p>
-        <div className={clsx(["mt-1"])}>
-          <div
-            className={clsx(
-              ["flex", ["items-center"], ["flex-wrap"]],
-              ["gap-2"]
-            )}
-          >
-            {selectedTags.map((id) => (
-              <RegisterTag key={id} id={id} deselect={() => deselectTag(id)} />
-            ))}
-            <TagAdder
-              className={clsx(["w-48"])}
-              select={(id) => selectTag(id)}
-            />
-          </div>
-        </div>
-      </div>
-      <div>
-        <p>仮タグ</p>
-        <div className={clsx(["mt-1"])}>
-          <div
-            className={clsx(
-              ["flex", ["items-center"], ["flex-wrap"]],
-              ["gap-2"]
-            )}
-          >
-            {semitags.map((semitag) => (
-              <div
-                key={semitag}
-                className={clsx(
-                  ["group"],
-                  ["rounded"],
-                  ["px-2"],
-                  ["py-0.5"],
-                  ["border", "border-slate-300"],
-                  [
-                    "aria-checked:bg-sky-100",
-                    ["bg-gray-50", "hover:bg-sky-50"],
-                  ],
-                  ["cursor-pointer"],
-                  ["text-xs"]
-                )}
-                onClick={() =>
-                  updateSemitags({ type: "remove", name: semitag })
-                }
-              >
-                {semitag}
-              </div>
-            ))}
-            <SemitagAdder
-              addTag={(name) => updateSemitags({ type: "add", name })}
-            />
-          </div>
-        </div>
-      </div>
-      <div>
         <p>サムネイル</p>
         <div className={clsx(["mt-1"])}>
           {thumbnailUrl && (
@@ -179,6 +120,71 @@ export const RegisterForm: React.FC<{
               サムネイル画像を指定してください．
             </p>
           )}
+        </div>
+      </div>
+      <div>
+        <p>タグ付け</p>
+        <div className={clsx(["mt-1"], ["px-2"])}>
+          <TagAdder
+            className={clsx(["w-72"])}
+            select={(p) => {
+              if (p.type === "tag") selectTag(p.id);
+              else updateSemitags({ type: "add", name: p.name });
+            }}
+          />
+          <div className={clsx(["mt-2"])}>
+            <p className={clsx(["text-sm"])}>タグ</p>
+            <div className={clsx(["mt-1"])}>
+              {selectedTags.length === 0 && (
+                <p className={clsx(["text-slate-500"], ["text-xs"])}>
+                  タグ付けはありません
+                </p>
+              )}
+              <div
+                className={clsx(
+                  ["flex"],
+                  ["flex-wrap"],
+                  ["gap-x-2"],
+                  ["gap-y-2"]
+                )}
+              >
+                {selectedTags.map((id) => (
+                  <RegisterTag
+                    key={id}
+                    id={id}
+                    deselect={() => deselectTag(id)}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+          <div className={clsx(["mt-2"])}>
+            <p className={clsx(["text-sm"])}>仮タグ</p>
+            <div className={clsx(["mt-1"])}>
+              {semitags.length === 0 && (
+                <p className={clsx(["text-slate-500"], ["text-xs"])}>
+                  仮タグ付けはありません
+                </p>
+              )}
+              <div
+                className={clsx(
+                  ["flex"],
+                  ["flex-wrap"],
+                  ["gap-x-2"],
+                  ["gap-y-2"]
+                )}
+              >
+                {semitags.map((name) => (
+                  <Semitag
+                    key={name}
+                    name={name}
+                    className={clsx()}
+                    onClick={() => updateSemitags({ type: "remove", name })}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div>

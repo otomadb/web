@@ -104,7 +104,7 @@ export const RegisterNicovideoForm: React.FC<{ className?: string }> = ({
             <div
               className={clsx(
                 ["px-4"],
-                ["py-6"],
+                ["py-4"],
                 ["border", "border-gray-300"],
                 ["rounded"]
               )}
@@ -132,7 +132,7 @@ export const RegisterNicovideoForm: React.FC<{ className?: string }> = ({
             <div
               className={clsx(
                 ["px-4"],
-                ["py-6"],
+                ["py-4"],
                 ["border", "border-gray-300"],
                 ["rounded"]
               )}
@@ -144,12 +144,10 @@ export const RegisterNicovideoForm: React.FC<{ className?: string }> = ({
               {source && already === null && (
                 <RegisterForm
                   className={clsx(["mt-4"])}
-                  init={{
-                    sourceId: source.id,
-                    title: source.title,
-                    thumbnailUrl: selectedThumbnail,
-                  }}
-                  selectedTags={selectedTags}
+                  sourceId={source.id}
+                  title={source.title}
+                  thumbnailUrl={selectedThumbnail}
+                  tags={selectedTags}
                   selectTag={(id) => updateSelectedTags({ type: "add", id })}
                   deselectTag={(id) =>
                     updateSelectedTags({ type: "remove", id })
