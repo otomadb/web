@@ -23,6 +23,8 @@ export default {
   },
 } as Meta<typeof LoginForm>;
 
+export const Primary: StoryObj<typeof LoginForm> = {};
+
 export const NoUser: StoryObj<typeof LoginForm> = {
   name: "存在しないユーザー",
   args: {},

@@ -33,3 +33,32 @@ export const usePostAuthLogin = () => {
     [base]
   );
 };
+
+export const usePostAuthSignup = () => {
+  const { base } = useContext(RestContext);
+
+  return useCallback(
+    ({
+      name,
+      password,
+      displayName,
+      email,
+    }: {
+      name: string;
+      displayName: string;
+      password: string;
+      email: string;
+    }) =>
+      ky.post(
+        base === "/"
+          ? "/auth/signup"
+          : new URL("/auth/signup", base).toString(),
+        {
+          json: { name, password, displayName, email },
+          throwHttpErrors: false,
+          credentials: "include",
+        }
+      ),
+    [base]
+  );
+};

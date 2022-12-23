@@ -15,10 +15,11 @@ import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as z from "zod";
 
+import { usePostAuthSignup } from "~/rest";
+
 import { AuthFormButton } from "../common/AuthForm/Button";
 import { AuthFormInput } from "../common/AuthForm/FormInput";
 import { SigninLink } from "../common/Link";
-import { useSignup } from "./useSignup";
 
 const formSchema = z.object({
   name: z.string().min(3, { message: "ユーザーネームは3文字以上です" }),
@@ -31,6 +32,7 @@ type FormSchema = z.infer<typeof formSchema>;
 
 export const SignupForm: React.FC<{ className?: string }> = ({ className }) => {
   const router = useRouter();
+  const triggerSignup = usePostAuthSignup();
 
   const {
     register,
@@ -41,12 +43,18 @@ export const SignupForm: React.FC<{ className?: string }> = ({ className }) => {
   } = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
   });
-  const trySignup = useSignup({
-    onSuccess() {
+  const onSubmit: SubmitHandler<FormSchema> = async ({
+    name,
+    displayName,
+    email,
+    password,
+  }) => {
+    const result = await triggerSignup({ name, displayName, email, password });
+    if (result.ok) {
       router.replace("/");
-    },
-    onError(status) {
-      switch (status) {
+    } else {
+      const { code: errorMessage } = await result.json<{ code: string }>();
+      switch (errorMessage) {
         case "USER_NAME_ALREADY_REGISTERED":
           setError("name", {
             message: "既に登録されているユーザーネームです",
@@ -57,18 +65,10 @@ export const SignupForm: React.FC<{ className?: string }> = ({ className }) => {
             message: "既に登録されているメールアドレスです",
           });
           break;
-        case "UNKNOWN":
+        default:
           break;
       }
-    },
-  });
-  const onSubmit: SubmitHandler<FormSchema> = async ({
-    name,
-    displayName,
-    email,
-    password,
-  }) => {
-    await trySignup({ name, displayName, email, password });
+    }
   };
 
   return (
