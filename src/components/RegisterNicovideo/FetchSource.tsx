@@ -2,7 +2,8 @@
 
 import clsx from "clsx";
 import ky from "ky";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
+import useSWR from "swr";
 
 export type SourceData = {
   id: string;
@@ -14,11 +15,13 @@ export type SourceData = {
   }[];
 };
 
-export const SourceIDInput: React.FC<{
+export const FetchSource: React.FC<{
   className?: string;
-  setSource(data: undefined | null | SourceData): void;
-}> = ({ className, setSource: setRemote }) => {
-  const [sourceId, setSourceId] = useState<string>("");
+  setSource(data: SourceData | null | undefined): void;
+}> = ({ className, setSource }) => {
+  const [input, setInput] = useState<string>("");
+  const [sourceId, setSourceId] = useState<string | undefined>(undefined);
+
   const apiUrl = useMemo(() => {
     if (!sourceId || !/(sm)\d+/.test(sourceId)) return undefined;
     const url = new URL(
@@ -27,37 +30,37 @@ export const SourceIDInput: React.FC<{
     );
     return url.toString();
   }, [sourceId]);
-
-  const handleClick = useCallback(async () => {
-    if (!apiUrl) return;
-
-    setRemote(undefined);
-    const result = await ky.get(apiUrl);
-    if (!result.ok) {
-      setRemote(null);
-      return;
+  useSWR(
+    apiUrl,
+    (url) =>
+      ky
+        .get(url, { throwHttpErrors: false })
+        .json<{
+          id: string;
+          title: string;
+          tags: { value: string }[];
+          watch_url: string;
+          uploaded_at: string;
+          thumbnail_url: { original: string; large: string };
+        }>()
+        .then(({ id, title, tags, thumbnail_url }) => ({
+          id,
+          title,
+          tags: tags.map((v) => v.value),
+          thumbnails: [
+            { type: "original", url: thumbnail_url.original },
+            { type: "large", url: thumbnail_url.large },
+          ],
+        })),
+    {
+      onSuccess(data) {
+        setSource(data);
+      },
+      onError() {
+        setSource(null);
+      },
     }
-
-    const { id, title, tags, thumbnails } = await result
-      .json<{
-        id: string;
-        title: string;
-        tags: { value: string }[];
-        watch_url: string;
-        uploaded_at: string;
-        thumbnail_url: { original: string; large: string };
-      }>()
-      .then(({ id, title, tags, thumbnail_url }) => ({
-        id,
-        title,
-        tags: tags.map((v) => v.value),
-        thumbnails: [
-          { type: "original", url: thumbnail_url.original },
-          { type: "large", url: thumbnail_url.large },
-        ],
-      }));
-    setRemote({ id, title, tags, thumbnails });
-  }, [apiUrl, setRemote]);
+  );
 
   return (
     <form className={clsx(className, ["flex", ["items-stretch"]])}>
@@ -66,15 +69,14 @@ export const SourceIDInput: React.FC<{
         className={clsx(
           ["px-2"],
           ["py-1"],
-          ["text-sm"],
           ["font-mono"],
           ["bg-white"],
           ["border", "border-gray-300"],
           ["rounded"]
         )}
-        value={sourceId}
+        value={input}
         onChange={(e) => {
-          setSourceId(e.target.value);
+          setInput(e.target.value);
         }}
         placeholder="sm2057168"
       />
@@ -86,12 +88,11 @@ export const SourceIDInput: React.FC<{
           ["text-blue-50", "hover:text-blue-100"],
           ["px-4"],
           ["rounded"],
-          ["text-sm"],
-          "cursor-pointer",
+          ["cursor-pointer"],
           ["flex", "items-center"]
         )}
         onClick={() => {
-          handleClick();
+          setSourceId(input);
         }}
       >
         <div>検索</div>

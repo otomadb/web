@@ -97,7 +97,14 @@ export const SourceTag: React.FC<{
               候補が見つかりませんでした
             </p>
           )}
-          <div className={clsx(["w-full"], ["flex"], ["gap-x-2"])}>
+          <div
+            className={clsx(
+              ["w-full"],
+              ["flex", "flex-wrap"],
+              ["gap-x-2"],
+              ["gap-y-2"]
+            )}
+          >
             {items?.map((item, i) => (
               <Candidate
                 key={i}

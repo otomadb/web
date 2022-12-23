@@ -9,10 +9,37 @@ import React, { useReducer, useState } from "react";
 import { useIsLogin } from "~/hooks/useIsLogin";
 
 import { Already } from "./Already";
-import { SourceData, SourceIDInput } from "./FetchSource";
+import { FetchSource, SourceData } from "./FetchSource";
 import { RegisterForm } from "./Register/RegisterForm";
 import { SourceForm } from "./Source/SourceForm";
 import { useIsAlready } from "./useIsAlready";
+
+export const Youhavetologin: React.FC<{ className?: string }> = ({
+  className,
+}) => {
+  return (
+    <div className={clsx(className, ["flex", "flex-col"])}>
+      <p className={clsx(["text-md"], ["text-gray-500"], ["font-bold"])}>
+        ログインしてください
+      </p>
+      <div className={clsx(["mt-2"], ["flex"])}>
+        <Link
+          href={"/login"}
+          className={clsx(
+            ["block"],
+            ["rounded"],
+            ["px-4", "py-2"],
+            ["transition-colors", "duration-75"],
+            ["bg-sky-400", "hover:bg-sky-500"],
+            ["text-sky-100", "hover:text-sky-200"]
+          )}
+        >
+          Login
+        </Link>
+      </div>
+    </div>
+  );
+};
 
 export const RegisterNicovideoForm: React.FC<{ className?: string }> = ({
   className,
@@ -53,7 +80,7 @@ export const RegisterNicovideoForm: React.FC<{ className?: string }> = ({
   return (
     <div className={clsx(className)}>
       <div>
-        <SourceIDInput
+        <FetchSource
           setSource={(data) => {
             setSource(data);
             updateSelectedTags({ type: "clean" });
@@ -67,58 +94,50 @@ export const RegisterNicovideoForm: React.FC<{ className?: string }> = ({
           ["bg-gray-100"],
           ["border", "border-gray-300"],
           ["rounded-lg"],
-          ["px-8"],
-          ["py-6"]
+          ["px-4"],
+          ["py-4"]
         )}
       >
-        {typeof islogin === "boolean" && !islogin && (
-          <div className={clsx(["flex", "flex-col"])}>
-            <p className={clsx(["text-md"], ["text-gray-500"], ["font-bold"])}>
-              ログインしてください
-            </p>
-            <div className={clsx(["mt-2"], ["flex"])}>
-              <Link
-                href={"/login"}
-                className={clsx(
-                  ["block"],
-                  ["rounded"],
-                  ["px-4", "py-2"],
-                  ["transition-colors", "duration-75"],
-                  ["bg-sky-400", "hover:bg-sky-500"],
-                  ["text-sky-100", "hover:text-sky-200"]
-                )}
-              >
-                Login
-              </Link>
-            </div>
-          </div>
-        )}
+        {typeof islogin === "boolean" && !islogin && <Youhavetologin />}
         {islogin && (
-          <div className={clsx(["grid", ["grid-cols-2"]])}>
-            <div>
-              <p>ニコニコ動画からの情報</p>
-              {source === null && (
-                <div className={clsx(["mt-4"])}>
+          <div className={clsx(["grid", ["grid-cols-2"], ["gap-x-4"]])}>
+            <div
+              className={clsx(
+                ["px-4"],
+                ["py-6"],
+                ["border", "border-gray-300"],
+                ["rounded"]
+              )}
+            >
+              <p className={clsx(["text-lg"])}>ニコニコ動画からの情報</p>
+              <div className={clsx(["mt-4"])}>
+                {source === null && (
                   <p className={clsx(["text-sm"], ["text-red-500"])}>
                     動画データの取得に失敗しました。動画は存在しますか？
                   </p>
-                </div>
-              )}
-              {source && (
-                <SourceForm
-                  className={clsx(["mt-4"])}
-                  source={source}
-                  isTagSelected={(id) => selectedTags.includes(id)}
-                  selectTag={(id) => updateSelectedTags({ type: "add", id })}
-                  deselectTag={(id) =>
-                    updateSelectedTags({ type: "remove", id })
-                  }
-                  selectThumbnail={(url) => setSelectedThumbnail(url)}
-                />
-              )}
+                )}
+                {source && (
+                  <SourceForm
+                    source={source}
+                    isTagSelected={(id) => selectedTags.includes(id)}
+                    selectTag={(id) => updateSelectedTags({ type: "add", id })}
+                    deselectTag={(id) =>
+                      updateSelectedTags({ type: "remove", id })
+                    }
+                    selectThumbnail={(url) => setSelectedThumbnail(url)}
+                  />
+                )}
+              </div>
             </div>
-            <div>
-              <p>登録される情報</p>
+            <div
+              className={clsx(
+                ["px-4"],
+                ["py-6"],
+                ["border", "border-gray-300"],
+                ["rounded"]
+              )}
+            >
+              <p className={clsx(["text-lg"])}>登録される情報</p>
               {already && (
                 <Already className={clsx(["mt-4"])} source={already} />
               )}
