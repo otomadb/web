@@ -18,10 +18,11 @@ export const FetchSource: React.FC<{
   setSource(data: SourceData | null | undefined): void;
 }> = ({ className, setSource }) => {
   const [input, setInput] = useState<string>("");
+  const [search, setSearch] = useState<string>("");
   const trigger = useGetRemoteNicovideo();
 
   useSWRImmutable(
-    input && /(sm)\d+/.test(input) ? input : null,
+    search && /(sm)\d+/.test(search) ? search : null,
     (i) =>
       trigger(i).json<{
         sourceId: string;
@@ -74,7 +75,7 @@ export const FetchSource: React.FC<{
           ["cursor-pointer"],
           ["flex", "items-center"]
         )}
-        onClick={() => setInput(input)}
+        onClick={() => setSearch(input)}
       >
         <div>検索</div>
       </div>
