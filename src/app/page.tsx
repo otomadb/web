@@ -1,9 +1,9 @@
 import "server-only";
 
 import clsx from "clsx";
-import Link from "next/link";
 import React from "react";
 
+import { LinkRegisterNicovideo } from "~/components/common/Link";
 import { VideoList } from "~/components/common/VideoList";
 import { graphql } from "~/gql";
 import { gqlRequest } from "~/utils/gqlRequest";
@@ -41,7 +41,7 @@ export default async function Page() {
         <VideoList className={clsx(["mt-4"])} videos={recentVideos} />
       </section>
       <section>
-        <Link href={"/register/nicovideo"}>ニコニコ動画から追加</Link>
+        <LinkRegisterNicovideo>ニコニコ動画から追加</LinkRegisterNicovideo>
       </section>
     </>
   );
