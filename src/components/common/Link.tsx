@@ -1,9 +1,26 @@
 import Link from "next/link";
 import React, { ComponentProps } from "react";
 
-export const VideoLink: React.FC<
-  { videoId: string } & Omit<ComponentProps<typeof Link>, "href">
-> = ({ children, videoId, ...props }) => (
+// eslint-disable-next-line @typescript-eslint/ban-types
+type LinkProps<T = {}> = Omit<ComponentProps<typeof Link>, "href"> & T;
+
+export const LinkTop: React.FC<LinkProps> = ({ children, ...props }) => (
+  <Link href={"/"} {...props}>
+    {children}
+  </Link>
+);
+
+export const LinkLogin: React.FC<LinkProps> = ({ children, ...props }) => (
+  <Link href={"/login"} {...props}>
+    {children}
+  </Link>
+);
+
+export const LinkVideo: React.FC<LinkProps<{ videoId: string }>> = ({
+  children,
+  videoId,
+  ...props
+}) => (
   <Link
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     href={`/videos/${videoId.split(":").at(1)!}`}
@@ -13,9 +30,11 @@ export const VideoLink: React.FC<
   </Link>
 );
 
-export const TagLink: React.FC<
-  { tagId: string } & Omit<ComponentProps<typeof Link>, "href">
-> = ({ children, tagId, ...props }) => (
+export const LinkTag: React.FC<LinkProps<{ tagId: string }>> = ({
+  children,
+  tagId,
+  ...props
+}) => (
   <Link
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     href={`/tags/${tagId.split(":").at(1)!}`}
@@ -25,17 +44,21 @@ export const TagLink: React.FC<
   </Link>
 );
 
-export const UserLink: React.FC<
-  { name: string } & Omit<ComponentProps<typeof Link>, "href">
-> = ({ children, name, ...props }) => (
+export const LinkUser: React.FC<LinkProps<{ name: string }>> = ({
+  children,
+  name,
+  ...props
+}) => (
   <Link href={`/users/${name}`} {...props}>
     {children}
   </Link>
 );
 
-export const MylistLink: React.FC<
-  { mylistId: string } & Omit<ComponentProps<typeof Link>, "href">
-> = ({ children, mylistId, ...props }) => (
+export const LinkMylist: React.FC<LinkProps<{ mylistId: string }>> = ({
+  children,
+  mylistId,
+  ...props
+}) => (
   <Link
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     href={`/mylists/${mylistId.split(":").at(1)!}`}
@@ -45,18 +68,65 @@ export const MylistLink: React.FC<
   </Link>
 );
 
-export const SignupLink: React.FC<
-  Omit<ComponentProps<typeof Link>, "href">
-> = ({ children, ...props }) => (
+export const LinkSignup: React.FC<LinkProps> = ({ children, ...props }) => (
   <Link href={"/signup"} {...props}>
     {children}
   </Link>
 );
 
-export const SigninLink: React.FC<
-  Omit<ComponentProps<typeof Link>, "href">
-> = ({ children, ...props }) => (
+export const LinkSignin: React.FC<LinkProps> = ({ children, ...props }) => (
   <Link href={"/login"} {...props}>
+    {children}
+  </Link>
+);
+
+export const LinkRegisterNicovideo: React.FC<LinkProps> = ({
+  children,
+  ...props
+}) => (
+  <Link href={"/editor/nicovideo"} {...props}>
+    {children}
+  </Link>
+);
+
+export const LinkRegisterTag: React.FC<LinkProps> = ({
+  children,
+  ...props
+}) => (
+  <Link href={"/editor/tag"} {...props}>
+    {children}
+  </Link>
+);
+
+export const LinkRegisterSemitag: React.FC<LinkProps> = ({
+  children,
+  ...props
+}) => (
+  <Link href={"/editor/semitag"} {...props}>
+    {children}
+  </Link>
+);
+
+export const LinkProfile: React.FC<LinkProps> = ({ children, ...props }) => (
+  <Link href={"/profile"} {...props}>
+    {children}
+  </Link>
+);
+
+export const LinkProfileLikes: React.FC<LinkProps> = ({
+  children,
+  ...props
+}) => (
+  <Link href={"/profile/likes"} {...props}>
+    {children}
+  </Link>
+);
+
+export const LinkProfileMylists: React.FC<LinkProps> = ({
+  children,
+  ...props
+}) => (
+  <Link href={"/profile/mylists"} {...props}>
     {children}
   </Link>
 );

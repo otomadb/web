@@ -1,6 +1,7 @@
 import clsx from "clsx";
-import Link from "next/link";
 import React from "react";
+
+import { LinkTop } from "~/components/common/Link";
 
 import { Profile } from "./Profile/Profile";
 import { SearchBox } from "./SearchBox";
@@ -22,9 +23,7 @@ export const GlobalNavigation: React.FC<{ className?: string }> = ({
         )}
       >
         <div className={clsx(["flex-shrink-0"], ["flex", ["justify-start"]])}>
-          <Link href="/" className={clsx(["text-white"])}>
-            otomadb
-          </Link>
+          <LinkTop className={clsx(["text-white"])}>otomadb</LinkTop>
         </div>
         <div className={clsx(["flex-grow"], ["px-8"])}>
           <SearchBox className={clsx(["mx-auto"], ["max-w-xl"])} />

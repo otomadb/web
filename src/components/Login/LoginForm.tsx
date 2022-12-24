@@ -7,7 +7,7 @@ import clsx from "clsx";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
-import { SignupLink } from "../common/Link";
+import { LinkSignup } from "../common/Link";
 import { useLogin } from "./useLogin";
 
 export const LoginForm: React.FC<{ className?: string }> = ({ className }) => {
@@ -177,14 +177,14 @@ export const LoginForm: React.FC<{ className?: string }> = ({ className }) => {
       </div>
       <div className={clsx(["mt-4"])}>
         <p>
-          <SignupLink
+          <LinkSignup
             className={clsx(
               ["text-blue-400", "hover:text-blue-500"],
               ["text-sm"]
             )}
           >
             ユーザー登録をしていないなら
-          </SignupLink>
+          </LinkSignup>
         </p>
       </div>
     </form>

@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import React from "react";
 
-import { TagLink } from "~/components/common/Link";
+import { LinkTag } from "~/components/common/Link";
 import { graphql } from "~/gql";
 import { PseudoTagType, VideoPage_TagFragment } from "~/gql/graphql";
 
@@ -23,7 +23,7 @@ export const Tag: React.FC<{
 }> = ({ className, tag }) => {
   const { id, name, type, explicitParent } = tag;
   return (
-    <TagLink
+    <LinkTag
       tagId={id}
       className={clsx(
         className,
@@ -56,6 +56,6 @@ export const Tag: React.FC<{
           ({explicitParent.name})
         </span>
       )}
-    </TagLink>
+    </LinkTag>
   );
 };
