@@ -6,8 +6,8 @@ import {
   AtSymbolIcon,
   EnvelopeIcon,
   LockClosedIcon,
-  UserCircleIcon,
-} from "@heroicons/react/24/outline";
+  UserIcon,
+} from "@heroicons/react/24/solid";
 import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
@@ -15,8 +15,11 @@ import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as z from "zod";
 
+import { usePostAuthSignup } from "~/rest";
+
+import { AuthFormButton } from "../common/AuthForm/Button";
+import { AuthFormInput } from "../common/AuthForm/FormInput";
 import { SigninLink } from "../common/Link";
-import { useSignup } from "./useSignup";
 
 const formSchema = z.object({
   name: z.string().min(3, { message: "ユーザーネームは3文字以上です" }),
@@ -29,6 +32,7 @@ type FormSchema = z.infer<typeof formSchema>;
 
 export const SignupForm: React.FC<{ className?: string }> = ({ className }) => {
   const router = useRouter();
+  const triggerSignup = usePostAuthSignup();
 
   const {
     register,
@@ -39,12 +43,18 @@ export const SignupForm: React.FC<{ className?: string }> = ({ className }) => {
   } = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
   });
-  const trySignup = useSignup({
-    onSuccess() {
+  const onSubmit: SubmitHandler<FormSchema> = async ({
+    name,
+    displayName,
+    email,
+    password,
+  }) => {
+    const result = await triggerSignup({ name, displayName, email, password });
+    if (result.ok) {
       router.replace("/");
-    },
-    onError(status) {
-      switch (status) {
+    } else {
+      const { code: errorMessage } = await result.json<{ code: string }>();
+      switch (errorMessage) {
         case "USER_NAME_ALREADY_REGISTERED":
           setError("name", {
             message: "既に登録されているユーザーネームです",
@@ -55,18 +65,10 @@ export const SignupForm: React.FC<{ className?: string }> = ({ className }) => {
             message: "既に登録されているメールアドレスです",
           });
           break;
-        case "UNKNOWN":
+        default:
           break;
       }
-    },
-  });
-  const onSubmit: SubmitHandler<FormSchema> = async ({
-    name,
-    displayName,
-    email,
-    password,
-  }) => {
-    await trySignup({ name, displayName, email, password });
+    }
   };
 
   return (
@@ -83,231 +85,56 @@ export const SignupForm: React.FC<{ className?: string }> = ({ className }) => {
       )}
     >
       <div className={clsx(["grid"], ["grid-cols-1"], ["gap-y-4"])}>
-        <div>
-          <label
-            className={clsx(
-              ["flex"],
-              ["border", "border-slate-300"],
-              ["rounded-md"],
-              ["overflow-hidden"]
-            )}
-          >
-            <div
-              className={clsx(
-                ["flex-shrink-0"],
-                ["flex"],
-                ["px-4"],
-                [["bg-teal-400"]]
-              )}
-            >
-              <AtSymbolIcon
-                className={clsx(
-                  ["place-self-center"],
-                  [["w-6"], ["h-6"]],
-                  ["text-teal-100"]
-                )}
-              />
-            </div>
+        <AuthFormInput
+          Input={(props) => (
             <input
               {...register("name")}
-              type="text"
-              aria-label="User name"
-              placeholder={"ユーザーネーム"}
-              className={clsx(
-                ["flex-grow"],
-                ["px-4", "py-2"],
-                ["rounded-r-md"],
-                ["bg-slate-50"],
-                ["outline-teal-300"],
-                [
-                  ["text-md"],
-                  ["text-slate-900"],
-                  ["placeholder:text-slate-300"],
-                ]
-              )}
-            />
-          </label>
-          {errors.name && (
-            <p className={clsx(["mt-1"], ["text-xs"], ["text-red-600"])}>
-              {errors.name.message}
-            </p>
+              {...props}
+              type={"text"}
+              placeholder="ユーザーネーム"
+            ></input>
           )}
-        </div>
-        <div>
-          <label
-            className={clsx(
-              ["flex"],
-              ["border", "border-slate-300"],
-              ["rounded-md"],
-              ["overflow-hidden"]
-            )}
-          >
-            <div
-              className={clsx(
-                ["flex-shrink-0"],
-                ["flex"],
-                ["px-4"],
-                [["bg-teal-400"]]
-              )}
-            >
-              <UserCircleIcon
-                className={clsx(
-                  ["place-self-center"],
-                  [["w-6"], ["h-6"]],
-                  ["text-teal-100"]
-                )}
-              />
-            </div>
+          Icon={(props) => <AtSymbolIcon {...props} />}
+          error={errors.name}
+        />
+        <AuthFormInput
+          Input={(props) => (
             <input
               {...register("displayName")}
-              type="text"
-              aria-label="Display name"
-              placeholder={"表示される名前"}
-              className={clsx(
-                ["flex-grow"],
-                ["px-4", "py-2"],
-                ["rounded-r-md"],
-                ["bg-slate-50"],
-                ["outline-teal-300"],
-                [
-                  ["text-md"],
-                  ["text-slate-900"],
-                  ["placeholder:text-slate-300"],
-                ]
-              )}
-            />
-          </label>
-          {errors.displayName && (
-            <p className={clsx(["mt-1"], ["text-xs"], ["text-red-600"])}>
-              {errors.displayName.message}
-            </p>
+              {...props}
+              type={"text"}
+              placeholder="表示される名前"
+            ></input>
           )}
-        </div>
-        <div>
-          <label
-            className={clsx(
-              ["flex"],
-              ["border", "border-slate-300"],
-              ["rounded-md"],
-              ["overflow-hidden"]
-            )}
-          >
-            <div
-              className={clsx(
-                ["flex-shrink-0"],
-                ["flex"],
-                ["px-4"],
-                [["bg-teal-400"]]
-              )}
-            >
-              <EnvelopeIcon
-                className={clsx(
-                  ["place-self-center"],
-                  [["w-6"], ["h-6"]],
-                  ["text-teal-100"]
-                )}
-              />
-            </div>
+          Icon={(props) => <UserIcon {...props} />}
+          error={errors.displayName}
+        />
+        <AuthFormInput
+          Input={(props) => (
             <input
               {...register("email")}
-              type="text"
-              aria-label="Email"
-              placeholder={"メールアドレス"}
-              className={clsx(
-                ["flex-grow"],
-                ["px-4", "py-2"],
-                ["rounded-r-md"],
-                ["bg-slate-50"],
-                ["outline-teal-300"],
-                [
-                  ["text-md"],
-                  ["text-slate-900"],
-                  ["placeholder:text-slate-300"],
-                ]
-              )}
-            />
-          </label>
-          {errors.email && (
-            <p className={clsx(["mt-1"], ["text-xs"], ["text-red-600"])}>
-              {errors.email.message}
-            </p>
+              {...props}
+              type={"text"}
+              placeholder="メールアドレス"
+            ></input>
           )}
-        </div>
-        <div>
-          <label
-            className={clsx(
-              ["flex"],
-              ["border", "border-slate-300"],
-              ["rounded-md"],
-              ["overflow-hidden"]
-            )}
-          >
-            <div
-              className={clsx(
-                ["flex-shrink-0"],
-                ["flex"],
-                ["px-4"],
-                [["bg-teal-400"]]
-              )}
-            >
-              <LockClosedIcon
-                className={clsx(
-                  ["place-self-center"],
-                  [["w-6"], ["h-6"]],
-                  ["text-teal-100"]
-                )}
-              />
-            </div>
+          Icon={(props) => <EnvelopeIcon {...props} />}
+          error={errors.email}
+        />
+        <AuthFormInput
+          Input={(props) => (
             <input
               {...register("password")}
-              type="password"
-              aria-label="Password"
-              placeholder={"パスワード"}
-              className={clsx(
-                ["flex-grow"],
-                ["px-4", "py-2"],
-                ["rounded-r-md"],
-                ["bg-slate-50"],
-                ["outline-teal-300"],
-                [
-                  ["text-md"],
-                  ["text-slate-900"],
-                  ["placeholder:text-slate-300"],
-                ]
-              )}
-            />
-          </label>
-          {errors.password && (
-            <p className={clsx(["mt-1"], ["text-xs"], ["text-red-600"])}>
-              {errors.password.message}
-            </p>
+              {...props}
+              type={"password"}
+              placeholder="パスワード"
+            ></input>
           )}
-        </div>
-        <div>
-          <label
-            className={clsx(
-              ["flex"],
-              ["border", "border-slate-300"],
-              ["rounded-md"],
-              ["overflow-hidden"]
-            )}
-          >
-            <div
-              className={clsx(
-                ["flex-shrink-0"],
-                ["flex"],
-                ["px-4"],
-                [["bg-teal-400"]]
-              )}
-            >
-              <LockClosedIcon
-                className={clsx(
-                  ["place-self-center"],
-                  [["w-6"], ["h-6"]],
-                  ["text-teal-100"]
-                )}
-              />
-            </div>
+          Icon={(props) => <LockClosedIcon {...props} />}
+          error={errors.password}
+        />
+        <AuthFormInput
+          Input={(props) => (
             <input
               {...register("passwordRepeat", {
                 validate: (value) => {
@@ -318,60 +145,16 @@ export const SignupForm: React.FC<{ className?: string }> = ({ className }) => {
                   );
                 },
               })}
-              type="password"
-              aria-label="Retype password"
-              placeholder={"パスワードの再入力"}
-              className={clsx(
-                ["flex-grow"],
-                ["px-4", "py-2"],
-                ["rounded-r-md"],
-                ["bg-slate-50"],
-                ["outline-teal-300"],
-                [
-                  ["text-md"],
-                  ["text-slate-900"],
-                  ["placeholder:text-slate-300"],
-                ]
-              )}
-            />
-          </label>
-          {errors.passwordRepeat && (
-            <p className={clsx(["mt-1"], ["text-xs"], ["text-red-600"])}>
-              {errors.passwordRepeat.message}
-            </p>
+              {...props}
+              type={"password"}
+              placeholder="パスワードの再入力"
+            ></input>
           )}
-        </div>
+          Icon={(props) => <LockClosedIcon {...props} />}
+          error={errors.passwordRepeat}
+        />
       </div>
-      <button
-        type="submit"
-        aria-label="Signup"
-        className={clsx(
-          ["mt-8"],
-          [["py-2"]],
-          ["group"],
-          ["transition-colors", "duration-75"],
-          ["disabled:bg-slate-300", ["bg-teal-400", "hover:bg-teal-500"]],
-          [
-            "border",
-            "disabled:border-slate-300",
-            ["border-teal-300", "hover:border-teal-400"],
-          ],
-          ["rounded-md"]
-        )}
-      >
-        <span
-          className={clsx(
-            ["font-bold"],
-            ["transition-colors", "duration-75"],
-            [
-              "group-disabled:text-slate-200",
-              ["text-teal-100", "group-hover:text-teal-200"],
-            ]
-          )}
-        >
-          登録
-        </span>
-      </button>
+      <AuthFormButton className={clsx("mt-6")} text="ユーザー登録" />
       <div className={clsx(["mt-4"])}>
         <p>
           <SigninLink
