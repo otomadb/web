@@ -3,7 +3,7 @@
 import clsx from "clsx";
 import React from "react";
 
-import { SigninLink } from "~/components/common/Link";
+import { LinkSignin } from "~/components/common/Link";
 import { UserIcon } from "~/components/common/UserIcon";
 import { useViewer } from "~/hooks/useViewer";
 
@@ -26,7 +26,7 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
         ></div>
       )}
       {whoami === null && (
-        <SigninLink
+        <LinkSignin
           className={clsx(
             ["flex"],
             ["flex-row"],
@@ -41,7 +41,7 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
           )}
         >
           <span>Login</span>
-        </SigninLink>
+        </LinkSignin>
       )}
       {whoami && (
         <div className={clsx(["relative"], ["group"], ["flex"])}>

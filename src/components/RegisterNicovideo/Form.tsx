@@ -3,9 +3,9 @@
 import "client-only";
 
 import clsx from "clsx";
-import Link from "next/link";
 import React, { useReducer, useState } from "react";
 
+import { LinkSignin } from "~/components/common/Link";
 import { useIsLogin } from "~/hooks/useIsLogin";
 
 import { Already } from "./Already";
@@ -23,8 +23,7 @@ export const Youhavetologin: React.FC<{ className?: string }> = ({
         ログインしてください
       </p>
       <div className={clsx(["mt-2"], ["flex"])}>
-        <Link
-          href={"/login"}
+        <LinkSignin
           className={clsx(
             ["block"],
             ["rounded"],
@@ -35,7 +34,7 @@ export const Youhavetologin: React.FC<{ className?: string }> = ({
           )}
         >
           Login
-        </Link>
+        </LinkSignin>
       </div>
     </div>
   );

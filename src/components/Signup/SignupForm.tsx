@@ -15,11 +15,10 @@ import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as z from "zod";
 
+import { AuthFormButton } from "~/components/common/AuthForm/Button";
+import { AuthFormInput } from "~/components/common/AuthForm/FormInput";
+import { LinkSignin } from "~/components/common/Link";
 import { usePostAuthSignup } from "~/rest";
-
-import { AuthFormButton } from "../common/AuthForm/Button";
-import { AuthFormInput } from "../common/AuthForm/FormInput";
-import { SigninLink } from "../common/Link";
 
 const formSchema = z.object({
   name: z.string().min(3, { message: "ユーザーネームは3文字以上です" }),
@@ -157,14 +156,14 @@ export const SignupForm: React.FC<{ className?: string }> = ({ className }) => {
       <AuthFormButton className={clsx("mt-6")} text="ユーザー登録" />
       <div className={clsx(["mt-4"])}>
         <p>
-          <SigninLink
+          <LinkSignin
             className={clsx(
               ["text-blue-400", "hover:text-blue-500"],
               ["text-sm"]
             )}
           >
             ユーザー登録が既に済んでいるなら
-          </SigninLink>
+          </LinkSignin>
         </p>
       </div>
     </form>

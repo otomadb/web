@@ -12,7 +12,7 @@ import * as z from "zod";
 
 import { AuthFormButton } from "~/components/common/AuthForm/Button";
 import { AuthFormInput } from "~/components/common/AuthForm/FormInput";
-import { SignupLink } from "~/components/common/Link";
+import { LinkSignup } from "~/components/common/Link";
 import { usePostAuthLogin } from "~/rest";
 
 const formSchema = z.object({
@@ -98,14 +98,14 @@ export const LoginForm: React.FC<{ className?: string }> = ({ className }) => {
       <AuthFormButton className={clsx("mt-6")} text="ログイン" />
       <div className={clsx(["mt-4"])}>
         <p>
-          <SignupLink
+          <LinkSignup
             className={clsx(
               ["text-blue-400", "hover:text-blue-500"],
               ["text-sm"]
             )}
           >
             ユーザー登録をしていないなら
-          </SignupLink>
+          </LinkSignup>
         </p>
       </div>
     </form>

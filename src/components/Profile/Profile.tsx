@@ -4,7 +4,7 @@ import clsx from "clsx";
 import React from "react";
 import { useQuery } from "urql";
 
-import { MylistLink } from "~/components/common/Link";
+import { LinkMylist } from "~/components/common/Link";
 import { UserIcon } from "~/components/common/UserIcon";
 import { VideoList } from "~/components/common/VideoList";
 import { graphql } from "~/gql";
@@ -121,7 +121,7 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
         <h2 className={clsx(["text-lg"])}>いいねした動画</h2>
         {whoami && (
           <>
-            <MylistLink mylistId={whoami.favorites.id}>ページ</MylistLink>
+            <LinkMylist mylistId={whoami.favorites.id}>ページ</LinkMylist>
             <VideoList
               className={clsx(["mt-2"])}
               videos={whoami.favorites.registrations.nodes.map(({ video }) => ({

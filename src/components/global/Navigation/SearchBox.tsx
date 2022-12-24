@@ -8,7 +8,7 @@ import React, { useMemo, useState } from "react";
 import { useQuery } from "urql";
 
 import { DelayedInput } from "~/components/common/DelayedInput";
-import { TagLink, VideoLink } from "~/components/common/Link";
+import { LinkTag, LinkVideo } from "~/components/common/Link";
 import { getFragment, graphql } from "~/gql";
 import {
   GlobalNav_SearchBox_SearchTagsFragment,
@@ -70,7 +70,7 @@ export const VideosSect: React.FC<{
       )}
       <div className={clsx(["divide-y", "divide-slate-400/75"])}>
         {items.map(({ video, matchedTitle }) => (
-          <VideoLink
+          <LinkVideo
             key={video.id}
             videoId={video.id}
             tabIndex={0}
@@ -118,7 +118,7 @@ export const VideosSect: React.FC<{
                 {video.title}
               </div>
             </div>
-          </VideoLink>
+          </LinkVideo>
         ))}
       </div>
     </div>
@@ -140,7 +140,7 @@ export const TagsSect: React.FC<{
       )}
       <div className={clsx(["divide-y", "divide-slate-400/75"])}>
         {items.map(({ tag, matchedName }) => (
-          <TagLink
+          <LinkTag
             key={tag.id}
             tagId={tag.id}
             tabIndex={0}
@@ -189,7 +189,7 @@ export const TagsSect: React.FC<{
                 </div>
               </div>
             </div>
-          </TagLink>
+          </LinkTag>
         ))}
       </div>
     </div>

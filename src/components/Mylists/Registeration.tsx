@@ -5,7 +5,7 @@ import clsx from "clsx";
 import Image from "next/image";
 import React from "react";
 
-import { VideoLink } from "~/components/common/Link";
+import { LinkVideo } from "~/components/common/Link";
 import { graphql } from "~/gql";
 import { MylistPage_RegistrationsSection_RegistrationFragment } from "~/gql/graphql";
 
@@ -43,7 +43,7 @@ export const Registeration: React.FC<{
         ["py-0.5"]
       )}
     >
-      <VideoLink
+      <LinkVideo
         videoId={videoId}
         className={clsx(["block"], ["flex-shrink-0"], ["px-2"])}
       >
@@ -55,7 +55,7 @@ export const Registeration: React.FC<{
           alt={title}
           priority={true}
         />
-      </VideoLink>
+      </LinkVideo>
       <div
         className={clsx(
           ["flex-grow"],
@@ -71,9 +71,9 @@ export const Registeration: React.FC<{
             ["text-slate-900"]
           )}
         >
-          <VideoLink videoId={videoId} className={clsx()}>
+          <LinkVideo videoId={videoId} className={clsx()}>
             {title}
-          </VideoLink>
+          </LinkVideo>
         </div>
         <div
           className={clsx(

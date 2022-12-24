@@ -7,10 +7,10 @@ import {
   TagIcon,
 } from "@heroicons/react/24/outline";
 import clsx from "clsx";
-import Link from "next/link";
 import React, { ReactNode } from "react";
 
 import { DateTime } from "~/components/common/DateTime";
+import { LinkUser } from "~/components/common/Link";
 import { UserIcon } from "~/components/common/UserIcon";
 import { getFragment, graphql } from "~/gql";
 import {
@@ -118,10 +118,7 @@ const HistItemTemplate: React.FC<{
           ["flex", ["items-center"]]
         )}
       >
-        <Link
-          href={`/users/${user.name}`}
-          className={clsx(["flex", ["items-center"]])}
-        >
+        <LinkUser name={user.name} className={clsx(["flex", ["items-center"]])}>
           <UserIcon
             className={clsx(["w-4"], ["h-4"])}
             src={user.icon}
@@ -130,7 +127,7 @@ const HistItemTemplate: React.FC<{
           <span className={clsx(["ml-1"], ["text-xs"], ["text-slate-700"])}>
             {user.displayName}
           </span>
-        </Link>
+        </LinkUser>
         <DateTime
           className={clsx(
             ["flex-grow"],
