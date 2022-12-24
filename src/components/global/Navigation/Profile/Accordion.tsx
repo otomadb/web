@@ -1,9 +1,16 @@
 "use client";
 import clsx from "clsx";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 
+import {
+  LinkProfile,
+  LinkProfileLikes,
+  LinkProfileMylists,
+  LinkRegisterNicovideo,
+  LinkRegisterSemitag,
+  LinkRegisterTag,
+} from "~/components/common/Link";
 import { useLogout } from "~/hooks/useLogout";
 
 export const Logout: React.FC<{ className?: string }> = ({ className }) => {
@@ -65,7 +72,7 @@ export const Accordion: React.FC<{
             </div>
           </div>
           <div className={clsx(["grid"], ["grid-cols-1"])}>
-            <Link
+            <LinkProfile
               className={clsx(
                 ["group/link"],
                 ["block"],
@@ -73,7 +80,6 @@ export const Accordion: React.FC<{
                 ["px-4"],
                 [["bg-white/75", "hover:bg-sky-300/75"]]
               )}
-              href={"/profile"}
             >
               <div
                 className={clsx(
@@ -83,8 +89,8 @@ export const Accordion: React.FC<{
               >
                 プロフィール
               </div>
-            </Link>
-            <Link
+            </LinkProfile>
+            <LinkProfileLikes
               className={clsx(
                 ["group/link"],
                 ["block"],
@@ -92,7 +98,6 @@ export const Accordion: React.FC<{
                 ["px-4"],
                 [["bg-white/75", "hover:bg-sky-300/75"]]
               )}
-              href={"/profile/likes"}
             >
               <div
                 className={clsx(
@@ -102,8 +107,8 @@ export const Accordion: React.FC<{
               >
                 いいねした動画
               </div>
-            </Link>
-            <Link
+            </LinkProfileLikes>
+            <LinkProfileMylists
               className={clsx(
                 ["group/link"],
                 ["block"],
@@ -111,7 +116,6 @@ export const Accordion: React.FC<{
                 ["px-4"],
                 [["bg-white/75", "hover:bg-sky-300/75"]]
               )}
-              href={"/profile/mylists"}
             >
               <div
                 className={clsx(
@@ -121,7 +125,7 @@ export const Accordion: React.FC<{
               >
                 マイリスト
               </div>
-            </Link>
+            </LinkProfileMylists>
           </div>
         </div>
         <div>
@@ -136,7 +140,7 @@ export const Accordion: React.FC<{
             <div className={clsx(["text-xs"], ["text-slate-500"])}>編集者</div>
           </div>
           <div className={clsx(["grid"], ["grid-cols-2"])}>
-            <Link
+            <LinkRegisterNicovideo
               className={clsx(
                 ["col-span-2"],
                 ["group/link"],
@@ -145,7 +149,6 @@ export const Accordion: React.FC<{
                 ["px-4"],
                 [["bg-white/75", "hover:bg-sky-300/75"]]
               )}
-              href={"/register/nicovideo"}
             >
               <div
                 className={clsx(
@@ -155,8 +158,8 @@ export const Accordion: React.FC<{
               >
                 ニコニコ動画から登録
               </div>
-            </Link>
-            <Link
+            </LinkRegisterNicovideo>
+            <LinkRegisterTag
               className={clsx(
                 ["group/link"],
                 ["block"],
@@ -164,7 +167,6 @@ export const Accordion: React.FC<{
                 ["px-4"],
                 [["bg-white/75", "hover:bg-sky-300/75"]]
               )}
-              href={"/editor/tag"}
             >
               <div
                 className={clsx(
@@ -174,8 +176,8 @@ export const Accordion: React.FC<{
               >
                 タグの登録
               </div>
-            </Link>
-            <Link
+            </LinkRegisterTag>
+            <LinkRegisterSemitag
               className={clsx(
                 ["group/link"],
                 ["block"],
@@ -183,7 +185,6 @@ export const Accordion: React.FC<{
                 ["px-4"],
                 [["bg-white/75", "hover:bg-sky-300/75"]]
               )}
-              href={"/editor/semitag"}
             >
               <div
                 className={clsx(
@@ -193,7 +194,7 @@ export const Accordion: React.FC<{
               >
                 仮タグの解決
               </div>
-            </Link>
+            </LinkRegisterSemitag>
           </div>
         </div>
         <div

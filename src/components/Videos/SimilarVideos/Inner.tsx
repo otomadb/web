@@ -6,7 +6,7 @@ import clsx from "clsx";
 import Image from "next/image";
 import React from "react";
 
-import { VideoLink } from "~/components/common/Link";
+import { LinkVideo } from "~/components/common/Link";
 import { graphql } from "~/gql";
 import { VideoPage_SimilarVideosFragment } from "~/gql/graphql";
 
@@ -44,7 +44,7 @@ export const Inner: React.FC<{
         {videos.similarVideos.items.map(
           ({ video: { id, title, thumbnailUrl } }) => (
             <div key={id}>
-              <VideoLink videoId={id} className={clsx(["block"])}>
+              <LinkVideo videoId={id} className={clsx(["block"])}>
                 <Image
                   className={clsx(["w-full"], ["h-auto"], ["rounded-lg"])}
                   src={thumbnailUrl}
@@ -53,8 +53,8 @@ export const Inner: React.FC<{
                   alt={title}
                   priority={true}
                 />
-              </VideoLink>
-              <VideoLink
+              </LinkVideo>
+              <LinkVideo
                 videoId={id}
                 className={clsx(
                   ["block"],
@@ -65,7 +65,7 @@ export const Inner: React.FC<{
                 )}
               >
                 {title}
-              </VideoLink>
+              </LinkVideo>
             </div>
           )
         )}

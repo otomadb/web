@@ -4,7 +4,7 @@ import React from "react";
 import { toast } from "react-hot-toast";
 import { useMutation } from "urql";
 
-import { VideoLink } from "~/components/common/Link";
+import { LinkVideo } from "~/components/common/Link";
 import { graphql } from "~/gql";
 import {
   RegisterNicovideoPage_RegisterVideoDocument,
@@ -81,12 +81,12 @@ export const RegisterButton: React.FC<{
           const { id, title } = payload.registerVideo.video;
           toast(() => (
             <span className={clsx(["text-slate-700"])}>
-              <VideoLink
+              <LinkVideo
                 videoId={id}
                 className={clsx(["font-bold"], ["text-blue-500"])}
               >
                 {title}
-              </VideoLink>
+              </LinkVideo>
               を登録しました．
             </span>
           ));
