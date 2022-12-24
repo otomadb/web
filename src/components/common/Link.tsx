@@ -93,7 +93,7 @@ export const LinkRegisterTag: React.FC<LinkProps> = ({
   children,
   ...props
 }) => (
-  <Link href={"/editor/tag"} {...props}>
+  <Link href={"/editor/tags"} {...props}>
     {children}
   </Link>
 );
@@ -102,7 +102,7 @@ export const LinkRegisterSemitag: React.FC<LinkProps> = ({
   children,
   ...props
 }) => (
-  <Link href={"/editor/semitag"} {...props}>
+  <Link href={"/editor/semitags"} {...props}>
     {children}
   </Link>
 );
