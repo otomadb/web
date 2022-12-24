@@ -16,7 +16,7 @@ export default {
   },
   render(args) {
     return (
-      <RestProvider value={{ base: "/" }}>
+      <RestProvider value={{ base: window.location.origin }}>
         <LoginForm {...args} />
       </RestProvider>
     );

@@ -49,7 +49,7 @@ export const RegisterNicovideoForm: React.FC<{ className?: string }> = ({
   const [source, setSource] = useState<null | undefined | SourceData>(
     undefined
   );
-  const already = useIsAlready(source?.id);
+  const already = useIsAlready(source?.sourceId);
 
   const [selectedTags, updateSelectedTags] = useReducer(
     (
@@ -73,9 +73,6 @@ export const RegisterNicovideoForm: React.FC<{ className?: string }> = ({
     },
     []
   );
-  const [selectedThumbnail, setSelectedThumbnail] = useState<
-    string | undefined
-  >();
 
   return (
     <div className={clsx(className)}>
@@ -84,7 +81,6 @@ export const RegisterNicovideoForm: React.FC<{ className?: string }> = ({
           setSource={(data) => {
             setSource(data);
             updateSelectedTags({ type: "clean" });
-            setSelectedThumbnail(undefined);
           }}
         />
       </div>
@@ -124,7 +120,6 @@ export const RegisterNicovideoForm: React.FC<{ className?: string }> = ({
                     deselectTag={(id) =>
                       updateSelectedTags({ type: "remove", id })
                     }
-                    selectThumbnail={(url) => setSelectedThumbnail(url)}
                   />
                 )}
               </div>
@@ -144,9 +139,9 @@ export const RegisterNicovideoForm: React.FC<{ className?: string }> = ({
               {source && already === null && (
                 <RegisterForm
                   className={clsx(["mt-4"])}
-                  sourceId={source.id}
+                  sourceId={source.sourceId}
                   title={source.title}
-                  thumbnailUrl={selectedThumbnail}
+                  thumbnailUrl={source.thumbnail}
                   tags={selectedTags}
                   selectTag={(id) => updateSelectedTags({ type: "add", id })}
                   deselectTag={(id) =>
@@ -155,7 +150,6 @@ export const RegisterNicovideoForm: React.FC<{ className?: string }> = ({
                   onRegistered={() => {
                     setSource(undefined);
                     updateSelectedTags({ type: "clean" });
-                    setSelectedThumbnail(undefined);
                   }}
                 />
               )}

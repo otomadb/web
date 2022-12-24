@@ -21,14 +21,11 @@ graphql(`
 `);
 
 export const useIsAlready = (sourceId: string | undefined) => {
-  const [{ data: alreadyCheckData }] = useQuery({
+  const [{ data }] = useQuery({
     query: RegisterNicovideoPage_AlreadyCheckDocument,
     pause: !sourceId,
     variables: sourceId ? { sourceId } : undefined,
     requestPolicy: "network-only",
   });
-  return useMemo(
-    () => alreadyCheckData?.findNicovideoVideoSource,
-    [alreadyCheckData?.findNicovideoVideoSource]
-  );
+  return useMemo(() => data?.findNicovideoVideoSource, [data]);
 };
