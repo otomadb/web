@@ -2,34 +2,63 @@
 
 import "client-only";
 
-import { LockClosedIcon, UserIcon } from "@heroicons/react/24/outline";
+import { AtSymbolIcon, LockClosedIcon } from "@heroicons/react/24/solid";
+import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useCallback } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import * as z from "zod";
 
-import { LinkSignup } from "../common/Link";
-import { useLogin } from "./useLogin";
+import { AuthFormButton } from "~/components/common/AuthForm/Button";
+import { AuthFormInput } from "~/components/common/AuthForm/FormInput";
+import { LinkSignup } from "~/components/common/Link";
+import { usePostAuthLogin } from "~/rest";
+
+const formSchema = z.object({
+  name: z.string({ required_error: "ユーザーネームを入力してください" }),
+  password: z.string({ required_error: "パスワードを入力してください" }),
+});
+type FormSchema = z.infer<typeof formSchema>;
 
 export const LoginForm: React.FC<{ className?: string }> = ({ className }) => {
   const router = useRouter();
-  const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
+  const triggerLogin = usePostAuthLogin();
 
-  const [errorStatus, setErrorStatus] = useState<
-    "NO_USER" | "WRONG_PASSWORD" | "UNKNOWN" | null
-  >(null);
-
-  const tryLogin = useLogin({
-    onSuccess() {
-      router.replace("/");
-    },
-    onError(status) {
-      setErrorStatus(status);
-    },
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setError,
+  } = useForm<FormSchema>({
+    resolver: zodResolver(formSchema),
   });
+
+  const onSubmit: SubmitHandler<FormSchema> = useCallback(
+    async ({ name, password }) => {
+      const result = await triggerLogin({ name, password });
+      if (result.ok) {
+        router.replace("/");
+      } else {
+        const { error } = await result.json<{ error: string }>();
+        switch (error) {
+          case "user not found":
+            setError("name", { message: "存在しないユーザーです" });
+            break;
+          case "password wrong":
+            setError("password", { message: "誤ったパスワード" });
+            break;
+          default:
+            break;
+        }
+      }
+    },
+    [router, setError, triggerLogin]
+  );
 
   return (
     <form
+      onSubmit={handleSubmit(onSubmit)}
       className={clsx(
         className,
         ["rounded-lg"],
@@ -40,141 +69,33 @@ export const LoginForm: React.FC<{ className?: string }> = ({ className }) => {
         ["shadow-lg"]
       )}
     >
-      <label
-        className={clsx(
-          ["w-full"],
-          ["group"],
-          ["flex", ["items-stretch"]],
-          ["border", "border-slate-300"],
-          ["rounded-md"],
-          ["overflow-hidden"]
-        )}
-      >
-        <div
-          className={clsx(
-            ["flex-shrink-0"],
-            ["flex"],
-            ["px-4"],
-            [["bg-teal-400"], ["bg-opacity-50"]]
+      <div className={clsx(["grid"], ["grid-cols-1"], ["gap-y-4"])}>
+        <AuthFormInput
+          Input={(props) => (
+            <input
+              {...register("name")}
+              {...props}
+              type={"text"}
+              placeholder="ユーザーネーム"
+            ></input>
           )}
-        >
-          <UserIcon
-            className={clsx(
-              ["place-self-center"],
-              [["w-6"], ["h-6"]],
-              ["text-teal-700"]
-            )}
-          />
-        </div>
-        <input
-          value={name}
-          placeholder={"ユーザーネーム"}
-          onChange={(e) => {
-            setName(e.target.value);
-          }}
-          className={clsx(
-            ["flex-grow"],
-            ["px-4", "py-2"],
-            ["rounded-r-md"],
-            ["bg-slate-50"],
-            ["outline-teal-300"],
-            [["text-md"], ["text-slate-900"], ["placeholder:text-slate-300"]]
-          )}
-        ></input>
-      </label>
-
-      <label
-        className={clsx(
-          ["mt-4"],
-          ["group"],
-          ["w-full"],
-          ["flex", ["items-stretch"]],
-          ["border", "border-slate-300"],
-          ["rounded-md"],
-          ["overflow-hidden"]
-        )}
-      >
-        <div
-          className={clsx(
-            ["flex-shrink-0"],
-            ["flex"],
-            ["px-4"],
-            [["bg-teal-400"], ["bg-opacity-50"]]
-          )}
-        >
-          <LockClosedIcon
-            className={clsx(
-              ["place-self-center"],
-              [["w-6"], ["h-6"]],
-              ["text-teal-700"]
-            )}
-          />
-        </div>
-        <input
-          type="password"
-          placeholder={"パスワード"}
-          value={password}
-          onChange={(e) => {
-            setPassword(e.target.value);
-          }}
-          className={clsx(
-            ["flex-grow"],
-            ["px-4", "py-2"],
-            ["rounded-r-md"],
-            ["bg-slate-50"],
-            ["outline-teal-300"],
-            [["text-md"], ["text-slate-900"], ["placeholder:text-slate-300"]]
-          )}
+          Icon={(props) => <AtSymbolIcon {...props} />}
+          error={errors.name}
         />
-      </label>
-      <button
-        disabled={!name || !password}
-        className={clsx(
-          ["mt-8"],
-          [["py-2"]],
-          ["group"],
-          ["transition-colors", "duration-75"],
-          ["disabled:bg-slate-300", ["bg-teal-400", "hover:bg-teal-500"]],
-          [
-            "border",
-            "disabled:border-slate-300",
-            ["border-teal-300", "hover:border-teal-400"],
-          ],
-          ["rounded-md"]
-        )}
-        type="button"
-        onClick={async () => {
-          if (!name || !password) return;
-          setErrorStatus(null);
-          tryLogin({ name, password });
-        }}
-      >
-        <span
-          className={clsx(
-            ["font-bold"],
-            ["transition-colors", "duration-75"],
-            [
-              "group-disabled:text-slate-200",
-              ["text-teal-100", "group-hover:text-teal-200"],
-            ]
+        <AuthFormInput
+          Icon={(props) => <LockClosedIcon {...props} />}
+          Input={(props) => (
+            <input
+              {...register("password")}
+              {...props}
+              type={"password"}
+              placeholder="パスワード"
+            ></input>
           )}
-        >
-          ログイン
-        </span>
-      </button>
-      <div
-        className={clsx(
-          ["mt-[0.25rem]"],
-          ["flex", ["items-center"]],
-          ["h-[1.5rem]"]
-        )}
-      >
-        <span className={clsx(["text-sm"], ["text-red-400"])}>
-          {errorStatus === "NO_USER" && <>存在しないユーザー</>}
-          {errorStatus === "WRONG_PASSWORD" && <>誤ったパスワード</>}
-          {errorStatus === "UNKNOWN" && <>不明なエラー</>}
-        </span>
+          error={errors.password}
+        />
       </div>
+      <AuthFormButton className={clsx("mt-6")} text="ログイン" />
       <div className={clsx(["mt-4"])}>
         <p>
           <LinkSignup

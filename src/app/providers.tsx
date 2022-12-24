@@ -7,19 +7,14 @@ import {
   createClient as createUrqlClient,
   dedupExchange,
   fetchExchange,
-  Provider,
+  Provider as UrqlProvider,
 } from "urql";
 
-import { mockLoginHandler } from "~/components/Login/useLogin";
-import { mockSignupHandler } from "~/components/Signup/useSignup";
 import { GraphCacheConfig } from "~/gql/graphql";
 import { mockLogoutHandler } from "~/hooks/useLogout";
+import { RestProvider } from "~/rest";
 
-export const handlers = [
-  mockLoginHandler,
-  mockLogoutHandler,
-  mockSignupHandler,
-];
+export const handlers = [mockLogoutHandler];
 
 if (
   process.env.NEXT_PUBLIC_MSW_ENABLE === "true" &&
@@ -107,5 +102,9 @@ const urqlClient = createUrqlClient({
 });
 
 export default function Providers({ children }: { children: ReactNode }) {
-  return <Provider value={urqlClient}>{children}</Provider>;
+  return (
+    <RestProvider value={{ base: process.env.NEXT_PUBLIC_API_ENDPOINT }}>
+      <UrqlProvider value={urqlClient}>{children}</UrqlProvider>
+    </RestProvider>
+  );
 }
