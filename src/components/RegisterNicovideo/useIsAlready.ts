@@ -1,6 +1,5 @@
 "use client";
 
-import { useMemo } from "react";
 import { useQuery } from "urql";
 
 import { graphql } from "~/gql";
@@ -27,5 +26,5 @@ export const useIsAlready = (sourceId: string | undefined) => {
     variables: sourceId ? { sourceId } : undefined,
     requestPolicy: "network-only",
   });
-  return useMemo(() => data?.findNicovideoVideoSource, [data]);
+  return data?.findNicovideoVideoSource;
 };

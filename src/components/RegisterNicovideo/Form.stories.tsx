@@ -50,7 +50,7 @@ const mockUnlogin = graphql.query(ViewerDocument, (req, res, ctx) =>
 const mockRemoteSuccess = rest.get("/remote/nicovideo", (req, res, ctx) =>
   res(
     ctx.json({
-      sourceId: req.params["id"],
+      sourceId: req.url.searchParams.get("id"),
       title: "M.C.ドナルドはダンスに夢中なのか？最終鬼畜道化師ドナルド・Ｍ",
       tags: [
         { name: "ドナルド" },

@@ -18,28 +18,25 @@ export const FetchSource: React.FC<{
   setSource(data: SourceData | null | undefined): void;
 }> = ({ className, setSource }) => {
   const [input, setInput] = useState<string>("");
-  const [sourceId, setSourceId] = useState<string | undefined>(undefined);
   const trigger = useGetRemoteNicovideo();
 
   useSWRImmutable(
-    sourceId,
-    (sourceId) =>
-      trigger(sourceId)
-        .json<{
-          sourceId: string;
-          title: string;
-          tags: { name: string }[];
-          thumbnails: { ogp: string };
-        }>()
-        .then(({ sourceId, title, tags, thumbnails }) => ({
-          sourceId,
-          title,
-          tags: tags.map((v) => v.name),
-          thumbnail: thumbnails.ogp,
-        })),
+    input && /(sm)\d+/.test(input) ? input : null,
+    (i) =>
+      trigger(i).json<{
+        sourceId: string;
+        title: string;
+        tags: { name: string }[];
+        thumbnails: { ogp: string };
+      }>(),
     {
       onSuccess(data) {
-        setSource(data);
+        setSource({
+          sourceId: data.sourceId,
+          title: data.title,
+          tags: data.tags.map((v) => v.name),
+          thumbnail: data.thumbnails.ogp,
+        });
       },
       onError() {
         setSource(null);
@@ -66,6 +63,7 @@ export const FetchSource: React.FC<{
         placeholder="sm2057168"
       />
       <div
+        role={"button"}
         aria-label="検索"
         className={clsx(
           ["ml-1"],
@@ -76,9 +74,7 @@ export const FetchSource: React.FC<{
           ["cursor-pointer"],
           ["flex", "items-center"]
         )}
-        onClick={() => {
-          setSourceId(input);
-        }}
+        onClick={() => setInput(input)}
       >
         <div>検索</div>
       </div>
