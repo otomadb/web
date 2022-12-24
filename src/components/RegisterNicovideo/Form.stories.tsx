@@ -1,6 +1,6 @@
 import { css } from "@emotion/css";
 import { Meta, StoryObj } from "@storybook/react";
-import { screen, userEvent } from "@storybook/testing-library";
+import { userEvent, within } from "@storybook/testing-library";
 import { graphql, rest } from "msw";
 import {
   createClient as createUrqlClient,
@@ -22,6 +22,7 @@ import {
   RegisterNicovideoPage_SearchTagsDocument,
   ViewerDocument,
 } from "~/gql/graphql";
+import { RestProvider } from "~/rest";
 
 import { RegisterNicovideoForm } from "./Form";
 
@@ -46,28 +47,25 @@ const mockUnlogin = graphql.query(ViewerDocument, (req, res, ctx) =>
   )
 );
 
-const mockRemoteSuccess = rest.get(
-  "https://nicovideo-gti-proxy.deno.dev/:id",
-  (req, res, ctx) =>
-    res(
-      ctx.json({
-        id: req.params["id"],
-        title: "M.C.ドナルドはダンスに夢中なのか？最終鬼畜道化師ドナルド・Ｍ",
-        tags: [
-          { value: "ドナルド" },
-          { value: "U.N.オーエンは彼女なのか？" },
-          { value: "最終鬼畜妹フランドール・Ｓ" },
-          { value: "エンターテイメント" },
-          { value: "東方乱々流" },
-          { value: "音mad" },
-          { value: "ドナルド教" },
-        ],
-        thumbnail_url: {
-          original: "/storybook/960x540.jpg",
-          large: "/storybook/960x540.jpg",
-        },
-      })
-    )
+const mockRemoteSuccess = rest.get("/remote/nicovideo", (req, res, ctx) =>
+  res(
+    ctx.json({
+      sourceId: req.url.searchParams.get("id"),
+      title: "M.C.ドナルドはダンスに夢中なのか？最終鬼畜道化師ドナルド・Ｍ",
+      tags: [
+        { name: "ドナルド" },
+        { name: "U.N.オーエンは彼女なのか？" },
+        { name: "最終鬼畜妹フランドール・Ｓ" },
+        { name: "エンターテイメント" },
+        { name: "東方乱々流" },
+        { name: "音mad" },
+        { name: "ドナルド教" },
+      ],
+      thumbnails: {
+        ogp: "/storybook/960x540.jpg",
+      },
+    })
+  )
 );
 
 const mockYetUnregistered = graphql.query(
@@ -145,7 +143,9 @@ export default {
           requestPolicy: "network-only",
         })}
       >
-        <RegisterNicovideoForm {...args} />
+        <RestProvider value={{ base: window.location.origin }}>
+          <RegisterNicovideoForm {...args} />
+        </RestProvider>
       </UrqlProvider>
     );
   },
@@ -208,15 +208,15 @@ export const NoRemote: StoryObj<typeof RegisterNicovideoForm> = {
     msw: {
       handlers: [
         mockLogin,
-        rest.get("https://nicovideo-gti-proxy.deno.dev/:id", (req, res, ctx) =>
-          res(ctx.status(404))
-        ),
+        rest.get("/remote/nicovideo", (req, res, ctx) => res(ctx.status(404))),
       ],
     },
   },
-  play: async () => {
-    await userEvent.type(screen.getByLabelText("ID入力"), "sm2057168");
-    await userEvent.click(screen.getByLabelText("検索"));
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    await userEvent.type(canvas.getByLabelText("ID入力"), "sm2057168");
+    await userEvent.click(canvas.getByLabelText("検索"));
   },
 };
 
@@ -249,17 +249,21 @@ export const Already: StoryObj<typeof RegisterNicovideoForm> = {
       ],
     },
   },
-  play: async () => {
-    await userEvent.type(screen.getByLabelText("ID入力"), "sm2057168");
-    await userEvent.click(screen.getByLabelText("検索"));
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    await userEvent.type(canvas.getByLabelText("ID入力"), "sm2057168");
+    await userEvent.click(canvas.getByLabelText("検索"));
   },
 };
 
 export const ValidId: StoryObj<typeof RegisterNicovideoForm> = {
   name: "正しいnicovideoのIDを入力",
   args: {},
-  play: async () => {
-    await userEvent.type(screen.getByLabelText("ID入力"), "sm2057168");
-    await userEvent.click(screen.getByLabelText("検索"));
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    await userEvent.type(canvas.getByLabelText("ID入力"), "sm2057168");
+    await userEvent.click(canvas.getByLabelText("検索"));
   },
 };

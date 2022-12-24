@@ -26,7 +26,7 @@ export const RegisterForm: React.FC<{
 
   sourceId: string;
   title: string;
-  thumbnailUrl: string | undefined;
+  thumbnailUrl: string;
   tags: string[];
   selectTag(id: string): void;
   deselectTag(id: string): void;
@@ -106,20 +106,13 @@ export const RegisterForm: React.FC<{
       <div>
         <p>サムネイル</p>
         <div className={clsx(["mt-1"])}>
-          {thumbnailUrl && (
-            <Image
-              className={clsx(["object-scale-down"], ["h-32"])}
-              src={thumbnailUrl}
-              width={260}
-              height={200}
-              alt={`${title}のサムネイル候補`}
-            />
-          )}
-          {!thumbnailUrl && (
-            <p className={clsx(["text-sm"], ["text-slate-500"])}>
-              サムネイル画像を指定してください．
-            </p>
-          )}
+          <Image
+            className={clsx(["object-scale-down"], ["h-32"])}
+            src={thumbnailUrl}
+            width={260}
+            height={200}
+            alt={`${title}のサムネイル候補`}
+          />
         </div>
       </div>
       <div>

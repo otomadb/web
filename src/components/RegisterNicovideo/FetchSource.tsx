@@ -1,18 +1,16 @@
 "use client";
 
 import clsx from "clsx";
-import ky from "ky";
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import useSWRImmutable from "swr/immutable";
 
+import { useGetRemoteNicovideo } from "~/rest";
+
 export type SourceData = {
-  id: string;
+  sourceId: string;
   title: string;
   tags: string[];
-  thumbnails: {
-    type: string;
-    url: string;
-  }[];
+  thumbnail: string;
 };
 
 export const FetchSource: React.FC<{
@@ -20,41 +18,26 @@ export const FetchSource: React.FC<{
   setSource(data: SourceData | null | undefined): void;
 }> = ({ className, setSource }) => {
   const [input, setInput] = useState<string>("");
-  const [sourceId, setSourceId] = useState<string | undefined>(undefined);
+  const [search, setSearch] = useState<string>("");
+  const trigger = useGetRemoteNicovideo();
 
-  const apiUrl = useMemo(() => {
-    if (!sourceId || !/(sm)\d+/.test(sourceId)) return undefined;
-    const url = new URL(
-      `/${sourceId}`,
-      "https://nicovideo-gti-proxy.deno.dev/"
-    );
-    return url.toString();
-  }, [sourceId]);
   useSWRImmutable(
-    apiUrl,
-    (url) =>
-      ky
-        .get(url, { throwHttpErrors: false })
-        .json<{
-          id: string;
-          title: string;
-          tags: { value: string }[];
-          watch_url: string;
-          uploaded_at: string;
-          thumbnail_url: { original: string; large: string };
-        }>()
-        .then(({ id, title, tags, thumbnail_url }) => ({
-          id,
-          title,
-          tags: tags.map((v) => v.value),
-          thumbnails: [
-            { type: "original", url: thumbnail_url.original },
-            { type: "large", url: thumbnail_url.large },
-          ],
-        })),
+    search && /(sm)\d+/.test(search) ? search : null,
+    (i) =>
+      trigger(i).json<{
+        sourceId: string;
+        title: string;
+        tags: { name: string }[];
+        thumbnails: { ogp: string };
+      }>(),
     {
       onSuccess(data) {
-        setSource(data);
+        setSource({
+          sourceId: data.sourceId,
+          title: data.title,
+          tags: data.tags.map((v) => v.name),
+          thumbnail: data.thumbnails.ogp,
+        });
       },
       onError() {
         setSource(null);
@@ -81,6 +64,7 @@ export const FetchSource: React.FC<{
         placeholder="sm2057168"
       />
       <div
+        role={"button"}
         aria-label="検索"
         className={clsx(
           ["ml-1"],
@@ -91,9 +75,7 @@ export const FetchSource: React.FC<{
           ["cursor-pointer"],
           ["flex", "items-center"]
         )}
-        onClick={() => {
-          setSourceId(input);
-        }}
+        onClick={() => setSearch(input)}
       >
         <div>検索</div>
       </div>
