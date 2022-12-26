@@ -96,7 +96,13 @@ export const Semitags: React.FC<{
   return (
     <div className={clsx(className)}>
       <div className={clsx(["w-full"])}>
-        <div className={clsx(["divide-y", "divide-slate-300"])}>
+        <div
+          className={clsx(
+            ["divide-y", "divide-slate-300"],
+            ["max-h-[12rem]"],
+            ["overflow-y-scroll"]
+          )}
+        >
           {fields.map(({ id, semitag }, index) => (
             <UnselectedRaw
               className={clsx(["bg-teal-100", "hover:bg-blue-200"])}
@@ -110,8 +116,11 @@ export const Semitags: React.FC<{
         </div>
         <div
           className={clsx(
-            0 < fields.length && ["border-t-2", "border-t-slate-300"],
-            ["divide-y", "divide-slate-300"]
+            0 < fields.length && ["border-t-4", "border-t-slate-300"],
+            ["divide-y", "divide-slate-300"],
+            ["h-64"],
+            ["overflow-y-scroll"],
+            ["bg-slate-300"]
           )}
         >
           {data?.findSemitags.nodes.map((semitag) => (
