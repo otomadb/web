@@ -93,8 +93,7 @@ export const VideoList: React.FC<{
                 className={clsx(
                   ["block"],
                   [["px-1"], ["py-1"]],
-                  ["text-sm", "@[768px]/videolist:text-xs"],
-                  ["line-clamp-2"]
+                  ["text-sm", "@[768px]/videolist:text-xs"]
                 )}
               >
                 {title}
