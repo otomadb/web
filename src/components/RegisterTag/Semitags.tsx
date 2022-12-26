@@ -1,6 +1,7 @@
 "use client";
 import "client-only";
 
+import { ArrowPathIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 import React, { useEffect, useId, useMemo } from "react";
 import { useQuery } from "urql";
@@ -138,7 +139,7 @@ export const UnselectedRaw: React.FC<{
 export const Semitags: React.FC<{
   className?: string;
   fields: { id: string; semitagId: string }[];
-  append(p: { semitagId: string }): void;
+  append(p: { semitagId: string; name: string }): void;
   remove(index: number): void;
 }> = ({ className, fields, append, remove }) => {
   const selectedIds = useMemo(
@@ -148,12 +149,21 @@ export const Semitags: React.FC<{
   const [{ data, fetching }, refetch] = useQuery({
     query: RegisterTag_FindSemitagsDocument,
     variables: { except: selectedIds },
+    requestPolicy: "network-only",
   });
   useEffect(() => refetch(), [fields, refetch]);
 
   return (
     <div className={clsx(className)}>
-      <div className={clsx(["w-full"])}>
+      <div className={clsx(["flex"], ["w-full"])}>
+        <div className={clsx(["flex-grow"])}>既存の仮タグ</div>
+        <div className={clsx(["flex-shrkink-0"], ["flex"], ["px-2"])}>
+          <button type="button" onClick={() => refetch()}>
+            <ArrowPathIcon className={clsx(["w-6"], ["h-6"])} />
+          </button>
+        </div>
+      </div>
+      <div className={clsx(["mt-2"], ["w-full"])}>
         <div
           className={clsx(
             ["divide-y", "divide-slate-300"],
@@ -185,7 +195,9 @@ export const Semitags: React.FC<{
               className={clsx(["bg-white", "hover:bg-blue-200"])}
               key={semitag.id}
               semitag={semitag}
-              append={() => append({ semitagId: semitag.id })}
+              append={() =>
+                append({ semitagId: semitag.id, name: semitag.name })
+              }
               fetching={fetching}
             />
           ))}

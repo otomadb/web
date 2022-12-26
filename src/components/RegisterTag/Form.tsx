@@ -79,7 +79,6 @@ export const RegisterTagForm: React.FC<{ className?: string }> = ({
     formState: { errors, isSubmitSuccessful },
     reset,
     watch,
-    resetField,
   } = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
   });
@@ -111,14 +110,6 @@ export const RegisterTagForm: React.FC<{ className?: string }> = ({
     ],
     [explicitParentTagId, implicitParents]
   );
-
-  /*
-  useEffect(() => {
-    const firstSemitag = resolveSemitags.at(0);
-    if (!firstSemitag || primaryName !== "") return;
-    setValue("primaryName", firstSemitag.semitagId.name, { shouldDirty: true });
-  }, [primaryName, resolveSemitags, setValue]);
-  */
 
   useEffect(() => {
     if (isSubmitSuccessful)
@@ -268,7 +259,11 @@ export const RegisterTagForm: React.FC<{ className?: string }> = ({
       >
         <Semitags
           fields={resolveSemitags}
-          append={(p) => appendResolveSemitag(p)}
+          append={({ semitagId, name }) => {
+            appendResolveSemitag({ semitagId });
+            if (!primaryName)
+              setValue("primaryName", name, { shouldDirty: true });
+          }}
           remove={(i) => removeresolveSemitag(i)}
         />
       </div>
