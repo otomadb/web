@@ -4,7 +4,7 @@ import ky from "ky";
 import React, { ReactNode, useCallback, useContext } from "react";
 
 const RestContext = React.createContext<{ base: string }>({
-  base: window.location.origin,
+  base: process.env.NEXT_PUBLIC_API_ENDPOINT,
 });
 export const RestProvider: React.FC<{
   children: ReactNode;
