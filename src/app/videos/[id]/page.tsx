@@ -30,12 +30,12 @@ export default async function Page({ params }: { params: { id: string } }) {
   );
 
   return (
-    <div className={clsx(["flex"], ["gap-x-4"], ["px-2"])}>
+    <div className={clsx(["flex"])}>
       <div
         className={clsx(
           ["flex-shrink-0"],
           ["hidden", "md:block"],
-          ["w-60", "lg:w-80"],
+          ["w-64"],
           ["space-y-4"]
         )}
       >
