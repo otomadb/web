@@ -58,47 +58,9 @@ const formSchema = z.object({
     )
   ),
 
-  explicitParent: z.optional(
-    z.object({
-      tag: z.object({
-        id: z.string(),
-        name: z.string(),
-        explicitParent: z.optional(
-          z.object({
-            id: z.string(),
-            name: z.string(),
-          })
-        ),
-      }),
-    })
-  ),
-  implicitParents: z.array(
-    z.object({
-      tag: z.object({
-        id: z.string(),
-        name: z.string(),
-        explicitParent: z.optional(
-          z.object({
-            id: z.string(),
-            name: z.string(),
-          })
-        ),
-      }),
-    })
-  ),
-
-  resolveSemitags: z.array(
-    z.object({
-      semitag: z.object({
-        id: z.string(),
-        name: z.string(),
-        video: z.object({
-          id: z.string(),
-          title: z.string(),
-        }),
-      }),
-    })
-  ),
+  explicitParentTagId: z.optional(z.string()),
+  implicitParents: z.array(z.object({ tagId: z.string() })),
+  resolveSemitags: z.array(z.object({ semitagId: z.string() })),
 });
 type FormSchema = z.infer<typeof formSchema>;
 
@@ -114,7 +76,7 @@ export const RegisterTagForm: React.FC<{ className?: string }> = ({
     register,
     handleSubmit,
     setValue,
-    formState: { errors },
+    formState: { errors, isSubmitSuccessful },
     reset,
     watch,
     resetField,
@@ -131,7 +93,7 @@ export const RegisterTagForm: React.FC<{ className?: string }> = ({
     control,
     name: "extraNames",
   });
-  const explicitParent = watch("explicitParent");
+  const explicitParentTagId = watch("explicitParentTagId");
   const {
     fields: implicitParents,
     append: appendImplicitParent,
@@ -144,38 +106,46 @@ export const RegisterTagForm: React.FC<{ className?: string }> = ({
   } = useFieldArray({ control, name: "resolveSemitags" });
   const selectedParentIds: string[] = useMemo(
     () => [
-      ...(explicitParent?.tag ? [explicitParent.tag.id] : []),
-      ...implicitParents.map(({ tag }) => tag.id),
+      ...(explicitParentTagId ? [explicitParentTagId] : []),
+      ...implicitParents.map(({ tagId }) => tagId),
     ],
-    [explicitParent, implicitParents]
+    [explicitParentTagId, implicitParents]
   );
 
+  /*
   useEffect(() => {
     const firstSemitag = resolveSemitags.at(0);
     if (!firstSemitag || primaryName !== "") return;
-    setValue("primaryName", firstSemitag.semitag.name);
+    setValue("primaryName", firstSemitag.semitagId.name, { shouldDirty: true });
   }, [primaryName, resolveSemitags, setValue]);
+  */
+
+  useEffect(() => {
+    if (isSubmitSuccessful)
+      reset({
+        primaryName: undefined,
+        extraNames: [],
+        explicitParentTagId: undefined,
+        implicitParents: [],
+        resolveSemitags: [],
+      });
+  }, [isSubmitSuccessful, reset]);
 
   const onSubmit: SubmitHandler<FormSchema> = useCallback(
     async ({
       primaryName,
       extraNames,
-      explicitParent,
+      explicitParentTagId,
       implicitParents,
       resolveSemitags,
     }) => {
       const { data } = await trigger({
         primaryName,
         extraNames: extraNames?.map(({ name }) => name),
-        explicitParent: explicitParent?.tag.id,
-        implicitParents: implicitParents.map(({ tag: { id } }) => id),
-        resolveSemitags: resolveSemitags.map(({ semitag: { id } }) => id),
+        explicitParent: explicitParentTagId,
+        implicitParents: implicitParents.map(({ tagId }) => tagId),
+        resolveSemitags: resolveSemitags.map(({ semitagId }) => semitagId),
       });
-      resetField("primaryName");
-      resetField("extraNames");
-      resetField("explicitParent");
-      resetField("implicitParents");
-      resetField("resolveSemitags");
 
       if (data) {
         const { id, name } = data.registerTag.tag;
@@ -192,7 +162,7 @@ export const RegisterTagForm: React.FC<{ className?: string }> = ({
         ));
       }
     },
-    [resetField, trigger]
+    [trigger]
   );
 
   return (
@@ -235,6 +205,7 @@ export const RegisterTagForm: React.FC<{ className?: string }> = ({
                   ["bg-slate-100"],
                   ["border", "border-slate-300"]
                 )}
+                {...register("primaryName")}
               />
             </div>
             {errors.primaryName && (
@@ -246,10 +217,10 @@ export const RegisterTagForm: React.FC<{ className?: string }> = ({
         </div>
         <ExplicitParentTag
           className={clsx(["flex-shrink-0"], ["w-96"])}
-          field={explicitParent}
+          tagId={explicitParentTagId}
           selectedParentIds={selectedParentIds}
-          append={(payload) => setValue("explicitParent", payload)}
-          remove={() => setValue("explicitParent", undefined)}
+          append={(id) => setValue("explicitParentTagId", id)}
+          remove={() => setValue("explicitParentTagId", undefined)}
         />
       </div>
       <div

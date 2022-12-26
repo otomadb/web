@@ -10,8 +10,11 @@ import {
   aSearchTagsItem,
   aSemitag,
   aTag,
+  aVideo,
   PseudoTagType,
   RegisterTag_FindSemitagsDocument,
+  RegisterTag_GetParentTagDocument,
+  RegisterTag_GetSemitagDocument,
   RegisterTag_RegisterTagDocument,
   RegisterTag_SearchTagsDocument,
 } from "~/gql/graphql";
@@ -86,6 +89,22 @@ export default {
             })
           )
         ),
+        graphql.query(RegisterTag_GetSemitagDocument, (req, res, ctx) =>
+          res(
+            ctx.data({
+              semitag: aSemitag({
+                id: "semitag:1",
+                name: "ドナルド・マクドナルド",
+                video: aVideo({
+                  id: "video:1",
+                  title:
+                    "M.C.ドナルドはダンスに夢中なのか？最終鬼畜道化師ドナルド・Ｍ",
+                  thumbnailUrl: "/storybook/960x540.jpg",
+                }),
+              }),
+            })
+          )
+        ),
         graphql.query(RegisterTag_FindSemitagsDocument, (req, res, ctx) =>
           res(
             ctx.data({
@@ -133,6 +152,20 @@ export default {
               ],
                 */
               },
+            })
+          )
+        ),
+        graphql.query(RegisterTag_GetParentTagDocument, (req, res, ctx) =>
+          res(
+            ctx.data({
+              tag: aTag({
+                id: "tag:1",
+                name: "後藤ひとり",
+                explicitParent: aTag({
+                  id: "tag:2",
+                  name: "ぼっち・ざ・ろっく！",
+                }),
+              }),
             })
           )
         ),

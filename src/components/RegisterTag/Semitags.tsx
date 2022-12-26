@@ -2,13 +2,27 @@
 import "client-only";
 
 import clsx from "clsx";
-import React, { useId, useMemo } from "react";
+import React, { useEffect, useId, useMemo } from "react";
 import { useQuery } from "urql";
 
 import { graphql } from "~/gql";
-import { RegisterTag_FindSemitagsDocument } from "~/gql/graphql";
+import {
+  RegisterTag_FindSemitagsDocument,
+  RegisterTag_GetSemitagDocument,
+} from "~/gql/graphql";
 
 graphql(`
+  query RegisterTag_GetSemitag($id: ID!) {
+    semitag(id: $id) {
+      id
+      name
+      video {
+        id
+        title
+      }
+    }
+  }
+
   query RegisterTag_FindSemitags($except: [ID!]!) {
     findSemitags(input: { limit: 30, except: $except, resolved: false }) {
       nodes {
@@ -23,18 +37,68 @@ graphql(`
   }
 `);
 
+export const SelectedRaw: React.FC<{
+  className?: string;
+  fetching: boolean;
+  semitagId: string;
+  remove(): void;
+}> = ({ className, fetching, semitagId, remove }) => {
+  const labelId = useId();
+  const [{ data }] = useQuery({
+    query: RegisterTag_GetSemitagDocument,
+    variables: { id: semitagId },
+  });
+
+  return (
+    <label
+      className={clsx(className, ["group/raw"], ["flex"])}
+      htmlFor={labelId}
+    >
+      <div
+        className={clsx(
+          ["flex-shrink-0"],
+          ["flex", "justify-center"],
+          ["px-4"]
+        )}
+      >
+        <input
+          id={labelId}
+          type={"checkbox"}
+          disabled={fetching}
+          checked={true}
+          onChange={(e) => {
+            if (!e.target.checked) remove();
+          }}
+        />
+      </div>
+      <div className={clsx(["flex-grow"], ["grid", "grid-cols-2"])}>
+        {data && (
+          <>
+            <label htmlFor={labelId} className={clsx(["px-2"], ["py-1"])}>
+              <div className={clsx(["text-xs"])}>{data.semitag.name}</div>
+            </label>
+            <div className={clsx(["px-2"], ["py-1"])}>
+              <div className={clsx(["text-xs"])}>
+                {data.semitag.video.title}
+              </div>
+            </div>
+          </>
+        )}
+      </div>
+    </label>
+  );
+};
+
 export const UnselectedRaw: React.FC<{
   className?: string;
   fetching: boolean;
+  append(): void;
   semitag: {
     id: string;
     name: string;
     video: { id: string; title: string };
   };
-  selected: boolean;
-  append?(): void;
-  remove?(): void;
-}> = ({ className, fetching, semitag, selected, append, remove }) => {
+}> = ({ className, fetching, semitag, append }) => {
   const labelId = useId();
 
   return (
@@ -53,19 +117,18 @@ export const UnselectedRaw: React.FC<{
           id={labelId}
           type={"checkbox"}
           disabled={fetching}
-          checked={selected}
+          checked={false}
           onChange={(e) => {
-            if (e.target.checked) append?.();
-            else remove?.();
+            if (e.target.checked) append();
           }}
         />
       </div>
       <div className={clsx(["flex-grow"], ["grid", "grid-cols-2"])}>
         <label htmlFor={labelId} className={clsx(["px-2"], ["py-1"])}>
-          <div className={clsx(["text-sm"])}>{semitag.name}</div>
+          <div className={clsx(["text-xs"])}>{semitag.name}</div>
         </label>
         <div className={clsx(["px-2"], ["py-1"])}>
-          <div className={clsx(["text-sm"])}>{semitag.video.title}</div>
+          <div className={clsx(["text-xs"])}>{semitag.video.title}</div>
         </div>
       </div>
     </label>
@@ -74,24 +137,19 @@ export const UnselectedRaw: React.FC<{
 
 export const Semitags: React.FC<{
   className?: string;
-  fields: {
-    id: string;
-    semitag: { id: string; name: string; video: { id: string; title: string } };
-  }[];
-  append(p: {
-    semitag: { id: string; name: string; video: { id: string; title: string } };
-  }): void;
+  fields: { id: string; semitagId: string }[];
+  append(p: { semitagId: string }): void;
   remove(index: number): void;
 }> = ({ className, fields, append, remove }) => {
   const selectedIds = useMemo(
-    () => fields.map(({ semitag }) => semitag.id),
+    () => fields.map(({ semitagId }) => semitagId),
     [fields]
   );
-  const [{ data, fetching }] = useQuery({
+  const [{ data, fetching }, refetch] = useQuery({
     query: RegisterTag_FindSemitagsDocument,
     variables: { except: selectedIds },
-    requestPolicy: "network-only",
   });
+  useEffect(() => refetch(), [fields, refetch]);
 
   return (
     <div className={clsx(className)}>
@@ -99,16 +157,15 @@ export const Semitags: React.FC<{
         <div
           className={clsx(
             ["divide-y", "divide-slate-300"],
-            ["max-h-[12rem]"],
+            ["max-h-[18rem]"],
             ["overflow-y-scroll"]
           )}
         >
-          {fields.map(({ id, semitag }, index) => (
-            <UnselectedRaw
+          {fields.map(({ id, semitagId }, index) => (
+            <SelectedRaw
               className={clsx(["bg-teal-100", "hover:bg-blue-200"])}
               key={id}
-              semitag={semitag}
-              selected={true}
+              semitagId={semitagId}
               remove={() => remove(index)}
               fetching={fetching}
             />
@@ -118,7 +175,7 @@ export const Semitags: React.FC<{
           className={clsx(
             0 < fields.length && ["border-t-4", "border-t-slate-300"],
             ["divide-y", "divide-slate-300"],
-            ["h-64"],
+            ["h-72"],
             ["overflow-y-scroll"],
             ["bg-slate-300"]
           )}
@@ -128,8 +185,7 @@ export const Semitags: React.FC<{
               className={clsx(["bg-white", "hover:bg-blue-200"])}
               key={semitag.id}
               semitag={semitag}
-              selected={false}
-              append={() => append({ semitag })}
+              append={() => append({ semitagId: semitag.id })}
               fetching={fetching}
             />
           ))}

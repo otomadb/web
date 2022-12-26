@@ -31,13 +31,7 @@ export const SearchBox: React.FC<{
   classNames?: string;
   query: string;
   selectedIds: string[];
-  handleSelect(p: {
-    tag: {
-      id: string;
-      name: string;
-      explicitParent?: { id: string; name: string };
-    };
-  }): void;
+  handleSelect(p: { tagId: string }): void;
 }> = ({ query, classNames, handleSelect, selectedIds }) => {
   const [{ data, fetching }, refetch] = useQuery({
     query: RegisterTag_SearchTagsDocument,
@@ -91,18 +85,7 @@ export const SearchBox: React.FC<{
               [["px-2"], ["py-2"]]
             )}
             onClick={async () => {
-              await handleSelect({
-                tag: {
-                  id: tag.id,
-                  name: tag.name,
-                  explicitParent: tag.explicitParent
-                    ? {
-                        id: tag.explicitParent.id,
-                        name: tag.explicitParent.name,
-                      }
-                    : undefined,
-                },
-              });
+              await handleSelect({ tagId: tag.id });
               await refetch();
             }}
           >
@@ -148,13 +131,7 @@ export const TagAdder: React.FC<{
   className?: string;
   placeholder: string;
   selectedIds: string[];
-  handleSelect(p: {
-    tag: {
-      id: string;
-      name: string;
-      explicitParent?: { id: string; name: string };
-    };
-  }): void;
+  handleSelect(p: { tagId: string }): void;
   id?: string;
 }> = ({ id, className, handleSelect, placeholder, selectedIds }) => {
   const [query, setQuery] = useState<string>("");

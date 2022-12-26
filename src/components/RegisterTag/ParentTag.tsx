@@ -1,34 +1,56 @@
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 import React from "react";
+import { useQuery } from "urql";
+
+import { graphql } from "~/gql";
+import { RegisterTag_GetParentTagDocument } from "~/gql/graphql";
+
+graphql(`
+  query RegisterTag_GetParentTag($id: ID!) {
+    tag(id: $id) {
+      id
+      name
+      pseudoType
+      explicitParent {
+        id
+        name
+      }
+    }
+  }
+`);
 
 export const ParentTag: React.FC<{
   className?: string;
-  tag: {
-    id: string;
-    name: string;
-    parentName?: string;
-  };
+  tagId: string;
   handleDelete(): void;
-}> = ({ className, tag, handleDelete }) => {
+}> = ({ className, tagId, handleDelete }) => {
+  const [{ data }] = useQuery({
+    query: RegisterTag_GetParentTagDocument,
+    variables: { id: tagId },
+  });
+
   return (
     <div className={clsx(className, ["flex", "items-center"])}>
       <div
         className={clsx(
+          ["flex-grow"],
           ["py-0.5", "px-2"],
+          ["bg-white"],
           ["border"],
           ["rounded"],
-          ["shadow"],
-          ["flex-grow"],
-          ["text-sm"],
-          ["bg-white"]
+          ["shadow"]
         )}
       >
-        <span className={clsx(["text-slate-900"])}>{tag.name}</span>
-        {tag.parentName && (
-          <span className={clsx(["ml-0.5"], ["text-slate-500"])}>
-            ({tag.parentName})
-          </span>
+        {data && (
+          <div className={clsx(["text-sm"])}>
+            <span className={clsx(["text-slate-900"])}>{data.tag.name}</span>
+            {data.tag.explicitParent && (
+              <span className={clsx(["ml-0.5"], ["text-slate-500"])}>
+                ({data.tag.explicitParent.name})
+              </span>
+            )}
+          </div>
         )}
       </div>
       <button

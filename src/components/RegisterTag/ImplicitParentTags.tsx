@@ -13,20 +13,10 @@ export const ImplictParentTags: React.FC<{
 
   fields: {
     id: string; // for for
-    tag: {
-      id: string;
-      name: string;
-      explicitParent?: { id: string; name: string };
-    };
+    tagId: string;
   }[];
 
-  append(payload: {
-    tag: {
-      id: string;
-      name: string;
-      explicitParent?: { id: string; name: string };
-    };
-  }): void;
+  append(payload: { tagId: string }): void;
   remove(index: number): void;
   selectedParentIds: string[];
 }> = ({ className, append, remove, selectedParentIds, fields }) => {
@@ -48,14 +38,10 @@ export const ImplictParentTags: React.FC<{
         />
         {0 < fields.length && (
           <div className={clsx(["mt-2"], ["w-full"], ["space-y-2"])}>
-            {fields.map(({ id, tag }, index) => (
+            {fields.map(({ id, tagId }, index) => (
               <ParentTag
                 key={id}
-                tag={{
-                  id: tag.id,
-                  name: tag.name,
-                  parentName: tag.explicitParent?.name,
-                }}
+                tagId={tagId}
                 handleDelete={() => remove(index)}
               />
             ))}
