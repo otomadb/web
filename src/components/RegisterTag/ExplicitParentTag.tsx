@@ -30,7 +30,7 @@ export const ExplicitParentTag: React.FC<{
   const labelId = useId();
 
   return (
-    <div className={clsx(className)}>
+    <div className={clsx(className, ["flex", "flex-col"])}>
       <label className={clsx(["text-sm"])} htmlFor={labelId}>
         明示的な親タグ
       </label>

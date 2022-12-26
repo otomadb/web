@@ -216,7 +216,7 @@ export const RegisterTagForm: React.FC<{ className?: string }> = ({
           ["bg-slate-100"]
         )}
       >
-        <div className={clsx(className)}>
+        <div className={clsx(["flex-grow"], ["flex", "flex-col"])}>
           <label className={clsx(["text-sm"])} htmlFor={primaryTitleLabelId}>
             主な名前
           </label>
