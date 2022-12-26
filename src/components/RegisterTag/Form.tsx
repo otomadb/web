@@ -3,7 +3,7 @@ import "client-only";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { useCallback, useEffect, useId, useMemo } from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { useMutation } from "urql";
@@ -16,7 +16,6 @@ import { LinkTag } from "../common/Link";
 import { ExplicitParentTag } from "./ExplicitParentTag";
 import { ExtraName } from "./ExtraName";
 import { ImplictParentTags } from "./ImplicitParentTags";
-import { PrimaryName } from "./PrimaryName";
 import { Semitags } from "./Semitags";
 
 graphql(`
@@ -106,6 +105,8 @@ type FormSchema = z.infer<typeof formSchema>;
 export const RegisterTagForm: React.FC<{ className?: string }> = ({
   className,
 }) => {
+  const primaryTitleLabelId = useId();
+
   const [, trigger] = useMutation(RegisterTag_RegisterTagDocument);
 
   const {
@@ -151,8 +152,7 @@ export const RegisterTagForm: React.FC<{ className?: string }> = ({
 
   useEffect(() => {
     const firstSemitag = resolveSemitags.at(0);
-    if (primaryName || !firstSemitag) return;
-
+    if (!firstSemitag || primaryName !== "") return;
     setValue("primaryName", firstSemitag.semitag.name);
   }, [primaryName, resolveSemitags, setValue]);
 
@@ -216,13 +216,34 @@ export const RegisterTagForm: React.FC<{ className?: string }> = ({
           ["bg-slate-100"]
         )}
       >
-        <PrimaryName
-          className={clsx(["flex-grow"], ["flex-shrink-0"])}
-          Input={({ ...props }) => (
-            <input type={"text"} {...props} {...register("primaryName")} />
-          )}
-          errorMessage={errors.primaryName?.message}
-        />
+        <div className={clsx(className)}>
+          <label className={clsx(["text-sm"])} htmlFor={primaryTitleLabelId}>
+            主な名前
+          </label>
+          <div className={clsx(["mt-1"], ["flex", "flex-col"])}>
+            <div className={clsx(["w-full"])}>
+              <input
+                id={primaryTitleLabelId}
+                type={"text"}
+                placeholder="タグの主な名前"
+                className={clsx(
+                  ["w-full"],
+                  ["flex-grow"],
+                  ["rounded"],
+                  ["text-sm"],
+                  [["py-0.5"], ["px-2"]],
+                  ["bg-slate-100"],
+                  ["border", "border-slate-300"]
+                )}
+              />
+            </div>
+            {errors.primaryName && (
+              <div className={clsx(["text-xs"], ["text-red-600"])}>
+                {errors.primaryName.message}
+              </div>
+            )}
+          </div>
+        </div>
         <ExplicitParentTag
           className={clsx(["flex-shrink-0"], ["w-96"])}
           field={explicitParent}
