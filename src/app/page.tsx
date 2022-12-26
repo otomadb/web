@@ -5,7 +5,8 @@ import React from "react";
 
 import { LinkRegisterNicovideo } from "~/components/common/Link";
 import { VideoList } from "~/components/common/VideoList";
-import { graphql } from "~/gql";
+import { getFragment, graphql } from "~/gql";
+import { VideoList_VideoFragmentDoc } from "~/gql/graphql";
 import { gqlRequest } from "~/utils/gqlRequest";
 
 export const revalidate = 0;
@@ -14,24 +15,20 @@ export default async function Page() {
   const result = await gqlRequest(
     graphql(`
       query IndexPage {
-        recentRegisteredVideos: findVideos(input: { limit: 18 }) {
+        recentRegisteredVideos: findVideos(
+          input: { limit: 24, order: { createdAt: DESC } }
+        ) {
           nodes {
-            id
-            title
-            thumbnailUrl
+            ...VideoList_Video
           }
         }
       }
     `)
   );
 
-  const recentVideos = result.recentRegisteredVideos.nodes.map(
-    ({ id, title, thumbnailUrl }) => ({
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      id,
-      title,
-      thumbnailUrl,
-    })
+  const recentVideos = getFragment(
+    VideoList_VideoFragmentDoc,
+    result.recentRegisteredVideos.nodes
   );
 
   return (
