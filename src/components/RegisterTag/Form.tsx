@@ -3,7 +3,7 @@ import "client-only";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { useMutation } from "urql";
@@ -121,6 +121,7 @@ export const RegisterTagForm: React.FC<{ className?: string }> = ({
     resolver: zodResolver(formSchema),
   });
 
+  const primaryName = watch("primaryName");
   const {
     fields: extraNames,
     append: appendExtraName,
@@ -147,6 +148,13 @@ export const RegisterTagForm: React.FC<{ className?: string }> = ({
     ],
     [explicitParent, implicitParents]
   );
+
+  useEffect(() => {
+    const firstSemitag = resolveSemitags.at(0);
+    if (primaryName || !firstSemitag) return;
+
+    setValue("primaryName", firstSemitag.semitag.name);
+  }, [primaryName, resolveSemitags, setValue]);
 
   const onSubmit: SubmitHandler<FormSchema> = useCallback(
     async ({
