@@ -32,11 +32,10 @@ export const SearchBox: React.FC<{
   query: string;
   selectedIds: string[];
   handleSelect(p: {
-    tagId: string;
-    name: string;
-    explicitParent?: {
-      tagId: string;
+    tag: {
+      id: string;
       name: string;
+      explicitParent?: { id: string; name: string };
     };
   }): void;
 }> = ({ query, classNames, handleSelect, selectedIds }) => {
@@ -93,14 +92,16 @@ export const SearchBox: React.FC<{
             )}
             onClick={async () => {
               await handleSelect({
-                tagId: tag.id,
-                name: tag.name,
-                explicitParent: tag.explicitParent
-                  ? {
-                      tagId: tag.explicitParent.id,
-                      name: tag.explicitParent.name,
-                    }
-                  : undefined,
+                tag: {
+                  id: tag.id,
+                  name: tag.name,
+                  explicitParent: tag.explicitParent
+                    ? {
+                        id: tag.explicitParent.id,
+                        name: tag.explicitParent.name,
+                      }
+                    : undefined,
+                },
               });
               await refetch();
             }}
@@ -148,11 +149,10 @@ export const TagAdder: React.FC<{
   placeholder: string;
   selectedIds: string[];
   handleSelect(p: {
-    tagId: string;
-    name: string;
-    explicitParent?: {
-      tagId: string;
+    tag: {
+      id: string;
       name: string;
+      explicitParent?: { id: string; name: string };
     };
   }): void;
   id?: string;

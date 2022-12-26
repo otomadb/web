@@ -5,16 +5,19 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
 import React, { useCallback, useMemo } from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
 import { useMutation } from "urql";
 import * as z from "zod";
 
 import { graphql } from "~/gql";
 import { RegisterTag_RegisterTagDocument } from "~/gql/graphql";
 
+import { LinkTag } from "../common/Link";
 import { ExplicitParentTag } from "./ExplicitParentTag";
 import { ExtraName } from "./ExtraName";
 import { ImplictParentTags } from "./ImplicitParentTags";
 import { PrimaryName } from "./PrimaryName";
+import { Semitags } from "./Semitags";
 
 graphql(`
   mutation RegisterTag_RegisterTag(
@@ -58,35 +61,44 @@ const formSchema = z.object({
 
   explicitParent: z.optional(
     z.object({
-      tagId: z.string(),
-      name: z.string(),
-      explicitParent: z.optional(
-        z.object({
-          tagId: z.string(),
-          name: z.string(),
-        })
-      ),
+      tag: z.object({
+        id: z.string(),
+        name: z.string(),
+        explicitParent: z.optional(
+          z.object({
+            id: z.string(),
+            name: z.string(),
+          })
+        ),
+      }),
     })
   ),
   implicitParents: z.array(
     z.object({
-      tagId: z.string(),
-      name: z.string(),
-      explicitParent: z.optional(
-        z.object({
-          tagId: z.string(),
-          name: z.string(),
-        })
-      ),
+      tag: z.object({
+        id: z.string(),
+        name: z.string(),
+        explicitParent: z.optional(
+          z.object({
+            id: z.string(),
+            name: z.string(),
+          })
+        ),
+      }),
     })
   ),
 
-  resolveSemitags: z.optional(
-    z.array(
-      z.object({
+  resolveSemitags: z.array(
+    z.object({
+      semitag: z.object({
         id: z.string(),
-      })
-    )
+        name: z.string(),
+        video: z.object({
+          id: z.string(),
+          title: z.string(),
+        }),
+      }),
+    })
   ),
 });
 type FormSchema = z.infer<typeof formSchema>;
@@ -104,6 +116,7 @@ export const RegisterTagForm: React.FC<{ className?: string }> = ({
     formState: { errors },
     reset,
     watch,
+    resetField,
   } = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
   });
@@ -121,14 +134,16 @@ export const RegisterTagForm: React.FC<{ className?: string }> = ({
     fields: implicitParents,
     append: appendImplicitParent,
     remove: removeImplicitParent,
-  } = useFieldArray({
-    control,
-    name: "implicitParents",
-  });
+  } = useFieldArray({ control, name: "implicitParents" });
+  const {
+    fields: resolveSemitags,
+    append: appendResolveSemitag,
+    remove: removeresolveSemitag,
+  } = useFieldArray({ control, name: "resolveSemitags" });
   const selectedParentIds: string[] = useMemo(
     () => [
-      ...(explicitParent?.tagId ? [explicitParent.tagId] : []),
-      ...implicitParents.map(({ tagId }) => tagId),
+      ...(explicitParent?.tag ? [explicitParent.tag.id] : []),
+      ...implicitParents.map(({ tag }) => tag.id),
     ],
     [explicitParent, implicitParents]
   );
@@ -141,16 +156,35 @@ export const RegisterTagForm: React.FC<{ className?: string }> = ({
       implicitParents,
       resolveSemitags,
     }) => {
-      await trigger({
+      const { data } = await trigger({
         primaryName,
         extraNames: extraNames?.map(({ name }) => name),
-        explicitParent: explicitParent?.tagId,
-        implicitParents: implicitParents?.map(({ tagId: id }) => id),
-        resolveSemitags: resolveSemitags?.map(({ id }) => id),
+        explicitParent: explicitParent?.tag.id,
+        implicitParents: implicitParents.map(({ tag: { id } }) => id),
+        resolveSemitags: resolveSemitags.map(({ semitag: { id } }) => id),
       });
-      reset();
+      resetField("primaryName");
+      resetField("extraNames");
+      resetField("explicitParent");
+      resetField("implicitParents");
+      resetField("resolveSemitags");
+
+      if (data) {
+        const { id, name } = data.registerTag.tag;
+        toast(() => (
+          <div className={clsx(["text-slate-700"])}>
+            <LinkTag
+              tagId={id}
+              className={clsx(["font-bold"], ["text-blue-500"])}
+            >
+              {name}
+            </LinkTag>
+            を登録しました．
+          </div>
+        ));
+      }
     },
-    [reset, trigger]
+    [resetField, trigger]
   );
 
   return (
@@ -183,7 +217,7 @@ export const RegisterTagForm: React.FC<{ className?: string }> = ({
         />
         <ExplicitParentTag
           className={clsx(["flex-shrink-0"], ["w-96"])}
-          parent={explicitParent}
+          field={explicitParent}
           selectedParentIds={selectedParentIds}
           append={(payload) => setValue("explicitParent", payload)}
           remove={() => setValue("explicitParent", undefined)}
@@ -217,27 +251,48 @@ export const RegisterTagForm: React.FC<{ className?: string }> = ({
         />
         <ImplictParentTags
           className={clsx()}
-          parents={implicitParents}
+          fields={implicitParents}
           selectedParentIds={selectedParentIds}
           append={(payload) => appendImplicitParent(payload)}
           remove={(index) => removeImplicitParent(index)}
         />
       </div>
+      <div
+        className={clsx(
+          ["mt-4"],
+          [["px-4"], ["py-4"]],
+          ["border"],
+          ["rounded"],
+          ["bg-slate-100"]
+        )}
+      >
+        <Semitags
+          fields={resolveSemitags}
+          append={(p) => appendResolveSemitag(p)}
+          remove={(i) => removeresolveSemitag(i)}
+        />
+      </div>
       <div className={clsx(["mt-8"])}>
-        <button
-          type="submit"
-          className={clsx(
-            ["px-4"],
-            ["py-2"],
-            ["disabled:bg-slate-300", "bg-blue-400", "hover:bg-blue-500"],
-            ["disabled:text-slate-100", "text-blue-50", "hover:text-blue-100"],
-            ["text-sm"],
-            ["cursor-pointer"],
-            ["rounded"]
-          )}
-        >
-          追加
-        </button>
+        <div>
+          <button
+            type="submit"
+            className={clsx(
+              ["px-4"],
+              ["py-2"],
+              ["disabled:bg-slate-300", "bg-blue-400", "hover:bg-blue-500"],
+              [
+                "disabled:text-slate-100",
+                "text-blue-50",
+                "hover:text-blue-100",
+              ],
+              ["text-sm"],
+              ["cursor-pointer"],
+              ["rounded"]
+            )}
+          >
+            追加
+          </button>
+        </div>
       </div>
     </form>
   );

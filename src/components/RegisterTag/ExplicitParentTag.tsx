@@ -10,24 +10,23 @@ import { TagAdder } from "./TagAdder";
 
 export const ExplicitParentTag: React.FC<{
   className?: string;
-  parent:
-    | undefined
-    | {
-        tagId: string;
-        name: string;
-        explicitParent?: { tagId: string; name: string };
-      };
-  append(payload: {
-    tagId: string;
-    name: string;
-    explicitParent?: {
+  field?: {
+    tag: {
+      id: string;
       name: string;
-      tagId: string;
+      explicitParent?: { id: string; name: string };
+    };
+  };
+  append(payload: {
+    tag: {
+      id: string;
+      name: string;
+      explicitParent?: { id: string; name: string };
     };
   }): void;
   remove(): void;
   selectedParentIds: string[];
-}> = ({ className, parent, append, remove, selectedParentIds }) => {
+}> = ({ className, field: parent, append, remove, selectedParentIds }) => {
   const labelId = useId();
 
   return (
@@ -47,9 +46,9 @@ export const ExplicitParentTag: React.FC<{
         {!!parent && (
           <ParentTag
             tag={{
-              id: parent.tagId,
-              name: parent.name,
-              parentName: parent.explicitParent?.name,
+              id: parent.tag.id,
+              name: parent.tag.name,
+              parentName: parent.tag.explicitParent?.name,
             }}
             handleDelete={() => remove()}
           />

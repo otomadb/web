@@ -11,26 +11,25 @@ import { TagAdder } from "./TagAdder";
 export const ImplictParentTags: React.FC<{
   className?: string;
 
-  parents: {
-    tagId: string;
-    name: string;
-    explicitParent?: {
-      tagId: string;
+  fields: {
+    id: string; // for for
+    tag: {
+      id: string;
       name: string;
+      explicitParent?: { id: string; name: string };
     };
   }[];
 
   append(payload: {
-    tagId: string;
-    name: string;
-    explicitParent?: {
-      tagId: string;
+    tag: {
+      id: string;
       name: string;
+      explicitParent?: { id: string; name: string };
     };
   }): void;
   remove(index: number): void;
   selectedParentIds: string[];
-}> = ({ className, append, remove, selectedParentIds, parents }) => {
+}> = ({ className, append, remove, selectedParentIds, fields }) => {
   const labelId = useId();
 
   return (
@@ -47,15 +46,15 @@ export const ImplictParentTags: React.FC<{
           }}
           selectedIds={selectedParentIds}
         />
-        {0 < parents.length && (
+        {0 < fields.length && (
           <div className={clsx(["mt-2"], ["w-full"], ["space-y-2"])}>
-            {parents.map((parent, index) => (
+            {fields.map(({ id, tag }, index) => (
               <ParentTag
-                key={parent.tagId}
+                key={id}
                 tag={{
-                  id: parent.tagId,
-                  name: parent.name,
-                  parentName: parent.explicitParent?.name,
+                  id: tag.id,
+                  name: tag.name,
+                  parentName: tag.explicitParent?.name,
                 }}
                 handleDelete={() => remove(index)}
               />
