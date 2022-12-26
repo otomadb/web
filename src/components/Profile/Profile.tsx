@@ -20,7 +20,7 @@ graphql(`
       icon
       favorites {
         id
-        registrations(input: { limit: 12 }) {
+        registrations(input: { limit: 12, order: { updatedAt: DESC } }) {
           nodes {
             id
             video {
