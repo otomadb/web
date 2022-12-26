@@ -32,7 +32,7 @@ export const VideoList: React.FC<{
                 "@[384px]/videolist:grid-cols-2",
                 "@[512px]/videolist:grid-cols-3",
                 "@[768px]/videolist:grid-cols-4",
-                "@[1280px]/videolist:grid-cols-6",
+                "@[1024px]/videolist:grid-cols-6",
                 "@[1536px]/videolist:grid-cols-8",
               ],
             ],
