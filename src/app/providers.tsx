@@ -95,6 +95,9 @@ const urqlClient = createUrqlClient({
         MylistRecommendedVideosItem() {
           return null;
         },
+        SemitagCollection() {
+          return null;
+        },
       },
     }),
     fetchExchange,

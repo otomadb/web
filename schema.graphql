@@ -47,6 +47,19 @@ input FindNicovideoVideoSourceInput {
   sourceId: String
 }
 
+input FindSemitagsInput {
+  except: [ID!]! = []
+  limit: Int! = 10
+  order: FindSemitagsInputOrder! = {updatedAt: DESC}
+  resolved: Boolean
+  skip: Int! = 0
+}
+
+input FindSemitagsInputOrder {
+  createdAt: SortOrder
+  updatedAt: SortOrder
+}
+
 input FindTagsInput {
   limit: Int! = 10
   order: FindTagsInputOrder! = {updatedAt: DESC}
@@ -220,6 +233,7 @@ enum PseudoTagType {
 type Query {
   findMylist(input: FindMylistInput!): Mylist
   findNicovideoVideoSource(input: FindNicovideoVideoSourceInput!): NicovideoVideoSource
+  findSemitags(input: FindSemitagsInput!): SemitagCollection!
   findTags(input: FindTagsInput!): TagCollection!
   findUser(input: FindUserInput!): User
   findVideos(input: FindVideosInput!): VideoCollection!
@@ -240,6 +254,7 @@ input RegisterTagInput {
   implicitParents: [ID!]! = []
   meaningless: Boolean! = false
   primaryName: String!
+  resolveSemitags: [ID!]! = []
 }
 
 type RegisterTagPayload {
@@ -333,6 +348,10 @@ type Semitag implements Node {
   resolved: Boolean!
   resolvedTag: Tag
   video: Video!
+}
+
+type SemitagCollection {
+  nodes: [Semitag!]!
 }
 
 enum SortOrder {
