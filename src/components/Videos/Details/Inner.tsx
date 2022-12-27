@@ -52,15 +52,45 @@ export const Inner: React.FC<{
       className={clsx(
         className,
         ["flex", ["flex-col", "lg:flex-row"]],
-        ["gap-x-4"]
+        ["gap-x-8"]
       )}
     >
-      <div>
+      <div
+        className={clsx(
+          ["border", "border-slate-400"],
+          ["flex-shrink-0"],
+          ["w-64", "h-48"],
+          ["flex", "justify-center"],
+          ["relative"],
+          ["rounded-lg"],
+          ["overflow-hidden"]
+        )}
+      >
         <Image
-          className={clsx(["object-scale-down"], ["h-40"])}
+          className={clsx(
+            ["z-0"],
+            ["absolute"],
+            ["inset-0"],
+            ["w-full", "h-full"],
+            ["object-cover", "object-center"],
+            ["blur-md", "brightness-75", "scale-125"]
+          )}
           src={thumbnailUrl}
-          width={260}
-          height={200}
+          width={512}
+          height={384}
+          alt={title}
+          priority={true}
+        />
+        <Image
+          className={clsx(
+            ["z-1"],
+            ["relative"],
+            ["object-scale-down"],
+            ["w-64", "h-auto"]
+          )}
+          src={thumbnailUrl}
+          width={256}
+          height={192}
           alt={title}
           priority={true}
         />
