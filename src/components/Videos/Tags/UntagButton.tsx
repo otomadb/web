@@ -12,7 +12,7 @@ graphql(`
     removeTagFromVideo(input: $input) {
       video {
         id
-        ...VideoPage_Tags
+        ...VideoPage_TagsSection
         ...VideoPage_History
         ...VideoPage_SimilarVideos
       }

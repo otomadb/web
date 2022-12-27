@@ -1,25 +1,51 @@
+"use client";
+
+import "client-only";
+
 import clsx from "clsx";
 import Image from "next/image";
-import React from "react";
+import React, { useMemo } from "react";
+import { useQuery } from "urql";
 
-import { graphql } from "~/gql";
-import { VideoPage_DetailsFragment } from "~/gql/graphql";
+import { getFragment, graphql } from "~/gql";
+import {
+  VideoPage_DetailsSectionFragment,
+  VideoPage_DetailsSectionFragmentDoc,
+  VideoPage_UpstreamDetailsSectionDocument,
+} from "~/gql/graphql";
 
 import { LikeButton } from "./LikeButton";
 
 graphql(`
-  fragment VideoPage_Details on Video {
+  fragment VideoPage_DetailsSection on Video {
+    id
     title
     thumbnailUrl
+  }
+
+  query VideoPage_UpstreamDetailsSection($id: ID!) {
+    video(id: $id) {
+      id
+      ...VideoPage_DetailsSection
+    }
   }
 `);
 
 export const Inner: React.FC<{
   className?: string;
-  videoId: string;
-  details: VideoPage_DetailsFragment;
-}> = ({ className, videoId, details }) => {
-  const { thumbnailUrl, title } = details;
+  fallback: VideoPage_DetailsSectionFragment;
+}> = ({ className, fallback }) => {
+  const [{ data }] = useQuery({
+    query: VideoPage_UpstreamDetailsSectionDocument,
+    variables: { id: fallback.id },
+  });
+  const upstream = getFragment(
+    VideoPage_DetailsSectionFragmentDoc,
+    data?.video
+  );
+
+  const video = useMemo(() => fallback || upstream, [fallback, upstream]);
+  const { id: videoId, thumbnailUrl, title } = video;
 
   return (
     <section

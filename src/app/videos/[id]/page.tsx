@@ -1,14 +1,17 @@
 import clsx from "clsx";
-import React from "react";
 
-import { graphql } from "~/gql";
+import { Inner } from "~/components/Videos/Details/Inner";
+import { Inner as Tags } from "~/components/Videos/Tags/Inner";
+import { getFragment, graphql } from "~/gql";
+import {
+  VideoPage_DetailsSectionFragmentDoc,
+  VideoPage_TagsSectionFragmentDoc,
+} from "~/gql/graphql";
 import { gqlRequest } from "~/utils/gqlRequest";
 
-import { Details } from "./Details";
 import { History } from "./History";
 import { Semitags } from "./Semitags";
 import { SimilarVideos } from "./SimilarVideos";
-import { Tags } from "./Tags";
 
 export const revalidate = 0;
 
@@ -18,8 +21,8 @@ export default async function Page({ params }: { params: { id: string } }) {
       query VideoPage($id: ID!) {
         video(id: $id) {
           id
-          ...VideoPage_Details
-          ...VideoPage_Tags
+          ...VideoPage_DetailsSection
+          ...VideoPage_TagsSection
           ...VideoPage_Semitags
           ...VideoPage_SimilarVideos
           ...VideoPage_History
@@ -28,6 +31,9 @@ export default async function Page({ params }: { params: { id: string } }) {
     `),
     { id: `video:${params.id}` }
   );
+
+  const details = getFragment(VideoPage_DetailsSectionFragmentDoc, video);
+  const tags = getFragment(VideoPage_TagsSectionFragmentDoc, video);
 
   return (
     <div className={clsx(["flex"], ["gap-x-4"])}>
@@ -39,14 +45,14 @@ export default async function Page({ params }: { params: { id: string } }) {
           ["space-y-4"]
         )}
       >
-        <Tags className={clsx(["w-full"])} fallback={video} />
+        <Tags className={clsx(["w-full"])} fallback={tags} />
         <Semitags className={clsx(["w-full"])} fallback={video} />
       </div>
       <div className={clsx(["flex-grow"])}>
-        <Details fallback={video} />
+        <Inner fallback={details} />
         <div className={clsx(["mt-4"], ["space-y-2"])}>
           <div className={clsx(["block", "md:hidden"], ["space-y-2"])}>
-            <Tags fallback={video} />
+            <Tags fallback={tags} />
             <Semitags fallback={video} />
           </div>
           <SimilarVideos className={clsx()} fallback={video} />

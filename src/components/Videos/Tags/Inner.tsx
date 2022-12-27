@@ -3,14 +3,16 @@
 import "client-only";
 
 import clsx from "clsx";
-import React, { useCallback, useState } from "react";
-import { useMutation } from "urql";
+import React, { useCallback, useMemo, useState } from "react";
+import { useMutation, useQuery } from "urql";
 
-import { getFragment, graphql } from "~/gql";
+import { getFragment as useFragment, graphql } from "~/gql";
 import {
-  VideoPage_TagsFragment,
   VideoPage_TagsListFragmentDoc,
+  VideoPage_TagsSectionFragment,
+  VideoPage_TagsSectionFragmentDoc,
   VideoPage_TagVideoDocument,
+  VideoPage_UpstreamTagsSectionDocument,
 } from "~/gql/graphql";
 import { useViewer } from "~/hooks/useViewer";
 
@@ -19,16 +21,23 @@ import { TagsList } from "./List";
 import { TagAdder } from "./TagAdder";
 
 graphql(`
-  fragment VideoPage_Tags on Video {
+  fragment VideoPage_TagsSection on Video {
     id
     ...VideoPage_TagsList
+  }
+
+  query VideoPage_UpstreamTagsSection($id: ID!) {
+    video(id: $id) {
+      id
+      ...VideoPage_TagsSection
+    }
   }
 
   mutation VideoPage_TagVideo($input: AddTagToVideoInput!) {
     addTagToVideo(input: $input) {
       video {
         id
-        ...VideoPage_Tags
+        ...VideoPage_TagsSection
         ...VideoPage_SimilarVideos
         ...VideoPage_History
       }
@@ -38,13 +47,20 @@ graphql(`
 
 export const Inner: React.FC<{
   className?: string;
-  videoId: string;
-  tags: VideoPage_TagsFragment;
-}> = ({ className, videoId, tags }) => {
+  fallback: VideoPage_TagsSectionFragment;
+}> = ({ className, fallback }) => {
+  const [{ data }] = useQuery({
+    query: VideoPage_UpstreamTagsSectionDocument,
+    variables: { id: fallback.id },
+  });
+  const upstream = useFragment(VideoPage_TagsSectionFragmentDoc, data?.video);
+
+  const video = useMemo(() => upstream || fallback, [fallback, upstream]);
+  const { id: videoId } = video;
+  const taglist = useFragment(VideoPage_TagsListFragmentDoc, video);
+
   const isLoggedIn = useViewer();
   const [edit, setEdit] = useState(false);
-
-  const taglist = getFragment(VideoPage_TagsListFragmentDoc, tags);
 
   const [, triggerTagVideo] = useMutation(VideoPage_TagVideoDocument);
   const handleTagVideo = useCallback(
