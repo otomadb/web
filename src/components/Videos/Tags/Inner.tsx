@@ -16,9 +16,7 @@ import {
 } from "~/gql/graphql";
 import { useViewer } from "~/hooks/useViewer";
 
-import { EditToggle } from "./EditToggle";
 import { TagsList } from "./List";
-import { TagAdder } from "./TagAdder";
 
 graphql(`
   fragment VideoPage_TagsSection on Video {
@@ -57,7 +55,8 @@ export const Inner: React.FC<{
 
   const video = useMemo(() => upstream || fallback, [fallback, upstream]);
   const { id: videoId } = video;
-  const taglist = useFragment(VideoPage_TagsListFragmentDoc, video);
+
+  const tagslist = useFragment(VideoPage_TagsListFragmentDoc, video);
 
   const isLoggedIn = useViewer();
   const [edit, setEdit] = useState(false);
@@ -72,9 +71,12 @@ export const Inner: React.FC<{
 
   return (
     <section className={clsx(className)}>
-      <h2 className={clsx(["text-xl"], ["text-slate-900"])}>タグ</h2>
+      <div>
+        <h2 className={clsx(["text-xl"], ["text-slate-900"])}>タグ</h2>
+      </div>
       <div className={clsx(["mt-2"])}>
-        <div
+        {/*
+          <div
           className={clsx([
             "flex",
             ["flex-col"],
@@ -93,12 +95,8 @@ export const Inner: React.FC<{
             handleSelect={handleTagVideo}
           />
         </div>
-        <TagsList
-          className={clsx(["mt-1"])}
-          edit={edit}
-          videoId={videoId}
-          tags={taglist}
-        />
+      */}
+        <TagsList className={clsx(["mt-1"])} edit={edit} fragment={tagslist} />
       </div>
     </section>
   );

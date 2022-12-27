@@ -48,13 +48,7 @@ export const Inner: React.FC<{
   const { id: videoId, thumbnailUrl, title } = video;
 
   return (
-    <section
-      className={clsx(
-        className,
-        ["flex", ["flex-col", "lg:flex-row"]],
-        ["gap-x-8"]
-      )}
-    >
+    <section className={clsx(className, ["flex", ["flex-row"]], ["gap-x-8"])}>
       <div
         className={clsx(
           ["border", "border-slate-400"],
@@ -86,7 +80,7 @@ export const Inner: React.FC<{
             ["z-1"],
             ["relative"],
             ["object-scale-down"],
-            ["w-64", "h-auto"]
+            ["w-full", "h-auto"]
           )}
           src={thumbnailUrl}
           width={256}

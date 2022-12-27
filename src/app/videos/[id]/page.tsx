@@ -40,8 +40,8 @@ export default async function Page({ params }: { params: { id: string } }) {
       <div
         className={clsx(
           ["flex-shrink-0"],
-          ["hidden", "md:block"],
-          ["w-60", "lg:w-72"],
+          ["hidden", "lg:block"],
+          ["w-72"],
           ["space-y-4"]
         )}
       >
@@ -51,7 +51,7 @@ export default async function Page({ params }: { params: { id: string } }) {
       <div className={clsx(["flex-grow"])}>
         <Inner fallback={details} />
         <div className={clsx(["mt-4"], ["space-y-2"])}>
-          <div className={clsx(["block", "md:hidden"], ["space-y-2"])}>
+          <div className={clsx(["block", "lg:hidden"], ["space-y-2"])}>
             <Tags fallback={tags} />
             <Semitags fallback={video} />
           </div>
