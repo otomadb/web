@@ -2,21 +2,20 @@
 
 import "client-only";
 
+import { PencilSquareIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
-import React, { useCallback, useMemo, useState } from "react";
-import { useMutation, useQuery } from "urql";
+import React, { useMemo, useState } from "react";
+import { useQuery } from "urql";
 
 import { getFragment as useFragment, graphql } from "~/gql";
 import {
   VideoPage_TagsListFragmentDoc,
   VideoPage_TagsSectionFragment,
   VideoPage_TagsSectionFragmentDoc,
-  VideoPage_TagVideoDocument,
   VideoPage_UpstreamTagsSectionDocument,
 } from "~/gql/graphql";
-import { useViewer } from "~/hooks/useViewer";
 
-import { TagsList } from "./List";
+import { TagsList } from "./TagsList";
 
 graphql(`
   fragment VideoPage_TagsSection on Video {
@@ -28,17 +27,6 @@ graphql(`
     video(id: $id) {
       id
       ...VideoPage_TagsSection
-    }
-  }
-
-  mutation VideoPage_TagVideo($input: AddTagToVideoInput!) {
-    addTagToVideo(input: $input) {
-      video {
-        id
-        ...VideoPage_TagsSection
-        ...VideoPage_SimilarVideos
-        ...VideoPage_History
-      }
     }
   }
 `);
@@ -58,45 +46,42 @@ export const Inner: React.FC<{
 
   const tagslist = useFragment(VideoPage_TagsListFragmentDoc, video);
 
-  const isLoggedIn = useViewer();
   const [edit, setEdit] = useState(false);
-
-  const [, triggerTagVideo] = useMutation(VideoPage_TagVideoDocument);
-  const handleTagVideo = useCallback(
-    (tagId: string) => {
-      triggerTagVideo({ input: { tagId, videoId } });
-    },
-    [triggerTagVideo, videoId]
-  );
 
   return (
     <section className={clsx(className)}>
-      <div>
-        <h2 className={clsx(["text-xl"], ["text-slate-900"])}>タグ</h2>
-      </div>
-      <div className={clsx(["mt-2"])}>
-        {/*
-          <div
-          className={clsx([
-            "flex",
-            ["flex-col"],
-            ["lg:flex-row", "lg:items-center", "lg:gap-x-2"],
-          ])}
+      <div className={clsx(["flex"], ["items-center"])}>
+        <h2 className={clsx(["flex-grow"], ["text-xl"], ["text-slate-900"])}>
+          タグ
+        </h2>
+        <div
+          className={clsx(
+            ["group/toggle"],
+            ["flex-shrink-0"],
+            [["px-2"], ["py-1"]],
+            ["bg-blue-400", "hover:bg-blue-500"],
+            ["rounded"],
+            ["cursor-pointer"]
+          )}
+          tabIndex={0}
+          aria-checked={edit}
+          onClick={() => setEdit((prev) => !prev)}
         >
-          <EditToggle
-            className={clsx(["flex-shrink-0"])}
-            edit={edit}
-            toggleEdit={(v) => setEdit(v)}
-          />
-          <TagAdder
-            className={clsx(["flex-grow"])}
-            videoId={videoId}
-            disabled={!isLoggedIn || !edit}
-            handleSelect={handleTagVideo}
+          <PencilSquareIcon
+            className={clsx(
+              ["w-4"],
+              ["h-4"],
+              ["text-blue-50", "group-hover/toggle:text-blue-100"]
+            )}
           />
         </div>
-      */}
-        <TagsList className={clsx(["mt-1"])} edit={edit} fragment={tagslist} />
+      </div>
+      <div className={clsx(["mt-2"], ["flex", "flex-col", "items-start"])}>
+        <TagsList
+          className={clsx(["mt-1"], ["w-full"])}
+          edit={edit}
+          fragment={tagslist}
+        />
       </div>
     </section>
   );

@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 
-import { TagsList } from "./List";
+import { TagsList } from "./TagsList";
 
 export default {
   component: TagsList,

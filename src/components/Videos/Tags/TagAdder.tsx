@@ -1,12 +1,15 @@
 "use client";
 import { ArrowPathIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
-import React, { useState } from "react";
-import { useQuery } from "urql";
+import React, { useCallback, useState } from "react";
+import { useMutation, useQuery } from "urql";
 
 import { DelayedInput } from "~/components/common/DelayedInput";
 import { graphql } from "~/gql";
-import { VideoPage_TagEditor_SearchBoxDocument } from "~/gql/graphql";
+import {
+  VideoPage_AddTagToVideoDocument,
+  VideoPage_TagEditor_SearchBoxDocument,
+} from "~/gql/graphql";
 
 graphql(`
   query VideoPage_TagEditor_SearchBox($query: String!, $videoId: ID!) {
@@ -134,40 +137,67 @@ export const SearchBox: React.FC<{
   );
 };
 
+graphql(`
+  mutation VideoPage_AddTagToVideo($input: AddTagToVideoInput!) {
+    addTagToVideo(input: $input) {
+      video {
+        id
+        ...VideoPage_TagsSection
+        ...VideoPage_SimilarVideos
+        ...VideoPage_History
+      }
+    }
+  }
+`);
+
 export const TagAdder: React.FC<{
   className?: string;
   videoId: string;
-  disabled?: boolean;
-  handleSelect(tagId: string): void;
-}> = ({ className, videoId, disabled, handleSelect }) => {
+}> = ({ className, videoId }) => {
   const [query, setQuery] = useState<string>("");
 
+  const [, trigger] = useMutation(VideoPage_AddTagToVideoDocument);
+  const handleTagVideo = useCallback(
+    (tagId: string) => {
+      trigger({ input: { tagId, videoId } });
+    },
+    [trigger, videoId]
+  );
+
   return (
-    <div className={clsx(className, ["flex"], ["group"], ["relative"])}>
-      <DelayedInput
-        aria-label="タグの名前を入力"
-        placeholder="タグの名前"
-        className={clsx(
-          ["w-full"],
-          [["py-0.5"], ["px-2"]],
-          ["bg-slate-100"],
-          ["border", "border-slate-300"],
-          ["rounded"],
-          ["text-sm"]
-        )}
-        disabled={disabled}
-        onUpdateQuery={(q) => setQuery(q)}
-      />
-      <SearchBox
-        classNames={clsx(
-          ["invisible", "group-focus-within:visible"],
-          ["w-full"],
-          [["absolute"], ["z-infinity"], ["top-full"]]
-        )}
-        query={query}
-        videoId={videoId}
-        handleSelect={handleSelect}
-      />
+    <div
+      className={clsx(
+        className,
+        ["rounded"],
+        ["bg-white/90", "backdrop-blur-sm"],
+        ["shadow"]
+      )}
+    >
+      <div className={clsx(["group/adder"], ["relative"])}>
+        <DelayedInput
+          aria-label="タグの名前を入力"
+          placeholder="タグの名前"
+          className={clsx(
+            ["w-full"],
+            [["py-0.5"], ["px-2"]],
+            ["bg-slate-100"],
+            ["border", "border-slate-300"],
+            ["rounded"],
+            ["text-sm"]
+          )}
+          onUpdateQuery={(q) => setQuery(q)}
+        />
+        <SearchBox
+          classNames={clsx(
+            ["invisible", "group-focus-within/adder:visible"],
+            ["w-full"],
+            [["absolute"], ["z-infinity"], ["top-full"]]
+          )}
+          query={query}
+          videoId={videoId}
+          handleSelect={(id) => handleTagVideo(id)}
+        />
+      </div>
     </div>
   );
 };
