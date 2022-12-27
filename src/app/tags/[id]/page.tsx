@@ -1,7 +1,8 @@
 import clsx from "clsx";
 
 import { VideoList } from "~/components/common/VideoList";
-import { graphql } from "~/gql";
+import { getFragment, graphql } from "~/gql";
+import { VideoList_VideoFragmentDoc } from "~/gql/graphql";
 import { gqlRequest } from "~/utils/gqlRequest";
 
 export const revalidate = 60;
@@ -13,19 +14,19 @@ export default async function Page({ params }: { params: { id: string } }) {
         tag(id: $id) {
           id
           name
-          type
           taggedVideos {
             id
-            title
-            thumbnailUrl
-            tags {
-              name
-            }
+            ...VideoList_Video
           }
         }
       }
     `),
     { id: `tag:${params.id}` }
+  );
+
+  const taggedVideos = getFragment(
+    VideoList_VideoFragmentDoc,
+    tag.taggedVideos
   );
 
   return (
@@ -36,14 +37,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         </span>
       </h1>
       <div className={clsx(["mt-4"])}>
-        <VideoList
-          className={clsx()}
-          videos={tag.taggedVideos.map(({ id, title, thumbnailUrl }) => ({
-            id,
-            title,
-            thumbnailUrl,
-          }))}
-        />
+        <VideoList className={clsx()} videos={taggedVideos} />
       </div>
     </>
   );

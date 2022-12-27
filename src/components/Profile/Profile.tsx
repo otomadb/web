@@ -4,12 +4,11 @@ import clsx from "clsx";
 import React from "react";
 import { useQuery } from "urql";
 
-import { LinkMylist } from "~/components/common/Link";
 import { UserIcon } from "~/components/common/UserIcon";
-import { VideoList } from "~/components/common/VideoList";
-import { graphql } from "~/gql";
-import { ProfilePageDocument } from "~/gql/graphql";
+import { getFragment, graphql } from "~/gql";
+import { ProfilePageDocument, VideoList_VideoFragmentDoc } from "~/gql/graphql";
 
+import { VideoList } from "../common/VideoList";
 import { Logout } from "./Logout";
 
 graphql(`
@@ -21,22 +20,18 @@ graphql(`
       icon
       favorites {
         id
-        registrations(input: { limit: 12 }) {
+        registrations(input: { limit: 12, order: { updatedAt: DESC } }) {
           nodes {
             id
             video {
-              id
-              title
-              thumbnailUrl
+              ...VideoList_Video
             }
           }
         }
         recommendedVideos(input: { limit: 12 }) {
           items {
             video {
-              id
-              title
-              thumbnailUrl
+              ...VideoList_Video
             }
             score
           }
@@ -59,6 +54,16 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
   }
 
   const whoami = data?.whoami;
+
+  const likedVideos = getFragment(
+    VideoList_VideoFragmentDoc,
+    whoami?.favorites.registrations.nodes.map(({ video }) => video)
+  );
+  const recommendedVideosFromLiked = getFragment(
+    VideoList_VideoFragmentDoc,
+    whoami?.favorites.recommendedVideos.items.map(({ video }) => video)
+  );
+
   return (
     <main className={clsx(className)}>
       <h1 className={clsx(["text-xl"])}>Profile</h1>
@@ -119,17 +124,9 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
       </section>
       <section className={clsx(["mt-4"])}>
         <h2 className={clsx(["text-lg"])}>いいねした動画</h2>
-        {whoami && (
+        {likedVideos && (
           <>
-            <LinkMylist mylistId={whoami.favorites.id}>ページ</LinkMylist>
-            <VideoList
-              className={clsx(["mt-2"])}
-              videos={whoami.favorites.registrations.nodes.map(({ video }) => ({
-                id: video.id,
-                title: video.title,
-                thumbnailUrl: video.thumbnailUrl,
-              }))}
-            />
+            <VideoList className={clsx(["mt-2"])} videos={likedVideos} />
           </>
         )}
       </section>
@@ -137,16 +134,10 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
         <h2 className={clsx(["text-lg"])}>
           あなたのいいねした動画からのオススメ
         </h2>
-        {whoami && (
+        {recommendedVideosFromLiked && (
           <VideoList
             className={clsx(["mt-2"])}
-            videos={whoami.favorites.recommendedVideos.items.map(
-              ({ video }) => ({
-                id: video.id,
-                title: video.title,
-                thumbnailUrl: video.thumbnailUrl,
-              })
-            )}
+            videos={recommendedVideosFromLiked}
           />
         )}
       </section>
