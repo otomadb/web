@@ -11,7 +11,7 @@ export default {
 
 export const Primary: StoryObj<typeof Inner> = {
   args: {
-    details: aVideo({
+    fallback: aVideo({
       thumbnailUrl: "/storybook/960x540.jpg",
       title: "M.C.ドナルドはダンスに夢中なのか？最終鬼畜道化師ドナルド・Ｍ",
     }),
