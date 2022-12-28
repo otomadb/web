@@ -3,6 +3,7 @@ import { PencilSquareIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 import React, { useEffect, useMemo, useState } from "react";
 
+import { LinkTag } from "~/components/common/Link";
 import { Tag } from "~/components/common/Tag";
 import { TagSearcher } from "~/components/common/TagSearcher";
 import { getFragment, graphql } from "~/gql";
@@ -50,7 +51,12 @@ export const TagsListItem: React.FC<{
     <div
       className={clsx(className, ["flex", "justify-between", "items-center"])}
     >
-      <Tag tag={tag} />
+      <Tag
+        tag={tag}
+        Wrapper={({ ...props }) =>
+          edit ? <div {...props} /> : <LinkTag tagId={tag.id} {...props} />
+        }
+      />
       {edit && (
         <div className={clsx(["relative"], ["flex"])}>
           <div
