@@ -13,7 +13,7 @@ import {
   aSearchTagsPayload,
   aTag,
   PseudoTagType,
-  TagSearcher_SearchTagsDocument,
+  TagSearcher_SearchDocument,
 } from "~/gql/graphql";
 
 import { TagSearcher } from "./TagSearcher";
@@ -37,7 +37,7 @@ export default {
     layout: "centered",
     msw: {
       handlers: [
-        graphql.query(TagSearcher_SearchTagsDocument, (req, res, ctx) =>
+        graphql.query(TagSearcher_SearchDocument, (req, res, ctx) =>
           res(
             ctx.data({
               searchTags: aSearchTagsPayload({
@@ -86,13 +86,21 @@ export const Primary: StoryObj<typeof TagSearcher> = {
   args: {},
 };
 
+export const SomethingInput: StoryObj<typeof TagSearcher> = {
+  args: {},
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.type(canvas.getByPlaceholderText("タグの名前"), "あ");
+  },
+};
+
 export const Searching: StoryObj<typeof TagSearcher> = {
   args: {},
   parameters: {
     layout: "centered",
     msw: {
       handlers: [
-        graphql.query(TagSearcher_SearchTagsDocument, (req, res, ctx) =>
+        graphql.query(TagSearcher_SearchDocument, (req, res, ctx) =>
           res(ctx.delay("infinite"))
         ),
       ],
@@ -100,7 +108,30 @@ export const Searching: StoryObj<typeof TagSearcher> = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
+    await userEvent.type(canvas.getByPlaceholderText("タグの名前"), "あ");
+  },
+};
 
+export const Nothing: StoryObj<typeof TagSearcher> = {
+  args: {},
+  parameters: {
+    layout: "centered",
+    msw: {
+      handlers: [
+        graphql.query(TagSearcher_SearchDocument, (req, res, ctx) =>
+          res(
+            ctx.data({
+              searchTags: aSearchTagsPayload({
+                items: [],
+              }),
+            })
+          )
+        ),
+      ],
+    },
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
     await userEvent.type(canvas.getByPlaceholderText("タグの名前"), "あ");
   },
 };
