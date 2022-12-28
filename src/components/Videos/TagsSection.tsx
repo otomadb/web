@@ -32,7 +32,7 @@ graphql(`
   }
 `);
 
-export const Inner: React.FC<{
+export const TagsSection: React.FC<{
   className?: string;
   fallback: VideoPage_TagsSectionFragment;
 }> = ({ className, fallback }) => {

@@ -30,8 +30,8 @@ graphql(`
       video {
         id
         ...VideoPage_TagsSection
-        ...VideoPage_History
-        ...VideoPage_SimilarVideos
+        ...VideoPage_HistorySection
+        ...VideoPage_SimilarVideosSection
       }
     }
   }

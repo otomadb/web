@@ -2,14 +2,14 @@ import { Meta, StoryObj } from "@storybook/react";
 
 import { aVideo } from "~/gql/graphql";
 
-import { Inner } from "./Inner";
+import { DetailsSection } from "./DetailsSection";
 
 export default {
-  component: Inner,
+  component: DetailsSection,
   args: {},
-} as Meta<typeof Inner>;
+} as Meta<typeof DetailsSection>;
 
-export const Primary: StoryObj<typeof Inner> = {
+export const Primary: StoryObj<typeof DetailsSection> = {
   args: {
     fallback: aVideo({
       thumbnailUrl: "/storybook/960x540.jpg",

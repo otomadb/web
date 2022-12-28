@@ -16,17 +16,11 @@ import {
   VideoPage_TagsTypesListFragmentDoc,
 } from "~/gql/graphql";
 
-import { AddTagForm } from "./AddTagForm";
-import { RemoveTagForm } from "./RemoveTagForm";
+import { AddTagForm } from "./TagAddForm";
+import { RemoveTagForm } from "./TagRemoveForm";
 import { TagTypesList } from "./TagTypesList";
 
 graphql(`
-  fragment VideoPage_TagsListItem on Tag {
-    id
-    ...VideoPage_Tag
-    ...VideoPage_RemoveTagForm
-  }
-
   fragment VideoPage_TagsList on Video {
     id
     tags {
@@ -35,81 +29,6 @@ graphql(`
     ...VideoPage_TagsTypesList
   }
 `);
-
-export const TagsListItem: React.FC<{
-  className?: string;
-  videoId: string;
-  edit: boolean;
-  open: boolean;
-  handleOpen(): void;
-  fragment: VideoPage_TagsListItemFragment;
-}> = ({ className, fragment, edit, open, handleOpen, videoId }) => {
-  const tag = getFragment(VideoPage_TagFragmentDoc, fragment);
-  const untag = getFragment(VideoPage_RemoveTagFormFragmentDoc, fragment);
-
-  return (
-    <div
-      className={clsx(className, ["flex", "justify-between", "items-center"])}
-    >
-      <Tag
-        tag={tag}
-        Wrapper={({ ...props }) =>
-          edit ? <div {...props} /> : <LinkTag tagId={tag.id} {...props} />
-        }
-      />
-      {edit && (
-        <div className={clsx(["relative"], ["flex"])}>
-          <div
-            role="radio"
-            aria-checked={open}
-            className={clsx(
-              ["ml-1"],
-              ["px-2", "py-0.5"],
-              ["group/edit", "peer/edit"],
-              ["border", "border-slate-300"],
-              [
-                "aria-checked:bg-slate-400",
-                ["bg-slate-200", "hover:bg-slate-300"],
-              ],
-              ["rounded"],
-              ["z-20"]
-            )}
-            onClick={() => handleOpen()}
-          >
-            <PencilSquareIcon
-              className={clsx(
-                ["w-3", "h-3"],
-                [
-                  "group-aria-checked/edit:text-slate-300",
-                  ["text-slate-900", "group-hover/edit:text-slate-800"],
-                ]
-              )}
-            />
-          </div>
-          <div
-            className={clsx(
-              ["hidden", "peer-aria-checked/edit:block"],
-              ["fixed", "inset-0"],
-              ["z-10"]
-            )}
-            onClick={() => handleOpen()}
-          />
-          {open && (
-            <RemoveTagForm
-              className={clsx(
-                ["absolute", "left-full", "top-0"],
-                ["ml-2", "-mt-2"],
-                ["z-30"]
-              )}
-              videoId={videoId}
-              fragment={untag}
-            />
-          )}
-        </div>
-      )}
-    </div>
-  );
-};
 
 export const TagsList: React.FC<{
   className?: string;
@@ -188,6 +107,89 @@ export const TagsList: React.FC<{
                 }}
               />
             </>
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
+
+graphql(`
+  fragment VideoPage_TagsListItem on Tag {
+    id
+    ...VideoPage_Tag
+    ...VideoPage_RemoveTagForm
+  }
+`);
+
+export const TagsListItem: React.FC<{
+  className?: string;
+  videoId: string;
+  edit: boolean;
+  open: boolean;
+  handleOpen(): void;
+  fragment: VideoPage_TagsListItemFragment;
+}> = ({ className, fragment, edit, open, handleOpen, videoId }) => {
+  const tag = getFragment(VideoPage_TagFragmentDoc, fragment);
+  const untag = getFragment(VideoPage_RemoveTagFormFragmentDoc, fragment);
+
+  return (
+    <div
+      className={clsx(className, ["flex", "justify-between", "items-center"])}
+    >
+      <Tag
+        tag={tag}
+        Wrapper={({ ...props }) =>
+          edit ? <div {...props} /> : <LinkTag tagId={tag.id} {...props} />
+        }
+      />
+      {edit && (
+        <div className={clsx(["relative"], ["flex"])}>
+          <div
+            role="radio"
+            aria-checked={open}
+            className={clsx(
+              ["ml-1"],
+              ["px-2", "py-0.5"],
+              ["group/edit", "peer/edit"],
+              ["border", "border-slate-300"],
+              [
+                "aria-checked:bg-slate-400",
+                ["bg-slate-200", "hover:bg-slate-300"],
+              ],
+              ["rounded"],
+              ["z-20"]
+            )}
+            onClick={() => handleOpen()}
+          >
+            <PencilSquareIcon
+              className={clsx(
+                ["w-3", "h-3"],
+                [
+                  "group-aria-checked/edit:text-slate-300",
+                  ["text-slate-900", "group-hover/edit:text-slate-800"],
+                ]
+              )}
+            />
+          </div>
+          <div
+            className={clsx(
+              ["hidden", "peer-aria-checked/edit:block"],
+              ["fixed", "inset-0"],
+              ["z-10"]
+            )}
+            onClick={() => handleOpen()}
+          />
+          {open && (
+            <RemoveTagForm
+              className={clsx(
+                ["absolute", "left-full", "top-0"],
+                ["ml-2", "-mt-2"],
+                ["z-30"]
+              )}
+              videoId={videoId}
+              fragment={untag}
+            />
           )}
         </div>
       )}

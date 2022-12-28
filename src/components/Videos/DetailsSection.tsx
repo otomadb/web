@@ -31,7 +31,7 @@ graphql(`
   }
 `);
 
-export const Inner: React.FC<{
+export const DetailsSection: React.FC<{
   className?: string;
   fallback: VideoPage_DetailsSectionFragment;
 }> = ({ className, fallback }) => {

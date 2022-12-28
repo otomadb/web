@@ -30,7 +30,7 @@ graphql(`
   }
 `);
 
-export const Inner: React.FC<{
+export const SemitagsSection: React.FC<{
   className?: string;
   fallback: VideoPage_SemitagsSectionFragment;
 }> = ({ className, fallback }) => {

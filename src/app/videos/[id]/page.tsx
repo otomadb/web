@@ -1,18 +1,19 @@
 import clsx from "clsx";
 
-import { Inner as Details } from "~/components/Videos/Details/Inner";
-import { Inner as Semitags } from "~/components/Videos/Semitags/Inner";
-import { Inner as Tags } from "~/components/Videos/Tags/Inner";
+import { DetailsSection } from "~/components/Videos/DetailsSection";
+import { HistorySection } from "~/components/Videos/HistorySection";
+import { SemitagsSection } from "~/components/Videos/SemitagsSection";
+import { SimilarVideosSection } from "~/components/Videos/SimilarVideosSection";
+import { TagsSection } from "~/components/Videos/TagsSection";
 import { getFragment, graphql } from "~/gql";
 import {
   VideoPage_DetailsSectionFragmentDoc,
+  VideoPage_HistorySectionFragmentDoc,
   VideoPage_SemitagsSectionFragmentDoc,
+  VideoPage_SimilarVideosSectionFragmentDoc,
   VideoPage_TagsSectionFragmentDoc,
 } from "~/gql/graphql";
 import { gqlRequest } from "~/utils/gqlRequest";
-
-import { History } from "./History";
-import { SimilarVideos } from "./SimilarVideos";
 
 export const revalidate = 0;
 
@@ -25,8 +26,8 @@ export default async function Page({ params }: { params: { id: string } }) {
           ...VideoPage_DetailsSection
           ...VideoPage_TagsSection
           ...VideoPage_SemitagsSection
-          ...VideoPage_SimilarVideos
-          ...VideoPage_History
+          ...VideoPage_SimilarVideosSection
+          ...VideoPage_HistorySection
         }
       }
     `),
@@ -36,6 +37,11 @@ export default async function Page({ params }: { params: { id: string } }) {
   const details = getFragment(VideoPage_DetailsSectionFragmentDoc, video);
   const tags = getFragment(VideoPage_TagsSectionFragmentDoc, video);
   const semitags = getFragment(VideoPage_SemitagsSectionFragmentDoc, video);
+  const similarVideos = getFragment(
+    VideoPage_SimilarVideosSectionFragmentDoc,
+    video
+  );
+  const history = getFragment(VideoPage_HistorySectionFragmentDoc, video);
 
   return (
     <div className={clsx(["flex"], ["gap-x-4"])}>
@@ -47,18 +53,18 @@ export default async function Page({ params }: { params: { id: string } }) {
           ["space-y-4"]
         )}
       >
-        <Tags className={clsx(["w-full"])} fallback={tags} />
-        <Semitags className={clsx(["w-full"])} fallback={semitags} />
+        <TagsSection className={clsx(["w-full"])} fallback={tags} />
+        <SemitagsSection className={clsx(["w-full"])} fallback={semitags} />
       </div>
       <div className={clsx(["flex-grow"])}>
-        <Details fallback={details} />
+        <DetailsSection fallback={details} />
         <div className={clsx(["mt-4"], ["space-y-2"])}>
           <div className={clsx(["block", "lg:hidden"], ["space-y-2"])}>
-            <Tags fallback={tags} />
-            <Semitags fallback={semitags} />
+            <TagsSection fallback={tags} />
+            <SemitagsSection fallback={semitags} />
           </div>
-          <SimilarVideos className={clsx()} fallback={video} />
-          <History className={clsx()} fallback={video} />
+          <SimilarVideosSection className={clsx()} fallback={similarVideos} />
+          <HistorySection className={clsx()} fallback={history} />
         </div>
       </div>
     </div>
