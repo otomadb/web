@@ -3,26 +3,49 @@
 import "client-only";
 
 import clsx from "clsx";
-import React from "react";
+import React, { useMemo } from "react";
+import { useQuery } from "urql";
 
-import { graphql } from "~/gql";
-import { VideoPage_SemitagsFragment } from "~/gql/graphql";
+import { getFragment as useFragment, graphql } from "~/gql";
+import {
+  VideoPage_SemitagsSectionFragment,
+  VideoPage_SemitagsSectionFragmentDoc,
+  VideoPage_UpstreamSemitagsSectionDocument,
+} from "~/gql/graphql";
 
 graphql(`
-  fragment VideoPage_Semitags on Video {
+  fragment VideoPage_SemitagsSection on Video {
     id
     semitags(resolved: false) {
       id
       name
     }
   }
+
+  query VideoPage_UpstreamSemitagsSection($id: ID!) {
+    video(id: $id) {
+      id
+      ...VideoPage_SemitagsSection
+    }
+  }
 `);
 
 export const Inner: React.FC<{
   className?: string;
-  videoId: string;
-  tags: VideoPage_SemitagsFragment;
-}> = ({ className, tags }) => {
+  fallback: VideoPage_SemitagsSectionFragment;
+}> = ({ className, fallback }) => {
+  const [{ data }] = useQuery({
+    query: VideoPage_UpstreamSemitagsSectionDocument,
+    variables: { id: fallback.id },
+  });
+  const upstream = useFragment(
+    VideoPage_SemitagsSectionFragmentDoc,
+    data?.video
+  );
+  const a = useMemo(() => upstream || fallback, [fallback, upstream]);
+
+  const { semitags } = a;
+
   return (
     <section className={clsx(className)}>
       <h2 className={clsx(["text-xl"], ["text-slate-900"])}>仮タグ</h2>
@@ -33,7 +56,7 @@ export const Inner: React.FC<{
           ["gap-y-2"]
         )}
       >
-        {tags.semitags.map(({ id, name }) => (
+        {semitags.map(({ id, name }) => (
           <div
             key={id}
             className={clsx(
