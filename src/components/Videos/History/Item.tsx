@@ -11,6 +11,7 @@ import React, { ReactNode } from "react";
 
 import { DateTime } from "~/components/common/DateTime";
 import { LinkUser } from "~/components/common/Link";
+import { Tag } from "~/components/common/Tag";
 import { UserIcon } from "~/components/common/UserIcon";
 import { getFragment, graphql } from "~/gql";
 import {
@@ -20,8 +21,6 @@ import {
   VideoPage_TagFragment,
   VideoPage_TagFragmentDoc,
 } from "~/gql/graphql";
-
-import { Tag } from "../Tag";
 
 graphql(`
   fragment VideoPage_HistoryItemUser on User {

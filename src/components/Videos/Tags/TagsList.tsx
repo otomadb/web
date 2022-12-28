@@ -3,25 +3,27 @@ import { PencilSquareIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 import React, { useEffect, useMemo, useState } from "react";
 
+import { Tag } from "~/components/common/Tag";
+import { TagSearcher } from "~/components/common/TagSearcher";
 import { getFragment, graphql } from "~/gql";
 import {
+  VideoPage_RemoveTagFormFragmentDoc,
   VideoPage_TagFragmentDoc,
   VideoPage_TagsListFragment,
   VideoPage_TagsListItemFragment,
   VideoPage_TagsListItemFragmentDoc,
   VideoPage_TagsTypesListFragmentDoc,
-  VideoPage_UntagFormFragmentDoc,
 } from "~/gql/graphql";
 
-import { Tag } from "../Tag";
+import { AddTagForm } from "./AddTagForm";
+import { RemoveTagForm } from "./RemoveTagForm";
 import { TagTypesList } from "./TagTypesList";
-import { UntagForm } from "./UntagForm";
 
 graphql(`
   fragment VideoPage_TagsListItem on Tag {
     id
     ...VideoPage_Tag
-    ...VideoPage_UntagForm
+    ...VideoPage_RemoveTagForm
   }
 
   fragment VideoPage_TagsList on Video {
@@ -42,7 +44,7 @@ export const TagsListItem: React.FC<{
   fragment: VideoPage_TagsListItemFragment;
 }> = ({ className, fragment, edit, open, handleOpen, videoId }) => {
   const tag = getFragment(VideoPage_TagFragmentDoc, fragment);
-  const untag = getFragment(VideoPage_UntagFormFragmentDoc, fragment);
+  const untag = getFragment(VideoPage_RemoveTagFormFragmentDoc, fragment);
 
   return (
     <div
@@ -87,11 +89,10 @@ export const TagsListItem: React.FC<{
             onClick={() => handleOpen()}
           />
           {open && (
-            <UntagForm
+            <RemoveTagForm
               className={clsx(
                 ["absolute", "left-full", "top-0"],
                 ["ml-2", "-mt-2"],
-                ["min-w-[12rem]"],
                 ["z-30"]
               )}
               videoId={videoId}
@@ -114,17 +115,20 @@ export const TagsList: React.FC<{
 
   const videoId = useMemo(() => fragment.id, [fragment]);
 
-  const [open, setOpen] = useState<string | undefined>("");
+  const [addTagId, setAddTagId] = useState<string | undefined>(undefined);
+  const [removeId, setRemoveId] = useState<string | undefined>(undefined);
   useEffect(() => {
-    if (edit) setOpen(undefined);
+    if (!edit) {
+      setRemoveId(undefined);
+      setAddTagId(undefined);
+    }
   }, [edit]);
 
   return (
-    <div className={className}>
+    <div className={clsx(className, ["flex", "flex-col", "gap-y-2"])}>
       <TagTypesList fragment={tagtypes} />
       <div
         className={clsx(
-          ["mt-2"],
           ["flex", ["flex-row", "lg:flex-col"], ["flex-wrap"]],
           ["gap-x-1", "gap-y-1"]
         )}
@@ -133,17 +137,54 @@ export const TagsList: React.FC<{
           <TagsListItem
             key={tag.id}
             handleOpen={() => {
-              if (tag.id === open) setOpen(undefined);
-              else setOpen(tag.id);
+              if (tag.id === removeId) {
+                setRemoveId(undefined);
+              } else {
+                setRemoveId(tag.id);
+                setAddTagId(undefined);
+              }
             }}
-            open={tag.id === open}
+            open={tag.id === removeId}
             edit={edit}
             videoId={videoId}
             fragment={tag}
           />
         ))}
       </div>
-      <div></div>
+      {edit && (
+        <div className={clsx(["flex"], ["relative"])}>
+          <TagSearcher
+            className={clsx(["w-full"], ["z-20"])}
+            handleSelect={(id) => {
+              setAddTagId(id);
+            }}
+          />
+          {addTagId && (
+            <>
+              <div
+                className={clsx(["block"], ["fixed", "inset-0"], ["z-10"])}
+                onClick={() => {
+                  setAddTagId(undefined);
+                }}
+              />
+              <AddTagForm
+                className={clsx(
+                  ["z-30"],
+                  ["absolute", "left-full", "top-0"],
+                  ["w-72"],
+                  ["ml-2", "-mt-2"]
+                )}
+                videoId={videoId}
+                tagId={addTagId}
+                clear={() => {
+                  setAddTagId(undefined);
+                  setRemoveId(undefined);
+                }}
+              />
+            </>
+          )}
+        </div>
+      )}
     </div>
   );
 };

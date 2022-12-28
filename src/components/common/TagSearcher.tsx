@@ -1,30 +1,28 @@
 "use client";
+
 import { ArrowPathIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
-import React, { useCallback, useState } from "react";
-import { useMutation, useQuery } from "urql";
+import React, { useState } from "react";
+import { useQuery } from "urql";
 
 import { DelayedInput } from "~/components/common/DelayedInput";
-import { graphql } from "~/gql";
+import { getFragment, graphql } from "~/gql";
 import {
-  VideoPage_AddTagToVideoDocument,
-  VideoPage_TagEditor_SearchBoxDocument,
+  TagSearcher_SearchTagsDocument,
+  VideoPage_TagFragmentDoc,
 } from "~/gql/graphql";
 
+import { Tag } from "./Tag";
+
 graphql(`
-  query VideoPage_TagEditor_SearchBox($query: String!, $videoId: ID!) {
+  query TagSearcher_SearchTags($query: String!) {
     searchTags(input: { query: $query, limit: 5 }) {
       items {
         matchedName
         tag {
           id
           name
-          pseudoType
-          canTagTo(videoId: $videoId)
-          explicitParent {
-            id
-            name
-          }
+          ...VideoPage_Tag
         }
       }
     }
@@ -34,13 +32,12 @@ graphql(`
 export const SearchBox: React.FC<{
   classNames?: string;
   query: string;
-  videoId: string;
   handleSelect(id: string): void;
-}> = ({ query, classNames, handleSelect, videoId }) => {
-  const [{ data, fetching }, refetch] = useQuery({
-    query: VideoPage_TagEditor_SearchBoxDocument,
+}> = ({ query, classNames, handleSelect }) => {
+  const [{ data, fetching }] = useQuery({
+    query: TagSearcher_SearchTagsDocument,
     pause: query === "",
-    variables: query !== "" ? { query, videoId } : undefined,
+    variables: query !== "" ? { query } : undefined,
   });
 
   if (query === "") return null;
@@ -78,91 +75,43 @@ export const SearchBox: React.FC<{
       )}
       {data &&
         data.searchTags.items.map(({ matchedName, tag }) => (
-          <div
+          <button
             key={tag.id}
-            role="button"
-            aria-disabled={!tag.canTagTo}
+            type="button"
             tabIndex={0}
             className={clsx(
               ["w-full"],
               ["group"],
-              [
-                "aria-disabled:bg-slate-200",
-                ["bg-slate-50", "hover:bg-blue-200"],
-              ],
-              [["px-2"], ["py-2"]]
+              [["px-2"], ["py-2"]],
+              ["flex", "flex-col", "items-start", "gap-y-1"],
+              ["bg-white", "hover:bg-blue-200"]
             )}
             onClick={async () => {
-              if (tag.canTagTo) {
-                await handleSelect(tag.id);
-                await refetch();
-              }
+              await handleSelect(tag.id);
             }}
           >
-            <div className={clsx(["text-left"], ["text-xs"])}>
-              <span
-                className={clsx([
-                  "group-aria-disabled:text-slate-400",
-                  ["text-slate-800"],
-                ])}
-              >
-                {tag.name}
-              </span>
-              {tag.explicitParent && (
-                <span
-                  className={clsx(
-                    ["ml-0.5"],
-                    ["group-aria-disabled:text-slate-400", ["text-slate-700"]]
-                  )}
-                >
-                  ({tag.explicitParent.name})
-                </span>
+            <Tag
+              tag={getFragment(VideoPage_TagFragmentDoc, tag)}
+              Wrapper={({ children, ...props }) => (
+                <div {...props}>{children}</div>
               )}
-            </div>
+            />
             {tag.name !== matchedName && (
-              <div
-                className={clsx(
-                  ["text-left"],
-                  ["text-xs"],
-                  ["group-aria-disabled:text-slate-400", ["text-slate-600"]],
-                  ["italic"]
-                )}
-              >
+              <div className={clsx(["text-xs"], ["text-slate-700"])}>
                 {matchedName}
               </div>
             )}
-          </div>
+          </button>
         ))}
     </div>
   );
 };
 
-graphql(`
-  mutation VideoPage_AddTagToVideo($input: AddTagToVideoInput!) {
-    addTagToVideo(input: $input) {
-      video {
-        id
-        ...VideoPage_TagsSection
-        ...VideoPage_SimilarVideos
-        ...VideoPage_History
-      }
-    }
-  }
-`);
-
-export const TagAdder: React.FC<{
+export const TagSearcher: React.FC<{
   className?: string;
-  videoId: string;
-}> = ({ className, videoId }) => {
+  handleSelect(id: string): void;
+}> = ({ className, handleSelect }) => {
   const [query, setQuery] = useState<string>("");
-
-  const [, trigger] = useMutation(VideoPage_AddTagToVideoDocument);
-  const handleTagVideo = useCallback(
-    (tagId: string) => {
-      trigger({ input: { tagId, videoId } });
-    },
-    [trigger, videoId]
-  );
 
   return (
     <div
@@ -194,8 +143,7 @@ export const TagAdder: React.FC<{
             [["absolute"], ["z-infinity"], ["top-full"]]
           )}
           query={query}
-          videoId={videoId}
-          handleSelect={(id) => handleTagVideo(id)}
+          handleSelect={(id) => handleSelect(id)}
         />
       </div>
     </div>
