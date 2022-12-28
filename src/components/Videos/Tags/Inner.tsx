@@ -2,11 +2,11 @@
 
 import "client-only";
 
-import { PencilSquareIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 import React, { useMemo, useState } from "react";
 import { useQuery } from "urql";
 
+import { ToggleSwitch } from "~/components/common/ToggleSwitch";
 import { getFragment as useFragment, graphql } from "~/gql";
 import {
   VideoPage_TagsListFragmentDoc,
@@ -14,6 +14,7 @@ import {
   VideoPage_TagsSectionFragmentDoc,
   VideoPage_UpstreamTagsSectionDocument,
 } from "~/gql/graphql";
+import { useIsLogin } from "~/hooks/useIsLogin";
 
 import { TagsList } from "./TagsList";
 
@@ -42,11 +43,11 @@ export const Inner: React.FC<{
   const upstream = useFragment(VideoPage_TagsSectionFragmentDoc, data?.video);
 
   const video = useMemo(() => upstream || fallback, [fallback, upstream]);
-  const { id: videoId } = video;
 
   const tagslist = useFragment(VideoPage_TagsListFragmentDoc, video);
 
   const [edit, setEdit] = useState(false);
+  const islogin = useIsLogin();
 
   return (
     <section className={clsx(className)}>
@@ -54,27 +55,12 @@ export const Inner: React.FC<{
         <h2 className={clsx(["flex-grow"], ["text-xl"], ["text-slate-900"])}>
           タグ
         </h2>
-        <div
-          className={clsx(
-            ["group/toggle"],
-            ["flex-shrink-0"],
-            [["px-2"], ["py-1"]],
-            ["bg-blue-400", "hover:bg-blue-500"],
-            ["rounded"],
-            ["cursor-pointer"]
-          )}
-          tabIndex={0}
-          aria-checked={edit}
-          onClick={() => setEdit((prev) => !prev)}
-        >
-          <PencilSquareIcon
-            className={clsx(
-              ["w-4"],
-              ["h-4"],
-              ["text-blue-50", "group-hover/toggle:text-blue-100"]
-            )}
+        {islogin && (
+          <ToggleSwitch
+            className={clsx(["flex-shrink-0"])}
+            handleToggle={(v) => setEdit(v)}
           />
-        </div>
+        )}
       </div>
       <div className={clsx(["mt-2"], ["flex", "flex-col", "items-start"])}>
         <TagsList
