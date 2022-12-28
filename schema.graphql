@@ -5,7 +5,6 @@ input AddSemitagToVideoInput {
 
 type AddSemitagToVideoPayload {
   semitag: Semitag!
-  video: Video!
 }
 
 input AddTagToVideoInput {
@@ -62,7 +61,11 @@ input FindSemitagsInputOrder {
 
 input FindTagsInput {
   limit: Int! = 10
+
+  """正確に一致"""
+  name: String
   order: FindTagsInputOrder! = {updatedAt: DESC}
+  parents: [ID!]
   skip: Int! = 0
 }
 

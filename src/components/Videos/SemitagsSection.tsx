@@ -2,16 +2,22 @@
 
 import "client-only";
 
+import { PlusIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
-import React, { useMemo } from "react";
-import { useQuery } from "urql";
+import React, { useCallback, useMemo, useState } from "react";
+import { useMutation, useQuery } from "urql";
 
 import { getFragment as useFragment, graphql } from "~/gql";
 import {
+  VideoPage_AddSemitagDocument,
   VideoPage_SemitagsSectionFragment,
   VideoPage_SemitagsSectionFragmentDoc,
   VideoPage_UpstreamSemitagsSectionDocument,
 } from "~/gql/graphql";
+import { useIsLogin } from "~/hooks/useIsLogin";
+
+import { BlueButton } from "../common/Button";
+import { ToggleSwitch } from "../common/ToggleSwitch";
 
 graphql(`
   fragment VideoPage_SemitagsSection on Video {
@@ -42,13 +48,24 @@ export const SemitagsSection: React.FC<{
     VideoPage_SemitagsSectionFragmentDoc,
     data?.video
   );
-  const a = useMemo(() => upstream || fallback, [fallback, upstream]);
+  const video = useMemo(() => upstream || fallback, [fallback, upstream]);
 
-  const { semitags } = a;
+  const [edit, setEdit] = useState(false);
+  const islogin = useIsLogin();
 
   return (
     <section className={clsx(className)}>
-      <h2 className={clsx(["text-xl"], ["text-slate-900"])}>仮タグ</h2>
+      <div className={clsx(["flex"], ["items-center"])}>
+        <h2 className={clsx(["flex-grow"], ["text-xl"], ["text-slate-900"])}>
+          仮タグ
+        </h2>
+        {islogin && (
+          <ToggleSwitch
+            className={clsx(["flex-shrink-0"])}
+            handleToggle={(v) => setEdit(v)}
+          />
+        )}
+      </div>
       <div
         className={clsx(
           ["mt-2"],
@@ -56,7 +73,7 @@ export const SemitagsSection: React.FC<{
           ["gap-y-2"]
         )}
       >
-        {semitags.map(({ id, name }) => (
+        {video.semitags.map(({ id, name }) => (
           <div
             key={id}
             className={clsx(
@@ -75,6 +92,60 @@ export const SemitagsSection: React.FC<{
           </div>
         ))}
       </div>
+      {edit && (
+        <div className={clsx(["mt-2"])}>
+          <Inp className={clsx(["w-full"])} videoId={video.id} />
+        </div>
+      )}
     </section>
+  );
+};
+
+graphql(`
+  mutation VideoPage_AddSemitag($videoId: ID!, $name: String!) {
+    addSemitagToVideo(input: { videoId: $videoId, name: $name }) {
+      semitag {
+        id
+        video {
+          ...VideoPage_SemitagsSection
+        }
+      }
+    }
+  }
+`);
+
+export const Inp: React.FC<{ className?: string; videoId: string }> = ({
+  className,
+  videoId,
+}) => {
+  const [name, setName] = useState<string>("");
+  const [, trigger] = useMutation(VideoPage_AddSemitagDocument);
+
+  const handleAdd = useCallback(
+    () => trigger({ name, videoId }),
+    [name, trigger, videoId]
+  );
+
+  return (
+    <div className={clsx(className, ["flex", "items-center"])}>
+      <input
+        className={clsx(
+          ["flex-grow"],
+          ["border", "border-slate-300"],
+          ["rounded"],
+          ["px-2", "py-1"],
+          ["text-xs"]
+        )}
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+      <BlueButton
+        className={clsx(["ml-2"], ["px-2", "py-1"])}
+        disabled={name === ""}
+        onClick={() => handleAdd()}
+      >
+        <PlusIcon className={clsx(["w-4"], ["h-4"])} />
+      </BlueButton>
+    </div>
   );
 };
