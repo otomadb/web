@@ -1,4 +1,5 @@
 "use client";
+import { ArrowUturnLeftIcon, CheckIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 import React, { useCallback, useMemo, useState } from "react";
 import { useMutation, useQuery } from "urql";
@@ -115,13 +116,24 @@ export const SemitagEditor: React.FC<{
       </div>
       <div className={clsx(["mt-4"], ["flex", "justify-end", "items-stretch"])}>
         <div className={clsx(["flex"], ["gap-x-2"])}>
-          <RedButton onClick={() => setResolveToTagId(undefined)}>
-            <div className={clsx(["px-2"], ["py-0.5"], ["text-sm"])}>
-              やり直す
+          <RedButton
+            className={clsx(["px-2", "py-1"])}
+            onClick={() => setResolveToTagId(undefined)}
+            disabled={!resolveToTagId}
+          >
+            <div className={clsx(["flex"], ["items-center"])}>
+              <ArrowUturnLeftIcon className={clsx(["w-4"], ["h-4"])} />
+              <div className={clsx(["ml-1"], ["text-sm"])}>やり直す</div>
             </div>
           </RedButton>
-          <BlueButton onClick={() => handleResolve()}>
-            <div className={clsx(["px-2"], ["py-0.5"], ["text-sm"])}>確定</div>
+          <BlueButton
+            className={clsx(["px-2", "py-1"])}
+            onClick={() => handleResolve()}
+          >
+            <div className={clsx(["flex"], ["items-center"])}>
+              <CheckIcon className={clsx(["w-4"], ["h-4"])} />
+              <div className={clsx(["ml-1"], ["text-sm"])}>確定する</div>
+            </div>
           </BlueButton>
         </div>
       </div>
