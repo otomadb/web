@@ -135,3 +135,17 @@ export const Nothing: StoryObj<typeof TagSearcher> = {
     await userEvent.type(canvas.getByPlaceholderText("タグの名前"), "あ");
   },
 };
+
+export const Select: StoryObj<typeof TagSearcher> = {
+  args: {},
+  parameters: {
+    layout: "centered",
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.type(canvas.getByPlaceholderText("タグの名前"), "あ");
+
+    const items = await canvas.findAllByLabelText("検索候補");
+    await userEvent.click(items[0]);
+  },
+};
