@@ -1,10 +1,10 @@
 "use client";
-import { MinusIcon, PlusIcon } from "@heroicons/react/24/solid";
+import { PlusIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 import React from "react";
 import { useMutation, useQuery } from "urql";
 
-import { BlueButton, RedButton } from "~/components/common/Button";
+import { BlueButton } from "~/components/common/Button";
 import { Tag } from "~/components/common/Tag";
 import { getFragment, graphql } from "~/gql";
 import {
@@ -66,9 +66,9 @@ export const AddTagForm: React.FC<{
       )}
     >
       <p className={clsx(["text-xs"], ["text-slate-900"])}>タグを追加する</p>
-      <div className={clsx(["mt-2"], ["flex", "items-center"])}>
-        <div className={clsx(["flex-grow"], ["flex"])}>
-          {data && (
+      {data && (
+        <>
+          <div className={clsx(["mt-2"], ["flex", "items-center"])}>
             <Tag
               tag={getFragment(Component_TagFragmentDoc, data.tag)}
               className={clsx(["shadow"])}
@@ -76,38 +76,33 @@ export const AddTagForm: React.FC<{
                 <div {...props}>{children}</div>
               )}
             />
-          )}
-        </div>
-        <RedButton
-          className={clsx([["px-1"], ["py-0.5"]])}
-          onClick={() => clear()}
-        >
-          <MinusIcon className={clsx(["w-3"], ["h-3"])} />
-        </RedButton>
-      </div>
-
-      {!fetching && data?.tag.canTagTo === false && (
-        <div className={clsx(["mt-2"])}>
-          <p className={clsx(["text-xs"], ["text-red-600"])}>
-            このタグを付けることは出来ません
-          </p>
-        </div>
-      )}
-      <div className={clsx(["mt-2"], ["flex", "items-center"])}>
-        <BlueButton
-          className={clsx([["px-2"], ["py-1"]])}
-          disabled={!data?.tag.canTagTo}
-          onClick={async () => {
-            await trigger({ input: { tagId, videoId } });
-            clear();
-          }}
-        >
-          <div className={clsx(["flex"], ["items-center"])}>
-            <PlusIcon className={clsx(["w-4"], ["h-4"])} />
-            <div className={clsx(["ml-1"], ["text-sm"])}>追加する</div>
           </div>
-        </BlueButton>
-      </div>
+          {data.tag.canTagTo === false && (
+            <div className={clsx(["mt-2"])}>
+              <p className={clsx(["text-xs"], ["text-red-600"])}>
+                このタグを付けることは出来ません
+              </p>
+            </div>
+          )}
+          <div
+            className={clsx(["mt-2"], ["flex", "justify-end", "items-stretch"])}
+          >
+            <BlueButton
+              className={clsx([["px-2"], ["py-1"]])}
+              disabled={!data?.tag.canTagTo}
+              onClick={async () => {
+                await trigger({ input: { tagId, videoId } });
+                clear();
+              }}
+            >
+              <div className={clsx(["flex"], ["items-center"])}>
+                <PlusIcon className={clsx(["w-4"], ["h-4"])} />
+                <div className={clsx(["ml-1"], ["text-sm"])}>追加する</div>
+              </div>
+            </BlueButton>
+          </div>
+        </>
+      )}
     </div>
   );
 };

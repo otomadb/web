@@ -113,7 +113,7 @@ export const SemitagEditor: React.FC<{
           {!resolveToTagId && <>棄却する</>}
         </p>
       </div>
-      <div className={clsx(["mt-4"], ["flex", "justify-end"])}>
+      <div className={clsx(["mt-4"], ["flex", "justify-end", "items-stretch"])}>
         <div className={clsx(["flex"], ["gap-x-2"])}>
           <RedButton onClick={() => setResolveToTagId(undefined)}>
             <div className={clsx(["px-2"], ["py-0.5"], ["text-sm"])}>
