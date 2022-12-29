@@ -6,17 +6,17 @@ import { useMutation, useQuery } from "urql";
 
 import { BlueButton, RedButton } from "~/components/common/Button";
 import { Tag } from "~/components/common/Tag";
-import { getFragment as useFragment, graphql } from "~/gql";
+import { graphql } from "~/gql";
 import {
   VideoPage_AddTagDocument,
   VideoPage_AddTagFormDocument,
-  VideoPage_TagFragmentDoc,
 } from "~/gql/graphql";
 
 graphql(`
   query VideoPage_AddTagForm($videoId: ID!, $tagId: ID!) {
     tag(id: $tagId) {
-      ...VideoPage_Tag
+      id
+      ...Component_Tag
       canTagTo(videoId: $videoId)
     }
     video(id: $videoId) {
@@ -48,7 +48,6 @@ export const AddTagForm: React.FC<{
     variables: { tagId, videoId },
     requestPolicy: "cache-and-network",
   });
-  const tag = useFragment(VideoPage_TagFragmentDoc, data?.tag);
 
   const [, trigger] = useMutation(VideoPage_AddTagDocument);
 
@@ -68,9 +67,9 @@ export const AddTagForm: React.FC<{
       <p className={clsx(["text-xs"], ["text-slate-900"])}>タグを追加する</p>
       <div className={clsx(["mt-2"], ["flex", "items-center"])}>
         <div className={clsx(["flex-grow"], ["flex"])}>
-          {tag && (
+          {data && (
             <Tag
-              tag={tag}
+              tagId={data.tag.id}
               className={clsx(["shadow"])}
               Wrapper={({ children, ...props }) => (
                 <div {...props}>{children}</div>

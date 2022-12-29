@@ -2,14 +2,16 @@
 
 import "client-only";
 
-import { PlusIcon } from "@heroicons/react/24/solid";
+import { PencilSquareIcon, PlusIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery } from "urql";
 
 import { getFragment as useFragment, graphql } from "~/gql";
 import {
   VideoPage_AddSemitagDocument,
+  VideoPage_SemitagFragment,
+  VideoPage_SemitagFragmentDoc,
   VideoPage_SemitagsSectionFragment,
   VideoPage_SemitagsSectionFragmentDoc,
   VideoPage_UpstreamSemitagsSectionDocument,
@@ -18,6 +20,7 @@ import { useIsLogin } from "~/hooks/useIsLogin";
 
 import { BlueButton } from "../common/Button";
 import { ToggleSwitch } from "../common/ToggleSwitch";
+import { SemitagEditor } from "./SemitagEditor";
 
 graphql(`
   fragment VideoPage_SemitagsSection on Video {
@@ -25,6 +28,7 @@ graphql(`
     semitags(resolved: false) {
       id
       name
+      ...VideoPage_Semitag
     }
   }
 
@@ -50,8 +54,16 @@ export const SemitagsSection: React.FC<{
   );
   const video = useMemo(() => upstream || fallback, [fallback, upstream]);
 
-  const [edit, setEdit] = useState(false);
+  const semitags = useFragment(VideoPage_SemitagFragmentDoc, video.semitags);
+
   const islogin = useIsLogin();
+  const [edit, setEdit] = useState(false);
+  const [radio, setRadio] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    if (edit) return;
+    setRadio(undefined);
+  }, [edit]);
 
   return (
     <section className={clsx(className)}>
@@ -69,35 +81,113 @@ export const SemitagsSection: React.FC<{
       <div
         className={clsx(
           ["mt-2"],
-          ["flex", "flex-col", "items-start"],
+          ["flex", "flex-col", "items-stretch"],
           ["gap-y-2"]
         )}
       >
-        {video.semitags.map(({ id, name }) => (
-          <div
-            key={id}
-            className={clsx(
-              ["flex"],
-              ["items-center"],
-              ["bg-white"],
-              ["border", "border-gray-200"],
-              ["shadow-sm"],
-              ["rounded"],
-              ["px-2", "py-0.5"],
-              ["text-slate-600"],
-              ["text-xs"]
-            )}
-          >
-            {name}
-          </div>
+        {semitags.map((fragment) => (
+          <SemitagItem
+            key={fragment.id}
+            fragment={fragment}
+            edit={edit}
+            radio={radio === fragment.id}
+            handleFocus={(v) => {
+              if (v) setRadio(fragment.id);
+              else setRadio(undefined);
+            }}
+          />
         ))}
       </div>
       {edit && (
         <div className={clsx(["mt-2"])}>
-          <Inp className={clsx(["w-full"])} videoId={video.id} />
+          <SemitagAdder className={clsx(["w-full"])} videoId={video.id} />
         </div>
       )}
     </section>
+  );
+};
+
+graphql(`
+  fragment VideoPage_Semitag on Semitag {
+    id
+    name
+  }
+`);
+export const SemitagItem: React.FC<{
+  className?: string;
+  fragment: VideoPage_SemitagFragment;
+  edit: boolean;
+  radio: boolean;
+  handleFocus(focus: boolean): void;
+}> = ({ className, fragment, edit, radio, handleFocus }) => {
+  return (
+    <div
+      className={clsx(className, ["flex", "items-center", "justify-between"])}
+    >
+      <div
+        className={clsx(
+          ["bg-white"],
+          ["border", "border-gray-200"],
+          ["shadow-sm"],
+          ["rounded"],
+          ["px-2", "py-0.5"],
+          ["text-slate-700"],
+          ["text-xs"]
+        )}
+      >
+        {fragment.name}
+      </div>
+      {edit && (
+        <div className={clsx(["relative"])}>
+          <div
+            role="radio"
+            aria-checked={radio}
+            className={clsx(
+              ["ml-1"],
+              ["px-2", "py-0.5"],
+              ["group/edit", "peer/edit"],
+              ["border", "border-slate-300"],
+              [
+                "aria-checked:bg-slate-400",
+                ["bg-slate-200", "hover:bg-slate-300"],
+              ],
+              ["rounded"],
+              ["z-20"]
+            )}
+            onClick={() => {
+              handleFocus(!radio);
+            }}
+          >
+            <PencilSquareIcon
+              className={clsx(
+                ["w-3", "h-3"],
+                [
+                  "group-aria-checked/edit:text-slate-300",
+                  ["text-slate-900", "group-hover/edit:text-slate-800"],
+                ]
+              )}
+            />
+          </div>
+          {radio && (
+            <div className={clsx(["absolute", "left-full"], ["z-infinity"])}>
+              <div
+                className={clsx(["fixed", "inset-0"], ["z-0"], ["bg-black/25"])}
+                onClick={() => handleFocus(false)}
+              />
+              <SemitagEditor
+                className={clsx(
+                  ["absolute", "left-0", "top-0"],
+                  ["ml-2"],
+                  ["z-1"],
+                  ["w-80"]
+                )}
+                semitagId={fragment.id}
+              />
+            </div>
+          )}
+        </div>
+      )}
+    </div>
   );
 };
 
@@ -113,11 +203,10 @@ graphql(`
     }
   }
 `);
-
-export const Inp: React.FC<{ className?: string; videoId: string }> = ({
-  className,
-  videoId,
-}) => {
+export const SemitagAdder: React.FC<{
+  className?: string;
+  videoId: string;
+}> = ({ className, videoId }) => {
   const [name, setName] = useState<string>("");
   const [, trigger] = useMutation(VideoPage_AddSemitagDocument);
 

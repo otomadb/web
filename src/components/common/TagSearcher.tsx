@@ -12,7 +12,6 @@ import {
   TagSearcher_ItemFragment,
   TagSearcher_ItemFragmentDoc,
   TagSearcher_SearchDocument,
-  VideoPage_TagFragmentDoc,
 } from "~/gql/graphql";
 
 import { Tag } from "./Tag";
@@ -137,7 +136,7 @@ graphql(`
     tag {
       id
       name
-      ...VideoPage_Tag
+      ...Component_Tag
     }
   }
 `);
@@ -164,10 +163,7 @@ const Item: React.FC<{
         e.currentTarget.blur();
       }}
     >
-      <Tag
-        tag={getFragment(VideoPage_TagFragmentDoc, fragment.tag)}
-        Wrapper={({ children, ...props }) => <div {...props}>{children}</div>}
-      />
+      <Tag tagId={fragment.tag.id} Wrapper={(props) => <div {...props} />} />
       {fragment.tag.name !== fragment.matchedName && (
         <div className={clsx(["text-xs"], ["text-slate-700"])}>
           {fragment.matchedName}

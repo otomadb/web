@@ -15,11 +15,11 @@ import { Tag } from "~/components/common/Tag";
 import { UserIcon } from "~/components/common/UserIcon";
 import { getFragment, graphql } from "~/gql";
 import {
+  Component_TagFragment,
+  Component_TagFragmentDoc,
   VideoPage_HistoryItemFragment,
   VideoPage_HistoryItemUserFragment,
   VideoPage_HistoryItemUserFragmentDoc,
-  VideoPage_TagFragment,
-  VideoPage_TagFragmentDoc,
 } from "~/gql/graphql";
 
 graphql(`
@@ -59,12 +59,12 @@ graphql(`
     }
     ... on VideoAddTagHistoryItem {
       tag {
-        ...VideoPage_Tag
+        ...Component_Tag
       }
     }
     ... on VideoDeleteTagHistoryItem {
       tag {
-        ...VideoPage_Tag
+        ...Component_Tag
       }
     }
     ... on VideoAddNicovideoVideoSourceHistoryItem {
@@ -337,7 +337,7 @@ export const AddTagItem: React.FC<{
     id: string;
     createdAt: string;
     user: VideoPage_HistoryItemUserFragment;
-    tag: VideoPage_TagFragment;
+    tag: Component_TagFragment;
   };
 }> = ({ className, item: { id, createdAt, user, tag } }) => {
   return (
@@ -351,7 +351,7 @@ export const AddTagItem: React.FC<{
         <TagIcon className={clsx(className, ["text-teal-400"])} />
       )}
     >
-      <Tag tag={tag} />
+      <Tag tagId={tag.id} />
     </HistItemTemplate>
   );
 };
@@ -362,7 +362,7 @@ export const DeleteTagItem: React.FC<{
     id: string;
     createdAt: string;
     user: VideoPage_HistoryItemUserFragment;
-    tag: VideoPage_TagFragment;
+    tag: Component_TagFragment;
   };
 }> = ({ className, item: { id, createdAt, user, tag } }) => {
   return (
@@ -376,7 +376,7 @@ export const DeleteTagItem: React.FC<{
         <MinusIcon className={clsx(className, ["text-red-400"])} />
       )}
     >
-      <Tag tag={tag} />
+      <Tag tagId={tag.id} />
     </HistItemTemplate>
   );
 };
@@ -500,7 +500,7 @@ export const History: React.FC<{
           id: item.id,
           createdAt: item.createdAt,
           user: getFragment(VideoPage_HistoryItemUserFragmentDoc, item.user),
-          tag: getFragment(VideoPage_TagFragmentDoc, item.tag),
+          tag: getFragment(Component_TagFragmentDoc, item.tag),
         }}
       />
     );
@@ -512,7 +512,7 @@ export const History: React.FC<{
           id: item.id,
           createdAt: item.createdAt,
           user: getFragment(VideoPage_HistoryItemUserFragmentDoc, item.user),
-          tag: getFragment(VideoPage_TagFragmentDoc, item.tag),
+          tag: getFragment(Component_TagFragmentDoc, item.tag),
         }}
       />
     );

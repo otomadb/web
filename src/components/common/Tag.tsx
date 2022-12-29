@@ -1,12 +1,17 @@
 import clsx from "clsx";
-import React, { ReactNode } from "react";
+import React, { ReactNode, useMemo } from "react";
+import { useQuery } from "urql";
 
 import { LinkTag } from "~/components/common/Link";
-import { graphql } from "~/gql";
-import { PseudoTagType, VideoPage_TagFragment } from "~/gql/graphql";
+import { getFragment, graphql } from "~/gql";
+import {
+  Component_TagDocument,
+  Component_TagFragmentDoc,
+  PseudoTagType,
+} from "~/gql/graphql";
 
 graphql(`
-  fragment VideoPage_Tag on Tag {
+  fragment Component_Tag on Tag {
     id
     name
     pseudoType
@@ -15,23 +20,36 @@ graphql(`
       name
     }
   }
+
+  query Component_Tag($id: ID!) {
+    tag(id: $id) {
+      ...Component_Tag
+    }
+  }
 `);
 
 export const Tag: React.FC<{
   className?: string;
-  tag: VideoPage_TagFragment;
+  tagId: string;
   Wrapper?: React.FC<{ className?: string; children: ReactNode }>;
 }> = ({
   className,
-  tag,
-  Wrapper = (props) => <LinkTag tagId={tag.id} {...props} />,
+  tagId,
+  Wrapper = (props) => <LinkTag tagId={tagId} {...props} />,
 }) => {
-  const { name, pseudoType, explicitParent } = tag;
+  const [{ data }] = useQuery({
+    query: Component_TagDocument,
+    variables: {
+      id: tagId,
+    },
+  });
+  const tag = getFragment(Component_TagFragmentDoc, data?.tag);
+  const type = useMemo(() => tag?.pseudoType, [tag]);
+
   return (
     <Wrapper
       className={clsx(
         className,
-        ["flex"],
         ["items-center"],
         ["whitespace-nowrap"],
         ["bg-white"],
@@ -41,11 +59,11 @@ export const Tag: React.FC<{
           [
             "border-l-4",
             {
-              "border-l-character-400": pseudoType === PseudoTagType.Character,
-              "border-l-music-400": pseudoType === PseudoTagType.Music,
-              "border-l-copyright-400": pseudoType === PseudoTagType.Copyright,
-              "border-l-event-400": pseudoType === PseudoTagType.Event,
-              "border-l-series-400": pseudoType === PseudoTagType.Series,
+              "border-l-character-400": type === PseudoTagType.Character,
+              "border-l-music-400": type === PseudoTagType.Music,
+              "border-l-copyright-400": type === PseudoTagType.Copyright,
+              "border-l-event-400": type === PseudoTagType.Event,
+              "border-l-series-400": type === PseudoTagType.Series,
             },
           ],
         ],
@@ -55,11 +73,15 @@ export const Tag: React.FC<{
         ["text-xs"]
       )}
     >
-      <span className={clsx(["text-slate-800"])}>{name}</span>
-      {explicitParent?.name && (
-        <span className={clsx(["ml-0.5"], ["text-slate-500"])}>
-          ({explicitParent.name})
-        </span>
+      {tag && (
+        <>
+          <span className={clsx(["text-slate-800"])}>{tag.name}</span>
+          {tag.explicitParent && (
+            <span className={clsx(["ml-0.5"], ["text-slate-500"])}>
+              {tag.explicitParent.name}
+            </span>
+          )}
+        </>
       )}
     </Wrapper>
   );

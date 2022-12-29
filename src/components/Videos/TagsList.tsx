@@ -9,7 +9,6 @@ import { TagSearcher } from "~/components/common/TagSearcher";
 import { getFragment, graphql } from "~/gql";
 import {
   VideoPage_RemoveTagFormFragmentDoc,
-  VideoPage_TagFragmentDoc,
   VideoPage_TagsListFragment,
   VideoPage_TagsListItemFragment,
   VideoPage_TagsListItemFragmentDoc,
@@ -117,7 +116,7 @@ export const TagsList: React.FC<{
 graphql(`
   fragment VideoPage_TagsListItem on Tag {
     id
-    ...VideoPage_Tag
+    ...Component_Tag
     ...VideoPage_RemoveTagForm
   }
 `);
@@ -130,7 +129,6 @@ export const TagsListItem: React.FC<{
   handleOpen(): void;
   fragment: VideoPage_TagsListItemFragment;
 }> = ({ className, fragment, edit, open, handleOpen, videoId }) => {
-  const tag = getFragment(VideoPage_TagFragmentDoc, fragment);
   const untag = getFragment(VideoPage_RemoveTagFormFragmentDoc, fragment);
 
   return (
@@ -138,9 +136,9 @@ export const TagsListItem: React.FC<{
       className={clsx(className, ["flex", "justify-between", "items-center"])}
     >
       <Tag
-        tag={tag}
+        tagId={fragment.id}
         Wrapper={({ ...props }) =>
-          edit ? <div {...props} /> : <LinkTag tagId={tag.id} {...props} />
+          edit ? <div {...props} /> : <LinkTag tagId={fragment.id} {...props} />
         }
       />
       {edit && (

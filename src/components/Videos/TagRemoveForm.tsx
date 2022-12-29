@@ -6,17 +6,16 @@ import { useMutation } from "urql";
 
 import { RedButton } from "~/components/common/Button";
 import { Tag } from "~/components/common/Tag";
-import { getFragment as useFragment, graphql } from "~/gql";
+import { graphql } from "~/gql";
 import {
   VideoPage_RemoveTagFormFragment,
-  VideoPage_TagFragmentDoc,
   VideoPage_UntagVideoDocument,
 } from "~/gql/graphql";
 
 graphql(`
   fragment VideoPage_RemoveTagForm on Tag {
     id
-    ...VideoPage_Tag
+    ...Component_Tag
   }
 
   mutation VideoPage_UntagVideo($input: RemoveTagFromVideoInput!) {
@@ -38,8 +37,6 @@ export const RemoveTagForm: React.FC<{
 }> = ({ className, videoId, fragment }) => {
   const [, mutate] = useMutation(VideoPage_UntagVideoDocument);
 
-  const tag = useFragment(VideoPage_TagFragmentDoc, fragment);
-
   return (
     <div
       className={clsx(
@@ -54,7 +51,7 @@ export const RemoveTagForm: React.FC<{
       )}
     >
       <Tag
-        tag={tag}
+        tagId={fragment.id}
         className={clsx(["shadow"])}
         Wrapper={({ children, ...props }) => <div {...props}>{children}</div>}
       />
