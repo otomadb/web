@@ -1,15 +1,15 @@
 import clsx from "clsx";
-import React from "react";
+import React, { ReactNode, useMemo } from "react";
 
 import { LinkTag } from "~/components/common/Link";
 import { graphql } from "~/gql";
-import { PseudoTagType, VideoPage_TagFragment } from "~/gql/graphql";
+import { Component_TagFragment, PseudoTagType } from "~/gql/graphql";
 
 graphql(`
-  fragment VideoPage_Tag on Tag {
+  fragment Component_Tag on Tag {
     id
     name
-    type: pseudoType
+    pseudoType
     explicitParent {
       id
       name
@@ -19,15 +19,19 @@ graphql(`
 
 export const Tag: React.FC<{
   className?: string;
-  tag: VideoPage_TagFragment;
-}> = ({ className, tag }) => {
-  const { id, name, type, explicitParent } = tag;
+  tag: Component_TagFragment;
+  Wrapper?: React.FC<{ className?: string; children: ReactNode }>;
+}> = ({
+  className,
+  tag,
+  Wrapper = (props) => <LinkTag tagId={tag.id} {...props} />,
+}) => {
+  const type = useMemo(() => tag?.pseudoType, [tag]);
+
   return (
-    <LinkTag
-      tagId={id}
+    <Wrapper
       className={clsx(
         className,
-        ["flex"],
         ["items-center"],
         ["whitespace-nowrap"],
         ["bg-white"],
@@ -47,15 +51,20 @@ export const Tag: React.FC<{
         ],
         ["shadow-sm"],
         ["rounded"],
-        ["pr-2", "pl-1.5", "py-0.5"]
+        ["pr-2", "pl-1.5", "py-0.5"],
+        ["text-xs"]
       )}
     >
-      <span className={clsx(["text-slate-800"], ["text-xs"])}>{name}</span>
-      {explicitParent?.name && (
-        <span className={clsx(["ml-0.5"], ["text-slate-500"], ["text-xs"])}>
-          ({explicitParent.name})
-        </span>
+      {tag && (
+        <>
+          <span className={clsx(["text-slate-800"])}>{tag.name}</span>
+          {tag.explicitParent && (
+            <span className={clsx(["ml-0.5"], ["text-slate-500"])}>
+              ({tag.explicitParent.name})
+            </span>
+          )}
+        </>
       )}
-    </LinkTag>
+    </Wrapper>
   );
 };

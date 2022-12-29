@@ -1,14 +1,19 @@
 import clsx from "clsx";
-import React from "react";
 
-import { graphql } from "~/gql";
+import { DetailsSection } from "~/components/Videos/DetailsSection";
+import { HistorySection } from "~/components/Videos/HistorySection";
+import { SemitagsSection } from "~/components/Videos/SemitagsSection";
+import { SimilarVideosSection } from "~/components/Videos/SimilarVideosSection";
+import { TagsSection } from "~/components/Videos/TagsSection";
+import { getFragment, graphql } from "~/gql";
+import {
+  VideoPage_DetailsSectionFragmentDoc,
+  VideoPage_HistorySectionFragmentDoc,
+  VideoPage_SemitagsSectionFragmentDoc,
+  VideoPage_SimilarVideosSectionFragmentDoc,
+  VideoPage_TagsSectionFragmentDoc,
+} from "~/gql/graphql";
 import { gqlRequest } from "~/utils/gqlRequest";
-
-import { Details } from "./Details";
-import { History } from "./History";
-import { Semitags } from "./Semitags";
-import { SimilarVideos } from "./SimilarVideos";
-import { Tags } from "./Tags";
 
 export const revalidate = 0;
 
@@ -18,71 +23,50 @@ export default async function Page({ params }: { params: { id: string } }) {
       query VideoPage($id: ID!) {
         video(id: $id) {
           id
-          ...VideoPage_Details
-          ...VideoPage_Tags
-          ...VideoPage_Semitags
-          ...VideoPage_SimilarVideos
-          ...VideoPage_History
+          ...VideoPage_DetailsSection
+          ...VideoPage_TagsSection
+          ...VideoPage_SemitagsSection
+          ...VideoPage_SimilarVideosSection
+          ...VideoPage_HistorySection
         }
       }
     `),
     { id: `video:${params.id}` }
   );
 
+  const details = getFragment(VideoPage_DetailsSectionFragmentDoc, video);
+  const tags = getFragment(VideoPage_TagsSectionFragmentDoc, video);
+  const semitags = getFragment(VideoPage_SemitagsSectionFragmentDoc, video);
+  const similarVideos = getFragment(
+    VideoPage_SimilarVideosSectionFragmentDoc,
+    video
+  );
+  const history = getFragment(VideoPage_HistorySectionFragmentDoc, video);
+
   return (
     <div className={clsx(["flex"], ["gap-x-4"])}>
       <div
         className={clsx(
           ["flex-shrink-0"],
-          ["hidden", "md:block"],
-          ["w-60", "lg:w-72"],
+          ["hidden", "lg:block"],
+          ["w-72"],
           ["space-y-4"]
         )}
       >
-        <Tags className={clsx(["w-full"])} fallback={video} />
-        <Semitags className={clsx(["w-full"])} fallback={video} />
+        <TagsSection className={clsx(["w-full"])} fallback={tags} />
+        <SemitagsSection className={clsx(["w-full"])} fallback={semitags} />
       </div>
       <div className={clsx(["flex-grow"])}>
-        <Details fallback={video} />
+        <DetailsSection fallback={details} />
         <div className={clsx(["mt-4"], ["space-y-2"])}>
-          <div className={clsx(["block", "md:hidden"], ["space-y-2"])}>
-            <Tags fallback={video} />
-            <Semitags fallback={video} />
+          <div className={clsx(["block", "lg:hidden"], ["space-y-2"])}>
+            <TagsSection fallback={tags} />
+            <SemitagsSection fallback={semitags} />
           </div>
-          <SimilarVideos className={clsx()} fallback={video} />
-          <History className={clsx()} fallback={video} />
+          <SimilarVideosSection className={clsx()} fallback={similarVideos} />
+          <HistorySection className={clsx()} fallback={history} />
         </div>
       </div>
     </div>
   );
-
-  /*   <div className={clsx(["mt-4"], ["flex", "flex-col"])}>
-      <span>Niconico</span>
-      {details.sources.niconico.map(({ id, link, title, upload_date }) => (
-        <div key={`niconico-${id}`} className={clsx(["flex"])}>
-          <div>
-            <a className={clsx(["text-blue-500"], ["underline"])} href={link}>
-              {id}
-            </a>
-          </div>
-          <div className={clsx(["ml-2"])}>
-            <span>{title}</span>
-          </div>
-          <div className={clsx(["ml-2"])}>
-            <time>{new Date(upload_date).toLocaleString()}</time>
-          </div>
-        </div>
-      ))}
-    </div>
-  */
-  /*
-      <div className={clsx(["mt-8"])}>
-        <span>親作品</span>
-        <VideoList className={clsx(["mt-4"])} videos={details.parent_videos} />
-      </div>
-      <div className={clsx(["mt-8"])}>
-        <span>関連</span>
-        <VideoList className={clsx(["mt-4"])} videos={details.related_videos} />
-      </div>
-    */
 }

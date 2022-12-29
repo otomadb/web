@@ -55,16 +55,12 @@ export const VideoList: React.FC<{
               >
                 <Image
                   className={clsx(
-                    ["absolute"],
-                    ["block"],
-                    ["inset-0"],
-                    ["h-32"],
                     ["z-0"],
-                    ["object-cover"],
-                    ["object-center"],
-                    ["blur-md"],
-                    ["brightness-75"],
-                    ["scale-125"]
+                    ["absolute"],
+                    ["inset-0"],
+                    ["w-full", "h-full"],
+                    ["object-cover", "object-center"],
+                    ["blur-md", "brightness-75", "scale-125"]
                   )}
                   src={thumbnailUrl}
                   width={512}
@@ -76,6 +72,7 @@ export const VideoList: React.FC<{
                 <Image
                   className={clsx(
                     ["z-1"],
+                    ["relative"],
                     ["w-auto"],
                     ["h-32"],
                     ["mx-auto"],

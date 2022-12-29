@@ -11,17 +11,16 @@ import React, { ReactNode } from "react";
 
 import { DateTime } from "~/components/common/DateTime";
 import { LinkUser } from "~/components/common/Link";
+import { Tag } from "~/components/common/Tag";
 import { UserIcon } from "~/components/common/UserIcon";
 import { getFragment, graphql } from "~/gql";
 import {
+  Component_TagFragment,
+  Component_TagFragmentDoc,
   VideoPage_HistoryItemFragment,
   VideoPage_HistoryItemUserFragment,
   VideoPage_HistoryItemUserFragmentDoc,
-  VideoPage_TagFragment,
-  VideoPage_TagFragmentDoc,
 } from "~/gql/graphql";
-
-import { Tag } from "../Tag";
 
 graphql(`
   fragment VideoPage_HistoryItemUser on User {
@@ -60,12 +59,12 @@ graphql(`
     }
     ... on VideoAddTagHistoryItem {
       tag {
-        ...VideoPage_Tag
+        ...Component_Tag
       }
     }
     ... on VideoDeleteTagHistoryItem {
       tag {
-        ...VideoPage_Tag
+        ...Component_Tag
       }
     }
     ... on VideoAddNicovideoVideoSourceHistoryItem {
@@ -338,7 +337,7 @@ export const AddTagItem: React.FC<{
     id: string;
     createdAt: string;
     user: VideoPage_HistoryItemUserFragment;
-    tag: VideoPage_TagFragment;
+    tag: Component_TagFragment;
   };
 }> = ({ className, item: { id, createdAt, user, tag } }) => {
   return (
@@ -363,7 +362,7 @@ export const DeleteTagItem: React.FC<{
     id: string;
     createdAt: string;
     user: VideoPage_HistoryItemUserFragment;
-    tag: VideoPage_TagFragment;
+    tag: Component_TagFragment;
   };
 }> = ({ className, item: { id, createdAt, user, tag } }) => {
   return (
@@ -501,7 +500,7 @@ export const History: React.FC<{
           id: item.id,
           createdAt: item.createdAt,
           user: getFragment(VideoPage_HistoryItemUserFragmentDoc, item.user),
-          tag: getFragment(VideoPage_TagFragmentDoc, item.tag),
+          tag: getFragment(Component_TagFragmentDoc, item.tag),
         }}
       />
     );
@@ -513,7 +512,7 @@ export const History: React.FC<{
           id: item.id,
           createdAt: item.createdAt,
           user: getFragment(VideoPage_HistoryItemUserFragmentDoc, item.user),
-          tag: getFragment(VideoPage_TagFragmentDoc, item.tag),
+          tag: getFragment(Component_TagFragmentDoc, item.tag),
         }}
       />
     );
