@@ -5,7 +5,6 @@ import React, { useEffect, useMemo, useState } from "react";
 
 import { LinkTag } from "~/components/common/Link";
 import { Tag } from "~/components/common/Tag";
-import { TagSearcher } from "~/components/common/TagSearcher";
 import { getFragment, graphql } from "~/gql";
 import {
   Component_TagFragmentDoc,
@@ -16,7 +15,6 @@ import {
   VideoPage_TagsTypesListFragmentDoc,
 } from "~/gql/graphql";
 
-import { AddTagForm } from "./TagAddForm";
 import { RemoveTagForm } from "./TagRemoveForm";
 import { TagTypesList } from "./TagTypesList";
 
@@ -40,13 +38,10 @@ export const TagsList: React.FC<{
 
   const videoId = useMemo(() => fragment.id, [fragment]);
 
-  const [addTagId, setAddTagId] = useState<string | undefined>(undefined);
-  const [removeId, setRemoveId] = useState<string | undefined>(undefined);
+  const [radio, setRadio] = useState<string | undefined>(undefined);
   useEffect(() => {
-    if (!edit) {
-      setRemoveId(undefined);
-      setAddTagId(undefined);
-    }
+    if (edit) return;
+    setRadio(undefined);
   }, [edit]);
 
   return (
@@ -61,55 +56,17 @@ export const TagsList: React.FC<{
         {tags.map((tag) => (
           <TagsListItem
             key={tag.id}
-            handleOpen={() => {
-              if (tag.id === removeId) {
-                setRemoveId(undefined);
-              } else {
-                setRemoveId(tag.id);
-                setAddTagId(undefined);
-              }
+            handleFocus={(v) => {
+              if (v) setRadio(tag.id);
+              else setRadio(undefined);
             }}
-            open={tag.id === removeId}
+            radio={tag.id === radio}
             edit={edit}
             videoId={videoId}
             fragment={tag}
           />
         ))}
       </div>
-      {edit && (
-        <div className={clsx(["flex"], ["relative"])}>
-          <TagSearcher
-            className={clsx(["w-full"], ["z-20"])}
-            handleSelect={(id) => {
-              setAddTagId(id);
-            }}
-          />
-          {addTagId && (
-            <>
-              <div
-                className={clsx(["block"], ["fixed", "inset-0"], ["z-10"])}
-                onClick={() => {
-                  setAddTagId(undefined);
-                }}
-              />
-              <AddTagForm
-                className={clsx(
-                  ["z-30"],
-                  ["absolute", "left-full", "top-0"],
-                  ["w-72"],
-                  ["ml-2", "-mt-2"]
-                )}
-                videoId={videoId}
-                tagId={addTagId}
-                clear={() => {
-                  setAddTagId(undefined);
-                  setRemoveId(undefined);
-                }}
-              />
-            </>
-          )}
-        </div>
-      )}
     </div>
   );
 };
@@ -121,15 +78,14 @@ graphql(`
     ...VideoPage_RemoveTagForm
   }
 `);
-
 export const TagsListItem: React.FC<{
   className?: string;
   videoId: string;
   edit: boolean;
-  open: boolean;
-  handleOpen(): void;
+  radio: boolean;
+  handleFocus(v: boolean): void;
   fragment: VideoPage_TagsListItemFragment;
-}> = ({ className, fragment, edit, open, handleOpen, videoId }) => {
+}> = ({ className, fragment, edit, radio, handleFocus, videoId }) => {
   const untag = getFragment(VideoPage_RemoveTagFormFragmentDoc, fragment);
 
   return (
@@ -146,7 +102,7 @@ export const TagsListItem: React.FC<{
         <div className={clsx(["relative"], ["flex"])}>
           <div
             role="radio"
-            aria-checked={open}
+            aria-checked={radio}
             className={clsx(
               ["ml-1"],
               ["px-2", "py-0.5"],
@@ -159,7 +115,7 @@ export const TagsListItem: React.FC<{
               ["rounded"],
               ["z-20"]
             )}
-            onClick={() => handleOpen()}
+            onClick={() => handleFocus(!radio)}
           >
             <PencilSquareIcon
               className={clsx(
@@ -171,24 +127,23 @@ export const TagsListItem: React.FC<{
               )}
             />
           </div>
-          <div
-            className={clsx(
-              ["hidden", "peer-aria-checked/edit:block"],
-              ["fixed", "inset-0"],
-              ["z-10"]
-            )}
-            onClick={() => handleOpen()}
-          />
-          {open && (
-            <RemoveTagForm
-              className={clsx(
-                ["absolute", "left-full", "top-0"],
-                ["ml-2", "-mt-2"],
-                ["z-30"]
-              )}
-              videoId={videoId}
-              fragment={untag}
-            />
+          {radio && (
+            <div className={clsx(["absolute", "left-full"], ["z-infinity"])}>
+              <div
+                className={clsx(["fixed", "inset-0"], ["z-0"], ["bg-black/25"])}
+                onClick={() => handleFocus(false)}
+              />
+              <RemoveTagForm
+                className={clsx(
+                  ["absolute", "left-0", "top-0"],
+                  ["ml-2"],
+                  ["z-1"],
+                  ["w-96"]
+                )}
+                videoId={videoId}
+                fragment={untag}
+              />
+            </div>
           )}
         </div>
       )}

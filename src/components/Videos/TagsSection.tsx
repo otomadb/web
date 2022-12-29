@@ -6,6 +6,7 @@ import clsx from "clsx";
 import React, { useMemo, useState } from "react";
 import { useQuery } from "urql";
 
+import { TagSearcher } from "~/components/common/TagSearcher";
 import { ToggleSwitch } from "~/components/common/ToggleSwitch";
 import { getFragment as useFragment, graphql } from "~/gql";
 import {
@@ -16,6 +17,7 @@ import {
 } from "~/gql/graphql";
 import { useIsLogin } from "~/hooks/useIsLogin";
 
+import { AddTagForm } from "./TagAddForm";
 import { TagsList } from "./TagsList";
 
 graphql(`
@@ -46,8 +48,9 @@ export const TagsSection: React.FC<{
 
   const tagslist = useFragment(VideoPage_TagsListFragmentDoc, video);
 
-  const [edit, setEdit] = useState(false);
   const islogin = useIsLogin();
+  const [edit, setEdit] = useState(false);
+  const [addTagId, setAddTagId] = useState<string | undefined>(undefined);
 
   return (
     <section className={clsx(className)}>
@@ -69,6 +72,35 @@ export const TagsSection: React.FC<{
           fragment={tagslist}
         />
       </div>
+      {edit && (
+        <div className={clsx(["mt-2"], ["flex"], ["relative"])}>
+          <TagSearcher
+            className={clsx(["w-full"])}
+            handleSelect={(id) => setAddTagId(id)}
+          />
+          {addTagId && (
+            <div className={clsx(["absolute", "left-full"], ["z-infinity"])}>
+              <div
+                className={clsx(["fixed", "inset-0"], ["z-0"], ["bg-black/25"])}
+                onClick={() => setAddTagId(undefined)}
+              />
+              <AddTagForm
+                className={clsx(
+                  ["absolute", "left-0", "top-0"],
+                  ["ml-2"],
+                  ["z-1"],
+                  ["w-96"]
+                )}
+                videoId={video.id}
+                tagId={addTagId}
+                clear={() => {
+                  setAddTagId(undefined);
+                }}
+              />
+            </div>
+          )}
+        </div>
+      )}
     </section>
   );
 };

@@ -154,9 +154,7 @@ export const SemitagItem: React.FC<{
               ["rounded"],
               ["z-20"]
             )}
-            onClick={() => {
-              handleFocus(!radio);
-            }}
+            onClick={() => handleFocus(!radio)}
           >
             <PencilSquareIcon
               className={clsx(
