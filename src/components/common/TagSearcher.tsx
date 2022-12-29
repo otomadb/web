@@ -9,6 +9,7 @@ import { useQuery } from "urql";
 import { DelayedInput } from "~/components/common/DelayedInput";
 import { getFragment, graphql } from "~/gql";
 import {
+  Component_TagFragmentDoc,
   TagSearcher_ItemFragment,
   TagSearcher_ItemFragmentDoc,
   TagSearcher_SearchDocument,
@@ -163,7 +164,10 @@ const Item: React.FC<{
         e.currentTarget.blur();
       }}
     >
-      <Tag tagId={fragment.tag.id} Wrapper={(props) => <div {...props} />} />
+      <Tag
+        tag={getFragment(Component_TagFragmentDoc, fragment.tag)}
+        Wrapper={(props) => <div {...props} />}
+      />
       {fragment.tag.name !== fragment.matchedName && (
         <div className={clsx(["text-xs"], ["text-slate-700"])}>
           {fragment.matchedName}

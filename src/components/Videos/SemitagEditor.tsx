@@ -6,10 +6,12 @@ import { useMutation, useQuery } from "urql";
 import { BlueButton, RedButton } from "~/components/common/Button";
 import { Tag } from "~/components/common/Tag";
 import { TagSearcher } from "~/components/common/TagSearcher";
-import { graphql } from "~/gql";
+import { getFragment, graphql } from "~/gql";
 import {
+  Component_TagFragmentDoc,
   VideoPage_ResolveSemitagDocument,
   VideoPage_SemitagEditor_SemitagDocument,
+  VideoPage_SemitagEditor_TagDocument,
 } from "~/gql/graphql";
 
 graphql(`
@@ -17,6 +19,12 @@ graphql(`
     semitag(id: $semitagId) {
       id
       name
+    }
+  }
+
+  query VideoPage_SemitagEditor_Tag($tagId: ID!) {
+    tag(id: $tagId) {
+      ...Component_Tag
     }
   }
 
@@ -44,14 +52,19 @@ export const SemitagEditor: React.FC<{
   const semitagName = useMemo(() => semitagData?.semitag.name, [semitagData]);
 
   const [, trigger] = useMutation(VideoPage_ResolveSemitagDocument);
-  const [resolvedToTagId, setResolvedToTagId] = useState<string | undefined>(
+
+  const [resolveToTagId, setResolveToTagId] = useState<string | undefined>(
     undefined
   );
+  const [{ data: tagData }] = useQuery({
+    query: VideoPage_SemitagEditor_TagDocument,
+    variables: resolveToTagId ? { tagId: resolveToTagId } : undefined,
+  });
 
   const handleResolve = useCallback(async () => {
-    await trigger({ input: { id: semitagId, tagId: resolvedToTagId } });
+    await trigger({ input: { id: semitagId, tagId: resolveToTagId } });
     handleSelected();
-  }, [handleSelected, resolvedToTagId, semitagId, trigger]);
+  }, [handleSelected, resolveToTagId, semitagId, trigger]);
 
   return (
     <div
@@ -81,26 +94,28 @@ export const SemitagEditor: React.FC<{
         を編集する
       </p>
       <div className={clsx(["mt-2"])}>
-        <TagSearcher handleSelect={(id) => setResolvedToTagId(id)} />
+        <TagSearcher handleSelect={(id) => setResolveToTagId(id)} />
       </div>
       <div className={clsx(["mt-2"])}>
         <p className={clsx(["text-xs"], ["text-slate-600"])}>
-          {resolvedToTagId && (
+          {resolveToTagId && (
             <>
-              <Tag
-                className={clsx(["inline-block"])}
-                tagId={resolvedToTagId}
-                Wrapper={(props) => <span {...props} />}
-              />
+              {tagData && (
+                <Tag
+                  className={clsx(["inline-block"])}
+                  tag={getFragment(Component_TagFragmentDoc, tagData.tag)}
+                  Wrapper={(props) => <span {...props} />}
+                />
+              )}
               として解決する
             </>
           )}
-          {!resolvedToTagId && <>棄却する</>}
+          {!resolveToTagId && <>棄却する</>}
         </p>
       </div>
       <div className={clsx(["mt-4"], ["flex", "justify-end"])}>
         <div className={clsx(["flex"], ["gap-x-2"])}>
-          <RedButton onClick={() => setResolvedToTagId(undefined)}>
+          <RedButton onClick={() => setResolveToTagId(undefined)}>
             <div className={clsx(["px-2"], ["py-0.5"], ["text-sm"])}>
               やり直す
             </div>

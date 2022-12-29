@@ -6,8 +6,9 @@ import { useMutation } from "urql";
 
 import { RedButton } from "~/components/common/Button";
 import { Tag } from "~/components/common/Tag";
-import { graphql } from "~/gql";
+import { getFragment, graphql } from "~/gql";
 import {
+  Component_TagFragmentDoc,
   VideoPage_RemoveTagFormFragment,
   VideoPage_UntagVideoDocument,
 } from "~/gql/graphql";
@@ -51,7 +52,7 @@ export const RemoveTagForm: React.FC<{
       )}
     >
       <Tag
-        tagId={fragment.id}
+        tag={getFragment(Component_TagFragmentDoc, fragment)}
         className={clsx(["shadow"])}
         Wrapper={({ children, ...props }) => <div {...props}>{children}</div>}
       />

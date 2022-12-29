@@ -6,8 +6,9 @@ import { useMutation, useQuery } from "urql";
 
 import { BlueButton, RedButton } from "~/components/common/Button";
 import { Tag } from "~/components/common/Tag";
-import { graphql } from "~/gql";
+import { getFragment, graphql } from "~/gql";
 import {
+  Component_TagFragmentDoc,
   VideoPage_AddTagDocument,
   VideoPage_AddTagFormDocument,
 } from "~/gql/graphql";
@@ -69,7 +70,7 @@ export const AddTagForm: React.FC<{
         <div className={clsx(["flex-grow"], ["flex"])}>
           {data && (
             <Tag
-              tagId={data.tag.id}
+              tag={getFragment(Component_TagFragmentDoc, data.tag)}
               className={clsx(["shadow"])}
               Wrapper={({ children, ...props }) => (
                 <div {...props}>{children}</div>

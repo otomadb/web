@@ -1,14 +1,9 @@
 import clsx from "clsx";
 import React, { ReactNode, useMemo } from "react";
-import { useQuery } from "urql";
 
 import { LinkTag } from "~/components/common/Link";
-import { getFragment, graphql } from "~/gql";
-import {
-  Component_TagDocument,
-  Component_TagFragmentDoc,
-  PseudoTagType,
-} from "~/gql/graphql";
+import { graphql } from "~/gql";
+import { Component_TagFragment, PseudoTagType } from "~/gql/graphql";
 
 graphql(`
   fragment Component_Tag on Tag {
@@ -20,30 +15,17 @@ graphql(`
       name
     }
   }
-
-  query Component_Tag($id: ID!) {
-    tag(id: $id) {
-      ...Component_Tag
-    }
-  }
 `);
 
 export const Tag: React.FC<{
   className?: string;
-  tagId: string;
+  tag: Component_TagFragment;
   Wrapper?: React.FC<{ className?: string; children: ReactNode }>;
 }> = ({
   className,
-  tagId,
-  Wrapper = (props) => <LinkTag tagId={tagId} {...props} />,
+  tag,
+  Wrapper = (props) => <LinkTag tagId={tag.id} {...props} />,
 }) => {
-  const [{ data }] = useQuery({
-    query: Component_TagDocument,
-    variables: {
-      id: tagId,
-    },
-  });
-  const tag = getFragment(Component_TagFragmentDoc, data?.tag);
   const type = useMemo(() => tag?.pseudoType, [tag]);
 
   return (

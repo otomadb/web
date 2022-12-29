@@ -14,11 +14,11 @@ import {
   aSemitag,
   aTag,
   aVideo,
-  Component_TagDocument,
   PseudoTagType,
   TagSearcher_SearchDocument,
   VideoPage_ResolveSemitagDocument,
   VideoPage_SemitagEditor_SemitagDocument,
+  VideoPage_SemitagEditor_TagDocument,
 } from "~/gql/graphql";
 
 import { SemitagEditor } from "./SemitagEditor";
@@ -53,7 +53,7 @@ export default {
               })
             )
         ),
-        graphql.query(Component_TagDocument, (req, res, ctx) =>
+        graphql.query(VideoPage_SemitagEditor_TagDocument, (req, res, ctx) =>
           res(
             ctx.data({
               tag: aTag({

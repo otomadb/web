@@ -8,6 +8,7 @@ import { Tag } from "~/components/common/Tag";
 import { TagSearcher } from "~/components/common/TagSearcher";
 import { getFragment, graphql } from "~/gql";
 import {
+  Component_TagFragmentDoc,
   VideoPage_RemoveTagFormFragmentDoc,
   VideoPage_TagsListFragment,
   VideoPage_TagsListItemFragment,
@@ -136,7 +137,7 @@ export const TagsListItem: React.FC<{
       className={clsx(className, ["flex", "justify-between", "items-center"])}
     >
       <Tag
-        tagId={fragment.id}
+        tag={getFragment(Component_TagFragmentDoc, fragment)}
         Wrapper={({ ...props }) =>
           edit ? <div {...props} /> : <LinkTag tagId={fragment.id} {...props} />
         }
