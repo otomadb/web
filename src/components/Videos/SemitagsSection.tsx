@@ -179,9 +179,12 @@ export const SemitagItem: React.FC<{
                   ["absolute", "left-0", "top-0"],
                   ["ml-2"],
                   ["z-1"],
-                  ["w-80"]
+                  ["w-96"]
                 )}
                 semitagId={fragment.id}
+                handleSelected={() => {
+                  handleFocus(false);
+                }}
               />
             </div>
           )}

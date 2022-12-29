@@ -78,7 +78,7 @@ export const Tag: React.FC<{
           <span className={clsx(["text-slate-800"])}>{tag.name}</span>
           {tag.explicitParent && (
             <span className={clsx(["ml-0.5"], ["text-slate-500"])}>
-              {tag.explicitParent.name}
+              ({tag.explicitParent.name})
             </span>
           )}
         </>

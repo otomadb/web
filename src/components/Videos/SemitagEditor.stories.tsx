@@ -8,13 +8,16 @@ import {
 } from "urql";
 
 import {
+  aResolveSemitagPayload,
   aSearchTagsItem,
   aSearchTagsPayload,
   aSemitag,
   aTag,
+  aVideo,
   Component_TagDocument,
   PseudoTagType,
   TagSearcher_SearchDocument,
+  VideoPage_ResolveSemitagDocument,
   VideoPage_SemitagEditor_SemitagDocument,
 } from "~/gql/graphql";
 
@@ -24,7 +27,8 @@ export default {
   component: SemitagEditor,
   args: {
     className: clsx(["w-80"]),
-    handleSelect: action("handleSelect"),
+    semitagId: "semitag:1",
+    handleSelected: action("handleSelect"),
   },
   render(args) {
     return (
@@ -100,6 +104,20 @@ export default {
                     }),
                   }),
                 ],
+              }),
+            })
+          )
+        ),
+        graphql.mutation(VideoPage_ResolveSemitagDocument, (req, res, ctx) =>
+          res(
+            ctx.data({
+              resovleSemitag: aResolveSemitagPayload({
+                semitag: aSemitag({
+                  id: "semitag:1",
+                  video: aVideo({
+                    id: "video:1",
+                  }),
+                }),
               }),
             })
           )
