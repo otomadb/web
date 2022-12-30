@@ -7,7 +7,7 @@ export default {
   component: Accordion,
   args: {
     className: css`
-      width: 192px;
+      width: 256px;
     `,
     user: {
       id: "1",

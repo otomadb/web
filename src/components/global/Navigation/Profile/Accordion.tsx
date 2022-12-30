@@ -1,17 +1,39 @@
 "use client";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { ReactNode } from "react";
 
 import {
-  LinkProfile,
-  LinkProfileLikes,
-  LinkProfileMylists,
   LinkRegisterNicovideo,
   LinkRegisterSemitag,
   LinkRegisterTag,
+  LinkUser,
+  LinkUserLikes,
+  LinkUserMylists,
 } from "~/components/common/Link";
 import { useLogout } from "~/hooks/useLogout";
+
+const MenuItem: React.FC<{
+  className?: string;
+  Wrapper: React.FC<{ className?: string; children?: ReactNode }>;
+  children: ReactNode;
+}> = ({ className, Wrapper, children }) => {
+  return (
+    <Wrapper
+      className={clsx(
+        className,
+        ["block"],
+        ["py-2"],
+        ["px-4"],
+        ["bg-white/75", "hover:bg-sky-300/75"],
+        ["text-slate-900", "group-hover/link:text-sky-900"],
+        ["text-xs"]
+      )}
+    >
+      {children}
+    </Wrapper>
+  );
+};
 
 export const Logout: React.FC<{ className?: string }> = ({ className }) => {
   const router = useRouter();
@@ -72,60 +94,23 @@ export const Accordion: React.FC<{
             </div>
           </div>
           <div className={clsx(["grid"], ["grid-cols-1"])}>
-            <LinkProfile
-              className={clsx(
-                ["group/link"],
-                ["block"],
-                ["py-2"],
-                ["px-4"],
-                [["bg-white/75", "hover:bg-sky-300/75"]]
+            <MenuItem
+              Wrapper={(props) => <LinkUser name={user.name} {...props} />}
+            >
+              いいねした動画
+            </MenuItem>
+            <MenuItem
+              Wrapper={(props) => <LinkUserLikes name={user.name} {...props} />}
+            >
+              プロフィール
+            </MenuItem>
+            <MenuItem
+              Wrapper={(props) => (
+                <LinkUserMylists name={user.name} {...props} />
               )}
             >
-              <div
-                className={clsx(
-                  ["text-slate-900", "group-hover/link:text-sky-900"],
-                  ["text-xs"]
-                )}
-              >
-                プロフィール
-              </div>
-            </LinkProfile>
-            <LinkProfileLikes
-              className={clsx(
-                ["group/link"],
-                ["block"],
-                ["py-2"],
-                ["px-4"],
-                [["bg-white/75", "hover:bg-sky-300/75"]]
-              )}
-            >
-              <div
-                className={clsx(
-                  ["text-slate-900", "group-hover/link:text-sky-900"],
-                  ["text-xs"]
-                )}
-              >
-                いいねした動画
-              </div>
-            </LinkProfileLikes>
-            <LinkProfileMylists
-              className={clsx(
-                ["group/link"],
-                ["block"],
-                ["py-2"],
-                ["px-4"],
-                [["bg-white/75", "hover:bg-sky-300/75"]]
-              )}
-            >
-              <div
-                className={clsx(
-                  ["text-slate-900", "group-hover/link:text-sky-900"],
-                  ["text-xs"]
-                )}
-              >
-                マイリスト
-              </div>
-            </LinkProfileMylists>
+              マイリスト
+            </MenuItem>
           </div>
         </div>
         <div>
@@ -140,61 +125,24 @@ export const Accordion: React.FC<{
             <div className={clsx(["text-xs"], ["text-slate-500"])}>編集者</div>
           </div>
           <div className={clsx(["grid"], ["grid-cols-2"])}>
-            <LinkRegisterNicovideo
-              className={clsx(
-                ["col-span-2"],
-                ["group/link"],
-                ["block"],
-                ["py-2"],
-                ["px-4"],
-                [["bg-white/75", "hover:bg-sky-300/75"]]
-              )}
+            <MenuItem
+              className={clsx(["col-span-2"])}
+              Wrapper={(props) => <LinkRegisterNicovideo {...props} />}
             >
-              <div
-                className={clsx(
-                  ["text-slate-900", "group-hover/link:text-sky-900"],
-                  ["text-xs"]
-                )}
-              >
-                ニコニコ動画から登録
-              </div>
-            </LinkRegisterNicovideo>
-            <LinkRegisterTag
-              className={clsx(
-                ["group/link"],
-                ["block"],
-                ["py-2"],
-                ["px-4"],
-                [["bg-white/75", "hover:bg-sky-300/75"]]
-              )}
+              ニコニコ動画から登録
+            </MenuItem>
+            <MenuItem
+              className={clsx(["col-span-1"])}
+              Wrapper={(props) => <LinkRegisterTag {...props} />}
             >
-              <div
-                className={clsx(
-                  ["text-slate-900", "group-hover/link:text-sky-900"],
-                  ["text-xs"]
-                )}
-              >
-                タグの登録
-              </div>
-            </LinkRegisterTag>
-            <LinkRegisterSemitag
-              className={clsx(
-                ["group/link"],
-                ["block"],
-                ["py-2"],
-                ["px-4"],
-                [["bg-white/75", "hover:bg-sky-300/75"]]
-              )}
+              タグの登録
+            </MenuItem>
+            <MenuItem
+              className={clsx(["col-span-1"])}
+              Wrapper={(props) => <LinkRegisterSemitag {...props} />}
             >
-              <div
-                className={clsx(
-                  ["text-slate-900", "group-hover/link:text-sky-900"],
-                  ["text-xs"]
-                )}
-              >
-                仮タグの解決
-              </div>
-            </LinkRegisterSemitag>
+              仮タグの解決
+            </MenuItem>
           </div>
         </div>
         <div
