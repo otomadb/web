@@ -62,7 +62,7 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
               ],
               ["absolute"],
               ["top-full"],
-              ["-left-[7rem]"],
+              [["right-0", "xl:right-auto"], ["xl:-left-[7rem]"]],
               ["mx-auto"]
             )}
             user={whoami}
