@@ -2,12 +2,16 @@
 
 import { PencilIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
-import Image from "next/image";
 import React from "react";
 
 import { LinkVideo } from "~/components/common/Link";
-import { graphql } from "~/gql";
-import { MylistPage_RegistrationsSection_RegistrationFragment } from "~/gql/graphql";
+import { getFragment, graphql } from "~/gql";
+import {
+  Component_ThumbnailFragmentDoc,
+  MylistPage_RegistrationsSection_RegistrationFragment,
+} from "~/gql/graphql";
+
+import { Thumbnail } from "../common/Thumbnail";
 
 graphql(`
   fragment MylistPage_RegistrationsSection_Registration on MylistRegistration {
@@ -16,7 +20,7 @@ graphql(`
     video {
       id
       title
-      thumbnailUrl
+      ...Component_Thumbnail
     }
   }
 `);
@@ -25,10 +29,7 @@ export const Registeration: React.FC<{
   className?: string;
   registration: MylistPage_RegistrationsSection_RegistrationFragment;
 }> = ({ className, registration }) => {
-  const {
-    note,
-    video: { id: videoId, thumbnailUrl, title },
-  } = registration;
+  const { note, video } = registration;
   return (
     <div
       className={clsx(
@@ -44,16 +45,15 @@ export const Registeration: React.FC<{
       )}
     >
       <LinkVideo
-        videoId={videoId}
+        videoId={video.id}
         className={clsx(["block"], ["flex-shrink-0"], ["px-2"])}
       >
-        <Image
-          className={clsx(["h-16"], ["w-24"], ["object-scale-down"])}
-          src={thumbnailUrl}
+        <Thumbnail
+          fragment={getFragment(Component_ThumbnailFragmentDoc, video)}
+          className={clsx(["w-24"], ["h-16"], ["border", "border-slate-400"])}
           width={256}
           height={192}
-          alt={title}
-          priority={true}
+          Wrapper={(props) => <div {...props} />}
         />
       </LinkVideo>
       <div
@@ -71,8 +71,8 @@ export const Registeration: React.FC<{
             ["text-slate-900"]
           )}
         >
-          <LinkVideo videoId={videoId} className={clsx()}>
-            {title}
+          <LinkVideo videoId={video.id} className={clsx()}>
+            {video.title}
           </LinkVideo>
         </div>
         <div

@@ -3,24 +3,25 @@
 import "client-only";
 
 import clsx from "clsx";
-import Image from "next/image";
 import React, { useMemo } from "react";
 import { useQuery } from "urql";
 
 import { getFragment, graphql } from "~/gql";
 import {
+  Component_ThumbnailFragmentDoc,
   VideoPage_DetailsSectionFragment,
   VideoPage_DetailsSectionFragmentDoc,
   VideoPage_UpstreamDetailsSectionDocument,
 } from "~/gql/graphql";
 
+import { Thumbnail } from "../common/Thumbnail";
 import { LikeButton } from "./LikeButton";
 
 graphql(`
   fragment VideoPage_DetailsSection on Video {
     id
     title
-    thumbnailUrl
+    ...Component_Thumbnail
   }
 
   query VideoPage_UpstreamDetailsSection($id: ID!) {
@@ -45,50 +46,16 @@ export const DetailsSection: React.FC<{
   );
 
   const video = useMemo(() => fallback || upstream, [fallback, upstream]);
-  const { id: videoId, thumbnailUrl, title } = video;
+  const { id: videoId, title } = video;
 
   return (
     <section className={clsx(className, ["flex", ["flex-row"]], ["gap-x-8"])}>
-      <div
-        className={clsx(
-          ["border", "border-slate-400"],
-          ["flex-shrink-0"],
-          ["w-64", "h-48"],
-          ["flex", "justify-center"],
-          ["relative"],
-          ["rounded-lg"],
-          ["overflow-hidden"]
-        )}
-      >
-        <Image
-          className={clsx(
-            ["z-0"],
-            ["absolute"],
-            ["inset-0"],
-            ["w-full", "h-full"],
-            ["object-cover", "object-center"],
-            ["blur-md", "brightness-75", "scale-125"]
-          )}
-          src={thumbnailUrl}
-          width={512}
-          height={384}
-          alt={title}
-          priority={true}
-        />
-        <Image
-          className={clsx(
-            ["z-1"],
-            ["relative"],
-            ["object-scale-down"],
-            ["w-full", "h-auto"]
-          )}
-          src={thumbnailUrl}
-          width={256}
-          height={192}
-          alt={title}
-          priority={true}
-        />
-      </div>
+      <Thumbnail
+        fragment={getFragment(Component_ThumbnailFragmentDoc, video)}
+        className={clsx(["w-72"], ["h-48"], ["border", "border-slate-400"])}
+        width={512}
+        height={384}
+      />
       <div className={clsx(["flex-grow"], ["py-2"])}>
         <h1
           className={clsx(
