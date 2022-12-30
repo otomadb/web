@@ -1,16 +1,20 @@
 import clsx from "clsx";
-import Image from "next/image";
 import React from "react";
 
 import { LinkVideo } from "~/components/common/Link";
-import { graphql } from "~/gql";
-import { VideoList_VideoFragment } from "~/gql/graphql";
+import { getFragment, graphql } from "~/gql";
+import {
+  Component_ThumbnailFragmentDoc,
+  VideoList_VideoFragment,
+} from "~/gql/graphql";
+
+import { Thumbnail } from "./Thumbnail";
 
 graphql(`
   fragment VideoList_Video on Video {
     id
     title
-    thumbnailUrl
+    ...Component_Thumbnail
   }
 `);
 
@@ -40,60 +44,27 @@ export const VideoList: React.FC<{
             ["gap-y-2", "@[768px]/videolist:gap-x-4"]
           )}
         >
-          {videos.map(({ id, thumbnailUrl, title }) => (
-            <div key={id}>
-              <LinkVideo
-                videoId={id}
+          {videos.map((video) => (
+            <div key={video.id}>
+              <Thumbnail
+                fragment={getFragment(Component_ThumbnailFragmentDoc, video)}
                 className={clsx(
-                  ["block"],
-                  ["border", "border-slate-400"],
-                  ["flex", "justify-center"],
-                  ["rounded-lg"],
-                  ["overflow-hidden"],
-                  ["relative"]
+                  ["w-full"],
+                  ["h-32"],
+                  ["border", "border-slate-400"]
                 )}
-              >
-                <Image
-                  className={clsx(
-                    ["z-0"],
-                    ["absolute"],
-                    ["inset-0"],
-                    ["w-full", "h-full"],
-                    ["object-cover", "object-center"],
-                    ["blur-md", "brightness-75", "scale-125"]
-                  )}
-                  src={thumbnailUrl}
-                  width={512}
-                  height={384}
-                  quality={2}
-                  alt={title}
-                  priority={true}
-                />
-                <Image
-                  className={clsx(
-                    ["z-1"],
-                    ["relative"],
-                    ["w-auto"],
-                    ["h-32"],
-                    ["mx-auto"],
-                    ["object-scale-down"]
-                  )}
-                  src={thumbnailUrl}
-                  width={256}
-                  height={192}
-                  alt={title}
-                  priority={true}
-                />
-              </LinkVideo>
+                width={256}
+                height={192}
+              />
               <LinkVideo
-                videoId={id}
+                videoId={video.id}
                 className={clsx(
                   ["block"],
                   [["px-1"], ["py-1"]],
                   ["text-sm", "@[768px]/videolist:text-xs"]
                 )}
               >
-                {title}
+                {video.title}
               </LinkVideo>
             </div>
           ))}

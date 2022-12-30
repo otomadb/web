@@ -3,14 +3,15 @@
 import { css } from "@emotion/css";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
-import Image from "next/image";
 import React, { useMemo, useState } from "react";
 import { useQuery } from "urql";
 
 import { DelayedInput } from "~/components/common/DelayedInput";
 import { LinkTag, LinkVideo } from "~/components/common/Link";
+import { Thumbnail } from "~/components/common/Thumbnail";
 import { getFragment, graphql } from "~/gql";
 import {
+  Component_ThumbnailFragmentDoc,
   GlobalNav_SearchBox_SearchTagsFragment,
   GlobalNav_SearchBox_SearchTagsFragmentDoc,
   GlobalNav_SearchBox_SearchVideosFragment,
@@ -34,17 +35,6 @@ graphql(`
     }
   }
 
-  fragment GlobalNav_SearchBox_SearchVideos on SearchVideosPayload {
-    items {
-      matchedTitle
-      video {
-        id
-        title
-        thumbnailUrl
-      }
-    }
-  }
-
   query GlobalNav_SearchBox($query: String!) {
     tags: searchTags(input: { query: $query, limit: 6 }) {
       ...GlobalNav_SearchBox_SearchTags
@@ -55,6 +45,18 @@ graphql(`
   }
 `);
 
+graphql(`
+  fragment GlobalNav_SearchBox_SearchVideos on SearchVideosPayload {
+    items {
+      matchedTitle
+      video {
+        id
+        title
+        ...Component_Thumbnail
+      }
+    }
+  }
+`);
 export const VideosSect: React.FC<{
   className?: string;
   fragment: GlobalNav_SearchBox_SearchVideosFragment;
@@ -81,27 +83,17 @@ export const VideosSect: React.FC<{
               ["divide-x", "border-slate-300/75"]
             )}
           >
-            <div
+            <Thumbnail
+              fragment={getFragment(Component_ThumbnailFragmentDoc, video)}
               className={clsx(
                 ["flex-shrink-0"],
-                ["w-32"],
-                ["flex", ["justify-center"]]
+                ["h-16"],
+                ["border", "border-slate-400"]
               )}
-            >
-              <Image
-                className={clsx(
-                  ["h-16"],
-                  ["rounded-lg"],
-                  ["object-scale-down"]
-                )}
-                src={video.thumbnailUrl}
-                alt={video.title}
-                width={96}
-                height={64}
-                quality={50}
-                priority={true}
-              />
-            </div>
+              width={192}
+              height={144}
+              Wrapper={(props) => <div {...props} />}
+            />
             <div
               className={clsx(
                 ["flex-grow"],
