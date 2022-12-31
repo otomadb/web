@@ -18,7 +18,7 @@ graphql(`
       name
       displayName
       icon
-      favorites {
+      likes {
         id
         registrations(input: { limit: 12, order: { updatedAt: DESC } }) {
           nodes {

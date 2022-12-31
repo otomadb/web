@@ -58,7 +58,7 @@ export const Logout: React.FC<{ className?: string }> = ({ className }) => {
 
 export const Accordion: React.FC<{
   className?: string;
-  user: { id: string; name: string; displayName: string; icon: string };
+  user: { id: string; name: string; displayName: string; icon?: string | null };
 }> = ({ className, user }) => {
   return (
     <div className={clsx(className, ["pt-1"])}>
