@@ -48,6 +48,9 @@ const Item: React.FC<{
 graphql(`
   fragment UserPageLayout_Nav on User {
     name
+    likes {
+      id
+    }
   }
 `);
 export const Nav: React.FC<{
@@ -80,19 +83,6 @@ export const Nav: React.FC<{
       <Item
         className={clsx()}
         Wrapper={(props) => (
-          <LinkUserLikes
-            aria-current={highlight === "LIKES" ? "page" : undefined}
-            name={user.name}
-            {...props}
-          />
-        )}
-        highlight={highlight === "LIKES"}
-      >
-        いいね
-      </Item>
-      <Item
-        className={clsx()}
-        Wrapper={(props) => (
           <LinkUserMylists
             aria-current={highlight === "MYLISTS" ? "page" : undefined}
             name={user.name}
@@ -102,6 +92,19 @@ export const Nav: React.FC<{
         highlight={highlight === "MYLISTS"}
       >
         マイリスト
+      </Item>
+      <Item
+        className={clsx()}
+        Wrapper={(props) => (
+          <LinkUserLikes
+            aria-current={highlight === "LIKES" ? "page" : undefined}
+            name={user.name}
+            {...props}
+          />
+        )}
+        highlight={highlight === "LIKES"}
+      >
+        いいねした動画
       </Item>
     </nav>
   );

@@ -1,7 +1,11 @@
 import { notFound } from "next/navigation";
 
+import { Mylists } from "~/components/pages/UserMylists";
 import { getFragment, graphql } from "~/gql";
-import { UserPageLayout_NavFragmentDoc } from "~/gql/graphql";
+import {
+  UserMylistsPage_MylistsFragmentDoc,
+  UserPageLayout_NavFragmentDoc,
+} from "~/gql/graphql";
 import { gqlRequest } from "~/utils/gqlRequest";
 
 import { Nav } from "../Nav";
@@ -13,6 +17,9 @@ export default async function Page({ params }: { params: { name: string } }) {
         findUser(input: { name: $name }) {
           id
           ...UserPageLayout_Nav
+          mylists(input: { limit: 10 }) {
+            ...UserMylistsPage_Mylists
+          }
         }
       }
     `),
@@ -27,7 +34,13 @@ export default async function Page({ params }: { params: { name: string } }) {
         highlight="MYLISTS"
         user={getFragment(UserPageLayout_NavFragmentDoc, findUser)}
       />
-      <p>マイリスト</p>
+      <Mylists
+        pageUserId={findUser.id}
+        fallback={getFragment(
+          UserMylistsPage_MylistsFragmentDoc,
+          findUser.mylists
+        )}
+      />
     </>
   );
 }
