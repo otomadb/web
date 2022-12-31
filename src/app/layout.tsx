@@ -31,8 +31,7 @@ export default function RootLayout({
               ["relative"],
               ["min-h-[calc(100vh-64px)]"],
               ["container"],
-              ["mx-auto"],
-              ["py-8"]
+              ["mx-auto"]
             )}
           >
             {children}

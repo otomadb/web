@@ -4,12 +4,12 @@ import { getFragment, graphql } from "~/gql";
 import { UserPageLayout_NavFragmentDoc } from "~/gql/graphql";
 import { gqlRequest } from "~/utils/gqlRequest";
 
-import { Nav } from "./Nav";
+import { Nav } from "../Nav";
 
 export default async function Page({ params }: { params: { name: string } }) {
   const { findUser } = await gqlRequest(
     graphql(`
-      query UserPage($name: String!) {
+      query UserMylistsPage($name: String!) {
         findUser(input: { name: $name }) {
           id
           ...UserPageLayout_Nav
@@ -24,10 +24,10 @@ export default async function Page({ params }: { params: { name: string } }) {
   return (
     <>
       <Nav
-        highlight="PROFILE"
+        highlight="MYLISTS"
         user={getFragment(UserPageLayout_NavFragmentDoc, findUser)}
       />
-      <p>プロフィール</p>
+      <p>マイリスト</p>
     </>
   );
 }

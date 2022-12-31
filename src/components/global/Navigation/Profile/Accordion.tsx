@@ -97,12 +97,12 @@ export const Accordion: React.FC<{
             <MenuItem
               Wrapper={(props) => <LinkUser name={user.name} {...props} />}
             >
-              いいねした動画
+              プロフィール
             </MenuItem>
             <MenuItem
               Wrapper={(props) => <LinkUserLikes name={user.name} {...props} />}
             >
-              プロフィール
+              いいねした動画
             </MenuItem>
             <MenuItem
               Wrapper={(props) => (
