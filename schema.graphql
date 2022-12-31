@@ -469,7 +469,7 @@ type UndoLikeVideoPayload {
 type User implements Node {
   displayName: String!
   favorites: Mylist!
-  icon: String!
+  icon: String
   id: ID!
   mylists(input: UserMylistsInput!): MylistsConnection!
   name: String!
