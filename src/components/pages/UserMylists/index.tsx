@@ -23,7 +23,7 @@ graphql(`
     range
   }
 
-  fragment UserMylistsPage_Mylists on MylistsConnection {
+  fragment UserMylistsPage_Mylists on MylistConnection {
     nodes {
       id
       ...UserMylistsPage_Mylist

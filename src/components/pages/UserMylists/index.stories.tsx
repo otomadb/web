@@ -8,7 +8,7 @@ import {
 
 import {
   aMylist,
-  aMylistsConnection,
+  aMylistConnection,
   aUser,
   ProfileMylistsPage_MylistsDocument,
 } from "~/gql/graphql";
@@ -36,7 +36,7 @@ export default {
                 icon: "/storybook/512x512.png",
                 name: "sno2wman",
                 displayName: "SnO2WMaN",
-                mylists: aMylistsConnection({
+                mylists: aMylistConnection({
                   nodes: [
                     aMylist({ id: "mylist:1" }),
                     aMylist({ id: "mylist:2" }),
