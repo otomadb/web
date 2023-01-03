@@ -54,7 +54,7 @@ export const DetailsSection: React.FC<{
         {isLikeList ? `${holder.displayName}がいいねした動画` : title}
       </h1>
       <div className={clsx(["mt-1"], ["flex"], ["items-center"])}>
-        <UserIcon name={holder.name} src={holder.icon} size={32} />
+        <UserIcon name={holder.name} src={holder.icon || null} size={32} />
         <div className={clsx(["ml-1"], ["flex", "items-center"])}>
           <div className={clsx(["text-slate-900"], ["text-sm"])}>
             {holder.displayName}

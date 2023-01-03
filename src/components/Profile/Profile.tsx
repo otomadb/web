@@ -18,7 +18,7 @@ graphql(`
       name
       displayName
       icon
-      favorites {
+      likes {
         id
         registrations(input: { limit: 12, order: { updatedAt: DESC } }) {
           nodes {
@@ -57,11 +57,11 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
 
   const likedVideos = getFragment(
     VideoList_VideoFragmentDoc,
-    whoami?.favorites.registrations.nodes.map(({ video }) => video)
+    whoami?.likes.registrations.nodes.map(({ video }) => video)
   );
   const recommendedVideosFromLiked = getFragment(
     VideoList_VideoFragmentDoc,
-    whoami?.favorites.recommendedVideos.items.map(({ video }) => video)
+    whoami?.likes.recommendedVideos.items.map(({ video }) => video)
   );
 
   return (
@@ -82,7 +82,7 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
           {whoami && (
             <UserIcon
               className={clsx(["w-full"], ["h-full"], ["rounded-md"])}
-              src={whoami.icon}
+              src={whoami.icon || null}
               name={whoami.name}
             />
           )}

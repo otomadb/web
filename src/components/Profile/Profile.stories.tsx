@@ -30,7 +30,7 @@ export const Successful: StoryObj<typeof Profile> = {
                 name: "sno2wman",
                 displayName: "SnO2WMaN",
                 icon: "/storybook/512x512.png",
-                favorites: {
+                likes: {
                   id: "mylist:1",
                   recommendedVideos: { items: [] },
                   registrations: { nodes: [] },
@@ -58,7 +58,7 @@ export const Slow: StoryObj<typeof Profile> = {
                 name: "sno2wman",
                 displayName: "SnO2WMaN",
                 icon: "/storybook/512x512.png",
-                favorites: {
+                likes: {
                   id: "mylist:1",
                   recommendedVideos: { items: [] },
                   registrations: { nodes: [] },

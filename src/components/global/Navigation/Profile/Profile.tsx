@@ -48,7 +48,7 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
           <div tabIndex={0}>
             <UserIcon
               className={clsx(["w-[2rem]"], ["h-[2rem]"])}
-              src={whoami.icon}
+              src={whoami.icon || null}
               name={whoami.name}
             />
           </div>

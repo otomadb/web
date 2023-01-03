@@ -122,9 +122,13 @@ type Mylist implements Node {
   isLikeList: Boolean!
   range: MylistShareRange!
   recommendedVideos(input: MylistRecommendedVideosInput!): MylistRecommendedVideosPayload!
-  registrations(input: MylistRegistrationsInput!): MylistRegistrationCollection!
+  registrations(input: MylistRegistrationsInput!): MylistRegistrationConnection!
   title: String!
   updatedAt: DateTime!
+}
+
+type MylistConnection {
+  nodes: [Mylist!]!
 }
 
 input MylistIncludeTagsInput {
@@ -162,7 +166,7 @@ type MylistRegistration implements Node {
   video: Video!
 }
 
-type MylistRegistrationCollection {
+type MylistRegistrationConnection {
   nodes: [MylistRegistration!]!
 }
 
@@ -181,10 +185,6 @@ enum MylistShareRange {
   KNOW_LINK
   PRIVATE
   PUBLIC
-}
-
-type MylistsConnection {
-  nodes: [Mylist!]!
 }
 
 type NicovideoVideoSource implements Node & VideoSource {
@@ -236,10 +236,10 @@ enum PseudoTagType {
 type Query {
   findMylist(input: FindMylistInput!): Mylist
   findNicovideoVideoSource(input: FindNicovideoVideoSourceInput!): NicovideoVideoSource
-  findSemitags(input: FindSemitagsInput!): SemitagCollection!
-  findTags(input: FindTagsInput!): TagCollection!
+  findSemitags(input: FindSemitagsInput!): SemitagConnection!
+  findTags(input: FindTagsInput!): TagConnection!
   findUser(input: FindUserInput!): User
-  findVideos(input: FindVideosInput!): VideoCollection!
+  findVideos(input: FindVideosInput!): VideoConnection!
   mylist(id: ID!): Mylist!
   nicovideoVideoSource(id: ID!): NicovideoVideoSource!
   searchTags(input: SearchTagInput!): SearchTagsPayload!
@@ -353,7 +353,7 @@ type Semitag implements Node {
   video: Video!
 }
 
-type SemitagCollection {
+type SemitagConnection {
   nodes: [Semitag!]!
 }
 
@@ -369,7 +369,7 @@ type Tag implements Node {
     videoId: ID!
   ): Boolean!
   explicitParent: Tag
-  history(input: TagHistoryInput!): TagHistoryCollection!
+  history(input: TagHistoryInput!): TagHistoryConnection!
   id: ID!
   meaningless: Boolean!
   name: String!
@@ -397,7 +397,7 @@ type TagChangePrimaryNameHistoryItem implements TagHistoryItem {
   user: User!
 }
 
-type TagCollection {
+type TagConnection {
   nodes: [Tag!]!
 }
 
@@ -409,7 +409,7 @@ type TagDeleteNameHistoryItem implements TagHistoryItem {
   user: User!
 }
 
-type TagHistoryCollection {
+type TagHistoryConnection {
   nodes: [VideoHistoryItem!]!
 }
 
@@ -468,10 +468,10 @@ type UndoLikeVideoPayload {
 
 type User implements Node {
   displayName: String!
-  favorites: Mylist!
-  icon: String!
+  icon: String
   id: ID!
-  mylists(input: UserMylistsInput!): MylistsConnection!
+  likes: Mylist!
+  mylists(input: UserMylistsInput!): MylistConnection!
   name: String!
 }
 
@@ -489,7 +489,7 @@ input UserMylistsInputOrder {
 
 type Video implements Node {
   hasTag(id: ID!): Boolean!
-  history(input: VideoHistoryInput!): VideoHistoryCollection!
+  history(input: VideoHistoryInput!): VideoHistoryConnection!
   id: ID!
   nicovideoSources: [NicovideoVideoSource!]!
   registeredAt: DateTime!
@@ -552,7 +552,7 @@ type VideoChangePrimaryTitleHistoryItem implements VideoHistoryItem {
   video: Video!
 }
 
-type VideoCollection {
+type VideoConnection {
   nodes: [Video!]!
 }
 
@@ -580,7 +580,7 @@ type VideoDeleteTitleHistoryItem implements VideoHistoryItem {
   video: Video!
 }
 
-type VideoHistoryCollection {
+type VideoHistoryConnection {
   nodes: [VideoHistoryItem!]!
 }
 
