@@ -68,19 +68,19 @@ const urqlClient = createUrqlClient({
         RemoveTagFromVideoPayload() {
           return null;
         },
-        TagCollection() {
+        TagConnection() {
           return null;
         },
-        TagHistoryCollection() {
+        TagHistoryConnection() {
           return null;
         },
-        VideoCollection() {
+        VideoConnection() {
           return null;
         },
-        VideoHistoryCollection() {
+        VideoHistoryConnection() {
           return null;
         },
-        MylistRegistrationCollection() {
+        MylistRegistrationConnection() {
           return null;
         },
         VideoSimilarVideosPayload() {
@@ -95,7 +95,7 @@ const urqlClient = createUrqlClient({
         MylistRecommendedVideosItem() {
           return null;
         },
-        SemitagCollection() {
+        SemitagConnection() {
           return null;
         },
       },
