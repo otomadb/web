@@ -31,7 +31,7 @@ export default async function Page({ params }: { params: { name: string } }) {
   return (
     <>
       <div>
-        <UserIcon className={clsx([])} src={icon} name={name} />
+        <UserIcon className={clsx([])} src={icon || null} name={name} />
         <p>@{name}</p>
         <p>{displayName}</p>
       </div>

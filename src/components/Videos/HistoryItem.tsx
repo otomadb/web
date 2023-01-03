@@ -120,7 +120,7 @@ const HistItemTemplate: React.FC<{
         <LinkUser name={user.name} className={clsx(["flex", ["items-center"]])}>
           <UserIcon
             className={clsx(["w-4"], ["h-4"])}
-            src={user.icon}
+            src={user.icon || null}
             name={user.name}
           />
           <span className={clsx(["ml-1"], ["text-xs"], ["text-slate-700"])}>
