@@ -1,9 +1,10 @@
 import clsx from "clsx";
 import React from "react";
 
-import { LinkUserMylist } from "~/components/common/Link";
 import { graphql } from "~/gql";
 import { UserMylistsPage_SmallMylistListFragment } from "~/gql/graphql";
+
+import { MylistLinkSwitch } from "./LinkSwitch";
 
 graphql(`
   fragment UserMylistsPage_SmallMylistList on MylistConnection {
@@ -26,17 +27,17 @@ export const SmallMylistList: React.FC<{
   return (
     <div className={clsx(className, ["flex", "flex-col", "items-stretch"])}>
       {fallback.nodes.map(({ id, title, isLikeList, holder }) => (
-        <LinkUserMylist
+        <MylistLinkSwitch
+          key={id}
           className={clsx(["px-4"], ["py-2"], ["hover:bg-blue-200"])}
           mylistId={id}
           userName={holder.name}
-          key={id}
         >
           <p className={clsx(["text-sm"], ["truncate"])}>
             {!isLikeList && title}
             {isLikeList && `${holder.displayName}のいいね欄`}
           </p>
-        </LinkUserMylist>
+        </MylistLinkSwitch>
       ))}
     </div>
   );

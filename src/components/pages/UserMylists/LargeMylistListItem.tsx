@@ -1,7 +1,6 @@
 import clsx from "clsx";
 import React from "react";
 
-import { LinkUserMylist } from "~/components/common/Link";
 import { Thumbnail } from "~/components/common/Thumbnail";
 import { UserIcon2 } from "~/components/common/UserIcon";
 import { getFragment, graphql } from "~/gql";
@@ -10,6 +9,8 @@ import {
   Component_UserIconFragmentDoc,
   UserMylistsPage_LargeMylistListItemFragment,
 } from "~/gql/graphql";
+
+import { MylistLinkSwitch } from "./LinkSwitch";
 
 graphql(`
   fragment UserMylistsPage_LargeMylistListItem on Mylist {
@@ -42,7 +43,7 @@ export const LargeMylistListItem: React.FC<{
   const { id, isLikeList, title, holder, registrations } = fragment;
 
   return (
-    <LinkUserMylist
+    <MylistLinkSwitch
       userName={holder.name}
       mylistId={id}
       className={clsx(
@@ -126,6 +127,6 @@ export const LargeMylistListItem: React.FC<{
           </p>
         </div>
       </div>
-    </LinkUserMylist>
+    </MylistLinkSwitch>
   );
 };
