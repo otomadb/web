@@ -10,16 +10,15 @@ import {
   MylistShareRange,
 } from "~/gql/graphql";
 
-import { Mylist } from "./Mylist";
+import { LargeMylistListItem } from "./LargeMylistListItem";
 
 export default {
-  component: Mylist,
+  component: LargeMylistListItem,
   args: {
     className: clsx(["w-[1024px]"]),
   },
 };
-
-export const NotLikeList: StoryObj<typeof Mylist> = {
+export const NotLikeList: StoryObj<typeof LargeMylistListItem> = {
   name: "いいねリストでない",
   args: {
     fragment: aMylist({
@@ -76,7 +75,7 @@ export const NotLikeList: StoryObj<typeof Mylist> = {
   },
 };
 
-export const LikeList: StoryObj<typeof Mylist> = {
+export const LikeList: StoryObj<typeof LargeMylistListItem> = {
   name: "いいねリスト",
   args: {
     fragment: aMylist({
@@ -133,7 +132,7 @@ export const LikeList: StoryObj<typeof Mylist> = {
   },
 };
 
-export const NoRegistration: StoryObj<typeof Mylist> = {
+export const NoRegistration: StoryObj<typeof LargeMylistListItem> = {
   name: "マイリストへの登録がない",
   args: {
     fragment: aMylist({

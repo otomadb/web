@@ -5,10 +5,10 @@ import "client-only";
 import { useQuery } from "urql";
 
 import { graphql } from "~/gql";
-import { ViewerDocument } from "~/gql/graphql";
+import { UseViewerDocument } from "~/gql/graphql";
 
 graphql(`
-  query Viewer {
+  query UseViewer {
     whoami {
       id
       name
@@ -19,4 +19,4 @@ graphql(`
 `);
 
 export const useViewer = () =>
-  useQuery({ query: ViewerDocument, requestPolicy: "cache-and-network" });
+  useQuery({ query: UseViewerDocument, requestPolicy: "cache-and-network" });

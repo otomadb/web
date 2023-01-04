@@ -8,11 +8,11 @@ import { getFragment, graphql } from "~/gql";
 import {
   Component_ThumbnailFragmentDoc,
   Component_UserIconFragmentDoc,
-  UserMylistsPage_MylistFragment,
+  UserMylistsPage_LargeMylistListItemFragment,
 } from "~/gql/graphql";
 
 graphql(`
-  fragment UserMylistsPage_Mylist on Mylist {
+  fragment UserMylistsPage_LargeMylistListItem on Mylist {
     id
     title
     isLikeList
@@ -35,9 +35,9 @@ graphql(`
     }
   }
 `);
-export const Mylist: React.FC<{
+export const LargeMylistListItem: React.FC<{
   className?: string;
-  fragment: UserMylistsPage_MylistFragment;
+  fragment: UserMylistsPage_LargeMylistListItemFragment;
 }> = ({ className, fragment }) => {
   const { id, isLikeList, title, holder, registrations } = fragment;
 
