@@ -57,11 +57,11 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
 
   const likedVideos = getFragment(
     VideoList_VideoFragmentDoc,
-    whoami?.likes.registrations.nodes.map(({ video }) => video)
+    whoami?.likes?.registrations.nodes.map(({ video }) => video)
   );
   const recommendedVideosFromLiked = getFragment(
     VideoList_VideoFragmentDoc,
-    whoami?.likes.recommendedVideos.items.map(({ video }) => video)
+    whoami?.likes?.recommendedVideos.items.map(({ video }) => video)
   );
 
   return (
