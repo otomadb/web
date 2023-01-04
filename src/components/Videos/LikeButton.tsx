@@ -62,7 +62,7 @@ export const LikeButton: React.FC<{ className?: string; videoId: string }> = ({
 
   const liked = useMemo(() => {
     const { data } = currentResult;
-    if (!data?.whoami) return undefined;
+    if (!data?.whoami?.likes) return undefined;
     return data.whoami.likes.isIncludesVideo;
   }, [currentResult]);
 
