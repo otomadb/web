@@ -1,10 +1,7 @@
 import { notFound } from "next/navigation";
 
-import { getFragment, graphql } from "~/gql";
-import { UserPageLayout_NavFragmentDoc } from "~/gql/graphql";
+import { graphql } from "~/gql";
 import { gqlRequest } from "~/utils/gqlRequest";
-
-import { Nav } from "../Nav";
 
 export default async function Page({ params }: { params: { name: string } }) {
   const { findUser } = await gqlRequest(
@@ -23,10 +20,6 @@ export default async function Page({ params }: { params: { name: string } }) {
 
   return (
     <>
-      <Nav
-        highlight="LIKES"
-        user={getFragment(UserPageLayout_NavFragmentDoc, findUser)}
-      />
       <p>いいね</p>
     </>
   );

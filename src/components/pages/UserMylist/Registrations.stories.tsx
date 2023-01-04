@@ -10,17 +10,17 @@ import {
   aMylistRegistration,
   aMylistRegistrationConnection,
   aVideo,
-  MylistPage_RegistrationsSectionDocument,
+  MylistPage_UpstreamRegistrationsDocument,
 } from "~/gql/graphql";
 
-import { RegistrationsSection } from "./Registrations";
+import { Registrations } from "./Registrations";
 
 export default {
-  component: RegistrationsSection,
+  component: Registrations,
   render(args) {
     return (
       <UrqlProvider value={createUrqlClient({ url: "/graphql" })}>
-        <RegistrationsSection {...args} />
+        <Registrations {...args} />
       </UrqlProvider>
     );
   },
@@ -45,7 +45,7 @@ export default {
     msw: {
       handlers: [
         graphql.query(
-          MylistPage_RegistrationsSectionDocument,
+          MylistPage_UpstreamRegistrationsDocument,
           (req, res, ctx) =>
             res(
               ctx.data({
@@ -69,6 +69,6 @@ export default {
       ],
     },
   },
-} as Meta<typeof RegistrationsSection>;
+} as Meta<typeof Registrations>;
 
-export const Primary: StoryObj<typeof RegistrationsSection> = {};
+export const Primary: StoryObj<typeof Registrations> = {};

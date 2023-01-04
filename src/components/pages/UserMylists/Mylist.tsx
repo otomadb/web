@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import React from "react";
 
-import { LinkMylist } from "~/components/common/Link";
+import { LinkUserMylist } from "~/components/common/Link";
 import { Thumbnail } from "~/components/common/Thumbnail";
 import { UserIcon2 } from "~/components/common/UserIcon";
 import { getFragment, graphql } from "~/gql";
@@ -42,7 +42,8 @@ export const Mylist: React.FC<{
   const { id, isLikeList, title, holder, registrations } = fragment;
 
   return (
-    <LinkMylist
+    <LinkUserMylist
+      userName={holder.name}
       mylistId={id}
       className={clsx(
         className,
@@ -125,6 +126,6 @@ export const Mylist: React.FC<{
           </p>
         </div>
       </div>
-    </LinkMylist>
+    </LinkUserMylist>
   );
 };

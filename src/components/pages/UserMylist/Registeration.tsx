@@ -5,16 +5,15 @@ import clsx from "clsx";
 import React from "react";
 
 import { LinkVideo } from "~/components/common/Link";
+import { Thumbnail } from "~/components/common/Thumbnail";
 import { getFragment, graphql } from "~/gql";
 import {
   Component_ThumbnailFragmentDoc,
-  MylistPage_RegistrationsSection_RegistrationFragment,
+  MylistPage_RegistrationFragment,
 } from "~/gql/graphql";
 
-import { Thumbnail } from "../common/Thumbnail";
-
 graphql(`
-  fragment MylistPage_RegistrationsSection_Registration on MylistRegistration {
+  fragment MylistPage_Registration on MylistRegistration {
     id
     note
     video {
@@ -27,7 +26,7 @@ graphql(`
 
 export const Registeration: React.FC<{
   className?: string;
-  registration: MylistPage_RegistrationsSection_RegistrationFragment;
+  registration: MylistPage_RegistrationFragment;
 }> = ({ className, registration }) => {
   const { note, video } = registration;
   return (

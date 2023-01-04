@@ -54,9 +54,14 @@ graphql(`
   }
 `);
 export const Nav: React.FC<{
-  highlight?: "PROFILE" | "LIKES" | "MYLISTS";
+  // highlight?: "PROFILE" | "LIKES" | "MYLISTS";
   user: UserPageLayout_NavFragment;
-}> = ({ highlight, user }) => {
+}> = ({
+  // highlight,
+  user,
+}) => {
+  const highlight = undefined;
+
   return (
     <nav
       className={clsx(

@@ -3,18 +3,18 @@
 import "client-only";
 
 import clsx from "clsx";
-import React, { useMemo } from "react";
+import React from "react";
 import { useQuery } from "urql";
 
 import { UserIcon } from "~/components/common/UserIcon";
-import { FragmentType, getFragment as useFragment, graphql } from "~/gql";
+import { graphql } from "~/gql";
 import {
-  MylistPage_DetailsSectionDocument,
-  MylistPage_DetailsSectionFragmentDoc,
+  MylistPage_DetailsFragment,
+  MylistPage_UpstreamDetailsDocument,
 } from "~/gql/graphql";
 
 graphql(`
-  fragment MylistPage_DetailsSection on Mylist {
+  fragment MylistPage_Details on Mylist {
     id
     title
     isLikeList
@@ -26,27 +26,22 @@ graphql(`
     }
   }
 
-  query MylistPage_DetailsSection($id: ID!) {
+  query MylistPage_UpstreamDetails($id: ID!) {
     mylist(id: $id) {
-      ...MylistPage_DetailsSection
+      ...MylistPage_Details
     }
   }
 `);
 
-export const DetailsSection: React.FC<{
+export const Details: React.FC<{
   className?: string;
-  mylistId: string;
-  fallback: FragmentType<typeof MylistPage_DetailsSectionFragmentDoc>;
-}> = ({ className, mylistId, fallback }) => {
-  const [result] = useQuery({
-    query: MylistPage_DetailsSectionDocument,
-    variables: { id: mylistId },
+  fallback: MylistPage_DetailsFragment;
+}> = ({ className, fallback }) => {
+  const [{ data }] = useQuery({
+    query: MylistPage_UpstreamDetailsDocument,
+    variables: { id: fallback.id },
   });
-  const mylist = useFragment(
-    MylistPage_DetailsSectionFragmentDoc,
-    useMemo(() => result.data?.mylist || fallback, [result, fallback])
-  );
-  const { title, holder, isLikeList } = mylist;
+  const { title, holder, isLikeList } = fallback;
 
   return (
     <section className={clsx(className)}>

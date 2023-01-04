@@ -74,14 +74,15 @@ export const LinkUserMylists: React.FC<LinkProps<{ name: string }>> = ({
   </Link>
 );
 
-export const LinkMylist: React.FC<LinkProps<{ mylistId: string }>> = ({
-  children,
-  mylistId,
-  ...props
-}) => (
+export const LinkUserMylist: React.FC<
+  LinkProps<{
+    userName: string;
+    mylistId: string;
+  }>
+> = ({ children, userName, mylistId, ...props }) => (
   <Link
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    href={`/mylists/${mylistId.split(":").at(1)!}`}
+    href={`/users/${userName}/mylists/${mylistId.split(":").at(1)!}`}
     {...props}
   >
     {children}
