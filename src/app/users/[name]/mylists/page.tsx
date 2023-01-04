@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import { notFound } from "next/navigation";
 
+import { AttentionYou } from "~/components/common/UserPage/AttentionYou";
 import { Mylists } from "~/components/pages/UserMylists";
 import { getFragment, graphql } from "~/gql";
 import { UserMylistsPage_MylistsFragmentDoc } from "~/gql/graphql";
@@ -27,8 +28,11 @@ export default async function Page({ params }: { params: { name: string } }) {
   return (
     <>
       <main className={clsx(["py-4"])}>
-        <Mylists
+        <AttentionYou
+          className={clsx(["w-full"], ["mb-4"])}
           pageUserId={findUser.id}
+        />
+        <Mylists
           fallback={getFragment(
             UserMylistsPage_MylistsFragmentDoc,
             findUser.mylists

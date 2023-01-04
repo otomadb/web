@@ -20,13 +20,13 @@ import {
   RegisterNicovideoPage_RegisterVideoDocument,
   RegisterNicovideoPage_SearchTagCandidatesDocument,
   RegisterNicovideoPage_SearchTagsDocument,
-  ViewerDocument,
+  UseViewerDocument,
 } from "~/gql/graphql";
 import { RestProvider } from "~/rest";
 
 import { RegisterNicovideoForm } from "./Form";
 
-const mockLogin = graphql.query(ViewerDocument, (req, res, ctx) =>
+const mockLogin = graphql.query(UseViewerDocument, (req, res, ctx) =>
   res(
     ctx.data({
       whoami: aUser({
@@ -39,7 +39,7 @@ const mockLogin = graphql.query(ViewerDocument, (req, res, ctx) =>
   )
 );
 
-const mockUnlogin = graphql.query(ViewerDocument, (req, res, ctx) =>
+const mockUnlogin = graphql.query(UseViewerDocument, (req, res, ctx) =>
   res(
     ctx.data({
       whoami: null,

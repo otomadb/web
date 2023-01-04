@@ -2,7 +2,7 @@ import { Meta, StoryObj } from "@storybook/react";
 import { graphql } from "msw";
 import { createClient, Provider } from "urql";
 
-import { aUser, ViewerDocument } from "~/gql/graphql";
+import { aUser, UseViewerDocument } from "~/gql/graphql";
 
 import { Profile } from "./Profile";
 
@@ -18,7 +18,7 @@ export default {
     layout: "centered",
     msw: {
       handlers: [
-        graphql.query(ViewerDocument, (req, res, ctx) => {
+        graphql.query(UseViewerDocument, (req, res, ctx) => {
           return res(
             ctx.data({
               whoami: aUser({
@@ -50,7 +50,7 @@ export const NotLogin: StoryObj<typeof Profile> = {
   parameters: {
     msw: {
       handlers: [
-        graphql.query(ViewerDocument, (req, res, ctx) => {
+        graphql.query(UseViewerDocument, (req, res, ctx) => {
           return res(ctx.delay(500), ctx.data({ whoami: null }));
         }),
       ],
@@ -64,7 +64,7 @@ export const Loading: StoryObj<typeof Profile> = {
   parameters: {
     msw: {
       handlers: [
-        graphql.query(ViewerDocument, async (req, res, ctx) => {
+        graphql.query(UseViewerDocument, async (req, res, ctx) => {
           return res(ctx.delay("infinite"));
         }),
       ],
