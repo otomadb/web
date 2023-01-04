@@ -82,7 +82,7 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
           {whoami && (
             <UserIcon
               className={clsx(["w-full"], ["h-full"], ["rounded-md"])}
-              src={whoami.icon}
+              src={whoami.icon || null}
               name={whoami.name}
             />
           )}
