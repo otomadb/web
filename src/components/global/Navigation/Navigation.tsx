@@ -4,7 +4,7 @@ import React from "react";
 import { LinkTop } from "~/components/common/Link";
 
 import { Profile } from "./Profile/Profile";
-import { SearchBox } from "./SearchBox";
+import { SearchBox } from "./SearchBox/SearchBox";
 
 export const revalidate = 120;
 
