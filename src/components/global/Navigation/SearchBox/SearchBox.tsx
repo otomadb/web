@@ -7,34 +7,17 @@ import React, { useMemo, useState } from "react";
 import { useQuery } from "urql";
 
 import { DelayedInput } from "~/components/common/DelayedInput";
-import { LinkTag, LinkVideo } from "~/components/common/Link";
-import { Thumbnail } from "~/components/common/Thumbnail";
 import { getFragment, graphql } from "~/gql";
 import {
-  Component_ThumbnailFragmentDoc,
-  GlobalNav_SearchBox_SearchTagsFragment,
   GlobalNav_SearchBox_SearchTagsFragmentDoc,
-  GlobalNav_SearchBox_SearchVideosFragment,
   GlobalNav_SearchBox_SearchVideosFragmentDoc,
   GlobalNav_SearchBoxDocument,
 } from "~/gql/graphql";
 
-graphql(`
-  fragment GlobalNav_SearchBox_SearchTags on SearchTagsPayload {
-    items {
-      matchedName
-      tag {
-        id
-        name
-        pseudoType
-        explicitParent {
-          id
-          name
-        }
-      }
-    }
-  }
+import { SearchTags } from "./SearchTags";
+import { SearchVideos } from "./SearchVideos";
 
+graphql(`
   query GlobalNav_SearchBox($query: String!) {
     tags: searchTags(input: { query: $query, limit: 6 }) {
       ...GlobalNav_SearchBox_SearchTags
@@ -44,150 +27,6 @@ graphql(`
     }
   }
 `);
-
-graphql(`
-  fragment GlobalNav_SearchBox_SearchVideos on SearchVideosPayload {
-    items {
-      matchedTitle
-      video {
-        id
-        title
-        ...Component_Thumbnail
-      }
-    }
-  }
-`);
-export const VideosSect: React.FC<{
-  className?: string;
-  fragment: GlobalNav_SearchBox_SearchVideosFragment;
-}> = ({ className, fragment }) => {
-  const { items } = fragment;
-
-  return (
-    <div className={clsx(className)}>
-      {items.length === 0 && (
-        <div className={clsx(["px-4", "py-2"])}>
-          <p className={clsx(["text-xs"], ["text-slate-500"])}>該当なし</p>
-        </div>
-      )}
-      <div className={clsx(["divide-y", "divide-slate-400/75"])}>
-        {items.map(({ video, matchedTitle }) => (
-          <LinkVideo
-            key={video.id}
-            videoId={video.id}
-            tabIndex={0}
-            className={clsx(
-              ["py-2"],
-              ["flex", ["items-stretch"]],
-              ["hover:bg-sky-300/50", "focus:bg-sky-400/50"],
-              ["divide-x", "border-slate-300/75"]
-            )}
-          >
-            <Thumbnail
-              fragment={getFragment(Component_ThumbnailFragmentDoc, video)}
-              className={clsx(
-                ["flex-shrink-0"],
-                ["h-16"],
-                ["border", "border-slate-400"]
-              )}
-              width={192}
-              height={144}
-              Wrapper={(props) => <div {...props} />}
-            />
-            <div
-              className={clsx(
-                ["flex-grow"],
-                ["flex", "flex-col", "justify-center"],
-                ["px-2"]
-              )}
-            >
-              <div
-                className={clsx(["text-slate-900"], ["text-sm"], ["font-bold"])}
-              >
-                {matchedTitle}
-              </div>
-              <div className={clsx(["text-slate-500"], ["text-xs"])}>
-                {video.title}
-              </div>
-            </div>
-          </LinkVideo>
-        ))}
-      </div>
-    </div>
-  );
-};
-
-export const TagsSect: React.FC<{
-  className?: string;
-  fragment: GlobalNav_SearchBox_SearchTagsFragment;
-}> = ({ className, fragment }) => {
-  const { items } = fragment;
-
-  return (
-    <div className={clsx(className)}>
-      {items.length === 0 && (
-        <div className={clsx(["px-4", "py-2"])}>
-          <p className={clsx(["text-xs"], ["text-slate-500"])}>該当なし</p>
-        </div>
-      )}
-      <div className={clsx(["divide-y", "divide-slate-400/75"])}>
-        {items.map(({ tag, matchedName }) => (
-          <LinkTag
-            key={tag.id}
-            tagId={tag.id}
-            tabIndex={0}
-            className={clsx(
-              [["flex"], ["items-center"]],
-              ["divide-x", "border-slate-300/75"],
-              ["hover:bg-sky-300/50", "focus:bg-sky-4 00/50"],
-              ["py-2"]
-            )}
-          >
-            <div className={clsx(["flex-shrink-0"], ["w-36"], ["px-2"])}>
-              <div
-                className={clsx(
-                  ["text-slate-500"],
-                  ["text-xs"],
-                  ["text-right"]
-                )}
-              >
-                {matchedName}
-              </div>
-            </div>
-            <div
-              className={clsx(
-                ["flex-grow"],
-                ["flex", "flex-col", "justify-start"],
-                ["px-2"]
-              )}
-            >
-              <div
-                className={clsx(["text-slate-900"], ["text-sm"], ["font-bold"])}
-              >
-                {tag.name}
-              </div>
-              <div className={clsx(["flex"])}>
-                <div
-                  className={clsx(["text-xs"], ["italic"], {
-                    "text-copyright-500": tag.pseudoType === "COPYRIGHT",
-                    "text-character-500": tag.pseudoType === "CHARACTER",
-                    "text-class-500": tag.pseudoType === "CLASS",
-                    "text-music-500": tag.pseudoType === "MUSIC",
-                    "text-series-500": tag.pseudoType === "SERIES",
-                    "text-phrase-500": tag.pseudoType === "PHRASE",
-                  })}
-                >
-                  {tag.pseudoType}
-                </div>
-              </div>
-            </div>
-          </LinkTag>
-        ))}
-      </div>
-    </div>
-  );
-};
-
 export const SearchResult: React.FC<{
   classname?: string;
   query: string;
@@ -235,7 +74,7 @@ export const SearchResult: React.FC<{
           >
             タグ
           </div>
-          {tags && <TagsSect className={clsx()} fragment={tags} />}
+          {tags && <SearchTags className={clsx()} fragment={tags} />}
         </div>
         <div className={clsx()}>
           <div
@@ -248,7 +87,7 @@ export const SearchResult: React.FC<{
           >
             動画
           </div>
-          {videos && <VideosSect className={clsx()} fragment={videos} />}
+          {videos && <SearchVideos className={clsx()} fragment={videos} />}
         </div>
       </div>
     </div>
