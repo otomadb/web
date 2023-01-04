@@ -8,7 +8,7 @@ import {
 import {
   aMylist,
   aMylistRegistration,
-  aMylistRegistrationCollection,
+  aMylistRegistrationConnection,
   aVideo,
   MylistPage_RegistrationsSectionDocument,
 } from "~/gql/graphql";
@@ -27,7 +27,7 @@ export default {
   args: {
     mylistId: "mylist:1",
     fallback: {
-      registrations: aMylistRegistrationCollection({
+      registrations: aMylistRegistrationConnection({
         nodes: [...new Array(24)].map((_, i) =>
           aMylistRegistration({
             id: `mylistRegistration:${i + 1}`,
@@ -50,7 +50,7 @@ export default {
             res(
               ctx.data({
                 mylist: aMylist({
-                  registrations: aMylistRegistrationCollection({
+                  registrations: aMylistRegistrationConnection({
                     nodes: [...new Array(24)].map((_, i) =>
                       aMylistRegistration({
                         id: `mylistRegistration:${i + 1}`,

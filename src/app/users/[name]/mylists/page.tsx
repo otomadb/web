@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { notFound } from "next/navigation";
 
 import { Mylists } from "~/components/pages/UserMylists";
@@ -34,13 +35,15 @@ export default async function Page({ params }: { params: { name: string } }) {
         highlight="MYLISTS"
         user={getFragment(UserPageLayout_NavFragmentDoc, findUser)}
       />
-      <Mylists
-        pageUserId={findUser.id}
-        fallback={getFragment(
-          UserMylistsPage_MylistsFragmentDoc,
-          findUser.mylists
-        )}
-      />
+      <main className={clsx(["py-4"])}>
+        <Mylists
+          pageUserId={findUser.id}
+          fallback={getFragment(
+            UserMylistsPage_MylistsFragmentDoc,
+            findUser.mylists
+          )}
+        />
+      </main>
     </>
   );
 }

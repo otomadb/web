@@ -31,7 +31,7 @@ export default async function Layout({
   if (!findUser) notFound();
 
   return (
-    <main className={clsx(["h-full"])}>
+    <div className={clsx(["h-full"])}>
       <div className={clsx(["container", "max-w-screen-xl", "mx-auto"])}>
         <Header
           className={clsx(["container", "max-w-screen-xl", "mx-auto"])}
@@ -39,6 +39,6 @@ export default async function Layout({
         />
         {children}
       </div>
-    </main>
+    </div>
   );
 }

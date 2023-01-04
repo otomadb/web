@@ -10,10 +10,20 @@ import {
   aMylist,
   aMylistConnection,
   aUser,
-  ProfileMylistsPage_MylistsDocument,
+  UserMylistsPage_AuthMylistsDocument,
+  UserMylistsPage_ViewerDocument,
 } from "~/gql/graphql";
 
 import { Mylists } from ".";
+
+const mock_UserMylistsPage_ViewerDocument_loggedIn = graphql.query(
+  UserMylistsPage_ViewerDocument,
+  (req, res, ctx) => res(ctx.data({ whoami: { id: "user:1" } }))
+);
+const mock_UserMylistsPage_ViewerDocument_notLoggedIn = graphql.query(
+  UserMylistsPage_ViewerDocument,
+  (req, res, ctx) => res(ctx.data({ whoami: null }))
+);
 
 export default {
   component: Mylists,
@@ -24,14 +34,18 @@ export default {
       </UrqlProvider>
     );
   },
+  args: {
+    pageUserId: "user:1",
+  },
   parameters: {
     layout: "centered",
     msw: {
       handlers: [
-        graphql.query(ProfileMylistsPage_MylistsDocument, (req, res, ctx) =>
+        mock_UserMylistsPage_ViewerDocument_loggedIn,
+        graphql.query(UserMylistsPage_AuthMylistsDocument, (req, res, ctx) =>
           res(
             ctx.data({
-              whoami: aUser({
+              user: aUser({
                 id: "user:1",
                 icon: "/storybook/512x512.png",
                 name: "sno2wman",
@@ -60,11 +74,7 @@ export const NotLoggedIn: StoryObj<typeof Mylists> = {
   },
   parameters: {
     msw: {
-      handlers: [
-        graphql.query(ProfileMylistsPage_MylistsDocument, (req, res, ctx) =>
-          res(ctx.data({ whoami: null }))
-        ),
-      ],
+      handlers: [mock_UserMylistsPage_ViewerDocument_notLoggedIn],
     },
   },
 };
@@ -79,7 +89,8 @@ export const Loading: StoryObj<typeof Mylists> = {
   parameters: {
     msw: {
       handlers: [
-        graphql.query(ProfileMylistsPage_MylistsDocument, (req, res, ctx) =>
+        mock_UserMylistsPage_ViewerDocument_loggedIn,
+        graphql.query(UserMylistsPage_AuthMylistsDocument, (req, res, ctx) =>
           res(ctx.delay("infinite"))
         ),
       ],

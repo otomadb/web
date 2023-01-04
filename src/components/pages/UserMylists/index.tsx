@@ -4,23 +4,25 @@ import "client-only";
 
 import clsx from "clsx";
 import React, { useMemo } from "react";
-import { useQuery } from "urql";
+import { TypedDocumentNode, useQuery } from "urql";
 
+import { LinkMylist } from "~/components/common/Link";
 import { getFragment, graphql } from "~/gql";
 import {
   UserMylistsPage_AuthMylistsDocument,
   UserMylistsPage_MylistFragmentDoc,
   UserMylistsPage_MylistsFragment,
   UserMylistsPage_MylistsFragmentDoc,
+  UserMylistsPage_ViewerDocument,
 } from "~/gql/graphql";
-import { useViewer } from "~/hooks/useViewer";
+
+import { Mylist } from "./Mylist";
 
 graphql(`
-  fragment UserMylistsPage_Mylist on Mylist {
-    id
-    title
-    isLikeList
-    range
+  query UserMylistsPage_Viewer {
+    whoami {
+      id
+    }
   }
 
   fragment UserMylistsPage_Mylists on MylistConnection {
@@ -33,53 +35,91 @@ graphql(`
   query UserMylistsPage_AuthMylists($userId: ID!) {
     user(id: $userId) {
       id
-      mylists(input: { limit: 10, range: [PUBLIC, KNOW_LINK, PRIVATE] }) {
+      mylists(input: { limit: 20, range: [PUBLIC, KNOW_LINK, PRIVATE] }) {
         ...UserMylistsPage_Mylists
       }
     }
   }
 `);
 
+export const useViewerPage = <TQuery, TVariable, TFallback>(
+  pageUserId: string,
+  {
+    query,
+    transform,
+    fallback,
+  }: {
+    query: TypedDocumentNode<TQuery, TVariable>;
+    transform: (data: TQuery | undefined) => TFallback;
+    fallback: TFallback;
+  }
+) => {
+  const [{ data: viewerData }] = useQuery({
+    query: UserMylistsPage_ViewerDocument,
+  });
+  const viewerId = useMemo(
+    () => (viewerData?.whoami?.id === pageUserId ? viewerData.whoami.id : null),
+    [viewerData, pageUserId]
+  );
+  const [{ data, fetching }] = useQuery({
+    query,
+    variables: viewerId ? { userId: viewerId } : undefined,
+  });
+  return [!!viewerId, viewerId ? transform(data) : fallback, fetching] as const;
+};
+
 export const Mylists: React.FC<{
   className?: string;
   pageUserId: string;
   fallback: UserMylistsPage_MylistsFragment;
 }> = ({ className, pageUserId, fallback }) => {
-  const [{ data: viewerData }] = useViewer();
-  const isYou = useMemo(
-    () => !!viewerData?.whoami?.id && viewerData.whoami.id === pageUserId,
-    [viewerData, pageUserId]
-  );
-  const [{ data, fetching }] = useQuery({
+  const [isViewer, data, fetching] = useViewerPage(pageUserId, {
     query: UserMylistsPage_AuthMylistsDocument,
-    pause: !isYou,
-    variables: isYou
-      ? {
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          userId: viewerData!.whoami!.id!,
-        }
-      : undefined,
+    transform: (data) =>
+      getFragment(UserMylistsPage_MylistsFragmentDoc, data?.user.mylists),
+    fallback,
   });
 
-  const mylists = useMemo(
-    () =>
-      (isYou
-        ? getFragment(UserMylistsPage_MylistsFragmentDoc, data?.user.mylists)
-        : fallback
-      )?.nodes.map((mylist) =>
-        getFragment(UserMylistsPage_MylistFragmentDoc, mylist)
-      ),
-    [data, fallback, isYou]
-  );
+  const mylists = getFragment(UserMylistsPage_MylistFragmentDoc, data?.nodes);
 
   return (
     <div className={clsx(className)}>
-      {fetching && <p>ロード中です</p>}
-      {mylists?.map((mylist) => (
-        <div key={mylist.id}>
-          <p>{mylist.title}</p>
-        </div>
-      ))}
+      {!fetching && data && (
+        <>
+          <div className={clsx(className, ["flex"], ["gap-x-2"])}>
+            <div
+              className={clsx(
+                ["flex-grow"],
+                ["flex", "flex-col", "items-stretch"]
+              )}
+            >
+              {mylists?.map(({ id, title, isLikeList, holder }) => (
+                <LinkMylist
+                  className={clsx(["px-4"], ["py-2"], ["hover:bg-blue-200"])}
+                  mylistId={id}
+                  key={id}
+                >
+                  <p className={clsx(["text-sm"], ["truncate"])}>
+                    {!isLikeList && title}
+                    {isLikeList && `${holder.displayName}のいいね欄`}
+                  </p>
+                </LinkMylist>
+              ))}
+            </div>
+            <div
+              className={clsx(
+                ["flex-shrink-0"],
+                ["w-[1024px]"],
+                ["flex", "flex-col", "items-stretch", "gap-y-2"]
+              )}
+            >
+              {mylists?.map((mylist) => (
+                <Mylist key={mylist.id} fragment={mylist} />
+              ))}
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };
