@@ -20,6 +20,7 @@ export default {
 };
 
 export const NotLikeList: StoryObj<typeof Mylist> = {
+  name: "いいねリストでない",
   args: {
     fragment: aMylist({
       id: "mylist:1",
@@ -55,6 +56,20 @@ export const NotLikeList: StoryObj<typeof Mylist> = {
               thumbnailUrl: "/storybook/960x540.jpg",
             }),
           }),
+          aMylistRegistration({
+            id: "mylistRegistration:4",
+            video: aVideo({
+              id: "video:4",
+              thumbnailUrl: "/storybook/960x540.jpg",
+            }),
+          }),
+          aMylistRegistration({
+            id: "mylistRegistration:5",
+            video: aVideo({
+              id: "video:5",
+              thumbnailUrl: "/storybook/960x540.jpg",
+            }),
+          }),
         ],
       }),
     }),
@@ -62,6 +77,7 @@ export const NotLikeList: StoryObj<typeof Mylist> = {
 };
 
 export const LikeList: StoryObj<typeof Mylist> = {
+  name: "いいねリスト",
   args: {
     fragment: aMylist({
       id: "mylist:1",
@@ -97,7 +113,42 @@ export const LikeList: StoryObj<typeof Mylist> = {
               thumbnailUrl: "/storybook/960x540.jpg",
             }),
           }),
+          aMylistRegistration({
+            id: "mylistRegistration:4",
+            video: aVideo({
+              id: "video:4",
+              thumbnailUrl: "/storybook/960x540.jpg",
+            }),
+          }),
+          aMylistRegistration({
+            id: "mylistRegistration:5",
+            video: aVideo({
+              id: "video:5",
+              thumbnailUrl: "/storybook/960x540.jpg",
+            }),
+          }),
         ],
+      }),
+    }),
+  },
+};
+
+export const NoRegistration: StoryObj<typeof Mylist> = {
+  name: "マイリストへの登録がない",
+  args: {
+    fragment: aMylist({
+      id: "mylist:1",
+      title: "マイリスト1",
+      isLikeList: false,
+      range: MylistShareRange.Public,
+      holder: aUser({
+        id: "user:1",
+        name: "sno2wman",
+        displayName: "SnO2WMaN",
+        icon: "/storybook/512x512.png",
+      }),
+      registrations: aMylistRegistrationConnection({
+        nodes: [],
       }),
     }),
   },

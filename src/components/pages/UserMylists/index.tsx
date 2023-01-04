@@ -86,7 +86,7 @@ export const Mylists: React.FC<{
     <div className={clsx(className)}>
       {!fetching && data && (
         <>
-          <div className={clsx(className, ["flex"], ["gap-x-2"])}>
+          <div className={clsx(className, ["flex"], ["gap-x-4"])}>
             <div
               className={clsx(
                 ["flex-grow"],

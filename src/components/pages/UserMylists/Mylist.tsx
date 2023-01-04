@@ -47,7 +47,8 @@ export const Mylist: React.FC<{
       className={clsx(
         className,
         ["border", "border-slate-300"],
-        ["py-2"],
+        ["bg-slate-100"],
+        ["py-3"],
         ["px-4"],
         ["flex", "items-center"],
         ["rounded"],
@@ -81,21 +82,23 @@ export const Mylist: React.FC<{
           </div>
         </div>
       </div>
-      <div>
-        <div
-          className={clsx(
-            ["flex", "gap-x-2"],
-            ["py-2"],
-            ["px-4"],
-            ["border", "border-slate-300"],
-            ["bg-slate-100"],
-            ["rounded"]
-          )}
-        >
+      <div
+        className={clsx(
+          ["relative"],
+          ["w-[512px]"],
+          ["overflow-hidden"],
+          ["border", "border-slate-300"],
+          ["bg-slate-200"],
+          ["px-4"],
+          ["py-2"],
+          ["rounded"]
+        )}
+      >
+        <div className={clsx(["z-0"], ["flex", "gap-x-2"], ["h-[72px]"])}>
           {registrations.nodes.map(({ id, video }) => (
             <div key={id}>
               <Thumbnail
-                className={clsx(["w-[96px]"], ["h-[72px]"])}
+                className={clsx(["w-[96px]"], ["h-full"])}
                 fragment={getFragment(Component_ThumbnailFragmentDoc, video)}
                 width={96}
                 height={72}
@@ -103,6 +106,23 @@ export const Mylist: React.FC<{
               />
             </div>
           ))}
+        </div>
+        <div
+          className={clsx(
+            ["flex", "items-end"],
+            ["z-1"],
+            ["absolute"],
+            ["inset-0"],
+            ["px-4"],
+            ["py-2"],
+            ["bg-gradient-to-r", "from-transparent", "to-slate-200"]
+          )}
+        >
+          <p className={clsx(["text-xs"], ["text-slate-700"])}>
+            {registrations.nodes.length === 0 && (
+              <>登録されている動画はありません。</>
+            )}
+          </p>
         </div>
       </div>
     </LinkMylist>
