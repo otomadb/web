@@ -12,7 +12,14 @@ export const GlobalNavigation: React.FC<{ className?: string }> = ({
   className,
 }) => {
   return (
-    <nav className={clsx(className, ["bg-slate-900"], ["shadow-lg"])}>
+    <nav
+      className={clsx(
+        className,
+        ["z-infinity"],
+        ["bg-slate-900"],
+        ["shadow-lg"]
+      )}
+    >
       <div
         className={clsx(
           ["h-full"],
