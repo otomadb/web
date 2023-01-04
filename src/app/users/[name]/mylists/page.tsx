@@ -3,13 +3,8 @@ import { notFound } from "next/navigation";
 
 import { Mylists } from "~/components/pages/UserMylists";
 import { getFragment, graphql } from "~/gql";
-import {
-  UserMylistsPage_MylistsFragmentDoc,
-  UserPageLayout_NavFragmentDoc,
-} from "~/gql/graphql";
+import { UserMylistsPage_MylistsFragmentDoc } from "~/gql/graphql";
 import { gqlRequest } from "~/utils/gqlRequest";
-
-import { Nav } from "../Nav";
 
 export default async function Page({ params }: { params: { name: string } }) {
   const { findUser } = await gqlRequest(
@@ -31,10 +26,6 @@ export default async function Page({ params }: { params: { name: string } }) {
 
   return (
     <>
-      <Nav
-        highlight="MYLISTS"
-        user={getFragment(UserPageLayout_NavFragmentDoc, findUser)}
-      />
       <main className={clsx(["py-4"])}>
         <Mylists
           pageUserId={findUser.id}

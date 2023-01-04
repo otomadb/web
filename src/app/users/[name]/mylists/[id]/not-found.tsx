@@ -4,7 +4,7 @@ import clsx from "clsx";
 
 export default function NotFound() {
   return (
-    <main>
+    <main className={clsx(["px-8"])}>
       <h1
         className={clsx(
           ["tracking-wider"],
