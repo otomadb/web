@@ -1,6 +1,12 @@
 import { notFound } from "next/navigation";
 
-import { graphql } from "~/gql";
+import { Details } from "~/components/pages/UserMylist/Details";
+import { Registrations } from "~/components/pages/UserMylist/Registrations";
+import { getFragment, graphql } from "~/gql";
+import {
+  MylistPage_DetailsFragmentDoc,
+  MylistPage_RegistrationsFragmentDoc,
+} from "~/gql/graphql";
 import { gqlRequest } from "~/utils/gqlRequest";
 
 export const revalidate = 0;
@@ -17,8 +23,8 @@ export default async function Page({
           ...UserPageLayout_Nav
           mylist(id: $mylistId) {
             id
-            ...MylistPage_DetailsSection
-            ...MylistPage_RegistrationsSection
+            ...MylistPage_Details
+            ...MylistPage_Registrations
           }
         }
       }
@@ -37,7 +43,15 @@ export default async function Page({
   return (
     <>
       <div>
-        <p>Oh!</p>
+        <Details
+          fallback={getFragment(MylistPage_DetailsFragmentDoc, findUser.mylist)}
+        />
+        <Registrations
+          fallback={getFragment(
+            MylistPage_RegistrationsFragmentDoc,
+            findUser.mylist
+          )}
+        />
       </div>
     </>
   );
