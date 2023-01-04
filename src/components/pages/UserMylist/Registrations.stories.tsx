@@ -10,7 +10,7 @@ import {
   aMylistRegistration,
   aMylistRegistrationConnection,
   aVideo,
-  MylistPage_RegistrationsSectionDocument,
+  MylistPage_UpstreamRegistrationsDocument,
 } from "~/gql/graphql";
 
 import { Registrations } from "./Registrations";
@@ -45,7 +45,7 @@ export default {
     msw: {
       handlers: [
         graphql.query(
-          MylistPage_RegistrationsSectionDocument,
+          MylistPage_UpstreamRegistrationsDocument,
           (req, res, ctx) =>
             res(
               ctx.data({
