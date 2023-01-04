@@ -6,7 +6,7 @@ import clsx from "clsx";
 import React, { useMemo } from "react";
 import { TypedDocumentNode, useQuery } from "urql";
 
-import { LinkMylist } from "~/components/common/Link";
+import { LinkUserMylist } from "~/components/common/Link";
 import { getFragment, graphql } from "~/gql";
 import {
   UserMylistsPage_AuthMylistsDocument,
@@ -94,16 +94,17 @@ export const Mylists: React.FC<{
               )}
             >
               {mylists?.map(({ id, title, isLikeList, holder }) => (
-                <LinkMylist
+                <LinkUserMylist
                   className={clsx(["px-4"], ["py-2"], ["hover:bg-blue-200"])}
                   mylistId={id}
+                  userName={holder.name}
                   key={id}
                 >
                   <p className={clsx(["text-sm"], ["truncate"])}>
                     {!isLikeList && title}
                     {isLikeList && `${holder.displayName}のいいね欄`}
                   </p>
-                </LinkMylist>
+                </LinkUserMylist>
               ))}
             </div>
             <div
