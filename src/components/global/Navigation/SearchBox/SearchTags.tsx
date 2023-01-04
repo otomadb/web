@@ -47,6 +47,9 @@ export const SearchTags: React.FC<{
               ["hover:bg-sky-300/50", "focus:bg-sky-4 00/50"],
               ["py-2"]
             )}
+            onClick={(e) => {
+              e.currentTarget.blur();
+            }}
           >
             <div className={clsx(["flex-shrink-0"], ["w-36"], ["px-2"])}>
               <div

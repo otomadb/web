@@ -47,6 +47,9 @@ export const SearchVideos: React.FC<{
               ["hover:bg-sky-300/50", "focus:bg-sky-400/50"],
               ["divide-x", "border-slate-300/75"]
             )}
+            onClick={(e) => {
+              e.currentTarget.blur();
+            }}
           >
             <Thumbnail
               fragment={getFragment(Component_ThumbnailFragmentDoc, video)}
