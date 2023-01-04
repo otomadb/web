@@ -470,7 +470,7 @@ type User implements Node {
   displayName: String!
   icon: String
   id: ID!
-  likes: Mylist!
+  likes: Mylist
   mylist(id: ID!): Mylist
   mylists(input: UserMylistsInput!): MylistConnection!
   name: String!
