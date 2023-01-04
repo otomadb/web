@@ -8,8 +8,8 @@ import {
   LinkRegisterSemitag,
   LinkRegisterTag,
   LinkUser,
-  LinkUserLikes,
-  LinkUserMylists,
+  LinkYouLikes,
+  LinkYouMylists,
 } from "~/components/common/Link";
 import { useLogout } from "~/hooks/useLogout";
 
@@ -99,16 +99,10 @@ export const Accordion: React.FC<{
             >
               プロフィール
             </MenuItem>
-            <MenuItem
-              Wrapper={(props) => <LinkUserLikes name={user.name} {...props} />}
-            >
+            <MenuItem Wrapper={(props) => <LinkYouLikes {...props} />}>
               いいねした動画
             </MenuItem>
-            <MenuItem
-              Wrapper={(props) => (
-                <LinkUserMylists name={user.name} {...props} />
-              )}
-            >
+            <MenuItem Wrapper={(props) => <LinkYouMylists {...props} />}>
               マイリスト
             </MenuItem>
           </div>

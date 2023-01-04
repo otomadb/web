@@ -4,15 +4,14 @@ import clsx from "clsx";
 import { notFound } from "next/navigation";
 import React from "react";
 
+import { Header } from "~/components/common/UserPage/Header";
+import { UserPageNav } from "~/components/common/UserPage/Nav";
 import { getFragment, graphql } from "~/gql";
 import {
   UserPageLayout_HeaderFragmentDoc,
   UserPageLayout_NavFragmentDoc,
 } from "~/gql/graphql";
 import { gqlRequest } from "~/utils/gqlRequest";
-
-import { Header } from "./Header";
-import { Nav } from "./Nav";
 
 export default async function Layout({
   children,
@@ -42,9 +41,9 @@ export default async function Layout({
           className={clsx(["container", "max-w-screen-xl", "mx-auto"])}
           fragment={getFragment(UserPageLayout_HeaderFragmentDoc, findUser)}
         />
-        <Nav
+        <UserPageNav
           // highlight="MYLISTS"
-          user={getFragment(UserPageLayout_NavFragmentDoc, findUser)}
+          fragment={getFragment(UserPageLayout_NavFragmentDoc, findUser)}
         />
         {children}
       </div>
