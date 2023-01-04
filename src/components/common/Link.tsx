@@ -54,6 +54,26 @@ export const LinkUser: React.FC<LinkProps<{ name: string }>> = ({
   </Link>
 );
 
+export const LinkUserLikes: React.FC<LinkProps<{ name: string }>> = ({
+  children,
+  name,
+  ...props
+}) => (
+  <Link href={`/users/${name}/likes`} {...props}>
+    {children}
+  </Link>
+);
+
+export const LinkUserMylists: React.FC<LinkProps<{ name: string }>> = ({
+  children,
+  name,
+  ...props
+}) => (
+  <Link href={`/users/${name}/mylists`} {...props}>
+    {children}
+  </Link>
+);
+
 export const LinkMylist: React.FC<LinkProps<{ mylistId: string }>> = ({
   children,
   mylistId,

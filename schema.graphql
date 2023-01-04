@@ -171,9 +171,9 @@ type MylistRegistrationConnection {
 }
 
 input MylistRegistrationsInput {
-  limit: Int
+  limit: Int! = 10
   order: MylistRegistrationsInputOrder! = {}
-  skip: Int
+  skip: Int! = 0
 }
 
 input MylistRegistrationsInputOrder {

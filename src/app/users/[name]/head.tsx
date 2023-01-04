@@ -17,9 +17,7 @@ export default async function Head({ params }: { params: { name: string } }) {
     { name: params.name }
   );
 
-  if (!findUser) {
-    notFound();
-  }
+  if (!findUser) notFound();
 
   const { name, displayName } = findUser;
 
