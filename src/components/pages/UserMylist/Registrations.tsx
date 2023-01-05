@@ -15,7 +15,7 @@ import { Registeration } from "./Registeration";
 
 graphql(`
   fragment MylistPage_Registrations on Mylist {
-    registrations(input: { limit: 24 }) {
+    registrations(input: { limit: 24, order: { createdAt: DESC } }) {
       nodes {
         id
         ...MylistPage_Registration

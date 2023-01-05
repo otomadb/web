@@ -128,26 +128,34 @@ export const LinkRegisterSemitag: React.FC<LinkProps> = ({
   </Link>
 );
 
-export const LinkProfile: React.FC<LinkProps> = ({ children, ...props }) => (
-  <Link href={"/profile"} {...props}>
+export const LinkYou: React.FC<LinkProps> = ({ children, ...props }) => (
+  <Link href={"/you"} {...props}>
     {children}
   </Link>
 );
 
-export const LinkProfileLikes: React.FC<LinkProps> = ({
-  children,
-  ...props
-}) => (
-  <Link href={"/profile/likes"} {...props}>
+export const LinkYouLikes: React.FC<LinkProps> = ({ children, ...props }) => (
+  <Link href={"/you/likes"} {...props}>
     {children}
   </Link>
 );
 
-export const LinkProfileMylists: React.FC<LinkProps> = ({
-  children,
-  ...props
-}) => (
-  <Link href={"/profile/mylists"} {...props}>
+export const LinkYouMylists: React.FC<LinkProps> = ({ children, ...props }) => (
+  <Link href={"/you/mylists"} {...props}>
+    {children}
+  </Link>
+);
+
+export const LinkYouMylist: React.FC<
+  LinkProps<{
+    /**
+     * GraphQL Mylist ID (ex. `mylist:1234`)
+     */
+    mylistId: string;
+  }>
+> = ({ mylistId, children, ...props }) => (
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  <Link href={`/you/mylists/${mylistId.split(":").at(1)!}`} {...props}>
     {children}
   </Link>
 );

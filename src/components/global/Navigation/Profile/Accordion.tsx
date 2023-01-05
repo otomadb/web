@@ -8,8 +8,8 @@ import {
   LinkRegisterSemitag,
   LinkRegisterTag,
   LinkUser,
-  LinkUserLikes,
-  LinkUserMylists,
+  LinkYouLikes,
+  LinkYouMylists,
 } from "~/components/common/Link";
 import { LogoutButton } from "~/components/common/LogoutButton";
 import { getFragment, graphql } from "~/gql";
@@ -72,8 +72,8 @@ const Profile: React.FC<{
 
 graphql(`
   fragment GlobalNav_Profile_Accordion on User {
-    ...GlobalNav_Profile_Accordion_Profile
     name
+    ...GlobalNav_Profile_Accordion_Profile
   }
 `);
 export const Accordion: React.FC<{
@@ -117,18 +117,10 @@ export const Accordion: React.FC<{
             >
               プロフィール
             </MenuItem>
-            <MenuItem
-              Wrapper={(props) => (
-                <LinkUserLikes name={fragment.name} {...props} />
-              )}
-            >
+            <MenuItem Wrapper={(props) => <LinkYouLikes {...props} />}>
               いいねした動画
             </MenuItem>
-            <MenuItem
-              Wrapper={(props) => (
-                <LinkUserMylists name={fragment.name} {...props} />
-              )}
-            >
+            <MenuItem Wrapper={(props) => <LinkYouMylists {...props} />}>
               マイリスト
             </MenuItem>
           </div>

@@ -17,7 +17,7 @@ graphql(`
 `);
 export const Header: React.FC<{
   className?: string;
-  fragment: UserPageLayout_HeaderFragment;
+  fragment?: UserPageLayout_HeaderFragment;
 }> = ({ className, fragment }) => {
   return (
     <header
@@ -35,16 +35,23 @@ export const Header: React.FC<{
           ["flex", "items-center"]
         )}
       >
-        <UserIcon2
-          fragment={getFragment(Component_UserIconFragmentDoc, fragment)}
-          size={96}
-        />
+        <div className={clsx(["w-[96px]", "h-[96px]"])}>
+          {fragment && (
+            <UserIcon2
+              size={96}
+              fragment={
+                getFragment(Component_UserIconFragmentDoc, fragment) ||
+                undefined
+              }
+            />
+          )}
+        </div>
         <div className={clsx(["ml-4"])}>
           <p className={clsx(["text-xl"], ["text-slate-900"])}>
-            {fragment.displayName}
+            {fragment?.displayName}
           </p>
           <p className={clsx(["text-base"], ["text-slate-600"], ["font-mono"])}>
-            @{fragment.name}
+            {fragment?.name && `@${fragment.name}`}
           </p>
         </div>
       </div>

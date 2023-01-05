@@ -54,7 +54,7 @@ export const UserIcon2: React.FC<{
       style={{ width: size, height: size }}
     >
       <Image
-        className={clsx(className)}
+        className={clsx(["w-full"], ["h-full"])}
         width={size}
         height={size}
         src={src}
