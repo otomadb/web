@@ -29,7 +29,7 @@ graphql(`
 export const Inner: React.FC<{ mylistId: string }> = ({ mylistId }) => {
   const [{ data }] = useQuery({
     query: YouMylistPageDocument,
-    variables: { mylistId },
+    variables: { mylistId: `mylist:${mylistId}` },
   });
 
   const details = getFragment(
