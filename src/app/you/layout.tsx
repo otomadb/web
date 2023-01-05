@@ -16,7 +16,7 @@ export default async function Layout({
       <div className={clsx(["container", "max-w-screen-xl", "mx-auto"])}>
         <YouPageHeader />
         <YouPageNav />
-        {children}
+        <main className={clsx(["py-4"])}>{children}</main>
       </div>
     </div>
   );
