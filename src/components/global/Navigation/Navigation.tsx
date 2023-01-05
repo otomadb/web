@@ -1,3 +1,5 @@
+"use client";
+
 import clsx from "clsx";
 import React from "react";
 
@@ -5,8 +7,6 @@ import { LinkTop } from "~/components/common/Link";
 
 import { Profile } from "./Profile/Profile";
 import { SearchBox } from "./SearchBox/SearchBox";
-
-export const revalidate = 120;
 
 export const GlobalNavigation: React.FC<{ className?: string }> = ({
   className,

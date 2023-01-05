@@ -2,19 +2,36 @@
 
 import clsx from "clsx";
 import React from "react";
+import { useQuery } from "urql";
 
 import { LinkSignin } from "~/components/common/Link";
-import { UserIcon } from "~/components/common/UserIcon";
-import { useViewer } from "~/hooks/useViewer";
+import { UserIcon2 } from "~/components/common/UserIcon";
+import { getFragment, graphql } from "~/gql";
+import {
+  Component_UserIconFragmentDoc,
+  GlobalNav_Profile_AccordionFragmentDoc,
+  GlobalNav_ProfileDocument,
+} from "~/gql/graphql";
 
 import { Accordion } from "./Accordion";
 
+graphql(`
+  query GlobalNav_Profile {
+    whoami {
+      id
+      ...Component_UserIcon
+      ...GlobalNav_Profile_Accordion
+    }
+  }
+`);
 export const Profile: React.FC<{ className?: string }> = ({ className }) => {
-  const [{ data }] = useViewer();
-  const whoami = data?.whoami;
+  const [{ data, fetching }] = useQuery({
+    query: GlobalNav_ProfileDocument,
+    requestPolicy: "cache-and-network",
+  });
   return (
     <div className={clsx(className, ["flex"])}>
-      {whoami === undefined && (
+      {fetching && (
         <div
           className={clsx(
             ["rounded-sm"],
@@ -25,7 +42,7 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
           )}
         ></div>
       )}
-      {whoami === null && (
+      {data?.whoami === null && (
         <LinkSignin
           className={clsx(
             ["flex"],
@@ -43,13 +60,13 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
           <span>Login</span>
         </LinkSignin>
       )}
-      {whoami && (
+      {data?.whoami && (
         <div className={clsx(["relative"], ["group"], ["flex"])}>
           <div tabIndex={0}>
-            <UserIcon
-              className={clsx(["w-[2rem]"], ["h-[2rem]"])}
-              src={whoami.icon || null}
-              name={whoami.name}
+            <UserIcon2
+              className={clsx(["w-[32px]"], ["h-[32px]"])}
+              fragment={getFragment(Component_UserIconFragmentDoc, data.whoami)}
+              size={32}
             />
           </div>
           <Accordion
@@ -65,7 +82,10 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
               [["right-0", "xl:right-auto"], ["xl:-left-[7rem]"]],
               ["mx-auto"]
             )}
-            user={whoami}
+            fragment={getFragment(
+              GlobalNav_Profile_AccordionFragmentDoc,
+              data.whoami
+            )}
           />
         </div>
       )}
