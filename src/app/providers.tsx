@@ -11,10 +11,9 @@ import {
 } from "urql";
 
 import { GraphCacheConfig } from "~/gql/graphql";
-import { mockLogoutHandler } from "~/hooks/useLogout";
 import { RestProvider } from "~/rest";
 
-export const handlers = [mockLogoutHandler];
+export const handlers = [];
 
 if (
   process.env.NEXT_PUBLIC_MSW_ENABLE === "true" &&

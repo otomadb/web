@@ -1,6 +1,6 @@
 "use client";
+
 import clsx from "clsx";
-import { useRouter } from "next/navigation";
 import React, { ReactNode } from "react";
 
 import {
@@ -11,11 +11,21 @@ import {
   LinkUserLikes,
   LinkUserMylists,
 } from "~/components/common/Link";
-import { useLogout } from "~/hooks/useLogout";
+import { LogoutButton } from "~/components/common/LogoutButton";
+import { getFragment, graphql } from "~/gql";
+import {
+  GlobalNav_Profile_Accordion_ProfileFragment,
+  GlobalNav_Profile_Accordion_ProfileFragmentDoc,
+  GlobalNav_Profile_AccordionFragment,
+} from "~/gql/graphql";
 
 const MenuItem: React.FC<{
   className?: string;
-  Wrapper: React.FC<{ className?: string; children?: ReactNode }>;
+  Wrapper: React.FC<{
+    className?: string;
+    children?: ReactNode;
+    onClick?: React.MouseEventHandler<HTMLAnchorElement>;
+  }>;
   children: ReactNode;
 }> = ({ className, Wrapper, children }) => {
   return (
@@ -29,37 +39,47 @@ const MenuItem: React.FC<{
         ["text-slate-900", "group-hover/link:text-sky-900"],
         ["text-xs"]
       )}
+      onClick={(e) => {
+        e.currentTarget.blur();
+      }}
     >
       {children}
     </Wrapper>
   );
 };
 
-export const Logout: React.FC<{ className?: string }> = ({ className }) => {
-  const router = useRouter();
-  const logout = useLogout({
-    onSuccess() {
-      router.push("/");
-    },
-  });
-
+graphql(`
+  fragment GlobalNav_Profile_Accordion_Profile on User {
+    id
+    name
+    displayName
+  }
+`);
+const Profile: React.FC<{
+  fragment: GlobalNav_Profile_Accordion_ProfileFragment;
+}> = ({ fragment }) => {
   return (
-    <div
-      className={clsx(className)}
-      role={"button"}
-      onClick={() => {
-        logout();
-      }}
-    >
-      ログアウト
+    <div className={clsx(["py-3"], ["px-4"], ["bg-white/75"])}>
+      <div className={clsx(["text-slate-900"], ["text-sm"], ["font-bold"])}>
+        {fragment.displayName}
+      </div>
+      <div className={clsx(["text-slate-700"], ["text-xs"])}>
+        @{fragment.name}
+      </div>
     </div>
   );
 };
 
+graphql(`
+  fragment GlobalNav_Profile_Accordion on User {
+    ...GlobalNav_Profile_Accordion_Profile
+    name
+  }
+`);
 export const Accordion: React.FC<{
   className?: string;
-  user: { id: string; name: string; displayName: string; icon?: string | null };
-}> = ({ className, user }) => {
+  fragment: GlobalNav_Profile_AccordionFragment;
+}> = ({ className, fragment }) => {
   return (
     <div className={clsx(className, ["pt-1"])}>
       <div
@@ -72,14 +92,12 @@ export const Accordion: React.FC<{
           ["divide-y-2", "divide-y-slate-400"]
         )}
       >
-        <div className={clsx(["py-3"], ["px-4"], ["bg-white/75"])}>
-          <div className={clsx(["text-slate-900"], ["text-sm"], ["font-bold"])}>
-            {user.displayName}
-          </div>
-          <div className={clsx(["text-slate-700"], ["text-xs"])}>
-            @{user.name}
-          </div>
-        </div>
+        <Profile
+          fragment={getFragment(
+            GlobalNav_Profile_Accordion_ProfileFragmentDoc,
+            fragment
+          )}
+        />
         <div>
           <div
             className={clsx(
@@ -95,18 +113,20 @@ export const Accordion: React.FC<{
           </div>
           <div className={clsx(["grid"], ["grid-cols-1"])}>
             <MenuItem
-              Wrapper={(props) => <LinkUser name={user.name} {...props} />}
+              Wrapper={(props) => <LinkUser name={fragment.name} {...props} />}
             >
               プロフィール
             </MenuItem>
             <MenuItem
-              Wrapper={(props) => <LinkUserLikes name={user.name} {...props} />}
+              Wrapper={(props) => (
+                <LinkUserLikes name={fragment.name} {...props} />
+              )}
             >
               いいねした動画
             </MenuItem>
             <MenuItem
               Wrapper={(props) => (
-                <LinkUserMylists name={user.name} {...props} />
+                <LinkUserMylists name={fragment.name} {...props} />
               )}
             >
               マイリスト
@@ -153,7 +173,7 @@ export const Accordion: React.FC<{
           )}
         >
           <div className={clsx(["flex"])}>
-            <Logout
+            <LogoutButton
               className={clsx(
                 ["text-xs"],
                 ["text-slate-700", "hover:text-slate-500"]
