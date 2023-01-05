@@ -7,8 +7,10 @@ import ky from "ky";
 import { rest } from "msw";
 import { useRouter } from "next/navigation";
 import React, { useCallback } from "react";
+import { useQuery } from "urql";
 
-import { useViewer } from "~/hooks/useViewer";
+import { graphql } from "~/gql";
+import { LogoutButtonDocument } from "~/gql/graphql";
 
 export const mockLogoutHandler = rest.post(
   new URL("/auth/logout", process.env.NEXT_PUBLIC_API_ENDPOINT).toString(),
@@ -24,10 +26,20 @@ export const mockLogoutHandler = rest.post(
   }
 );
 
+graphql(`
+  query LogoutButton {
+    whoami {
+      id
+    }
+  }
+`);
 export const LogoutButton: React.FC<{ className?: string }> = ({
   className,
 }) => {
-  const [{ data }] = useViewer();
+  const [, updateViewer] = useQuery({
+    query: LogoutButtonDocument,
+    pause: true,
+  });
 
   const router = useRouter();
   const handleLogout = useCallback(async () => {
@@ -36,10 +48,10 @@ export const LogoutButton: React.FC<{ className?: string }> = ({
       { throwHttpErrors: false, credentials: "include" }
     );
     if (result.ok) {
-      // update({ requestPolicy: "network-only" });
+      updateViewer({ requestPolicy: "network-only" });
       router.push("/");
     }
-  }, [router]);
+  }, [router, updateViewer]);
 
   return (
     <button
