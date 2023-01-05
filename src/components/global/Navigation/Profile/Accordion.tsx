@@ -1,6 +1,6 @@
 "use client";
+
 import clsx from "clsx";
-import { useRouter } from "next/navigation";
 import React, { ReactNode } from "react";
 
 import {
@@ -11,7 +11,7 @@ import {
   LinkUserLikes,
   LinkUserMylists,
 } from "~/components/common/Link";
-import { useLogout } from "~/hooks/useLogout";
+import { LogoutButton } from "~/components/common/LogoutButton";
 
 const MenuItem: React.FC<{
   className?: string;
@@ -39,27 +39,6 @@ const MenuItem: React.FC<{
     >
       {children}
     </Wrapper>
-  );
-};
-
-export const Logout: React.FC<{ className?: string }> = ({ className }) => {
-  const router = useRouter();
-  const logout = useLogout({
-    onSuccess() {
-      router.push("/");
-    },
-  });
-
-  return (
-    <div
-      className={clsx(className)}
-      role={"button"}
-      onClick={() => {
-        logout();
-      }}
-    >
-      ログアウト
-    </div>
   );
 };
 
@@ -160,7 +139,7 @@ export const Accordion: React.FC<{
           )}
         >
           <div className={clsx(["flex"])}>
-            <Logout
+            <LogoutButton
               className={clsx(
                 ["text-xs"],
                 ["text-slate-700", "hover:text-slate-500"]

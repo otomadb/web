@@ -2,11 +2,13 @@
 
 import "client-only";
 
+import clsx from "clsx";
 import ky from "ky";
 import { rest } from "msw";
-import { useCallback } from "react";
+import { useRouter } from "next/navigation";
+import React, { useCallback } from "react";
 
-import { useViewer } from "./useViewer";
+import { useViewer } from "~/hooks/useViewer";
 
 export const mockLogoutHandler = rest.post(
   new URL("/auth/logout", process.env.NEXT_PUBLIC_API_ENDPOINT).toString(),
@@ -22,18 +24,30 @@ export const mockLogoutHandler = rest.post(
   }
 );
 
-export const useLogout = ({ onSuccess }: { onSuccess(): void }) => {
-  const [, update] = useViewer();
+export const LogoutButton: React.FC<{ className?: string }> = ({
+  className,
+}) => {
+  const [{ data }] = useViewer();
 
-  const handler = useCallback(async () => {
+  const router = useRouter();
+  const handleLogout = useCallback(async () => {
     const result = await ky.post(
       new URL("/auth/logout", process.env.NEXT_PUBLIC_API_ENDPOINT).toString(),
       { throwHttpErrors: false, credentials: "include" }
     );
     if (result.ok) {
-      onSuccess();
-      update({ requestPolicy: "network-only" });
+      // update({ requestPolicy: "network-only" });
+      router.push("/");
     }
-  }, [onSuccess, update]);
-  return handler;
+  }, [router]);
+
+  return (
+    <button
+      className={clsx(className)}
+      type="button"
+      onClick={() => handleLogout()}
+    >
+      ログアウト
+    </button>
+  );
 };
