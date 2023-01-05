@@ -11,9 +11,6 @@ graphql(`
   query UseViewer {
     whoami {
       id
-      name
-      displayName
-      icon
     }
   }
 `);
