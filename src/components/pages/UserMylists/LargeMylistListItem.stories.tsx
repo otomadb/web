@@ -13,7 +13,7 @@ import {
   aUser,
   aVideo,
   MylistShareRange,
-  UserMylistsPage_LinkSwitch_ViewerDocument,
+  UseViewerDocument,
 } from "~/gql/graphql";
 
 import { LargeMylistListItem } from "./LargeMylistListItem";
@@ -34,9 +34,8 @@ export default {
     layout: "centered",
     msw: {
       handlers: [
-        graphql.query(
-          UserMylistsPage_LinkSwitch_ViewerDocument,
-          (req, res, ctx) => res(ctx.data({ whoami: null }))
+        graphql.query(UseViewerDocument, (req, res, ctx) =>
+          res(ctx.data({ whoami: null }))
         ),
       ],
     },
@@ -215,17 +214,8 @@ export const MyLikeList: StoryObj<typeof LargeMylistListItem> = {
   parameters: {
     msw: {
       handlers: [
-        graphql.query(
-          UserMylistsPage_LinkSwitch_ViewerDocument,
-          (req, res, ctx) =>
-            res(
-              ctx.data({
-                whoami: aUser({
-                  id: "user:1",
-                  likes: aMylist({ id: "mylist:1" }),
-                }),
-              })
-            )
+        graphql.query(UseViewerDocument, (req, res, ctx) =>
+          res(ctx.data({ whoami: aUser({ id: "user:1" }) }))
         ),
       ],
     },
