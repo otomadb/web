@@ -15,7 +15,11 @@ import { useLogout } from "~/hooks/useLogout";
 
 const MenuItem: React.FC<{
   className?: string;
-  Wrapper: React.FC<{ className?: string; children?: ReactNode }>;
+  Wrapper: React.FC<{
+    className?: string;
+    children?: ReactNode;
+    onClick?: React.MouseEventHandler<HTMLAnchorElement>;
+  }>;
   children: ReactNode;
 }> = ({ className, Wrapper, children }) => {
   return (
@@ -29,6 +33,9 @@ const MenuItem: React.FC<{
         ["text-slate-900", "group-hover/link:text-sky-900"],
         ["text-xs"]
       )}
+      onClick={(e) => {
+        e.currentTarget.blur();
+      }}
     >
       {children}
     </Wrapper>
