@@ -1,35 +1,42 @@
-import React, { ReactNode } from "react";
-import { useQuery } from "urql";
+"use client";
 
-import { LinkUserMylist, LinkYouLikes } from "~/components/common/Link";
+import React, { ReactNode } from "react";
+
+import {
+  LinkUserMylist,
+  LinkYouLikes,
+  LinkYouMylist,
+} from "~/components/common/Link";
 import { graphql } from "~/gql";
-import { UserMylistsPage_LinkSwitch_ViewerDocument } from "~/gql/graphql";
+import { UserMylistsPage_LinkSwitchFragment } from "~/gql/graphql";
+import { useViewer } from "~/hooks/useViewer";
 
 graphql(`
-  query UserMylistsPage_LinkSwitch_Viewer {
-    whoami {
+  fragment UserMylistsPage_LinkSwitch on Mylist {
+    id
+    isLikeList
+    holder {
       id
-      likes {
-        id
-      }
+      name
     }
   }
 `);
 export const MylistLinkSwitch: React.FC<{
   children: ReactNode;
   className?: string;
+  fragment: UserMylistsPage_LinkSwitchFragment;
+}> = ({ fragment, ...props }) => {
+  const [{ data: viewer }] = useViewer();
 
-  userName: string;
-  mylistId: string;
-}> = ({ userName, mylistId, ...props }) => {
-  const [{ data: viewer }] = useQuery({
-    query: UserMylistsPage_LinkSwitch_ViewerDocument,
-  });
-
-  if (viewer?.whoami?.likes?.id === mylistId)
-    return <LinkYouLikes {...props} />;
-  else
+  if (viewer?.whoami?.id !== fragment.holder.id)
     return (
-      <LinkUserMylist userName={userName} mylistId={mylistId} {...props} />
+      <LinkUserMylist
+        mylistId={fragment.id}
+        userName={fragment.holder.name}
+        {...props}
+      />
     );
+
+  if (fragment.isLikeList) return <LinkYouLikes {...props} />;
+  else return <LinkYouMylist mylistId={fragment.id} {...props} />;
 };

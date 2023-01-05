@@ -145,3 +145,17 @@ export const LinkYouMylists: React.FC<LinkProps> = ({ children, ...props }) => (
     {children}
   </Link>
 );
+
+export const LinkYouMylist: React.FC<
+  LinkProps<{
+    /**
+     * GraphQL Mylist ID (ex. `mylist:1234`)
+     */
+    mylistId: string;
+  }>
+> = ({ mylistId, children, ...props }) => (
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  <Link href={`/you/mylists/${mylistId.split(":").at(1)!}`} {...props}>
+    {children}
+  </Link>
+);
