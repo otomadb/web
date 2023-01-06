@@ -8,7 +8,7 @@ import { styleByTagType } from "~/utils/styleByTagType";
 
 graphql(`
   fragment VideoPage_TagsTypesList on Video {
-    tags {
+    tags(input: {}) {
       pseudoType
     }
   }

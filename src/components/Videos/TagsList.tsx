@@ -21,7 +21,7 @@ import { TagTypesList } from "./TagTypesList";
 graphql(`
   fragment VideoPage_TagsList on Video {
     id
-    tags {
+    tags(input: {}) {
       ...VideoPage_TagsListItem
     }
     ...VideoPage_TagsTypesList
