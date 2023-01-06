@@ -4,17 +4,13 @@ import "client-only";
 
 import clsx from "clsx";
 import React from "react";
-import { useQuery } from "urql";
 
 import { UserIcon } from "~/components/common/UserIcon";
 import { graphql } from "~/gql";
-import {
-  MylistPage_DetailsFragment,
-  MylistPage_UpstreamDetailsDocument,
-} from "~/gql/graphql";
+import { UserMylistPage_DetailsFragment } from "~/gql/graphql";
 
 graphql(`
-  fragment MylistPage_Details on Mylist {
+  fragment UserMylistPage_Details on Mylist {
     id
     title
     isLikeList
@@ -25,22 +21,12 @@ graphql(`
       icon
     }
   }
-
-  query MylistPage_UpstreamDetails($id: ID!) {
-    mylist(id: $id) {
-      ...MylistPage_Details
-    }
-  }
 `);
 
 export const Details: React.FC<{
   className?: string;
-  fallback: MylistPage_DetailsFragment;
+  fallback: UserMylistPage_DetailsFragment;
 }> = ({ className, fallback }) => {
-  const [{ data }] = useQuery({
-    query: MylistPage_UpstreamDetailsDocument,
-    variables: { id: fallback.id },
-  });
   const { title, holder, isLikeList } = fallback;
 
   return (

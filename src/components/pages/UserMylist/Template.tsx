@@ -1,19 +1,29 @@
 "use client";
-import React, { ComponentProps } from "react";
+import React from "react";
 
 import { MetaTemplate } from "~/components/common/MylistPage/MetaTemplate";
-import { SideMylistList } from "~/components/common/MylistPage/SideMylistList";
-import { Registrations } from "~/components/pages/UserMylist/Registrations";
+import {
+  MylistPageCommon_SideMylistListFragment,
+  UserMylistPage_DetailsFragment,
+  UserMylistPage_RegistrationsFragment,
+} from "~/gql/graphql";
+
+import { Details } from "./Details";
+import { Registrations } from "./Registrations";
 
 export const UserMylistTemplate: React.FC<{
-  sidelist?: ComponentProps<typeof SideMylistList>["fallback"];
-  registrations?: ComponentProps<typeof Registrations>["fallback"];
-}> = ({ sidelist, registrations }) => {
+  sidelist: MylistPageCommon_SideMylistListFragment | undefined;
+  details: UserMylistPage_DetailsFragment | undefined;
+  registrations: UserMylistPage_RegistrationsFragment | undefined;
+}> = ({ sidelist, details, registrations }) => {
   return (
     <MetaTemplate
       sidelist={sidelist}
       Main={() => (
-        <>{registrations && <Registrations fallback={registrations} />}</>
+        <>
+          {details && <Details fallback={details} />}
+          {registrations && <Registrations fallback={registrations} />}
+        </>
       )}
     />
   );

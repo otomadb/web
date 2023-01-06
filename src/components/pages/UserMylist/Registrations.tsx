@@ -35,17 +35,7 @@ export const Registrations: React.FC<{
 
   return (
     <section className={clsx(className)}>
-      <div
-        className={clsx(
-          ["mt-1"],
-          [
-            "grid",
-            ["grid-cols-1", "lg:grid-cols-2", "xl:grid-cols-3"],
-            ["gap-x-2"],
-            ["gap-y-2"],
-          ]
-        )}
-      >
+      <div className={clsx(["flex", ["flex-col"], ["gap-y-2"]])}>
         {nodes.map((registration) => (
           <Registeration key={registration.id} registration={registration} />
         ))}

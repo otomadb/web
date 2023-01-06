@@ -1,3 +1,4 @@
+import { css } from "@emotion/css";
 import { Meta, StoryObj } from "@storybook/react";
 import {
   createClient as createUrqlClient,
@@ -22,7 +23,6 @@ export default {
     );
   },
   args: {
-    mylistId: "mylist:1",
     fallback: {
       registrations: aMylistRegistrationConnection({
         nodes: [...new Array(24)].map((_, i) =>
@@ -40,4 +40,11 @@ export default {
   },
 } as Meta<typeof Registrations>;
 
-export const Primary: StoryObj<typeof Registrations> = {};
+export const W1024: StoryObj<typeof Registrations> = {
+  name: "width: 1024px",
+  args: {
+    className: css`
+      width: 1024px;
+    `,
+  },
+};
