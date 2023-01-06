@@ -15,7 +15,7 @@ import { Registeration } from "./Registeration";
 
 graphql(`
   fragment UserMylistPage_Registrations on Mylist {
-    registrations(input: { limit: 24, order: { createdAt: DESC } }) {
+    registrations(input: { order: { createdAt: DESC } }) {
       nodes {
         id
         ...MylistPage_Registration
@@ -35,7 +35,7 @@ export const Registrations: React.FC<{
 
   return (
     <section className={clsx(className)}>
-      <div className={clsx(["flex", ["flex-col"], ["gap-y-2"]])}>
+      <div className={clsx(["flex", ["flex-col"], ["gap-y-4"]])}>
         {nodes.map((registration) => (
           <Registeration key={registration.id} registration={registration} />
         ))}

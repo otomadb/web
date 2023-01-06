@@ -1,4 +1,5 @@
 "use client";
+import clsx from "clsx";
 import React from "react";
 
 import { MetaTemplate } from "~/components/common/MylistPage/MetaTemplate";
@@ -20,10 +21,15 @@ export const UserMylistTemplate: React.FC<{
     <MetaTemplate
       sidelist={sidelist}
       Main={() => (
-        <>
+        <main className={clsx()}>
           {details && <Details fallback={details} />}
-          {registrations && <Registrations fallback={registrations} />}
-        </>
+          {registrations && (
+            <Registrations
+              className={clsx(["mt-2"])}
+              fallback={registrations}
+            />
+          )}
+        </main>
       )}
     />
   );
