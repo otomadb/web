@@ -587,7 +587,7 @@ type Video implements Node {
   registeredAt: DateTime!
   semitags(resolved: Boolean): [Semitag!]!
   similarVideos(input: VideoSimilarVideosInput!): VideoSimilarVideosPayload!
-  tags: [Tag!]!
+  tags(input: VideoTagsInput!): [Tag!]!
   thumbnailUrl: String!
   thumbnails: [VideoThumbnail!]!
   title: String!
@@ -719,6 +719,18 @@ interface VideoSource {
   sourceId: String!
   url: String!
   video: Video!
+}
+
+input VideoTagsInput {
+  """未指定なら全てを取得する"""
+  limit: Int
+  order: VideoTagsInputOrder! = {updatedAt: DESC}
+  skip: Int! = 0
+}
+
+input VideoTagsInputOrder {
+  createdAt: SortOrder
+  updatedAt: SortOrder
 }
 
 type VideoThumbnail {

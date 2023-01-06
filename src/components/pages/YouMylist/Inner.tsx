@@ -5,23 +5,26 @@ import "client-only";
 import React from "react";
 import { useQuery } from "urql";
 
-import { Details } from "~/components/pages/UserMylist/Details";
-import { Registrations } from "~/components/pages/UserMylist/Registrations";
-import { getFragment, graphql } from "~/gql";
+import { getFragment as useFragment, graphql } from "~/gql";
 import {
-  MylistPage_DetailsFragmentDoc,
-  MylistPage_RegistrationsFragmentDoc,
+  MylistPageCommon_SideMylistListFragmentDoc,
+  UserMylistPage_DetailsFragmentDoc,
+  UserMylistPage_RegistrationsFragmentDoc,
   YouMylistPageDocument,
 } from "~/gql/graphql";
+
+import { UserMylistTemplate } from "../UserMylist/Template";
 
 graphql(`
   query YouMylistPage($mylistId: ID!) {
     whoami {
       id
       mylist(id: $mylistId) {
-        id
-        ...MylistPage_Details
-        ...MylistPage_Registrations
+        ...UserMylistPage_Registrations
+        ...UserMylistPage_Details
+      }
+      mylists(input: { limit: 20, range: [PUBLIC, KNOW_LINK, PRIVATE] }) {
+        ...MylistPageCommon_SideMylistList
       }
     }
   }
@@ -32,19 +35,27 @@ export const Inner: React.FC<{ mylistId: string }> = ({ mylistId }) => {
     variables: { mylistId: `mylist:${mylistId}` },
   });
 
-  const details = getFragment(
-    MylistPage_DetailsFragmentDoc,
+  const sidelist = useFragment(
+    MylistPageCommon_SideMylistListFragmentDoc,
+    data?.whoami?.mylists
+  );
+  const details = useFragment(
+    UserMylistPage_DetailsFragmentDoc,
     data?.whoami?.mylist
   );
-  const registrations = getFragment(
-    MylistPage_RegistrationsFragmentDoc,
+  const registrations = useFragment(
+    UserMylistPage_RegistrationsFragmentDoc,
     data?.whoami?.mylist
   );
 
+  if (sidelist === null || details === null || registrations === null)
+    return null; // TODO: whoamiがnullのケース
+
   return (
-    <>
-      {details && <Details fallback={details} />}
-      {registrations && <Registrations fallback={registrations} />}
-    </>
+    <UserMylistTemplate
+      sidelist={sidelist}
+      details={details}
+      registrations={registrations}
+    />
   );
 };

@@ -5,47 +5,45 @@ import "client-only";
 import clsx from "clsx";
 import React from "react";
 
+import { MetaTemplate } from "~/components/common/MylistPage/MetaTemplate";
 import { getFragment, graphql } from "~/gql";
 import {
+  MylistPageCommon_SideMylistListFragmentDoc,
   UserMylistsPage_LargeMylistListFragmentDoc,
   UserMylistsPage_MylistsFragment,
-  UserMylistsPage_SmallMylistListFragmentDoc,
 } from "~/gql/graphql";
 
 import { LargeMylistList } from "./LargeMylistList";
-import { SmallMylistList } from "./SmallMylistList";
 
 graphql(`
   fragment UserMylistsPage_Mylists on MylistConnection {
     ...UserMylistsPage_LargeMylistList
-    ...UserMylistsPage_SmallMylistList
+    ...MylistPageCommon_SideMylistList
   }
 `);
-export const Mylists: React.FC<{
+export const UserMylists: React.FC<{
   className?: string;
   fallback: UserMylistsPage_MylistsFragment;
-}> = ({ className, fallback }) => {
+}> = ({ fallback }) => {
   return (
-    <div className={clsx(className, ["@container"], ["flex"], ["gap-x-4"])}>
-      <div className={clsx(["hidden", "xl:block"], ["flex-grow"])}>
-        <SmallMylistList
+    <MetaTemplate
+      sidelist={getFragment(
+        MylistPageCommon_SideMylistListFragmentDoc,
+        fallback
+      )}
+      Main={() => (
+        <LargeMylistList
+          className={clsx(
+            ["flex-shrink-0"],
+            ["flex-grow", "xl:flex-grow-0"],
+            ["xl:w-[1024px]"]
+          )}
           fallback={getFragment(
-            UserMylistsPage_SmallMylistListFragmentDoc,
+            UserMylistsPage_LargeMylistListFragmentDoc,
             fallback
           )}
         />
-      </div>
-      <LargeMylistList
-        className={clsx(
-          ["flex-shrink-0"],
-          ["flex-grow", "xl:flex-grow-0"],
-          ["xl:w-[1024px]"]
-        )}
-        fallback={getFragment(
-          UserMylistsPage_LargeMylistListFragmentDoc,
-          fallback
-        )}
-      />
-    </div>
+      )}
+    />
   );
 };

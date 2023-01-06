@@ -16,4 +16,7 @@ graphql(`
 `);
 
 export const useViewer = () =>
-  useQuery({ query: UseViewerDocument, requestPolicy: "cache-and-network" });
+  useQuery({
+    query: UseViewerDocument,
+    // requestPolicy: "cache-and-network",
+  });

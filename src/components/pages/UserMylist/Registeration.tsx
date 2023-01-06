@@ -1,13 +1,13 @@
-"use client";
-
 import { PencilIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 import React from "react";
 
 import { LinkVideo } from "~/components/common/Link";
+import { Tag } from "~/components/common/Tag";
 import { Thumbnail } from "~/components/common/Thumbnail";
 import { getFragment, graphql } from "~/gql";
 import {
+  Component_TagFragmentDoc,
   Component_ThumbnailFragmentDoc,
   MylistPage_RegistrationFragment,
 } from "~/gql/graphql";
@@ -20,86 +20,91 @@ graphql(`
       id
       title
       ...Component_Thumbnail
+      tags(input: { limit: 5 }) {
+        id
+        ...Component_Tag
+      }
     }
   }
 `);
-
 export const Registeration: React.FC<{
   className?: string;
   registration: MylistPage_RegistrationFragment;
 }> = ({ className, registration }) => {
   const { note, video } = registration;
   return (
-    <div
+    <LinkVideo
+      videoId={video.id}
       className={clsx(
         className,
-        ["@container"],
-        ["flex", []],
+        ["@container/registration"],
+        ["group/registration"],
         ["border", "border-slate-300"],
-        ["shadow-md"],
-        ["rounded-md"],
-        ["bg-white"],
-        ["divide-x", "border-slate-300"],
-        ["py-0.5"]
+        ["bg-slate-100"],
+        ["rounded"],
+        ["py-3"],
+        ["px-4"],
+        ["flex"]
       )}
     >
-      <LinkVideo
-        videoId={video.id}
-        className={clsx(["block"], ["flex-shrink-0"], ["px-2"])}
-      >
-        <Thumbnail
-          fragment={getFragment(Component_ThumbnailFragmentDoc, video)}
-          className={clsx(["w-24"], ["h-16"], ["border", "border-slate-400"])}
-          width={256}
-          height={192}
-          Wrapper={(props) => <div {...props} />}
-        />
-      </LinkVideo>
-      <div
+      <Thumbnail
+        fragment={getFragment(Component_ThumbnailFragmentDoc, video)}
         className={clsx(
-          ["flex-grow"],
-          ["px-2"],
-          ["py-2"],
-          ["flex", "flex-col"]
+          ["flex-shrink-0"],
+          ["w-[144px]", "@[1024px]/registration:w-[112px]"],
+          ["h-[108px]", "@[1024px]/registration:h-[84px]"],
+          ["border", "border-slate-400"]
         )}
-      >
-        <div
-          className={clsx(
-            ["text-base", "lg:text-sm", "2xl:text-xs"],
-            ["font-bold"],
-            ["text-slate-900"]
-          )}
-        >
-          <LinkVideo videoId={video.id} className={clsx()}>
+        width={144}
+        height={108}
+        Wrapper={(props) => <div {...props} />}
+      />
+      <div className={clsx(["flex-grow"], ["px-4"], ["flex", "flex-col"])}>
+        <div className={clsx()}>
+          <p className={clsx(["text-base"], ["text-slate-900"])}>
             {video.title}
-          </LinkVideo>
+          </p>
         </div>
         <div
           className={clsx(
-            ["mt-2"],
-            ["px-2", "md:px-1"],
-            ["py-2", "md:py-1"],
-            ["rounded"],
-            ["bg-slate-100"]
+            ["mt-1"],
+            ["flex", ["flex-wrap"], ["gap-x-1"], ["gap-y-1"]]
           )}
         >
-          <div
-            className={clsx(["float-left"], ["place-items-center"], ["mr-1"])}
-          >
-            <PencilIcon
-              className={clsx(["w-4"], ["h-4"], ["text-slate-500"])}
+          {video.tags.map((tag) => (
+            <Tag
+              key={tag.id}
+              tag={getFragment(Component_TagFragmentDoc, tag)}
+              Wrapper={(props) => <div {...props} />}
             />
-          </div>
-          <div
-            className={clsx(["text-sm", "md:text-xs"], {
-              "text-slate-700": !(!note || note === ""),
-              "text-slate-500": !note || note === "",
-            })}
-          >
-            {!note || note === "" ? "記載なし" : note}
-          </div>
+          ))}
         </div>
+        {note && note !== "" && (
+          <div
+            className={clsx(
+              ["mt-2"],
+              ["px-2"],
+              ["py-2"],
+              ["rounded"],
+              ["bg-slate-200"]
+            )}
+          >
+            <p>
+              <PencilIcon
+                className={clsx(
+                  ["float-left"],
+                  ["w-4"],
+                  ["h-4"],
+                  ["text-slate-400"]
+                )}
+              />
+              <div className={clsx(["text-xs"], ["text-slate-700"])}>
+                {note}
+              </div>
+            </p>
+          </div>
+        )}
       </div>
-    </div>
+    </LinkVideo>
   );
 };

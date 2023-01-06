@@ -1,16 +1,14 @@
+import { css } from "@emotion/css";
 import { Meta, StoryObj } from "@storybook/react";
-import { graphql } from "msw";
 import {
   createClient as createUrqlClient,
   Provider as UrqlProvider,
 } from "urql";
 
 import {
-  aMylist,
   aMylistRegistration,
   aMylistRegistrationConnection,
   aVideo,
-  MylistPage_UpstreamRegistrationsDocument,
 } from "~/gql/graphql";
 
 import { Registrations } from "./Registrations";
@@ -25,7 +23,6 @@ export default {
     );
   },
   args: {
-    mylistId: "mylist:1",
     fallback: {
       registrations: aMylistRegistrationConnection({
         nodes: [...new Array(24)].map((_, i) =>
@@ -41,34 +38,13 @@ export default {
       }),
     },
   },
-  parameters: {
-    msw: {
-      handlers: [
-        graphql.query(
-          MylistPage_UpstreamRegistrationsDocument,
-          (req, res, ctx) =>
-            res(
-              ctx.data({
-                mylist: aMylist({
-                  registrations: aMylistRegistrationConnection({
-                    nodes: [...new Array(24)].map((_, i) =>
-                      aMylistRegistration({
-                        id: `mylistRegistration:${i + 1}`,
-                        video: aVideo({
-                          id: `video:${i + 1}`,
-                          title: `Video ${i + 1}`,
-                          thumbnailUrl: "/storybook/960x540.jpg",
-                        }),
-                      })
-                    ),
-                  }),
-                }),
-              })
-            )
-        ),
-      ],
-    },
-  },
 } as Meta<typeof Registrations>;
 
-export const Primary: StoryObj<typeof Registrations> = {};
+export const W1024: StoryObj<typeof Registrations> = {
+  name: "width: 1024px",
+  args: {
+    className: css`
+      width: 1024px;
+    `,
+  },
+};
