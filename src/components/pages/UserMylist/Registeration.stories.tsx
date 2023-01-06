@@ -1,13 +1,16 @@
 import { css } from "@emotion/css";
 import { Meta, StoryObj } from "@storybook/react";
 
-import { aMylistRegistration, aVideo } from "~/gql/graphql";
+import { aMylistRegistration, aTag, aVideo } from "~/gql/graphql";
 
 import { Registeration } from "./Registeration";
 
 export default {
   component: Registeration,
   args: {
+    className: css`
+      width: 1024px;
+    `,
     registration: aMylistRegistration({
       id: "mylistRegistration:1",
       note: "これはサンプル文章です",
@@ -15,10 +18,32 @@ export default {
         id: "video:1",
         title: "Video1",
         thumbnailUrl: "/storybook/960x540.jpg",
+        tags: [
+          aTag({
+            id: "tag:1",
+            name: "child",
+            explicitParent: aTag({
+              id: "tag:2",
+              name: "parent",
+            }),
+          }),
+        ],
       }),
     }),
   },
+  parameters: {
+    layout: "centered",
+  },
 } as Meta<typeof Registeration>;
+
+export const W768: StoryObj<typeof Registeration> = {
+  name: "width: 768px",
+  args: {
+    className: css`
+      width: 768px;
+    `,
+  },
+};
 
 export const W1024: StoryObj<typeof Registeration> = {
   name: "width: 1024px",
@@ -26,5 +51,26 @@ export const W1024: StoryObj<typeof Registeration> = {
     className: css`
       width: 1024px;
     `,
+  },
+};
+
+export const NoNote: StoryObj<typeof Registeration> = {
+  args: {
+    registration: aMylistRegistration({
+      id: "mylistRegistration:1",
+      note: null,
+      video: aVideo({
+        id: "video:1",
+        title: "Video1",
+        thumbnailUrl: "/storybook/960x540.jpg",
+        tags: [
+          aTag({
+            id: "tag:1",
+            name: "child",
+            explicitParent: aTag({ id: "tag:2", name: "parent" }),
+          }),
+        ],
+      }),
+    }),
   },
 };
