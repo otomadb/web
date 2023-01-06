@@ -85,13 +85,13 @@ const urqlClient = createUrqlClient({
         VideoSimilarVideosPayload() {
           return null;
         },
-        VideoSimilarVideoItem() {
+        VideoSimilarity() {
           return null;
         },
         MylistRecommendedVideosPayload() {
           return null;
         },
-        MylistRecommendedVideosItem() {
+        MylistVideoRecommendation() {
           return null;
         },
         SemitagConnection() {

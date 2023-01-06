@@ -20,7 +20,7 @@ graphql(`
     id
     similarVideos(input: { limit: 12 }) {
       items {
-        video {
+        to {
           ...VideoList_Video
         }
       }
@@ -51,9 +51,9 @@ export const SimilarVideosSection: React.FC<{
   const video = useMemo(() => upstream || fallback, [fallback, upstream]);
   const { similarVideos } = video;
 
-  const videos = similarVideos.items.map(({ video }) =>
+  const videos = similarVideos.items.map(({ to }) =>
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    useFragment(VideoList_VideoFragmentDoc, video)
+    useFragment(VideoList_VideoFragmentDoc, to)
   );
 
   return (
