@@ -1,3 +1,12 @@
+input AddMylistToMylistGroupInput {
+  groupId: ID!
+  mylistId: ID!
+}
+
+type AddMylistToMylistGroupPayload {
+  inclusion: MylistGroupMylistInclusion!
+}
+
 input AddSemitagToVideoInput {
   name: String!
   videoId: ID!
@@ -25,6 +34,14 @@ input AddVideoToMylistInput {
 
 type AddVideoToMylistPayload {
   registration: MylistRegistration!
+}
+
+input CreateMylistGroupInput {
+  title: String!
+}
+
+type CreateMylistGroupPayload {
+  group: MylistGroup!
 }
 
 input CreateMylistInput {
@@ -98,10 +115,12 @@ type LikeVideoPayload {
 }
 
 type Mutation {
+  addMylistToMylistGroup(input: AddMylistToMylistGroupInput!): AddMylistToMylistGroupPayload!
   addSemitagToVideo(input: AddSemitagToVideoInput!): AddSemitagToVideoPayload!
   addTagToVideo(input: AddTagToVideoInput!): AddTagToVideoPayload!
   addVideoToMylist(input: AddVideoToMylistInput!): AddVideoToMylistPayload!
   createMylist(input: CreateMylistInput!): CreateMylistPayload!
+  createMylistGroup(input: CreateMylistGroupInput!): CreateMylistGroupPayload!
   likeVideo(input: LikeVideoInput!): LikeVideoPayload!
   registerTag(input: RegisterTagInput!): RegisterTagPayload!
   registerVideo(input: RegisterVideoInput!): RegisterVideoPayload!
@@ -131,30 +150,89 @@ type MylistConnection {
   nodes: [Mylist!]!
 }
 
-input MylistIncludeTagsInput {
-  limit: Int! = 10
+type MylistGroup implements Node {
+  createdAt: DateTime!
+  holder: User!
+  id: ID!
+  mylists(input: MylistGroupMylistsInput!): MylistGroupMylistInclusionConnection!
+  title: String!
+  updatedAt: DateTime!
+  videos(input: MylistGroupVideosInput!): [MylistGroupVideoAggregation!]!
 }
 
-type MylistIncludeTagsItem {
+type MylistGroupMylistInclusion implements Node {
+  createdAt: DateTime!
+  group: MylistGroup!
+  id: ID!
+  mylist: Mylist!
+  updatedAt: DateTime!
+}
+
+type MylistGroupMylistInclusionConnection {
+  nodes: [MylistGroupMylistInclusion!]!
+}
+
+input MylistGroupMylistsInput {
+  limit: Int! = 10
+  order: MylistGroupMylistsInputOrder! = {createdAt: DESC}
+  skip: Int! = 0
+}
+
+input MylistGroupMylistsInputOrder {
+  createdAt: SortOrder
+  updatedAt: SortOrder
+}
+
+type MylistGroupVideoAggregation {
+  """動画を含んでいるマイリストの数"""
   count: Int!
-  tag: Tag!
+
+  """動画を含んでいるマイリスト"""
+  mylists(input: MylistGroupVideoAggregationMylistsInput!): [Mylist!]!
+  video: Video!
+}
+
+input MylistGroupVideoAggregationMylistsInput {
+  limit: Int! = 10
+  order: MylistGroupVideoAggregationMylistsInputOrder! = {createdAt: DESC}
+  skip: Int! = 0
+}
+
+input MylistGroupVideoAggregationMylistsInputOrder {
+  createdAt: SortOrder
+  updatedAt: SortOrder
+}
+
+input MylistGroupVideosInput {
+  limit: Int! = 10
+  order: MylistGroupVideosInputOrder! = {count: DESC}
+  skip: Int! = 0
+}
+
+input MylistGroupVideosInputOrder {
+  count: SortOrder!
+}
+
+input MylistIncludeTagsInput {
+  limit: Int! = 10
+  order: MylistIncludeTagsInputOrder! = {count: DESC}
+  skip: Int! = 0
+}
+
+input MylistIncludeTagsInputOrder {
+  count: SortOrder!
 }
 
 type MylistIncludeTagsPayload {
-  items: [MylistIncludeTagsItem!]!
+  items: [MylistTagInclusion!]!
 }
 
 input MylistRecommendedVideosInput {
   limit: Int! = 10
 }
 
-type MylistRecommendedVideosItem {
-  score: Float!
-  video: Video!
-}
-
 type MylistRecommendedVideosPayload {
-  items: [MylistRecommendedVideosItem!]!
+  items: [MylistVideoRecommendation!]!
 }
 
 type MylistRegistration implements Node {
@@ -185,6 +263,18 @@ enum MylistShareRange {
   KNOW_LINK
   PRIVATE
   PUBLIC
+}
+
+type MylistTagInclusion {
+  count: Int!
+  mylist: Mylist!
+  tag: Tag!
+}
+
+type MylistVideoRecommendation {
+  origin: Mylist!
+  score: Float!
+  to: Video!
 }
 
 type NicovideoVideoSource implements Node & VideoSource {
@@ -241,6 +331,7 @@ type Query {
   findUser(input: FindUserInput!): User
   findVideos(input: FindVideosInput!): VideoConnection!
   mylist(id: ID!): Mylist!
+  mylistGroup(id: ID!): MylistGroup!
   nicovideoVideoSource(id: ID!): NicovideoVideoSource!
   searchTags(input: SearchTagInput!): SearchTagsPayload!
   searchVideos(input: SearchVideoInput!): SearchVideosPayload!
@@ -609,17 +700,18 @@ type VideoRegisterHistoryItem implements VideoHistoryItem {
   video: Video!
 }
 
-type VideoSimilarVideoItem {
-  score: Float!
-  video: Video!
-}
-
 input VideoSimilarVideosInput {
   limit: Int! = 10
 }
 
 type VideoSimilarVideosPayload {
-  items: [VideoSimilarVideoItem!]!
+  items: [VideoSimilarity!]!
+}
+
+type VideoSimilarity {
+  origin: Video!
+  score: Float!
+  to: Video!
 }
 
 interface VideoSource {
