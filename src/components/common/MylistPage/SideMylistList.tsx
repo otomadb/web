@@ -29,7 +29,14 @@ export const SideMylistList: React.FC<{
   fallback: MylistPageCommon_SideMylistListFragment;
 }> = ({ className, fallback }) => {
   return (
-    <div className={clsx(className, ["flex", "flex-col", "items-stretch"])}>
+    <div
+      className={clsx(
+        className,
+        ["flex", "flex-col", "items-stretch"],
+        ["h-full"],
+        ["overflow-y-scroll"]
+      )}
+    >
       {fallback.nodes.map((fragment) => (
         <MylistLinkSwitch
           key={fragment.id}

@@ -15,14 +15,14 @@ import {
   MylistShareRange,
 } from "~/gql/graphql";
 
-import { Mylists } from ".";
+import { UserMylists } from ".";
 
 export default {
-  component: Mylists,
+  component: UserMylists,
   render(args) {
     return (
       <UrqlProvider value={createUrqlClient({ url: "/graphql" })}>
-        <Mylists {...args} />
+        <UserMylists {...args} />
       </UrqlProvider>
     );
   },
@@ -138,9 +138,9 @@ export default {
   parameters: {
     layout: "centered",
   },
-} as Meta<typeof Mylists>;
+} as Meta<typeof UserMylists>;
 
-export const W_1024px: StoryObj<typeof Mylists> = {
+export const W_1024px: StoryObj<typeof UserMylists> = {
   name: "width: 1024px",
   args: {
     className: clsx(["w-[1024px]"]),

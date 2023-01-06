@@ -10,7 +10,14 @@ export const MetaTemplate: React.FC<{
 }> = ({ sidelist, Main }) => {
   return (
     <div className={clsx(["@container"], ["flex"], ["gap-x-4"])}>
-      <div className={clsx(["hidden", "xl:block"], ["flex-grow"])}>
+      <div
+        className={clsx(
+          ["hidden", "xl:block"],
+          ["flex-grow"],
+          ["sticky", "top-[64px]"],
+          ["h-[calc(100vh-64px)]"]
+        )}
+      >
         {sidelist && <SideMylistList fallback={sidelist} />}
       </div>
       <div
@@ -20,7 +27,7 @@ export const MetaTemplate: React.FC<{
           ["xl:w-[1024px]"]
         )}
       >
-        <Main />
+        <Main className={clsx(["w-full"])} />
       </div>
     </div>
   );

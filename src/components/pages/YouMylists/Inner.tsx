@@ -5,7 +5,7 @@ import "client-only";
 import React from "react";
 import { useQuery } from "urql";
 
-import { Mylists } from "~/components/pages/UserMylists";
+import { UserMylists } from "~/components/pages/UserMylists";
 import { getFragment, graphql } from "~/gql";
 import {
   UserMylistsPage_MylistsFragmentDoc,
@@ -32,5 +32,5 @@ export const Inner: React.FC = () => {
     data?.whoami?.mylists
   );
 
-  return <>{mylists && <Mylists fallback={mylists} />}</>;
+  return <>{mylists && <UserMylists fallback={mylists} />}</>;
 };
