@@ -1,21 +1,20 @@
 import clsx from "clsx";
 import React from "react";
 
+import { MylistLinkSwitch } from "~/components/common/MylistPage/LinkSwitch";
 import { Thumbnail } from "~/components/common/Thumbnail";
 import { UserIcon2 } from "~/components/common/UserIcon";
 import { getFragment, graphql } from "~/gql";
 import {
   Component_ThumbnailFragmentDoc,
   Component_UserIconFragmentDoc,
+  MylistPageCommon_LinkSwitchFragmentDoc,
   UserMylistsPage_LargeMylistListItemFragment,
-  UserMylistsPage_LinkSwitchFragmentDoc,
 } from "~/gql/graphql";
-
-import { MylistLinkSwitch } from "./LinkSwitch";
 
 graphql(`
   fragment UserMylistsPage_LargeMylistListItem on Mylist {
-    ...UserMylistsPage_LinkSwitch
+    ...MylistPageCommon_LinkSwitch
     id
     title
     isLikeList
@@ -46,7 +45,7 @@ export const LargeMylistListItem: React.FC<{
 
   return (
     <MylistLinkSwitch
-      fragment={getFragment(UserMylistsPage_LinkSwitchFragmentDoc, fragment)}
+      fragment={getFragment(MylistPageCommon_LinkSwitchFragmentDoc, fragment)}
       className={clsx(
         className,
         ["border", "border-slate-300"],

@@ -8,11 +8,11 @@ import {
   LinkYouMylist,
 } from "~/components/common/Link";
 import { graphql } from "~/gql";
-import { UserMylistsPage_LinkSwitchFragment } from "~/gql/graphql";
+import { MylistPageCommon_LinkSwitchFragment } from "~/gql/graphql";
 import { useViewer } from "~/hooks/useViewer";
 
 graphql(`
-  fragment UserMylistsPage_LinkSwitch on Mylist {
+  fragment MylistPageCommon_LinkSwitch on Mylist {
     id
     isLikeList
     holder {
@@ -24,7 +24,7 @@ graphql(`
 export const MylistLinkSwitch: React.FC<{
   children: ReactNode;
   className?: string;
-  fragment: UserMylistsPage_LinkSwitchFragment;
+  fragment: MylistPageCommon_LinkSwitchFragment;
 }> = ({ fragment, ...props }) => {
   const [{ data: viewer }] = useViewer();
 

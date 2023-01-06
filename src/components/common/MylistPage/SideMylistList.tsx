@@ -3,16 +3,16 @@ import React from "react";
 
 import { getFragment, graphql } from "~/gql";
 import {
-  UserMylistsPage_LinkSwitchFragmentDoc,
-  UserMylistsPage_SmallMylistListFragment,
+  MylistPageCommon_LinkSwitchFragmentDoc,
+  MylistPageCommon_SideMylistListFragment,
 } from "~/gql/graphql";
 
 import { MylistLinkSwitch } from "./LinkSwitch";
 
 graphql(`
-  fragment UserMylistsPage_SmallMylistList on MylistConnection {
+  fragment MylistPageCommon_SideMylistList on MylistConnection {
     nodes {
-      ...UserMylistsPage_LinkSwitch
+      ...MylistPageCommon_LinkSwitch
       id
       title
       isLikeList
@@ -24,9 +24,9 @@ graphql(`
     }
   }
 `);
-export const SmallMylistList: React.FC<{
+export const SideMylistList: React.FC<{
   className?: string;
-  fallback: UserMylistsPage_SmallMylistListFragment;
+  fallback: MylistPageCommon_SideMylistListFragment;
 }> = ({ className, fallback }) => {
   return (
     <div className={clsx(className, ["flex", "flex-col", "items-stretch"])}>
@@ -35,7 +35,7 @@ export const SmallMylistList: React.FC<{
           key={fragment.id}
           className={clsx(["px-4"], ["py-2"], ["hover:bg-blue-200"])}
           fragment={getFragment(
-            UserMylistsPage_LinkSwitchFragmentDoc,
+            MylistPageCommon_LinkSwitchFragmentDoc,
             fragment
           )}
         >

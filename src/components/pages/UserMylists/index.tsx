@@ -5,20 +5,20 @@ import "client-only";
 import clsx from "clsx";
 import React from "react";
 
+import { SideMylistList } from "~/components/common/MylistPage/SideMylistList";
 import { getFragment, graphql } from "~/gql";
 import {
+  MylistPageCommon_SideMylistListFragmentDoc,
   UserMylistsPage_LargeMylistListFragmentDoc,
   UserMylistsPage_MylistsFragment,
-  UserMylistsPage_SmallMylistListFragmentDoc,
 } from "~/gql/graphql";
 
 import { LargeMylistList } from "./LargeMylistList";
-import { SmallMylistList } from "./SmallMylistList";
 
 graphql(`
   fragment UserMylistsPage_Mylists on MylistConnection {
     ...UserMylistsPage_LargeMylistList
-    ...UserMylistsPage_SmallMylistList
+    ...MylistPageCommon_SideMylistList
   }
 `);
 export const Mylists: React.FC<{
@@ -28,9 +28,9 @@ export const Mylists: React.FC<{
   return (
     <div className={clsx(className, ["@container"], ["flex"], ["gap-x-4"])}>
       <div className={clsx(["hidden", "xl:block"], ["flex-grow"])}>
-        <SmallMylistList
+        <SideMylistList
           fallback={getFragment(
-            UserMylistsPage_SmallMylistListFragmentDoc,
+            MylistPageCommon_SideMylistListFragmentDoc,
             fallback
           )}
         />
