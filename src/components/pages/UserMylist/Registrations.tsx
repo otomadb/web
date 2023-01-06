@@ -8,13 +8,13 @@ import React from "react";
 import { getFragment, graphql } from "~/gql";
 import {
   MylistPage_RegistrationFragmentDoc,
-  MylistPage_RegistrationsFragment,
+  UserMylistPage_RegistrationsFragment,
 } from "~/gql/graphql";
 
 import { Registeration } from "./Registeration";
 
 graphql(`
-  fragment MylistPage_Registrations on Mylist {
+  fragment UserMylistPage_Registrations on Mylist {
     registrations(input: { limit: 24, order: { createdAt: DESC } }) {
       nodes {
         id
@@ -22,17 +22,11 @@ graphql(`
       }
     }
   }
-
-  query MylistPage_UpstreamRegistrations($id: ID!) {
-    mylist(id: $id) {
-      ...MylistPage_Registrations
-    }
-  }
 `);
 
 export const Registrations: React.FC<{
   className?: string;
-  fallback: MylistPage_RegistrationsFragment;
+  fallback: UserMylistPage_RegistrationsFragment;
 }> = ({ className, fallback }) => {
   const nodes = getFragment(
     MylistPage_RegistrationFragmentDoc,

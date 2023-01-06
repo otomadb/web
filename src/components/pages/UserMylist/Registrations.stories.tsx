@@ -1,16 +1,13 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { graphql } from "msw";
 import {
   createClient as createUrqlClient,
   Provider as UrqlProvider,
 } from "urql";
 
 import {
-  aMylist,
   aMylistRegistration,
   aMylistRegistrationConnection,
   aVideo,
-  MylistPage_UpstreamRegistrationsDocument,
 } from "~/gql/graphql";
 
 import { Registrations } from "./Registrations";
@@ -39,34 +36,6 @@ export default {
           })
         ),
       }),
-    },
-  },
-  parameters: {
-    msw: {
-      handlers: [
-        graphql.query(
-          MylistPage_UpstreamRegistrationsDocument,
-          (req, res, ctx) =>
-            res(
-              ctx.data({
-                mylist: aMylist({
-                  registrations: aMylistRegistrationConnection({
-                    nodes: [...new Array(24)].map((_, i) =>
-                      aMylistRegistration({
-                        id: `mylistRegistration:${i + 1}`,
-                        video: aVideo({
-                          id: `video:${i + 1}`,
-                          title: `Video ${i + 1}`,
-                          thumbnailUrl: "/storybook/960x540.jpg",
-                        }),
-                      })
-                    ),
-                  }),
-                }),
-              })
-            )
-        ),
-      ],
     },
   },
 } as Meta<typeof Registrations>;
