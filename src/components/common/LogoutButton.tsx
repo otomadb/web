@@ -13,7 +13,7 @@ import { graphql } from "~/gql";
 import { LogoutButtonDocument } from "~/gql/graphql";
 
 export const mockLogoutHandler = rest.post(
-  new URL("/api/auth/logout", process.env.NEXT_PUBLIC_API_ENDPOINT).toString(),
+  new URL("/auth/logout", process.env.NEXT_PUBLIC_API_ENDPOINT).toString(),
   async (req, res, ctx) => {
     return res(
       ctx.cookie("otmd-session", "", {
@@ -44,10 +44,7 @@ export const LogoutButton: React.FC<{ className?: string }> = ({
   const router = useRouter();
   const handleLogout = useCallback(async () => {
     const result = await ky.post(
-      new URL(
-        "/api/auth/logout",
-        process.env.NEXT_PUBLIC_API_ENDPOINT
-      ).toString(),
+      new URL("/auth/logout", process.env.NEXT_PUBLIC_API_ENDPOINT).toString(),
       { throwHttpErrors: false, credentials: "include" }
     );
     if (result.ok) {

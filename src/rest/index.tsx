@@ -22,7 +22,7 @@ export const usePostAuthLogin = () => {
 
   return useCallback(
     ({ name, password }: { name: string; password: string }) =>
-      ky.post(new URL("/api/auth/login", base).toString(), {
+      ky.post(new URL("/auth/login", base).toString(), {
         json: { name, password },
         throwHttpErrors: false,
         credentials: "include",
@@ -46,7 +46,7 @@ export const usePostAuthSignup = () => {
       password: string;
       email: string;
     }) =>
-      ky.post(new URL("/api/auth/signup", base).toString(), {
+      ky.post(new URL("/auth/signup", base).toString(), {
         json: { name, password, displayName, email },
         throwHttpErrors: false,
         credentials: "include",
@@ -60,7 +60,7 @@ export const useGetRemoteNicovideo = () => {
 
   return useCallback(
     (sourceId: string) => {
-      const url = new URL("/api/remote/nicovideo", base);
+      const url = new URL("/remote/nicovideo", base);
       url.searchParams.set("id", sourceId);
       return ky.get(url.toString(), {
         throwHttpErrors: false,
