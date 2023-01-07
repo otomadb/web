@@ -40,7 +40,7 @@ if (
 }
 
 const urqlClient = createUrqlClient({
-  url: new URL("/graphql", process.env.NEXT_PUBLIC_API_ENDPOINT).toString(),
+  url: new URL("/api/graphql", process.env.NEXT_PUBLIC_API_ENDPOINT).toString(),
   fetchOptions: {
     credentials: "include",
     mode: "cors",
