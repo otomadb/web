@@ -6,7 +6,7 @@ export const gqlRequest = <T, V extends Variables>(
   variables?: V
 ) =>
   request(
-    new URL("/graphql", process.env.NEXT_PUBLIC_API_ENDPOINT).toString(),
+    new URL("/api/graphql", process.env.NEXT_PUBLIC_API_ENDPOINT).toString(),
     document,
     ...([variables] as never)
   );
