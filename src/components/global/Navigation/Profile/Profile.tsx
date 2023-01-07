@@ -16,6 +16,12 @@ import {
 import { Accordion } from "./Accordion";
 
 graphql(`
+  fragment GlobalNav_Profile on User {
+    id
+    ...Component_UserIcon
+    ...GlobalNav_Profile_Accordion
+  }
+
   query GlobalNav_Profile {
     whoami {
       id
@@ -27,7 +33,6 @@ graphql(`
 export const Profile: React.FC<{ className?: string }> = ({ className }) => {
   const [{ data, fetching }] = useQuery({
     query: GlobalNav_ProfileDocument,
-    requestPolicy: "cache-and-network",
   });
   return (
     <div className={clsx(className, ["flex"])}>
