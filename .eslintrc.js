@@ -31,6 +31,8 @@ module.exports = {
     ],
     /* next.js  */
     "@next/next/no-html-link-for-pages": [0], // https://github.com/vercel/next.js/issues/42448
+    /* eslint-comments */
+    "eslint-comments/no-unused-disable": 2,
   },
   overrides: [
     {

@@ -21,11 +21,7 @@ export const LinkVideo: React.FC<LinkProps<{ videoId: string }>> = ({
   videoId,
   ...props
 }) => (
-  <Link
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    href={`/videos/${videoId.split(":").at(1)!}`}
-    {...props}
-  >
+  <Link href={`/videos/${videoId}`} {...props}>
     {children}
   </Link>
 );
@@ -35,11 +31,7 @@ export const LinkTag: React.FC<LinkProps<{ tagId: string }>> = ({
   tagId,
   ...props
 }) => (
-  <Link
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    href={`/tags/${tagId.split(":").at(1)!}`}
-    {...props}
-  >
+  <Link href={`/tags/${tagId}`} {...props}>
     {children}
   </Link>
 );
@@ -80,11 +72,7 @@ export const LinkUserMylist: React.FC<
     mylistId: string;
   }>
 > = ({ children, userName, mylistId, ...props }) => (
-  <Link
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    href={`/users/${userName}/mylists/${mylistId.split(":").at(1)!}`}
-    {...props}
-  >
+  <Link href={`/users/${userName}/mylists/${mylistId}`} {...props}>
     {children}
   </Link>
 );
@@ -154,8 +142,7 @@ export const LinkYouMylist: React.FC<
     mylistId: string;
   }>
 > = ({ mylistId, children, ...props }) => (
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  <Link href={`/you/mylists/${mylistId.split(":").at(1)!}`} {...props}>
+  <Link href={`/you/mylists/${mylistId}`} {...props}>
     {children}
   </Link>
 );
