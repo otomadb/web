@@ -44,7 +44,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         }
       }
     `),
-    { id: `video:${params.id}` }
+    { id: params.id }
   );
 
   const details = getFragment(VideoPage_DetailsSectionFragmentDoc, video);

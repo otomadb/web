@@ -34,7 +34,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         }
       }
     `),
-    { id: `tag:${params.id}` }
+    { id: params.id }
   );
 
   const taggedVideos = getFragment(
