@@ -47,10 +47,10 @@ export default {
             ctx.data({
               registerTag: {
                 tag: aTag({
-                  id: "tag:1",
+                  id: "tag_1",
                   name: req.variables.primaryName,
                   explicitParent: aTag({
-                    id: "tag:2",
+                    id: "tag_2",
                     name: "仮",
                   }),
                 }),
@@ -66,11 +66,11 @@ export default {
                   aSearchTagsItem({
                     matchedName: "後藤ひとり",
                     tag: aTag({
-                      id: "tag:1",
+                      id: "tag_1",
                       name: "後藤ひとり",
                       pseudoType: PseudoTagType.Character,
                       explicitParent: aTag({
-                        id: "tag:2",
+                        id: "tag_2",
                         name: "ぼっち・ざ・ろっく！",
                       }),
                     }),
@@ -78,7 +78,7 @@ export default {
                   aSearchTagsItem({
                     matchedName: "ぼっち・ざ・ろっく！",
                     tag: aTag({
-                      id: "tag:3",
+                      id: "tag_3",
                       name: "ぼっち・ざ・ろっく！",
                       pseudoType: PseudoTagType.Copyright,
                       explicitParent: null,
@@ -96,7 +96,7 @@ export default {
                 id: "semitag:1",
                 name: "ドナルド・マクドナルド",
                 video: aVideo({
-                  id: "video:1",
+                  id: "video_1",
                   title:
                     "M.C.ドナルドはダンスに夢中なのか？最終鬼畜道化師ドナルド・Ｍ",
                   thumbnailUrl: "/storybook/960x540.jpg",
@@ -123,7 +123,7 @@ export default {
                   id: "semitag:1",
                   name: "ドナルド・マクドナルド",
                   video: aVideo({
-                    id: "video:1",
+                    id: "video_1",
                     title:
                       "M.C.ドナルドはダンスに夢中なのか？最終鬼畜道化師ドナルド・Ｍ",
                     thumbnailUrl: "/storybook/960x540.jpg",
@@ -133,7 +133,7 @@ export default {
                   id: "semitag:2",
                   name: "U.N.オーエンは彼女なのか？",
                   video: aVideo({
-                    id: "video:1",
+                    id: "video_1",
                     title:
                       "M.C.ドナルドはダンスに夢中なのか？最終鬼畜道化師ドナルド・Ｍ",
                     thumbnailUrl: "/storybook/960x540.jpg",
@@ -143,7 +143,7 @@ export default {
                   id: "semitag:3",
                   name: "最終鬼畜妹フランドール・Ｓ",
                   video: aVideo({
-                    id: "video:1",
+                    id: "video_1",
                     title:
                       "M.C.ドナルドはダンスに夢中なのか？最終鬼畜道化師ドナルド・Ｍ",
                     thumbnailUrl: "/storybook/960x540.jpg",
@@ -159,10 +159,10 @@ export default {
           res(
             ctx.data({
               tag: aTag({
-                id: "tag:1",
+                id: "tag_1",
                 name: "後藤ひとり",
                 explicitParent: aTag({
-                  id: "tag:2",
+                  id: "tag_2",
                   name: "ぼっち・ざ・ろっく！",
                 }),
               }),

@@ -174,7 +174,7 @@ export default {
               ctx.data({
                 registerVideo: aRegisterVideoPayload({
                   video: aVideo({
-                    id: "video:1",
+                    id: "video_1",
                     title: req.variables.input.primaryTitle,
                   }),
                 }),
@@ -237,7 +237,7 @@ export const Already: StoryObj<typeof RegisterNicovideoForm> = {
                 findNicovideoVideoSource: aNicovideoVideoSource({
                   sourceId: "sm2057168",
                   video: aVideo({
-                    id: "video:1",
+                    id: "video_1",
                     title:
                       "M.C.ドナルドはダンスに夢中なのか？最終鬼畜道化師ドナルド・Ｍ",
                     thumbnailUrl: "/storybook/960x540.jpg",

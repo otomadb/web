@@ -20,7 +20,7 @@ export const NoRegistration: StoryObj<typeof SearchVideos> = {
         aSearchVideosItem({
           matchedTitle: "match title",
           video: aVideo({
-            id: "video:1",
+            id: "video_1",
             title: "title",
             thumbnailUrl: "/storybook/960x540.jpg",
           }),

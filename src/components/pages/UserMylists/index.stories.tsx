@@ -31,7 +31,7 @@ export default {
     fallback: aMylistConnection({
       nodes: [
         aMylist({
-          id: "mylist:1",
+          id: "mylist_1",
           title: "マイリスト1",
           isLikeList: false,
           range: MylistShareRange.Public,
@@ -46,35 +46,35 @@ export default {
               aMylistRegistration({
                 id: "mylistRegistration:1",
                 video: aVideo({
-                  id: "video:1",
+                  id: "video_1",
                   thumbnailUrl: "/storybook/960x540.jpg",
                 }),
               }),
               aMylistRegistration({
                 id: "mylistRegistration:2",
                 video: aVideo({
-                  id: "video:2",
+                  id: "video_2",
                   thumbnailUrl: "/storybook/960x540.jpg",
                 }),
               }),
               aMylistRegistration({
                 id: "mylistRegistration:3",
                 video: aVideo({
-                  id: "video:3",
+                  id: "video_3",
                   thumbnailUrl: "/storybook/960x540.jpg",
                 }),
               }),
               aMylistRegistration({
                 id: "mylistRegistration:4",
                 video: aVideo({
-                  id: "video:4",
+                  id: "video_4",
                   thumbnailUrl: "/storybook/960x540.jpg",
                 }),
               }),
               aMylistRegistration({
                 id: "mylistRegistration:5",
                 video: aVideo({
-                  id: "video:5",
+                  id: "video_5",
                   thumbnailUrl: "/storybook/960x540.jpg",
                 }),
               }),
@@ -82,7 +82,7 @@ export default {
           }),
         }),
         aMylist({
-          id: "mylist:2",
+          id: "mylist_2",
           title: "マイリスト2",
           isLikeList: false,
           range: MylistShareRange.Public,
@@ -97,35 +97,35 @@ export default {
               aMylistRegistration({
                 id: "mylistRegistration:1",
                 video: aVideo({
-                  id: "video:1",
+                  id: "video_1",
                   thumbnailUrl: "/storybook/960x540.jpg",
                 }),
               }),
               aMylistRegistration({
                 id: "mylistRegistration:2",
                 video: aVideo({
-                  id: "video:2",
+                  id: "video_2",
                   thumbnailUrl: "/storybook/960x540.jpg",
                 }),
               }),
               aMylistRegistration({
                 id: "mylistRegistration:3",
                 video: aVideo({
-                  id: "video:3",
+                  id: "video_3",
                   thumbnailUrl: "/storybook/960x540.jpg",
                 }),
               }),
               aMylistRegistration({
                 id: "mylistRegistration:4",
                 video: aVideo({
-                  id: "video:4",
+                  id: "video_4",
                   thumbnailUrl: "/storybook/960x540.jpg",
                 }),
               }),
               aMylistRegistration({
                 id: "mylistRegistration:5",
                 video: aVideo({
-                  id: "video:5",
+                  id: "video_5",
                   thumbnailUrl: "/storybook/960x540.jpg",
                 }),
               }),

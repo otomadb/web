@@ -134,7 +134,7 @@ export const Type: StoryObj<typeof SearchBox> = {
                   aSearchTagsItem({
                     matchedName: "ぼっち・ざ・ろっく！",
                     tag: aTag({
-                      id: "tag:1",
+                      id: "tag_1",
                       name: "ぼっち・ざ・ろっく！",
                       pseudoType: PseudoTagType.Character,
                     }),
@@ -142,7 +142,7 @@ export const Type: StoryObj<typeof SearchBox> = {
                   aSearchTagsItem({
                     matchedName: "後藤ひとり",
                     tag: aTag({
-                      id: "tag:2",
+                      id: "tag_2",
                       name: "後藤ひとり",
                       pseudoType: PseudoTagType.Character,
                     }),
@@ -150,7 +150,7 @@ export const Type: StoryObj<typeof SearchBox> = {
                   aSearchTagsItem({
                     matchedName: "伊地知虹夏",
                     tag: aTag({
-                      id: "tag:3",
+                      id: "tag_3",
                       name: "伊地知虹夏",
                       pseudoType: PseudoTagType.Character,
                     }),
@@ -158,7 +158,7 @@ export const Type: StoryObj<typeof SearchBox> = {
                   aSearchTagsItem({
                     matchedName: "山田リョウ",
                     tag: aTag({
-                      id: "tag:4",
+                      id: "tag_4",
                       name: "山田リョウ",
                       pseudoType: PseudoTagType.Character,
                     }),
@@ -166,7 +166,7 @@ export const Type: StoryObj<typeof SearchBox> = {
                   aSearchTagsItem({
                     matchedName: "喜多郁代",
                     tag: aTag({
-                      id: "tag:5",
+                      id: "tag_5",
                       name: "喜多郁代",
                       pseudoType: PseudoTagType.Character,
                     }),
@@ -174,7 +174,7 @@ export const Type: StoryObj<typeof SearchBox> = {
                   aSearchTagsItem({
                     matchedName: "草を食べて生きていきます",
                     tag: aTag({
-                      id: "tag:6",
+                      id: "tag_6",
                       name: "これで私は所持金が底を尽きたので草を食べて生きていきます",
                       pseudoType: PseudoTagType.Phrase,
                     }),
@@ -186,7 +186,7 @@ export const Type: StoryObj<typeof SearchBox> = {
                   aSearchVideosItem({
                     matchedTitle: "この音、フラットゾーンで使えるかな",
                     video: aVideo({
-                      id: "video:1",
+                      id: "video_1",
                       title: "この音、フラットゾーンで使えるかな",
                       thumbnailUrl: "/storybook/960x540.jpg",
                     }),
@@ -194,7 +194,7 @@ export const Type: StoryObj<typeof SearchBox> = {
                   aSearchVideosItem({
                     matchedTitle: "スーパー社会が怖いブラザーズ3",
                     video: aVideo({
-                      id: "video:2",
+                      id: "video_2",
                       title: "スーパー社会が怖いブラザーズ3",
                       thumbnailUrl: "/storybook/960x540.jpg",
                     }),
@@ -202,7 +202,7 @@ export const Type: StoryObj<typeof SearchBox> = {
                   aSearchVideosItem({
                     matchedTitle: "ぼっち　ろっく",
                     video: aVideo({
-                      id: "video:3",
+                      id: "video_3",
                       title: "ぼっち　ろっく",
                       thumbnailUrl: "/storybook/960x540.jpg",
                     }),
@@ -211,7 +211,7 @@ export const Type: StoryObj<typeof SearchBox> = {
                   aSearchVideosResultItem({
                     matchedTitle: "ぼっちのギターは黒色",
                     video: aVideo({
-                      id: "video:4",
+                      id: "video_4",
                       title: "ぼっちのギターは黒色",
                       thumbnailUrl: "/storybook/960x540.jpg",
                     }),
@@ -219,7 +219,7 @@ export const Type: StoryObj<typeof SearchBox> = {
                   aSearchVideosResultItem({
                     matchedTitle: "危険なぼっち",
                     video: aVideo({
-                      id: "video:5",
+                      id: "video_5",
                       title: "危険なぼっち",
                       thumbnailUrl: "/storybook/960x540.jpg",
                     }),
@@ -227,7 +227,7 @@ export const Type: StoryObj<typeof SearchBox> = {
                   aSearchVideosResultItem({
                     matchedTitle: "ぼっち・ざ・がらーじ",
                     video: aVideo({
-                      id: "video:6",
+                      id: "video_6",
                       title: "ぼっち・ざ・がらーじ",
                       thumbnailUrl: "/storybook/960x540.jpg",
                     }),

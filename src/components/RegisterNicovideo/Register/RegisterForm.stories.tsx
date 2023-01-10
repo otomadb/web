@@ -76,7 +76,7 @@ export default {
               ctx.data({
                 registerVideo: aRegisterVideoPayload({
                   video: aVideo({
-                    id: "video:1",
+                    id: "video_1",
                     title: req.variables.input.primaryTitle,
                   }),
                 }),
