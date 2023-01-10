@@ -15,7 +15,23 @@ import {
 } from "~/gql/graphql";
 import { gqlRequest } from "~/utils/gqlRequest";
 
-export const revalidate = 0;
+export async function generateStaticParams() {
+  const { findVideos } = await gqlRequest(
+    graphql(`
+      query VideoPagePaths {
+        findVideos(input: { limit: 96, order: { updatedAt: DESC } }) {
+          nodes {
+            id
+          }
+        }
+      }
+    `)
+  );
+  return findVideos.nodes.map(({ id }) => ({
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    id: id.split(":").at(1)!,
+  }));
+}
 
 export default async function Page({ params }: { params: { id: string } }) {
   const { video } = await gqlRequest(
