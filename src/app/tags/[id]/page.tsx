@@ -5,7 +5,23 @@ import { getFragment, graphql } from "~/gql";
 import { VideoList_VideoFragmentDoc } from "~/gql/graphql";
 import { gqlRequest } from "~/utils/gqlRequest";
 
-export const revalidate = 60;
+export async function generateStaticParams() {
+  const { findTags } = await gqlRequest(
+    graphql(`
+      query TagPagePaths {
+        findTags(input: { limit: 96, order: { updatedAt: DESC } }) {
+          nodes {
+            id
+          }
+        }
+      }
+    `)
+  );
+  return findTags.nodes.map(({ id }) => ({
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    id: id.split(":").at(1)!,
+  }));
+}
 
 export default async function Page({ params }: { params: { id: string } }) {
   const { tag } = await gqlRequest(
