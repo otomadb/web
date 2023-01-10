@@ -134,14 +134,11 @@ export const LinkYouMylists: React.FC<LinkProps> = ({ children, ...props }) => (
   </Link>
 );
 
-export const LinkYouMylist: React.FC<
-  LinkProps<{
-    /**
-     * GraphQL Mylist ID (ex. `mylist:1234`)
-     */
-    mylistId: string;
-  }>
-> = ({ mylistId, children, ...props }) => (
+export const LinkYouMylist: React.FC<LinkProps<{ mylistId: string }>> = ({
+  mylistId,
+  children,
+  ...props
+}) => (
   <Link href={`/you/mylists/${mylistId}`} {...props}>
     {children}
   </Link>
