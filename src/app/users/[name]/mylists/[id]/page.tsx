@@ -25,7 +25,7 @@ export default async function Page({
     `),
     {
       userName: params.name,
-      mylistId: `mylist:${params.id}`,
+      mylistId: params.id,
     }
   );
 

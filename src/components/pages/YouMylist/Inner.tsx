@@ -32,7 +32,7 @@ graphql(`
 export const Inner: React.FC<{ mylistId: string }> = ({ mylistId }) => {
   const [{ data }] = useQuery({
     query: YouMylistPageDocument,
-    variables: { mylistId: `mylist:${mylistId}` },
+    variables: { mylistId },
   });
 
   const sidelist = useFragment(

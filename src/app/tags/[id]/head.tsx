@@ -11,7 +11,7 @@ export default async function Head({ params }: { params: { id: string } }) {
         }
       }
     `),
-    { id: `tag:${params.id}` }
+    { id: params.id }
   );
 
   return (

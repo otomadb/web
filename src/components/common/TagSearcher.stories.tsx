@@ -49,7 +49,7 @@ export default {
                       name: "後藤ひとり",
                       pseudoType: PseudoTagType.Character,
                       explicitParent: aTag({
-                        id: "tag:2",
+                        id: "tag_2",
                         name: "ぼっち・ざ・ろっく！",
                       }),
                     }),

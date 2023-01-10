@@ -15,15 +15,15 @@ export default {
       id: "mylistRegistration:1",
       note: "これはサンプル文章です",
       video: aVideo({
-        id: "video:1",
+        id: "video_1",
         title: "Video1",
         thumbnailUrl: "/storybook/960x540.jpg",
         tags: [
           aTag({
-            id: "tag:1",
+            id: "tag_1",
             name: "child",
             explicitParent: aTag({
-              id: "tag:2",
+              id: "tag_2",
               name: "parent",
             }),
           }),
@@ -60,14 +60,14 @@ export const NoNote: StoryObj<typeof Registeration> = {
       id: "mylistRegistration:1",
       note: null,
       video: aVideo({
-        id: "video:1",
+        id: "video_1",
         title: "Video1",
         thumbnailUrl: "/storybook/960x540.jpg",
         tags: [
           aTag({
-            id: "tag:1",
+            id: "tag_1",
             name: "child",
-            explicitParent: aTag({ id: "tag:2", name: "parent" }),
+            explicitParent: aTag({ id: "tag_2", name: "parent" }),
           }),
         ],
       }),

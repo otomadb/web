@@ -27,10 +27,7 @@ export async function generateStaticParams() {
       }
     `)
   );
-  return findVideos.nodes.map(({ id }) => ({
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    id: id.split(":").at(1)!,
-  }));
+  return findVideos.nodes.map(({ id }) => ({ id }));
 }
 
 export default async function Page({ params }: { params: { id: string } }) {
@@ -47,7 +44,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         }
       }
     `),
-    { id: `video:${params.id}` }
+    { id: params.id }
   );
 
   const details = getFragment(VideoPage_DetailsSectionFragmentDoc, video);

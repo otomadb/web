@@ -46,7 +46,7 @@ export const NotLikeList: StoryObj<typeof LargeMylistListItem> = {
   name: "いいねリストでない",
   args: {
     fragment: aMylist({
-      id: "mylist:1",
+      id: "mylist_1",
       title: "マイリスト1",
       isLikeList: false,
       range: MylistShareRange.Public,
@@ -61,35 +61,35 @@ export const NotLikeList: StoryObj<typeof LargeMylistListItem> = {
           aMylistRegistration({
             id: "mylistRegistration:1",
             video: aVideo({
-              id: "video:1",
+              id: "video_1",
               thumbnailUrl: "/storybook/960x540.jpg",
             }),
           }),
           aMylistRegistration({
             id: "mylistRegistration:2",
             video: aVideo({
-              id: "video:2",
+              id: "video_2",
               thumbnailUrl: "/storybook/960x540.jpg",
             }),
           }),
           aMylistRegistration({
             id: "mylistRegistration:3",
             video: aVideo({
-              id: "video:3",
+              id: "video_3",
               thumbnailUrl: "/storybook/960x540.jpg",
             }),
           }),
           aMylistRegistration({
             id: "mylistRegistration:4",
             video: aVideo({
-              id: "video:4",
+              id: "video_4",
               thumbnailUrl: "/storybook/960x540.jpg",
             }),
           }),
           aMylistRegistration({
             id: "mylistRegistration:5",
             video: aVideo({
-              id: "video:5",
+              id: "video_5",
               thumbnailUrl: "/storybook/960x540.jpg",
             }),
           }),
@@ -103,7 +103,7 @@ export const OthersLikeList: StoryObj<typeof LargeMylistListItem> = {
   name: "自分以外のいいねリスト",
   args: {
     fragment: aMylist({
-      id: "mylist:1",
+      id: "mylist_1",
       title: "likes list for user:1",
       isLikeList: true,
       range: MylistShareRange.Public,
@@ -118,35 +118,35 @@ export const OthersLikeList: StoryObj<typeof LargeMylistListItem> = {
           aMylistRegistration({
             id: "mylistRegistration:1",
             video: aVideo({
-              id: "video:1",
+              id: "video_1",
               thumbnailUrl: "/storybook/960x540.jpg",
             }),
           }),
           aMylistRegistration({
             id: "mylistRegistration:2",
             video: aVideo({
-              id: "video:2",
+              id: "video_2",
               thumbnailUrl: "/storybook/960x540.jpg",
             }),
           }),
           aMylistRegistration({
             id: "mylistRegistration:3",
             video: aVideo({
-              id: "video:3",
+              id: "video_3",
               thumbnailUrl: "/storybook/960x540.jpg",
             }),
           }),
           aMylistRegistration({
             id: "mylistRegistration:4",
             video: aVideo({
-              id: "video:4",
+              id: "video_4",
               thumbnailUrl: "/storybook/960x540.jpg",
             }),
           }),
           aMylistRegistration({
             id: "mylistRegistration:5",
             video: aVideo({
-              id: "video:5",
+              id: "video_5",
               thumbnailUrl: "/storybook/960x540.jpg",
             }),
           }),
@@ -160,7 +160,7 @@ export const MyLikeList: StoryObj<typeof LargeMylistListItem> = {
   name: "自分のいいねリスト",
   args: {
     fragment: aMylist({
-      id: "mylist:1",
+      id: "mylist_1",
       title: "likes list for user:1",
       isLikeList: true,
       range: MylistShareRange.Private,
@@ -175,35 +175,35 @@ export const MyLikeList: StoryObj<typeof LargeMylistListItem> = {
           aMylistRegistration({
             id: "mylistRegistration:1",
             video: aVideo({
-              id: "video:1",
+              id: "video_1",
               thumbnailUrl: "/storybook/960x540.jpg",
             }),
           }),
           aMylistRegistration({
             id: "mylistRegistration:2",
             video: aVideo({
-              id: "video:2",
+              id: "video_2",
               thumbnailUrl: "/storybook/960x540.jpg",
             }),
           }),
           aMylistRegistration({
             id: "mylistRegistration:3",
             video: aVideo({
-              id: "video:3",
+              id: "video_3",
               thumbnailUrl: "/storybook/960x540.jpg",
             }),
           }),
           aMylistRegistration({
             id: "mylistRegistration:4",
             video: aVideo({
-              id: "video:4",
+              id: "video_4",
               thumbnailUrl: "/storybook/960x540.jpg",
             }),
           }),
           aMylistRegistration({
             id: "mylistRegistration:5",
             video: aVideo({
-              id: "video:5",
+              id: "video_5",
               thumbnailUrl: "/storybook/960x540.jpg",
             }),
           }),
@@ -226,7 +226,7 @@ export const NoRegistration: StoryObj<typeof LargeMylistListItem> = {
   name: "マイリストへの登録がない",
   args: {
     fragment: aMylist({
-      id: "mylist:1",
+      id: "mylist_1",
       title: "マイリスト1",
       isLikeList: false,
       range: MylistShareRange.Public,
