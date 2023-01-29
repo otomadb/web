@@ -29,7 +29,7 @@ export default async function Page() {
       <section>
         <h2 className={clsx(["text-xl"])}>最近登録された動画</h2>
         <Suspense fallback={<span>LOADING</span>}>
-          {/* @ts-expect-error 現状は jsx が Promise を返すと TypeScript が型エラーを報告するが、将来的には解決される */}
+          {/* @ts-expect-error for Server Component*/}
           <ServerSideVideosList
             className={clsx(["mt-4"])}
             videosPromise={promiseRecentVideos}
