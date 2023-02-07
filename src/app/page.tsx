@@ -1,44 +1,40 @@
 import "server-only";
 
 import clsx from "clsx";
-import React from "react";
+import { Suspense } from "react";
 
-import { LinkRegisterNicovideo } from "~/components/common/Link";
-import { VideoList } from "~/components/common/VideoList";
-import { getFragment, graphql } from "~/gql";
-import { VideoList_VideoFragmentDoc } from "~/gql/graphql";
-import { gqlRequest } from "~/utils/gqlRequest";
+import { ServerSideVideosList } from "~/components/common/VideoList.server";
+import { graphql } from "~/gql";
+import { gqlclient } from "~/utils/gqlRequest";
 
 export const revalidate = 0;
 
 export default async function Page() {
-  const result = await gqlRequest(
-    graphql(`
-      query IndexPage {
-        recentRegisteredVideos: findVideos(
-          input: { limit: 24, order: { createdAt: DESC } }
-        ) {
-          nodes {
-            ...VideoList_Video
+  const promiseRecentVideos = gqlclient
+    .request(
+      graphql(`
+        query TopPage_RecentRegisteredVideos {
+          findVideos(input: { limit: 24, order: { createdAt: DESC } }) {
+            nodes {
+              ...VideoList_Video
+            }
           }
         }
-      }
-    `)
-  );
-
-  const recentVideos = getFragment(
-    VideoList_VideoFragmentDoc,
-    result.recentRegisteredVideos.nodes
-  );
+      `)
+    )
+    .then((v) => v.findVideos.nodes);
 
   return (
     <>
       <section>
         <h2 className={clsx(["text-xl"])}>最近登録された動画</h2>
-        <VideoList className={clsx(["mt-4"])} videos={recentVideos} />
-      </section>
-      <section>
-        <LinkRegisterNicovideo>ニコニコ動画から追加</LinkRegisterNicovideo>
+        <Suspense fallback={<span>LOADING</span>}>
+          {/* @ts-expect-error for Server Component*/}
+          <ServerSideVideosList
+            className={clsx(["mt-4"])}
+            videosPromise={promiseRecentVideos}
+          />
+        </Suspense>
       </section>
     </>
   );
