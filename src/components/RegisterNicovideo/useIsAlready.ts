@@ -12,6 +12,7 @@ graphql(`
       sourceId
       video {
         id
+        serial
         title
         thumbnailUrl
       }
