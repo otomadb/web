@@ -73,6 +73,8 @@ const Profile: React.FC<{
 graphql(`
   fragment GlobalNav_Profile_Accordion on User {
     name
+    isEditor
+    isAdministrator
     ...GlobalNav_Profile_Accordion_Profile
   }
 `);
@@ -80,6 +82,8 @@ export const Accordion: React.FC<{
   className?: string;
   fragment: GlobalNav_Profile_AccordionFragment;
 }> = ({ className, fragment }) => {
+  const { isEditor } = fragment;
+
   return (
     <div className={clsx(className, ["pt-1"])}>
       <div
@@ -104,12 +108,12 @@ export const Accordion: React.FC<{
               ["py-2"],
               ["px-4"],
               ["bg-slate-200/75"],
-              ["border-b", "border-y-slate-300"]
+              ["border-b", "border-y-slate-300"],
+              ["text-xs"],
+              ["text-slate-500"]
             )}
           >
-            <div className={clsx(["text-xs"], ["text-slate-500"])}>
-              通常ユーザー
-            </div>
+            通常ユーザー
           </div>
           <div className={clsx(["grid"], ["grid-cols-1"])}>
             <MenuItem
@@ -125,38 +129,42 @@ export const Accordion: React.FC<{
             </MenuItem>
           </div>
         </div>
-        <div>
-          <div
-            className={clsx(
-              ["py-2"],
-              ["px-4"],
-              ["bg-slate-200/75"],
-              ["border-b", "border-y-slate-300"]
-            )}
-          >
-            <div className={clsx(["text-xs"], ["text-slate-500"])}>編集者</div>
+        {isEditor && (
+          <div>
+            <div
+              className={clsx(
+                ["py-2"],
+                ["px-4"],
+                ["bg-slate-200/75"],
+                ["border-b", "border-y-slate-300"],
+                ["text-xs"],
+                ["text-slate-500"]
+              )}
+            >
+              編集者
+            </div>
+            <div className={clsx(["grid"], ["grid-cols-2"])}>
+              <MenuItem
+                className={clsx(["col-span-2"])}
+                Wrapper={(props) => <LinkRegisterNicovideo {...props} />}
+              >
+                ニコニコ動画から登録
+              </MenuItem>
+              <MenuItem
+                className={clsx(["col-span-1"])}
+                Wrapper={(props) => <LinkRegisterTag {...props} />}
+              >
+                タグの登録
+              </MenuItem>
+              <MenuItem
+                className={clsx(["col-span-1"])}
+                Wrapper={(props) => <LinkRegisterSemitag {...props} />}
+              >
+                仮タグの解決
+              </MenuItem>
+            </div>
           </div>
-          <div className={clsx(["grid"], ["grid-cols-2"])}>
-            <MenuItem
-              className={clsx(["col-span-2"])}
-              Wrapper={(props) => <LinkRegisterNicovideo {...props} />}
-            >
-              ニコニコ動画から登録
-            </MenuItem>
-            <MenuItem
-              className={clsx(["col-span-1"])}
-              Wrapper={(props) => <LinkRegisterTag {...props} />}
-            >
-              タグの登録
-            </MenuItem>
-            <MenuItem
-              className={clsx(["col-span-1"])}
-              Wrapper={(props) => <LinkRegisterSemitag {...props} />}
-            >
-              仮タグの解決
-            </MenuItem>
-          </div>
-        </div>
+        )}
         <div
           className={clsx(
             [["py-2"], ["px-4"]],
