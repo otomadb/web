@@ -9,8 +9,8 @@ import { LinkVideo } from "./Link";
 
 graphql(`
   fragment Component_Thumbnail on Video {
-    id
     title
+    serial
     thumbnailUrl
   }
 `);
@@ -26,7 +26,7 @@ export const Thumbnail: React.FC<{
   fragment,
   width = 256,
   height = 192,
-  Wrapper = (props) => <LinkVideo videoId={fragment.id} {...props} />,
+  Wrapper = (props) => <LinkVideo serial={fragment.serial} {...props} />,
 }) => {
   const { title, thumbnailUrl } = fragment;
 

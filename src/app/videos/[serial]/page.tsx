@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import { notFound } from "next/navigation";
 
 import { DetailsSection } from "~/components/Videos/DetailsSection";
 import { HistorySection } from "~/components/Videos/HistorySection";
@@ -22,19 +23,22 @@ export async function generateStaticParams() {
         findVideos(input: { limit: 96, order: { updatedAt: DESC } }) {
           nodes {
             id
+            serial
           }
         }
       }
     `)
   );
-  return findVideos.nodes.map(({ id }) => ({ id }));
+  return findVideos.nodes.map(({ serial }) => ({
+    serial: serial.toString(),
+  }));
 }
 
-export default async function Page({ params }: { params: { id: string } }) {
-  const { video } = await gqlRequest(
+export default async function Page({ params }: { params: { serial: string } }) {
+  const { findVideo: video } = await gqlRequest(
     graphql(`
-      query VideoPage($id: ID!) {
-        video(id: $id) {
+      query VideoPage($serial: Int!) {
+        findVideo(input: { serial: $serial }) {
           id
           ...VideoPage_DetailsSection
           ...VideoPage_TagsSection
@@ -44,8 +48,10 @@ export default async function Page({ params }: { params: { id: string } }) {
         }
       }
     `),
-    { id: params.id }
+    { serial: parseInt(params.serial, 10) }
   );
+
+  if (!video) return notFound();
 
   const details = getFragment(VideoPage_DetailsSectionFragmentDoc, video);
   const tags = getFragment(VideoPage_TagsSectionFragmentDoc, video);
