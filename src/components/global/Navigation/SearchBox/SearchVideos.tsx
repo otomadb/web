@@ -17,6 +17,7 @@ graphql(`
     matchedTitle
     video {
       id
+      serial
       title
       ...Component_Thumbnail
     }
@@ -30,7 +31,7 @@ export const SearchVideosItem: React.FC<{
   return (
     <LinkVideo
       key={video.id}
-      videoId={video.id}
+      serial={video.serial}
       tabIndex={0}
       className={clsx(
         className,

@@ -16,6 +16,7 @@ graphql(`
     registerVideo(input: $input) {
       video {
         id
+        serial
         title
       }
     }
@@ -78,11 +79,11 @@ export const RegisterButton: React.FC<{
         }
 
         if (payload) {
-          const { id, title } = payload.registerVideo.video;
+          const { serial, title } = payload.registerVideo.video;
           toast(() => (
             <span className={clsx(["text-slate-700"])}>
               <LinkVideo
-                videoId={id}
+                serial={serial}
                 className={clsx(["font-bold"], ["text-blue-500"])}
               >
                 {title}

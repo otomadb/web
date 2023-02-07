@@ -16,12 +16,12 @@ export const LinkLogin: React.FC<LinkProps> = ({ children, ...props }) => (
   </Link>
 );
 
-export const LinkVideo: React.FC<LinkProps<{ videoId: string }>> = ({
+export const LinkVideo: React.FC<LinkProps<{ serial: number }>> = ({
   children,
-  videoId,
+  serial,
   ...props
 }) => (
-  <Link href={`/videos/${videoId}`} {...props}>
+  <Link href={`/videos/${serial}`} {...props}>
     {children}
   </Link>
 );

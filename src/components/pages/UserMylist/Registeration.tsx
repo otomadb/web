@@ -18,6 +18,7 @@ graphql(`
     note
     video {
       id
+      serial
       title
       ...Component_Thumbnail
       tags(input: { limit: 5 }) {
@@ -34,7 +35,7 @@ export const Registeration: React.FC<{
   const { note, video } = registration;
   return (
     <LinkVideo
-      videoId={video.id}
+      serial={video.serial}
       className={clsx(
         className,
         ["@container/registration"],

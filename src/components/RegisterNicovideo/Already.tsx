@@ -8,11 +8,11 @@ export const Already: React.FC<{
   className?: string;
   source: {
     sourceId: string;
-    video: { id: string; title: string; thumbnailUrl: string };
+    video: { serial: number; title: string; thumbnailUrl: string };
   };
 }> = ({ className, source }) => (
   <div className={clsx(className, ["mt-4"], ["flex", ["flex-col"]])}>
-    <LinkVideo videoId={source.video.id}>
+    <LinkVideo serial={source.video.serial}>
       <Image
         className={clsx(["object-scale-down"], ["h-32"])}
         src={source.video.thumbnailUrl}
@@ -25,7 +25,7 @@ export const Already: React.FC<{
     <p className={clsx(["mt-2"], ["text-sm"], ["text-slate-700"])}>
       <span className={clsx(["font-mono"])}>{source.sourceId}</span>は
       <LinkVideo
-        videoId={source.video.id}
+        serial={source.video.serial}
         className={clsx(["font-bold"], ["text-slate-900"])}
       >
         {source.video.title}

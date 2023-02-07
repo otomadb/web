@@ -13,6 +13,7 @@ import { Thumbnail } from "./Thumbnail";
 graphql(`
   fragment VideoList_Video on Video {
     id
+    serial
     title
     ...Component_Thumbnail
   }
@@ -57,7 +58,7 @@ export const VideoList: React.FC<{
                 height={192}
               />
               <LinkVideo
-                videoId={video.id}
+                serial={video.serial}
                 className={clsx(
                   ["block"],
                   [["px-1"], ["py-1"]],

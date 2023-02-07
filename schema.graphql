@@ -95,6 +95,11 @@ input FindUserInput {
   name: String
 }
 
+input FindVideoInput {
+  id: ID
+  serial: Int
+}
+
 input FindVideosInput {
   limit: Int! = 10
   order: FindVideosInputOrder! = {createdAt: DESC}
@@ -329,6 +334,7 @@ type Query {
   findSemitags(input: FindSemitagsInput!): SemitagConnection!
   findTags(input: FindTagsInput!): TagConnection!
   findUser(input: FindUserInput!): User
+  findVideo(input: FindVideoInput!): Video
   findVideos(input: FindVideosInput!): VideoConnection!
   mylist(id: ID!): Mylist!
   mylistGroup(id: ID!): MylistGroup!
@@ -586,6 +592,7 @@ type Video implements Node {
   nicovideoSources: [NicovideoVideoSource!]!
   registeredAt: DateTime!
   semitags(resolved: Boolean): [Semitag!]!
+  serial: Int!
   similarVideos(input: VideoSimilarVideosInput!): VideoSimilarVideosPayload!
   tags(input: VideoTagsInput!): [Tag!]!
   thumbnailUrl: String!
