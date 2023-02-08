@@ -32,7 +32,7 @@ graphql(`
   }
 `);
 
-export const HistorySection: React.FC<{
+export const EventsSection: React.FC<{
   className?: string;
   videoId: string;
 }> = ({ className, videoId }) => {
