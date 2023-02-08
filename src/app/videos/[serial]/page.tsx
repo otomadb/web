@@ -9,7 +9,6 @@ import { TagsSection } from "~/components/Videos/TagsSection";
 import { getFragment, graphql } from "~/gql";
 import {
   VideoPage_DetailsSectionFragmentDoc,
-  VideoPage_HistorySectionFragmentDoc,
   VideoPage_SemitagsSectionFragmentDoc,
   VideoPage_SimilarVideosSectionFragmentDoc,
   VideoPage_TagsSectionFragmentDoc,
@@ -44,7 +43,6 @@ export default async function Page({ params }: { params: { serial: string } }) {
           ...VideoPage_TagsSection
           ...VideoPage_SemitagsSection
           ...VideoPage_SimilarVideosSection
-          ...VideoPage_HistorySection
         }
       }
     `),
@@ -60,7 +58,6 @@ export default async function Page({ params }: { params: { serial: string } }) {
     VideoPage_SimilarVideosSectionFragmentDoc,
     video
   );
-  const history = getFragment(VideoPage_HistorySectionFragmentDoc, video);
 
   return (
     <div className={clsx(["flex"], ["gap-x-4"])}>
@@ -83,7 +80,7 @@ export default async function Page({ params }: { params: { serial: string } }) {
             <SemitagsSection fallback={semitags} />
           </div>
           <SimilarVideosSection className={clsx()} fallback={similarVideos} />
-          <HistorySection className={clsx()} fallback={history} />
+          <HistorySection className={clsx()} videoId={video.id} />
         </div>
       </div>
     </div>

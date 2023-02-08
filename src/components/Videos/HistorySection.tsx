@@ -3,63 +3,61 @@
 import "client-only";
 
 import clsx from "clsx";
-import { useMemo } from "react";
 import { useQuery } from "urql";
 
-import { getFragment as useFragment, graphql } from "~/gql";
+import { getFragment, getFragment as useFragment, graphql } from "~/gql";
 import {
-  VideoPage_HistoryItemFragmentDoc,
-  VideoPage_HistorySectionFragment,
-  VideoPage_HistorySectionFragmentDoc,
-  VideoPage_UpstreamHistorySectionDocument,
+  VideoPage_EventsSectionDocument,
+  VideoPage_EventsSectionFragmentDoc,
+  VideoPage_VideoEventFragmentDoc,
 } from "~/gql/graphql";
 
-import { History } from "./HistoryItem";
+import { Event } from "./events/Event";
 
 graphql(`
-  fragment VideoPage_HistorySection on Video {
-    id
-    history(input: { order: { createdAt: DESC } }) {
+  fragment VideoPage_EventsSection on Video {
+    events(input: { limit: 20 }) {
       nodes {
         id
-        ...VideoPage_HistoryItem
+        ...VideoPage_VideoEvent
       }
     }
   }
 
-  query VideoPage_UpstreamHistorySection($id: ID!) {
+  query VideoPage_EventsSection($id: ID!) {
     video(id: $id) {
       id
-      ...VideoPage_HistorySection
+      ...VideoPage_EventsSection
     }
   }
 `);
 
 export const HistorySection: React.FC<{
   className?: string;
-  fallback: VideoPage_HistorySectionFragment;
-}> = ({ className, fallback }) => {
-  const [{ data }] = useQuery({
-    query: VideoPage_UpstreamHistorySectionDocument,
-    variables: { id: fallback.id },
+  videoId: string;
+}> = ({ className, videoId }) => {
+  const [{ data, fetching }] = useQuery({
+    query: VideoPage_EventsSectionDocument,
+    variables: { id: videoId },
   });
-  const upstream = useFragment(
-    VideoPage_HistorySectionFragmentDoc,
-    data?.video
-  );
 
-  const video = useMemo(() => upstream || fallback, [fallback, upstream]);
-  const { history } = video;
+  if (fetching) return null;
+  if (!data) return null;
+
+  const { events } = getFragment(
+    VideoPage_EventsSectionFragmentDoc,
+    data.video
+  );
 
   return (
     <section className={clsx(className)}>
       <h2 className={clsx(["text-xl"], ["text-slate-900"])}>動画の更新履歴</h2>
       <div className={clsx(["mt-2"], ["flex", "flex-col"], ["space-y-1"])}>
-        {history.nodes.map((event) => (
-          <History
+        {events.nodes.map((event) => (
+          <Event
             key={event.id}
             // eslint-disable-next-line react-hooks/rules-of-hooks
-            item={useFragment(VideoPage_HistoryItemFragmentDoc, event)}
+            fragment={useFragment(VideoPage_VideoEventFragmentDoc, event)}
           />
         ))}
       </div>

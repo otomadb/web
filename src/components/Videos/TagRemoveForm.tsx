@@ -24,7 +24,7 @@ graphql(`
       video {
         id
         ...VideoPage_TagsSection
-        ...VideoPage_HistorySection
+        ...VideoPage_EventsSection
         ...VideoPage_SimilarVideosSection
       }
     }
