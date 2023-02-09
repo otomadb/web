@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { notFound } from "next/navigation";
 
 import { DetailsSection } from "~/components/Videos/DetailsSection";
-import { HistorySection } from "~/components/Videos/HistorySection";
+import { EventsSection } from "~/components/Videos/EventsSection";
 import { SemitagsSection } from "~/components/Videos/SemitagsSection";
 import { SimilarVideosSection } from "~/components/Videos/SimilarVideosSection";
 import { TagsSection } from "~/components/Videos/TagsSection";
@@ -80,7 +80,7 @@ export default async function Page({ params }: { params: { serial: string } }) {
             <SemitagsSection fallback={semitags} />
           </div>
           <SimilarVideosSection className={clsx()} fallback={similarVideos} />
-          <HistorySection className={clsx()} videoId={video.id} />
+          <EventsSection className={clsx()} videoId={video.id} />
         </div>
       </div>
     </div>
