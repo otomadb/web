@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 
 import { DetailsSection } from "~/components/Videos/DetailsSection";
 import { EventsSection } from "~/components/Videos/EventsSection";
@@ -80,7 +81,10 @@ export default async function Page({ params }: { params: { serial: string } }) {
             <SemitagsSection fallback={semitags} />
           </div>
           <SimilarVideosSection className={clsx()} fallback={similarVideos} />
-          <EventsSection className={clsx()} videoId={video.id} />
+          <Suspense fallback={<div>Loading</div>}>
+            {/* @ts-expect-error for Server Component*/}
+            <EventsSection className={clsx()} videoId={video.id} />
+          </Suspense>
         </div>
       </div>
     </div>
