@@ -1,15 +1,13 @@
 "use client";
 import clsx from "clsx";
 import React, { Fragment } from "react";
-import { useMemo } from "react";
-import { useQuery } from "urql";
 
-import { getFragment as useFragment, graphql } from "~/gql";
+import { getFragment, getFragment as useFragment, graphql } from "~/gql";
 import {
+  RegisterNicovideoPage_FetchNicovideoTagCandidateFragment,
+  RegisterNicovideoPage_FetchNicovideoTagCandidateFragmentDoc,
+  RegisterNicovideoPage_FetchNicovideoTagCandidatesFragment,
   RegisterNicovideoPage_InnerTagFragmentDoc,
-  RegisterNicovideoPage_SearchItemFragment,
-  RegisterNicovideoPage_SearchItemFragmentDoc,
-  RegisterNicovideoPage_SearchTagCandidatesDocument,
 } from "~/gql/graphql";
 
 import { TagInner } from "../TagInner";
@@ -18,26 +16,16 @@ export const isUnnecessarySearch = (tag: string) =>
   tag.toLowerCase() === "音mad";
 
 graphql(`
-  fragment RegisterNicovideoPage_SearchItem on SearchTagsItem {
-    matchedName
+  fragment RegisterNicovideoPage_FetchNicovideoTagCandidate on NicovideoOriginalSourceTagSearchTagsItem {
     tag {
       id
       ...RegisterNicovideoPage_InnerTag
     }
   }
-
-  query RegisterNicovideoPage_SearchTagCandidates($query: String!) {
-    searchTags(input: { query: $query, limit: 2 }) {
-      items {
-        ...RegisterNicovideoPage_SearchItem
-      }
-    }
-  }
 `);
-
 export const Candidate: React.FC<{
   className?: string;
-  item: RegisterNicovideoPage_SearchItemFragment;
+  item: RegisterNicovideoPage_FetchNicovideoTagCandidateFragment;
   isSelected(id: string): boolean;
   select(id: string): void;
   deselect(id: string): void;
@@ -55,29 +43,60 @@ export const Candidate: React.FC<{
   );
 };
 
-export const SourceTag: React.FC<{
+graphql(`
+  fragment RegisterNicovideoPage_FetchNicovideoTagCandidates on NicovideoOriginalSourceTagSearchTagsPayload {
+    items {
+      ...RegisterNicovideoPage_FetchNicovideoTagCandidate
+    }
+  }
+`);
+
+export const Candidates: React.FC<{
   className?: string;
-  sourceTag: string;
+  candidates: RegisterNicovideoPage_FetchNicovideoTagCandidatesFragment;
   isSelected(id: string): boolean;
   select(id: string): void;
   deselect(id: string): void;
-}> = ({ className, sourceTag, isSelected, select, deselect }) => {
-  const unneccesary = useMemo(
-    () => isUnnecessarySearch(sourceTag),
-    [sourceTag]
+}> = ({ className, candidates, isSelected, select, deselect }) => {
+  return (
+    <div className={clsx(className)}>
+      {candidates.items.length === 0 && (
+        <p className={clsx(["text-xs"], ["text-slate-500"])}>
+          候補が見つかりませんでした
+        </p>
+      )}
+      <div
+        className={clsx(
+          ["w-full"],
+          ["flex", "flex-wrap"],
+          ["gap-x-2"],
+          ["gap-y-2"]
+        )}
+      >
+        {candidates.items.map((item, i) => (
+          <Candidate
+            key={i}
+            item={getFragment(
+              RegisterNicovideoPage_FetchNicovideoTagCandidateFragmentDoc,
+              item
+            )}
+            isSelected={isSelected}
+            select={select}
+            deselect={deselect}
+          />
+        ))}
+      </div>
+    </div>
   );
+};
 
-  const [result] = useQuery({
-    query: RegisterNicovideoPage_SearchTagCandidatesDocument,
-    pause: unneccesary,
-    variables: { query: sourceTag },
-    requestPolicy: "cache-and-network",
-  });
-  const items = useFragment(
-    RegisterNicovideoPage_SearchItemFragmentDoc,
-    result.data?.searchTags.items
-  );
-
+export const SourceTag: React.FC<{
+  className?: string;
+  candidates: RegisterNicovideoPage_FetchNicovideoTagCandidatesFragment;
+  isSelected(id: string): boolean;
+  select(id: string): void;
+  deselect(id: string): void;
+}> = ({ className, candidates, isSelected, select, deselect }) => {
   return (
     <div className={clsx(className)}>
       <div>

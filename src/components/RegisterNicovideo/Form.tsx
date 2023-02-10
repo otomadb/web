@@ -6,10 +6,11 @@ import clsx from "clsx";
 import React, { useReducer, useState } from "react";
 
 import { LinkSignin } from "~/components/common/Link";
+import { RegisterNicovideoPage_FetchNicovideoSourceFragment } from "~/gql/graphql";
 import { useIsLogin } from "~/hooks/useIsLogin";
 
 import { Already } from "./Already";
-import { FetchSource, SourceData } from "./FetchSource";
+import { FetchSource } from "./FetchSource";
 import { RegisterForm } from "./Register/RegisterForm";
 import { SourceForm } from "./Source/SourceForm";
 import { useIsAlready } from "./useIsAlready";
@@ -45,9 +46,9 @@ export const RegisterNicovideoForm: React.FC<{ className?: string }> = ({
 }) => {
   const islogin = useIsLogin();
 
-  const [source, setSource] = useState<null | undefined | SourceData>(
-    undefined
-  );
+  const [source, setSource] = useState<
+    null | undefined | RegisterNicovideoPage_FetchNicovideoSourceFragment
+  >(undefined);
   const already = useIsAlready(source?.sourceId);
 
   const [selectedTags, updateSelectedTags] = useReducer(
@@ -140,7 +141,7 @@ export const RegisterNicovideoForm: React.FC<{ className?: string }> = ({
                   className={clsx(["mt-4"])}
                   sourceId={source.sourceId}
                   title={source.title}
-                  thumbnailUrl={source.thumbnail}
+                  thumbnailUrl={source.thumbnailUrl}
                   tags={selectedTags}
                   selectTag={(id) => updateSelectedTags({ type: "add", id })}
                   deselectTag={(id) =>

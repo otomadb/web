@@ -8,6 +8,9 @@ import {
 } from "urql";
 
 import {
+  aFetchNicovideoPayload,
+  aNicovideoOriginalSource,
+  aNicovideoOriginalSourceTagSearchTagsPayload,
   aNicovideoVideoSource,
   aRegisterVideoPayload,
   aSearchTagsItem,
@@ -17,8 +20,8 @@ import {
   aVideo,
   RegisterNicovideoPage_AlreadyCheckDocument,
   RegisterNicovideoPage_ExactTagDocument,
+  RegisterNicovideoPage_FetchNicovideoDocument,
   RegisterNicovideoPage_RegisterVideoDocument,
-  RegisterNicovideoPage_SearchTagCandidatesDocument,
   RegisterNicovideoPage_SearchTagsDocument,
   UseViewerDocument,
 } from "~/gql/graphql";
@@ -47,25 +50,86 @@ const mockUnlogin = graphql.query(UseViewerDocument, (req, res, ctx) =>
   )
 );
 
-const mockRemoteSuccess = rest.get("/remote/nicovideo", (req, res, ctx) =>
-  res(
-    ctx.json({
-      sourceId: req.url.searchParams.get("id"),
-      title: "M.C.ドナルドはダンスに夢中なのか？最終鬼畜道化師ドナルド・Ｍ",
-      tags: [
-        { name: "ドナルド" },
-        { name: "U.N.オーエンは彼女なのか？" },
-        { name: "最終鬼畜妹フランドール・Ｓ" },
-        { name: "エンターテイメント" },
-        { name: "東方乱々流" },
-        { name: "音mad" },
-        { name: "ドナルド教" },
-      ],
-      thumbnails: {
-        ogp: "/storybook/960x540.jpg",
-      },
-    })
-  )
+const mockRemoteSuccess = graphql.query(
+  RegisterNicovideoPage_FetchNicovideoDocument,
+  (req, res, ctx) =>
+    res(
+      ctx.data({
+        fetchNicovideo: aFetchNicovideoPayload({
+          source: aNicovideoOriginalSource({
+            sourceId: "sm2057168",
+            title:
+              "M.C.ドナルドはダンスに夢中なのか？最終鬼畜道化師ドナルド・Ｍ",
+            thumbnailUrl: "/storybook/960x540.jpg",
+            tags: [
+              {
+                name: "ドナルド",
+                searchTags: aNicovideoOriginalSourceTagSearchTagsPayload({
+                  items: [
+                    {
+                      tag: aTag({
+                        id: "t1",
+                        name: "ドナルド・マクドナルド",
+                      }),
+                    },
+                  ],
+                }),
+              },
+              {
+                name: "U.N.オーエンは彼女なのか？",
+                searchTags: aNicovideoOriginalSourceTagSearchTagsPayload({
+                  items: [
+                    {
+                      tag: aTag({
+                        id: "t2",
+                        name: "U.N.オーエンは彼女なのか？",
+                      }),
+                    },
+                  ],
+                }),
+              },
+              {
+                name: "最終鬼畜妹フランドール・Ｓ",
+                searchTags: aNicovideoOriginalSourceTagSearchTagsPayload({
+                  items: [
+                    {
+                      tag: aTag({
+                        id: "t3",
+                        name: "最終鬼畜妹フランドール・Ｓ",
+                      }),
+                    },
+                  ],
+                }),
+              },
+              {
+                name: "エンターテイメント",
+                searchTags: aNicovideoOriginalSourceTagSearchTagsPayload({
+                  items: [],
+                }),
+              },
+              {
+                name: "東方乱々流",
+                searchTags: aNicovideoOriginalSourceTagSearchTagsPayload({
+                  items: [],
+                }),
+              },
+              {
+                name: "音mad",
+                searchTags: aNicovideoOriginalSourceTagSearchTagsPayload({
+                  items: [],
+                }),
+              },
+              {
+                name: "ドナルド教",
+                searchTags: aNicovideoOriginalSourceTagSearchTagsPayload({
+                  items: [],
+                }),
+              },
+            ],
+          }),
+        }),
+      })
+    )
 );
 
 const mockYetUnregistered = graphql.query(
@@ -74,27 +138,6 @@ const mockYetUnregistered = graphql.query(
     res(
       ctx.data({
         findNicovideoVideoSource: null,
-      })
-    )
-);
-
-const mockSearchCandidates = graphql.query(
-  RegisterNicovideoPage_SearchTagCandidatesDocument,
-  (req, res, ctx) =>
-    res(
-      ctx.data({
-        searchTags: aSearchTagsPayload({
-          items: [
-            aSearchTagsItem({
-              matchedName: req.variables.query,
-              tag: aTag({
-                id: `tag:1:${req.variables.query}`,
-                name: req.variables.query,
-                explicitParent: null,
-              }),
-            }),
-          ],
-        }),
       })
     )
 );
@@ -155,7 +198,6 @@ export default {
       handlers: [
         mockLogin,
         mockRemoteSuccess,
-        mockSearchCandidates,
         graphql.query(RegisterNicovideoPage_ExactTagDocument, (req, res, ctx) =>
           res(
             ctx.data({
@@ -228,7 +270,6 @@ export const Already: StoryObj<typeof RegisterNicovideoForm> = {
       handlers: [
         mockLogin,
         mockRemoteSuccess,
-        mockSearchCandidates,
         graphql.query(
           RegisterNicovideoPage_AlreadyCheckDocument,
           (req, res, ctx) =>

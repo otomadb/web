@@ -1,49 +1,59 @@
 "use client";
 
 import clsx from "clsx";
-import React, { useState } from "react";
-import useSWRImmutable from "swr/immutable";
+import React, { useEffect, useMemo, useState } from "react";
+import { useQuery } from "urql";
 
+import { getFragment, graphql } from "~/gql";
+import {
+  RegisterNicovideoPage_FetchNicovideoDocument,
+  RegisterNicovideoPage_FetchNicovideoSourceFragment,
+  RegisterNicovideoPage_FetchNicovideoSourceFragmentDoc,
+} from "~/gql/graphql";
 import { useGetRemoteNicovideo } from "~/rest";
 
-export type SourceData = {
-  sourceId: string;
-  title: string;
-  tags: string[];
-  thumbnail: string;
-};
+graphql(`
+  query RegisterNicovideoPage_FetchNicovideo($sourceId: String!) {
+    fetchNicovideo(input: { sourceId: $sourceId }) {
+      source {
+        ...RegisterNicovideoPage_FetchNicovideoSource
+      }
+    }
+  }
+`);
 
 export const FetchSource: React.FC<{
   className?: string;
-  setSource(data: SourceData | null | undefined): void;
+  setSource(
+    data: RegisterNicovideoPage_FetchNicovideoSourceFragment | null | undefined
+  ): void;
 }> = ({ className, setSource }) => {
   const [input, setInput] = useState<string>("");
   const [search, setSearch] = useState<string>("");
   const trigger = useGetRemoteNicovideo();
 
-  useSWRImmutable(
-    search && /(sm)\d+/.test(search) ? search : null,
-    (i) =>
-      trigger(i).json<{
-        sourceId: string;
-        title: string;
-        tags: { name: string }[];
-        thumbnails: { ogp: string };
-      }>(),
-    {
-      onSuccess(data) {
-        setSource({
-          sourceId: data.sourceId,
-          title: data.title,
-          tags: data.tags.map((v) => v.name),
-          thumbnail: data.thumbnails.ogp,
-        });
-      },
-      onError() {
-        setSource(null);
-      },
-    }
+  const sourceId = useMemo(
+    () => (search && /(sm)\d+/.test(search) ? search : null),
+    [search]
   );
+
+  const [{ data, error }] = useQuery({
+    query: RegisterNicovideoPage_FetchNicovideoDocument,
+    variables: sourceId ? { sourceId } : undefined,
+  });
+  useEffect(() => {
+    if (!data || !data.fetchNicovideo.source) {
+      setSource(null);
+      return;
+    }
+
+    const {
+      fetchNicovideo: { source },
+    } = data;
+    setSource(
+      getFragment(RegisterNicovideoPage_FetchNicovideoSourceFragmentDoc, source)
+    );
+  }, [data, setSource]);
 
   return (
     <form className={clsx(className, ["flex", ["items-stretch"]])}>

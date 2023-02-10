@@ -55,6 +55,15 @@ type CreateMylistPayload {
 
 scalar DateTime
 
+input FetchNicovideoInput {
+  """ニコニコ動画の動画ID（sm2057168など）"""
+  sourceId: String!
+}
+
+type FetchNicovideoPayload {
+  source: NicovideoOriginalSource
+}
+
 input FindMylistInput {
   id: ID
 }
@@ -74,6 +83,11 @@ input FindSemitagsInput {
 input FindSemitagsInputOrder {
   createdAt: SortOrder
   updatedAt: SortOrder
+}
+
+input FindTagInput {
+  id: ID
+  serial: Int
 }
 
 input FindTagsInput {
@@ -283,6 +297,39 @@ type MylistVideoRecommendation {
   to: Video!
 }
 
+type NicovideoOriginalSource {
+  countComments: Int!
+  countLikes: Int!
+  countMylists: Int!
+  countViews: Int!
+
+  """動画の長さ"""
+  duration: Int!
+  registeredAt: DateTime!
+  sourceId: String!
+  tags: [NicovideoOriginalSourceTag!]!
+  thumbnailUrl: String!
+  title: String!
+}
+
+type NicovideoOriginalSourceTag {
+  name: String!
+  searchTags(input: NicovideoOriginalSourceTagSearchTagsInput!): NicovideoOriginalSourceTagSearchTagsPayload!
+}
+
+input NicovideoOriginalSourceTagSearchTagsInput {
+  limit: Int! = 3
+  skip: Int! = 0
+}
+
+type NicovideoOriginalSourceTagSearchTagsItem {
+  tag: Tag!
+}
+
+type NicovideoOriginalSourceTagSearchTagsPayload {
+  items: [NicovideoOriginalSourceTagSearchTagsItem!]!
+}
+
 type NicovideoVideoSource implements Node & VideoSource {
   id: ID!
   sourceId: String!
@@ -330,9 +377,12 @@ enum PseudoTagType {
 }
 
 type Query {
+  """ニコニコ動画から動画情報を取得する"""
+  fetchNicovideo(input: FetchNicovideoInput!): FetchNicovideoPayload!
   findMylist(input: FindMylistInput!): Mylist
   findNicovideoVideoSource(input: FindNicovideoVideoSourceInput!): NicovideoVideoSource
   findSemitags(input: FindSemitagsInput!): SemitagConnection!
+  findTag(input: FindTagInput!): Tag
   findTags(input: FindTagsInput!): TagConnection!
   findUser(input: FindUserInput!): User
   findVideo(input: FindVideoInput!): Video
@@ -500,6 +550,7 @@ type Tag implements Node {
   names: [TagName!]!
   parents(meaningless: Boolean): [TagParent!]!
   pseudoType: PseudoTagType!
+  serial: Int!
   taggedVideos: [Video!]!
   type: TagType! @deprecated
 }
@@ -615,6 +666,7 @@ input UserMylistsInputOrder {
 }
 
 type Video implements Node {
+  events(input: VideoEventsInput!): VideoEventsConnection!
   hasTag(id: ID!): Boolean!
   history(input: VideoHistoryInput!): VideoHistoryConnection!
   id: ID!
@@ -630,10 +682,43 @@ type Video implements Node {
   titles: [VideoTitle!]!
 }
 
+"""Videoにニコニコ動画の動画ソースを追加した際に発生．"""
+type VideoAddNicovideoSourceEvent implements VideoEvent {
+  createdAt: DateTime!
+  id: ID!
+
+  """追加されたニコニコ動画の動画ソース"""
+  source: NicovideoVideoSource!
+  user: User!
+  video: Video!
+}
+
 type VideoAddNicovideoVideoSourceHistoryItem implements VideoHistoryItem {
   createdAt: DateTime!
   id: ID!
   source: NicovideoVideoSource!
+  user: User!
+  video: Video!
+}
+
+"""Videoに仮タグを追加した際に発生．"""
+type VideoAddSemitagEvent implements VideoEvent {
+  createdAt: DateTime!
+  id: ID!
+
+  """追加された仮タグ"""
+  semitag: Semitag!
+  user: User!
+  video: Video!
+}
+
+"""Videoにタグを追加した際に発生．"""
+type VideoAddTagEvent implements VideoEvent {
+  createdAt: DateTime!
+  id: ID!
+
+  """追加されたタグ"""
+  tag: Tag!
   user: User!
   video: Video!
 }
@@ -646,10 +731,32 @@ type VideoAddTagHistoryItem implements VideoHistoryItem {
   video: Video!
 }
 
+"""Videoにサムネイルを追加した際に発生．"""
+type VideoAddThumbnailEvent implements VideoEvent {
+  createdAt: DateTime!
+  id: ID!
+
+  """追加されたサムネイル"""
+  thumbnailUrl: String!
+  user: User!
+  video: Video!
+}
+
 type VideoAddThumbnailHistoryItem implements VideoHistoryItem {
   createdAt: DateTime!
   id: ID!
   thumbnail: String!
+  user: User!
+  video: Video!
+}
+
+"""Videoにタイトルを追加した際に発生．"""
+type VideoAddTitleEvent implements VideoEvent {
+  createdAt: DateTime!
+  id: ID!
+
+  """追加されたタイトル"""
+  title: String!
   user: User!
   video: Video!
 }
@@ -662,9 +769,29 @@ type VideoAddTitleHistoryItem implements VideoHistoryItem {
   video: Video!
 }
 
+"""Videoの主サムネイルを変更した際に発生．"""
+type VideoChangePrimaryThumbnailEvent implements VideoEvent {
+  createdAt: DateTime!
+  from: String!
+  id: ID!
+  to: String!
+  user: User!
+  video: Video!
+}
+
 type VideoChangePrimaryThumbnailHistoryItem implements VideoHistoryItem {
   createdAt: DateTime!
   from: String
+  id: ID!
+  to: String!
+  user: User!
+  video: Video!
+}
+
+"""Videoの主タイトルを変更した際に発生．"""
+type VideoChangePrimaryTitleEvent implements VideoEvent {
+  createdAt: DateTime!
+  from: String!
   id: ID!
   to: String!
   user: User!
@@ -708,6 +835,22 @@ type VideoDeleteTitleHistoryItem implements VideoHistoryItem {
   video: Video!
 }
 
+interface VideoEvent {
+  createdAt: DateTime!
+  id: ID!
+  user: User!
+  video: Video!
+}
+
+type VideoEventsConnection {
+  nodes: [VideoEvent!]!
+}
+
+input VideoEventsInput {
+  limit: Int! = 10
+  skip: Int! = 0
+}
+
 type VideoHistoryConnection {
   nodes: [VideoHistoryItem!]!
 }
@@ -729,9 +872,68 @@ input VideoHistoryOrder {
   createdAt: SortOrder
 }
 
+"""Videoを追加した際に発生．（初回のみ）"""
+type VideoRegisterEvent implements VideoEvent {
+  createdAt: DateTime!
+  id: ID!
+  user: User!
+  video: Video!
+}
+
 type VideoRegisterHistoryItem implements VideoHistoryItem {
   createdAt: DateTime!
   id: ID!
+  user: User!
+  video: Video!
+}
+
+"""Videoからタグを削除した際に発生．"""
+type VideoRemoveTagEvent implements VideoEvent {
+  createdAt: DateTime!
+  id: ID!
+
+  """削除されたタグ"""
+  tag: Tag!
+  user: User!
+  video: Video!
+}
+
+"""Videoからサムネイルを削除した際に発生．"""
+type VideoRemoveThumbnailEvent implements VideoEvent {
+  createdAt: DateTime!
+  id: ID!
+
+  """削除されたサムネイル"""
+  thumbnailUrl: String!
+  user: User!
+  video: Video!
+}
+
+"""Videoからタイトルを削除した際に発生．"""
+type VideoRemoveTitleEvent implements VideoEvent {
+  createdAt: DateTime!
+  id: ID!
+
+  """削除されたタイトル"""
+  title: String!
+  user: User!
+  video: Video!
+}
+
+"""Videoに主サムネイルを設定した際に発生．（初回のみ）"""
+type VideoSetPrimaryThumbnailEvent implements VideoEvent {
+  createdAt: DateTime!
+  id: ID!
+  thumbnailUrl: String!
+  user: User!
+  video: Video!
+}
+
+"""Videoに主タイトルを設定した際に発生．（初回のみ）"""
+type VideoSetPrimaryTitleEvent implements VideoEvent {
+  createdAt: DateTime!
+  id: ID!
+  title: String!
   user: User!
   video: Video!
 }
