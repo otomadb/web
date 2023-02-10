@@ -148,6 +148,7 @@ type Mutation {
   resovleSemitag(input: ResolveSemitagInput!): ResolveSemitagPayload!
   signin(input: SigninInput!): SigninPayload!
   signout: SignoutPayload!
+  signup(input: SignupInput!): SignupPayload!
   undoLikeVideo(input: UndoLikeVideoInput!): UndoLikeVideoPayload!
 }
 
@@ -559,6 +560,34 @@ union SignoutPayload = SignoutFailedPayload | SignoutSuccessedPayload
 
 type SignoutSuccessedPayload {
   session: Session!
+}
+
+enum SignupFailedMessage {
+  """そのメールアドレスはすでに存在する"""
+  EXISTS_EMAIL
+
+  """そのユーザーネームはすでに存在する"""
+  EXISTS_USERNAME
+
+  """原因不明のエラー"""
+  UNKNOWN
+}
+
+type SignupFailedPayload {
+  message: SignupFailedMessage!
+}
+
+input SignupInput {
+  displayName: String!
+  email: String!
+  name: String!
+  password: String!
+}
+
+union SignupPayload = SignupFailedPayload | SignupSuccessedPayload
+
+type SignupSuccessedPayload {
+  user: User!
 }
 
 enum SortOrder {
