@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 
 import { getFragment, graphql } from "~/gql";
 import { UserMylistPageFragmentDoc } from "~/gql/graphql";
-import { UserMylist } from "~/pages/User/UserMylist";
+import { UserMylist } from "~/pages/User/Mylist";
 import { gqlRequest } from "~/utils/gqlRequest";
 
 export const revalidate = 0;

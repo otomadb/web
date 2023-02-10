@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { getFragment, graphql } from "~/gql";
 import { UserMylistsPage_MylistsFragmentDoc } from "~/gql/graphql";
 import { AttentionYou } from "~/pages/User/AttentionYou";
-import { UserMylists } from "~/pages/User/UserMylists";
+import { UserMylists } from "~/pages/User/Mylists";
 import { gqlRequest } from "~/utils/gqlRequest";
 
 export default async function Page({ params }: { params: { name: string } }) {

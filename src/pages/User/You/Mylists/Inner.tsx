@@ -11,7 +11,7 @@ import {
   YouMylistsPageDocument,
 } from "~/gql/graphql";
 
-import { UserMylists } from "../../UserMylists";
+import { UserMylists } from "../../Mylists";
 
 graphql(`
   query YouMylistsPage {
