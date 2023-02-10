@@ -8,6 +8,7 @@ import { Tag } from "~/components/common/Tag";
 import { getFragment, graphql } from "~/gql";
 import {
   Component_TagFragmentDoc,
+  Link_TagFragmentDoc,
   VideoPage_RemoveTagFormFragmentDoc,
   VideoPage_TagsListFragment,
   VideoPage_TagsListItemFragment,
@@ -74,6 +75,7 @@ export const TagsList: React.FC<{
 graphql(`
   fragment VideoPage_TagsListItem on Tag {
     id
+    ...Link_Tag
     ...Component_Tag
     ...VideoPage_RemoveTagForm
   }
@@ -95,7 +97,14 @@ export const TagsListItem: React.FC<{
       <Tag
         tag={getFragment(Component_TagFragmentDoc, fragment)}
         Wrapper={({ ...props }) =>
-          edit ? <div {...props} /> : <LinkTag tagId={fragment.id} {...props} />
+          edit ? (
+            <div {...props} />
+          ) : (
+            <LinkTag
+              fragment={getFragment(Link_TagFragmentDoc, fragment)}
+              {...props}
+            />
+          )
         }
       />
       {edit && (

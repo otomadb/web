@@ -9,8 +9,11 @@ import { toast } from "react-hot-toast";
 import { useMutation } from "urql";
 import * as z from "zod";
 
-import { graphql } from "~/gql";
-import { RegisterTag_RegisterTagDocument } from "~/gql/graphql";
+import { getFragment, graphql } from "~/gql";
+import {
+  Link_TagFragmentDoc,
+  RegisterTag_RegisterTagDocument,
+} from "~/gql/graphql";
 
 import { LinkTag } from "../common/Link";
 import { ExplicitParentTag } from "./ExplicitParentTag";
@@ -37,6 +40,7 @@ graphql(`
       }
     ) {
       tag {
+        ...Link_Tag
         id
         name
         explicitParent {
@@ -139,14 +143,13 @@ export const RegisterTagForm: React.FC<{ className?: string }> = ({
       });
 
       if (data) {
-        const { id, name } = data.registerTag.tag;
         toast(() => (
           <div className={clsx(["text-slate-700"])}>
             <LinkTag
-              tagId={id}
+              fragment={getFragment(Link_TagFragmentDoc, data.registerTag.tag)}
               className={clsx(["font-bold"], ["text-blue-500"])}
             >
-              {name}
+              {data.registerTag.tag.name}
             </LinkTag>
             を登録しました．
           </div>

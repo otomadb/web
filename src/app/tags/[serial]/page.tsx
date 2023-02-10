@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import { notFound } from "next/navigation";
 
 import { VideoList } from "~/components/common/VideoList";
 import { getFragment, graphql } from "~/gql";
@@ -11,46 +12,44 @@ export async function generateStaticParams() {
       query TagPagePaths {
         findTags(input: { limit: 96, order: { updatedAt: DESC } }) {
           nodes {
-            id
+            serial
           }
         }
       }
     `)
   );
-  return findTags.nodes.map(({ id }) => ({ id }));
+  return findTags.nodes.map(({ serial }) => ({ serial: serial.toString() }));
 }
 
-export default async function Page({ params }: { params: { id: string } }) {
-  const { tag } = await gqlRequest(
+export default async function Page({ params }: { params: { serial: string } }) {
+  const { findTag } = await gqlRequest(
     graphql(`
-      query TagPage($id: ID!) {
-        tag(id: $id) {
-          id
+      query TagPage($serial: Int!) {
+        findTag(input: { serial: $serial }) {
           name
           taggedVideos {
-            id
             ...VideoList_Video
           }
         }
       }
     `),
-    { id: params.id }
+    { serial: parseInt(params.serial, 10) }
   );
 
-  const taggedVideos = getFragment(
-    VideoList_VideoFragmentDoc,
-    tag.taggedVideos
-  );
+  if (!findTag) return notFound();
 
   return (
     <>
       <h1 className={clsx(["flex"], ["items-center"])}>
         <span className={clsx(["block"], ["text-2xl"], ["text-slate-800"])}>
-          {tag.name}
+          {findTag.name}
         </span>
       </h1>
       <div className={clsx(["mt-4"])}>
-        <VideoList className={clsx()} videos={taggedVideos} />
+        <VideoList
+          className={clsx()}
+          videos={getFragment(VideoList_VideoFragmentDoc, findTag.taggedVideos)}
+        />
       </div>
     </>
   );
