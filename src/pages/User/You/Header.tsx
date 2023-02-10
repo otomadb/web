@@ -8,7 +8,7 @@ import {
   YouPageLayout_HeaderDocument,
 } from "~/gql/graphql";
 
-import { Header } from "../UserPage/Header";
+import { Header } from "../Header";
 
 graphql(`
   query YouPageLayout_Header {

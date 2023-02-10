@@ -16,8 +16,6 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useMutation, useQuery } from "urql";
 import * as z from "zod";
 
-import { AuthFormButton } from "~/components/common/AuthForm/Button";
-import { AuthFormInput } from "~/components/common/AuthForm/FormInput";
 import { LinkSignin } from "~/components/common/Link";
 import { graphql } from "~/gql";
 import {
@@ -25,6 +23,9 @@ import {
   SignupPage_FetchViewerDocument,
   SignupPage_SignupDocument,
 } from "~/gql/graphql";
+
+import { AuthFormButton } from "../Button";
+import { AuthFormInput } from "../FormInput";
 
 const formSchema = z.object({
   name: z.string().min(3, { message: "ユーザーネームは3文字以上です" }),

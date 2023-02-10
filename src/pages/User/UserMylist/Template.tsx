@@ -2,13 +2,13 @@
 import clsx from "clsx";
 import React from "react";
 
-import { MetaTemplate } from "~/components/common/MylistPage/MetaTemplate";
 import {
   MylistPageCommon_SideMylistListFragment,
   UserMylistPage_DetailsFragment,
   UserMylistPage_RegistrationsFragment,
 } from "~/gql/graphql";
 
+import { MetaTemplate } from "../MetaTemplate";
 import { Details } from "./Details";
 import { Registrations } from "./Registrations";
 

@@ -5,21 +5,22 @@ import "client-only";
 import React from "react";
 import { useQuery } from "urql";
 
-import { getFragment as useFragment, graphql } from "~/gql";
+import { getFragment, getFragment as useFragment, graphql } from "~/gql";
 import {
   MylistPageCommon_SideMylistListFragmentDoc,
   UserMylistPage_DetailsFragmentDoc,
   UserMylistPage_RegistrationsFragmentDoc,
-  YouMylistPageDocument,
+  YouLikesPageDocument,
 } from "~/gql/graphql";
 
-import { UserMylistTemplate } from "../UserMylist/Template";
+import { UserMylistTemplate } from "../../UserMylist/Template";
 
 graphql(`
-  query YouMylistPage($mylistId: ID!) {
+  query YouLikesPage {
     whoami {
       id
-      mylist(id: $mylistId) {
+      likes {
+        id
         ...UserMylistPage_Registrations
         ...UserMylistPage_Details
       }
@@ -29,23 +30,22 @@ graphql(`
     }
   }
 `);
-export const Inner: React.FC<{ mylistId: string }> = ({ mylistId }) => {
+export const Inner: React.FC = () => {
   const [{ data }] = useQuery({
-    query: YouMylistPageDocument,
-    variables: { mylistId },
+    query: YouLikesPageDocument,
   });
 
-  const sidelist = useFragment(
+  const sidelist = getFragment(
     MylistPageCommon_SideMylistListFragmentDoc,
     data?.whoami?.mylists
   );
   const details = useFragment(
     UserMylistPage_DetailsFragmentDoc,
-    data?.whoami?.mylist
+    data?.whoami?.likes
   );
-  const registrations = useFragment(
+  const registrations = getFragment(
     UserMylistPage_RegistrationsFragmentDoc,
-    data?.whoami?.mylist
+    data?.whoami?.likes
   );
 
   if (sidelist === null || details === null || registrations === null)

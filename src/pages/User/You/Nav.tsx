@@ -11,7 +11,7 @@ import {
 import { graphql } from "~/gql";
 import { YouPageLayout_NavDocument } from "~/gql/graphql";
 
-import { Item, NavWrapper } from "../UserPage/Nav";
+import { Item, NavWrapper } from "../Nav";
 
 graphql(`
   query YouPageLayout_Nav {

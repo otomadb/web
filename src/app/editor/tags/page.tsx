@@ -1,6 +1,6 @@
 import clsx from "clsx";
 
-import { RegisterTagForm } from "~/components/pages/RegisterTag/Form";
+import { RegisterTagForm } from "~/pages/Editor/RegisterTag/Form";
 
 export default async function Page() {
   return (

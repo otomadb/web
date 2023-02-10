@@ -1,4 +1,3 @@
-import { UserMylistTemplate } from "~/components/pages/UserMylist/Template";
 import { getFragment, graphql } from "~/gql";
 import {
   MylistPageCommon_SideMylistListFragmentDoc,
@@ -6,6 +5,8 @@ import {
   UserMylistPage_RegistrationsFragmentDoc,
   UserMylistPageFragment,
 } from "~/gql/graphql";
+
+import { UserMylistTemplate } from "./Template";
 
 graphql(`
   fragment UserMylistPage on Mylist {

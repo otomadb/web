@@ -1,10 +1,10 @@
 import clsx from "clsx";
 import { notFound } from "next/navigation";
 
-import { AttentionYou } from "~/components/common/UserPage/AttentionYou";
-import { UserMylists } from "~/components/pages/UserMylists";
 import { getFragment, graphql } from "~/gql";
 import { UserMylistsPage_MylistsFragmentDoc } from "~/gql/graphql";
+import { AttentionYou } from "~/pages/User/AttentionYou";
+import { UserMylists } from "~/pages/User/UserMylists";
 import { gqlRequest } from "~/utils/gqlRequest";
 
 export default async function Page({ params }: { params: { name: string } }) {

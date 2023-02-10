@@ -3,8 +3,8 @@ import "~/styles/globals.css";
 import clsx from "clsx";
 import React from "react";
 
-import { YouPageHeader } from "~/components/common/YouPage/Header";
-import { YouPageNav } from "~/components/common/YouPage/Nav";
+import { YouPageHeader } from "~/pages/User/You/Header";
+import { YouPageNav } from "~/pages/User/You/Nav";
 
 export default async function Layout({
   children,

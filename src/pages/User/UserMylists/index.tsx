@@ -5,7 +5,6 @@ import "client-only";
 import clsx from "clsx";
 import React from "react";
 
-import { MetaTemplate } from "~/components/common/MylistPage/MetaTemplate";
 import { getFragment, graphql } from "~/gql";
 import {
   MylistPageCommon_SideMylistListFragmentDoc,
@@ -13,6 +12,7 @@ import {
   UserMylistsPage_MylistsFragment,
 } from "~/gql/graphql";
 
+import { MetaTemplate } from "../MetaTemplate";
 import { LargeMylistList } from "./LargeMylistList";
 
 graphql(`

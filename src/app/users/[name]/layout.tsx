@@ -4,13 +4,13 @@ import clsx from "clsx";
 import { notFound } from "next/navigation";
 import React from "react";
 
-import { Header } from "~/components/common/UserPage/Header";
-import { UserPageNav } from "~/components/common/UserPage/Nav";
 import { getFragment, graphql } from "~/gql";
 import {
   UserPageLayout_HeaderFragmentDoc,
   UserPageLayout_NavFragmentDoc,
 } from "~/gql/graphql";
+import { Header } from "~/pages/User/Header";
+import { UserPageNav } from "~/pages/User/Nav";
 import { gqlRequest } from "~/utils/gqlRequest";
 
 export default async function Layout({

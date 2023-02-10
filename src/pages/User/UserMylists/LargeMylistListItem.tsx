@@ -1,7 +1,6 @@
 import clsx from "clsx";
 import React from "react";
 
-import { MylistLinkSwitch } from "~/components/common/MylistPage/LinkSwitch";
 import { Thumbnail } from "~/components/common/Thumbnail";
 import { UserIcon2 } from "~/components/common/UserIcon";
 import { getFragment, graphql } from "~/gql";
@@ -11,6 +10,8 @@ import {
   MylistPageCommon_LinkSwitchFragmentDoc,
   UserMylistsPage_LargeMylistListItemFragment,
 } from "~/gql/graphql";
+
+import { MylistLinkSwitch } from "../LinkSwitch";
 
 graphql(`
   fragment UserMylistsPage_LargeMylistListItem on Mylist {
