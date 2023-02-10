@@ -15,14 +15,15 @@
       url = "github:numtide/flake-utils";
     };
   };
-  outputs = {
-    self,
-    nixpkgs,
-    flake-utils,
-    ...
-  } @ inputs:
+  outputs =
+    { self
+    , nixpkgs
+    , flake-utils
+    , ...
+    } @ inputs:
     flake-utils.lib.eachDefaultSystem (
-      system: let
+      system:
+      let
         pkgs = import nixpkgs {
           inherit system;
           overlays = with inputs; [
@@ -30,7 +31,8 @@
             corepack.overlays.default
           ];
         };
-      in {
+      in
+      {
         devShells.default = pkgs.devshell.mkShell {
           packages = with pkgs; [
             alejandra
@@ -44,7 +46,6 @@
             act
             actionlint
           ];
-          devshell.startup.pnpm_install.text = "pnpm install";
           env = [
             {
               name = "PATH";
