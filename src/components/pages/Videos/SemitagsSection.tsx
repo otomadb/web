@@ -7,6 +7,8 @@ import clsx from "clsx";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery } from "urql";
 
+import { BlueButton } from "~/components/common/Button";
+import { ToggleSwitch } from "~/components/common/ToggleSwitch";
 import { getFragment as useFragment, graphql } from "~/gql";
 import {
   VideoPage_AddSemitagDocument,
@@ -18,8 +20,6 @@ import {
 } from "~/gql/graphql";
 import { useIsLogin } from "~/hooks/useIsLogin";
 
-import { BlueButton } from "../common/Button";
-import { ToggleSwitch } from "../common/ToggleSwitch";
 import { SemitagEditor } from "./SemitagEditor";
 
 graphql(`

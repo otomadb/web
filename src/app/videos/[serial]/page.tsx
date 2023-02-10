@@ -2,11 +2,11 @@ import clsx from "clsx";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
-import { DetailsSection } from "~/components/Videos/DetailsSection";
-import { EventsSection } from "~/components/Videos/EventsSection";
-import { SemitagsSection } from "~/components/Videos/SemitagsSection";
-import { SimilarVideosSection } from "~/components/Videos/SimilarVideosSection";
-import { TagsSection } from "~/components/Videos/TagsSection";
+import { DetailsSection } from "~/components/pages/Videos/DetailsSection";
+import { EventsSection } from "~/components/pages/Videos/EventsSection";
+import { SemitagsSection } from "~/components/pages/Videos/SemitagsSection";
+import { SimilarVideosSection } from "~/components/pages/Videos/SimilarVideosSection";
+import { TagsSection } from "~/components/pages/Videos/TagsSection";
 import { getFragment, graphql } from "~/gql";
 import {
   VideoPage_DetailsSectionFragmentDoc,

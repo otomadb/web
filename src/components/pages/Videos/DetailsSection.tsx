@@ -6,6 +6,7 @@ import clsx from "clsx";
 import React, { useMemo } from "react";
 import { useQuery } from "urql";
 
+import { Thumbnail } from "~/components/common/Thumbnail";
 import { getFragment, graphql } from "~/gql";
 import {
   Component_ThumbnailFragmentDoc,
@@ -14,7 +15,6 @@ import {
   VideoPage_UpstreamDetailsSectionDocument,
 } from "~/gql/graphql";
 
-import { Thumbnail } from "../common/Thumbnail";
 import { LikeButton } from "./LikeButton";
 
 graphql(`
