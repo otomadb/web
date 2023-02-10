@@ -1,5 +1,6 @@
 import { TagIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
+
 import { Tag } from "~/components/common/Tag";
 import { getFragment, graphql } from "~/gql";
 import {
@@ -7,6 +8,7 @@ import {
   VideoPage_VideoEventTemplateFragmentDoc,
   VideoPage_VideoRemoveTagEventFragment,
 } from "~/gql/graphql";
+
 import { VideoEventTemplate } from "./VideoEventTemplate";
 
 graphql(`
