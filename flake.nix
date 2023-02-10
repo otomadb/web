@@ -35,16 +35,13 @@
       {
         devShells.default = pkgs.devshell.mkShell {
           packages = with pkgs; [
-            alejandra
-            treefmt
-            nodejs-18_x
-            (mkCorepack {
-              nodejs = nodejs-18_x;
-              pm = "pnpm";
-            })
-            httpie
+            (mkCorepack { nodejs = nodejs-18_x; pm = "pnpm"; })
             act
             actionlint
+            httpie
+            nixpkgs-fmt
+            nodejs-18_x
+            treefmt
           ];
           env = [
             {
