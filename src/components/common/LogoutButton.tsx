@@ -3,61 +3,66 @@
 import "client-only";
 
 import clsx from "clsx";
-import ky from "ky";
-import { rest } from "msw";
 import { useRouter } from "next/navigation";
-import React, { useCallback } from "react";
-import { useQuery } from "urql";
+import React, { useEffect } from "react";
+import { useMutation, useQuery } from "urql";
 
 import { graphql } from "~/gql";
-import { LogoutButtonDocument } from "~/gql/graphql";
-
-export const mockLogoutHandler = rest.post(
-  new URL("/auth/logout", process.env.NEXT_PUBLIC_API_ENDPOINT).toString(),
-  async (req, res, ctx) => {
-    return res(
-      ctx.cookie("otmd-session", "", {
-        httpOnly: true,
-        sameSite: "strict",
-        secure: false,
-        expires: new Date(Date.now() - 1),
-      })
-    );
-  }
-);
+import {
+  LogoutButton_FetchViewerDocument,
+  LogoutButton_SignoutDocument,
+} from "~/gql/graphql";
 
 graphql(`
-  query LogoutButton {
+  mutation LogoutButton_Signout {
+    signout {
+      ... on SignoutSuccessedPayload {
+        session {
+          user {
+            ...GlobalNav_Profile
+          }
+        }
+      }
+      ... on SignoutFailedPayload {
+        message
+      }
+    }
+  }
+
+  query LogoutButton_FetchViewer {
     whoami {
       id
+      ...GlobalNav_Profile
     }
   }
 `);
 export const LogoutButton: React.FC<{ className?: string }> = ({
   className,
 }) => {
-  const [, updateViewer] = useQuery({
-    query: LogoutButtonDocument,
-    pause: true,
-  });
-
   const router = useRouter();
-  const handleLogout = useCallback(async () => {
-    const result = await ky.post(
-      new URL("/auth/logout", process.env.NEXT_PUBLIC_API_ENDPOINT).toString(),
-      { throwHttpErrors: false, credentials: "include" }
-    );
-    if (result.ok) {
-      updateViewer({ requestPolicy: "network-only" });
-      router.push("/");
-    }
-  }, [router, updateViewer]);
+  const [{ data: viewerData }, afterlogin] = useQuery({
+    query: LogoutButton_FetchViewerDocument,
+    requestPolicy: "cache-and-network",
+  });
+  useEffect(() => {
+    if (viewerData?.whoami === null) router.replace("/");
+  }, [viewerData, router]);
+
+  const [{ data: loginData }, signout] = useMutation(
+    LogoutButton_SignoutDocument
+  );
+  useEffect(() => {
+    if (!loginData) return;
+
+    if (loginData.signout.__typename === "SignoutSuccessedPayload")
+      afterlogin();
+  }, [afterlogin, loginData]);
 
   return (
     <button
       className={clsx(className)}
       type="button"
-      onClick={() => handleLogout()}
+      onClick={() => signout({})}
     >
       ログアウト
     </button>
