@@ -9,9 +9,9 @@ import {
   UserPageLayout_HeaderFragmentDoc,
   UserPageLayout_NavFragmentDoc,
 } from "~/gql/graphql";
-import { Header } from "~/pages/User/Header";
-import { UserPageNav } from "~/pages/User/Nav";
 import { gqlRequest } from "~/utils/gqlRequest";
+import { Header } from "~/components/pages/User/Header";
+import { UserPageNav } from "~/components/pages/User/Nav";
 
 export default async function Layout({
   children,

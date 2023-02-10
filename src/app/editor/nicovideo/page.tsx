@@ -1,6 +1,6 @@
 import clsx from "clsx";
 
-import { RegisterNicovideoForm } from "~/pages/Editor/RegisterNicovideo/Form";
+import { RegisterNicovideoForm } from "~/components/pages/Editor/RegisterNicovideo/Form";
 
 export default async function Page() {
   return (

@@ -2,6 +2,11 @@ import clsx from "clsx";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
+import { DetailsSection } from "~/components/pages/Video/DetailsSection";
+import { EventsSection } from "~/components/pages/Video/EventsSection";
+import { SemitagsSection } from "~/components/pages/Video/SemitagsSection";
+import { SimilarVideosSection } from "~/components/pages/Video/SimilarVideosSection";
+import { TagsSection } from "~/components/pages/Video/TagsSection";
 import { getFragment, graphql } from "~/gql";
 import {
   VideoPage_DetailsSectionFragmentDoc,
@@ -9,11 +14,6 @@ import {
   VideoPage_SimilarVideosSectionFragmentDoc,
   VideoPage_TagsSectionFragmentDoc,
 } from "~/gql/graphql";
-import { DetailsSection } from "~/pages/Video/DetailsSection";
-import { EventsSection } from "~/pages/Video/EventsSection";
-import { SemitagsSection } from "~/pages/Video/SemitagsSection";
-import { SimilarVideosSection } from "~/pages/Video/SimilarVideosSection";
-import { TagsSection } from "~/pages/Video/TagsSection";
 import { gqlRequest } from "~/utils/gqlRequest";
 
 export async function generateStaticParams() {
