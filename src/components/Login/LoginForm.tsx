@@ -5,19 +5,21 @@ import "client-only";
 import { AtSymbolIcon, LockClosedIcon } from "@heroicons/react/24/solid";
 import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
-import ky from "ky";
 import { useRouter } from "next/navigation";
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useQuery } from "urql";
+import { useMutation, useQuery } from "urql";
 import * as z from "zod";
 
 import { AuthFormButton } from "~/components/common/AuthForm/Button";
 import { AuthFormInput } from "~/components/common/AuthForm/FormInput";
 import { LinkSignup } from "~/components/common/Link";
 import { graphql } from "~/gql";
-import { UseLoginDocument } from "~/gql/graphql";
-import { useLoginPath } from "~/rest";
+import {
+  LoginPage_FetchViewerDocument,
+  LoginPage_LoginDocument,
+  SigninFailedMessage,
+} from "~/gql/graphql";
 
 const formSchema = z.object({
   name: z.string({ required_error: "ユーザーネームを入力してください" }),
@@ -26,45 +28,30 @@ const formSchema = z.object({
 type FormSchema = z.infer<typeof formSchema>;
 
 graphql(`
-  query UseLogin {
+  mutation LoginPage_Login($username: String!, $password: String!) {
+    signin(input: { username: $username, password: $password }) {
+      ... on SigninSuccessedPayload {
+        user {
+          id
+          ...GlobalNav_Profile
+        }
+      }
+      ... on SigninFailedPayload {
+        message
+      }
+    }
+  }
+
+  query LoginPage_FetchViewer {
     whoami {
       id
       ...GlobalNav_Profile
     }
   }
 `);
-export const useLogin = () => {
-  const url = useLoginPath();
-  const [, update] = useQuery({ query: UseLoginDocument, pause: true });
-
-  return useCallback(
-    async ({
-      name,
-      password,
-    }: {
-      name: string;
-      password: string;
-    }): Promise<{ ok: true } | { ok: false; error: string }> => {
-      const result = await ky.post(url, {
-        json: { name, password },
-        throwHttpErrors: false,
-        credentials: "include",
-      });
-      if (!result.ok) {
-        const { error } = await result.json<{ error: string }>();
-        return { ok: false, error };
-      } else {
-        update({ requestPolicy: "network-only" });
-        return { ok: true };
-      }
-    },
-    [update, url]
-  );
-};
 
 export const LoginForm: React.FC<{ className?: string }> = ({ className }) => {
   const router = useRouter();
-  const triggerLogin = useLogin();
 
   const {
     register,
@@ -75,26 +62,34 @@ export const LoginForm: React.FC<{ className?: string }> = ({ className }) => {
     resolver: zodResolver(formSchema),
   });
 
-  const onSubmit: SubmitHandler<FormSchema> = useCallback(
-    async ({ name, password }) => {
-      const result = await triggerLogin({ name, password });
-      if (result.ok) {
-        router.replace("/");
-      } else {
-        const { error } = result;
-        switch (error) {
-          case "user not found":
-            setError("name", { message: "存在しないユーザーです" });
-            break;
-          case "password wrong":
-            setError("password", { message: "誤ったパスワード" });
-            break;
-          default:
-            break;
-        }
+  const [{ data: viewerData }, afterlogin] = useQuery({
+    query: LoginPage_FetchViewerDocument,
+    requestPolicy: "cache-and-network",
+  });
+  useEffect(() => {
+    if (viewerData?.whoami) router.replace("/");
+  }, [viewerData, router]);
+
+  const [{ data: loginData }, login] = useMutation(LoginPage_LoginDocument);
+  useEffect(() => {
+    if (!loginData) return;
+
+    if (loginData.signin.__typename === "SigninFailedPayload") {
+      const { message } = loginData.signin;
+      switch (message) {
+        case SigninFailedMessage.UserNotFound:
+          setError("name", { message: "存在しないユーザーです" });
+          break;
+        case SigninFailedMessage.WrongPassword:
+          setError("password", { message: "誤ったパスワード" });
+          break;
       }
-    },
-    [router, setError, triggerLogin]
+    } else afterlogin();
+  }, [afterlogin, loginData, setError]);
+
+  const onSubmit: SubmitHandler<FormSchema> = useCallback(
+    async ({ name, password }) => login({ username: name, password }),
+    [login]
   );
 
   return (

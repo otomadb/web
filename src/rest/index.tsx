@@ -1,7 +1,7 @@
 import "client-only";
 
 import ky from "ky";
-import React, { ReactNode, useCallback, useContext, useMemo } from "react";
+import React, { ReactNode, useCallback, useContext } from "react";
 
 const RestContext = React.createContext<{ base: string }>({
   base: process.env.NEXT_PUBLIC_API_ENDPOINT,
@@ -15,11 +15,6 @@ export const RestProvider: React.FC<{
       {children}
     </RestContext.Provider>
   );
-};
-
-export const useLoginPath = () => {
-  const { base } = useContext(RestContext);
-  return useMemo(() => new URL("/auth/login", base).toString(), [base]);
 };
 
 export const usePostAuthSignup = () => {

@@ -1,8 +1,13 @@
 import { css } from "@emotion/css";
 import { Meta, StoryObj } from "@storybook/react";
 import { userEvent, within } from "@storybook/testing-library";
-import { rest } from "msw";
+import { graphql } from "msw";
 
+import {
+  aUser,
+  LoginPage_LoginDocument,
+  SigninFailedMessage,
+} from "~/gql/graphql";
 import { RestProvider } from "~/rest";
 
 import { LoginForm } from "./LoginForm";
@@ -31,9 +36,16 @@ export const NoUser: StoryObj<typeof LoginForm> = {
   parameters: {
     msw: {
       handlers: [
-        rest.post("/auth/login", async (req, res, ctx) =>
-          res(ctx.status(400), ctx.json({ error: "user not found" }))
-        ),
+        graphql.mutation(LoginPage_LoginDocument, (req, res, ctx) => {
+          return res(
+            ctx.data({
+              signin: {
+                __typename: "SigninFailedPayload",
+                message: SigninFailedMessage.UserNotFound,
+              },
+            })
+          );
+        }),
       ],
     },
   },
@@ -55,9 +67,16 @@ export const WrongPassword: StoryObj<typeof LoginForm> = {
   parameters: {
     msw: {
       handlers: [
-        rest.post("/auth/login", async (req, res, ctx) =>
-          res(ctx.status(400), ctx.json({ error: "password wrong" }))
-        ),
+        graphql.mutation(LoginPage_LoginDocument, (req, res, ctx) => {
+          return res(
+            ctx.data({
+              signin: {
+                __typename: "SigninFailedPayload",
+                message: SigninFailedMessage.WrongPassword,
+              },
+            })
+          );
+        }),
       ],
     },
   },
@@ -79,14 +98,18 @@ export const SuccessfulLogin: StoryObj<typeof LoginForm> = {
   parameters: {
     msw: {
       handlers: [
-        rest.post("/auth/login", async (req, res, ctx) => {
+        graphql.mutation(LoginPage_LoginDocument, (req, res, ctx) => {
           return res(
-            ctx.cookie("otmd-session", "sessionid-secret", {
-              httpOnly: true,
-              sameSite: "strict",
-              secure: false,
-            }),
-            ctx.json({ id: "1" })
+            ctx.data({
+              signin: {
+                __typename: "SigninSuccessedPayload",
+                user: aUser({
+                  id: "u1",
+                  name: "sno2wman",
+                  displayName: "SnO2WMaN",
+                }),
+              },
+            })
           );
         }),
       ],

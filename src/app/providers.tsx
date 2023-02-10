@@ -97,6 +97,12 @@ const urqlClient = createUrqlClient({
         SemitagConnection() {
           return null;
         },
+        SigninSuccessedPayload() {
+          return null;
+        },
+        SigninFailedPayload() {
+          return null;
+        },
       },
     }),
     fetchExchange,
