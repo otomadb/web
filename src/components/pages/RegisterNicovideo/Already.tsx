@@ -2,7 +2,7 @@ import clsx from "clsx";
 import Image from "next/image";
 import React from "react";
 
-import { LinkVideo } from "../common/Link";
+import { LinkVideo } from "~/components/common/Link";
 
 export const Already: React.FC<{
   className?: string;
