@@ -3,14 +3,18 @@ import clsx from "clsx";
 import React from "react";
 
 import { LinkTag } from "~/components/common/Link";
-import { graphql } from "~/gql";
-import { GlobalNav_SearchBox_SearchTagsFragment } from "~/gql/graphql";
+import { getFragment, graphql } from "~/gql";
+import {
+  GlobalNav_SearchBox_SearchTagsFragment,
+  Link_TagFragmentDoc,
+} from "~/gql/graphql";
 
 graphql(`
   fragment GlobalNav_SearchBox_SearchTags on SearchTagsPayload {
     items {
       matchedName
       tag {
+        ...Link_Tag
         id
         name
         pseudoType
@@ -39,7 +43,7 @@ export const SearchTags: React.FC<{
         {items.map(({ tag, matchedName }) => (
           <LinkTag
             key={tag.id}
-            tagId={tag.id}
+            fragment={getFragment(Link_TagFragmentDoc, tag)}
             tabIndex={0}
             className={clsx(
               [["flex"], ["items-center"]],

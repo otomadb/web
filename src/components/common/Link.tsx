@@ -1,6 +1,9 @@
 import Link from "next/link";
 import React, { ComponentProps } from "react";
 
+import { graphql } from "~/gql";
+import { Link_TagFragment } from "~/gql/graphql";
+
 // eslint-disable-next-line @typescript-eslint/ban-types
 type LinkProps<T = {}> = Omit<ComponentProps<typeof Link>, "href"> & T;
 
@@ -26,12 +29,18 @@ export const LinkVideo: React.FC<LinkProps<{ serial: number }>> = ({
   </Link>
 );
 
-export const LinkTag: React.FC<LinkProps<{ tagId: string }>> = ({
-  children,
-  tagId,
-  ...props
-}) => (
-  <Link href={`/tags/${tagId}`} {...props}>
+graphql(`
+  fragment Link_Tag on Tag {
+    id
+    serial
+  }
+`);
+export const LinkTag: React.FC<
+  LinkProps<{
+    fragment: Link_TagFragment;
+  }>
+> = ({ children, fragment: { serial }, ...props }) => (
+  <Link href={`/tags/${serial}`} {...props}>
     {children}
   </Link>
 );

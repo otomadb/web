@@ -1,8 +1,8 @@
 import clsx from "clsx";
 import { notFound } from "next/navigation";
 
-import { AttentionYou } from "~/components/common/UserPage/AttentionYou";
-import { UserMylists } from "~/components/pages/UserMylists";
+import { AttentionYou } from "~/components/pages/User/AttentionYou";
+import { UserMylists } from "~/components/pages/User/Mylists";
 import { getFragment, graphql } from "~/gql";
 import { UserMylistsPage_MylistsFragmentDoc } from "~/gql/graphql";
 import { gqlRequest } from "~/utils/gqlRequest";
