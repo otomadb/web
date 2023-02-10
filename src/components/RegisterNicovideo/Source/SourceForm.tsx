@@ -1,13 +1,35 @@
+"use client";
+
 import clsx from "clsx";
 import Image from "next/image";
 import React from "react";
 
-import { SourceData } from "../FetchSource";
-import { SourceTag } from "./SourceTag";
+import { getFragment, graphql } from "~/gql";
+import {
+  RegisterNicovideoPage_FetchNicovideoSourceFragment,
+  RegisterNicovideoPage_FetchNicovideoTagCandidatesFragmentDoc,
+} from "~/gql/graphql";
+
+import { Candidates } from "./SourceTag";
+
+graphql(`
+  fragment RegisterNicovideoPage_FetchNicovideoSource on NicovideoOriginalSource {
+    sourceId
+    title
+    thumbnailUrl
+    tags {
+      name
+      searchTags(input: { limit: 3 }) {
+        ...RegisterNicovideoPage_FetchNicovideoTagCandidates
+      }
+    }
+  }
+`);
 
 export const SourceForm: React.FC<{
   className?: string;
-  source: SourceData;
+
+  source: RegisterNicovideoPage_FetchNicovideoSourceFragment;
 
   isTagSelected(id: string): boolean;
   selectTag(id: string): void;
@@ -29,14 +51,20 @@ export const SourceForm: React.FC<{
             ["grid", ["grid-cols-2"], ["gap-x-2"], ["gap-y-3"]]
           )}
         >
-          {source.tags.map((tag, i) => (
-            <SourceTag
-              key={i}
-              sourceTag={tag}
-              isSelected={isTagSelected}
-              select={selectTag}
-              deselect={deselectTag}
-            />
+          {source.tags.map((tag) => (
+            <div key={tag.name}>
+              <div>{tag.name}</div>
+              <Candidates
+                className={clsx(["mt-1"])}
+                candidates={getFragment(
+                  RegisterNicovideoPage_FetchNicovideoTagCandidatesFragmentDoc,
+                  tag.searchTags
+                )}
+                isSelected={isTagSelected}
+                select={selectTag}
+                deselect={deselectTag}
+              />
+            </div>
           ))}
         </div>
       </div>
@@ -45,7 +73,7 @@ export const SourceForm: React.FC<{
         <div className={clsx(["mt-1"])}>
           <Image
             className={clsx(["object-scale-down"], ["h-32"])}
-            src={source.thumbnail}
+            src={source.thumbnailUrl}
             width={260}
             height={200}
             alt={`${source.sourceId}のサムネイル`}

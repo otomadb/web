@@ -3,13 +3,19 @@
 import "client-only";
 
 import clsx from "clsx";
-import React, { useReducer, useState } from "react";
+import React, { useMemo, useReducer, useState } from "react";
+import { useQuery } from "urql";
 
 import { LinkSignin } from "~/components/common/Link";
+import { getFragment, graphql } from "~/gql";
+import {
+  RegisterNicovideoPage_FetchNicovideoDocument,
+  RegisterNicovideoPage_FetchNicovideoSourceFragmentDoc,
+} from "~/gql/graphql";
 import { useIsLogin } from "~/hooks/useIsLogin";
 
 import { Already } from "./Already";
-import { FetchSource, SourceData } from "./FetchSource";
+import { FetchSource } from "./FetchSource";
 import { RegisterForm } from "./Register/RegisterForm";
 import { SourceForm } from "./Source/SourceForm";
 import { useIsAlready } from "./useIsAlready";
@@ -40,15 +46,19 @@ export const Youhavetologin: React.FC<{ className?: string }> = ({
   );
 };
 
+graphql(`
+  query RegisterNicovideoPage_FetchNicovideo($sourceId: String!) {
+    fetchNicovideo(input: { sourceId: $sourceId }) {
+      source {
+        ...RegisterNicovideoPage_FetchNicovideoSource
+      }
+    }
+  }
+`);
 export const RegisterNicovideoForm: React.FC<{ className?: string }> = ({
   className,
 }) => {
   const islogin = useIsLogin();
-
-  const [source, setSource] = useState<null | undefined | SourceData>(
-    undefined
-  );
-  const already = useIsAlready(source?.sourceId);
 
   const [selectedTags, updateSelectedTags] = useReducer(
     (
@@ -73,15 +83,25 @@ export const RegisterNicovideoForm: React.FC<{ className?: string }> = ({
     []
   );
 
+  const [sourceId, setSourceId] = useState<string>();
+  const [{ data, fetching }] = useQuery({
+    query: RegisterNicovideoPage_FetchNicovideoDocument,
+    variables: sourceId ? { sourceId } : undefined,
+  });
+  const source = useMemo(() => {
+    if (fetching) return undefined;
+    if (!data?.fetchNicovideo.source) return null;
+    return getFragment(
+      RegisterNicovideoPage_FetchNicovideoSourceFragmentDoc,
+      data.fetchNicovideo.source
+    );
+  }, [data, fetching]);
+  const already = useIsAlready(source?.sourceId);
+
   return (
     <div className={clsx(className)}>
       <div>
-        <FetchSource
-          setSource={(data) => {
-            setSource(data);
-            updateSelectedTags({ type: "clean" });
-          }}
-        />
+        <FetchSource setSourceId={(i) => setSourceId(i)} />
       </div>
       <div
         className={clsx(
@@ -104,12 +124,14 @@ export const RegisterNicovideoForm: React.FC<{ className?: string }> = ({
                 ["rounded"]
               )}
             >
-              <p className={clsx(["text-lg"])}>ニコニコ動画からの情報</p>
+              <div className={clsx(["text-lg"])}>ニコニコ動画からの情報</div>
               <div className={clsx(["mt-4"])}>
-                {source === null && (
-                  <p className={clsx(["text-sm"], ["text-red-500"])}>
-                    動画データの取得に失敗しました。動画は存在しますか？
-                  </p>
+                {sourceId && source === null && (
+                  <div>
+                    <p className={clsx(["text-sm"], ["text-red-500"])}>
+                      動画データの取得に失敗しました。動画は存在しますか？
+                    </p>
+                  </div>
                 )}
                 {source && (
                   <SourceForm
@@ -140,14 +162,14 @@ export const RegisterNicovideoForm: React.FC<{ className?: string }> = ({
                   className={clsx(["mt-4"])}
                   sourceId={source.sourceId}
                   title={source.title}
-                  thumbnailUrl={source.thumbnail}
+                  thumbnailUrl={source.thumbnailUrl}
                   tags={selectedTags}
                   selectTag={(id) => updateSelectedTags({ type: "add", id })}
                   deselectTag={(id) =>
                     updateSelectedTags({ type: "remove", id })
                   }
                   onRegistered={() => {
-                    setSource(undefined);
+                    setSourceId(undefined);
                     updateSelectedTags({ type: "clean" });
                   }}
                 />

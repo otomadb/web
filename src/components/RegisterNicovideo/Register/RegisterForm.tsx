@@ -6,7 +6,7 @@ import clsx from "clsx";
 import Image from "next/image";
 import React, { useMemo, useReducer, useState } from "react";
 
-import { RegisterButton, SendData } from "./RegisterButton";
+import { RegisterButton, RegisterData } from "./RegisterButton";
 import { RegisterTag } from "./RegisterTag";
 import { Semitag } from "./Semitag";
 import { TagAdder } from "./TagAdder";
@@ -45,7 +45,7 @@ export const RegisterForm: React.FC<{
   const nicovideoId = useMemo(() => sourceId, [sourceId]);
   const [title, setTitle] = useState(initTitle);
 
-  const [semitags, updateSemitags] = useReducer(
+  const [semitagNames, updateSemitagNames] = useReducer(
     (
       state: string[],
       action: { type: "add"; name: string } | { type: "remove"; name: string }
@@ -61,18 +61,19 @@ export const RegisterForm: React.FC<{
     []
   );
 
-  const registerData = useMemo<SendData | undefined>(() => {
-    if (typeof nicovideoId === "undefined") return undefined;
-    if (typeof title === "undefined") return undefined;
-    if (typeof thumbnailUrl === "undefined") return undefined;
+  const registerData = useMemo<RegisterData | undefined>(() => {
+    if (typeof nicovideoId === "undefined") return;
+    if (typeof title === "undefined") return;
+    if (typeof thumbnailUrl === "undefined") return;
+
     return {
       nicovideoId,
       title,
-      tags: selectedTags,
+      tagIds: selectedTags,
       thumbnail: thumbnailUrl,
-      semitags,
-    };
-  }, [nicovideoId, selectedTags, thumbnailUrl, title, semitags]);
+      semitagNames,
+    } satisfies RegisterData;
+  }, [nicovideoId, selectedTags, thumbnailUrl, title, semitagNames]);
 
   return (
     <div className={clsx(className, ["flex", ["flex-col"]], ["gap-y-4"])}>
@@ -122,7 +123,7 @@ export const RegisterForm: React.FC<{
             className={clsx(["w-72"])}
             select={(p) => {
               if (p.type === "tag") selectTag(p.id);
-              else updateSemitags({ type: "add", name: p.name });
+              else updateSemitagNames({ type: "add", name: p.name });
             }}
           />
           <div className={clsx(["mt-2"])}>
@@ -154,7 +155,7 @@ export const RegisterForm: React.FC<{
           <div className={clsx(["mt-2"])}>
             <p className={clsx(["text-sm"])}>仮タグ</p>
             <div className={clsx(["mt-1"])}>
-              {semitags.length === 0 && (
+              {semitagNames.length === 0 && (
                 <p className={clsx(["text-slate-500"], ["text-xs"])}>
                   仮タグ付けはありません
                 </p>
@@ -167,12 +168,12 @@ export const RegisterForm: React.FC<{
                   ["gap-y-2"]
                 )}
               >
-                {semitags.map((name) => (
+                {semitagNames.map((name) => (
                   <Semitag
                     key={name}
                     name={name}
                     className={clsx()}
-                    onClick={() => updateSemitags({ type: "remove", name })}
+                    onClick={() => updateSemitagNames({ type: "remove", name })}
                   />
                 ))}
               </div>
@@ -182,7 +183,7 @@ export const RegisterForm: React.FC<{
       </div>
       <div>
         <RegisterButton
-          senddata={registerData}
+          registerData={registerData}
           onSuccess={() => {
             onRegistered();
           }}

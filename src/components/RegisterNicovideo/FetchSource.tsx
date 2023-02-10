@@ -2,48 +2,12 @@
 
 import clsx from "clsx";
 import React, { useState } from "react";
-import useSWRImmutable from "swr/immutable";
-
-import { useGetRemoteNicovideo } from "~/rest";
-
-export type SourceData = {
-  sourceId: string;
-  title: string;
-  tags: string[];
-  thumbnail: string;
-};
 
 export const FetchSource: React.FC<{
   className?: string;
-  setSource(data: SourceData | null | undefined): void;
-}> = ({ className, setSource }) => {
+  setSourceId(sourceId: string): void;
+}> = ({ className, setSourceId }) => {
   const [input, setInput] = useState<string>("");
-  const [search, setSearch] = useState<string>("");
-  const trigger = useGetRemoteNicovideo();
-
-  useSWRImmutable(
-    search && /(sm)\d+/.test(search) ? search : null,
-    (i) =>
-      trigger(i).json<{
-        sourceId: string;
-        title: string;
-        tags: { name: string }[];
-        thumbnails: { ogp: string };
-      }>(),
-    {
-      onSuccess(data) {
-        setSource({
-          sourceId: data.sourceId,
-          title: data.title,
-          tags: data.tags.map((v) => v.name),
-          thumbnail: data.thumbnails.ogp,
-        });
-      },
-      onError() {
-        setSource(null);
-      },
-    }
-  );
 
   return (
     <form className={clsx(className, ["flex", ["items-stretch"]])}>
@@ -75,7 +39,9 @@ export const FetchSource: React.FC<{
           ["cursor-pointer"],
           ["flex", "items-center"]
         )}
-        onClick={() => setSearch(input)}
+        onClick={() => {
+          if (/(sm)\d+/.test(input)) setSourceId(input);
+        }}
       >
         <div>検索</div>
       </div>
