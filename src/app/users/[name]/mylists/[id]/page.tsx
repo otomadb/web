@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 
-import { UserMylist } from "~/components/pages/UserMylist";
+import { UserMylist } from "~/components/pages/User/Mylist";
 import { getFragment, graphql } from "~/gql";
 import { UserMylistPageFragmentDoc } from "~/gql/graphql";
 import { gqlRequest } from "~/utils/gqlRequest";

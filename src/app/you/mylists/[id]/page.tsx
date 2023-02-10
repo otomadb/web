@@ -1,4 +1,4 @@
-import { Inner } from "~/components/pages/YouMylist/Inner";
+import { Inner } from "~/components/pages/User/You/Mylist/Inner";
 
 export const dynamic = "force-dynamic";
 

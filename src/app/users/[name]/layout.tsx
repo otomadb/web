@@ -4,8 +4,8 @@ import clsx from "clsx";
 import { notFound } from "next/navigation";
 import React from "react";
 
-import { Header } from "~/components/common/UserPage/Header";
-import { UserPageNav } from "~/components/common/UserPage/Nav";
+import { Header } from "~/components/pages/User/Header";
+import { UserPageNav } from "~/components/pages/User/Nav";
 import { getFragment, graphql } from "~/gql";
 import {
   UserPageLayout_HeaderFragmentDoc,
