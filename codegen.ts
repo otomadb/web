@@ -23,7 +23,7 @@ const config: CodegenConfig = {
         },
       ],
       config: {
-        dedupeFragments: true,
+        dedupeFragments: true, // https://zenn.dev/link/comments/94104de0ddecfc
         scalars: {
           DateTime: "string",
         },
