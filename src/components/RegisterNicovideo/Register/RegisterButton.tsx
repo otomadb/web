@@ -23,25 +23,26 @@ graphql(`
   }
 `);
 
-export type SendData = {
+export type RegisterData = {
   title: string;
-  tags: string[];
   thumbnail: string;
   nicovideoId: string;
-  semitags: string[];
+
+  tagIds: string[];
+  semitagNames: string[];
 };
 
 export const RegisterButton: React.FC<{
   className?: string;
-  senddata: SendData | undefined;
+  registerData: RegisterData | undefined;
   onSuccess(): void;
-}> = ({ className, senddata, onSuccess }) => {
+}> = ({ className, registerData, onSuccess }) => {
   const [, trigger] = useMutation(RegisterNicovideoPage_RegisterVideoDocument);
 
   return (
     <input
       type="button"
-      disabled={!senddata}
+      disabled={!registerData}
       className={clsx(
         className,
         ["rounded"],
@@ -52,20 +53,20 @@ export const RegisterButton: React.FC<{
         ["cursor-pointer"]
       )}
       onClick={async () => {
-        if (!senddata) return;
+        if (!registerData) return;
         const { error, data: payload } = await trigger({
           input: {
-            primaryTitle: senddata.title,
+            primaryTitle: registerData.title,
             extraTitles: [],
-            primaryThumbnail: senddata.thumbnail,
-            tags: senddata.tags,
+            primaryThumbnail: registerData.thumbnail,
+            tags: registerData.tagIds,
             sources: [
               {
                 type: RegisterVideoInputSourceType.Nicovideo,
-                sourceId: senddata.nicovideoId,
+                sourceId: registerData.nicovideoId,
               },
             ],
-            semitags: senddata.semitags,
+            semitags: registerData.semitagNames,
           },
         });
 

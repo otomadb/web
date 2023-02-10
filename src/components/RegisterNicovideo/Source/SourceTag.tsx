@@ -12,9 +12,6 @@ import {
 
 import { TagInner } from "../TagInner";
 
-export const isUnnecessarySearch = (tag: string) =>
-  tag.toLowerCase() === "音mad";
-
 graphql(`
   fragment RegisterNicovideoPage_FetchNicovideoTagCandidate on NicovideoOriginalSourceTagSearchTagsItem {
     tag {
@@ -86,56 +83,6 @@ export const Candidates: React.FC<{
           />
         ))}
       </div>
-    </div>
-  );
-};
-
-export const SourceTag: React.FC<{
-  className?: string;
-  candidates: RegisterNicovideoPage_FetchNicovideoTagCandidatesFragment;
-  isSelected(id: string): boolean;
-  select(id: string): void;
-  deselect(id: string): void;
-}> = ({ className, candidates, isSelected, select, deselect }) => {
-  return (
-    <div className={clsx(className)}>
-      <div>
-        <div className={clsx(["text-sm"], ["text-slate-900"], ["font-bold"])}>
-          {sourceTag}
-        </div>
-      </div>
-      {unneccesary && (
-        <p className={clsx(["text-xs"], ["text-slate-500"])}>
-          検索対象外のタグです
-        </p>
-      )}
-      {result.data?.searchTags.items && (
-        <div className={clsx(["mt-1"])}>
-          {result.data.searchTags.items.length === 0 && (
-            <p className={clsx(["text-xs"], ["text-slate-500"])}>
-              候補が見つかりませんでした
-            </p>
-          )}
-          <div
-            className={clsx(
-              ["w-full"],
-              ["flex", "flex-wrap"],
-              ["gap-x-2"],
-              ["gap-y-2"]
-            )}
-          >
-            {items?.map((item, i) => (
-              <Candidate
-                key={i}
-                item={item}
-                isSelected={isSelected}
-                select={select}
-                deselect={deselect}
-              />
-            ))}
-          </div>
-        </div>
-      )}
     </div>
   );
 };

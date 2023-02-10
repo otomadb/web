@@ -1,59 +1,13 @@
 "use client";
 
 import clsx from "clsx";
-import React, { useEffect, useMemo, useState } from "react";
-import { useQuery } from "urql";
-
-import { getFragment, graphql } from "~/gql";
-import {
-  RegisterNicovideoPage_FetchNicovideoDocument,
-  RegisterNicovideoPage_FetchNicovideoSourceFragment,
-  RegisterNicovideoPage_FetchNicovideoSourceFragmentDoc,
-} from "~/gql/graphql";
-import { useGetRemoteNicovideo } from "~/rest";
-
-graphql(`
-  query RegisterNicovideoPage_FetchNicovideo($sourceId: String!) {
-    fetchNicovideo(input: { sourceId: $sourceId }) {
-      source {
-        ...RegisterNicovideoPage_FetchNicovideoSource
-      }
-    }
-  }
-`);
+import React, { useState } from "react";
 
 export const FetchSource: React.FC<{
   className?: string;
-  setSource(
-    data: RegisterNicovideoPage_FetchNicovideoSourceFragment | null | undefined
-  ): void;
-}> = ({ className, setSource }) => {
+  setSourceId(sourceId: string): void;
+}> = ({ className, setSourceId }) => {
   const [input, setInput] = useState<string>("");
-  const [search, setSearch] = useState<string>("");
-  const trigger = useGetRemoteNicovideo();
-
-  const sourceId = useMemo(
-    () => (search && /(sm)\d+/.test(search) ? search : null),
-    [search]
-  );
-
-  const [{ data, error }] = useQuery({
-    query: RegisterNicovideoPage_FetchNicovideoDocument,
-    variables: sourceId ? { sourceId } : undefined,
-  });
-  useEffect(() => {
-    if (!data || !data.fetchNicovideo.source) {
-      setSource(null);
-      return;
-    }
-
-    const {
-      fetchNicovideo: { source },
-    } = data;
-    setSource(
-      getFragment(RegisterNicovideoPage_FetchNicovideoSourceFragmentDoc, source)
-    );
-  }, [data, setSource]);
 
   return (
     <form className={clsx(className, ["flex", ["items-stretch"]])}>
@@ -85,7 +39,9 @@ export const FetchSource: React.FC<{
           ["cursor-pointer"],
           ["flex", "items-center"]
         )}
-        onClick={() => setSearch(input)}
+        onClick={() => {
+          if (/(sm)\d+/.test(input)) setSourceId(input);
+        }}
       >
         <div>検索</div>
       </div>

@@ -1,3 +1,5 @@
+"use client";
+
 import clsx from "clsx";
 import Image from "next/image";
 import React from "react";
@@ -23,8 +25,10 @@ graphql(`
     }
   }
 `);
+
 export const SourceForm: React.FC<{
   className?: string;
+
   source: RegisterNicovideoPage_FetchNicovideoSourceFragment;
 
   isTagSelected(id: string): boolean;
