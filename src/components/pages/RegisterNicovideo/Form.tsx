@@ -16,8 +16,8 @@ import { useIsLogin } from "~/hooks/useIsLogin";
 
 import { Already } from "./Already";
 import { FetchSource } from "./FetchSource";
-import { RegisterForm } from "./Register/RegisterForm";
-import { SourceForm } from "./Source/SourceForm";
+import { RegisterForm } from "./RegisterForm";
+import { SourceForm } from "./SourceForm";
 import { useIsAlready } from "./useIsAlready";
 
 export const Youhavetologin: React.FC<{ className?: string }> = ({

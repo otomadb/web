@@ -10,7 +10,7 @@ import {
   RegisterNicovideoPage_InnerTagFragmentDoc,
 } from "~/gql/graphql";
 
-import { TagInner } from "../TagInner";
+import { TagInner } from "./TagInner";
 
 graphql(`
   fragment RegisterNicovideoPage_FetchNicovideoTagCandidate on NicovideoOriginalSourceTagSearchTagsItem {
