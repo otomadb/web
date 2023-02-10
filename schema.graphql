@@ -132,6 +132,7 @@ type Mutation {
   removeTagFromVideo(input: RemoveTagFromVideoInput!): RemoveTagFromVideoPayload!
   removeVideoFromMylist(input: RemoveVideoFromMylistInput!): RemoveVideoFromMylistPayload!
   resovleSemitag(input: ResolveSemitagInput!): ResolveSemitagPayload!
+  signin(input: SigninInput!): SigninPayload!
   undoLikeVideo(input: UndoLikeVideoInput!): UndoLikeVideoPayload!
 }
 
@@ -452,6 +453,32 @@ type Semitag implements Node {
 
 type SemitagConnection {
   nodes: [Semitag!]!
+}
+
+enum SigninFailedMessage {
+  """原因不明のエラー"""
+  UNKNOWN
+
+  """ユーザーは存在しない"""
+  USER_NOT_FOUND
+
+  """パスワードが間違っている"""
+  WRONG_PASSWORD
+}
+
+type SigninFailedPayload {
+  message: SigninFailedMessage!
+}
+
+input SigninInput {
+  password: String!
+  username: String!
+}
+
+union SigninPayload = SigninFailedPayload | SigninSuccessedPayload
+
+type SigninSuccessedPayload {
+  user: User!
 }
 
 enum SortOrder {
