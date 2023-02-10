@@ -133,6 +133,7 @@ type Mutation {
   removeVideoFromMylist(input: RemoveVideoFromMylistInput!): RemoveVideoFromMylistPayload!
   resovleSemitag(input: ResolveSemitagInput!): ResolveSemitagPayload!
   signin(input: SigninInput!): SigninPayload!
+  signout: SignoutPayload!
   undoLikeVideo(input: UndoLikeVideoInput!): UndoLikeVideoPayload!
 }
 
@@ -455,6 +456,14 @@ type SemitagConnection {
   nodes: [Semitag!]!
 }
 
+type Session {
+  createdAt: DateTime!
+  expired: Boolean!
+  expiredAt: DateTime!
+  id: ID!
+  user: User!
+}
+
 enum SigninFailedMessage {
   """原因不明のエラー"""
   UNKNOWN
@@ -479,6 +488,27 @@ union SigninPayload = SigninFailedPayload | SigninSuccessedPayload
 
 type SigninSuccessedPayload {
   user: User!
+}
+
+enum SignoutFailedMessage {
+  """セッションIDが取得できない"""
+  NO_SESSION_ID
+
+  """セッションが存在しない"""
+  SESSION_NOT_FOUND
+
+  """原因不明のエラー"""
+  UNKNOWN
+}
+
+type SignoutFailedPayload {
+  message: SignoutFailedMessage!
+}
+
+union SignoutPayload = SignoutFailedPayload | SignoutSuccessedPayload
+
+type SignoutSuccessedPayload {
+  session: Session!
 }
 
 enum SortOrder {
