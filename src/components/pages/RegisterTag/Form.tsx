@@ -9,13 +9,13 @@ import { toast } from "react-hot-toast";
 import { useMutation } from "urql";
 import * as z from "zod";
 
+import { LinkTag } from "~/components/common/Link";
 import { getFragment, graphql } from "~/gql";
 import {
   Link_TagFragmentDoc,
   RegisterTag_RegisterTagDocument,
 } from "~/gql/graphql";
 
-import { LinkTag } from "../common/Link";
 import { ExplicitParentTag } from "./ExplicitParentTag";
 import { ExtraName } from "./ExtraName";
 import { ImplictParentTags } from "./ImplicitParentTags";
