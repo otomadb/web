@@ -11,14 +11,20 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useMutation, useQuery } from "urql";
 import * as z from "zod";
 
 import { AuthFormButton } from "~/components/common/AuthForm/Button";
 import { AuthFormInput } from "~/components/common/AuthForm/FormInput";
 import { LinkSignin } from "~/components/common/Link";
-import { usePostAuthSignup } from "~/rest";
+import { graphql } from "~/gql";
+import {
+  SignupFailedMessage,
+  SignupPage_FetchViewerDocument,
+  SignupPage_SignupDocument,
+} from "~/gql/graphql";
 
 const formSchema = z.object({
   name: z.string().min(3, { message: "ユーザーネームは3文字以上です" }),
@@ -29,9 +35,42 @@ const formSchema = z.object({
 });
 type FormSchema = z.infer<typeof formSchema>;
 
+graphql(`
+  mutation SignupPage_Signup(
+    $name: String!
+    $displayName: String!
+    $password: String!
+    $email: String!
+  ) {
+    signup(
+      input: {
+        name: $name
+        displayName: $displayName
+        password: $password
+        email: $email
+      }
+    ) {
+      ... on SignupSuccessedPayload {
+        user {
+          id
+          ...GlobalNav_Profile
+        }
+      }
+      ... on SignupFailedPayload {
+        message
+      }
+    }
+  }
+
+  query SignupPage_FetchViewer {
+    whoami {
+      id
+      ...GlobalNav_Profile
+    }
+  }
+`);
 export const SignupForm: React.FC<{ className?: string }> = ({ className }) => {
   const router = useRouter();
-  const triggerSignup = usePostAuthSignup();
 
   const {
     register,
@@ -42,33 +81,40 @@ export const SignupForm: React.FC<{ className?: string }> = ({ className }) => {
   } = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
   });
+
+  const [{ data: viewerData }, afterlogin] = useQuery({
+    query: SignupPage_FetchViewerDocument,
+    requestPolicy: "cache-and-network",
+  });
+  useEffect(() => {
+    if (viewerData?.whoami) router.replace("/");
+  }, [viewerData, router]);
+
+  const [{ data: loginData }, signup] = useMutation(SignupPage_SignupDocument);
+  useEffect(() => {
+    if (!loginData) return;
+
+    if (loginData.signup.__typename === "SignupFailedPayload") {
+      const { message } = loginData.signup;
+      switch (message) {
+        case SignupFailedMessage.ExistsUsername:
+          setError("name", { message: "既に登録されているユーザーネームです" });
+          break;
+        case SignupFailedMessage.ExistsEmail:
+          setError("email", {
+            message: "既に登録されているメールアドレスです",
+          });
+          break;
+      }
+    } else afterlogin();
+  }, [afterlogin, loginData, setError]);
+
   const onSubmit: SubmitHandler<FormSchema> = async ({
     name,
     displayName,
     email,
     password,
-  }) => {
-    const result = await triggerSignup({ name, displayName, email, password });
-    if (result.ok) {
-      router.replace("/");
-    } else {
-      const { code: errorMessage } = await result.json<{ code: string }>();
-      switch (errorMessage) {
-        case "USER_NAME_ALREADY_REGISTERED":
-          setError("name", {
-            message: "既に登録されているユーザーネームです",
-          });
-          break;
-        case "EMAIL_ALREADY_REGISTERED":
-          setError("email", {
-            message: "既に登録されているメールアドレスです",
-          });
-          break;
-        default:
-          break;
-      }
-    }
-  };
+  }) => signup({ name, displayName, email, password });
 
   return (
     <form

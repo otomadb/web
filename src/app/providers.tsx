@@ -103,6 +103,12 @@ const urqlClient = createUrqlClient({
         SigninFailedPayload() {
           return null;
         },
+        SignupSuccessedPayload() {
+          return null;
+        },
+        SignupFailedPayload() {
+          return null;
+        },
         FetchNicovideoPayload() {
           return null;
         },
