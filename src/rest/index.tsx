@@ -40,19 +40,3 @@ export const usePostAuthSignup = () => {
     [base]
   );
 };
-
-export const useGetRemoteNicovideo = () => {
-  const { base } = useContext(RestContext);
-
-  return useCallback(
-    (sourceId: string) => {
-      const url = new URL("/remote/nicovideo", base);
-      url.searchParams.set("id", sourceId);
-      return ky.get(url.toString(), {
-        throwHttpErrors: false,
-        credentials: "include",
-      });
-    },
-    [base]
-  );
-};
