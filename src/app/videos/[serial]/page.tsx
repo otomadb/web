@@ -1,15 +1,15 @@
 import clsx from "clsx";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 
 import { DetailsSection } from "~/components/Videos/DetailsSection";
-import { HistorySection } from "~/components/Videos/HistorySection";
+import { EventsSection } from "~/components/Videos/EventsSection";
 import { SemitagsSection } from "~/components/Videos/SemitagsSection";
 import { SimilarVideosSection } from "~/components/Videos/SimilarVideosSection";
 import { TagsSection } from "~/components/Videos/TagsSection";
 import { getFragment, graphql } from "~/gql";
 import {
   VideoPage_DetailsSectionFragmentDoc,
-  VideoPage_HistorySectionFragmentDoc,
   VideoPage_SemitagsSectionFragmentDoc,
   VideoPage_SimilarVideosSectionFragmentDoc,
   VideoPage_TagsSectionFragmentDoc,
@@ -44,7 +44,6 @@ export default async function Page({ params }: { params: { serial: string } }) {
           ...VideoPage_TagsSection
           ...VideoPage_SemitagsSection
           ...VideoPage_SimilarVideosSection
-          ...VideoPage_HistorySection
         }
       }
     `),
@@ -60,7 +59,6 @@ export default async function Page({ params }: { params: { serial: string } }) {
     VideoPage_SimilarVideosSectionFragmentDoc,
     video
   );
-  const history = getFragment(VideoPage_HistorySectionFragmentDoc, video);
 
   return (
     <div className={clsx(["flex"], ["gap-x-4"])}>
@@ -83,7 +81,10 @@ export default async function Page({ params }: { params: { serial: string } }) {
             <SemitagsSection fallback={semitags} />
           </div>
           <SimilarVideosSection className={clsx()} fallback={similarVideos} />
-          <HistorySection className={clsx()} fallback={history} />
+          <Suspense fallback={<div>Loading</div>}>
+            {/* @ts-expect-error for Server Component*/}
+            <EventsSection className={clsx()} videoId={video.id} />
+          </Suspense>
         </div>
       </div>
     </div>
