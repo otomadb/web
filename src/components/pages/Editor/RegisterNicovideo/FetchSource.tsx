@@ -1,34 +1,54 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
-import React, { useState } from "react";
+import React from "react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+
+const formSchema = z.object({
+  sourceId: z
+    .string({ required_error: "ニコニコ動画の動画IDを入力してください" })
+    .regex(/(sm)\d+/, {
+      message: "ニコニコ動画の動画IDとして正しくありません",
+    }),
+});
+type FormSchema = z.infer<typeof formSchema>;
 
 export const FetchSource: React.FC<{
   className?: string;
   setSourceId(sourceId: string): void;
 }> = ({ className, setSourceId }) => {
-  const [input, setInput] = useState<string>("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormSchema>({
+    resolver: zodResolver(formSchema),
+  });
 
   return (
-    <form className={clsx(className, ["flex", ["items-stretch"]])}>
-      <input
-        aria-label="ID入力"
-        className={clsx(
-          ["px-2"],
-          ["py-1"],
-          ["font-mono"],
-          ["bg-white"],
-          ["border", "border-gray-300"],
-          ["rounded"]
-        )}
-        value={input}
-        onChange={(e) => {
-          setInput(e.target.value);
-        }}
-        placeholder="sm2057168"
-      />
-      <div
-        role={"button"}
+    <form
+      onSubmit={handleSubmit(({ sourceId }) => setSourceId(sourceId))}
+      className={clsx(className, ["flex", ["items-stretch"]])}
+    >
+      <div>
+        <input
+          {...register("sourceId")}
+          aria-label="ID入力"
+          className={clsx(
+            ["px-2"],
+            ["py-1"],
+            ["font-mono"],
+            ["bg-white"],
+            ["border", "border-gray-300"],
+            ["rounded"]
+          )}
+          placeholder="sm2057168"
+        />
+      </div>
+      <button
+        type="submit"
         aria-label="検索"
         className={clsx(
           ["ml-1"],
@@ -39,12 +59,9 @@ export const FetchSource: React.FC<{
           ["cursor-pointer"],
           ["flex", "items-center"]
         )}
-        onClick={() => {
-          if (/(sm)\d+/.test(input)) setSourceId(input);
-        }}
       >
-        <div>検索</div>
-      </div>
+        検索
+      </button>
     </form>
   );
 };
