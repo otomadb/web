@@ -28,9 +28,9 @@ input AddSemitagToVideoInput {
   videoId: ID!
 }
 
-union AddSemitagToVideoPayload = AddSemitagToVideoFailedPayload | AddSemitagToVideoSuccessedPayload
+union AddSemitagToVideoPayload = AddSemitagToVideoFailedPayload | AddSemitagToVideoSucceededPayload
 
-type AddSemitagToVideoSuccessedPayload {
+type AddSemitagToVideoSucceededPayload {
   semitag: Semitag!
 }
 
@@ -53,9 +53,9 @@ input AddTagToVideoInput {
   videoId: ID!
 }
 
-union AddTagToVideoPayload = AddTagToVideoFailedPayload | AddTagToVideoSuccessedPayload
+union AddTagToVideoPayload = AddTagToVideoFailedPayload | AddTagToVideoSucceededPayload
 
-type AddTagToVideoSuccessedPayload {
+type AddTagToVideoSucceededPayload {
   tag: Tag!
   video: Video!
 }
@@ -175,9 +175,9 @@ input LikeVideoInput {
   videoId: ID!
 }
 
-union LikeVideoPayload = LikeVideoFailedPayload | LikeVideoSuccessedPayload
+union LikeVideoPayload = LikeVideoFailedPayload | LikeVideoSucceededPayload
 
-type LikeVideoSuccessedPayload {
+type LikeVideoSucceededPayload {
   registration: MylistRegistration!
 }
 
@@ -493,9 +493,9 @@ input RegisterTagInput {
   resolveSemitags: [ID!]! = []
 }
 
-union RegisterTagPayload = RegisterTagFailedPayload | RegisterTagSuccessedPayload
+union RegisterTagPayload = RegisterTagFailedPayload | RegisterTagSucceededPayload
 
-type RegisterTagSuccessedPayload {
+type RegisterTagSucceededPayload {
   tag: Tag!
 }
 
@@ -528,9 +528,9 @@ enum RegisterVideoInputSourceType {
   NICOVIDEO
 }
 
-union RegisterVideoPayload = RegisterVideoFailedPayload | RegisterVideoSuccessedPayload
+union RegisterVideoPayload = RegisterVideoFailedPayload | RegisterVideoSucceededPayload
 
-type RegisterVideoSuccessedPayload {
+type RegisterVideoSucceededPayload {
   video: Video!
 }
 
@@ -553,9 +553,9 @@ input RejectSemitagInput {
   id: ID!
 }
 
-union RejectSemitagPayload = RejectSemitagFailedPayload | RejectSemitagSuccessedPayload
+union RejectSemitagPayload = RejectSemitagFailedPayload | RejectSemitagSucceededPayload
 
-type RejectSemitagSuccessedPayload {
+type RejectSemitagSucceededPayload {
   semitag: Semitag!
 }
 
@@ -581,9 +581,9 @@ input RemoveTagFromVideoInput {
   videoId: ID!
 }
 
-union RemoveTagFromVideoPayload = RemoveTagFromVideoFailedPayload | RemoveTagFromVideoSuccessedPayload
+union RemoveTagFromVideoPayload = RemoveTagFromVideoFailedPayload | RemoveTagFromVideoSucceededPayload
 
-type RemoveTagFromVideoSuccessedPayload {
+type RemoveTagFromVideoSucceededPayload {
   tag: Tag!
   video: Video!
 }
@@ -621,9 +621,9 @@ input ResolveSemitagInput {
   tagId: ID!
 }
 
-union ResolveSemitagPayload = ResolveSemitagFailedPayload | ResolveSemitagSuccessedPayload
+union ResolveSemitagPayload = ResolveSemitagFailedPayload | ResolveSemitagSucceededPayload
 
-type ResolveSemitagSuccessedPayload {
+type ResolveSemitagSucceededPayload {
   semitag: Semitag!
 }
 
@@ -735,9 +735,9 @@ input SigninInput {
   username: String!
 }
 
-union SigninPayload = SigninFailedPayload | SigninSuccessedPayload
+union SigninPayload = SigninFailedPayload | SigninSucceededPayload
 
-type SigninSuccessedPayload {
+type SigninSucceededPayload {
   user: User!
 }
 
@@ -756,9 +756,9 @@ type SignoutFailedPayload {
   message: SignoutFailedMessage!
 }
 
-union SignoutPayload = SignoutFailedPayload | SignoutSuccessedPayload
+union SignoutPayload = SignoutFailedPayload | SignoutSucceededPayload
 
-type SignoutSuccessedPayload {
+type SignoutSucceededPayload {
   session: Session!
 }
 
@@ -784,9 +784,9 @@ input SignupInput {
   password: String!
 }
 
-union SignupPayload = SignupFailedPayload | SignupSuccessedPayload
+union SignupPayload = SignupFailedPayload | SignupSucceededPayload
 
-type SignupSuccessedPayload {
+type SignupSucceededPayload {
   user: User!
 }
 
@@ -854,9 +854,9 @@ input UndoLikeVideoInput {
   videoId: ID!
 }
 
-union UndoLikeVideoPayload = UndoLikeVideoFailedPayload | UndoLikeVideoSuccessedPayload
+union UndoLikeVideoPayload = UndoLikeVideoFailedPayload | UndoLikeVideoSucceededPayload
 
-type UndoLikeVideoSuccessedPayload {
+type UndoLikeVideoSucceededPayload {
   mylist: Mylist!
   video: Video!
 }

@@ -46,7 +46,7 @@ export default {
           res(
             ctx.data({
               registerTag: {
-                __typename: "RegisterTagSuccessedPayload",
+                __typename: "RegisterTagSucceededPayload",
                 tag: aTag({
                   id: "tag_1",
                   name: req.variables.primaryName,

@@ -85,13 +85,13 @@ const urqlClient = createUrqlClient({
         SemitagConnection() {
           return null;
         },
-        SigninSuccessedPayload() {
+        SigninSucceededPayload() {
           return null;
         },
         SigninFailedPayload() {
           return null;
         },
-        SignupSuccessedPayload() {
+        SignupSucceededPayload() {
           return null;
         },
         SignupFailedPayload() {

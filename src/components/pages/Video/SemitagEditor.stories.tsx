@@ -111,7 +111,7 @@ export default {
           res(
             ctx.data({
               resovleSemitag: {
-                __typename: "ResolveSemitagSuccessedPayload",
+                __typename: "ResolveSemitagSucceededPayload",
                 semitag: aSemitag({
                   id: "semitag:1",
                   video: aVideo({

@@ -41,7 +41,7 @@ graphql(`
       }
     ) {
       __typename
-      ... on RegisterTagSuccessedPayload {
+      ... on RegisterTagSucceededPayload {
         tag {
           ...Link_Tag
           id
@@ -153,7 +153,7 @@ export const RegisterTagForm: React.FC<{ className?: string }> = ({
 
       // TODO: Failedだったケース
 
-      if (payload.registerTag.__typename === "RegisterTagSuccessedPayload") {
+      if (payload.registerTag.__typename === "RegisterTagSucceededPayload") {
         const { name } = payload.registerTag.tag;
         const link = getFragment(Link_TagFragmentDoc, payload.registerTag.tag);
         toast(() => (

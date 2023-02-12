@@ -32,7 +32,7 @@ graphql(`
   mutation VideoPage_ResolveSemitag($input: ResolveSemitagInput!) {
     resovleSemitag(input: $input) {
       __typename
-      ... on ResolveSemitagSuccessedPayload {
+      ... on ResolveSemitagSucceededPayload {
         semitag {
           id
           video {

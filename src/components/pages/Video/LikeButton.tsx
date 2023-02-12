@@ -28,7 +28,7 @@ graphql(`
 
   mutation VideoPage_LikeButtonAddLike($videoId: ID!) {
     likeVideo(input: { videoId: $videoId }) {
-      ... on LikeVideoSuccessedPayload {
+      ... on LikeVideoSucceededPayload {
         registration {
           id
           mylist {
@@ -42,7 +42,7 @@ graphql(`
 
   mutation VideoPage_LikeButtonRemoveLike($videoId: ID!) {
     undoLikeVideo(input: { videoId: $videoId }) {
-      ... on UndoLikeVideoSuccessedPayload {
+      ... on UndoLikeVideoSucceededPayload {
         video {
           id
         }

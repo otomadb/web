@@ -15,7 +15,7 @@ graphql(`
   mutation RegisterNicovideoPage_RegisterVideo($input: RegisterVideoInput!) {
     registerVideo(input: $input) {
       __typename
-      ... on RegisterVideoSuccessedPayload {
+      ... on RegisterVideoSucceededPayload {
         video {
           id
           serial
@@ -85,7 +85,7 @@ export const RegisterButton: React.FC<{
         // TODO: Failedだったケース
 
         if (
-          payload.registerVideo.__typename === "RegisterVideoSuccessedPayload"
+          payload.registerVideo.__typename === "RegisterVideoSucceededPayload"
         ) {
           const { serial, title } = payload.registerVideo.video;
           toast(() => (

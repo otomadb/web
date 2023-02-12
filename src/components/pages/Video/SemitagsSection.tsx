@@ -195,7 +195,7 @@ export const SemitagItem: React.FC<{
 graphql(`
   mutation VideoPage_AddSemitag($videoId: ID!, $name: String!) {
     addSemitagToVideo(input: { videoId: $videoId, name: $name }) {
-      ... on AddSemitagToVideoSuccessedPayload {
+      ... on AddSemitagToVideoSucceededPayload {
         semitag {
           id
           video {
