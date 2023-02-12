@@ -6,7 +6,7 @@ import { DetailsSection } from "~/components/pages/Video/DetailsSection";
 import { EventsSection } from "~/components/pages/Video/EventsSection";
 import { SemitagsSection } from "~/components/pages/Video/SemitagsSection";
 import { SimilarVideosSection } from "~/components/pages/Video/SimilarVideosSection";
-import { TagsSection } from "~/components/pages/Video/TagsSection";
+import { TagsSection } from "~/components/pages/Video/TagsSection.server";
 import { getFragment, graphql } from "~/gql";
 import {
   VideoPage_DetailsSectionFragmentDoc,
@@ -70,14 +70,16 @@ export default async function Page({ params }: { params: { serial: string } }) {
           ["space-y-4"]
         )}
       >
-        <TagsSection className={clsx(["w-full"])} fallback={tags} />
+        {/* @ts-expect-error for Server Component*/}
+        <TagsSection className={clsx(["w-full"])} videoId={video.id} />
         <SemitagsSection className={clsx(["w-full"])} fallback={semitags} />
       </div>
       <div className={clsx(["flex-grow"])}>
         <DetailsSection fallback={details} />
         <div className={clsx(["mt-4"], ["space-y-2"])}>
           <div className={clsx(["block", "lg:hidden"], ["space-y-2"])}>
-            <TagsSection fallback={tags} />
+            {/* @ts-expect-error for Server Component*/}
+            <TagsSection videoId={video.id} />
             <SemitagsSection fallback={semitags} />
           </div>
           <SimilarVideosSection className={clsx()} fallback={similarVideos} />
