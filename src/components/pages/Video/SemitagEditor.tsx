@@ -66,6 +66,7 @@ export const SemitagEditor: React.FC<{
   });
 
   const handleResolve = useCallback(async () => {
+    if (!resolveToTagId) return; // TODO: ...
     await trigger({ input: { id: semitagId, tagId: resolveToTagId } });
     handleSelected();
   }, [handleSelected, resolveToTagId, semitagId, trigger]);

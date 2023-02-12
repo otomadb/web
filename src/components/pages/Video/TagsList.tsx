@@ -23,6 +23,7 @@ graphql(`
   fragment VideoPage_TagsList on Video {
     id
     tags(input: {}) {
+      id
       ...VideoPage_TagsListItem
     }
     ...VideoPage_TagsTypesList
@@ -35,7 +36,6 @@ export const TagsList: React.FC<{
   fragment: VideoPage_TagsListFragment;
 }> = ({ className, fragment, edit }) => {
   const tagtypes = getFragment(VideoPage_TagsTypesListFragmentDoc, fragment);
-  const tags = getFragment(VideoPage_TagsListItemFragmentDoc, fragment.tags);
 
   const videoId = useMemo(() => fragment.id, [fragment]);
 
@@ -54,17 +54,17 @@ export const TagsList: React.FC<{
           ["gap-x-1", "gap-y-1"]
         )}
       >
-        {tags.map((tag) => (
+        {fragment.tags.map((tagging) => (
           <TagsListItem
-            key={tag.id}
+            key={tagging.id}
             handleFocus={(v) => {
-              if (v) setRadio(tag.id);
+              if (v) setRadio(tagging.id);
               else setRadio(undefined);
             }}
-            radio={tag.id === radio}
+            radio={tagging.id === radio}
             edit={edit}
             videoId={videoId}
-            fragment={tag}
+            fragment={getFragment(VideoPage_TagsListItemFragmentDoc, tagging)}
           />
         ))}
       </div>
@@ -73,11 +73,13 @@ export const TagsList: React.FC<{
 };
 
 graphql(`
-  fragment VideoPage_TagsListItem on Tag {
-    id
-    ...Link_Tag
-    ...Component_Tag
-    ...VideoPage_RemoveTagForm
+  fragment VideoPage_TagsListItem on VideoTag {
+    tag {
+      id
+      ...Link_Tag
+      ...Component_Tag
+      ...VideoPage_RemoveTagForm
+    }
   }
 `);
 export const TagsListItem: React.FC<{
@@ -88,20 +90,20 @@ export const TagsListItem: React.FC<{
   handleFocus(v: boolean): void;
   fragment: VideoPage_TagsListItemFragment;
 }> = ({ className, fragment, edit, radio, handleFocus, videoId }) => {
-  const untag = getFragment(VideoPage_RemoveTagFormFragmentDoc, fragment);
+  const untag = getFragment(VideoPage_RemoveTagFormFragmentDoc, fragment.tag);
 
   return (
     <div
       className={clsx(className, ["flex", "justify-between", "items-center"])}
     >
       <Tag
-        tag={getFragment(Component_TagFragmentDoc, fragment)}
+        tag={getFragment(Component_TagFragmentDoc, fragment.tag)}
         Wrapper={({ ...props }) =>
           edit ? (
             <div {...props} />
           ) : (
             <LinkTag
-              fragment={getFragment(Link_TagFragmentDoc, fragment)}
+              fragment={getFragment(Link_TagFragmentDoc, fragment.tag)}
               {...props}
             />
           )

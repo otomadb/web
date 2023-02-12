@@ -8,7 +8,6 @@ import {
 } from "urql";
 
 import {
-  aResolveSemitagPayload,
   aSearchTagsItem,
   aSearchTagsPayload,
   aSemitag,
@@ -111,14 +110,15 @@ export default {
         graphql.mutation(VideoPage_ResolveSemitagDocument, (req, res, ctx) =>
           res(
             ctx.data({
-              resovleSemitag: aResolveSemitagPayload({
+              resovleSemitag: {
+                __typename: "ResolveSemitagSuccessedPayload",
                 semitag: aSemitag({
                   id: "semitag:1",
                   video: aVideo({
                     id: "video_1",
                   }),
                 }),
-              }),
+              },
             })
           )
         ),

@@ -7,12 +7,30 @@ type AddMylistToMylistGroupPayload {
   inclusion: MylistGroupMylistInclusion!
 }
 
+enum AddSemitagToVideoFailedMessage {
+  """すでに同名の仮タグが付いている"""
+  ALREADY_ATTACHED
+
+  """すでにこの仮タグはチェックした"""
+  ALREADY_CHECKED
+  FORBIDDEN
+  INVALID_VIDEO_ID
+  UNKNOWN
+  VIDEO_NOT_FOUND
+}
+
+type AddSemitagToVideoFailedPayload {
+  message: AddSemitagToVideoFailedMessage!
+}
+
 input AddSemitagToVideoInput {
   name: String!
   videoId: ID!
 }
 
-type AddSemitagToVideoPayload {
+union AddSemitagToVideoPayload = AddSemitagToVideoFailedPayload | AddSemitagToVideoSuccessedPayload
+
+type AddSemitagToVideoSuccessedPayload {
   semitag: Semitag!
 }
 
@@ -364,10 +382,34 @@ type NicovideoOriginalSourceTagSearchTagsPayload {
 }
 
 type NicovideoVideoSource implements Node & VideoSource {
+  events(input: NicovideoVideoSourceEventsInput!): NicovideoVideoSourceEventConnection!
   id: ID!
   sourceId: String!
   url: String!
   video: Video!
+}
+
+type NicovideoVideoSourceCreateEvent implements NicovideoVideoSourceEvent & Node {
+  createdAt: DateTime!
+  id: ID!
+  source: NicovideoVideoSource!
+  user: User!
+}
+
+interface NicovideoVideoSourceEvent implements Node {
+  createdAt: DateTime!
+  id: ID!
+  source: NicovideoVideoSource!
+  user: User!
+}
+
+type NicovideoVideoSourceEventConnection {
+  nodes: [NicovideoVideoSourceEvent!]!
+}
+
+input NicovideoVideoSourceEventsInput {
+  limit: Int! = 10
+  skip: Int! = 0
 }
 
 interface Node {
@@ -616,6 +658,7 @@ type SearchVideosPayload {
 }
 
 type Semitag implements Node {
+  events(input: SemitagEventsInput!): SemitagEventConnection!
   id: ID!
   name: String!
   resolved: Boolean!
@@ -625,6 +668,43 @@ type Semitag implements Node {
 
 type SemitagConnection {
   nodes: [Semitag!]!
+}
+
+interface SemitagEvent {
+  createdAt: DateTime!
+  id: ID!
+  semitag: Semitag!
+  user: User!
+}
+
+type SemitagEventAttachEvent implements Node & SemitagEvent {
+  createdAt: DateTime!
+  id: ID!
+  semitag: Semitag!
+  user: User!
+}
+
+type SemitagEventConnection {
+  nodes: [SemitagEvent!]!
+}
+
+type SemitagEventRejectEvent implements Node & SemitagEvent {
+  createdAt: DateTime!
+  id: ID!
+  semitag: Semitag!
+  user: User!
+}
+
+type SemitagEventResolveEvent implements Node & SemitagEvent {
+  createdAt: DateTime!
+  id: ID!
+  semitag: Semitag!
+  user: User!
+}
+
+input SemitagEventsInput {
+  limit: Int! = 10
+  skip: Int! = 0
 }
 
 type Session {
@@ -814,86 +894,11 @@ type Video implements Node {
   semitags(resolved: Boolean): [Semitag!]!
   serial: Int!
   similarVideos(input: VideoSimilarVideosInput!): VideoSimilarVideosPayload!
-  tags(input: VideoTagsInput!): [Tag!]!
+  tags(input: VideoTagsInput!): [VideoTag!]!
   thumbnailUrl: String!
   thumbnails: [VideoThumbnail!]!
   title: String!
   titles: [VideoTitle!]!
-}
-
-"""Videoにニコニコ動画の動画ソースを追加した際に発生．"""
-type VideoAddNicovideoSourceEvent implements VideoEvent {
-  createdAt: DateTime!
-  id: ID!
-
-  """追加されたニコニコ動画の動画ソース"""
-  source: NicovideoVideoSource!
-  user: User!
-  video: Video!
-}
-
-"""Videoに仮タグを追加した際に発生．"""
-type VideoAddSemitagEvent implements VideoEvent {
-  createdAt: DateTime!
-  id: ID!
-
-  """追加された仮タグ"""
-  semitag: Semitag!
-  user: User!
-  video: Video!
-}
-
-"""Videoにタグを追加した際に発生．"""
-type VideoAddTagEvent implements VideoEvent {
-  createdAt: DateTime!
-  id: ID!
-
-  """追加されたタグ"""
-  tag: Tag!
-  user: User!
-  video: Video!
-}
-
-"""Videoにサムネイルを追加した際に発生．"""
-type VideoAddThumbnailEvent implements VideoEvent {
-  createdAt: DateTime!
-  id: ID!
-
-  """追加されたサムネイル"""
-  thumbnailUrl: String!
-  user: User!
-  video: Video!
-}
-
-"""Videoにタイトルを追加した際に発生．"""
-type VideoAddTitleEvent implements VideoEvent {
-  createdAt: DateTime!
-  id: ID!
-
-  """追加されたタイトル"""
-  title: String!
-  user: User!
-  video: Video!
-}
-
-"""Videoの主サムネイルを変更した際に発生．"""
-type VideoChangePrimaryThumbnailEvent implements VideoEvent {
-  createdAt: DateTime!
-  from: String!
-  id: ID!
-  to: String!
-  user: User!
-  video: Video!
-}
-
-"""Videoの主タイトルを変更した際に発生．"""
-type VideoChangePrimaryTitleEvent implements VideoEvent {
-  createdAt: DateTime!
-  from: String!
-  id: ID!
-  to: String!
-  user: User!
-  video: Video!
 }
 
 type VideoConnection {
@@ -924,57 +929,6 @@ type VideoRegisterEvent implements VideoEvent {
   video: Video!
 }
 
-"""Videoからタグを削除した際に発生．"""
-type VideoRemoveTagEvent implements VideoEvent {
-  createdAt: DateTime!
-  id: ID!
-
-  """削除されたタグ"""
-  tag: Tag!
-  user: User!
-  video: Video!
-}
-
-"""Videoからサムネイルを削除した際に発生．"""
-type VideoRemoveThumbnailEvent implements VideoEvent {
-  createdAt: DateTime!
-  id: ID!
-
-  """削除されたサムネイル"""
-  thumbnailUrl: String!
-  user: User!
-  video: Video!
-}
-
-"""Videoからタイトルを削除した際に発生．"""
-type VideoRemoveTitleEvent implements VideoEvent {
-  createdAt: DateTime!
-  id: ID!
-
-  """削除されたタイトル"""
-  title: String!
-  user: User!
-  video: Video!
-}
-
-"""Videoに主サムネイルを設定した際に発生．（初回のみ）"""
-type VideoSetPrimaryThumbnailEvent implements VideoEvent {
-  createdAt: DateTime!
-  id: ID!
-  thumbnailUrl: String!
-  user: User!
-  video: Video!
-}
-
-"""Videoに主タイトルを設定した際に発生．（初回のみ）"""
-type VideoSetPrimaryTitleEvent implements VideoEvent {
-  createdAt: DateTime!
-  id: ID!
-  title: String!
-  user: User!
-  video: Video!
-}
-
 input VideoSimilarVideosInput {
   limit: Int! = 10
 }
@@ -996,6 +950,50 @@ interface VideoSource {
   video: Video!
 }
 
+type VideoTag {
+  events(input: VideoTagEventsInput!): VideoTagEventsConnection!
+  id: ID!
+  tag: Tag!
+  video: Video!
+}
+
+type VideoTagAttachEvent implements Node & VideoTagEvent {
+  createdAt: DateTime!
+  id: ID!
+  user: User!
+  videoTag: VideoTag!
+}
+
+type VideoTagDetachEvent implements Node & VideoTagEvent {
+  createdAt: DateTime!
+  id: ID!
+  user: User!
+  videoTag: VideoTag!
+}
+
+interface VideoTagEvent implements Node {
+  createdAt: DateTime!
+  id: ID!
+  user: User!
+  videoTag: VideoTag!
+}
+
+type VideoTagEventsConnection {
+  nodes: [VideoTagEvent!]!
+}
+
+input VideoTagEventsInput {
+  limit: Int! = 10
+  skip: Int! = 0
+}
+
+type VideoTagReattachEvent implements Node & VideoTagEvent {
+  createdAt: DateTime!
+  id: ID!
+  user: User!
+  videoTag: VideoTag!
+}
+
 input VideoTagsInput {
   """未指定なら全てを取得する"""
   limit: Int
@@ -1009,13 +1007,93 @@ input VideoTagsInputOrder {
 }
 
 type VideoThumbnail {
+  events(input: VideoThumbnailEventsInput!): VideoThumbnailEventsConnection!
+  id: ID!
   imageUrl: String!
   primary: Boolean!
+  video: Video!
+}
+
+type VideoThumbnailCreateEvent implements Node & VideoThumbnailEvent {
+  createdAt: DateTime!
+  id: ID!
+  user: User!
+  videoThumbnail: VideoThumbnail!
+}
+
+interface VideoThumbnailEvent implements Node {
+  createdAt: DateTime!
+  id: ID!
+  user: User!
+  videoThumbnail: VideoThumbnail!
+}
+
+type VideoThumbnailEventsConnection {
+  nodes: [VideoThumbnailEvent!]!
+}
+
+input VideoThumbnailEventsInput {
+  limit: Int! = 10
+  skip: Int! = 0
+}
+
+type VideoThumbnailSetPrimaryEvent implements Node & VideoThumbnailEvent {
+  createdAt: DateTime!
+  id: ID!
+  user: User!
+  videoThumbnail: VideoThumbnail!
+}
+
+type VideoThumbnailUnsetPrimaryEvent implements Node & VideoThumbnailEvent {
+  createdAt: DateTime!
+  id: ID!
+  user: User!
+  videoThumbnail: VideoThumbnail!
 }
 
 type VideoTitle {
+  events(input: VideoTitleEventsInput!): VideoTitleEventsConnection!
+  id: ID!
   primary: Boolean!
   title: String!
+  video: Video!
+}
+
+type VideoTitleCreateEvent implements Node & VideoTitleEvent {
+  createdAt: DateTime!
+  id: ID!
+  user: User!
+  videoTitle: VideoTitle!
+}
+
+interface VideoTitleEvent implements Node {
+  createdAt: DateTime!
+  id: ID!
+  user: User!
+  videoTitle: VideoTitle!
+}
+
+type VideoTitleEventsConnection {
+  nodes: [VideoTitleEvent!]!
+}
+
+input VideoTitleEventsInput {
+  limit: Int! = 10
+  skip: Int! = 0
+}
+
+type VideoTitleSetPrimaryEvent implements Node & VideoTitleEvent {
+  createdAt: DateTime!
+  id: ID!
+  user: User!
+  videoTitle: VideoTitle!
+}
+
+type VideoTitleUnsetPrimaryEvent implements Node & VideoTitleEvent {
+  createdAt: DateTime!
+  id: ID!
+  user: User!
+  videoTitle: VideoTitle!
 }
 
 type YoutubeVideoSource implements Node & VideoSource {

@@ -9,7 +9,9 @@ import { styleByTagType } from "~/utils/styleByTagType";
 graphql(`
   fragment VideoPage_TagsTypesList on Video {
     tags(input: {}) {
-      pseudoType
+      tag {
+        pseudoType
+      }
     }
   }
 `);
@@ -21,7 +23,7 @@ export const TagTypesList: React.FC<{
   const types = useMemo(
     () =>
       fragment.tags
-        .map(({ pseudoType }) => pseudoType)
+        .map(({ tag }) => tag.pseudoType)
         .filter((v1, i, arr) => i === arr.findIndex((v2) => v1 === v2)),
     [fragment]
   );
