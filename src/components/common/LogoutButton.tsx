@@ -16,7 +16,7 @@ import {
 graphql(`
   mutation LogoutButton_Signout {
     signout {
-      ... on SignoutSuccessedPayload {
+      ... on SignoutSucceededPayload {
         session {
           user {
             ...GlobalNav_Profile
@@ -54,7 +54,7 @@ export const LogoutButton: React.FC<{ className?: string }> = ({
   useEffect(() => {
     if (!loginData) return;
 
-    if (loginData.signout.__typename === "SignoutSuccessedPayload")
+    if (loginData.signout.__typename === "SignoutSucceededPayload")
       afterlogin();
   }, [afterlogin, loginData]);
 

@@ -1,7 +1,7 @@
 import { css } from "@emotion/css";
 import { Meta, StoryObj } from "@storybook/react";
 
-import { aMylistRegistration, aTag, aVideo } from "~/gql/graphql";
+import { aMylistRegistration, aTag, aVideo, aVideoTag } from "~/gql/graphql";
 
 import { Registeration } from "./Registeration";
 
@@ -19,12 +19,14 @@ export default {
         title: "Video1",
         thumbnailUrl: "/storybook/960x540.jpg",
         tags: [
-          aTag({
-            id: "tag_1",
-            name: "child",
-            explicitParent: aTag({
-              id: "tag_2",
-              name: "parent",
+          aVideoTag({
+            tag: aTag({
+              id: "tag_1",
+              name: "child",
+              explicitParent: aTag({
+                id: "tag_2",
+                name: "parent",
+              }),
             }),
           }),
         ],
@@ -64,10 +66,12 @@ export const NoNote: StoryObj<typeof Registeration> = {
         title: "Video1",
         thumbnailUrl: "/storybook/960x540.jpg",
         tags: [
-          aTag({
-            id: "tag_1",
-            name: "child",
-            explicitParent: aTag({ id: "tag_2", name: "parent" }),
+          aVideoTag({
+            tag: aTag({
+              id: "tag_1",
+              name: "child",
+              explicitParent: aTag({ id: "tag_2", name: "parent" }),
+            }),
           }),
         ],
       }),

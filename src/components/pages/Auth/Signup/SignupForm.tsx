@@ -51,7 +51,7 @@ graphql(`
         email: $email
       }
     ) {
-      ... on SignupSuccessedPayload {
+      ... on SignupSucceededPayload {
         user {
           id
           ...GlobalNav_Profile

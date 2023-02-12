@@ -102,7 +102,7 @@ export const SuccessfulLogin: StoryObj<typeof LoginForm> = {
           return res(
             ctx.data({
               signin: {
-                __typename: "SigninSuccessedPayload",
+                __typename: "SigninSucceededPayload",
                 user: aUser({
                   id: "u1",
                   name: "sno2wman",

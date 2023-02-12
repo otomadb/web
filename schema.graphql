@@ -7,13 +7,45 @@ type AddMylistToMylistGroupPayload {
   inclusion: MylistGroupMylistInclusion!
 }
 
+enum AddSemitagToVideoFailedMessage {
+  """すでに同名の仮タグが付いている"""
+  ALREADY_ATTACHED
+
+  """すでにこの仮タグはチェックした"""
+  ALREADY_CHECKED
+  FORBIDDEN
+  INVALID_VIDEO_ID
+  UNKNOWN
+  VIDEO_NOT_FOUND
+}
+
+type AddSemitagToVideoFailedPayload {
+  message: AddSemitagToVideoFailedMessage!
+}
+
 input AddSemitagToVideoInput {
   name: String!
   videoId: ID!
 }
 
-type AddSemitagToVideoPayload {
+union AddSemitagToVideoPayload = AddSemitagToVideoFailedPayload | AddSemitagToVideoSucceededPayload
+
+type AddSemitagToVideoSucceededPayload {
   semitag: Semitag!
+}
+
+enum AddTagToVideoFailedMessage {
+  FORBIDDEN
+  INVALID_TAG_ID
+  INVALID_VIDEO_ID
+
+  """原因不明のエラー"""
+  UNKNOWN
+  VIDEO_ALREADY_TAGGED
+}
+
+type AddTagToVideoFailedPayload {
+  message: AddTagToVideoFailedMessage!
 }
 
 input AddTagToVideoInput {
@@ -21,7 +53,9 @@ input AddTagToVideoInput {
   videoId: ID!
 }
 
-type AddTagToVideoPayload {
+union AddTagToVideoPayload = AddTagToVideoFailedPayload | AddTagToVideoSucceededPayload
+
+type AddTagToVideoSucceededPayload {
   tag: Tag!
   video: Video!
 }
@@ -125,11 +159,25 @@ input FindVideosInputOrder {
   updatedAt: SortOrder
 }
 
+enum LikeVideoFailedMessage {
+  FORBIDDEN
+  INVALID_VIDEO_ID
+  UNKNOWN
+  VIDEO_ALREADY_LIKED
+  VIDEO_NOT_FOUND
+}
+
+type LikeVideoFailedPayload {
+  message: LikeVideoFailedMessage!
+}
+
 input LikeVideoInput {
   videoId: ID!
 }
 
-type LikeVideoPayload {
+union LikeVideoPayload = LikeVideoFailedPayload | LikeVideoSucceededPayload
+
+type LikeVideoSucceededPayload {
   registration: MylistRegistration!
 }
 
@@ -143,6 +191,7 @@ type Mutation {
   likeVideo(input: LikeVideoInput!): LikeVideoPayload!
   registerTag(input: RegisterTagInput!): RegisterTagPayload!
   registerVideo(input: RegisterVideoInput!): RegisterVideoPayload!
+  rejectSemitag(input: RejectSemitagInput!): RejectSemitagPayload!
   removeTagFromVideo(input: RemoveTagFromVideoInput!): RemoveTagFromVideoPayload!
   removeVideoFromMylist(input: RemoveVideoFromMylistInput!): RemoveVideoFromMylistPayload!
   resovleSemitag(input: ResolveSemitagInput!): ResolveSemitagPayload!
@@ -333,10 +382,34 @@ type NicovideoOriginalSourceTagSearchTagsPayload {
 }
 
 type NicovideoVideoSource implements Node & VideoSource {
+  events(input: NicovideoVideoSourceEventsInput!): NicovideoVideoSourceEventConnection!
   id: ID!
   sourceId: String!
   url: String!
   video: Video!
+}
+
+type NicovideoVideoSourceCreateEvent implements NicovideoVideoSourceEvent & Node {
+  createdAt: DateTime!
+  id: ID!
+  source: NicovideoVideoSource!
+  user: User!
+}
+
+interface NicovideoVideoSourceEvent implements Node {
+  createdAt: DateTime!
+  id: ID!
+  source: NicovideoVideoSource!
+  user: User!
+}
+
+type NicovideoVideoSourceEventConnection {
+  nodes: [NicovideoVideoSourceEvent!]!
+}
+
+input NicovideoVideoSourceEventsInput {
+  limit: Int! = 10
+  skip: Int! = 0
 }
 
 interface Node {
@@ -401,6 +474,16 @@ type Query {
   whoami: User
 }
 
+enum RegisterTagFailedMessage {
+  FORBIDDEN
+  INVALID_TAG_ID
+  UNKNOWN
+}
+
+type RegisterTagFailedPayload {
+  message: RegisterTagFailedMessage!
+}
+
 input RegisterTagInput {
   explicitParent: ID
   extraNames: [String!]! = []
@@ -410,8 +493,21 @@ input RegisterTagInput {
   resolveSemitags: [ID!]! = []
 }
 
-type RegisterTagPayload {
+union RegisterTagPayload = RegisterTagFailedPayload | RegisterTagSucceededPayload
+
+type RegisterTagSucceededPayload {
   tag: Tag!
+}
+
+enum RegisterVideoFailedMessage {
+  FORBIDDEN
+  INVALID_NICOVIDEO_SOURCE_ID
+  INVALID_TAG_ID
+  UNKNOWN
+}
+
+type RegisterVideoFailedPayload {
+  message: RegisterVideoFailedMessage!
 }
 
 input RegisterVideoInput {
@@ -432,8 +528,52 @@ enum RegisterVideoInputSourceType {
   NICOVIDEO
 }
 
-type RegisterVideoPayload {
+union RegisterVideoPayload = RegisterVideoFailedPayload | RegisterVideoSucceededPayload
+
+type RegisterVideoSucceededPayload {
   video: Video!
+}
+
+enum RejectSemitagFailedMessage {
+  """権限なし"""
+  FORBIDDEN
+  INVALID_SEMITAG_ID
+  SEMITAG_ALREADY_CHECKED
+  SEMITAG_NOT_FOUND
+
+  """原因不明のエラー"""
+  UNKNOWN
+}
+
+type RejectSemitagFailedPayload {
+  message: RejectSemitagFailedMessage!
+}
+
+input RejectSemitagInput {
+  id: ID!
+}
+
+union RejectSemitagPayload = RejectSemitagFailedPayload | RejectSemitagSucceededPayload
+
+type RejectSemitagSucceededPayload {
+  semitag: Semitag!
+}
+
+enum RemoveTagFromVideoFailedMessage {
+  FORBIDDEN
+  INVALID_TAG_ID
+  INVALID_VIDEO_ID
+  NO_TAGGING
+  TAGGING_ALREADY_REMOVED
+  TAG_NOT_FOUND
+
+  """原因不明のエラー"""
+  UNKNOWN
+  VIDEO_NOT_FOUND
+}
+
+type RemoveTagFromVideoFailedPayload {
+  message: RemoveTagFromVideoFailedMessage!
 }
 
 input RemoveTagFromVideoInput {
@@ -441,7 +581,9 @@ input RemoveTagFromVideoInput {
   videoId: ID!
 }
 
-type RemoveTagFromVideoPayload {
+union RemoveTagFromVideoPayload = RemoveTagFromVideoFailedPayload | RemoveTagFromVideoSucceededPayload
+
+type RemoveTagFromVideoSucceededPayload {
   tag: Tag!
   video: Video!
 }
@@ -456,12 +598,32 @@ type RemoveVideoFromMylistPayload {
   video: Video!
 }
 
-input ResolveSemitagInput {
-  id: ID!
-  tagId: ID
+enum ResolveSemitagFailedMessage {
+  """権限なし"""
+  FORBIDDEN
+  INVALID_SEMITAG_ID
+  INVALID_TAG_ID
+  SEMITAG_ALREADY_CHECKED
+  SEMITAG_NOT_FOUND
+  TAG_NOT_FOUND
+
+  """原因不明のエラー"""
+  UNKNOWN
+  VIDEO_ALREADY_TAGGED
 }
 
-type ResolveSemitagPayload {
+type ResolveSemitagFailedPayload {
+  message: ResolveSemitagFailedMessage!
+}
+
+input ResolveSemitagInput {
+  id: ID!
+  tagId: ID!
+}
+
+union ResolveSemitagPayload = ResolveSemitagFailedPayload | ResolveSemitagSucceededPayload
+
+type ResolveSemitagSucceededPayload {
   semitag: Semitag!
 }
 
@@ -496,6 +658,7 @@ type SearchVideosPayload {
 }
 
 type Semitag implements Node {
+  events(input: SemitagEventsInput!): SemitagEventConnection!
   id: ID!
   name: String!
   resolved: Boolean!
@@ -505,6 +668,43 @@ type Semitag implements Node {
 
 type SemitagConnection {
   nodes: [Semitag!]!
+}
+
+interface SemitagEvent {
+  createdAt: DateTime!
+  id: ID!
+  semitag: Semitag!
+  user: User!
+}
+
+type SemitagEventAttachEvent implements Node & SemitagEvent {
+  createdAt: DateTime!
+  id: ID!
+  semitag: Semitag!
+  user: User!
+}
+
+type SemitagEventConnection {
+  nodes: [SemitagEvent!]!
+}
+
+type SemitagEventRejectEvent implements Node & SemitagEvent {
+  createdAt: DateTime!
+  id: ID!
+  semitag: Semitag!
+  user: User!
+}
+
+type SemitagEventResolveEvent implements Node & SemitagEvent {
+  createdAt: DateTime!
+  id: ID!
+  semitag: Semitag!
+  user: User!
+}
+
+input SemitagEventsInput {
+  limit: Int! = 10
+  skip: Int! = 0
 }
 
 type Session {
@@ -535,9 +735,9 @@ input SigninInput {
   username: String!
 }
 
-union SigninPayload = SigninFailedPayload | SigninSuccessedPayload
+union SigninPayload = SigninFailedPayload | SigninSucceededPayload
 
-type SigninSuccessedPayload {
+type SigninSucceededPayload {
   user: User!
 }
 
@@ -556,9 +756,9 @@ type SignoutFailedPayload {
   message: SignoutFailedMessage!
 }
 
-union SignoutPayload = SignoutFailedPayload | SignoutSuccessedPayload
+union SignoutPayload = SignoutFailedPayload | SignoutSucceededPayload
 
-type SignoutSuccessedPayload {
+type SignoutSucceededPayload {
   session: Session!
 }
 
@@ -584,9 +784,9 @@ input SignupInput {
   password: String!
 }
 
-union SignupPayload = SignupFailedPayload | SignupSuccessedPayload
+union SignupPayload = SignupFailedPayload | SignupSucceededPayload
 
-type SignupSuccessedPayload {
+type SignupSucceededPayload {
   user: User!
 }
 
@@ -602,7 +802,6 @@ type Tag implements Node {
     videoId: ID!
   ): Boolean!
   explicitParent: Tag
-  history(input: TagHistoryInput!): TagHistoryConnection!
   id: ID!
   meaningless: Boolean!
   name: String!
@@ -614,53 +813,8 @@ type Tag implements Node {
   type: TagType! @deprecated
 }
 
-type TagAddNameHistoryItem implements TagHistoryItem {
-  createdAt: DateTime!
-  id: ID!
-  name: String!
-  tag: Tag!
-  user: User!
-}
-
-type TagChangePrimaryNameHistoryItem implements TagHistoryItem {
-  createdAt: DateTime!
-  from: String
-  id: ID!
-  tag: Tag!
-  to: String!
-  user: User!
-}
-
 type TagConnection {
   nodes: [Tag!]!
-}
-
-type TagDeleteNameHistoryItem implements TagHistoryItem {
-  createdAt: DateTime!
-  id: ID!
-  name: String!
-  tag: Tag!
-  user: User!
-}
-
-type TagHistoryConnection {
-  nodes: [VideoHistoryItem!]!
-}
-
-input TagHistoryInput {
-  limit: Int! = 10
-  order: TagHistoryOrder! = {createdAt: DESC}
-  skip: Int! = 0
-}
-
-interface TagHistoryItem {
-  createdAt: DateTime!
-  id: ID!
-  user: User!
-}
-
-input TagHistoryOrder {
-  createdAt: SortOrder
 }
 
 type TagName {
@@ -671,13 +825,6 @@ type TagName {
 type TagParent {
   explicit: Boolean!
   tag: Tag!
-}
-
-type TagRegisterHistoryItem implements TagHistoryItem {
-  createdAt: DateTime!
-  id: ID!
-  tag: Tag!
-  user: User!
 }
 
 enum TagType {
@@ -691,11 +838,25 @@ enum TagType {
   TACTICS
 }
 
+enum UndoLikeVideoFailedMessage {
+  FORBIDDEN
+  INVALID_VIDEO_ID
+  UNKNOWN
+  VIDEO_NOT_FOUND
+  VIDEO_NOT_LIKED
+}
+
+type UndoLikeVideoFailedPayload {
+  message: UndoLikeVideoFailedMessage!
+}
+
 input UndoLikeVideoInput {
   videoId: ID!
 }
 
-type UndoLikeVideoPayload {
+union UndoLikeVideoPayload = UndoLikeVideoFailedPayload | UndoLikeVideoSucceededPayload
+
+type UndoLikeVideoSucceededPayload {
   mylist: Mylist!
   video: Video!
 }
@@ -727,171 +888,21 @@ input UserMylistsInputOrder {
 type Video implements Node {
   events(input: VideoEventsInput!): VideoEventsConnection!
   hasTag(id: ID!): Boolean!
-  history(input: VideoHistoryInput!): VideoHistoryConnection!
   id: ID!
   nicovideoSources: [NicovideoVideoSource!]!
   registeredAt: DateTime!
   semitags(resolved: Boolean): [Semitag!]!
   serial: Int!
   similarVideos(input: VideoSimilarVideosInput!): VideoSimilarVideosPayload!
-  tags(input: VideoTagsInput!): [Tag!]!
+  tags(input: VideoTagsInput!): [VideoTag!]!
   thumbnailUrl: String!
   thumbnails: [VideoThumbnail!]!
   title: String!
   titles: [VideoTitle!]!
 }
 
-"""Videoにニコニコ動画の動画ソースを追加した際に発生．"""
-type VideoAddNicovideoSourceEvent implements VideoEvent {
-  createdAt: DateTime!
-  id: ID!
-
-  """追加されたニコニコ動画の動画ソース"""
-  source: NicovideoVideoSource!
-  user: User!
-  video: Video!
-}
-
-type VideoAddNicovideoVideoSourceHistoryItem implements VideoHistoryItem {
-  createdAt: DateTime!
-  id: ID!
-  source: NicovideoVideoSource!
-  user: User!
-  video: Video!
-}
-
-"""Videoに仮タグを追加した際に発生．"""
-type VideoAddSemitagEvent implements VideoEvent {
-  createdAt: DateTime!
-  id: ID!
-
-  """追加された仮タグ"""
-  semitag: Semitag!
-  user: User!
-  video: Video!
-}
-
-"""Videoにタグを追加した際に発生．"""
-type VideoAddTagEvent implements VideoEvent {
-  createdAt: DateTime!
-  id: ID!
-
-  """追加されたタグ"""
-  tag: Tag!
-  user: User!
-  video: Video!
-}
-
-type VideoAddTagHistoryItem implements VideoHistoryItem {
-  createdAt: DateTime!
-  id: ID!
-  tag: Tag!
-  user: User!
-  video: Video!
-}
-
-"""Videoにサムネイルを追加した際に発生．"""
-type VideoAddThumbnailEvent implements VideoEvent {
-  createdAt: DateTime!
-  id: ID!
-
-  """追加されたサムネイル"""
-  thumbnailUrl: String!
-  user: User!
-  video: Video!
-}
-
-type VideoAddThumbnailHistoryItem implements VideoHistoryItem {
-  createdAt: DateTime!
-  id: ID!
-  thumbnail: String!
-  user: User!
-  video: Video!
-}
-
-"""Videoにタイトルを追加した際に発生．"""
-type VideoAddTitleEvent implements VideoEvent {
-  createdAt: DateTime!
-  id: ID!
-
-  """追加されたタイトル"""
-  title: String!
-  user: User!
-  video: Video!
-}
-
-type VideoAddTitleHistoryItem implements VideoHistoryItem {
-  createdAt: DateTime!
-  id: ID!
-  title: String!
-  user: User!
-  video: Video!
-}
-
-"""Videoの主サムネイルを変更した際に発生．"""
-type VideoChangePrimaryThumbnailEvent implements VideoEvent {
-  createdAt: DateTime!
-  from: String!
-  id: ID!
-  to: String!
-  user: User!
-  video: Video!
-}
-
-type VideoChangePrimaryThumbnailHistoryItem implements VideoHistoryItem {
-  createdAt: DateTime!
-  from: String
-  id: ID!
-  to: String!
-  user: User!
-  video: Video!
-}
-
-"""Videoの主タイトルを変更した際に発生．"""
-type VideoChangePrimaryTitleEvent implements VideoEvent {
-  createdAt: DateTime!
-  from: String!
-  id: ID!
-  to: String!
-  user: User!
-  video: Video!
-}
-
-type VideoChangePrimaryTitleHistoryItem implements VideoHistoryItem {
-  createdAt: DateTime!
-  from: String
-  id: ID!
-  to: String!
-  user: User!
-  video: Video!
-}
-
 type VideoConnection {
   nodes: [Video!]!
-}
-
-type VideoDeleteTagHistoryItem implements VideoHistoryItem {
-  createdAt: DateTime!
-  id: ID!
-  tag: Tag!
-  user: User!
-  video: Video!
-}
-
-type VideoDeleteThumbnailHistoryItem implements VideoHistoryItem {
-  createdAt: DateTime!
-  id: ID!
-  thumbnail: String!
-  user: User!
-  video: Video!
-}
-
-type VideoDeleteTitleHistoryItem implements VideoHistoryItem {
-  createdAt: DateTime!
-  id: ID!
-  title: String!
-  user: User!
-  video: Video!
 }
 
 interface VideoEvent {
@@ -910,89 +921,10 @@ input VideoEventsInput {
   skip: Int! = 0
 }
 
-type VideoHistoryConnection {
-  nodes: [VideoHistoryItem!]!
-}
-
-input VideoHistoryInput {
-  limit: Int! = 10
-  order: VideoHistoryOrder! = {createdAt: DESC}
-  skip: Int! = 0
-}
-
-interface VideoHistoryItem {
-  createdAt: DateTime!
-  id: ID!
-  user: User!
-  video: Video!
-}
-
-input VideoHistoryOrder {
-  createdAt: SortOrder
-}
-
 """Videoを追加した際に発生．（初回のみ）"""
 type VideoRegisterEvent implements VideoEvent {
   createdAt: DateTime!
   id: ID!
-  user: User!
-  video: Video!
-}
-
-type VideoRegisterHistoryItem implements VideoHistoryItem {
-  createdAt: DateTime!
-  id: ID!
-  user: User!
-  video: Video!
-}
-
-"""Videoからタグを削除した際に発生．"""
-type VideoRemoveTagEvent implements VideoEvent {
-  createdAt: DateTime!
-  id: ID!
-
-  """削除されたタグ"""
-  tag: Tag!
-  user: User!
-  video: Video!
-}
-
-"""Videoからサムネイルを削除した際に発生．"""
-type VideoRemoveThumbnailEvent implements VideoEvent {
-  createdAt: DateTime!
-  id: ID!
-
-  """削除されたサムネイル"""
-  thumbnailUrl: String!
-  user: User!
-  video: Video!
-}
-
-"""Videoからタイトルを削除した際に発生．"""
-type VideoRemoveTitleEvent implements VideoEvent {
-  createdAt: DateTime!
-  id: ID!
-
-  """削除されたタイトル"""
-  title: String!
-  user: User!
-  video: Video!
-}
-
-"""Videoに主サムネイルを設定した際に発生．（初回のみ）"""
-type VideoSetPrimaryThumbnailEvent implements VideoEvent {
-  createdAt: DateTime!
-  id: ID!
-  thumbnailUrl: String!
-  user: User!
-  video: Video!
-}
-
-"""Videoに主タイトルを設定した際に発生．（初回のみ）"""
-type VideoSetPrimaryTitleEvent implements VideoEvent {
-  createdAt: DateTime!
-  id: ID!
-  title: String!
   user: User!
   video: Video!
 }
@@ -1018,6 +950,50 @@ interface VideoSource {
   video: Video!
 }
 
+type VideoTag {
+  events(input: VideoTagEventsInput!): VideoTagEventsConnection!
+  id: ID!
+  tag: Tag!
+  video: Video!
+}
+
+type VideoTagAttachEvent implements Node & VideoTagEvent {
+  createdAt: DateTime!
+  id: ID!
+  user: User!
+  videoTag: VideoTag!
+}
+
+type VideoTagDetachEvent implements Node & VideoTagEvent {
+  createdAt: DateTime!
+  id: ID!
+  user: User!
+  videoTag: VideoTag!
+}
+
+interface VideoTagEvent implements Node {
+  createdAt: DateTime!
+  id: ID!
+  user: User!
+  videoTag: VideoTag!
+}
+
+type VideoTagEventsConnection {
+  nodes: [VideoTagEvent!]!
+}
+
+input VideoTagEventsInput {
+  limit: Int! = 10
+  skip: Int! = 0
+}
+
+type VideoTagReattachEvent implements Node & VideoTagEvent {
+  createdAt: DateTime!
+  id: ID!
+  user: User!
+  videoTag: VideoTag!
+}
+
 input VideoTagsInput {
   """未指定なら全てを取得する"""
   limit: Int
@@ -1031,13 +1007,93 @@ input VideoTagsInputOrder {
 }
 
 type VideoThumbnail {
+  events(input: VideoThumbnailEventsInput!): VideoThumbnailEventsConnection!
+  id: ID!
   imageUrl: String!
   primary: Boolean!
+  video: Video!
+}
+
+type VideoThumbnailCreateEvent implements Node & VideoThumbnailEvent {
+  createdAt: DateTime!
+  id: ID!
+  user: User!
+  videoThumbnail: VideoThumbnail!
+}
+
+interface VideoThumbnailEvent implements Node {
+  createdAt: DateTime!
+  id: ID!
+  user: User!
+  videoThumbnail: VideoThumbnail!
+}
+
+type VideoThumbnailEventsConnection {
+  nodes: [VideoThumbnailEvent!]!
+}
+
+input VideoThumbnailEventsInput {
+  limit: Int! = 10
+  skip: Int! = 0
+}
+
+type VideoThumbnailSetPrimaryEvent implements Node & VideoThumbnailEvent {
+  createdAt: DateTime!
+  id: ID!
+  user: User!
+  videoThumbnail: VideoThumbnail!
+}
+
+type VideoThumbnailUnsetPrimaryEvent implements Node & VideoThumbnailEvent {
+  createdAt: DateTime!
+  id: ID!
+  user: User!
+  videoThumbnail: VideoThumbnail!
 }
 
 type VideoTitle {
+  events(input: VideoTitleEventsInput!): VideoTitleEventsConnection!
+  id: ID!
   primary: Boolean!
   title: String!
+  video: Video!
+}
+
+type VideoTitleCreateEvent implements Node & VideoTitleEvent {
+  createdAt: DateTime!
+  id: ID!
+  user: User!
+  videoTitle: VideoTitle!
+}
+
+interface VideoTitleEvent implements Node {
+  createdAt: DateTime!
+  id: ID!
+  user: User!
+  videoTitle: VideoTitle!
+}
+
+type VideoTitleEventsConnection {
+  nodes: [VideoTitleEvent!]!
+}
+
+input VideoTitleEventsInput {
+  limit: Int! = 10
+  skip: Int! = 0
+}
+
+type VideoTitleSetPrimaryEvent implements Node & VideoTitleEvent {
+  createdAt: DateTime!
+  id: ID!
+  user: User!
+  videoTitle: VideoTitle!
+}
+
+type VideoTitleUnsetPrimaryEvent implements Node & VideoTitleEvent {
+  createdAt: DateTime!
+  id: ID!
+  user: User!
+  videoTitle: VideoTitle!
 }
 
 type YoutubeVideoSource implements Node & VideoSource {

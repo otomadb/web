@@ -177,7 +177,7 @@ export const SuccessfulFill: StoryObj<typeof SignupForm> = {
           return res(
             ctx.data({
               signup: {
-                __typename: "SignupSuccessedPayload",
+                __typename: "SignupSucceededPayload",
                 user: aUser({
                   id: "u1",
                   name: "testuser",

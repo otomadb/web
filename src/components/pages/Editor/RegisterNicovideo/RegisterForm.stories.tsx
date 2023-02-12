@@ -7,7 +7,6 @@ import {
 } from "urql";
 
 import {
-  aRegisterVideoPayload,
   aSearchTagsItem,
   aSearchTagsPayload,
   aTag,
@@ -74,12 +73,13 @@ export default {
           (req, res, ctx) =>
             res(
               ctx.data({
-                registerVideo: aRegisterVideoPayload({
+                registerVideo: {
+                  __typename: "RegisterVideoSucceededPayload",
                   video: aVideo({
                     id: "video_1",
                     title: req.variables.input.primaryTitle,
                   }),
-                }),
+                },
               })
             )
         ),

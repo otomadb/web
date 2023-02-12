@@ -23,7 +23,9 @@ graphql(`
       ...Component_Thumbnail
       tags(input: { limit: 5 }) {
         id
-        ...Component_Tag
+        tag {
+          ...Component_Tag
+        }
       }
     }
   }
@@ -72,10 +74,10 @@ export const Registeration: React.FC<{
             ["flex", ["flex-wrap"], ["gap-x-1"], ["gap-y-1"]]
           )}
         >
-          {video.tags.map((tag) => (
+          {video.tags.map((tagging) => (
             <Tag
-              key={tag.id}
-              tag={getFragment(Component_TagFragmentDoc, tag)}
+              key={tagging.id}
+              tag={getFragment(Component_TagFragmentDoc, tagging.tag)}
               Wrapper={(props) => <div {...props} />}
             />
           ))}

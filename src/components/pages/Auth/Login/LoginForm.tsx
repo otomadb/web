@@ -31,7 +31,7 @@ type FormSchema = z.infer<typeof formSchema>;
 graphql(`
   mutation LoginPage_Login($username: String!, $password: String!) {
     signin(input: { username: $username, password: $password }) {
-      ... on SigninSuccessedPayload {
+      ... on SigninSucceededPayload {
         user {
           id
           ...GlobalNav_Profile

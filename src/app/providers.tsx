@@ -61,22 +61,10 @@ const urqlClient = createUrqlClient({
         SearchVideosItem() {
           return null;
         },
-        AddTagToVideoPayload() {
-          return null;
-        },
-        RemoveTagFromVideoPayload() {
-          return null;
-        },
         TagConnection() {
           return null;
         },
-        TagHistoryConnection() {
-          return null;
-        },
         VideoConnection() {
-          return null;
-        },
-        VideoHistoryConnection() {
           return null;
         },
         MylistRegistrationConnection() {
@@ -97,13 +85,13 @@ const urqlClient = createUrqlClient({
         SemitagConnection() {
           return null;
         },
-        SigninSuccessedPayload() {
+        SigninSucceededPayload() {
           return null;
         },
         SigninFailedPayload() {
           return null;
         },
-        SignupSuccessedPayload() {
+        SignupSucceededPayload() {
           return null;
         },
         SignupFailedPayload() {

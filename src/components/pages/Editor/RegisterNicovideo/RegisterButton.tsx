@@ -14,10 +14,13 @@ import {
 graphql(`
   mutation RegisterNicovideoPage_RegisterVideo($input: RegisterVideoInput!) {
     registerVideo(input: $input) {
-      video {
-        id
-        serial
-        title
+      __typename
+      ... on RegisterVideoSucceededPayload {
+        video {
+          id
+          serial
+          title
+        }
       }
     }
   }
@@ -70,7 +73,7 @@ export const RegisterButton: React.FC<{
           },
         });
 
-        if (error) {
+        if (error || !payload) {
           toast.error(() => (
             <span className={clsx(["text-slate-700"])}>
               登録時に問題が発生しました
@@ -79,7 +82,11 @@ export const RegisterButton: React.FC<{
           return;
         }
 
-        if (payload) {
+        // TODO: Failedだったケース
+
+        if (
+          payload.registerVideo.__typename === "RegisterVideoSucceededPayload"
+        ) {
           const { serial, title } = payload.registerVideo.video;
           toast(() => (
             <span className={clsx(["text-slate-700"])}>

@@ -31,11 +31,14 @@ graphql(`
 
   mutation VideoPage_ResolveSemitag($input: ResolveSemitagInput!) {
     resovleSemitag(input: $input) {
-      semitag {
-        id
-        video {
-          ...VideoPage_TagsSection
-          ...VideoPage_SemitagsSection
+      __typename
+      ... on ResolveSemitagSucceededPayload {
+        semitag {
+          id
+          video {
+            ...VideoPage_TagsSection
+            ...VideoPage_SemitagsSection
+          }
         }
       }
     }
@@ -63,6 +66,7 @@ export const SemitagEditor: React.FC<{
   });
 
   const handleResolve = useCallback(async () => {
+    if (!resolveToTagId) return; // TODO: ...
     await trigger({ input: { id: semitagId, tagId: resolveToTagId } });
     handleSelected();
   }, [handleSelected, resolveToTagId, semitagId, trigger]);
