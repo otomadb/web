@@ -4,15 +4,13 @@ import { Suspense } from "react";
 
 import { DetailsSection } from "~/components/pages/Video/DetailsSection";
 import { EventsSection } from "~/components/pages/Video/EventsSection";
-import { SemitagsSection } from "~/components/pages/Video/SemitagsSection";
+import { SemitagsSection } from "~/components/pages/Video/SemitagsSection.server";
 import { SimilarVideosSection } from "~/components/pages/Video/SimilarVideosSection";
 import { TagsSection } from "~/components/pages/Video/TagsSection.server";
 import { getFragment, graphql } from "~/gql";
 import {
   VideoPage_DetailsSectionFragmentDoc,
-  VideoPage_SemitagsSectionFragmentDoc,
   VideoPage_SimilarVideosSectionFragmentDoc,
-  VideoPage_TagsSectionFragmentDoc,
 } from "~/gql/graphql";
 import { gqlRequest } from "~/utils/gqlRequest";
 
@@ -41,8 +39,6 @@ export default async function Page({ params }: { params: { serial: string } }) {
         findVideo(input: { serial: $serial }) {
           id
           ...VideoPage_DetailsSection
-          ...VideoPage_TagsSection
-          ...VideoPage_SemitagsSection
           ...VideoPage_SimilarVideosSection
         }
       }
@@ -53,8 +49,6 @@ export default async function Page({ params }: { params: { serial: string } }) {
   if (!video) return notFound();
 
   const details = getFragment(VideoPage_DetailsSectionFragmentDoc, video);
-  const tags = getFragment(VideoPage_TagsSectionFragmentDoc, video);
-  const semitags = getFragment(VideoPage_SemitagsSectionFragmentDoc, video);
   const similarVideos = getFragment(
     VideoPage_SimilarVideosSectionFragmentDoc,
     video
@@ -72,7 +66,8 @@ export default async function Page({ params }: { params: { serial: string } }) {
       >
         {/* @ts-expect-error for Server Component*/}
         <TagsSection className={clsx(["w-full"])} videoId={video.id} />
-        <SemitagsSection className={clsx(["w-full"])} fallback={semitags} />
+        {/* @ts-expect-error for Server Component*/}
+        <SemitagsSection className={clsx(["w-full"])} videoId={video.id} />
       </div>
       <div className={clsx(["flex-grow"])}>
         <DetailsSection fallback={details} />
@@ -80,7 +75,8 @@ export default async function Page({ params }: { params: { serial: string } }) {
           <div className={clsx(["block", "lg:hidden"], ["space-y-2"])}>
             {/* @ts-expect-error for Server Component*/}
             <TagsSection videoId={video.id} />
-            <SemitagsSection fallback={semitags} />
+            {/* @ts-expect-error for Server Component*/}
+            <SemitagsSection videoId={video.id} />
           </div>
           <SimilarVideosSection className={clsx()} fallback={similarVideos} />
           <Suspense fallback={<div>Loading</div>}>
