@@ -1,4 +1,5 @@
 "use client";
+
 import "client-only";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -39,11 +40,10 @@ graphql(`
         meaningless: false
       }
     ) {
-      tag {
-        ...Link_Tag
-        id
-        name
-        explicitParent {
+      __typename
+      ... on RegisterTagSuccessedPayload {
+        tag {
+          ...Link_Tag
           id
           name
         }
@@ -134,7 +134,7 @@ export const RegisterTagForm: React.FC<{ className?: string }> = ({
       implicitParents,
       resolveSemitags,
     }) => {
-      const { data } = await trigger({
+      const { error, data: payload } = await trigger({
         primaryName,
         extraNames: extraNames?.map(({ name }) => name),
         explicitParent: explicitParentTagId,
@@ -142,14 +142,27 @@ export const RegisterTagForm: React.FC<{ className?: string }> = ({
         resolveSemitags: resolveSemitags.map(({ semitagId }) => semitagId),
       });
 
-      if (data) {
+      if (error || !payload) {
+        toast.error(() => (
+          <span className={clsx(["text-slate-700"])}>
+            登録時に問題が発生しました
+          </span>
+        ));
+        return;
+      }
+
+      // TODO: Failedだったケース
+
+      if (payload.registerTag.__typename === "RegisterTagSuccessedPayload") {
+        const { name } = payload.registerTag.tag;
+        const link = getFragment(Link_TagFragmentDoc, payload.registerTag.tag);
         toast(() => (
           <div className={clsx(["text-slate-700"])}>
             <LinkTag
-              fragment={getFragment(Link_TagFragmentDoc, data.registerTag.tag)}
+              fragment={link}
               className={clsx(["font-bold"], ["text-blue-500"])}
             >
-              {data.registerTag.tag.name}
+              {name}
             </LinkTag>
             を登録しました．
           </div>

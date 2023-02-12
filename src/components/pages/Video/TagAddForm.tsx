@@ -28,10 +28,12 @@ graphql(`
 
   mutation VideoPage_AddTag($input: AddTagToVideoInput!) {
     addTagToVideo(input: $input) {
-      video {
-        id
-        ...VideoPage_TagsSection
-        ...VideoPage_SimilarVideosSection
+      ... on AddTagToVideoSuccessedPayload {
+        video {
+          id
+          ...VideoPage_TagsSection
+          ...VideoPage_SimilarVideosSection
+        }
       }
     }
   }

@@ -28,11 +28,13 @@ graphql(`
 
   mutation VideoPage_LikeButtonAddLike($videoId: ID!) {
     likeVideo(input: { videoId: $videoId }) {
-      registration {
-        id
-        mylist {
+      ... on LikeVideoSuccessedPayload {
+        registration {
           id
-          isIncludesVideo(id: $videoId)
+          mylist {
+            id
+            isIncludesVideo(id: $videoId)
+          }
         }
       }
     }
@@ -40,12 +42,14 @@ graphql(`
 
   mutation VideoPage_LikeButtonRemoveLike($videoId: ID!) {
     undoLikeVideo(input: { videoId: $videoId }) {
-      video {
-        id
-      }
-      mylist {
-        id
-        isIncludesVideo(id: $videoId)
+      ... on UndoLikeVideoSuccessedPayload {
+        video {
+          id
+        }
+        mylist {
+          id
+          isIncludesVideo(id: $videoId)
+        }
       }
     }
   }

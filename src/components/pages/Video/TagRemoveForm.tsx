@@ -21,10 +21,12 @@ graphql(`
 
   mutation VideoPage_UntagVideo($input: RemoveTagFromVideoInput!) {
     removeTagFromVideo(input: $input) {
-      video {
-        id
-        ...VideoPage_TagsSection
-        ...VideoPage_SimilarVideosSection
+      ... on RemoveTagFromVideoSuccessedPayload {
+        video {
+          id
+          ...VideoPage_TagsSection
+          ...VideoPage_SimilarVideosSection
+        }
       }
     }
   }
