@@ -11,8 +11,6 @@ import {
 } from "urql";
 
 import { GraphCacheConfig } from "~/gql/graphql";
-import { RestProvider } from "~/rest";
-
 export const handlers = [];
 
 if (
@@ -116,9 +114,5 @@ const urqlClient = createUrqlClient({
 });
 
 export default function Providers({ children }: { children: ReactNode }) {
-  return (
-    <RestProvider value={{ base: process.env.NEXT_PUBLIC_API_ENDPOINT }}>
-      <UrqlProvider value={urqlClient}>{children}</UrqlProvider>
-    </RestProvider>
-  );
+  return <UrqlProvider value={urqlClient}>{children}</UrqlProvider>;
 }

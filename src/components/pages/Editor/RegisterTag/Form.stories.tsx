@@ -18,7 +18,6 @@ import {
   RegisterTag_RegisterTagDocument,
   RegisterTag_SearchTagsDocument,
 } from "~/gql/graphql";
-import { RestProvider } from "~/rest";
 
 import { RegisterTagForm } from "./Form";
 
@@ -32,9 +31,7 @@ export default {
   render(args) {
     return (
       <UrqlProvider value={createUrqlClient({ url: "/graphql" })}>
-        <RestProvider value={{ base: window.location.origin }}>
-          <RegisterTagForm {...args} />
-        </RestProvider>
+        <RegisterTagForm {...args} />
       </UrqlProvider>
     );
   },

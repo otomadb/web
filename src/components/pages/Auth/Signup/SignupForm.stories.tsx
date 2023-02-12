@@ -8,7 +8,6 @@ import {
   SignupFailedMessage,
   SignupPage_SignupDocument,
 } from "~/gql/graphql";
-import { RestProvider } from "~/rest";
 
 import { SignupForm } from "./SignupForm";
 
@@ -20,11 +19,7 @@ export default {
     `,
   },
   render(args) {
-    return (
-      <RestProvider value={{ base: window.location.origin }}>
-        <SignupForm {...args} />
-      </RestProvider>
-    );
+    return <SignupForm {...args} />;
   },
 } as Meta<typeof SignupForm>;
 

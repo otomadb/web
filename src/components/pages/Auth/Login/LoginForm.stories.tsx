@@ -8,7 +8,6 @@ import {
   LoginPage_LoginDocument,
   SigninFailedMessage,
 } from "~/gql/graphql";
-import { RestProvider } from "~/rest";
 
 import { LoginForm } from "./LoginForm";
 
@@ -20,11 +19,7 @@ export default {
     `,
   },
   render(args) {
-    return (
-      <RestProvider value={{ base: window.location.origin }}>
-        <LoginForm {...args} />
-      </RestProvider>
-    );
+    return <LoginForm {...args} />;
   },
 } as Meta<typeof LoginForm>;
 
