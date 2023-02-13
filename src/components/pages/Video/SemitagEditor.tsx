@@ -35,10 +35,6 @@ graphql(`
       ... on ResolveSemitagSucceededPayload {
         semitag {
           id
-          video {
-            ...VideoPage_TagsSection
-            ...VideoPage_SemitagsSection
-          }
         }
       }
     }
