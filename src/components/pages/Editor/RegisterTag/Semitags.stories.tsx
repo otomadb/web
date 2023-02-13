@@ -8,7 +8,6 @@ import {
 } from "urql";
 
 import { aSemitag, RegisterTag_FindSemitagsDocument } from "~/gql/graphql";
-import { RestProvider } from "~/rest";
 
 import { Semitags } from "./Semitags";
 
@@ -25,9 +24,7 @@ export default {
   render(args) {
     return (
       <UrqlProvider value={createUrqlClient({ url: "/graphql" })}>
-        <RestProvider value={{ base: window.location.origin }}>
-          <Semitags {...args} />
-        </RestProvider>
+        <Semitags {...args} />
       </UrqlProvider>
     );
   },

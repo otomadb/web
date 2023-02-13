@@ -24,7 +24,6 @@ import {
   RegisterNicovideoPage_SearchTagsDocument,
   UseViewerDocument,
 } from "~/gql/graphql";
-import { RestProvider } from "~/rest";
 
 import { RegisterNicovideoForm } from "./Form";
 
@@ -185,9 +184,7 @@ export default {
           requestPolicy: "network-only",
         })}
       >
-        <RestProvider value={{ base: window.location.origin }}>
-          <RegisterNicovideoForm {...args} />
-        </RestProvider>
+        <RegisterNicovideoForm {...args} />
       </UrqlProvider>
     );
   },

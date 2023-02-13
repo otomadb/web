@@ -10,6 +10,7 @@ export default async function Head({ params }: { params: { serial: string } }) {
       query VideoPage_Title($serial: Int!) {
         findVideo(input: { serial: $serial }) {
           title
+          serial
         }
       }
     `),
@@ -21,7 +22,17 @@ export default async function Head({ params }: { params: { serial: string } }) {
   return (
     <>
       <CommonHead />
-      <title>{`${video.title} - 動画 - Otomad Database`}</title>
+      <title>{`${video.title} - otomadb`}</title>
+      <meta property="og:title" content={video.title} />
+      <meta
+        property="og:image"
+        content={`https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/og/video?serial=${video.serial}`}
+      />
+      <meta
+        property="og:url"
+        content={`https://${process.env.NEXT_PUBLIC_VERCEL_URL}/video/${video.serial}`}
+      />
+      <meta property="twitter:card" content="summary_large_image" />
     </>
   );
 }

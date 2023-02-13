@@ -42,5 +42,11 @@ module.exports = {
       parser: "@typescript-eslint/parser",
       rules: {},
     },
+    {
+      files: ["**/api/og/*.tsx"],
+      rules: {
+        "@next/next/no-img-element": 0,
+      },
+    },
   ],
 };
