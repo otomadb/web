@@ -857,8 +857,9 @@ input UndoLikeVideoInput {
 union UndoLikeVideoPayload = UndoLikeVideoFailedPayload | UndoLikeVideoSucceededPayload
 
 type UndoLikeVideoSucceededPayload {
-  mylist: Mylist!
-  video: Video!
+  mylist: Mylist! @deprecated
+  registration: MylistRegistration!
+  video: Video! @deprecated
 }
 
 type User implements Node {
@@ -889,6 +890,7 @@ type Video implements Node {
   events(input: VideoEventsInput!): VideoEventsConnection!
   hasTag(id: ID!): Boolean!
   id: ID!
+  isLiked: Boolean!
   nicovideoSources: [NicovideoVideoSource!]!
   registeredAt: DateTime!
   semitags(resolved: Boolean): [Semitag!]!

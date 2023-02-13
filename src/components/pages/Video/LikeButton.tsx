@@ -8,21 +8,24 @@ import clsx from "clsx";
 import React, { useCallback, useMemo } from "react";
 import { useMutation, useQuery } from "urql";
 
-import { graphql } from "~/gql";
+import { getFragment, graphql } from "~/gql";
 import {
   VideoPage_LikeButtonAddLikeDocument,
   VideoPage_LikeButtonCurrentLikeDocument,
+  VideoPage_LikeButtonFragmentDoc,
   VideoPage_LikeButtonRemoveLikeDocument,
 } from "~/gql/graphql";
+import { useIsLogin } from "~/hooks/useIsLogin";
 
 graphql(`
+  fragment VideoPage_LikeButton on Video {
+    id
+    isLiked
+  }
+
   query VideoPage_LikeButtonCurrentLike($videoId: ID!) {
-    whoami {
-      id
-      likes {
-        id
-        isIncludesVideo(id: $videoId)
-      }
+    video(id: $videoId) {
+      ...VideoPage_LikeButton
     }
   }
 
@@ -31,9 +34,8 @@ graphql(`
       ... on LikeVideoSucceededPayload {
         registration {
           id
-          mylist {
-            id
-            isIncludesVideo(id: $videoId)
+          video {
+            ...VideoPage_LikeButton
           }
         }
       }
@@ -43,12 +45,11 @@ graphql(`
   mutation VideoPage_LikeButtonRemoveLike($videoId: ID!) {
     undoLikeVideo(input: { videoId: $videoId }) {
       ... on UndoLikeVideoSucceededPayload {
-        video {
+        registration {
           id
-        }
-        mylist {
-          id
-          isIncludesVideo(id: $videoId)
+          video {
+            ...VideoPage_LikeButton
+          }
         }
       }
     }
@@ -59,15 +60,19 @@ export const LikeButton: React.FC<{ className?: string; videoId: string }> = ({
   className,
   videoId,
 }) => {
+  const isLogin = useIsLogin();
   const [currentResult] = useQuery({
     query: VideoPage_LikeButtonCurrentLikeDocument,
+    pause: !isLogin,
     variables: { videoId },
   });
 
   const liked = useMemo(() => {
-    const { data } = currentResult;
-    if (!data?.whoami?.likes) return undefined;
-    return data.whoami.likes.isIncludesVideo;
+    const l = getFragment(
+      VideoPage_LikeButtonFragmentDoc,
+      currentResult.data?.video
+    );
+    return l?.isLiked;
   }, [currentResult]);
 
   const [, triggerAddLike] = useMutation(VideoPage_LikeButtonAddLikeDocument);
