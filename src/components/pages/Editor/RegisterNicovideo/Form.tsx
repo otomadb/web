@@ -86,6 +86,7 @@ export const RegisterNicovideoForm: React.FC<{ className?: string }> = ({
   const [sourceId, setSourceId] = useState<string>();
   const [{ data, fetching }] = useQuery({
     query: RegisterNicovideoPage_FetchNicovideoDocument,
+    pause: !sourceId,
     variables: sourceId ? { sourceId } : undefined,
   });
   const source = useMemo(() => {
