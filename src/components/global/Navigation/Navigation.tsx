@@ -27,16 +27,28 @@ export const GlobalNavigation: React.FC<{ className?: string }> = ({
           ["mx-auto"],
           ["px-4"],
           ["flex", ["items-center"], ["justify-between"]],
-          ["gap-x-8"]
+          ["gap-x-0", "md:gap-x-2"]
         )}
       >
-        <div className={clsx(["flex-shrink-0"], ["flex", ["justify-start"]])}>
+        <div
+          className={clsx(
+            ["hidden", ["md:flex", ["justify-center"]]],
+            ["w-32"],
+            ["flex-shrink-0"]
+          )}
+        >
           <LinkTop className={clsx(["text-white"])}>otomadb</LinkTop>
         </div>
-        <div className={clsx(["flex-grow"], ["max-w-[640px]"])}>
+        <div className={clsx(["flex-grow"])}>
           <SearchBox className={clsx(["mx-auto"])} />
         </div>
-        <div className={clsx(["flex-shrink-0"], ["flex", ["justify-end"]])}>
+        <div
+          className={clsx(
+            ["w-32"],
+            ["flex-shrink-0"],
+            ["flex", ["justify-center"]]
+          )}
+        >
           <Profile />
         </div>
       </div>
