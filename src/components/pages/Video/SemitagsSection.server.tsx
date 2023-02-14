@@ -4,11 +4,10 @@ import clsx from "clsx";
 import React from "react";
 
 import { getFragment, graphql } from "~/gql";
-import {
-  VideoPage_SemitagSection_SemitagFragment,
-  VideoPage_SemitagSection_SemitagFragmentDoc,
-} from "~/gql/graphql";
+import { VideoPage_SemitagFragmentDoc } from "~/gql/graphql";
 import { gqlRequest } from "~/utils/gqlRequest";
+
+import { Semitag } from "./Semitag";
 
 export async function SemitagsSection({
   className,
@@ -23,7 +22,7 @@ export async function SemitagsSection({
         video(id: $id) {
           semitags {
             id
-            ...VideoPage_SemitagSection_Semitag
+            ...VideoPage_Semitag
           }
         }
       }
@@ -42,44 +41,10 @@ export async function SemitagsSection({
         {video.semitags.map((semitag) => (
           <Semitag
             key={semitag.id}
-            fragment={getFragment(
-              VideoPage_SemitagSection_SemitagFragmentDoc,
-              semitag
-            )}
+            fragment={getFragment(VideoPage_SemitagFragmentDoc, semitag)}
           />
         ))}
       </div>
     </section>
   );
 }
-
-graphql(`
-  fragment VideoPage_SemitagSection_Semitag on Semitag {
-    id
-    name
-  }
-`);
-export const Semitag: React.FC<{
-  className?: string;
-  fragment: VideoPage_SemitagSection_SemitagFragment;
-}> = ({ className, fragment }) => {
-  return (
-    <div
-      className={clsx(className, ["flex", "items-center", "justify-between"])}
-    >
-      <div
-        className={clsx(
-          ["bg-white"],
-          ["border", "border-gray-200"],
-          ["shadow-sm"],
-          ["rounded"],
-          ["px-2", "py-0.5"],
-          ["text-slate-700"],
-          ["text-xs"]
-        )}
-      >
-        {fragment.name}
-      </div>
-    </div>
-  );
-};

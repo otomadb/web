@@ -89,6 +89,15 @@ type CreateMylistPayload {
 
 scalar DateTime
 
+interface Event implements Node {
+  createdAt: DateTime!
+  id: ID!
+
+  """createdAtでのソートが不可能なので，別のEvent同士を混合してソートする際に必要．"""
+  series: String!
+  user: User!
+}
+
 input FetchNicovideoInput {
   """ニコニコ動画の動画ID（sm2057168など）"""
   sourceId: String!
@@ -389,16 +398,18 @@ type NicovideoVideoSource implements Node & VideoSource {
   video: Video!
 }
 
-type NicovideoVideoSourceCreateEvent implements NicovideoVideoSourceEvent & Node {
+type NicovideoVideoSourceCreateEvent implements Event & NicovideoVideoSourceEvent & Node {
   createdAt: DateTime!
   id: ID!
+  series: String!
   source: NicovideoVideoSource!
   user: User!
 }
 
-interface NicovideoVideoSourceEvent implements Node {
+interface NicovideoVideoSourceEvent implements Event & Node {
   createdAt: DateTime!
   id: ID!
+  series: String!
   source: NicovideoVideoSource!
   user: User!
 }
@@ -476,6 +487,7 @@ type Query {
 
 enum RegisterTagFailedMessage {
   FORBIDDEN
+  INVALID_SEMITAG_ID
   INVALID_TAG_ID
   UNKNOWN
 }
@@ -588,12 +600,30 @@ type RemoveTagFromVideoSucceededPayload {
   video: Video!
 }
 
+enum RemoveVideoFromMylistFailedMessage {
+  ALREADY_UNREGISTERED
+  FORBIDDEN
+  INVALID_MYLIST_ID
+  INVALID_VIDEO_ID
+  MYLIST_NOT_FOUND
+  NOT_REGISTERED
+  UNKNOWN
+  VIDEO_NOT_FOUND
+  WRONG_MYLIST_HOLDER
+}
+
+type RemoveVideoFromMylistFailedPayload {
+  message: RemoveVideoFromMylistFailedMessage!
+}
+
 input RemoveVideoFromMylistInput {
   mylistId: ID!
   videoId: ID!
 }
 
-type RemoveVideoFromMylistPayload {
+union RemoveVideoFromMylistPayload = RemoveVideoFromMylistFailedPayload | RemoveVideoFromMylistSucceededPayload
+
+type RemoveVideoFromMylistSucceededPayload {
   mylist: Mylist!
   video: Video!
 }
@@ -658,29 +688,35 @@ type SearchVideosPayload {
 }
 
 type Semitag implements Node {
+  check: SemitagCheck
+  checked: Boolean!
   events(input: SemitagEventsInput!): SemitagEventConnection!
   id: ID!
   name: String!
-  resolved: Boolean!
-  resolvedTag: Tag
+  resolved: Boolean! @deprecated
+  resolvedTag: Tag @deprecated
   video: Video!
 }
+
+type SemitagAttachEvent implements Event & Node & SemitagEvent {
+  createdAt: DateTime!
+  id: ID!
+  semitag: Semitag!
+  series: String!
+  user: User!
+}
+
+union SemitagCheck = SemitagRejecting | SemitagResolving
 
 type SemitagConnection {
   nodes: [Semitag!]!
 }
 
-interface SemitagEvent {
+interface SemitagEvent implements Event & Node {
   createdAt: DateTime!
   id: ID!
   semitag: Semitag!
-  user: User!
-}
-
-type SemitagEventAttachEvent implements Node & SemitagEvent {
-  createdAt: DateTime!
-  id: ID!
-  semitag: Semitag!
+  series: String!
   user: User!
 }
 
@@ -688,23 +724,34 @@ type SemitagEventConnection {
   nodes: [SemitagEvent!]!
 }
 
-type SemitagEventRejectEvent implements Node & SemitagEvent {
-  createdAt: DateTime!
-  id: ID!
-  semitag: Semitag!
-  user: User!
-}
-
-type SemitagEventResolveEvent implements Node & SemitagEvent {
-  createdAt: DateTime!
-  id: ID!
-  semitag: Semitag!
-  user: User!
-}
-
 input SemitagEventsInput {
   limit: Int! = 10
   skip: Int! = 0
+}
+
+type SemitagRejectEvent implements Event & Node & SemitagEvent {
+  createdAt: DateTime!
+  id: ID!
+  semitag: Semitag!
+  series: String!
+  user: User!
+}
+
+type SemitagRejecting {
+  note: String
+}
+
+type SemitagResolveEvent implements Event & Node & SemitagEvent {
+  createdAt: DateTime!
+  id: ID!
+  semitag: Semitag!
+  series: String!
+  user: User!
+}
+
+type SemitagResolving {
+  note: String
+  resolvedTo: VideoTag!
 }
 
 type Session {
@@ -801,6 +848,7 @@ type Tag implements Node {
     """動画のID"""
     videoId: ID!
   ): Boolean!
+  events(input: TagEventsInput!): TagEventsConnection!
   explicitParent: Tag
   id: ID!
   meaningless: Boolean!
@@ -810,32 +858,134 @@ type Tag implements Node {
   pseudoType: PseudoTagType!
   serial: Int!
   taggedVideos: [Video!]!
-  type: TagType! @deprecated
 }
 
 type TagConnection {
   nodes: [Tag!]!
 }
 
+interface TagEvent implements Event & Node {
+  createdAt: DateTime!
+  id: ID!
+  series: String!
+  tag: Tag!
+  user: User!
+}
+
+type TagEventsConnection {
+  nodes: [TagEvent!]!
+}
+
+input TagEventsInput {
+  limit: Int! = 10
+  skip: Int! = 0
+}
+
 type TagName {
+  events(input: TagNameEventsInput!): TagNameEventConnection!
+  id: ID!
   name: String!
   primary: Boolean!
 }
 
-type TagParent {
-  explicit: Boolean!
-  tag: Tag!
+type TagNameCreateEvent implements Event & Node & TagNameEvent {
+  createdAt: DateTime!
+  id: ID!
+  series: String!
+  tagName: TagName!
+  user: User!
 }
 
-enum TagType {
-  CLASS
-  COPYRIGHT
-  EVENT
-  IMAGE
-  MATERIAL
-  MUSIC
-  SERIES
-  TACTICS
+interface TagNameEvent implements Event & Node {
+  createdAt: DateTime!
+  id: ID!
+  series: String!
+  tagName: TagName!
+  user: User!
+}
+
+type TagNameEventConnection {
+  nodes: [TagNameEvent!]!
+}
+
+input TagNameEventsInput {
+  limit: Int
+  skip: Int! = 0
+}
+
+type TagNameSetPrimaryEvent implements Event & Node & TagNameEvent {
+  createdAt: DateTime!
+  id: ID!
+  series: String!
+  tagName: TagName!
+  user: User!
+}
+
+type TagNameUnsetPrimaryEvent implements Event & Node & TagNameEvent {
+  createdAt: DateTime!
+  id: ID!
+  series: String!
+  tagName: TagName!
+  user: User!
+}
+
+type TagParent {
+  child: Tag!
+  events(input: TagParentEventsInput!): TagParentEventConnection!
+  explicit: Boolean!
+  id: ID!
+  name: String!
+  parent: Tag!
+}
+
+type TagParentCreateEvent implements Event & Node & TagParentEvent {
+  createdAt: DateTime!
+  id: ID!
+  series: String!
+  tagParent: TagParent!
+  user: User!
+}
+
+interface TagParentEvent implements Event & Node {
+  createdAt: DateTime!
+  id: ID!
+  series: String!
+  tagParent: TagParent!
+  user: User!
+}
+
+type TagParentEventConnection {
+  nodes: [TagParentEvent!]!
+}
+
+input TagParentEventsInput {
+  limit: Int
+  skip: Int! = 0
+}
+
+type TagParentSetPrimaryEvent implements Event & Node & TagParentEvent {
+  createdAt: DateTime!
+  id: ID!
+  series: String!
+  tagParent: TagParent!
+  user: User!
+}
+
+type TagParentUnsetPrimaryEvent implements Event & Node & TagParentEvent {
+  createdAt: DateTime!
+  id: ID!
+  series: String!
+  tagParent: TagParent!
+  user: User!
+}
+
+"""Tagを追加した際に発生．（初回のみ）"""
+type TagRegisterEvent implements Event & Node & TagEvent {
+  createdAt: DateTime!
+  id: ID!
+  series: String!
+  tag: Tag!
+  user: User!
 }
 
 enum UndoLikeVideoFailedMessage {
@@ -893,7 +1043,7 @@ type Video implements Node {
   isLiked: Boolean!
   nicovideoSources: [NicovideoVideoSource!]!
   registeredAt: DateTime!
-  semitags(resolved: Boolean): [Semitag!]!
+  semitags(checked: Boolean): [Semitag!]!
   serial: Int!
   similarVideos(input: VideoSimilarVideosInput!): VideoSimilarVideosPayload!
   tags(input: VideoTagsInput!): [VideoTag!]!
@@ -907,9 +1057,10 @@ type VideoConnection {
   nodes: [Video!]!
 }
 
-interface VideoEvent {
+interface VideoEvent implements Event & Node {
   createdAt: DateTime!
   id: ID!
+  series: String!
   user: User!
   video: Video!
 }
@@ -924,9 +1075,10 @@ input VideoEventsInput {
 }
 
 """Videoを追加した際に発生．（初回のみ）"""
-type VideoRegisterEvent implements VideoEvent {
+type VideoRegisterEvent implements Event & Node & VideoEvent {
   createdAt: DateTime!
   id: ID!
+  series: String!
   user: User!
   video: Video!
 }
@@ -959,23 +1111,26 @@ type VideoTag {
   video: Video!
 }
 
-type VideoTagAttachEvent implements Node & VideoTagEvent {
+type VideoTagAttachEvent implements Event & Node & VideoTagEvent {
   createdAt: DateTime!
   id: ID!
+  series: String!
   user: User!
   videoTag: VideoTag!
 }
 
-type VideoTagDetachEvent implements Node & VideoTagEvent {
+type VideoTagDetachEvent implements Event & Node & VideoTagEvent {
   createdAt: DateTime!
   id: ID!
+  series: String!
   user: User!
   videoTag: VideoTag!
 }
 
-interface VideoTagEvent implements Node {
+interface VideoTagEvent implements Event & Node {
   createdAt: DateTime!
   id: ID!
+  series: String!
   user: User!
   videoTag: VideoTag!
 }
@@ -989,9 +1144,10 @@ input VideoTagEventsInput {
   skip: Int! = 0
 }
 
-type VideoTagReattachEvent implements Node & VideoTagEvent {
+type VideoTagReattachEvent implements Event & Node & VideoTagEvent {
   createdAt: DateTime!
   id: ID!
+  series: String!
   user: User!
   videoTag: VideoTag!
 }
@@ -1016,16 +1172,18 @@ type VideoThumbnail {
   video: Video!
 }
 
-type VideoThumbnailCreateEvent implements Node & VideoThumbnailEvent {
+type VideoThumbnailCreateEvent implements Event & Node & VideoThumbnailEvent {
   createdAt: DateTime!
   id: ID!
+  series: String!
   user: User!
   videoThumbnail: VideoThumbnail!
 }
 
-interface VideoThumbnailEvent implements Node {
+interface VideoThumbnailEvent implements Event & Node {
   createdAt: DateTime!
   id: ID!
+  series: String!
   user: User!
   videoThumbnail: VideoThumbnail!
 }
@@ -1039,16 +1197,18 @@ input VideoThumbnailEventsInput {
   skip: Int! = 0
 }
 
-type VideoThumbnailSetPrimaryEvent implements Node & VideoThumbnailEvent {
+type VideoThumbnailSetPrimaryEvent implements Event & Node & VideoThumbnailEvent {
   createdAt: DateTime!
   id: ID!
+  series: String!
   user: User!
   videoThumbnail: VideoThumbnail!
 }
 
-type VideoThumbnailUnsetPrimaryEvent implements Node & VideoThumbnailEvent {
+type VideoThumbnailUnsetPrimaryEvent implements Event & Node & VideoThumbnailEvent {
   createdAt: DateTime!
   id: ID!
+  series: String!
   user: User!
   videoThumbnail: VideoThumbnail!
 }
@@ -1061,16 +1221,18 @@ type VideoTitle {
   video: Video!
 }
 
-type VideoTitleCreateEvent implements Node & VideoTitleEvent {
+type VideoTitleCreateEvent implements Event & Node & VideoTitleEvent {
   createdAt: DateTime!
   id: ID!
+  series: String!
   user: User!
   videoTitle: VideoTitle!
 }
 
-interface VideoTitleEvent implements Node {
+interface VideoTitleEvent implements Event & Node {
   createdAt: DateTime!
   id: ID!
+  series: String!
   user: User!
   videoTitle: VideoTitle!
 }
@@ -1084,16 +1246,18 @@ input VideoTitleEventsInput {
   skip: Int! = 0
 }
 
-type VideoTitleSetPrimaryEvent implements Node & VideoTitleEvent {
+type VideoTitleSetPrimaryEvent implements Event & Node & VideoTitleEvent {
   createdAt: DateTime!
   id: ID!
+  series: String!
   user: User!
   videoTitle: VideoTitle!
 }
 
-type VideoTitleUnsetPrimaryEvent implements Node & VideoTitleEvent {
+type VideoTitleUnsetPrimaryEvent implements Event & Node & VideoTitleEvent {
   createdAt: DateTime!
   id: ID!
+  series: String!
   user: User!
   videoTitle: VideoTitle!
 }
