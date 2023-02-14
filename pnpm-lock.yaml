@@ -38,7 +38,7 @@ specifiers:
   eslint-plugin-simple-import-sort: 10.0.0
   eslint-plugin-storybook: ^0.6.8
   eslint-plugin-unused-imports: 2.0.0
-  graphql-codegen-typescript-mock-data: ^2.7.0
+  graphql-codegen-typescript-mock-data: ^3.0.0
   graphql-request: ^5.1.0
   jdenticon: ^3.2.0
   ky: ^0.33.1
@@ -117,7 +117,7 @@ devDependencies:
   eslint-plugin-simple-import-sort: 10.0.0_eslint@8.34.0
   eslint-plugin-storybook: 0.6.8_7kw3g6rralp5ps6mg3uyzz6azm
   eslint-plugin-unused-imports: 2.0.0_gkco22zgd55gec2acmpkwqj7pq
-  graphql-codegen-typescript-mock-data: 2.7.0_graphql@16.6.0
+  graphql-codegen-typescript-mock-data: 3.2.2_graphql@16.6.0
   msw: 0.49.2_4seyezkurar7apews3ddebtkri
   msw-storybook-addon: 1.6.3_hqjmemrlubrdinu76juhfilxoe
   npm-run-all: 4.1.5
@@ -8154,8 +8154,8 @@ packages:
     resolution: {integrity: sha512-bzh50DW9kTPM00T8y4o8vQg89Di9oLJVLW/KaOGIXJWP/iqCN6WKYkbNOF04vFLJhwcpYUh9ydh/+5vpOqV4YQ==}
     dev: true
 
-  /graphql-codegen-typescript-mock-data/2.7.0_graphql@16.6.0:
-    resolution: {integrity: sha512-9qUerzAex0Jvv4hFV2Le0LxztfPzcp9AjLb5NMnwYFCVi0Xs8OCZlJ1JDZUn4tEAB+k+vfLc/QPQ4Lj10oZZtQ==}
+  /graphql-codegen-typescript-mock-data/3.2.2_graphql@16.6.0:
+    resolution: {integrity: sha512-UoUs2hd7VHrewpS9FxFA+lHr9PyRMQ2ezvyAAG/gwDCEirEx+9vt3QNsg0rE3wxjDElEg4tv9npaLv5gof+2Gw==}
     peerDependencies:
       graphql: ^14.6.0 || ^15.0.0 || ^16.0.0
     dependencies:
@@ -8182,7 +8182,7 @@ packages:
       '@graphql-tools/load': 7.8.0_graphql@16.6.0
       '@graphql-tools/merge': 8.3.14_graphql@16.6.0
       '@graphql-tools/url-loader': 7.16.28_rygnzgav3d3b45uqjwv64gyqdi
-      '@graphql-tools/utils': 8.12.0_graphql@16.6.0
+      '@graphql-tools/utils': 8.13.1_graphql@16.6.0
       cosmiconfig: 7.0.1
       cosmiconfig-toml-loader: 1.0.0
       cosmiconfig-typescript-loader: 4.3.0_jcay4b76qixzqyhlcxbuxrf5ci
