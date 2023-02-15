@@ -14,7 +14,7 @@ import { Semitag } from "./Semitag";
 graphql(`
   fragment VideoPage_SemitagsSection on Video {
     id
-    semitags {
+    semitags(checked: false) {
       id
       ...VideoPage_Semitag
     }
