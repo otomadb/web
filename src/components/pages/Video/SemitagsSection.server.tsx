@@ -6,13 +6,11 @@ import React from "react";
 import { getFragment, graphql } from "~/gql";
 import {
   VideoPage_SemitagFragmentDoc,
-  VideoPage_SemitagsSectionDocument,
-  VideoPage_SemitagsSectionFragment,
   VideoPage_SemitagsSectionFragmentDoc,
 } from "~/gql/graphql";
+import { gqlRequest } from "~/utils/gqlRequest";
 
 import { Semitag } from "./Semitag";
-import { gqlRequest } from "~/utils/gqlRequest";
 
 graphql(`
   fragment VideoPage_SemitagsSection on Video {

@@ -6,11 +6,7 @@ import { DetailsSection } from "~/components/pages/Video/DetailsSection.server";
 import { SemitagsSection } from "~/components/pages/Video/SemitagsSection.server";
 import { TagsSection } from "~/components/pages/Video/TagsSection.server";
 import { getFragment, graphql } from "~/gql";
-import {
-  VideoPage_DetailsSectionFragmentDoc,
-  VideoPage_SemitagsSectionFragmentDoc,
-  VideoPage_TagsSectionFragmentDoc,
-} from "~/gql/graphql";
+import { VideoPage_DetailsSectionFragmentDoc } from "~/gql/graphql";
 import { gqlRequest } from "~/utils/gqlRequest";
 
 export default async function Page({
