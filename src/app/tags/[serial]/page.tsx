@@ -16,7 +16,8 @@ export async function generateStaticParams() {
           }
         }
       }
-    `)
+    `),
+    {}
   );
   return findTags.nodes.map(({ serial }) => ({ serial: serial.toString() }));
 }

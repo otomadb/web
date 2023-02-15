@@ -40,7 +40,8 @@ export const SimilarVideosSection = async ({
         }
       }
     `),
-    { id: videoId }
+    { id: videoId },
+    { next: { revalidate: 0 } }
   );
 
   const videos = getFragment(

@@ -13,9 +13,6 @@ import {
 } from "~/gql/graphql";
 import { gqlRequest } from "~/utils/gqlRequest";
 
-export const revalidate = 0;
-
-/*
 export async function generateStaticParams() {
   const { findVideos } = await gqlRequest(
     graphql(`
@@ -27,13 +24,13 @@ export async function generateStaticParams() {
           }
         }
       }
-    `)
+    `),
+    {}
   );
   return findVideos.nodes.map(({ serial }) => ({
     serial: serial.toString(),
   }));
 }
-*/
 
 export default async function Page({ params }: { params: { serial: string } }) {
   const { findVideo: video } = await gqlRequest(

@@ -6,10 +6,13 @@ import React from "react";
 import { getFragment, graphql } from "~/gql";
 import {
   VideoPage_SemitagFragmentDoc,
+  VideoPage_SemitagsSectionDocument,
   VideoPage_SemitagsSectionFragment,
+  VideoPage_SemitagsSectionFragmentDoc,
 } from "~/gql/graphql";
 
 import { Semitag } from "./Semitag";
+import { gqlRequest } from "~/utils/gqlRequest";
 
 graphql(`
   fragment VideoPage_SemitagsSection on Video {
@@ -21,10 +24,25 @@ graphql(`
   }
 `);
 
-export const SemitagsSection: React.FC<{
+export const SemitagsSection = async ({
+  className,
+  videoId,
+}: {
   className?: string;
-  fragment: VideoPage_SemitagsSectionFragment;
-}> = ({ className, fragment }) => {
+  videoId: string;
+}) => {
+  const { video } = await gqlRequest(
+    graphql(`
+      query VideoPage_SemitagsSection($id: ID!) {
+        video(id: $id) {
+          ...VideoPage_SemitagsSection
+        }
+      }
+    `),
+    { id: videoId },
+    { next: { revalidate: 0 } }
+  );
+
   return (
     <section className={clsx(className)}>
       <div className={clsx(["flex"], ["items-center"])}>
@@ -33,12 +51,14 @@ export const SemitagsSection: React.FC<{
         </h2>
       </div>
       <div className={clsx(["mt-2"], ["flex", "flex-col", "items-start"])}>
-        {fragment.semitags.map((semitag) => (
-          <Semitag
-            key={semitag.id}
-            fragment={getFragment(VideoPage_SemitagFragmentDoc, semitag)}
-          />
-        ))}
+        {getFragment(VideoPage_SemitagsSectionFragmentDoc, video).semitags.map(
+          (semitag) => (
+            <Semitag
+              key={semitag.id}
+              fragment={getFragment(VideoPage_SemitagFragmentDoc, semitag)}
+            />
+          )
+        )}
       </div>
     </section>
   );

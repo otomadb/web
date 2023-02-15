@@ -7,10 +7,11 @@ import { Tag } from "~/components/common/Tag";
 import { getFragment, graphql } from "~/gql";
 import {
   Component_TagFragmentDoc,
-  VideoPage_TagsSectionFragment,
+  VideoPage_TagsSectionFragmentDoc,
   VideoPage_TagTypesListFragment,
   VideoPage_TagTypesListFragmentDoc,
 } from "~/gql/graphql";
+import { gqlRequest } from "~/utils/gqlRequest";
 import { styleByTagType } from "~/utils/styleByTagType";
 
 graphql(`
@@ -27,10 +28,30 @@ graphql(`
     }
   }
 `);
-export const TagsSection: React.FC<{
+export const TagsSection = async ({
+  className,
+  videoId,
+}: {
   className?: string;
-  fragment: VideoPage_TagsSectionFragment;
-}> = ({ className, fragment }) => {
+  videoId: string;
+}) => {
+  const { video } = await gqlRequest(
+    graphql(`
+      query VideoPage_TagsSection($id: ID!) {
+        video(id: $id) {
+          ...VideoPage_TagsSection
+        }
+      }
+    `),
+    { id: videoId },
+    { next: { revalidate: 0 } }
+  );
+
+  const taggings = getFragment(
+    VideoPage_TagsSectionFragmentDoc,
+    video
+  ).taggings;
+
   return (
     <section className={clsx(className)}>
       <div className={clsx(["flex"], ["items-center"])}>
@@ -39,13 +60,10 @@ export const TagsSection: React.FC<{
         </h2>
       </div>
       <TagTypesList
-        fragment={getFragment(
-          VideoPage_TagTypesListFragmentDoc,
-          fragment.taggings
-        )}
+        fragment={getFragment(VideoPage_TagTypesListFragmentDoc, taggings)}
       />
       <div className={clsx(["mt-2"], ["flex", "flex-col", "items-start"])}>
-        {fragment.taggings.nodes.map((tagging) => (
+        {taggings.nodes.map((tagging) => (
           <Tag
             key={tagging.tag.id}
             tag={getFragment(Component_TagFragmentDoc, tagging.tag)}

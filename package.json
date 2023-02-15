@@ -31,6 +31,7 @@
     "client-only": "^0.0.1",
     "clsx": "^1.2.1",
     "date-fns": "^2.29.3",
+    "graphql": "^16.6.0",
     "graphql-request": "^5.1.0",
     "jdenticon": "^3.2.0",
     "ky": "^0.33.1",

@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 
 import { DetailsSection } from "~/components/pages/Video/DetailsSection.server";
 import { SemitagsSection } from "~/components/pages/Video/SemitagsSection.server";
@@ -24,8 +25,6 @@ export default async function Page({
       query VideoPage_Layout($serial: Int!) {
         findVideo(input: { serial: $serial }) {
           id
-          ...VideoPage_TagsSection
-          ...VideoPage_SemitagsSection
           ...VideoPage_DetailsSection
         }
       }
@@ -45,12 +44,14 @@ export default async function Page({
           ["space-y-4"]
         )}
       >
-        <TagsSection
-          fragment={getFragment(VideoPage_TagsSectionFragmentDoc, video)}
-        />
-        <SemitagsSection
-          fragment={getFragment(VideoPage_SemitagsSectionFragmentDoc, video)}
-        />
+        <Suspense>
+          {/* @ts-expect-error Server Component*/}
+          <TagsSection videoId={video.id} />
+        </Suspense>
+        <Suspense>
+          {/* @ts-expect-error Server Component*/}
+          <SemitagsSection videoId={video.id} />
+        </Suspense>
       </div>
       <div className={clsx(["flex-grow"])}>
         <DetailsSection
