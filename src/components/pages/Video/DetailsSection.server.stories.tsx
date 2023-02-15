@@ -2,7 +2,7 @@ import { Meta, StoryObj } from "@storybook/react";
 
 import { aVideo } from "~/gql/graphql";
 
-import { DetailsSection } from "./DetailsSection";
+import { DetailsSection } from "./DetailsSection.server";
 
 export default {
   component: DetailsSection,
@@ -11,7 +11,7 @@ export default {
 
 export const Primary: StoryObj<typeof DetailsSection> = {
   args: {
-    fallback: aVideo({
+    fragment: aVideo({
       thumbnailUrl: "/storybook/960x540.jpg",
       title: "M.C.ドナルドはダンスに夢中なのか？最終鬼畜道化師ドナルド・Ｍ",
     }),

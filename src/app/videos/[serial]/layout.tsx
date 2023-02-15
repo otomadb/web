@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { notFound } from "next/navigation";
 
-import { DetailsSection } from "~/components/pages/Video/DetailsSection";
+import { DetailsSection } from "~/components/pages/Video/DetailsSection.server";
 import { SemitagsSection } from "~/components/pages/Video/SemitagsSection.server";
 import { TagsSection } from "~/components/pages/Video/TagsSection.server";
 import { getFragment, graphql } from "~/gql";
@@ -54,7 +54,7 @@ export default async function Page({
       </div>
       <div className={clsx(["flex-grow"])}>
         <DetailsSection
-          fallback={getFragment(VideoPage_DetailsSectionFragmentDoc, video)}
+          fragment={getFragment(VideoPage_DetailsSectionFragmentDoc, video)}
         />
         {children}
       </div>
