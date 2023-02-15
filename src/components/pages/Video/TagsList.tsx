@@ -13,11 +13,9 @@ import {
   VideoPage_TagsListFragment,
   VideoPage_TagsListItemFragment,
   VideoPage_TagsListItemFragmentDoc,
-  VideoPage_TagsTypesListFragmentDoc,
 } from "~/gql/graphql";
 
 import { RemoveTagForm } from "./TagRemoveForm";
-import { TagTypesList } from "./TagTypesList";
 
 graphql(`
   fragment VideoPage_TagsList on Video {
@@ -26,7 +24,6 @@ graphql(`
       id
       ...VideoPage_TagsListItem
     }
-    ...VideoPage_TagsTypesList
   }
 `);
 
@@ -35,8 +32,6 @@ export const TagsList: React.FC<{
   edit: boolean;
   fragment: VideoPage_TagsListFragment;
 }> = ({ className, fragment, edit }) => {
-  const tagtypes = getFragment(VideoPage_TagsTypesListFragmentDoc, fragment);
-
   const videoId = useMemo(() => fragment.id, [fragment]);
 
   const [radio, setRadio] = useState<string | undefined>(undefined);
@@ -47,7 +42,6 @@ export const TagsList: React.FC<{
 
   return (
     <div className={clsx(className, ["flex", "flex-col", "gap-y-2"])}>
-      <TagTypesList fragment={tagtypes} />
       <div
         className={clsx(
           ["flex", ["flex-row", "lg:flex-col"], ["flex-wrap"]],
