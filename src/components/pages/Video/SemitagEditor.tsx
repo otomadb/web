@@ -33,8 +33,10 @@ graphql(`
     resovleSemitag(input: $input) {
       __typename
       ... on ResolveSemitagSucceededPayload {
-        semitag {
-          id
+        resolving {
+          semitag {
+            id
+          }
         }
       }
     }
