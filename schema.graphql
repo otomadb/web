@@ -1048,7 +1048,8 @@ type Video implements Node {
   semitags(checked: Boolean): [Semitag!]!
   serial: Int!
   similarVideos(input: VideoSimilarVideosInput!): VideoSimilarVideosPayload!
-  tags(input: VideoTagsInput!): [VideoTag!]!
+  taggings(input: VideoTaggingsInput!): VideoTagConnection!
+  tags(input: VideoTagsInput!): [VideoTag!]! @deprecated
   thumbnailUrl: String!
   thumbnails: [VideoThumbnail!]!
   title: String!
@@ -1121,6 +1122,10 @@ type VideoTagAttachEvent implements Event & Node & VideoTagEvent {
   videoTag: VideoTag!
 }
 
+type VideoTagConnection {
+  nodes: [VideoTag!]!
+}
+
 type VideoTagDetachEvent implements Event & Node & VideoTagEvent {
   createdAt: DateTime!
   id: ID!
@@ -1152,6 +1157,12 @@ type VideoTagReattachEvent implements Event & Node & VideoTagEvent {
   series: String!
   user: User!
   videoTag: VideoTag!
+}
+
+input VideoTaggingsInput {
+  """nullなら全てを取得する"""
+  limit: Int
+  skip: Int! = 0
 }
 
 input VideoTagsInput {
