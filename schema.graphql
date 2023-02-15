@@ -391,6 +391,7 @@ type NicovideoOriginalSourceTagSearchTagsPayload {
 }
 
 type NicovideoVideoSource implements Node & VideoSource {
+  embedUrl: String!
   events(input: NicovideoVideoSourceEventsInput!): NicovideoVideoSourceEventConnection!
   id: ID!
   sourceId: String!

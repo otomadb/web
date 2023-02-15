@@ -544,6 +544,7 @@ graphql(`
     ...VideoEventPage_EventTemplate
     source {
       sourceId
+      embedUrl
     }
   }
 `);
@@ -571,7 +572,7 @@ export const NicovideoVideoSourceCreateEvent: React.FC<{
         <iframe
           className={clsx(["mt-2"])}
           height="160"
-          src={`https://embed.nicovideo.jp/watch/${fragment.source.sourceId}`}
+          src={fragment.source.embedUrl}
         />
       </div>
     </EventTemplate>
