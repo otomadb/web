@@ -13,6 +13,25 @@ import {
 } from "~/gql/graphql";
 import { gqlRequest } from "~/utils/gqlRequest";
 
+export async function generateStaticParams() {
+  const { findVideos } = await gqlRequest(
+    graphql(`
+      query VideoEventsPage_Paths {
+        findVideos(input: { limit: 96, order: { updatedAt: DESC } }) {
+          nodes {
+            id
+            serial
+          }
+        }
+      }
+    `),
+    {}
+  );
+  return findVideos.nodes.map(({ serial }) => ({
+    serial: serial.toString(),
+  }));
+}
+
 export default async function Page({ params }: { params: { serial: string } }) {
   const { findVideo: video } = await gqlRequest(
     graphql(`
@@ -23,40 +42,28 @@ export default async function Page({ params }: { params: { serial: string } }) {
             ...VideoEventPage_VideoEvents
           }
           titles {
-            id
-            title
-            primary
             events(input: {}) {
               ...VideoEventPage_VideoTitleEvents
             }
           }
           thumbnails {
-            id
-            primary
             events(input: {}) {
               ...VideoEventPage_VideoThumbnailEvents
             }
           }
-          tags(input: {}) {
-            id
-            tag {
-              id
-              name
-            }
-            events(input: {}) {
-              ...VideoEventPage_VideoTagEvents
+          taggings(input: {}) {
+            nodes {
+              events(input: {}) {
+                ...VideoEventPage_VideoTagEvents
+              }
             }
           }
           semitags {
-            id
-            name
             events(input: {}) {
               ...VideoEventPage_SemitagEvents
             }
           }
           nicovideoSources {
-            id
-            sourceId
             events(input: {}) {
               ...VideoEventPage_NicovideoVideoSourceEvents
             }
@@ -70,7 +77,7 @@ export default async function Page({ params }: { params: { serial: string } }) {
   if (!video) return notFound();
 
   return (
-    <div className={clsx(["container", "max-w-screen-lg"], ["mx-auto"])}>
+    <>
       <section className={clsx(["flex", "flex-col"], ["gap-x-4"])}>
         <h2 className={clsx(["text-lg"])}>この動画に関する全ての変更</h2>
         <MixedEventLists
@@ -91,7 +98,7 @@ export default async function Page({ params }: { params: { serial: string } }) {
               title.events
             )
           )}
-          eventsTags={video.tags.map((tag) =>
+          eventsTags={video.taggings.nodes.map((tag) =>
             getFragment(VideoEventPage_VideoTagEventsFragmentDoc, tag.events)
           )}
           eventsSemitags={video.semitags.map((semitag) =>
@@ -105,6 +112,6 @@ export default async function Page({ params }: { params: { serial: string } }) {
           )}
         />
       </section>
-    </div>
+    </>
   );
 }

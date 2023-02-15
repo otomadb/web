@@ -4,9 +4,10 @@ import React from "react";
 import { toast } from "react-hot-toast";
 import { useMutation } from "urql";
 
-import { LinkVideo } from "~/components/common/Link";
-import { graphql } from "~/gql";
+import { LinkVideo } from "~/app/videos/[serial]/Link";
+import { getFragment, graphql } from "~/gql";
 import {
+  Link_VideoFragmentDoc,
   RegisterNicovideoPage_RegisterVideoDocument,
   RegisterVideoInputSourceType,
 } from "~/gql/graphql";
@@ -18,8 +19,8 @@ graphql(`
       ... on RegisterVideoSucceededPayload {
         video {
           id
-          serial
           title
+          ...Link_Video
         }
       }
     }
@@ -87,12 +88,16 @@ export const RegisterButton: React.FC<{
         if (
           payload.registerVideo.__typename === "RegisterVideoSucceededPayload"
         ) {
-          const { serial, title } = payload.registerVideo.video;
+          const { title } = payload.registerVideo.video;
+          const linkFragment = getFragment(
+            Link_VideoFragmentDoc,
+            payload.registerVideo.video
+          );
           toast(() => (
             <span className={clsx(["text-slate-700"])}>
               <LinkVideo
-                serial={serial}
                 className={clsx(["font-bold"], ["text-blue-500"])}
+                fragment={linkFragment}
               >
                 {title}
               </LinkVideo>

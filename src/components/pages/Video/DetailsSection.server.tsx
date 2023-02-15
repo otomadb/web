@@ -1,10 +1,7 @@
-"use client";
-
-import "client-only";
+import "server-only";
 
 import clsx from "clsx";
-import React, { useMemo } from "react";
-import { useQuery } from "urql";
+import React from "react";
 
 import { LinkVideoEvents } from "~/app/videos/[serial]/events/Link";
 import { Thumbnail } from "~/components/common/Thumbnail";
@@ -13,8 +10,6 @@ import {
   Component_ThumbnailFragmentDoc,
   Link_VideoEventsFragmentDoc,
   VideoPage_DetailsSectionFragment,
-  VideoPage_DetailsSectionFragmentDoc,
-  VideoPage_UpstreamDetailsSectionDocument,
 } from "~/gql/graphql";
 
 import { LikeButton } from "./LikeButton";
@@ -26,35 +21,16 @@ graphql(`
     ...Component_Thumbnail
     ...Link_VideoEvents
   }
-
-  query VideoPage_UpstreamDetailsSection($id: ID!) {
-    video(id: $id) {
-      id
-      ...VideoPage_DetailsSection
-    }
-  }
 `);
 
 export const DetailsSection: React.FC<{
   className?: string;
-  fallback: VideoPage_DetailsSectionFragment;
-}> = ({ className, fallback }) => {
-  const [{ data }] = useQuery({
-    query: VideoPage_UpstreamDetailsSectionDocument,
-    variables: { id: fallback.id },
-  });
-  const upstream = getFragment(
-    VideoPage_DetailsSectionFragmentDoc,
-    data?.video
-  );
-
-  const video = useMemo(() => fallback || upstream, [fallback, upstream]);
-  const { id: videoId, title } = video;
-
+  fragment: VideoPage_DetailsSectionFragment;
+}> = ({ className, fragment }) => {
   return (
     <section className={clsx(className, ["flex", ["flex-row"]], ["gap-x-8"])}>
       <Thumbnail
-        fragment={getFragment(Component_ThumbnailFragmentDoc, video)}
+        fragment={getFragment(Component_ThumbnailFragmentDoc, fragment)}
         className={clsx(["w-72"], ["h-48"], ["border", "border-slate-400"])}
         width={512}
         height={384}
@@ -67,11 +43,11 @@ export const DetailsSection: React.FC<{
             ["text-slate-900"]
           )}
         >
-          {title}
+          {fragment.title}
         </h1>
-        <LikeButton className={clsx(["mt-2"])} videoId={videoId} />
+        <LikeButton className={clsx(["mt-2"])} videoId={fragment.id} />
         <LinkVideoEvents
-          fragment={getFragment(Link_VideoEventsFragmentDoc, fallback)}
+          fragment={getFragment(Link_VideoEventsFragmentDoc, fragment)}
         >
           編集履歴を見る
         </LinkVideoEvents>

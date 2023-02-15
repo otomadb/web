@@ -1,10 +1,11 @@
 import clsx from "clsx";
 import React from "react";
 
-import { LinkVideo } from "~/components/common/Link";
+import { LinkVideo } from "~/app/videos/[serial]/Link";
 import { getFragment, graphql } from "~/gql";
 import {
   Component_ThumbnailFragmentDoc,
+  Link_VideoFragmentDoc,
   VideoList_VideoFragment,
 } from "~/gql/graphql";
 
@@ -13,9 +14,9 @@ import { Thumbnail } from "./Thumbnail";
 graphql(`
   fragment VideoList_Video on Video {
     id
-    serial
     title
     ...Component_Thumbnail
+    ...Link_Video
   }
 `);
 
@@ -58,12 +59,12 @@ export const VideoList: React.FC<{
                 height={192}
               />
               <LinkVideo
-                serial={video.serial}
                 className={clsx(
                   ["block"],
                   [["px-1"], ["py-1"]],
                   ["text-sm", "@[768px]/videolist:text-xs"]
                 )}
+                fragment={getFragment(Link_VideoFragmentDoc, video)}
               >
                 {video.title}
               </LinkVideo>

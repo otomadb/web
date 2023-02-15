@@ -1,4 +1,3 @@
-"use client";
 import { PseudoTagType } from "~/gql/graphql";
 
 export const styleByTagType = (

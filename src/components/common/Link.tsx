@@ -5,7 +5,7 @@ import { graphql } from "~/gql";
 import { Link_TagFragment } from "~/gql/graphql";
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-type LinkProps<T = {}> = Omit<ComponentProps<typeof Link>, "href"> & T;
+export type LinkProps<T = {}> = Omit<ComponentProps<typeof Link>, "href"> & T;
 
 export const LinkTop: React.FC<LinkProps> = ({ children, ...props }) => (
   <Link href={"/"} {...props}>
@@ -15,16 +15,6 @@ export const LinkTop: React.FC<LinkProps> = ({ children, ...props }) => (
 
 export const LinkLogin: React.FC<LinkProps> = ({ children, ...props }) => (
   <Link href={"/login"} {...props}>
-    {children}
-  </Link>
-);
-
-export const LinkVideo: React.FC<LinkProps<{ serial: number }>> = ({
-  children,
-  serial,
-  ...props
-}) => (
-  <Link href={`/videos/${serial}`} {...props}>
     {children}
   </Link>
 );

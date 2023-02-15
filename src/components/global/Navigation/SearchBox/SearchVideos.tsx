@@ -2,7 +2,7 @@
 import clsx from "clsx";
 import React from "react";
 
-import { LinkVideo } from "~/components/common/Link";
+import { LinkVideo } from "~/app/videos/[serial]/Link";
 import { Thumbnail } from "~/components/common/Thumbnail";
 import { getFragment, graphql } from "~/gql";
 import {
@@ -10,6 +10,7 @@ import {
   GlobalNav_SearchBox_SearchVideosFragment,
   GlobalNav_SearchBox_SearchVideosItemFragment,
   GlobalNav_SearchBox_SearchVideosItemFragmentDoc,
+  Link_VideoFragmentDoc,
 } from "~/gql/graphql";
 
 graphql(`
@@ -17,9 +18,9 @@ graphql(`
     matchedTitle
     video {
       id
-      serial
       title
       ...Component_Thumbnail
+      ...Link_Video
     }
   }
 `);
@@ -31,8 +32,8 @@ export const SearchVideosItem: React.FC<{
   return (
     <LinkVideo
       key={video.id}
-      serial={video.serial}
       tabIndex={0}
+      fragment={getFragment(Link_VideoFragmentDoc, video)}
       className={clsx(
         className,
         ["py-2"],

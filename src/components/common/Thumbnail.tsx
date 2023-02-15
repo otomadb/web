@@ -2,16 +2,18 @@ import clsx from "clsx";
 import Image from "next/image";
 import React, { ReactNode } from "react";
 
-import { graphql } from "~/gql";
-import { Component_ThumbnailFragment } from "~/gql/graphql";
-
-import { LinkVideo } from "./Link";
+import { LinkVideo } from "~/app/videos/[serial]/Link";
+import { getFragment, graphql } from "~/gql";
+import {
+  Component_ThumbnailFragment,
+  Link_VideoFragmentDoc,
+} from "~/gql/graphql";
 
 graphql(`
   fragment Component_Thumbnail on Video {
     title
-    serial
     thumbnailUrl
+    ...Link_Video
   }
 `);
 
@@ -26,7 +28,12 @@ export const Thumbnail: React.FC<{
   fragment,
   width = 256,
   height = 192,
-  Wrapper = (props) => <LinkVideo serial={fragment.serial} {...props} />,
+  Wrapper = (props) => (
+    <LinkVideo
+      fragment={getFragment(Link_VideoFragmentDoc, fragment)}
+      {...props}
+    />
+  ),
 }) => {
   const { title, thumbnailUrl } = fragment;
 

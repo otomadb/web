@@ -5,24 +5,24 @@ import { Suspense } from "react";
 
 import { ServerSideVideosList } from "~/components/common/VideoList.server";
 import { graphql } from "~/gql";
-import { gqlclient } from "~/utils/gqlRequest";
+import { gqlRequest } from "~/utils/gqlRequest";
 
 export const revalidate = 0;
 
 export default async function Page() {
-  const promiseRecentVideos = gqlclient
-    .request(
-      graphql(`
-        query TopPage_RecentRegisteredVideos {
-          findVideos(input: { limit: 24, order: { createdAt: DESC } }) {
-            nodes {
-              ...VideoList_Video
-            }
+  const promiseRecentVideos = gqlRequest(
+    graphql(`
+      query TopPage_RecentRegisteredVideos {
+        findVideos(input: { limit: 24, order: { createdAt: DESC } }) {
+          nodes {
+            ...VideoList_Video
           }
         }
-      `)
-    )
-    .then((v) => v.findVideos.nodes);
+      }
+    `),
+    {},
+    { next: { revalidate: 0 } }
+  ).then((v) => v.findVideos.nodes);
 
   return (
     <>

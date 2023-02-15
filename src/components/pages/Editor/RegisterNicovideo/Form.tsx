@@ -9,6 +9,7 @@ import { useQuery } from "urql";
 import { LinkSignin } from "~/components/common/Link";
 import { getFragment, graphql } from "~/gql";
 import {
+  EditorRegisterNicovideoPage_AlreadyFragmentDoc,
   RegisterNicovideoPage_FetchNicovideoDocument,
   RegisterNicovideoPage_FetchNicovideoSourceFragmentDoc,
 } from "~/gql/graphql";
@@ -18,7 +19,6 @@ import { Already } from "./Already";
 import { FetchSource } from "./FetchSource";
 import { RegisterForm } from "./RegisterForm";
 import { SourceForm } from "./SourceForm";
-import { useIsAlready } from "./useIsAlready";
 
 export const Youhavetologin: React.FC<{ className?: string }> = ({
   className,
@@ -53,6 +53,10 @@ graphql(`
         ...RegisterNicovideoPage_FetchNicovideoSource
       }
     }
+    findNicovideoVideoSource(input: { sourceId: $sourceId }) {
+      id
+      ...EditorRegisterNicovideoPage_Already
+    }
   }
 `);
 export const RegisterNicovideoForm: React.FC<{ className?: string }> = ({
@@ -84,10 +88,11 @@ export const RegisterNicovideoForm: React.FC<{ className?: string }> = ({
   );
 
   const [sourceId, setSourceId] = useState<string>();
-  const [{ data, fetching }] = useQuery({
+  const [{ data, fetching }, refresh] = useQuery({
     query: RegisterNicovideoPage_FetchNicovideoDocument,
     pause: !sourceId,
     variables: sourceId ? { sourceId } : undefined,
+    requestPolicy: "cache-and-network",
   });
   const source = useMemo(() => {
     if (fetching) return undefined;
@@ -97,7 +102,6 @@ export const RegisterNicovideoForm: React.FC<{ className?: string }> = ({
       data.fetchNicovideo.source
     );
   }, [data, fetching]);
-  const already = useIsAlready(source?.sourceId);
 
   return (
     <div className={clsx(className)}>
@@ -155,10 +159,16 @@ export const RegisterNicovideoForm: React.FC<{ className?: string }> = ({
               )}
             >
               <p className={clsx(["text-lg"])}>登録される情報</p>
-              {already && (
-                <Already className={clsx(["mt-4"])} source={already} />
+              {data?.findNicovideoVideoSource && (
+                <Already
+                  className={clsx(["mt-4"])}
+                  fragment={getFragment(
+                    EditorRegisterNicovideoPage_AlreadyFragmentDoc,
+                    data?.findNicovideoVideoSource
+                  )}
+                />
               )}
-              {source && already === null && (
+              {source && data?.findNicovideoVideoSource === null && (
                 <RegisterForm
                   className={clsx(["mt-4"])}
                   sourceId={source.sourceId}
@@ -172,6 +182,7 @@ export const RegisterNicovideoForm: React.FC<{ className?: string }> = ({
                   onRegistered={() => {
                     setSourceId(undefined);
                     updateSelectedTags({ type: "clean" });
+                    refresh();
                   }}
                 />
               )}
