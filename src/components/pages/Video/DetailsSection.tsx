@@ -6,10 +6,12 @@ import clsx from "clsx";
 import React, { useMemo } from "react";
 import { useQuery } from "urql";
 
+import { LinkVideoEvents } from "~/app/videos/[serial]/events/Link";
 import { Thumbnail } from "~/components/common/Thumbnail";
 import { getFragment, graphql } from "~/gql";
 import {
   Component_ThumbnailFragmentDoc,
+  Link_VideoEventsFragmentDoc,
   VideoPage_DetailsSectionFragment,
   VideoPage_DetailsSectionFragmentDoc,
   VideoPage_UpstreamDetailsSectionDocument,
@@ -22,6 +24,7 @@ graphql(`
     id
     title
     ...Component_Thumbnail
+    ...Link_VideoEvents
   }
 
   query VideoPage_UpstreamDetailsSection($id: ID!) {
@@ -67,6 +70,11 @@ export const DetailsSection: React.FC<{
           {title}
         </h1>
         <LikeButton className={clsx(["mt-2"])} videoId={videoId} />
+        <LinkVideoEvents
+          fragment={getFragment(Link_VideoEventsFragmentDoc, fallback)}
+        >
+          編集履歴を見る
+        </LinkVideoEvents>
       </div>
     </section>
   );
