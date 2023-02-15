@@ -17,7 +17,6 @@ import {
   aTag,
   aUser,
   aVideo,
-  EditorRegisterNicovideoPage_AlreadyCheckDocument,
   RegisterNicovideoPage_ExactTagDocument,
   RegisterNicovideoPage_FetchNicovideoDocument,
   RegisterNicovideoPage_RegisterVideoDocument,
@@ -130,16 +129,6 @@ const mockRemoteSuccess = graphql.query(
     )
 );
 
-const mockYetUnregistered = graphql.query(
-  EditorRegisterNicovideoPage_AlreadyCheckDocument,
-  (req, res, ctx) =>
-    res(
-      ctx.data({
-        findNicovideoVideoSource: null,
-      })
-    )
-);
-
 const mockSearchTag = graphql.query(
   RegisterNicovideoPage_SearchTagsDocument,
   (req, res, ctx) =>
@@ -204,7 +193,6 @@ export default {
             })
           )
         ),
-        mockYetUnregistered,
         graphql.mutation(
           RegisterNicovideoPage_RegisterVideoDocument,
           (req, res, ctx) =>
@@ -268,10 +256,11 @@ export const Already: StoryObj<typeof RegisterNicovideoForm> = {
         mockLogin,
         mockRemoteSuccess,
         graphql.query(
-          EditorRegisterNicovideoPage_AlreadyCheckDocument,
+          RegisterNicovideoPage_FetchNicovideoDocument,
           (req, res, ctx) =>
             res(
               ctx.data({
+                fetchNicovideo: aFetchNicovideoPayload({}),
                 findNicovideoVideoSource: aNicovideoVideoSource({
                   sourceId: "sm2057168",
                   video: aVideo({

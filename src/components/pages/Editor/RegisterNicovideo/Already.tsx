@@ -6,7 +6,7 @@ import { Thumbnail } from "~/components/common/Thumbnail";
 import { getFragment, graphql } from "~/gql";
 import {
   Component_ThumbnailFragmentDoc,
-  EditorRegisterNicovideo_AlreadyFragment,
+  EditorRegisterNicovideoPage_AlreadyFragment,
   Link_VideoFragmentDoc,
 } from "~/gql/graphql";
 
@@ -23,7 +23,7 @@ graphql(`
 `);
 export const Already: React.FC<{
   className?: string;
-  fragment: EditorRegisterNicovideo_AlreadyFragment;
+  fragment: EditorRegisterNicovideoPage_AlreadyFragment;
 }> = ({ className, fragment }) => (
   <div className={clsx(className, ["mt-4"], ["flex", "flex-col"])}>
     <Thumbnail
