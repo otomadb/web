@@ -1,8 +1,7 @@
 import { TypedDocumentNode } from "@graphql-typed-document-node/core";
 import { print } from "graphql";
-import { GraphQLClient, Variables } from "graphql-request";
 
-export const gqlRequest = async <T, V extends Variables>(
+export const gqlRequest = async <T, V>(
   document: TypedDocumentNode<T, V>,
   variables: V,
   { ...props }: Partial<Pick<RequestInit, "next">> = {}
