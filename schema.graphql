@@ -568,7 +568,7 @@ input RejectSemitagInput {
 union RejectSemitagPayload = RejectSemitagFailedPayload | RejectSemitagSucceededPayload
 
 type RejectSemitagSucceededPayload {
-  semitag: Semitag!
+  rejecting: SemitagRejecting!
 }
 
 enum RemoveTagFromVideoFailedMessage {
@@ -654,7 +654,7 @@ input ResolveSemitagInput {
 union ResolveSemitagPayload = ResolveSemitagFailedPayload | ResolveSemitagSucceededPayload
 
 type ResolveSemitagSucceededPayload {
-  semitag: Semitag!
+  resolving: SemitagResolving!
 }
 
 input SearchTagInput {
@@ -688,7 +688,7 @@ type SearchVideosPayload {
 }
 
 type Semitag implements Node {
-  check: SemitagCheck
+  check: SemitagChecking
   checked: Boolean!
   events(input: SemitagEventsInput!): SemitagEventConnection!
   id: ID!
@@ -706,7 +706,7 @@ type SemitagAttachEvent implements Event & Node & SemitagEvent {
   user: User!
 }
 
-union SemitagCheck = SemitagRejecting | SemitagResolving
+union SemitagChecking = SemitagRejecting | SemitagResolving
 
 type SemitagConnection {
   nodes: [Semitag!]!
@@ -715,7 +715,6 @@ type SemitagConnection {
 interface SemitagEvent implements Event & Node {
   createdAt: DateTime!
   id: ID!
-  semitag: Semitag!
   series: String!
   user: User!
 }
@@ -732,26 +731,28 @@ input SemitagEventsInput {
 type SemitagRejectEvent implements Event & Node & SemitagEvent {
   createdAt: DateTime!
   id: ID!
-  semitag: Semitag!
+  rejecting: SemitagRejecting!
   series: String!
   user: User!
 }
 
 type SemitagRejecting {
   note: String
+  semitag: Semitag!
 }
 
 type SemitagResolveEvent implements Event & Node & SemitagEvent {
   createdAt: DateTime!
   id: ID!
-  semitag: Semitag!
+  resolving: SemitagResolving!
   series: String!
   user: User!
 }
 
 type SemitagResolving {
   note: String
-  resolvedTo: VideoTag!
+  resolveTo: VideoTag!
+  semitag: Semitag!
 }
 
 type Session {

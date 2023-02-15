@@ -456,8 +456,15 @@ export const SemitagAttachEvent: React.FC<{
 graphql(`
   fragment VideoEventPage_SemitagResolveEvent on SemitagResolveEvent {
     ...VideoEventPage_EventTemplate
-    semitag {
-      ...VideoPage_Semitag
+    resolving {
+      semitag {
+        ...VideoPage_Semitag
+      }
+      resolveTo {
+        tag {
+          ...Component_Tag
+        }
+      }
     }
   }
 `);
@@ -477,9 +484,19 @@ export const SemitagResolveEvent: React.FC<{
       >
         仮タグ
         <Semitag
-          fragment={getFragment(VideoPage_SemitagFragmentDoc, fragment.semitag)}
+          fragment={getFragment(
+            VideoPage_SemitagFragmentDoc,
+            fragment.resolving.semitag
+          )}
         />
-        を解決しました。
+        は
+        <Tag
+          tag={getFragment(
+            Component_TagFragmentDoc,
+            fragment.resolving.resolveTo.tag
+          )}
+        />
+        に解決しました。
       </div>
     </EventTemplate>
   );
@@ -488,8 +505,10 @@ export const SemitagResolveEvent: React.FC<{
 graphql(`
   fragment VideoEventPage_SemitagRejectEvent on SemitagRejectEvent {
     ...VideoEventPage_EventTemplate
-    semitag {
-      ...VideoPage_Semitag
+    rejecting {
+      semitag {
+        ...VideoPage_Semitag
+      }
     }
   }
 `);
@@ -509,7 +528,10 @@ export const SemitagRejectEvent: React.FC<{
       >
         仮タグ
         <Semitag
-          fragment={getFragment(VideoPage_SemitagFragmentDoc, fragment.semitag)}
+          fragment={getFragment(
+            VideoPage_SemitagFragmentDoc,
+            fragment.rejecting.semitag
+          )}
         />
         を棄却しました。
       </div>
