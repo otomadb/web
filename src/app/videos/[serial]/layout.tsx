@@ -56,7 +56,7 @@ export default async function Page({
         <DetailsSection
           fragment={getFragment(VideoPage_DetailsSectionFragmentDoc, video)}
         />
-        {children}
+        <div className={clsx(["flex", "flex-col"])}>{children}</div>
       </div>
     </div>
   );

@@ -1,5 +1,7 @@
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 
+import { SimilarVideosSection } from "~/components/pages/Video/SimilarVideosSection.server";
 import { graphql } from "~/gql";
 import { gqlRequest } from "~/utils/gqlRequest";
 
@@ -37,7 +39,10 @@ export default async function Page({ params }: { params: { serial: string } }) {
 
   return (
     <>
-      <p>Wow!</p>
+      <Suspense>
+        {/* @ts-expect-error Server Component*/}
+        <SimilarVideosSection videoId={video.id} />
+      </Suspense>
     </>
   );
 }
