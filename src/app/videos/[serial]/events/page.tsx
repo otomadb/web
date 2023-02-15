@@ -43,40 +43,28 @@ export default async function Page({ params }: { params: { serial: string } }) {
             ...VideoEventPage_VideoEvents
           }
           titles {
-            id
-            title
-            primary
             events(input: {}) {
               ...VideoEventPage_VideoTitleEvents
             }
           }
           thumbnails {
-            id
-            primary
             events(input: {}) {
               ...VideoEventPage_VideoThumbnailEvents
             }
           }
-          tags(input: {}) {
-            id
-            tag {
-              id
-              name
-            }
-            events(input: {}) {
-              ...VideoEventPage_VideoTagEvents
+          taggings(input: {}) {
+            nodes {
+              events(input: {}) {
+                ...VideoEventPage_VideoTagEvents
+              }
             }
           }
           semitags {
-            id
-            name
             events(input: {}) {
               ...VideoEventPage_SemitagEvents
             }
           }
           nicovideoSources {
-            id
-            sourceId
             events(input: {}) {
               ...VideoEventPage_NicovideoVideoSourceEvents
             }
@@ -111,7 +99,7 @@ export default async function Page({ params }: { params: { serial: string } }) {
               title.events
             )
           )}
-          eventsTags={video.tags.map((tag) =>
+          eventsTags={video.taggings.nodes.map((tag) =>
             getFragment(VideoEventPage_VideoTagEventsFragmentDoc, tag.events)
           )}
           eventsSemitags={video.semitags.map((semitag) =>
