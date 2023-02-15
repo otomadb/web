@@ -5,6 +5,8 @@ import { SimilarVideosSection } from "~/components/pages/Video/SimilarVideosSect
 import { graphql } from "~/gql";
 import { gqlRequest } from "~/utils/gqlRequest";
 
+export const revalidate = 0;
+
 export async function generateStaticParams() {
   const { findVideos } = await gqlRequest(
     graphql(`

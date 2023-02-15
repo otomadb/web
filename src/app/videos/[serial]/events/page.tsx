@@ -13,6 +13,8 @@ import {
 } from "~/gql/graphql";
 import { gqlRequest } from "~/utils/gqlRequest";
 
+export const revalidate = 0;
+
 export async function generateStaticParams() {
   const { findVideos } = await gqlRequest(
     graphql(`
