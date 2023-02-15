@@ -11,6 +11,7 @@ import {
   aSearchTagsItem,
   aSearchTagsPayload,
   aSemitag,
+  aSemitagResolving,
   aTag,
   aVideo,
   PseudoTagType,
@@ -112,10 +113,12 @@ export default {
             ctx.data({
               resovleSemitag: {
                 __typename: "ResolveSemitagSucceededPayload",
-                semitag: aSemitag({
-                  id: "semitag:1",
-                  video: aVideo({
-                    id: "video_1",
+                resolving: aSemitagResolving({
+                  semitag: aSemitag({
+                    id: "semitag:1",
+                    video: aVideo({
+                      id: "video_1",
+                    }),
                   }),
                 }),
               },
