@@ -571,7 +571,7 @@ export const NicovideoVideoSourceCreateEvent: React.FC<{
         <iframe
           className={clsx(["mt-2"])}
           height="160"
-          src={`http://embed.nicovideo.jp/watch/${fragment.source.sourceId}`}
+          src={`https://embed.nicovideo.jp/watch/${fragment.source.sourceId}`}
         />
       </div>
     </EventTemplate>
