@@ -1,34 +1,43 @@
 import clsx from "clsx";
-import Image from "next/image";
 import React from "react";
 
-import { LinkVideo } from "~/components/common/Link";
+import { LinkVideo } from "~/app/videos/[serial]/Link";
+import { Thumbnail } from "~/components/common/Thumbnail";
+import { getFragment, graphql } from "~/gql";
+import {
+  Component_ThumbnailFragmentDoc,
+  EditorRegisterNicovideo_AlreadyFragment,
+  Link_VideoFragmentDoc,
+} from "~/gql/graphql";
 
+graphql(`
+  fragment EditorRegisterNicovideoPage_Already on NicovideoVideoSource {
+    sourceId
+    video {
+      id
+      title
+      ...Link_Video
+      ...Component_Thumbnail
+    }
+  }
+`);
 export const Already: React.FC<{
   className?: string;
-  source: {
-    sourceId: string;
-    video: { serial: number; title: string; thumbnailUrl: string };
-  };
-}> = ({ className, source }) => (
-  <div className={clsx(className, ["mt-4"], ["flex", ["flex-col"]])}>
-    <LinkVideo serial={source.video.serial}>
-      <Image
-        className={clsx(["object-scale-down"], ["h-32"])}
-        src={source.video.thumbnailUrl}
-        width={260}
-        height={200}
-        alt={source.video.title}
-        priority={true}
-      />
-    </LinkVideo>
+  fragment: EditorRegisterNicovideo_AlreadyFragment;
+}> = ({ className, fragment }) => (
+  <div className={clsx(className, ["mt-4"], ["flex", "flex-col"])}>
+    <Thumbnail
+      width={260}
+      height={200}
+      fragment={getFragment(Component_ThumbnailFragmentDoc, fragment.video)}
+    />
     <p className={clsx(["mt-2"], ["text-sm"], ["text-slate-700"])}>
-      <span className={clsx(["font-mono"])}>{source.sourceId}</span>は
+      <span className={clsx(["font-mono"])}>{fragment.sourceId}</span>は
       <LinkVideo
-        serial={source.video.serial}
         className={clsx(["font-bold"], ["text-slate-900"])}
+        fragment={getFragment(Link_VideoFragmentDoc, fragment.video)}
       >
-        {source.video.title}
+        {fragment.video.title}
       </LinkVideo>
       として既に登録されています。
     </p>

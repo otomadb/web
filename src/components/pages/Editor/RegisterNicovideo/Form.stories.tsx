@@ -17,7 +17,7 @@ import {
   aTag,
   aUser,
   aVideo,
-  RegisterNicovideoPage_AlreadyCheckDocument,
+  EditorRegisterNicovideoPage_AlreadyCheckDocument,
   RegisterNicovideoPage_ExactTagDocument,
   RegisterNicovideoPage_FetchNicovideoDocument,
   RegisterNicovideoPage_RegisterVideoDocument,
@@ -131,7 +131,7 @@ const mockRemoteSuccess = graphql.query(
 );
 
 const mockYetUnregistered = graphql.query(
-  RegisterNicovideoPage_AlreadyCheckDocument,
+  EditorRegisterNicovideoPage_AlreadyCheckDocument,
   (req, res, ctx) =>
     res(
       ctx.data({
@@ -268,7 +268,7 @@ export const Already: StoryObj<typeof RegisterNicovideoForm> = {
         mockLogin,
         mockRemoteSuccess,
         graphql.query(
-          RegisterNicovideoPage_AlreadyCheckDocument,
+          EditorRegisterNicovideoPage_AlreadyCheckDocument,
           (req, res, ctx) =>
             res(
               ctx.data({

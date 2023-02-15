@@ -2,13 +2,14 @@ import { PencilIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 import React from "react";
 
-import { LinkVideo } from "~/components/common/Link";
+import { LinkVideo } from "~/app/videos/[serial]/Link";
 import { Tag } from "~/components/common/Tag";
 import { Thumbnail } from "~/components/common/Thumbnail";
 import { getFragment, graphql } from "~/gql";
 import {
   Component_TagFragmentDoc,
   Component_ThumbnailFragmentDoc,
+  Link_VideoFragmentDoc,
   MylistPage_RegistrationFragment,
 } from "~/gql/graphql";
 
@@ -18,9 +19,9 @@ graphql(`
     note
     video {
       id
-      serial
       title
       ...Component_Thumbnail
+      ...Link_Video
       tags(input: { limit: 5 }) {
         id
         tag {
@@ -37,7 +38,7 @@ export const Registeration: React.FC<{
   const { note, video } = registration;
   return (
     <LinkVideo
-      serial={video.serial}
+      fragment={getFragment(Link_VideoFragmentDoc, registration.video)}
       className={clsx(
         className,
         ["@container/registration"],
