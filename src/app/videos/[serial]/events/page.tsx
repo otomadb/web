@@ -13,6 +13,24 @@ import {
 } from "~/gql/graphql";
 import { gqlRequest } from "~/utils/gqlRequest";
 
+export async function generateStaticParams() {
+  const { findVideos } = await gqlRequest(
+    graphql(`
+      query VideoEventsPage_Paths {
+        findVideos(input: { limit: 96, order: { updatedAt: DESC } }) {
+          nodes {
+            id
+            serial
+          }
+        }
+      }
+    `)
+  );
+  return findVideos.nodes.map(({ serial }) => ({
+    serial: serial.toString(),
+  }));
+}
+
 export default async function Page({ params }: { params: { serial: string } }) {
   const { findVideo: video } = await gqlRequest(
     graphql(`
@@ -70,7 +88,7 @@ export default async function Page({ params }: { params: { serial: string } }) {
   if (!video) return notFound();
 
   return (
-    <div className={clsx(["container", "max-w-screen-lg"], ["mx-auto"])}>
+    <>
       <section className={clsx(["flex", "flex-col"], ["gap-x-4"])}>
         <h2 className={clsx(["text-lg"])}>この動画に関する全ての変更</h2>
         <MixedEventLists
@@ -105,6 +123,6 @@ export default async function Page({ params }: { params: { serial: string } }) {
           )}
         />
       </section>
-    </div>
+    </>
   );
 }
