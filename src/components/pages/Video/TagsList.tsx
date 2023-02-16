@@ -3,7 +3,7 @@ import { PencilSquareIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 import React, { useEffect, useMemo, useState } from "react";
 
-import { LinkTag } from "~/components/common/Link";
+import { LinkTag } from "~/app/tags/[serial]/Link";
 import { Tag } from "~/components/common/Tag";
 import { getFragment, graphql } from "~/gql";
 import {

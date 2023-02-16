@@ -3,13 +3,11 @@ import clsx from "clsx";
 import React from "react";
 import { useQuery } from "urql";
 
-import {
-  LinkUser,
-  LinkYouLikes,
-  LinkYouMylists,
-} from "~/components/common/Link";
-import { graphql } from "~/gql";
-import { YouPageLayout_NavDocument } from "~/gql/graphql";
+import { LinkUser } from "~/app/users/[name]/Link";
+import { LinkYouLikes } from "~/app/you/likes/Link";
+import { LinkYouMylists } from "~/app/you/mylists/Link";
+import { getFragment, graphql } from "~/gql";
+import { Link_UserFragmentDoc, YouPageLayout_NavDocument } from "~/gql/graphql";
 
 import { Item, NavWrapper } from "../Nav";
 
@@ -18,6 +16,7 @@ graphql(`
     whoami {
       id
       name
+      ...Link_User
     }
   }
 `);
@@ -34,7 +33,7 @@ export const YouPageNav: React.FC = () => {
         Wrapper={(props) =>
           data?.whoami?.name ? (
             <LinkUser
-              name={data.whoami.name}
+              fragment={getFragment(Link_UserFragmentDoc, data?.whoami)}
               aria-current={highlight === "PROFILE" ? "page" : undefined}
               {...props}
             />

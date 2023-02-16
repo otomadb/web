@@ -11,7 +11,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useMutation, useQuery } from "urql";
 import * as z from "zod";
 
-import { LinkSignup } from "~/components/common/Link";
+import { LinkSignup } from "~/app/signup/Link";
 import { graphql } from "~/gql";
 import {
   LoginPage_FetchViewerDocument,

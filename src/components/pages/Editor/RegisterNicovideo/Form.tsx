@@ -6,7 +6,7 @@ import clsx from "clsx";
 import React, { useMemo, useReducer, useState } from "react";
 import { useQuery } from "urql";
 
-import { LinkSignin } from "~/components/common/Link";
+import { LinkLogin } from "~/app/login/Link";
 import { getFragment, graphql } from "~/gql";
 import {
   EditorRegisterNicovideoPage_AlreadyFragmentDoc,
@@ -29,7 +29,7 @@ export const Youhavetologin: React.FC<{ className?: string }> = ({
         ログインしてください
       </p>
       <div className={clsx(["mt-2"], ["flex"])}>
-        <LinkSignin
+        <LinkLogin
           className={clsx(
             ["block"],
             ["rounded"],
@@ -40,7 +40,7 @@ export const Youhavetologin: React.FC<{ className?: string }> = ({
           )}
         >
           Login
-        </LinkSignin>
+        </LinkLogin>
       </div>
     </div>
   );

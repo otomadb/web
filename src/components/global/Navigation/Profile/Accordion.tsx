@@ -3,20 +3,19 @@
 import clsx from "clsx";
 import React, { ReactNode } from "react";
 
-import {
-  LinkRegisterNicovideo,
-  LinkRegisterSemitag,
-  LinkRegisterTag,
-  LinkUser,
-  LinkYouLikes,
-  LinkYouMylists,
-} from "~/components/common/Link";
+import { LinkRegisterNicovideo } from "~/app/editor/nicovideo/Link";
+import { LinkRegisterSemitag } from "~/app/editor/semitags/Link";
+import { LinkRegisterTag } from "~/app/editor/tags/Link";
+import { LinkUser } from "~/app/users/[name]/Link";
+import { LinkYouLikes } from "~/app/you/likes/Link";
+import { LinkYouMylists } from "~/app/you/mylists/Link";
 import { LogoutButton } from "~/components/common/LogoutButton";
 import { getFragment, graphql } from "~/gql";
 import {
   GlobalNav_Profile_Accordion_ProfileFragment,
   GlobalNav_Profile_Accordion_ProfileFragmentDoc,
   GlobalNav_Profile_AccordionFragment,
+  Link_UserFragmentDoc,
 } from "~/gql/graphql";
 
 const MenuItem: React.FC<{
@@ -76,6 +75,7 @@ graphql(`
     isEditor
     isAdministrator
     ...GlobalNav_Profile_Accordion_Profile
+    ...Link_User
   }
 `);
 export const Accordion: React.FC<{
@@ -117,7 +117,12 @@ export const Accordion: React.FC<{
           </div>
           <div className={clsx(["grid"], ["grid-cols-1"])}>
             <MenuItem
-              Wrapper={(props) => <LinkUser name={fragment.name} {...props} />}
+              Wrapper={(props) => (
+                <LinkUser
+                  fragment={getFragment(Link_UserFragmentDoc, fragment)}
+                  {...props}
+                />
+              )}
             >
               プロフィール
             </MenuItem>
