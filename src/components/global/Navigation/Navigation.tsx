@@ -3,7 +3,7 @@
 import clsx from "clsx";
 import React from "react";
 
-import { LinkTop } from "~/components/common/Link";
+import { LinkTop } from "~/app/Link";
 
 import { Profile } from "./Profile/Profile";
 import { SearchBox } from "./SearchBox/SearchBox";

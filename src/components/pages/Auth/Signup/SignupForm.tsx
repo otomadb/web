@@ -16,7 +16,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useMutation, useQuery } from "urql";
 import * as z from "zod";
 
-import { LinkSignin } from "~/components/common/Link";
+import { LinkLogin } from "~/app/login/Link";
 import { graphql } from "~/gql";
 import {
   SignupFailedMessage,
@@ -203,14 +203,14 @@ export const SignupForm: React.FC<{ className?: string }> = ({ className }) => {
       <AuthFormButton className={clsx("mt-6")} text="ユーザー登録" />
       <div className={clsx(["mt-4"])}>
         <p>
-          <LinkSignin
+          <LinkLogin
             className={clsx(
               ["text-blue-400", "hover:text-blue-500"],
               ["text-sm"]
             )}
           >
             ユーザー登録が既に済んでいるなら
-          </LinkSignin>
+          </LinkLogin>
         </p>
       </div>
     </form>

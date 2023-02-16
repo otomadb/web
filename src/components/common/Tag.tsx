@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import React, { ReactNode, useMemo } from "react";
 
-import { LinkTag } from "~/components/common/Link";
+import { LinkTag } from "~/app/tags/[serial]/Link";
 import { getFragment, graphql } from "~/gql";
 import {
   Component_TagFragment,
@@ -21,7 +21,6 @@ graphql(`
     }
   }
 `);
-
 export const Tag: React.FC<{
   className?: string;
   tag: Component_TagFragment;

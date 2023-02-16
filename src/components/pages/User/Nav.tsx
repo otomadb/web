@@ -3,15 +3,16 @@ import clsx from "clsx";
 import React, { ReactNode } from "react";
 import { useQuery } from "urql";
 
+import { LinkUserLikes } from "~/app/users/[name]/likes/Link";
+import { LinkUser } from "~/app/users/[name]/Link";
+import { LinkUserMylists } from "~/app/users/[name]/mylists/Link";
+import { LinkYouLikes } from "~/app/you/likes/Link";
+import { LinkYouMylists } from "~/app/you/mylists/Link";
+import { getFragment, graphql } from "~/gql";
 import {
-  LinkUser,
-  LinkUserLikes,
-  LinkUserMylists,
-  LinkYouLikes,
-  LinkYouMylists,
-} from "~/components/common/Link";
-import { graphql } from "~/gql";
-import {
+  Link_UserFragmentDoc,
+  Link_UserLikesFragmentDoc,
+  Link_UserMylistsFragmentDoc,
   UserPageLayout_NavFragment,
   YouPageLayout_NavDocument,
 } from "~/gql/graphql";
@@ -69,6 +70,9 @@ export const NavWrapper: React.FC<{ children: ReactNode }> = ({ children }) => {
 
 graphql(`
   fragment UserPageLayout_Nav on User {
+    ...Link_User
+    ...Link_UserLikes
+    ...Link_UserMylists
     id
     name
     likes {
@@ -97,8 +101,8 @@ export const UserPageNav: React.FC<{
         className={clsx()}
         Wrapper={(props) => (
           <LinkUser
+            fragment={getFragment(Link_UserFragmentDoc, fragment)}
             aria-current={highlight === "PROFILE" ? "page" : undefined}
-            name={fragment.name}
             {...props}
           />
         )}
@@ -120,8 +124,8 @@ export const UserPageNav: React.FC<{
           className={clsx()}
           Wrapper={(props) => (
             <LinkUserLikes
+              fragment={getFragment(Link_UserLikesFragmentDoc, fragment)}
               aria-current={highlight === "LIKES" ? "page" : undefined}
-              name={fragment.name}
               {...props}
             />
           )}
@@ -137,8 +141,8 @@ export const UserPageNav: React.FC<{
             <LinkYouMylists {...props} />
           ) : (
             <LinkUserMylists
+              fragment={getFragment(Link_UserMylistsFragmentDoc, fragment)}
               aria-current={highlight === "MYLISTS" ? "page" : undefined}
-              name={fragment.name}
               {...props}
             />
           )

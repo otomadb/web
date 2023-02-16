@@ -10,7 +10,7 @@ import { toast } from "react-hot-toast";
 import { useMutation } from "urql";
 import * as z from "zod";
 
-import { LinkTag } from "~/components/common/Link";
+import { LinkTag } from "~/app/tags/[serial]/Link";
 import { getFragment, graphql } from "~/gql";
 import {
   Link_TagFragmentDoc,
