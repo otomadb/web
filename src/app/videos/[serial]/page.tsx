@@ -3,10 +3,10 @@ import { Suspense } from "react";
 
 import { SimilarVideosSection } from "~/components/pages/Video/SimilarVideosSection.server";
 import { graphql } from "~/gql";
-import { gqlRequest } from "~/utils/gqlRequest";
+import { fetchGql } from "~/utils/fetchGql";
 
 export async function generateStaticParams() {
-  const { findVideos } = await gqlRequest(
+  const { findVideos } = await fetchGql(
     graphql(`
       query VideoPage_Paths {
         findVideos(input: { limit: 96, order: { updatedAt: DESC } }) {
@@ -25,7 +25,7 @@ export async function generateStaticParams() {
 }
 
 export default async function Page({ params }: { params: { serial: string } }) {
-  const { findVideo: video } = await gqlRequest(
+  const { findVideo: video } = await fetchGql(
     graphql(`
       query VideoPage($serial: Int!) {
         findVideo(input: { serial: $serial }) {

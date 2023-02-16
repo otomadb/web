@@ -11,10 +11,10 @@ import {
   VideoEventPage_VideoThumbnailEventsFragmentDoc,
   VideoEventPage_VideoTitleEventsFragmentDoc,
 } from "~/gql/graphql";
-import { gqlRequest } from "~/utils/gqlRequest";
+import { fetchGql } from "~/utils/fetchGql";
 
 export async function generateStaticParams() {
-  const { findVideos } = await gqlRequest(
+  const { findVideos } = await fetchGql(
     graphql(`
       query VideoEventsPage_Paths {
         findVideos(input: { limit: 96, order: { updatedAt: DESC } }) {
@@ -33,7 +33,7 @@ export async function generateStaticParams() {
 }
 
 export default async function Page({ params }: { params: { serial: string } }) {
-  const { findVideo: video } = await gqlRequest(
+  const { findVideo: video } = await fetchGql(
     graphql(`
       query VideoEventPage($serial: Int!) {
         findVideo(input: { serial: $serial }) {
@@ -71,7 +71,8 @@ export default async function Page({ params }: { params: { serial: string } }) {
         }
       }
     `),
-    { serial: parseInt(params.serial, 10) }
+    { serial: parseInt(params.serial, 10) },
+    { next: { revalidate: 0 } }
   );
 
   if (!video) return notFound();

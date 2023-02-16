@@ -2,10 +2,10 @@ import { notFound } from "next/navigation";
 
 import { CommonHead } from "~/app/CommonHead";
 import { graphql } from "~/gql";
-import { gqlRequest } from "~/utils/gqlRequest";
+import { fetchGql } from "~/utils/fetchGql";
 
 export default async function Head({ params }: { params: { serial: string } }) {
-  const { findVideo: video } = await gqlRequest(
+  const { findVideo: video } = await fetchGql(
     graphql(`
       query VideoPage_Title($serial: Int!) {
         findVideo(input: { serial: $serial }) {
