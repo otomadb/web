@@ -4,7 +4,7 @@ import React, { ReactNode } from "react";
 
 import { LinkUserMylist } from "~/app/users/[name]/mylists/[id]/Link";
 import { LinkYouLikes } from "~/app/you/likes/Link";
-import { LinkYouMylist } from "~/app/you/mylists/[id]/LinkYouMylist";
+import { LinkYouMylist } from "~/app/you/mylists/[id]/Link";
 import { getFragment, graphql } from "~/gql";
 import {
   Link_UserMylistFragmentDoc,

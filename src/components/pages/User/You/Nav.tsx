@@ -5,7 +5,7 @@ import { useQuery } from "urql";
 
 import { LinkUser } from "~/app/users/[name]/Link";
 import { LinkYouLikes } from "~/app/you/likes/Link";
-import { LinkYouMylists } from "~/app/you/mylists/LinkYouMylists";
+import { LinkYouMylists } from "~/app/you/mylists/Link";
 import { getFragment, graphql } from "~/gql";
 import { Link_UserFragmentDoc, YouPageLayout_NavDocument } from "~/gql/graphql";
 

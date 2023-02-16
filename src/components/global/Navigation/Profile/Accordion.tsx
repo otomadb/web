@@ -8,7 +8,7 @@ import { LinkRegisterSemitag } from "~/app/editor/semitags/Link";
 import { LinkRegisterTag } from "~/app/editor/tags/Link";
 import { LinkUser } from "~/app/users/[name]/Link";
 import { LinkYouLikes } from "~/app/you/likes/Link";
-import { LinkYouMylists } from "~/app/you/mylists/LinkYouMylists";
+import { LinkYouMylists } from "~/app/you/mylists/Link";
 import { LogoutButton } from "~/components/common/LogoutButton";
 import { getFragment, graphql } from "~/gql";
 import {
