@@ -4,10 +4,10 @@ import { notFound } from "next/navigation";
 import { VideoList } from "~/components/common/VideoList";
 import { getFragment, graphql } from "~/gql";
 import { VideoList_VideoFragmentDoc } from "~/gql/graphql";
-import { gqlRequest } from "~/utils/gqlRequest";
+import { fetchGql } from "~/utils/fetchGql";
 
 export async function generateStaticParams() {
-  const { findTags } = await gqlRequest(
+  const { findTags } = await fetchGql(
     graphql(`
       query TagPagePaths {
         findTags(input: { limit: 96, order: { updatedAt: DESC } }) {
@@ -23,7 +23,7 @@ export async function generateStaticParams() {
 }
 
 export default async function Page({ params }: { params: { serial: string } }) {
-  const { findTag } = await gqlRequest(
+  const { findTag } = await fetchGql(
     graphql(`
       query TagPage($serial: Int!) {
         findTag(input: { serial: $serial }) {
@@ -34,7 +34,8 @@ export default async function Page({ params }: { params: { serial: string } }) {
         }
       }
     `),
-    { serial: parseInt(params.serial, 10) }
+    { serial: parseInt(params.serial, 10) },
+    { next: { revalidate: 0 } }
   );
 
   if (!findTag) return notFound();

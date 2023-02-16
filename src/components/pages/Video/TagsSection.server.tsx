@@ -11,7 +11,7 @@ import {
   VideoPage_TagTypesListFragment,
   VideoPage_TagTypesListFragmentDoc,
 } from "~/gql/graphql";
-import { gqlRequest } from "~/utils/gqlRequest";
+import { fetchGql } from "~/utils/fetchGql";
 import { styleByTagType } from "~/utils/styleByTagType";
 
 graphql(`
@@ -35,7 +35,7 @@ export const TagsSection = async ({
   className?: string;
   videoId: string;
 }) => {
-  const { video } = await gqlRequest(
+  const { video } = await fetchGql(
     graphql(`
       query VideoPage_TagsSection($id: ID!) {
         video(id: $id) {

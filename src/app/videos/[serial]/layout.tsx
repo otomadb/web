@@ -7,7 +7,7 @@ import { SemitagsSection } from "~/components/pages/Video/SemitagsSection.server
 import { TagsSection } from "~/components/pages/Video/TagsSection.server";
 import { getFragment, graphql } from "~/gql";
 import { VideoPage_DetailsSectionFragmentDoc } from "~/gql/graphql";
-import { gqlRequest } from "~/utils/gqlRequest";
+import { fetchGql } from "~/utils/fetchGql";
 
 export default async function Page({
   children,
@@ -16,7 +16,7 @@ export default async function Page({
   children: React.ReactNode;
   params: { serial: string };
 }) {
-  const { findVideo: video } = await gqlRequest(
+  const { findVideo } = await fetchGql(
     graphql(`
       query VideoPage_Layout($serial: Int!) {
         findVideo(input: { serial: $serial }) {
@@ -28,7 +28,7 @@ export default async function Page({
     { serial: parseInt(params.serial, 10) }
   );
 
-  if (!video) return notFound();
+  if (!findVideo) return notFound();
 
   return (
     <div className={clsx(["flex"], ["gap-x-4"])}>
@@ -42,16 +42,16 @@ export default async function Page({
       >
         <Suspense>
           {/* @ts-expect-error Server Component*/}
-          <TagsSection videoId={video.id} />
+          <TagsSection videoId={findVideo.id} />
         </Suspense>
         <Suspense>
           {/* @ts-expect-error Server Component*/}
-          <SemitagsSection videoId={video.id} />
+          <SemitagsSection videoId={findVideo.id} />
         </Suspense>
       </div>
       <div className={clsx(["flex-grow"])}>
         <DetailsSection
-          fragment={getFragment(VideoPage_DetailsSectionFragmentDoc, video)}
+          fragment={getFragment(VideoPage_DetailsSectionFragmentDoc, findVideo)}
         />
         <div className={clsx(["flex", "flex-col"])}>{children}</div>
       </div>

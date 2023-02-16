@@ -1,10 +1,10 @@
 import { TypedDocumentNode } from "@graphql-typed-document-node/core";
 import { print } from "graphql";
 
-export const gqlRequest = async <T, V>(
+export const fetchGql = async <T, V>(
   document: TypedDocumentNode<T, V>,
   variables: V,
-  { ...props }: Partial<Pick<RequestInit, "next">> = {}
+  fetchOptions: Partial<Pick<RequestInit, "next">> = {}
 ): Promise<T> => {
   const res = await fetch(
     new URL("/graphql", process.env.NEXT_PUBLIC_API_ENDPOINT).toString(),
@@ -12,10 +12,11 @@ export const gqlRequest = async <T, V>(
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ query: print(document), variables }),
-      ...props,
+      ...fetchOptions,
     }
   );
-
   const json = await res.json();
-  return json.data as T;
+  const { errors, data } = json;
+  // TODO: エラーハンドリング
+  return data as T;
 };

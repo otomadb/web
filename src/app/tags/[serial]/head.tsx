@@ -2,10 +2,10 @@ import { notFound } from "next/navigation";
 
 import { CommonHead } from "~/app/CommonHead";
 import { graphql } from "~/gql";
-import { gqlRequest } from "~/utils/gqlRequest";
+import { fetchGql } from "~/utils/fetchGql";
 
 export default async function Head({ params }: { params: { serial: string } }) {
-  const { findTag } = await gqlRequest(
+  const { findTag } = await fetchGql(
     graphql(`
       query TagPage_Title($serial: Int!) {
         findTag(input: { serial: $serial }) {

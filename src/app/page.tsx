@@ -5,12 +5,10 @@ import { Suspense } from "react";
 
 import { ServerSideVideosList } from "~/components/common/VideoList.server";
 import { graphql } from "~/gql";
-import { gqlRequest } from "~/utils/gqlRequest";
-
-export const revalidate = 0;
+import { fetchGql } from "~/utils/fetchGql";
 
 export default async function Page() {
-  const promiseRecentVideos = gqlRequest(
+  const promiseRecentVideos = fetchGql(
     graphql(`
       query TopPage_RecentRegisteredVideos {
         findVideos(input: { limit: 24, order: { createdAt: DESC } }) {

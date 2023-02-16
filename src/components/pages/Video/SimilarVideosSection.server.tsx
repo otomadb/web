@@ -9,7 +9,7 @@ import {
   VideoList_VideoFragmentDoc,
   VideoPage_SimilarVideosSectionFragmentDoc,
 } from "~/gql/graphql";
-import { gqlRequest } from "~/utils/gqlRequest";
+import { fetchGql } from "~/utils/fetchGql";
 
 graphql(`
   fragment VideoPage_SimilarVideosSection on Video {
@@ -31,7 +31,7 @@ export const SimilarVideosSection = async ({
   className?: string;
   videoId: string;
 }) => {
-  const { video } = await gqlRequest(
+  const { video } = await fetchGql(
     graphql(`
       query VideoPage_SimilarVideosSection($id: ID!) {
         video(id: $id) {

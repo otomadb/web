@@ -5,10 +5,10 @@ import { AttentionYou } from "~/components/pages/User/AttentionYou";
 import { UserMylists } from "~/components/pages/User/Mylists";
 import { getFragment, graphql } from "~/gql";
 import { UserMylistsPage_MylistsFragmentDoc } from "~/gql/graphql";
-import { gqlRequest } from "~/utils/gqlRequest";
+import { fetchGql } from "~/utils/fetchGql";
 
 export default async function Page({ params }: { params: { name: string } }) {
-  const { findUser } = await gqlRequest(
+  const { findUser } = await fetchGql(
     graphql(`
       query UserMylistsPage($name: String!) {
         findUser(input: { name: $name }) {

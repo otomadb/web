@@ -8,7 +8,7 @@ import {
   VideoPage_SemitagFragmentDoc,
   VideoPage_SemitagsSectionFragmentDoc,
 } from "~/gql/graphql";
-import { gqlRequest } from "~/utils/gqlRequest";
+import { fetchGql } from "~/utils/fetchGql";
 
 import { Semitag } from "./Semitag";
 
@@ -29,7 +29,7 @@ export const SemitagsSection = async ({
   className?: string;
   videoId: string;
 }) => {
-  const { video } = await gqlRequest(
+  const { video } = await fetchGql(
     graphql(`
       query VideoPage_SemitagsSection($id: ID!) {
         video(id: $id) {
