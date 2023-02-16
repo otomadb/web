@@ -34,7 +34,8 @@ export default async function Page({ params }: { params: { serial: string } }) {
         }
       }
     `),
-    { serial: parseInt(params.serial, 10) }
+    { serial: parseInt(params.serial, 10) },
+    { next: { revalidate: 0 } }
   );
 
   if (!findTag) return notFound();
