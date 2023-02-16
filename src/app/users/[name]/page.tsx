@@ -1,10 +1,10 @@
 import { notFound } from "next/navigation";
 
 import { graphql } from "~/gql";
-import { gqlRequest } from "~/utils/gqlRequest";
+import { fetchGql } from "~/utils/fetchGql";
 
 export default async function Page({ params }: { params: { name: string } }) {
-  const { findUser } = await gqlRequest(
+  const { findUser } = await fetchGql(
     graphql(`
       query UserPage($name: String!) {
         findUser(input: { name: $name }) {

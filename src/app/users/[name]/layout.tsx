@@ -11,7 +11,7 @@ import {
   UserPageLayout_HeaderFragmentDoc,
   UserPageLayout_NavFragmentDoc,
 } from "~/gql/graphql";
-import { gqlRequest } from "~/utils/gqlRequest";
+import { fetchGql } from "~/utils/fetchGql";
 
 export default async function Layout({
   children,
@@ -20,7 +20,7 @@ export default async function Layout({
   children: React.ReactNode;
   params: { name: string };
 }) {
-  const { findUser } = await gqlRequest(
+  const { findUser } = await fetchGql(
     graphql(`
       query UserPageLayout($name: String!) {
         findUser(input: { name: $name }) {

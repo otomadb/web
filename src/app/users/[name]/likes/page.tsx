@@ -3,12 +3,12 @@ import { notFound } from "next/navigation";
 import { UserMylist } from "~/components/pages/User/Mylist";
 import { getFragment, graphql } from "~/gql";
 import { UserMylistPageFragmentDoc } from "~/gql/graphql";
-import { gqlRequest } from "~/utils/gqlRequest";
+import { fetchGql } from "~/utils/fetchGql";
 
 export const revalidate = 0;
 
 export default async function Page({ params }: { params: { name: string } }) {
-  const data = await gqlRequest(
+  const data = await fetchGql(
     graphql(`
       query UserLikesPage($userName: String!) {
         findUser(input: { name: $userName }) {
