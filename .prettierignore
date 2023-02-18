@@ -9,7 +9,7 @@ schema.graphql
 src/gql
 
 # public
-public/mockServiceWorker.js
+**/public/mockServiceWorker.js
 
 # Vercel
 .vercel
