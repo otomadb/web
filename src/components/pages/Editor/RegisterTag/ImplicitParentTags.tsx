@@ -17,7 +17,7 @@ import {
   RegisterTagPage_ImplicitParentTagDocument,
 } from "~/gql/graphql";
 
-import { FormSchema } from "./Form2";
+import { FormSchema } from "./Form";
 
 export const ImplictParentTags: React.FC<{
   className?: string;

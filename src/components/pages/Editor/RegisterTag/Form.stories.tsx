@@ -18,7 +18,7 @@ import {
   TagSearcher_SearchDocument,
 } from "~/gql/graphql";
 
-import { RegisterTagForm } from "./Form2";
+import { RegisterTagForm } from "./Form";
 
 const meta = {
   component: RegisterTagForm,

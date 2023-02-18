@@ -18,7 +18,7 @@ import {
   RegisterTagPage_Semitags_UnselectedFragmentDoc,
 } from "~/gql/graphql";
 
-import { FormSchema } from "./Form2";
+import { FormSchema } from "./Form";
 
 graphql(`
   query RegisterTagPage_Semitags_Selected($id: ID!) {

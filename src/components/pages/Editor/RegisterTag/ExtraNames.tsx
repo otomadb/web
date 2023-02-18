@@ -11,7 +11,7 @@ import {
 
 import { BlueButton, RedButton } from "~/components/common/Button";
 
-import { FormSchema } from "./Form2";
+import { FormSchema } from "./Form";
 
 export const ExtraNames: React.FC<{
   className?: string;
