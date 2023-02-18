@@ -9,7 +9,7 @@ specifiers:
   '@graphql-codegen/typescript-urql-graphcache': ^2.4.3
   '@graphql-typed-document-node/core': ^3.1.1
   '@heroicons/react': ^2.0.13
-  '@hookform/resolvers': 2.9.10
+  '@hookform/resolvers': 2.9.11
   '@storybook/addon-actions': 7.0.0-beta.49
   '@storybook/addon-essentials': 7.0.0-beta.49
   '@storybook/addon-interactions': 7.0.0-beta.49
@@ -67,7 +67,7 @@ specifiers:
 dependencies:
   '@emotion/css': 11.10.5_@babel+core@7.20.12
   '@heroicons/react': 2.0.15_react@18.2.0
-  '@hookform/resolvers': 2.9.10_react-hook-form@7.41.2
+  '@hookform/resolvers': 2.9.11_react-hook-form@7.41.2
   '@urql/exchange-graphcache': 5.0.9_graphql@16.6.0
   '@vercel/og': 0.1.0
   client-only: 0.0.1
@@ -2451,8 +2451,8 @@ packages:
       react: 18.2.0
     dev: false
 
-  /@hookform/resolvers/2.9.10_react-hook-form@7.41.2:
-    resolution: {integrity: sha512-JIL1DgJIlH9yuxcNGtyhsWX/PgNltz+5Gr6+8SX9fhXc/hPbEIk6wPI82nhgvp3uUb6ZfAM5mqg/x7KR7NAb+A==}
+  /@hookform/resolvers/2.9.11_react-hook-form@7.41.2:
+    resolution: {integrity: sha512-bA3aZ79UgcHj7tFV7RlgThzwSSHZgvfbt2wprldRkYBcMopdMvHyO17Wwp/twcJasNFischFfS7oz8Katz8DdQ==}
     peerDependencies:
       react-hook-form: ^7.0.0
     dependencies:
