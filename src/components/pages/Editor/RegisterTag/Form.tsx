@@ -4,84 +4,18 @@ import "client-only";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
-import React, { useCallback } from "react";
+import React from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
-import { useMutation } from "urql";
-import * as z from "zod";
 
 import { BlueButton } from "~/components/common/Button";
-import { graphql } from "~/gql";
-import { RegisterTagPage_RegisterTagDocument } from "~/gql/graphql";
 
 import { ExplicitParentTag } from "./ExplicitParentTag";
 import { ExtraNames } from "./ExtraNames";
+import { FormSchema, formSchema } from "./FormSchema";
 import { ImplictParentTags } from "./ImplicitParentTags";
 import { PrimaryTitle } from "./PrimaryTitle";
 import { Semitags } from "./Semitags";
-
-graphql(`
-  mutation RegisterTagPage_RegisterTag($input: RegisterTagInput!) {
-    registerTag(input: $input) {
-      __typename
-      ... on RegisterTagSucceededPayload {
-        tag {
-          ...Link_Tag
-          id
-          name
-        }
-      }
-      ... on RegisterTagFailedPayload {
-        message
-      }
-    }
-  }
-`);
-export const useRegister = (): SubmitHandler<FormSchema> => {
-  const [, mutateRegisterTag] = useMutation(
-    RegisterTagPage_RegisterTagDocument
-  );
-  return useCallback(
-    async ({
-      primaryName,
-      extraNames,
-      explicitParentTagId,
-      implicitParents,
-      resolveSemitags,
-    }) => {
-      const { data, error } = await mutateRegisterTag({
-        input: {
-          primaryName,
-          extraNames: extraNames?.map(({ name }) => name),
-          explicitParent: explicitParentTagId,
-          implicitParents: implicitParents.map(({ tagId }) => tagId),
-          resolveSemitags: resolveSemitags.map(({ semitagId }) => semitagId),
-        },
-      });
-      if (!error || !data) {
-        // TODO 重大な例外処理
-        return;
-      }
-
-      if (data.registerTag.__typename === "RegisterTagFailedPayload") {
-        return;
-      }
-
-      const { name } = data.registerTag.tag;
-    },
-    [mutateRegisterTag]
-  );
-};
-
-const formSchema = z.object({
-  primaryName: z.string().min(1, "タグ名は1文字以上で"),
-  extraNames: z.optional(
-    z.array(z.object({ name: z.string().min(1, "タグ名は1文字以上で") }))
-  ),
-  explicitParentTagId: z.optional(z.string()),
-  implicitParents: z.array(z.object({ tagId: z.string() })),
-  resolveSemitags: z.array(z.object({ semitagId: z.string() })),
-});
-export type FormSchema = z.infer<typeof formSchema>;
+import { useRegister } from "./useRegister";
 
 export const RegisterTagForm: React.FC<{ className?: string }> = ({
   className,

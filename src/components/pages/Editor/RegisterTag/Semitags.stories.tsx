@@ -10,19 +10,21 @@ import {
 import {
   aSemitag,
   RegisterTagPage_Semitags_FindSemitagsDocument,
+  RegisterTagPage_Semitags_SelectedDocument,
+  Semitag,
 } from "~/gql/graphql";
 
 import { Semitags } from "./Semitags";
 
-export default {
+const meta = {
   component: Semitags,
   args: {
     className: css`
-      width: 960px;
+      width: 640px;
     `,
-    fields: [],
     append: action("append"),
     remove: action("remove"),
+    setTemporaryPrimaryTitle: action("setTemporaryPrimaryTitle"),
   },
   render(args) {
     return (
@@ -41,51 +43,80 @@ export default {
             res(
               ctx.data({
                 findSemitags: {
-                  nodes: [...new Array(30)].map((_, i) =>
-                    aSemitag({
-                      id: `semitag:${i}`,
-                    })
-                  ),
-                  /*[
-                  aSemitag({
-                    id: "semitag:1",
-                    name: "ドナルド・マクドナルド",
-                    video: aVideo({
-                      id: "video_1",
-                      title:
-                        "M.C.ドナルドはダンスに夢中なのか？最終鬼畜道化師ドナルド・Ｍ",
-                      thumbnailUrl: "/storybook/960x540.jpg",
-                    }),
-                  }),
-                  aSemitag({
-                    id: "semitag:2",
-                    name: "U.N.オーエンは彼女なのか？",
-                    video: aVideo({
-                      id: "video_1",
-                      title:
-                        "M.C.ドナルドはダンスに夢中なのか？最終鬼畜道化師ドナルド・Ｍ",
-                      thumbnailUrl: "/storybook/960x540.jpg",
-                    }),
-                  }),
-                  aSemitag({
-                    id: "semitag:3",
-                    name: "最終鬼畜妹フランドール・Ｓ",
-                    video: aVideo({
-                      id: "video_1",
-                      title:
-                        "M.C.ドナルドはダンスに夢中なのか？最終鬼畜道化師ドナルド・Ｍ",
-                      thumbnailUrl: "/storybook/960x540.jpg",
-                    }),
-                  }),
-                ],
-                  */
+                  nodes: (() => {
+                    const rtn: Semitag[] = [];
+                    if (!req.variables.except.includes("st1"))
+                      rtn.push(aSemitag({ id: "st1", name: "Semitag 1" }));
+                    if (!req.variables.except.includes("st2"))
+                      rtn.push(aSemitag({ id: "st2", name: "Semitag 2" }));
+                    if (!req.variables.except.includes("st3"))
+                      rtn.push(aSemitag({ id: "st3", name: "Semitag 3" }));
+                    if (!req.variables.except.includes("st4"))
+                      rtn.push(aSemitag({ id: "st4", name: "Semitag 4" }));
+                    if (!req.variables.except.includes("st5"))
+                      rtn.push(aSemitag({ id: "st5", name: "Semitag 5" }));
+                    return rtn;
+                  })(),
                 },
               })
             )
+        ),
+        graphql.query(
+          RegisterTagPage_Semitags_SelectedDocument,
+          (req, res, ctx) => {
+            switch (req.variables.id) {
+              case "st1":
+                return res(
+                  ctx.data({
+                    semitag: aSemitag({ id: "st1", name: "Semitag 1" }),
+                  })
+                );
+              case "st2":
+                return res(
+                  ctx.data({
+                    semitag: aSemitag({ id: "st2", name: "Semitag 2" }),
+                  })
+                );
+              case "st3":
+                return res(
+                  ctx.data({
+                    semitag: aSemitag({ id: "st3", name: "Semitag 3" }),
+                  })
+                );
+              case "st4":
+                return res(
+                  ctx.data({
+                    semitag: aSemitag({ id: "st4", name: "Semitag 4" }),
+                  })
+                );
+              case "st5":
+                return res(
+                  ctx.data({
+                    semitag: aSemitag({ id: "st5", name: "Semitag" }),
+                  })
+                );
+              default:
+                return res(ctx.errors([{ message: "not found" }]));
+            }
+          }
         ),
       ],
     },
   },
 } as Meta<typeof Semitags>;
+export default meta;
 
-export const Primary: StoryObj<typeof Semitags> = {};
+export const NotSelected: StoryObj<typeof meta> = {
+  args: {
+    fields: [],
+  },
+};
+
+export const Selected: StoryObj<typeof meta> = {
+  args: {
+    fields: [
+      { id: "id:st1", semitagId: "st1" },
+      { id: "id:st2", semitagId: "st2" },
+    ],
+  },
+};

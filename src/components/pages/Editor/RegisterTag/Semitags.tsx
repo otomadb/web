@@ -1,4 +1,5 @@
 "use client";
+
 import "client-only";
 
 import clsx from "clsx";
@@ -18,7 +19,7 @@ import {
   RegisterTagPage_Semitags_UnselectedFragmentDoc,
 } from "~/gql/graphql";
 
-import { FormSchema } from "./Form";
+import { FormSchema } from "./FormSchema";
 
 graphql(`
   query RegisterTagPage_Semitags_Selected($id: ID!) {
@@ -36,7 +37,8 @@ export const Selected: React.FC<{
   className?: string;
   semitagId: string;
   remove(): void;
-}> = ({ className, semitagId, remove }) => {
+  disabled: boolean;
+}> = ({ className, semitagId, remove, disabled }) => {
   const [{ data }] = useQuery({
     query: RegisterTagPage_Semitags_SelectedDocument,
     variables: { id: semitagId },
@@ -52,7 +54,7 @@ export const Selected: React.FC<{
         ["grid", "grid-cols-2"]
       )}
       onClick={() => remove()}
-      disabled={!data}
+      disabled={disabled || !data}
     >
       {data && (
         <>
@@ -82,7 +84,8 @@ export const UnselectedRaw: React.FC<{
   className?: string;
   append(): void;
   fragment: RegisterTagPage_Semitags_UnselectedFragment;
-}> = ({ className, fragment, append }) => {
+  disabled: boolean;
+}> = ({ className, fragment, append, disabled }) => {
   return (
     <button
       type="button"
@@ -93,6 +96,7 @@ export const UnselectedRaw: React.FC<{
         ["grid", "grid-cols-2"]
       )}
       onClick={() => append()}
+      disabled={disabled}
     >
       <div className={clsx(["flex"])}>
         <div className={clsx(["text-xs"])}>{fragment.name}</div>
@@ -166,6 +170,7 @@ export const Semitags: React.FC<{
                 remove={() => {
                   remove(index);
                 }}
+                disabled={fetching}
               />
             ))}
           </div>
@@ -202,6 +207,7 @@ export const Semitags: React.FC<{
                   append({ semitagId: semitag.id });
                   setTemporaryPrimaryTitle(semitag.name);
                 }}
+                disabled={fetching}
               />
             ))}
           </div>

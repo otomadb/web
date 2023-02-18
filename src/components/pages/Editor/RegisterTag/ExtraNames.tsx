@@ -1,4 +1,7 @@
 "use client";
+
+import "client-only";
+
 import { PlusIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import React, { useId, useState } from "react";
@@ -11,7 +14,7 @@ import {
 
 import { BlueButton, RedButton } from "~/components/common/Button";
 
-import { FormSchema } from "./Form";
+import { FormSchema } from "./FormSchema";
 
 export const ExtraNames: React.FC<{
   className?: string;

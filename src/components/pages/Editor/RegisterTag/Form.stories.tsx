@@ -1,5 +1,5 @@
+import { css } from "@emotion/css";
 import { Meta, StoryObj } from "@storybook/react";
-import clsx from "clsx";
 import { graphql } from "msw";
 import {
   createClient as createUrqlClient,
@@ -15,6 +15,8 @@ import {
   RegisterTagPage_ImplicitParentTagDocument,
   RegisterTagPage_RegisterTagDocument,
   RegisterTagPage_Semitags_FindSemitagsDocument,
+  RegisterTagPage_Semitags_SelectedDocument,
+  Semitag,
   TagSearcher_SearchDocument,
 } from "~/gql/graphql";
 
@@ -23,7 +25,9 @@ import { RegisterTagForm } from "./Form";
 const meta = {
   component: RegisterTagForm,
   args: {
-    className: clsx(["w-[1024px]"]),
+    className: css`
+      width: 1024px;
+    `,
   },
   render(args) {
     return (
@@ -154,53 +158,62 @@ const meta = {
             res(
               ctx.data({
                 findSemitags: {
-                  nodes: [...new Array(5)]
-                    .map((_, i) => i + 1)
-                    .filter(
-                      (i) => !req.variables.except.includes(`semitag:${i}`)
-                    )
-                    .map((i) =>
-                      aSemitag({
-                        id: `semitag:${i}`,
-                        name: `semitag ${i}`,
-                      })
-                    ),
-                  /*[
-              aSemitag({
-                id: "semitag:1",
-                name: "ドナルド・マクドナルド",
-                video: aVideo({
-                  id: "video_1",
-                  title:
-                    "M.C.ドナルドはダンスに夢中なのか？最終鬼畜道化師ドナルド・Ｍ",
-                  thumbnailUrl: "/storybook/960x540.jpg",
-                }),
-              }),
-              aSemitag({
-                id: "semitag:2",
-                name: "U.N.オーエンは彼女なのか？",
-                video: aVideo({
-                  id: "video_1",
-                  title:
-                    "M.C.ドナルドはダンスに夢中なのか？最終鬼畜道化師ドナルド・Ｍ",
-                  thumbnailUrl: "/storybook/960x540.jpg",
-                }),
-              }),
-              aSemitag({
-                id: "semitag:3",
-                name: "最終鬼畜妹フランドール・Ｓ",
-                video: aVideo({
-                  id: "video_1",
-                  title:
-                    "M.C.ドナルドはダンスに夢中なのか？最終鬼畜道化師ドナルド・Ｍ",
-                  thumbnailUrl: "/storybook/960x540.jpg",
-                }),
-              }),
-            ],
-              */
+                  nodes: (() => {
+                    const rtn: Semitag[] = [];
+                    if (!req.variables.except.includes("st1"))
+                      rtn.push(aSemitag({ id: "st1", name: "Semitag 1" }));
+                    if (!req.variables.except.includes("st2"))
+                      rtn.push(aSemitag({ id: "st2", name: "Semitag 2" }));
+                    if (!req.variables.except.includes("st3"))
+                      rtn.push(aSemitag({ id: "st3", name: "Semitag 3" }));
+                    if (!req.variables.except.includes("st4"))
+                      rtn.push(aSemitag({ id: "st4", name: "Semitag 4" }));
+                    if (!req.variables.except.includes("st5"))
+                      rtn.push(aSemitag({ id: "st5", name: "Semitag 5" }));
+                    return rtn;
+                  })(),
                 },
               })
             )
+        ),
+        graphql.query(
+          RegisterTagPage_Semitags_SelectedDocument,
+          (req, res, ctx) => {
+            switch (req.variables.id) {
+              case "st1":
+                return res(
+                  ctx.data({
+                    semitag: aSemitag({ id: "st1", name: "Semitag 1" }),
+                  })
+                );
+              case "st2":
+                return res(
+                  ctx.data({
+                    semitag: aSemitag({ id: "st2", name: "Semitag 2" }),
+                  })
+                );
+              case "st3":
+                return res(
+                  ctx.data({
+                    semitag: aSemitag({ id: "st3", name: "Semitag 3" }),
+                  })
+                );
+              case "st4":
+                return res(
+                  ctx.data({
+                    semitag: aSemitag({ id: "st4", name: "Semitag 4" }),
+                  })
+                );
+              case "st5":
+                return res(
+                  ctx.data({
+                    semitag: aSemitag({ id: "st5", name: "Semitag" }),
+                  })
+                );
+              default:
+                return res(ctx.errors([{ message: "not found" }]));
+            }
+          }
         ),
       ],
     },

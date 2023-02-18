@@ -1,4 +1,7 @@
 "use client";
+
+import "client-only";
+
 import clsx from "clsx";
 import React, { useId } from "react";
 import { FieldError, UseFormRegisterReturn } from "react-hook-form";
