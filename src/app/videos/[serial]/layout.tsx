@@ -49,11 +49,11 @@ export default async function Layout({
           <SemitagsSection videoId={findVideo.id} />
         </Suspense>
       </div>
-      <div className={clsx(["flex-grow"])}>
+      <div className={clsx(["flex-grow"], ["flex", "flex-col", "gap-y-4"])}>
         <DetailsSection
           fragment={getFragment(VideoPage_DetailsSectionFragmentDoc, findVideo)}
         />
-        <div className={clsx(["flex", "flex-col"])}>{children}</div>
+        <div>{children}</div>
       </div>
     </div>
   );
