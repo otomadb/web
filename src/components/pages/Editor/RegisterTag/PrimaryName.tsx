@@ -6,7 +6,7 @@ import clsx from "clsx";
 import React, { useId } from "react";
 import { FieldError, UseFormRegisterReturn } from "react-hook-form";
 
-export const PrimaryTitle: React.FC<{
+export const PrimaryName: React.FC<{
   className?: string;
   register: UseFormRegisterReturn<string>;
   errors?: FieldError;

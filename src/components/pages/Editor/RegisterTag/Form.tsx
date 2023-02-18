@@ -13,7 +13,7 @@ import { ExplicitParentTag } from "./ExplicitParentTag";
 import { ExtraNames } from "./ExtraNames";
 import { FormSchema, formSchema } from "./FormSchema";
 import { ImplictParentTags } from "./ImplicitParentTags";
-import { PrimaryTitle } from "./PrimaryTitle";
+import { PrimaryName } from "./PrimaryName";
 import { Semitags } from "./Semitags";
 import { useRegister } from "./useRegister";
 
@@ -28,11 +28,22 @@ export const RegisterTagForm: React.FC<{ className?: string }> = ({
     setValue,
     watch,
     getValues,
+    reset,
   } = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
   });
 
-  const onSubmit: SubmitHandler<FormSchema> = useRegister();
+  const onSubmit: SubmitHandler<FormSchema> = useRegister({
+    onSuccess: () => {
+      reset({
+        primaryName: "",
+        extraNames: [],
+        explicitParentTagId: "",
+        implicitParents: [],
+        resolveSemitags: [],
+      });
+    },
+  });
   const {
     fields: extraNames,
     append: appendExtraName,
@@ -72,7 +83,7 @@ export const RegisterTagForm: React.FC<{ className?: string }> = ({
         )}
       >
         <div className={clsx(["flex-grow"], ["flex", "flex-col", ["gap-y-4"]])}>
-          <PrimaryTitle
+          <PrimaryName
             register={register("primaryName")}
             errors={errors.primaryName}
           />

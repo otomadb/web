@@ -3,7 +3,7 @@
 import "client-only";
 
 import clsx from "clsx";
-import React, { useCallback } from "react";
+import React, { ComponentProps, useCallback } from "react";
 import { SubmitHandler } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { useMutation } from "urql";
@@ -34,6 +34,9 @@ export const SuccessToast: React.FC<{
     </div>
   );
 };
+export const useCallSuccessToast =
+  () => (props: Pick<ComponentProps<typeof SuccessToast>, "fragment">) =>
+    toast(() => <SuccessToast {...props} />);
 
 graphql(`
   mutation RegisterTagPage_RegisterTag($input: RegisterTagInput!) {
@@ -50,10 +53,16 @@ graphql(`
     }
   }
 `);
-export const useRegister = (): SubmitHandler<FormSchema> => {
+export const useRegister = ({
+  onSuccess,
+}: {
+  onSuccess(): void;
+}): SubmitHandler<FormSchema> => {
   const [, mutateRegisterTag] = useMutation(
     RegisterTagPage_RegisterTagDocument
   );
+  const callSuccessToast = useCallSuccessToast();
+
   return useCallback(
     async ({
       primaryName,
@@ -71,7 +80,7 @@ export const useRegister = (): SubmitHandler<FormSchema> => {
           resolveSemitags: resolveSemitags.map(({ semitagId }) => semitagId),
         },
       });
-      if (!error || !data) {
+      if (error || !data) {
         // TODO 重大な例外処理
         return;
       }
@@ -81,12 +90,14 @@ export const useRegister = (): SubmitHandler<FormSchema> => {
         return;
       }
 
-      const fragment = getFragment(
-        RegisterTagPage_SuccessToastFragmentDoc,
-        data.registerTag.tag
-      );
-      toast(() => <SuccessToast fragment={fragment} />);
+      onSuccess();
+      callSuccessToast({
+        fragment: getFragment(
+          RegisterTagPage_SuccessToastFragmentDoc,
+          data.registerTag.tag
+        ),
+      });
     },
-    [mutateRegisterTag]
+    [callSuccessToast, mutateRegisterTag, onSuccess]
   );
 };
