@@ -5,7 +5,7 @@ import { graphql } from "~/gql";
 import { fetchGql } from "~/utils/fetchGql";
 
 export default async function Head({ params }: { params: { serial: string } }) {
-  const { findVideo: video } = await fetchGql(
+  const { findVideo } = await fetchGql(
     graphql(`
       query VideoPage_Title($serial: Int!) {
         findVideo(input: { serial: $serial }) {
@@ -17,20 +17,20 @@ export default async function Head({ params }: { params: { serial: string } }) {
     { serial: parseInt(params.serial, 10) }
   );
 
-  if (!video) return notFound();
+  if (!findVideo) return notFound();
 
   return (
     <>
       <CommonHead />
-      <title>{`${video.title} - otomadb`}</title>
-      <meta property="og:title" content={video.title} />
+      <title>{`${findVideo.title} - otomadb`}</title>
+      <meta property="og:title" content={findVideo.title} />
       <meta
         property="og:image"
-        content={`https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/og/video?serial=${video.serial}`}
+        content={`https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/og/video?serial=${findVideo.serial}`}
       />
       <meta
         property="og:url"
-        content={`https://${process.env.NEXT_PUBLIC_VERCEL_URL}/video/${video.serial}`}
+        content={`https://${process.env.NEXT_PUBLIC_VERCEL_URL}/video/${findVideo.serial}`}
       />
       <meta property="twitter:card" content="summary_large_image" />
     </>
