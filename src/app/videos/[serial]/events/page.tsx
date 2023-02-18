@@ -13,6 +13,8 @@ import {
 } from "~/gql/graphql";
 import { fetchGql } from "~/utils/fetchGql";
 
+export const dynamic = "force-dynamic";
+
 export default async function Page({ params }: { params: { serial: string } }) {
   const { findVideo: video } = await fetchGql(
     graphql(`
