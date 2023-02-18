@@ -7,7 +7,10 @@ import {
   Provider as UrqlProvider,
 } from "urql";
 
-import { aSemitag, RegisterTag_FindSemitagsDocument } from "~/gql/graphql";
+import {
+  aSemitag,
+  RegisterTagPage_Semitags_FindSemitagsDocument,
+} from "~/gql/graphql";
 
 import { Semitags } from "./Semitags";
 
@@ -32,16 +35,18 @@ export default {
     layout: "centered",
     msw: {
       handlers: [
-        graphql.query(RegisterTag_FindSemitagsDocument, (req, res, ctx) =>
-          res(
-            ctx.data({
-              findSemitags: {
-                nodes: [...new Array(30)].map((_, i) =>
-                  aSemitag({
-                    id: `semitag:${i}`,
-                  })
-                ),
-                /*[
+        graphql.query(
+          RegisterTagPage_Semitags_FindSemitagsDocument,
+          (req, res, ctx) =>
+            res(
+              ctx.data({
+                findSemitags: {
+                  nodes: [...new Array(30)].map((_, i) =>
+                    aSemitag({
+                      id: `semitag:${i}`,
+                    })
+                  ),
+                  /*[
                   aSemitag({
                     id: "semitag:1",
                     name: "ドナルド・マクドナルド",
@@ -74,9 +79,9 @@ export default {
                   }),
                 ],
                   */
-              },
-            })
-          )
+                },
+              })
+            )
         ),
       ],
     },
