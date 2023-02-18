@@ -99,10 +99,12 @@ export const UnselectedRaw: React.FC<{
       disabled={disabled}
     >
       <div className={clsx(["flex"])}>
-        <div className={clsx(["text-xs"])}>{fragment.name}</div>
+        <div className={clsx(["text-xs"], ["text-left"])}>{fragment.name}</div>
       </div>
       <div className={clsx(["flex"])}>
-        <div className={clsx(["text-xs"])}>{fragment.video.title}</div>
+        <div className={clsx(["text-xs"], ["text-left"])}>
+          {fragment.video.title}
+        </div>
       </div>
     </button>
   );
