@@ -6,22 +6,6 @@ import { getFragment, graphql } from "~/gql";
 import { VideoList_VideoFragmentDoc } from "~/gql/graphql";
 import { fetchGql } from "~/utils/fetchGql";
 
-export async function generateStaticParams() {
-  const { findTags } = await fetchGql(
-    graphql(`
-      query TagPagePaths {
-        findTags(input: { limit: 96, order: { updatedAt: DESC } }) {
-          nodes {
-            serial
-          }
-        }
-      }
-    `),
-    {}
-  );
-  return findTags.nodes.map(({ serial }) => ({ serial: serial.toString() }));
-}
-
 export default async function Page({ params }: { params: { serial: string } }) {
   const { findTag } = await fetchGql(
     graphql(`
