@@ -10,22 +10,23 @@ import {
   aSearchTagsItem,
   aSemitag,
   aTag,
-  aVideo,
   PseudoTagType,
-  RegisterTag_FindSemitagsDocument,
-  RegisterTag_GetParentTagDocument,
-  RegisterTag_GetSemitagDocument,
-  RegisterTag_RegisterTagDocument,
-  RegisterTag_SearchTagsDocument,
+  RegisterTagPage_ExplicitParentTagDocument,
+  RegisterTagPage_ImplicitParentTagDocument,
+  RegisterTagPage_RegisterTagDocument,
+  RegisterTagPage_Semitags_FindSemitagsDocument,
+  RegisterTagPage_Semitags_SelectedDocument,
+  Semitag,
+  TagSearcher_SearchDocument,
 } from "~/gql/graphql";
 
 import { RegisterTagForm } from "./Form";
 
-export default {
+const meta = {
   component: RegisterTagForm,
   args: {
     className: css`
-      width: 960px;
+      width: 1024px;
     `,
   },
   render(args) {
@@ -39,24 +40,24 @@ export default {
     layout: "centered",
     msw: {
       handlers: [
-        graphql.mutation(RegisterTag_RegisterTagDocument, (req, res, ctx) =>
-          res(
-            ctx.data({
-              registerTag: {
-                __typename: "RegisterTagSucceededPayload",
-                tag: aTag({
-                  id: "tag_1",
-                  name: req.variables.primaryName,
-                  explicitParent: aTag({
-                    id: "tag_2",
-                    name: "仮",
+        graphql.mutation(
+          RegisterTagPage_RegisterTagDocument,
+          (req, res, ctx) => {
+            return res(
+              ctx.data({
+                registerTag: {
+                  __typename: "RegisterTagSucceededPayload",
+                  tag: aTag({
+                    id: "t1",
+                    name: req.variables.input.primaryName,
+                    explicitParent: aTag({ id: "tag_2", name: "仮" }),
                   }),
-                }),
-              },
-            })
-          )
+                },
+              })
+            );
+          }
         ),
-        graphql.query(RegisterTag_SearchTagsDocument, (req, res, ctx) =>
+        graphql.query(TagSearcher_SearchDocument, (req, res, ctx) =>
           res(
             ctx.data({
               searchTags: {
@@ -64,11 +65,11 @@ export default {
                   aSearchTagsItem({
                     matchedName: "後藤ひとり",
                     tag: aTag({
-                      id: "tag_1",
+                      id: "t2",
                       name: "後藤ひとり",
                       pseudoType: PseudoTagType.Character,
                       explicitParent: aTag({
-                        id: "tag_2",
+                        id: "t3",
                         name: "ぼっち・ざ・ろっく！",
                       }),
                     }),
@@ -76,7 +77,7 @@ export default {
                   aSearchTagsItem({
                     matchedName: "ぼっち・ざ・ろっく！",
                     tag: aTag({
-                      id: "tag_3",
+                      id: "t3",
                       name: "ぼっち・ざ・ろっく！",
                       pseudoType: PseudoTagType.Copyright,
                       explicitParent: null,
@@ -87,91 +88,141 @@ export default {
             })
           )
         ),
-        graphql.query(RegisterTag_GetSemitagDocument, (req, res, ctx) =>
-          res(
-            ctx.data({
-              semitag: aSemitag({
-                id: "semitag:1",
-                name: "ドナルド・マクドナルド",
-                video: aVideo({
-                  id: "video_1",
-                  title:
-                    "M.C.ドナルドはダンスに夢中なのか？最終鬼畜道化師ドナルド・Ｍ",
-                  thumbnailUrl: "/storybook/960x540.jpg",
-                }),
-              }),
-            })
-          )
+        graphql.query(
+          RegisterTagPage_ExplicitParentTagDocument,
+          (req, res, ctx) => {
+            switch (req.variables.id) {
+              case "t2":
+                return res(
+                  ctx.data({
+                    tag: aTag({
+                      id: "t2",
+                      name: "後藤ひとり",
+                      pseudoType: PseudoTagType.Character,
+                      explicitParent: aTag({
+                        id: "t3",
+                        name: "ぼっち・ざ・ろっく！",
+                      }),
+                    }),
+                  })
+                );
+              case "t3":
+                return res(
+                  ctx.data({
+                    tag: aTag({
+                      id: "t3",
+                      name: "ぼっち・ざ・ろっく！",
+                      pseudoType: PseudoTagType.Copyright,
+                      explicitParent: null,
+                    }),
+                  })
+                );
+            }
+          }
         ),
-        graphql.query(RegisterTag_FindSemitagsDocument, (req, res, ctx) =>
-          res(
-            ctx.data({
-              findSemitags: {
-                nodes: [...new Array(30)]
-                  .map((_, i) => i + 1)
-                  .filter((i) => !req.variables.except.includes(`semitag:${i}`))
-                  .map((i) =>
-                    aSemitag({
-                      id: `semitag:${i}`,
-                      name: `semitag ${i}`,
-                    })
-                  ),
-                /*[
-                aSemitag({
-                  id: "semitag:1",
-                  name: "ドナルド・マクドナルド",
-                  video: aVideo({
-                    id: "video_1",
-                    title:
-                      "M.C.ドナルドはダンスに夢中なのか？最終鬼畜道化師ドナルド・Ｍ",
-                    thumbnailUrl: "/storybook/960x540.jpg",
-                  }),
-                }),
-                aSemitag({
-                  id: "semitag:2",
-                  name: "U.N.オーエンは彼女なのか？",
-                  video: aVideo({
-                    id: "video_1",
-                    title:
-                      "M.C.ドナルドはダンスに夢中なのか？最終鬼畜道化師ドナルド・Ｍ",
-                    thumbnailUrl: "/storybook/960x540.jpg",
-                  }),
-                }),
-                aSemitag({
-                  id: "semitag:3",
-                  name: "最終鬼畜妹フランドール・Ｓ",
-                  video: aVideo({
-                    id: "video_1",
-                    title:
-                      "M.C.ドナルドはダンスに夢中なのか？最終鬼畜道化師ドナルド・Ｍ",
-                    thumbnailUrl: "/storybook/960x540.jpg",
-                  }),
-                }),
-              ],
-                */
-              },
-            })
-          )
+        graphql.query(
+          RegisterTagPage_ImplicitParentTagDocument,
+          (req, res, ctx) => {
+            switch (req.variables.id) {
+              case "t2":
+                return res(
+                  ctx.data({
+                    tag: aTag({
+                      id: "t2",
+                      name: "後藤ひとり",
+                      pseudoType: PseudoTagType.Character,
+                      explicitParent: aTag({
+                        id: "t3",
+                        name: "ぼっち・ざ・ろっく！",
+                      }),
+                    }),
+                  })
+                );
+              case "t3":
+                return res(
+                  ctx.data({
+                    tag: aTag({
+                      id: "t3",
+                      name: "ぼっち・ざ・ろっく！",
+                      pseudoType: PseudoTagType.Copyright,
+                      explicitParent: null,
+                    }),
+                  })
+                );
+            }
+          }
         ),
-        graphql.query(RegisterTag_GetParentTagDocument, (req, res, ctx) =>
-          res(
-            ctx.data({
-              tag: aTag({
-                id: "tag_1",
-                name: "後藤ひとり",
-                explicitParent: aTag({
-                  id: "tag_2",
-                  name: "ぼっち・ざ・ろっく！",
-                }),
-              }),
-            })
-          )
+        graphql.query(
+          RegisterTagPage_Semitags_FindSemitagsDocument,
+          (req, res, ctx) =>
+            res(
+              ctx.data({
+                findSemitags: {
+                  nodes: (() => {
+                    const rtn: Semitag[] = [];
+                    if (!req.variables.except.includes("st1"))
+                      rtn.push(aSemitag({ id: "st1", name: "Semitag 1" }));
+                    if (!req.variables.except.includes("st2"))
+                      rtn.push(aSemitag({ id: "st2", name: "Semitag 2" }));
+                    if (!req.variables.except.includes("st3"))
+                      rtn.push(aSemitag({ id: "st3", name: "Semitag 3" }));
+                    if (!req.variables.except.includes("st4"))
+                      rtn.push(aSemitag({ id: "st4", name: "Semitag 4" }));
+                    if (!req.variables.except.includes("st5"))
+                      rtn.push(aSemitag({ id: "st5", name: "Semitag 5" }));
+                    return rtn;
+                  })(),
+                },
+              })
+            )
+        ),
+        graphql.query(
+          RegisterTagPage_Semitags_SelectedDocument,
+          (req, res, ctx) => {
+            switch (req.variables.id) {
+              case "st1":
+                return res(
+                  ctx.data({
+                    semitag: aSemitag({ id: "st1", name: "Semitag 1" }),
+                  })
+                );
+              case "st2":
+                return res(
+                  ctx.data({
+                    semitag: aSemitag({ id: "st2", name: "Semitag 2" }),
+                  })
+                );
+              case "st3":
+                return res(
+                  ctx.data({
+                    semitag: aSemitag({ id: "st3", name: "Semitag 3" }),
+                  })
+                );
+              case "st4":
+                return res(
+                  ctx.data({
+                    semitag: aSemitag({ id: "st4", name: "Semitag 4" }),
+                  })
+                );
+              case "st5":
+                return res(
+                  ctx.data({
+                    semitag: aSemitag({ id: "st5", name: "Semitag" }),
+                  })
+                );
+              default:
+                return res(ctx.errors([{ message: "not found" }]));
+            }
+          }
         ),
       ],
     },
   },
 } as Meta<typeof RegisterTagForm>;
+export default meta;
 
-export const Primary: StoryObj<typeof RegisterTagForm> = {
+type Story = StoryObj<typeof meta>;
+
+export const Primary: Story = {
   args: {},
 };

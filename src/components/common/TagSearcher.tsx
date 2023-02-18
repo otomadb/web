@@ -29,12 +29,12 @@ graphql(`
     }
   }
 `);
-
 export const TagSearcher: React.FC<{
   className?: string;
   handleSelect(id: string): void;
   limit?: number;
-}> = ({ className, handleSelect, limit = 5 }) => {
+  disabled?: boolean;
+}> = ({ className, handleSelect, limit = 5, disabled = false }) => {
   const [query, setQuery] = useState<string>("");
   const [{ data, fetching }] = useQuery({
     query: TagSearcher_SearchDocument,
@@ -85,6 +85,7 @@ export const TagSearcher: React.FC<{
             ["text-sm"]
           )}
           onUpdateQuery={(q) => setQuery(q)}
+          disabled={disabled}
         />
       </label>
       <div
@@ -141,7 +142,6 @@ graphql(`
     }
   }
 `);
-
 const Item: React.FC<{
   className?: string;
   handleSelect(id: string): void;
