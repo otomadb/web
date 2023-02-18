@@ -23,17 +23,6 @@ graphql(`
       ...Component_Tag
     }
   }
-
-  query RegisterTagPage_ExplicitParentTag_SearchTags($query: String!) {
-    searchTags(input: { query: $query, limit: 5 }) {
-      items {
-        matchedName
-        tag {
-          ...Component_Tag
-        }
-      }
-    }
-  }
 `);
 export const ExplicitParentTag: React.FC<{
   className?: string;
