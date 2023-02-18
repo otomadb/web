@@ -9,7 +9,7 @@ import { getFragment, graphql } from "~/gql";
 import { VideoPage_DetailsSectionFragmentDoc } from "~/gql/graphql";
 import { fetchGql } from "~/utils/fetchGql";
 
-export default async function Page({
+export default async function Layout({
   children,
   params,
 }: {
