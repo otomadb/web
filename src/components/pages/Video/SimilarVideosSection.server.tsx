@@ -23,7 +23,6 @@ graphql(`
     }
   }
 `);
-
 export const SimilarVideosSection = async ({
   className,
   videoId,

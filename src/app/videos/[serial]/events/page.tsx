@@ -61,11 +61,11 @@ export default async function Page({ params }: { params: { serial: string } }) {
   if (!video) return notFound();
 
   return (
-    <>
+    <div className={clsx(["flex", "flex-col", "gap-y-4"])}>
       <section className={clsx(["flex", "flex-col"], ["gap-x-4"])}>
         <h2 className={clsx(["text-lg"])}>この動画に関する全ての変更</h2>
         <MixedEventLists
-          className={clsx(["mt-4"])}
+          className={clsx(["mt-2"])}
           eventsVideo={getFragment(
             VideoEventPage_VideoEventsFragmentDoc,
             video.events
@@ -96,6 +96,6 @@ export default async function Page({ params }: { params: { serial: string } }) {
           )}
         />
       </section>
-    </>
+    </div>
   );
 }
