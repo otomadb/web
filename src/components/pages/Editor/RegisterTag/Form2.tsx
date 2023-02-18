@@ -93,6 +93,7 @@ export const RegisterTagForm: React.FC<{ className?: string }> = ({
     register,
     setValue,
     watch,
+    getValues,
   } = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
   });
@@ -122,7 +123,7 @@ export const RegisterTagForm: React.FC<{ className?: string }> = ({
         ["rounded"],
         ["border", "border-slate-300"],
         ["bg-slate-50"],
-        ["flex", "gap-x-4"]
+        ["flex", "gap-x-4", "items-stretch"]
       )}
       onSubmit={handleSubmit(onSubmit)}
     >
@@ -130,7 +131,10 @@ export const RegisterTagForm: React.FC<{ className?: string }> = ({
         className={clsx(
           ["w-96"],
           ["flex-shrink-0"],
-          ["flex", "flex-col", ["gap-y-4"]]
+          ["flex", "flex-col", ["gap-y-4"]],
+          ["border"],
+          ["rounded-md"],
+          ["px-4", "py-4"]
         )}
       >
         <div className={clsx(["flex-grow"], ["flex", "flex-col", ["gap-y-4"]])}>
@@ -166,11 +170,22 @@ export const RegisterTagForm: React.FC<{ className?: string }> = ({
           </BlueButton>
         </div>
       </div>
-      <div className={clsx(["flex-grow"])}>
+      <div
+        className={clsx(
+          ["flex-grow"],
+          ["border"],
+          ["rounded-md"],
+          ["px-4", "py-4"]
+        )}
+      >
         <Semitags
+          className={clsx(["h-full"])}
           fields={resolveSemitags}
           append={appendResolveSemitag}
           remove={removeResolveSemitag}
+          setTemporaryPrimaryTitle={(temp) => {
+            if (getValues("primaryName") === "") setValue("primaryName", temp);
+          }}
         />
       </div>
     </form>

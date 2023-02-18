@@ -8,11 +8,13 @@ import {
 
 import {
   aSearchTagsItem,
+  aSemitag,
   aTag,
   PseudoTagType,
-  RegisterTag_RegisterTagDocument,
   RegisterTagPage_ExplicitParentTagDocument,
   RegisterTagPage_ImplicitParentTagDocument,
+  RegisterTagPage_RegisterTagDocument,
+  RegisterTagPage_Semitags_FindSemitagsDocument,
   TagSearcher_SearchDocument,
 } from "~/gql/graphql";
 
@@ -34,20 +36,23 @@ const meta = {
     layout: "centered",
     msw: {
       handlers: [
-        graphql.mutation(RegisterTag_RegisterTagDocument, (req, res, ctx) => {
-          return res(
-            ctx.data({
-              registerTag: {
-                __typename: "RegisterTagSucceededPayload",
-                tag: aTag({
-                  id: "t1",
-                  name: req.variables.primaryName,
-                  explicitParent: aTag({ id: "tag_2", name: "仮" }),
-                }),
-              },
-            })
-          );
-        }),
+        graphql.mutation(
+          RegisterTagPage_RegisterTagDocument,
+          (req, res, ctx) => {
+            return res(
+              ctx.data({
+                registerTag: {
+                  __typename: "RegisterTagSucceededPayload",
+                  tag: aTag({
+                    id: "t1",
+                    name: req.variables.input.primaryName,
+                    explicitParent: aTag({ id: "tag_2", name: "仮" }),
+                  }),
+                },
+              })
+            );
+          }
+        ),
         graphql.query(TagSearcher_SearchDocument, (req, res, ctx) =>
           res(
             ctx.data({
@@ -142,6 +147,60 @@ const meta = {
                 );
             }
           }
+        ),
+        graphql.query(
+          RegisterTagPage_Semitags_FindSemitagsDocument,
+          (req, res, ctx) =>
+            res(
+              ctx.data({
+                findSemitags: {
+                  nodes: [...new Array(5)]
+                    .map((_, i) => i + 1)
+                    .filter(
+                      (i) => !req.variables.except.includes(`semitag:${i}`)
+                    )
+                    .map((i) =>
+                      aSemitag({
+                        id: `semitag:${i}`,
+                        name: `semitag ${i}`,
+                      })
+                    ),
+                  /*[
+              aSemitag({
+                id: "semitag:1",
+                name: "ドナルド・マクドナルド",
+                video: aVideo({
+                  id: "video_1",
+                  title:
+                    "M.C.ドナルドはダンスに夢中なのか？最終鬼畜道化師ドナルド・Ｍ",
+                  thumbnailUrl: "/storybook/960x540.jpg",
+                }),
+              }),
+              aSemitag({
+                id: "semitag:2",
+                name: "U.N.オーエンは彼女なのか？",
+                video: aVideo({
+                  id: "video_1",
+                  title:
+                    "M.C.ドナルドはダンスに夢中なのか？最終鬼畜道化師ドナルド・Ｍ",
+                  thumbnailUrl: "/storybook/960x540.jpg",
+                }),
+              }),
+              aSemitag({
+                id: "semitag:3",
+                name: "最終鬼畜妹フランドール・Ｓ",
+                video: aVideo({
+                  id: "video_1",
+                  title:
+                    "M.C.ドナルドはダンスに夢中なのか？最終鬼畜道化師ドナルド・Ｍ",
+                  thumbnailUrl: "/storybook/960x540.jpg",
+                }),
+              }),
+            ],
+              */
+                },
+              })
+            )
         ),
       ],
     },
