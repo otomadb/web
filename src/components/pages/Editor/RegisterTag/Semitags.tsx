@@ -4,6 +4,7 @@ import "client-only";
 import { ArrowPathIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 import React, { useEffect, useId, useMemo } from "react";
+import { FieldArrayWithId } from "react-hook-form";
 import { useQuery } from "urql";
 
 import { graphql } from "~/gql";
@@ -11,6 +12,8 @@ import {
   RegisterTag_FindSemitagsDocument,
   RegisterTag_GetSemitagDocument,
 } from "~/gql/graphql";
+
+import { FormSchema } from "./Form2";
 
 graphql(`
   query RegisterTag_GetSemitag($id: ID!) {
@@ -138,7 +141,7 @@ export const UnselectedRaw: React.FC<{
 
 export const Semitags: React.FC<{
   className?: string;
-  fields: { id: string; semitagId: string }[];
+  fields: FieldArrayWithId<FormSchema, "resolveSemitags", "id">[];
   append(p: { semitagId: string; name: string }): void;
   remove(index: number): void;
 }> = ({ className, fields, append, remove }) => {

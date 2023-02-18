@@ -21,7 +21,7 @@ import {
 
 import { RegisterTagForm } from "./Form";
 
-export default {
+const meta = {
   component: RegisterTagForm,
   args: {
     className: css`
@@ -117,38 +117,38 @@ export default {
                     })
                   ),
                 /*[
-                aSemitag({
-                  id: "semitag:1",
-                  name: "ドナルド・マクドナルド",
-                  video: aVideo({
-                    id: "video_1",
-                    title:
-                      "M.C.ドナルドはダンスに夢中なのか？最終鬼畜道化師ドナルド・Ｍ",
-                    thumbnailUrl: "/storybook/960x540.jpg",
-                  }),
+              aSemitag({
+                id: "semitag:1",
+                name: "ドナルド・マクドナルド",
+                video: aVideo({
+                  id: "video_1",
+                  title:
+                    "M.C.ドナルドはダンスに夢中なのか？最終鬼畜道化師ドナルド・Ｍ",
+                  thumbnailUrl: "/storybook/960x540.jpg",
                 }),
-                aSemitag({
-                  id: "semitag:2",
-                  name: "U.N.オーエンは彼女なのか？",
-                  video: aVideo({
-                    id: "video_1",
-                    title:
-                      "M.C.ドナルドはダンスに夢中なのか？最終鬼畜道化師ドナルド・Ｍ",
-                    thumbnailUrl: "/storybook/960x540.jpg",
-                  }),
+              }),
+              aSemitag({
+                id: "semitag:2",
+                name: "U.N.オーエンは彼女なのか？",
+                video: aVideo({
+                  id: "video_1",
+                  title:
+                    "M.C.ドナルドはダンスに夢中なのか？最終鬼畜道化師ドナルド・Ｍ",
+                  thumbnailUrl: "/storybook/960x540.jpg",
                 }),
-                aSemitag({
-                  id: "semitag:3",
-                  name: "最終鬼畜妹フランドール・Ｓ",
-                  video: aVideo({
-                    id: "video_1",
-                    title:
-                      "M.C.ドナルドはダンスに夢中なのか？最終鬼畜道化師ドナルド・Ｍ",
-                    thumbnailUrl: "/storybook/960x540.jpg",
-                  }),
+              }),
+              aSemitag({
+                id: "semitag:3",
+                name: "最終鬼畜妹フランドール・Ｓ",
+                video: aVideo({
+                  id: "video_1",
+                  title:
+                    "M.C.ドナルドはダンスに夢中なのか？最終鬼畜道化師ドナルド・Ｍ",
+                  thumbnailUrl: "/storybook/960x540.jpg",
                 }),
-              ],
-                */
+              }),
+            ],
+              */
               },
             })
           )
@@ -171,7 +171,10 @@ export default {
     },
   },
 } as Meta<typeof RegisterTagForm>;
+export default meta;
 
-export const Primary: StoryObj<typeof RegisterTagForm> = {
+type Story = StoryObj<typeof meta>;
+
+export const Primary: Story = {
   args: {},
 };

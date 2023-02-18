@@ -1,16 +1,14 @@
 "use client";
 import clsx from "clsx";
-import React, { ReactNode } from "react";
+import React from "react";
 
-const ButtonTemplate: React.FC<{
-  className?: string;
-  onClick?(): void;
-  disabled?: boolean;
-  children: ReactNode;
-}> = ({ className, onClick, disabled, children }) => (
+const ButtonTemplate: React.FC<
+  React.DetailedHTMLProps<
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
+    HTMLButtonElement
+  >
+> = ({ className, children, ...props }) => (
   <button
-    type="button"
-    onClick={() => onClick?.()}
     className={clsx(
       className,
       ["rounded"],
@@ -18,7 +16,7 @@ const ButtonTemplate: React.FC<{
       ["disabled:bg-slate-300"],
       ["disabled:text-slate-200"]
     )}
-    disabled={disabled}
+    {...props}
   >
     {children}
   </button>

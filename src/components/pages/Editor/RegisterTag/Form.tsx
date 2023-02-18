@@ -61,7 +61,6 @@ const formSchema = z.object({
       })
     )
   ),
-
   explicitParentTagId: z.optional(z.string()),
   implicitParents: z.array(z.object({ tagId: z.string() })),
   resolveSemitags: z.array(z.object({ semitagId: z.string() })),
@@ -224,7 +223,7 @@ export const RegisterTagForm: React.FC<{ className?: string }> = ({
         </div>
         <ExplicitParentTag
           className={clsx(["flex-shrink-0"], ["w-96"])}
-          tagId={explicitParentTagId}
+          explicitParentTagId={explicitParentTagId}
           selectedParentIds={selectedParentIds}
           append={(id) => setValue("explicitParentTagId", id)}
           remove={() => setValue("explicitParentTagId", undefined)}

@@ -72,7 +72,7 @@ export const RegisterForm: React.FC<{
       tagIds: selectedTags,
       thumbnail: thumbnailUrl,
       semitagNames,
-    } satisfies RegisterData;
+    };
   }, [nicovideoId, selectedTags, thumbnailUrl, title, semitagNames]);
 
   return (
