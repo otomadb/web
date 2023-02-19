@@ -22,7 +22,6 @@ const meta = {
     );
   },
   parameters: {
-    layout: "centered",
     msw: { handlers: [] },
   },
 } as Meta<typeof SourceAlreadyExists>;

@@ -15,7 +15,7 @@ const formSchema = z.object({
     }),
 });
 type FormSchema = z.infer<typeof formSchema>;
-export const NicovideoInputForm: React.FC<{
+export const SourceIdInputForm: React.FC<{
   className?: string;
   set(sourceId: string): void;
 }> = ({ className, set }) => {
@@ -37,14 +37,23 @@ export const NicovideoInputForm: React.FC<{
 
   return (
     <form
-      className={clsx(className, ["flex", "flex-col", "items-start"])}
+      className={clsx(
+        className,
+        ["border"],
+        ["rounded-md"],
+        ["px-4", "py-4"],
+        ["flex", "flex-col", "items-start", "gap-y-2"]
+      )}
       onSubmit={handleSubmit(onSubmit)}
     >
-      <div className={clsx(["flex", "items-stretch", "gap-x-2"])}>
-        <div className={clsx(["flex-grow"])}>
+      <div>ニコニコ動画の動画IDの入力</div>
+      <div className={clsx(["flex", "flex-col", "gap-y-1"])}>
+        <div
+          className={clsx(["flex-grow"], ["flex", "items-stretch", "gap-x-2"])}
+        >
           <input
             {...register("sourceId")}
-            aria-label="ID入力"
+            aria-label="ニコニコ動画の動画ID"
             className={clsx(
               ["px-2"],
               ["py-1"],
@@ -55,18 +64,23 @@ export const NicovideoInputForm: React.FC<{
             )}
             placeholder="sm2057168"
           />
+          <BlueButton
+            type="submit"
+            aria-label="ニコニコ動画からの検索"
+            className={clsx(
+              ["py-1"],
+              ["px-4"],
+              ["rounded"],
+              ["cursor-pointer"]
+            )}
+          >
+            検索
+          </BlueButton>
         </div>
-        <BlueButton
-          type="submit"
-          aria-label="検索"
-          className={clsx(["py-1"], ["px-4"], ["rounded"], ["cursor-pointer"])}
-        >
-          検索
-        </BlueButton>
-      </div>
-      <div className={clsx([""])}>
         {errors.sourceId && (
-          <p className={clsx(["text-red-400"])}>{errors.sourceId.message}</p>
+          <div className={clsx(["text-xs", "text-red-400"])}>
+            {errors.sourceId.message}
+          </div>
         )}
       </div>
     </form>

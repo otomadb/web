@@ -37,16 +37,20 @@ export const OriginalSource: React.FC<{
 }> = ({ className, fragment, toggleTag }) => {
   return (
     <div className={clsx(className, ["flex", "gap-x-4"])}>
-      <div className={clsx(["w-64"], ["flex", "flex-col", "gap-y-4"])}>
-        <div className={clsx(["flex", "flex-col"])}>
+      <div
+        className={clsx(
+          ["flex-shrink-0"],
+          ["w-72"],
+          ["flex", "flex-col", "gap-y-4"]
+        )}
+      >
+        <div className={clsx(["flex", "flex-col", "gap-y-1"])}>
           <div className={clsx(["text-xs"])}>タイトル</div>
-          <div className={clsx(["mt-1"], ["text-sm", "font-bold"])}>
-            {fragment.title}
-          </div>
+          <div className={clsx(["text-sm", "font-bold"])}>{fragment.title}</div>
         </div>
-        <div className={clsx()}>
+        <div className={clsx(["flex", "flex-col", "gap-y-1"])}>
           <div className={clsx(["text-xs"])}>サムネイル</div>
-          <div className={clsx(["mt-1"])}>
+          <div className={clsx()}>
             <Image
               className={clsx(["object-scale-down"], ["w-48"])}
               src={fragment.thumbnailUrl}
@@ -57,7 +61,7 @@ export const OriginalSource: React.FC<{
           </div>
         </div>
       </div>
-      <div className={clsx(["flex", "flex-col"])}>
+      <div className={clsx(["flex-grow"], ["flex", "flex-col"])}>
         <div className={clsx(["text-xs"])}>タグ</div>
         <div
           className={clsx(

@@ -1,194 +1,302 @@
 "use client";
-
 import "client-only";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
 import Image from "next/image";
-import React, { useMemo, useReducer, useState } from "react";
+import React, { ComponentProps, useCallback, useState } from "react";
+import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
+import { useMutation, useQuery } from "urql";
+import * as z from "zod";
 
-import { RegisterButton, RegisterData } from "./RegisterButton";
-import { RegisterTag } from "./RegisterTag";
-import { Semitag } from "./Semitag";
-import { TagAdder } from "./TagAdder";
+import { BlueButton } from "~/components/common/Button";
+import { CommonTag } from "~/components/common/Tag";
+import { getFragment, graphql } from "~/gql";
+import {
+  CommonTagFragmentDoc,
+  RegisterNicovideoPage_RegisterForm_RegisterVideoDocument,
+  RegisterNicovideoPage_RegisterForm_SuccessToastFragment,
+  RegisterNicovideoPage_RegisterForm_SuccessToastFragmentDoc,
+  RegisterNicovideoPage_RegisterForm_TagDocument,
+} from "~/gql/graphql";
 
-export type SourceData = {
-  id: string;
-  title: string;
-  tags: string[];
-  thumbnails: {
-    type: string;
-    url: string;
-  }[];
-};
+import { SourceChecker } from "./SourceChecker";
+
+export const formSchema = z.object({
+  title: z.string(),
+  thumbnailUrl: z.string(),
+  tags: z.array(z.object({ tagId: z.string() })),
+  semitags: z.array(z.object({ name: z.string() })),
+});
+export type FormSchema = z.infer<typeof formSchema>;
 
 export const RegisterForm: React.FC<{
   className?: string;
+  sourceId: string | undefined;
+  clearSourceId(): void;
+}> = ({ className, sourceId, clearSourceId }) => {
+  const [notyet, setNotyet] = useState<boolean | undefined>(undefined);
+  const [exists, setExists] = useState<boolean | undefined>(undefined);
 
-  sourceId: string;
-  title: string;
-  thumbnailUrl: string;
-  tags: string[];
-  selectTag(id: string): void;
-  deselectTag(id: string): void;
+  const { control, handleSubmit, register, setValue, watch, getValues, reset } =
+    useForm<FormSchema>({
+      resolver: zodResolver(formSchema),
+    });
 
-  onRegistered(): void;
-}> = ({
-  className,
-  sourceId,
-  title: initTitle,
-  thumbnailUrl,
-  tags: selectedTags,
-  deselectTag,
-  selectTag,
-  onRegistered,
-}) => {
-  const nicovideoId = useMemo(() => sourceId, [sourceId]);
-  const [title, setTitle] = useState(initTitle);
+  const thumbnailUrl = watch("thumbnailUrl");
+  const {
+    fields: tags,
+    append: appendTag,
+    remove: removeTag,
+  } = useFieldArray({ control, name: "tags" });
+  const {
+    fields: semitags,
+    append: appendSemitag,
+    remove: removeSemitag,
+  } = useFieldArray({ control, name: "semitags" });
 
-  const [semitagNames, updateSemitagNames] = useReducer(
-    (
-      state: string[],
-      action: { type: "add"; name: string } | { type: "remove"; name: string }
-    ) => {
-      switch (action.type) {
-        case "add":
-          if (state.includes(action.name)) return state;
-          return [...state, action.name];
-        case "remove":
-          return state.filter((n) => n !== action.name);
+  const [, mutateRegisterTag] = useMutation(
+    RegisterNicovideoPage_RegisterForm_RegisterVideoDocument
+  );
+  const callSuccessToast = useCallSuccessToast();
+  const registerVideo: SubmitHandler<FormSchema> = useCallback(
+    async ({ title, thumbnailUrl, tags: tag }) => {
+      const { data, error } = await mutateRegisterTag({
+        input: {
+          primaryTitle: title,
+          extraTitles: [],
+          primaryThumbnail: thumbnailUrl,
+          tags: tag.map(({ tagId: id }) => id),
+          semitags: [],
+          sources: [],
+        },
+      });
+      if (error || !data) {
+        // TODO 重大な例外処理
+        return;
+      }
+
+      if (data.registerVideo.__typename === "RegisterVideoFailedPayload") {
+        // TODO: 何かしら出す
+        return;
+      }
+
+      callSuccessToast({
+        fragment: getFragment(
+          RegisterNicovideoPage_RegisterForm_SuccessToastFragmentDoc,
+          data.registerVideo
+        ),
+      });
+      reset({ title: "", thumbnailUrl: "", tags: [] });
+      clearSourceId();
+      setExists(undefined);
+      setNotyet(undefined);
+    },
+    [callSuccessToast, clearSourceId, mutateRegisterTag, reset]
+  );
+  const setSource = useCallback(
+    (source: undefined | { title: string; thumbnailUrl: string }) => {
+      if (!source) {
+        setExists(false);
+      } else {
+        setExists(true);
+        setValue("title", source.title);
+        setValue("thumbnailUrl", source.thumbnailUrl);
       }
     },
-    []
+    [setValue]
+  );
+  const toggleTag = useCallback(
+    (id: string) => {
+      const index = getValues("tags").findIndex(({ tagId }) => tagId === id);
+      if (index === -1) appendTag({ tagId: id });
+      else removeTag(index);
+    },
+    [appendTag, getValues, removeTag]
   );
 
-  const registerData = useMemo<RegisterData | undefined>(() => {
-    if (typeof nicovideoId === "undefined") return;
-    if (typeof title === "undefined") return;
-    if (typeof thumbnailUrl === "undefined") return;
-
-    return {
-      nicovideoId,
-      title,
-      tagIds: selectedTags,
-      thumbnail: thumbnailUrl,
-      semitagNames,
-    };
-  }, [nicovideoId, selectedTags, thumbnailUrl, title, semitagNames]);
+  if (!sourceId)
+    return (
+      <div
+        className={clsx(
+          className,
+          ["flex", "flex-col", "gap-y-4"],
+          ["border"],
+          ["rounded-md"],
+          ["px-4", "py-4"]
+        )}
+      >
+        <p>sourceId input</p>
+      </div>
+    );
 
   return (
-    <div className={clsx(className, ["flex", ["flex-col"]], ["gap-y-4"])}>
-      <div>
-        <p>動画ID</p>
-        <p className={clsx(["mt-1"], ["w-full"], ["text-sm"], ["font-bold"])}>
-          {nicovideoId}
-        </p>
-      </div>
-      <div>
-        <p>タイトル</p>
-        <input
-          type={"text"}
-          value={title}
+    <form
+      className={clsx(
+        className,
+        ["flex", "flex-col", "gap-y-4"],
+        ["border"],
+        ["rounded-md"],
+        ["px-4", "py-4"]
+      )}
+      onSubmit={handleSubmit(registerVideo)}
+    >
+      <SourceChecker
+        sourceId={sourceId}
+        setNotyet={(notyet) => setNotyet(notyet)}
+        setSource={(source) => setSource(source)}
+        toggleTag={(id) => toggleTag(id)}
+      />
+      {notyet && exists && (
+        <div
           className={clsx(
-            ["mt-1"],
-            ["px-2"],
-            ["py-1"],
-            ["w-full"],
-            ["text-sm"],
-            ["font-bold"],
-            ["bg-gray-50"],
-            ["border", "border-gray-300"],
-            ["rounded"]
+            ["flex", "flex-col"],
+            ["border"],
+            ["rounded-md"],
+            ["px-4", "py-4"]
           )}
-          onChange={(e) => {
-            setTitle(e.target.value);
-          }}
-        ></input>
-      </div>
-      <div>
-        <p>サムネイル</p>
-        <div className={clsx(["mt-1"])}>
-          <Image
-            className={clsx(["object-scale-down"], ["h-32"])}
-            src={thumbnailUrl}
-            width={260}
-            height={200}
-            alt={`${title}のサムネイル候補`}
-          />
-        </div>
-      </div>
-      <div>
-        <p>タグ付け</p>
-        <div className={clsx(["mt-1"], ["px-2"])}>
-          <TagAdder
-            className={clsx(["w-72"])}
-            select={(p) => {
-              if (p.type === "tag") selectTag(p.id);
-              else updateSemitagNames({ type: "add", name: p.name });
-            }}
-          />
+        >
+          <div>追加フォーム</div>
           <div className={clsx(["mt-2"])}>
-            <p className={clsx(["text-sm"])}>タグ</p>
-            <div className={clsx(["mt-1"])}>
-              {selectedTags.length === 0 && (
-                <p className={clsx(["text-slate-500"], ["text-xs"])}>
-                  タグ付けはありません
-                </p>
-              )}
-              <div
-                className={clsx(
-                  ["flex"],
-                  ["flex-wrap"],
-                  ["gap-x-2"],
-                  ["gap-y-2"]
-                )}
-              >
-                {selectedTags.map((id) => (
-                  <RegisterTag
-                    key={id}
-                    id={id}
-                    deselect={() => deselectTag(id)}
-                  />
-                ))}
+            <div className={clsx(["flex", "flex-col", "gap-y-4"])}>
+              <div>
+                <label className={clsx(["flex", "flex-col", "gap-y-1"])}>
+                  <div className={clsx(["text-xs"])}>タイトル</div>
+                  <input
+                    className={clsx(["text-sm"])}
+                    {...register("title")}
+                  ></input>
+                </label>
+              </div>
+              <div className={clsx(["flex", "gap-x-4"])}>
+                <label
+                  className={clsx(
+                    ["w-72"],
+                    ["flex-shrink-0"],
+                    ["flex", "flex-col", "gap-y-1"]
+                  )}
+                >
+                  <div className={clsx(["text-xs"])}>サムネイル</div>
+                  {thumbnailUrl && (
+                    <Image
+                      className={clsx(["object-scale-down"], ["w-48"])}
+                      src={thumbnailUrl}
+                      width={260}
+                      height={200}
+                      alt={`サムネイル候補`}
+                    />
+                  )}
+                </label>
+                <div className={clsx(["flex-grow"], ["flex", "flex-col"])}>
+                  <div className={clsx(["flex-grow"], ["flex", "flex-col"])}>
+                    <div className={clsx(["text-xs"])}>追加されるタグ</div>
+                    <div
+                      className={clsx([
+                        "flex",
+                        "flex-wrap",
+                        "gap-x-2",
+                        "gap-y-2",
+                      ])}
+                    >
+                      {tags.map(({ id, tagId }, index) => (
+                        <TagItem
+                          key={id}
+                          tagId={tagId}
+                          remove={() => removeTag(index)}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                  <div className={clsx(["flex-grow"], ["flex", "flex-col"])}>
+                    <div className={clsx(["text-xs"])}>追加される仮タグ</div>
+                    <div
+                      className={clsx([
+                        "flex",
+                        "flex-wrap",
+                        "gap-x-2",
+                        "gap-y-2",
+                      ])}
+                    >
+                      {semitags.map(({ id, name }, index) => (
+                        <button key={id} onClick={() => removeSemitag(index)}>
+                          {name}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-          <div className={clsx(["mt-2"])}>
-            <p className={clsx(["text-sm"])}>仮タグ</p>
-            <div className={clsx(["mt-1"])}>
-              {semitagNames.length === 0 && (
-                <p className={clsx(["text-slate-500"], ["text-xs"])}>
-                  仮タグ付けはありません
-                </p>
-              )}
-              <div
-                className={clsx(
-                  ["flex"],
-                  ["flex-wrap"],
-                  ["gap-x-2"],
-                  ["gap-y-2"]
-                )}
-              >
-                {semitagNames.map((name) => (
-                  <Semitag
-                    key={name}
-                    name={name}
-                    className={clsx()}
-                    onClick={() => updateSemitagNames({ type: "remove", name })}
-                  />
-                ))}
-              </div>
-            </div>
+          <div className={clsx("mt-4")}>
+            <BlueButton type="submit" className={clsx(["px-4"], ["py-1"])}>
+              登録
+            </BlueButton>
           </div>
         </div>
-      </div>
-      <div>
-        <RegisterButton
-          registerData={registerData}
-          onSuccess={() => {
-            onRegistered();
-          }}
-        />
-      </div>
+      )}
+    </form>
+  );
+};
+
+graphql(`
+  query RegisterNicovideoPage_RegisterForm_Tag($id: ID!) {
+    tag(id: $id) {
+      ...CommonTag
+    }
+  }
+`);
+const TagItem: React.FC<{
+  className?: string;
+  tagId: string;
+  remove(): void;
+}> = ({ className, tagId, remove }) => {
+  const [{ data }] = useQuery({
+    query: RegisterNicovideoPage_RegisterForm_TagDocument,
+    variables: { id: tagId },
+  });
+
+  return (
+    <button className={clsx(className)} onClick={() => remove()}>
+      {data && (
+        <CommonTag fragment={getFragment(CommonTagFragmentDoc, data.tag)} />
+      )}
+    </button>
+  );
+};
+
+graphql(`
+  fragment RegisterNicovideoPage_RegisterForm_SuccessToast on RegisterVideoSucceededPayload {
+    video {
+      id
+      title
+      ...Link_Video
+    }
+  }
+`);
+export const SuccessToast: React.FC<{
+  fragment: RegisterNicovideoPage_RegisterForm_SuccessToastFragment;
+}> = ({ fragment }) => {
+  return (
+    <div>
+      <span className={clsx(["text-slate-700"])}>を登録しました．</span>
     </div>
   );
 };
+export const useCallSuccessToast =
+  () => (props: Pick<ComponentProps<typeof SuccessToast>, "fragment">) =>
+    toast(() => <SuccessToast {...props} />);
+
+graphql(`
+  mutation RegisterNicovideoPage_RegisterForm_RegisterVideo(
+    $input: RegisterVideoInput!
+  ) {
+    registerVideo(input: $input) {
+      __typename
+      ... on RegisterVideoSucceededPayload {
+        ...RegisterNicovideoPage_RegisterForm_SuccessToast
+      }
+    }
+  }
+`);

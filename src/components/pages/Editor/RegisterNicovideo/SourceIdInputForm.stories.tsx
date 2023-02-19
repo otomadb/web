@@ -5,25 +5,24 @@ import {
   Provider as UrqlProvider,
 } from "urql";
 
-import { NicovideoInputForm } from "./NicovideoInputForm";
+import { SourceIdInputForm } from "./SourceIdInputForm";
 
 const meta = {
-  component: NicovideoInputForm,
+  component: SourceIdInputForm,
   args: {
     set: action("set"),
   },
   render(args) {
     return (
       <UrqlProvider value={createUrqlClient({ url: "/graphql" })}>
-        <NicovideoInputForm {...args} />
+        <SourceIdInputForm {...args} />
       </UrqlProvider>
     );
   },
   parameters: {
-    layout: "centered",
     msw: { handlers: [] },
   },
-} as Meta<typeof NicovideoInputForm>;
+} as Meta<typeof SourceIdInputForm>;
 export default meta;
 
 export const Primary: StoryObj<typeof meta> = {

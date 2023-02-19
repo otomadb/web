@@ -22,6 +22,8 @@ const meta = {
   component: SourceChecker,
   args: {
     toggleTag: action("toggleTag"),
+    setNotyet: action("setSource"),
+    setSource: action("setSource"),
   },
   render(args) {
     return (
@@ -30,9 +32,7 @@ const meta = {
       </UrqlProvider>
     );
   },
-  parameters: {
-    layout: "centered",
-  },
+  parameters: {},
 } as Meta<typeof SourceChecker>;
 export default meta;
 
