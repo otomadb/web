@@ -3,7 +3,7 @@
 import { ArrowPathIcon } from "@heroicons/react/24/outline";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useQuery } from "urql";
 
 import { DelayedInput } from "~/components/common/DelayedInput";
@@ -34,7 +34,8 @@ export const TagSearcher: React.FC<{
   handleSelect(id: string): void;
   limit?: number;
   disabled?: boolean;
-}> = ({ className, handleSelect, limit = 5, disabled = false }) => {
+  Optional?: React.FC<{ query: string; clearQuery(): void }>;
+}> = ({ className, handleSelect, limit = 5, disabled = false, Optional }) => {
   const [query, setQuery] = useState<string>("");
   const [{ data, fetching }] = useQuery({
     query: TagSearcher_SearchDocument,
@@ -46,6 +47,7 @@ export const TagSearcher: React.FC<{
     TagSearcher_ItemFragmentDoc,
     data?.searchTags.items
   );
+  const clearQuery = useCallback(() => setQuery(""), []);
 
   return (
     <div className={clsx(className, ["relative"], ["group/searcher"])}>
@@ -125,6 +127,18 @@ export const TagSearcher: React.FC<{
                 handleSelect={handleSelect}
               />
             ))}
+          </div>
+        )}
+        {Optional && query !== "" && (
+          <div
+            className={clsx(
+              ["border", "border-slate-300"],
+              ["px-2", "py-2"],
+              ["flex", "flex-col", "items-start", "gap-y-1"],
+              ["bg-white"]
+            )}
+          >
+            <Optional query={query} clearQuery={clearQuery} />
           </div>
         )}
       </div>

@@ -10,12 +10,14 @@ import {
   aNicovideoOriginalSource,
   aNicovideoOriginalSourceTagSearchTagsPayload,
   aRegisterVideoSucceededPayload,
+  aSearchTagsItem,
   aTag,
   aVideo,
   PseudoTagType,
   RegisterNicovideoPage_RegisterForm_RegisterVideoDocument,
   RegisterNicovideoPage_RegisterForm_TagDocument,
   RegisterNicovideoPage_SourceCheckerDocument,
+  TagSearcher_SearchDocument,
 } from "~/gql/graphql";
 
 import { RegisterForm } from "./RegisterForm";
@@ -221,6 +223,43 @@ export const Primary: StoryObj<typeof meta> = {
                 return res(ctx.errors([{ message: "not found" }]));
             }
           }
+        ),
+        graphql.query(TagSearcher_SearchDocument, (req, res, ctx) =>
+          res(
+            ctx.data({
+              searchTags: {
+                items: [
+                  aSearchTagsItem({
+                    matchedName: "ドナルド・マクドナルド",
+                    tag: aTag({
+                      id: "t1",
+                      name: "ドナルド・マクドナルド",
+                      explicitParent: null,
+                      pseudoType: PseudoTagType.Character,
+                    }),
+                  }),
+                  aSearchTagsItem({
+                    matchedName: "U.N.オーエンは彼女なのか？",
+                    tag: aTag({
+                      id: "t2",
+                      name: "U.N.オーエンは彼女なのか？",
+                      explicitParent: null,
+                      pseudoType: PseudoTagType.Music,
+                    }),
+                  }),
+                  aSearchTagsItem({
+                    matchedName: "最終鬼畜妹フランドール・Ｓ",
+                    tag: aTag({
+                      id: "t3",
+                      name: "最終鬼畜妹フランドール・Ｓ",
+                      explicitParent: null,
+                      pseudoType: PseudoTagType.Music,
+                    }),
+                  }),
+                ],
+              },
+            })
+          )
         ),
         graphql.mutation(
           RegisterNicovideoPage_RegisterForm_RegisterVideoDocument,
