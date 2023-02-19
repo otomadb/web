@@ -19,6 +19,7 @@ graphql(`
   query RegisterNicovideoPage_SourceChecker($sourceId: String!) {
     fetchNicovideo(input: { sourceId: $sourceId }) {
       source {
+        sourceId
         title
         thumbnailUrl
         ...RegisterNicovideoPage_OriginalSource
@@ -35,7 +36,9 @@ export const SourceChecker: React.FC<{
   sourceId: string;
   toggleTag: (id: string) => void;
   setSource: (
-    source: undefined | { title: string; thumbnailUrl: string }
+    source:
+      | undefined
+      | { sourceId: string; title: string; thumbnailUrl: string }
   ) => void;
   setNotyet(already: boolean): void;
 }> = ({ className, sourceId, toggleTag, setSource, setNotyet }) => {
@@ -59,8 +62,8 @@ export const SourceChecker: React.FC<{
 
       setNotyet(true);
 
-      const { title, thumbnailUrl } = data.fetchNicovideo.source;
-      setSource({ title, thumbnailUrl });
+      const { sourceId, title, thumbnailUrl } = data.fetchNicovideo.source;
+      setSource({ sourceId, title, thumbnailUrl });
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [data]

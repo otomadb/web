@@ -22,11 +22,13 @@ import {
   RegisterNicovideoPage_RegisterForm_SuccessToastFragment,
   RegisterNicovideoPage_RegisterForm_SuccessToastFragmentDoc,
   RegisterNicovideoPage_RegisterForm_TagDocument,
+  RegisterVideoInputSourceType,
 } from "~/gql/graphql";
 
 import { SourceChecker } from "./SourceChecker";
 
 export const formSchema = z.object({
+  sourceId: z.string(),
   title: z.string(),
   thumbnailUrl: z.string(),
   tags: z.array(z.object({ tagId: z.string() })),
@@ -81,15 +83,15 @@ export const RegisterForm: React.FC<{
   );
   const callSuccessToast = useCallSuccessToast();
   const registerVideo: SubmitHandler<FormSchema> = useCallback(
-    async ({ title, thumbnailUrl, tags: tag }) => {
+    async ({ sourceId, title, thumbnailUrl, tags, semitags }) => {
       const { data, error } = await mutateRegisterTag({
         input: {
           primaryTitle: title,
           extraTitles: [],
           primaryThumbnail: thumbnailUrl,
-          tags: tag.map(({ tagId: id }) => id),
-          semitags: [],
-          sources: [],
+          tags: tags.map(({ tagId }) => tagId),
+          semitags: semitags.map(({ name }) => name),
+          sources: [{ sourceId, type: RegisterVideoInputSourceType.Nicovideo }],
         },
       });
       if (error || !data) {
@@ -116,11 +118,16 @@ export const RegisterForm: React.FC<{
     [callSuccessToast, clearSourceId, mutateRegisterTag, reset]
   );
   const setSource = useCallback(
-    (source: undefined | { title: string; thumbnailUrl: string }) => {
+    (
+      source:
+        | undefined
+        | { sourceId: string; title: string; thumbnailUrl: string }
+    ) => {
       if (!source) {
         setExists(false);
       } else {
         setExists(true);
+        setValue("sourceId", source.sourceId);
         setValue("title", source.title);
         setValue("thumbnailUrl", source.thumbnailUrl);
       }
