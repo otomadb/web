@@ -8,8 +8,11 @@ import React, { useState } from "react";
 import { RegisterForm } from "./RegisterForm";
 import { SourceIdInputForm } from "./SourceIdInputForm";
 
-export const Form: React.FC<{ className?: string }> = ({ className }) => {
-  const [sourceId, setSourceId] = useState<string>();
+export const Form: React.FC<{ className?: string; initSourceId?: string }> = ({
+  className,
+  initSourceId,
+}) => {
+  const [sourceId, setSourceId] = useState<string | undefined>(initSourceId);
 
   return (
     <div
