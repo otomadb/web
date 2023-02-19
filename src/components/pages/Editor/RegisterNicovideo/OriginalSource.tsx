@@ -75,7 +75,9 @@ export const OriginalSource: React.FC<{
               <div className={clsx(["mt-1"])}>
                 {tag.searchTags.items.length === 0 && (
                   <div>
-                    <div className={clsx(["text-xs"])}>候補なし</div>
+                    <div className={clsx(["text-xs", "select-none"])}>
+                      候補なし
+                    </div>
                   </div>
                 )}
                 <div
