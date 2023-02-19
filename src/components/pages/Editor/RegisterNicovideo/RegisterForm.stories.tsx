@@ -9,7 +9,6 @@ import {
 import {
   aNicovideoOriginalSource,
   aNicovideoOriginalSourceTagSearchTagsPayload,
-  aRegisterVideoSucceededPayload,
   aSearchTagsItem,
   aTag,
   aVideo,
@@ -266,10 +265,10 @@ export const Primary: StoryObj<typeof meta> = {
           (req, res, ctx) => {
             return res(
               ctx.data({
-                registerVideo: aRegisterVideoSucceededPayload({
+                registerVideo: {
                   __typename: "RegisterVideoSucceededPayload",
                   video: aVideo({}),
-                }),
+                },
               })
             );
           }

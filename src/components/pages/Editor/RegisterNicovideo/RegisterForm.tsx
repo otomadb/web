@@ -32,6 +32,23 @@ export const formSchema = z.object({
 });
 export type FormSchema = z.infer<typeof formSchema>;
 
+graphql(`
+  mutation RegisterNicovideoPage_RegisterForm_RegisterVideo(
+    $input: RegisterVideoInput!
+  ) {
+    registerVideo(input: $input) {
+      __typename
+      ... on RegisterVideoSucceededPayload {
+        video {
+          ...RegisterNicovideoPage_RegisterForm_SuccessToast
+        }
+      }
+      ... on RegisterVideoFailedPayload {
+        message
+      }
+    }
+  }
+`);
 export const RegisterForm: React.FC<{
   className?: string;
   sourceId: string | undefined;
@@ -347,12 +364,10 @@ const TagItem: React.FC<{
 };
 
 graphql(`
-  fragment RegisterNicovideoPage_RegisterForm_SuccessToast on RegisterVideoSucceededPayload {
-    video {
-      id
-      title
-      ...Link_Video
-    }
+  fragment RegisterNicovideoPage_RegisterForm_SuccessToast on Video {
+    id
+    title
+    ...Link_Video
   }
 `);
 export const SuccessToast: React.FC<{
@@ -367,16 +382,3 @@ export const SuccessToast: React.FC<{
 export const useCallSuccessToast =
   () => (props: Pick<ComponentProps<typeof SuccessToast>, "fragment">) =>
     toast(() => <SuccessToast {...props} />);
-
-graphql(`
-  mutation RegisterNicovideoPage_RegisterForm_RegisterVideo(
-    $input: RegisterVideoInput!
-  ) {
-    registerVideo(input: $input) {
-      __typename
-      ... on RegisterVideoSucceededPayload {
-        ...RegisterNicovideoPage_RegisterForm_SuccessToast
-      }
-    }
-  }
-`);
