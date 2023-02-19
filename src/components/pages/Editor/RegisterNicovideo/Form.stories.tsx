@@ -1,179 +1,36 @@
 import { css } from "@emotion/css";
 import { Meta, StoryObj } from "@storybook/react";
 import { userEvent, within } from "@storybook/testing-library";
-import { graphql, rest } from "msw";
+import { graphql } from "msw";
 import {
   createClient as createUrqlClient,
   Provider as UrqlProvider,
 } from "urql";
 
 import {
-  aFetchNicovideoPayload,
   aNicovideoOriginalSource,
   aNicovideoOriginalSourceTagSearchTagsPayload,
-  aNicovideoVideoSource,
-  aSearchTagsItem,
-  aSearchTagsPayload,
   aTag,
-  aUser,
   aVideo,
-  RegisterNicovideoPage_ExactTagDocument,
-  RegisterNicovideoPage_FetchNicovideoDocument,
-  RegisterNicovideoPage_RegisterVideoDocument,
-  RegisterNicovideoPage_SearchTagsDocument,
-  UseViewerDocument,
+  PseudoTagType,
+  RegisterNicovideoPage_RegisterForm_RegisterVideoDocument,
+  RegisterNicovideoPage_RegisterForm_TagDocument,
+  RegisterNicovideoPage_SourceCheckerDocument,
 } from "~/gql/graphql";
 
-import { RegisterNicovideoForm } from "./Form";
+import { Form } from "./Form";
 
-const mockLogin = graphql.query(UseViewerDocument, (req, res, ctx) =>
-  res(
-    ctx.data({
-      whoami: aUser({
-        id: "user:1",
-        name: "Name",
-        displayName: "Displayname",
-        icon: "/storybook/512x512.png",
-      }),
-    })
-  )
-);
-
-const mockUnlogin = graphql.query(UseViewerDocument, (req, res, ctx) =>
-  res(
-    ctx.data({
-      whoami: null,
-    })
-  )
-);
-
-const mockRemoteSuccess = graphql.query(
-  RegisterNicovideoPage_FetchNicovideoDocument,
-  (req, res, ctx) =>
-    res(
-      ctx.data({
-        fetchNicovideo: aFetchNicovideoPayload({
-          source: aNicovideoOriginalSource({
-            sourceId: "sm2057168",
-            title:
-              "M.C.ドナルドはダンスに夢中なのか？最終鬼畜道化師ドナルド・Ｍ",
-            thumbnailUrl: "/storybook/960x540.jpg",
-            tags: [
-              {
-                name: "ドナルド",
-                searchTags: aNicovideoOriginalSourceTagSearchTagsPayload({
-                  items: [
-                    {
-                      tag: aTag({
-                        id: "t1",
-                        name: "ドナルド・マクドナルド",
-                      }),
-                    },
-                  ],
-                }),
-              },
-              {
-                name: "U.N.オーエンは彼女なのか？",
-                searchTags: aNicovideoOriginalSourceTagSearchTagsPayload({
-                  items: [
-                    {
-                      tag: aTag({
-                        id: "t2",
-                        name: "U.N.オーエンは彼女なのか？",
-                      }),
-                    },
-                  ],
-                }),
-              },
-              {
-                name: "最終鬼畜妹フランドール・Ｓ",
-                searchTags: aNicovideoOriginalSourceTagSearchTagsPayload({
-                  items: [
-                    {
-                      tag: aTag({
-                        id: "t3",
-                        name: "最終鬼畜妹フランドール・Ｓ",
-                      }),
-                    },
-                  ],
-                }),
-              },
-              {
-                name: "エンターテイメント",
-                searchTags: aNicovideoOriginalSourceTagSearchTagsPayload({
-                  items: [],
-                }),
-              },
-              {
-                name: "東方乱々流",
-                searchTags: aNicovideoOriginalSourceTagSearchTagsPayload({
-                  items: [],
-                }),
-              },
-              {
-                name: "音mad",
-                searchTags: aNicovideoOriginalSourceTagSearchTagsPayload({
-                  items: [],
-                }),
-              },
-              {
-                name: "ドナルド教",
-                searchTags: aNicovideoOriginalSourceTagSearchTagsPayload({
-                  items: [],
-                }),
-              },
-            ],
-          }),
-        }),
-      })
-    )
-);
-
-const mockSearchTag = graphql.query(
-  RegisterNicovideoPage_SearchTagsDocument,
-  (req, res, ctx) =>
-    res(
-      ctx.data({
-        searchTags: aSearchTagsPayload({
-          items: [
-            aSearchTagsItem({
-              matchedName: req.variables.query,
-              tag: aTag({
-                id: `tag:1:${req.variables.query}`,
-                name: req.variables.query,
-                explicitParent: null,
-              }),
-            }),
-            aSearchTagsItem({
-              matchedName: req.variables.query,
-              tag: aTag({
-                id: `tag:2:${req.variables.query}`,
-                name: req.variables.query,
-                explicitParent: null,
-              }),
-            }),
-          ],
-        }),
-      })
-    )
-);
-
-export default {
-  component: RegisterNicovideoForm,
+const meta = {
+  component: Form,
   args: {
     className: css`
-      width: 1280px;
+      width: 1024px;
     `,
   },
   render(args) {
     return (
-      <UrqlProvider
-        value={createUrqlClient({
-          url: "/graphql",
-          requestPolicy: "network-only",
-        })}
-      >
-        <RegisterNicovideoForm {...args} />
+      <UrqlProvider value={createUrqlClient({ url: "/graphql" })}>
+        <Form {...args} />
       </UrqlProvider>
     );
   },
@@ -181,116 +38,223 @@ export default {
     layout: "centered",
     msw: {
       handlers: [
-        mockLogin,
-        mockRemoteSuccess,
-        graphql.query(RegisterNicovideoPage_ExactTagDocument, (req, res, ctx) =>
-          res(
-            ctx.data({
-              tag: aTag({
-                id: `tag:1:${req.variables.id}`,
-                explicitParent: null,
-              }),
-            })
-          )
-        ),
-        graphql.mutation(
-          RegisterNicovideoPage_RegisterVideoDocument,
+        graphql.query(
+          RegisterNicovideoPage_SourceCheckerDocument,
           (req, res, ctx) =>
             res(
+              ctx.data({
+                fetchNicovideo: {
+                  source: aNicovideoOriginalSource({
+                    sourceId: "sm2057168",
+                    title:
+                      "M.C.ドナルドはダンスに夢中なのか？最終鬼畜道化師ドナルド・Ｍ",
+                    thumbnailUrl: "/960x540.jpg",
+                    tags: [
+                      {
+                        name: "ドナルド",
+                        searchTags:
+                          aNicovideoOriginalSourceTagSearchTagsPayload({
+                            items: [
+                              {
+                                tag: aTag({
+                                  id: "t1",
+                                  name: "ドナルド・マクドナルド",
+                                  explicitParent: null,
+                                  pseudoType: PseudoTagType.Character,
+                                }),
+                              },
+                            ],
+                          }),
+                      },
+                      {
+                        name: "U.N.オーエンは彼女なのか？",
+                        searchTags:
+                          aNicovideoOriginalSourceTagSearchTagsPayload({
+                            items: [
+                              {
+                                tag: aTag({
+                                  id: "t2",
+                                  name: "U.N.オーエンは彼女なのか？",
+                                  explicitParent: null,
+                                  pseudoType: PseudoTagType.Music,
+                                }),
+                              },
+                            ],
+                          }),
+                      },
+                      {
+                        name: "最終鬼畜妹フランドール・Ｓ",
+                        searchTags:
+                          aNicovideoOriginalSourceTagSearchTagsPayload({
+                            items: [
+                              {
+                                tag: aTag({
+                                  id: "t3",
+                                  name: "最終鬼畜妹フランドール・Ｓ",
+                                  explicitParent: null,
+                                  pseudoType: PseudoTagType.Music,
+                                }),
+                              },
+                            ],
+                          }),
+                      },
+                      {
+                        name: "エンターテイメント",
+                        searchTags:
+                          aNicovideoOriginalSourceTagSearchTagsPayload({
+                            items: [],
+                          }),
+                      },
+                      {
+                        name: "東方乱々流",
+                        searchTags:
+                          aNicovideoOriginalSourceTagSearchTagsPayload({
+                            items: [
+                              {
+                                tag: aTag({
+                                  id: "t1",
+                                  name: "ドナルド・マクドナルド",
+                                  explicitParent: null,
+                                  pseudoType: PseudoTagType.Character,
+                                }),
+                              },
+                              {
+                                tag: aTag({
+                                  id: "t4",
+                                  name: "東方Project",
+                                  explicitParent: null,
+                                  pseudoType: PseudoTagType.Unknown,
+                                }),
+                              },
+                            ],
+                          }),
+                      },
+                      {
+                        name: "音mad",
+                        searchTags:
+                          aNicovideoOriginalSourceTagSearchTagsPayload({
+                            items: [],
+                          }),
+                      },
+                      {
+                        name: "ドナルド教",
+                        searchTags:
+                          aNicovideoOriginalSourceTagSearchTagsPayload({
+                            items: [
+                              {
+                                tag: aTag({
+                                  id: "t1",
+                                  name: "ドナルド・マクドナルド",
+                                  explicitParent: null,
+                                  pseudoType: PseudoTagType.Character,
+                                }),
+                              },
+                            ],
+                          }),
+                      },
+                    ],
+                  }),
+                },
+                findNicovideoVideoSource: null,
+              })
+            )
+        ),
+        graphql.query(
+          RegisterNicovideoPage_RegisterForm_TagDocument,
+          (req, res, ctx) => {
+            switch (req.variables.id) {
+              case "t1":
+                return res(
+                  ctx.data({
+                    tag: aTag({
+                      id: "t1",
+                      name: "ドナルド・マクドナルド",
+                      explicitParent: null,
+                      pseudoType: PseudoTagType.Character,
+                    }),
+                  })
+                );
+              case "t2":
+                return res(
+                  ctx.data({
+                    tag: aTag({
+                      id: "t2",
+                      name: "U.N.オーエンは彼女なのか？",
+                      explicitParent: null,
+                      pseudoType: PseudoTagType.Music,
+                    }),
+                  })
+                );
+              case "t3":
+                return res(
+                  ctx.data({
+                    tag: aTag({
+                      id: "t3",
+                      name: "最終鬼畜妹フランドール・Ｓ",
+                      explicitParent: null,
+                      pseudoType: PseudoTagType.Music,
+                    }),
+                  })
+                );
+              case "t4":
+                return res(
+                  ctx.data({
+                    tag: aTag({
+                      id: "t4",
+                      name: "東方Project",
+                      explicitParent: null,
+                      pseudoType: PseudoTagType.Unknown,
+                    }),
+                  })
+                );
+              default:
+                return res(ctx.errors([{ message: "not found" }]));
+            }
+          }
+        ),
+        graphql.mutation(
+          RegisterNicovideoPage_RegisterForm_RegisterVideoDocument,
+          (req, res, ctx) => {
+            return res(
               ctx.data({
                 registerVideo: {
                   __typename: "RegisterVideoSucceededPayload",
                   video: aVideo({
-                    id: "video_1",
+                    id: "v1",
                     title: req.variables.input.primaryTitle,
+                    thumbnailUrl: req.variables.input.primaryThumbnail,
                   }),
                 },
               })
-            )
-        ),
-        mockSearchTag,
-      ],
-    },
-  },
-} as Meta<typeof RegisterNicovideoForm>;
-
-export const Primary: StoryObj<typeof RegisterNicovideoForm> = {
-  args: {},
-};
-
-export const Unlogin: StoryObj<typeof RegisterNicovideoForm> = {
-  name: "未ログイン",
-  args: {},
-  parameters: {
-    msw: {
-      handlers: [mockUnlogin],
-    },
-  },
-};
-
-export const NoRemote: StoryObj<typeof RegisterNicovideoForm> = {
-  name: "リモートからの取得に失敗",
-  args: {},
-  parameters: {
-    msw: {
-      handlers: [
-        mockLogin,
-        rest.get("/remote/nicovideo", (req, res, ctx) => res(ctx.status(404))),
-      ],
-    },
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-
-    await userEvent.type(canvas.getByLabelText("ID入力"), "sm2057168");
-    await userEvent.click(canvas.getByLabelText("検索"));
-  },
-};
-
-export const Already: StoryObj<typeof RegisterNicovideoForm> = {
-  name: "既にある",
-  args: {},
-  parameters: {
-    msw: {
-      handlers: [
-        mockLogin,
-        mockRemoteSuccess,
-        graphql.query(
-          RegisterNicovideoPage_FetchNicovideoDocument,
-          (req, res, ctx) =>
-            res(
-              ctx.data({
-                fetchNicovideo: aFetchNicovideoPayload({}),
-                findNicovideoVideoSource: aNicovideoVideoSource({
-                  sourceId: "sm2057168",
-                  video: aVideo({
-                    id: "video_1",
-                    title:
-                      "M.C.ドナルドはダンスに夢中なのか？最終鬼畜道化師ドナルド・Ｍ",
-                    thumbnailUrl: "/storybook/960x540.jpg",
-                  }),
-                }),
-              })
-            )
+            );
+          }
         ),
       ],
     },
   },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
+} as Meta<typeof Form>;
+export default meta;
 
-    await userEvent.type(canvas.getByLabelText("ID入力"), "sm2057168");
-    await userEvent.click(canvas.getByLabelText("検索"));
-  },
-};
-
-export const ValidId: StoryObj<typeof RegisterNicovideoForm> = {
-  name: "正しいnicovideoのIDを入力",
+export const WrongSourceId: StoryObj<typeof meta> = {
   args: {},
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
+    await userEvent.type(
+      canvas.getByLabelText("ニコニコ動画の動画ID"),
+      "wrong"
+    );
+    await userEvent.click(canvas.getByLabelText("ニコニコ動画からの検索"));
+  },
+};
 
-    await userEvent.type(canvas.getByLabelText("ID入力"), "sm2057168");
-    await userEvent.click(canvas.getByLabelText("検索"));
+export const OkSourceId: StoryObj<typeof meta> = {
+  args: {},
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.type(
+      canvas.getByLabelText("ニコニコ動画の動画ID"),
+      "sm2057168"
+    );
+    await userEvent.click(canvas.getByLabelText("ニコニコ動画からの検索"));
   },
 };
