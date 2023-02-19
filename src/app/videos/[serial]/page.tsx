@@ -1,6 +1,8 @@
+import clsx from "clsx";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
+import { NicovideoSourcesSection } from "~/components/pages/Video/NicovideoSourcesSection.server";
 import { SimilarVideosSection } from "~/components/pages/Video/SimilarVideosSection.server";
 import { graphql } from "~/gql";
 import { fetchGql } from "~/utils/fetchGql";
@@ -22,11 +24,15 @@ export default async function Page({ params }: { params: { serial: string } }) {
   if (!video) return notFound();
 
   return (
-    <>
+    <div className={clsx(["flex", "flex-col", "gap-y-4"])}>
+      <Suspense>
+        {/* @ts-expect-error Server Component*/}
+        <NicovideoSourcesSection videoId={video.id} />
+      </Suspense>
       <Suspense>
         {/* @ts-expect-error Server Component*/}
         <SimilarVideosSection videoId={video.id} />
       </Suspense>
-    </>
+    </div>
   );
 }
