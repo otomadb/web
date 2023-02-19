@@ -4,8 +4,8 @@ import { RegisterNicovideoForm } from "~/components/pages/Editor/RegisterNicovid
 
 export default async function Page() {
   return (
-    <main className={clsx(["max-w-screen-xl"], ["mx-auto"])}>
-      <h1>Register</h1>
+    <main className={clsx(["max-w-screen-lg"], ["mx-auto"])}>
+      <h1>ニコニコ動画からの追加</h1>
       <RegisterNicovideoForm className={clsx(["mt-4"])} />
     </main>
   );

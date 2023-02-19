@@ -16,7 +16,7 @@ import {
 import { useIsLogin } from "~/hooks/useIsLogin";
 
 import { Already } from "./Already";
-import { FetchSource } from "./FetchSource";
+import { NicovideoInputForm } from "./NicovideoInputForm";
 import { RegisterForm } from "./RegisterForm";
 import { SourceForm } from "./SourceForm";
 
@@ -106,7 +106,7 @@ export const RegisterNicovideoForm: React.FC<{ className?: string }> = ({
   return (
     <div className={clsx(className)}>
       <div>
-        <FetchSource setSourceId={(i) => setSourceId(i)} />
+        <NicovideoInputForm setSourceId={(i) => setSourceId(i)} />
       </div>
       <div
         className={clsx(
