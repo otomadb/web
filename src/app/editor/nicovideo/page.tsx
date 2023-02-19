@@ -2,6 +2,8 @@ import clsx from "clsx";
 
 import { Form } from "~/components/pages/Editor/RegisterNicovideo/Form";
 
+export const dynamic = "force-dynamic";
+
 export default async function Page() {
   return (
     <main className={clsx(["max-w-screen-lg"], ["mx-auto"])}>
