@@ -10,12 +10,14 @@ import { toast } from "react-hot-toast";
 import { useMutation, useQuery } from "urql";
 import * as z from "zod";
 
+import { LinkVideo } from "~/app/videos/[serial]/Link";
 import { BlueButton } from "~/components/common/Button";
 import { CommonTag } from "~/components/common/Tag";
 import { TagSearcher } from "~/components/common/TagSearcher";
 import { getFragment, graphql } from "~/gql";
 import {
   CommonTagFragmentDoc,
+  Link_VideoFragmentDoc,
   RegisterNicovideoPage_RegisterForm_RegisterVideoDocument,
   RegisterNicovideoPage_RegisterForm_SuccessToastFragment,
   RegisterNicovideoPage_RegisterForm_SuccessToastFragmentDoc,
@@ -145,7 +147,7 @@ export const RegisterForm: React.FC<{
           ["px-4", "py-4"]
         )}
       >
-        <p>sourceId input</p>
+        <p className={clsx(["text-sm"])}>動画IDを入力してください。</p>
       </div>
     );
 
@@ -375,6 +377,9 @@ export const SuccessToast: React.FC<{
 }> = ({ fragment }) => {
   return (
     <div>
+      <LinkVideo fragment={getFragment(Link_VideoFragmentDoc, fragment)}>
+        {fragment.title}
+      </LinkVideo>
       <span className={clsx(["text-slate-700"])}>を登録しました．</span>
     </div>
   );
