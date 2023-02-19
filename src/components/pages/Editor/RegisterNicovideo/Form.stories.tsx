@@ -11,6 +11,7 @@ import {
   aNicovideoOriginalSource,
   aNicovideoOriginalSourceTagSearchTagsPayload,
   aTag,
+  aVideo,
   PseudoTagType,
   RegisterNicovideoPage_RegisterForm_RegisterVideoDocument,
   RegisterNicovideoPage_RegisterForm_TagDocument,
@@ -218,6 +219,11 @@ const meta = {
               ctx.data({
                 registerVideo: {
                   __typename: "RegisterVideoSucceededPayload",
+                  video: aVideo({
+                    id: "v1",
+                    title: req.variables.input.primaryTitle,
+                    thumbnailUrl: req.variables.input.primaryThumbnail,
+                  }),
                 },
               })
             );

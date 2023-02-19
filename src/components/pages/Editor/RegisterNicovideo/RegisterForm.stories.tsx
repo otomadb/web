@@ -267,7 +267,11 @@ export const Primary: StoryObj<typeof meta> = {
               ctx.data({
                 registerVideo: {
                   __typename: "RegisterVideoSucceededPayload",
-                  video: aVideo({}),
+                  video: aVideo({
+                    id: "v1",
+                    title: req.variables.input.primaryTitle,
+                    thumbnailUrl: req.variables.input.primaryThumbnail,
+                  }),
                 },
               })
             );

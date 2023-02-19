@@ -103,7 +103,7 @@ export const RegisterForm: React.FC<{
       callSuccessToast({
         fragment: getFragment(
           RegisterNicovideoPage_RegisterForm_SuccessToastFragmentDoc,
-          data.registerVideo
+          data.registerVideo.video
         ),
       });
       reset({ title: "", thumbnailUrl: "", tags: [] });
