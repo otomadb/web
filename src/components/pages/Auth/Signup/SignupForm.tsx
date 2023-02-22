@@ -16,7 +16,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useMutation, useQuery } from "urql";
 import * as z from "zod";
 
-import { LinkLogin } from "~/app/login/Link";
+import { LinkSignin } from "~/app/auth/signin/Link";
 import { graphql } from "~/gql";
 import {
   SignupFailedMessage,
@@ -83,7 +83,7 @@ export const SignupForm: React.FC<{ className?: string }> = ({ className }) => {
     resolver: zodResolver(formSchema),
   });
 
-  const [{ data: viewerData }, afterlogin] = useQuery({
+  const [{ data: viewerData }, aftersignin] = useQuery({
     query: SignupPage_FetchViewerDocument,
     requestPolicy: "cache-and-network",
   });
@@ -91,12 +91,12 @@ export const SignupForm: React.FC<{ className?: string }> = ({ className }) => {
     if (viewerData?.whoami) router.replace("/");
   }, [viewerData, router]);
 
-  const [{ data: loginData }, signup] = useMutation(SignupPage_SignupDocument);
+  const [{ data: signinData }, signup] = useMutation(SignupPage_SignupDocument);
   useEffect(() => {
-    if (!loginData) return;
+    if (!signinData) return;
 
-    if (loginData.signup.__typename === "SignupFailedPayload") {
-      const { message } = loginData.signup;
+    if (signinData.signup.__typename === "SignupFailedPayload") {
+      const { message } = signinData.signup;
       switch (message) {
         case SignupFailedMessage.ExistsUsername:
           setError("name", { message: "既に登録されているユーザーネームです" });
@@ -107,8 +107,8 @@ export const SignupForm: React.FC<{ className?: string }> = ({ className }) => {
           });
           break;
       }
-    } else afterlogin();
-  }, [afterlogin, loginData, setError]);
+    } else aftersignin();
+  }, [aftersignin, signinData, setError]);
 
   const onSubmit: SubmitHandler<FormSchema> = async ({
     name,
@@ -203,14 +203,14 @@ export const SignupForm: React.FC<{ className?: string }> = ({ className }) => {
       <AuthFormButton className={clsx("mt-6")} text="ユーザー登録" />
       <div className={clsx(["mt-4"])}>
         <p>
-          <LinkLogin
+          <LinkSignin
             className={clsx(
               ["text-blue-400", "hover:text-blue-500"],
               ["text-sm"]
             )}
           >
             ユーザー登録が既に済んでいるなら
-          </LinkLogin>
+          </LinkSignin>
         </p>
       </div>
     </form>

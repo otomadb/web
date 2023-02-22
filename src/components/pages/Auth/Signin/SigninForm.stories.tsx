@@ -5,33 +5,33 @@ import { graphql } from "msw";
 
 import {
   aUser,
-  LoginPage_LoginDocument,
   SigninFailedMessage,
+  SigninPage_SigninDocument,
 } from "~/gql/graphql";
 
-import { LoginForm } from "./LoginForm";
+import { SigninForm } from "./SigninForm";
 
 export default {
-  component: LoginForm,
+  component: SigninForm,
   args: {
     className: css`
       width: 400px;
     `,
   },
   render(args) {
-    return <LoginForm {...args} />;
+    return <SigninForm {...args} />;
   },
-} as Meta<typeof LoginForm>;
+} as Meta<typeof SigninForm>;
 
-export const Primary: StoryObj<typeof LoginForm> = {};
+export const Primary: StoryObj<typeof SigninForm> = {};
 
-export const NoUser: StoryObj<typeof LoginForm> = {
+export const NoUser: StoryObj<typeof SigninForm> = {
   name: "存在しないユーザー",
   args: {},
   parameters: {
     msw: {
       handlers: [
-        graphql.mutation(LoginPage_LoginDocument, (req, res, ctx) => {
+        graphql.mutation(SigninPage_SigninDocument, (req, res, ctx) => {
           return res(
             ctx.data({
               signin: {
@@ -56,13 +56,13 @@ export const NoUser: StoryObj<typeof LoginForm> = {
   },
 };
 
-export const WrongPassword: StoryObj<typeof LoginForm> = {
+export const WrongPassword: StoryObj<typeof SigninForm> = {
   name: "パスワードが間違っている",
   args: {},
   parameters: {
     msw: {
       handlers: [
-        graphql.mutation(LoginPage_LoginDocument, (req, res, ctx) => {
+        graphql.mutation(SigninPage_SigninDocument, (req, res, ctx) => {
           return res(
             ctx.data({
               signin: {
@@ -87,13 +87,13 @@ export const WrongPassword: StoryObj<typeof LoginForm> = {
   },
 };
 
-export const SuccessfulLogin: StoryObj<typeof LoginForm> = {
+export const SuccessfulSignin: StoryObj<typeof SigninForm> = {
   name: "正常にログイン",
   args: {},
   parameters: {
     msw: {
       handlers: [
-        graphql.mutation(LoginPage_LoginDocument, (req, res, ctx) => {
+        graphql.mutation(SigninPage_SigninDocument, (req, res, ctx) => {
           return res(
             ctx.data({
               signin: {

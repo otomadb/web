@@ -11,12 +11,12 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useMutation, useQuery } from "urql";
 import * as z from "zod";
 
-import { LinkSignup } from "~/app/signup/Link";
+import { LinkSignup } from "~/app/auth/signup/Link";
 import { graphql } from "~/gql";
 import {
-  LoginPage_FetchViewerDocument,
-  LoginPage_LoginDocument,
   SigninFailedMessage,
+  SigninPage_FetchViewerDocument,
+  SigninPage_SigninDocument,
 } from "~/gql/graphql";
 
 import { AuthFormButton } from "../Button";
@@ -29,7 +29,7 @@ const formSchema = z.object({
 type FormSchema = z.infer<typeof formSchema>;
 
 graphql(`
-  mutation LoginPage_Login($username: String!, $password: String!) {
+  mutation SigninPage_Signin($username: String!, $password: String!) {
     signin(input: { username: $username, password: $password }) {
       ... on SigninSucceededPayload {
         user {
@@ -43,7 +43,7 @@ graphql(`
     }
   }
 
-  query LoginPage_FetchViewer {
+  query SigninPage_FetchViewer {
     whoami {
       id
       ...GlobalNav_Profile
@@ -51,7 +51,7 @@ graphql(`
   }
 `);
 
-export const LoginForm: React.FC<{ className?: string }> = ({ className }) => {
+export const SigninForm: React.FC<{ className?: string }> = ({ className }) => {
   const router = useRouter();
 
   const {
@@ -63,20 +63,20 @@ export const LoginForm: React.FC<{ className?: string }> = ({ className }) => {
     resolver: zodResolver(formSchema),
   });
 
-  const [{ data: viewerData }, afterlogin] = useQuery({
-    query: LoginPage_FetchViewerDocument,
+  const [{ data: viewerData }, aftersignin] = useQuery({
+    query: SigninPage_FetchViewerDocument,
     requestPolicy: "cache-and-network",
   });
   useEffect(() => {
     if (viewerData?.whoami) router.replace("/");
   }, [viewerData, router]);
 
-  const [{ data: loginData }, login] = useMutation(LoginPage_LoginDocument);
+  const [{ data: signinData }, signin] = useMutation(SigninPage_SigninDocument);
   useEffect(() => {
-    if (!loginData) return;
+    if (!signinData) return;
 
-    if (loginData.signin.__typename === "SigninFailedPayload") {
-      const { message } = loginData.signin;
+    if (signinData.signin.__typename === "SigninFailedPayload") {
+      const { message } = signinData.signin;
       switch (message) {
         case SigninFailedMessage.UserNotFound:
           setError("name", { message: "存在しないユーザーです" });
@@ -85,12 +85,12 @@ export const LoginForm: React.FC<{ className?: string }> = ({ className }) => {
           setError("password", { message: "誤ったパスワード" });
           break;
       }
-    } else afterlogin();
-  }, [afterlogin, loginData, setError]);
+    } else aftersignin();
+  }, [aftersignin, signinData, setError]);
 
   const onSubmit: SubmitHandler<FormSchema> = useCallback(
-    async ({ name, password }) => login({ username: name, password }),
-    [login]
+    async ({ name, password }) => signin({ username: name, password }),
+    [signin]
   );
 
   return (
