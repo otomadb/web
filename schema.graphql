@@ -60,15 +60,50 @@ type AddTagToVideoSucceededPayload {
   video: Video!
 }
 
+type AddVideoToMylistAlreadyRegisteredError {
+  registration: MylistRegistration!
+}
+
 input AddVideoToMylistInput {
   mylistId: ID!
   note: String
   videoId: ID!
 }
 
-type AddVideoToMylistPayload {
+enum AddVideoToMylistOtherErrorMessage {
+  INTERNAL_SERVER_ERROR
+}
+
+"""その他のエラー"""
+type AddVideoToMylistOtherErrorsFallback {
+  message: AddVideoToMylistOtherErrorMessage!
+}
+
+union AddVideoToMylistReturnUnion = AddVideoToMylistAlreadyRegisteredError | AddVideoToMylistOtherErrorsFallback | AddVideoToMylistSucceededPayload | MutationAuthenticationError | MutationInvalidMylistIdError | MutationInvalidVideoIdError | MutationMylistNotFoundError | MutationVideoNotFoundError | MutationWrongMylistHolderError
+
+type AddVideoToMylistSucceededPayload {
   registration: MylistRegistration!
 }
+
+input ChangeMylistShareRangeInput {
+  mylistId: ID!
+  range: MylistShareRange!
+}
+
+enum ChangeMylistShareRangeOtherErrorMessage {
+  INTERNAL_SERVER_ERROR
+}
+
+"""その他のエラー"""
+type ChangeMylistShareRangeOtherErrorsFallback {
+  message: ChangeMylistShareRangeOtherErrorMessage!
+}
+
+type ChangeMylistShareRangeSucceededPayload {
+  mylist: Mylist!
+}
+
+union ChangeMylistShareReturnUnion = ChangeMylistShareRangeOtherErrorsFallback | ChangeMylistShareRangeSucceededPayload | MutationAuthenticationError | MutationInvalidMylistIdError | MutationMylistNotFoundError | MutationWrongMylistHolderError
 
 input CreateMylistGroupInput {
   title: String!
@@ -83,7 +118,18 @@ input CreateMylistInput {
   title: String!
 }
 
-type CreateMylistPayload {
+enum CreateMylistOtherErrorMessage {
+  INTERNAL_SERVER_ERROR
+}
+
+"""その他のエラー"""
+type CreateMylistOtherErrorsFallback {
+  message: CreateMylistOtherErrorMessage!
+}
+
+union CreateMylistReturnUnion = CreateMylistOtherErrorsFallback | CreateMylistSucceededPayload | MutationAuthenticationError
+
+type CreateMylistSucceededPayload {
   mylist: Mylist!
 }
 
@@ -109,6 +155,17 @@ type FetchNicovideoPayload {
 
 input FindMylistInput {
   id: ID
+}
+
+input FindNicovideoRegistrationRequestsInput {
+  checked: Boolean
+  limit: Int! = 10
+  order: FindNicovideoRegistrationRequestsInputOrder! = {createdAt: DESC}
+  skip: Int! = 0
+}
+
+input FindNicovideoRegistrationRequestsInputOrder {
+  createdAt: SortOrder
 }
 
 input FindNicovideoVideoSourceInput {
@@ -194,8 +251,9 @@ type Mutation {
   addMylistToMylistGroup(input: AddMylistToMylistGroupInput!): AddMylistToMylistGroupPayload!
   addSemitagToVideo(input: AddSemitagToVideoInput!): AddSemitagToVideoPayload!
   addTagToVideo(input: AddTagToVideoInput!): AddTagToVideoPayload!
-  addVideoToMylist(input: AddVideoToMylistInput!): AddVideoToMylistPayload!
-  createMylist(input: CreateMylistInput!): CreateMylistPayload!
+  addVideoToMylist(input: AddVideoToMylistInput!): AddVideoToMylistReturnUnion!
+  changeMylistShareRange(input: ChangeMylistShareRangeInput!): ChangeMylistShareReturnUnion!
+  createMylist(input: CreateMylistInput!): CreateMylistReturnUnion!
   createMylistGroup(input: CreateMylistGroupInput!): CreateMylistGroupPayload!
   likeVideo(input: LikeVideoInput!): LikeVideoPayload!
   registerTag(input: RegisterTagInput!): RegisterTagPayload!
