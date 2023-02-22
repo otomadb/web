@@ -4,7 +4,7 @@ import clsx from "clsx";
 import React from "react";
 import { useQuery } from "urql";
 
-import { LinkLogin } from "~/app/login/Link";
+import { LinkSignin } from "~/app/auth/signin/Link";
 import { UserIcon2 } from "~/components/common/UserIcon";
 import { getFragment, graphql } from "~/gql";
 import {
@@ -48,7 +48,7 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
         ></div>
       )}
       {data?.whoami === null && (
-        <LinkLogin
+        <LinkSignin
           className={clsx(
             ["flex"],
             ["flex-row"],
@@ -62,8 +62,8 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
             ["text-sky-400", "hover:text-sky-300"]
           )}
         >
-          <span>Login</span>
-        </LinkLogin>
+          <span>ログイン</span>
+        </LinkSignin>
       )}
       {data?.whoami && (
         <div className={clsx(["relative"], ["group"], ["flex"])}>

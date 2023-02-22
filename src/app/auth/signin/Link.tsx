@@ -1,10 +1,10 @@
 import Link from "next/link";
 import React, { ComponentProps } from "react";
 
-export const LinkSignup: React.FC<
+export const LinkSignin: React.FC<
   Omit<ComponentProps<typeof Link>, "href">
 > = ({ children, ...props }) => (
-  <Link href={"/signup"} {...props}>
+  <Link href={"/signin"} {...props}>
     {children}
   </Link>
 );

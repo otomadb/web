@@ -8,5 +8,19 @@ const nextConfig = {
   experimental: {
     appDir: true,
   },
+  redirects() {
+    return [
+      {
+        source: "/signin",
+        destination: "/auth/signin",
+        permanent: true,
+      },
+      {
+        source: "/signup",
+        destination: "/auth/signup",
+        permanent: true,
+      },
+    ];
+  },
 };
 module.exports = nextConfig;
