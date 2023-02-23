@@ -4,6 +4,7 @@ import clsx from "clsx";
 import { Suspense } from "react";
 
 import { ServerSideVideosList } from "~/components/common/VideoList.server";
+import { NicovideoRequestsList } from "~/components/pages/Top/NicovideoRequestsList.server";
 import { graphql } from "~/gql";
 import { fetchGql } from "~/utils/fetchGql";
 
@@ -34,6 +35,23 @@ export default async function Page() {
           />
         </Suspense>
       </section>
+      <div className={clsx(["grid", ["grid-cols-1", "lg:grid-cols-2"]])}>
+        <section
+          className={clsx(
+            [["px-4"], ["py-4"]],
+            ["rounded"],
+            ["border", "border-slate-300"]
+          )}
+        >
+          <h2>最近リクエストされたニコニコ動画の動画</h2>
+          <div className={clsx(["mt-2"])}>
+            <Suspense fallback={<span>LOADING</span>}>
+              {/* @ts-expect-error for Server Component*/}
+              <NicovideoRequestsList />
+            </Suspense>
+          </div>
+        </section>
+      </div>
     </>
   );
 }
