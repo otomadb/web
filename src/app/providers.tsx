@@ -104,7 +104,13 @@ const urqlClient = createUrqlClient({
         NicovideoOriginalSourceTag() {
           return null;
         },
+        NicovideoOriginalSourceTagSearchTagsItem() {
+          return null;
+        },
         NicovideoOriginalSourceTagSearchTagsPayload() {
+          return null;
+        },
+        RequestNicovideoRegistrationSucceededPayload() {
           return null;
         },
       },
