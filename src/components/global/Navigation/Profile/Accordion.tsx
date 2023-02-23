@@ -6,6 +6,7 @@ import React, { ReactNode } from "react";
 import { LinkRegisterNicovideo } from "~/app/editor/nicovideo/Link";
 import { LinkRegisterSemitag } from "~/app/editor/semitags/Link";
 import { LinkRegisterTag } from "~/app/editor/tags/Link";
+import { LinkRequestNicovideo } from "~/app/request/nicovideo/Link";
 import { LinkUser } from "~/app/users/[name]/Link";
 import { LinkYouLikes } from "~/app/you/likes/Link";
 import { LinkYouMylists } from "~/app/you/mylists/Link";
@@ -131,6 +132,9 @@ export const Accordion: React.FC<{
             </MenuItem>
             <MenuItem Wrapper={(props) => <LinkYouMylists {...props} />}>
               マイリスト
+            </MenuItem>
+            <MenuItem Wrapper={(props) => <LinkRequestNicovideo {...props} />}>
+              動画のリクエスト
             </MenuItem>
           </div>
         </div>

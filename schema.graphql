@@ -157,6 +157,11 @@ input FindMylistInput {
   id: ID
 }
 
+input FindNicovideoRegistrationRequestInput {
+  id: ID
+  sourceId: String
+}
+
 input FindNicovideoRegistrationRequestsInput {
   checked: Boolean
   limit: Int! = 10
@@ -511,6 +516,7 @@ type NicovideoRegistrationRequest {
   semitaggings: [NicovideoRegistrationRequestSemitagging]!
   sourceId: String!
   taggings: [NicovideoRegistrationRequestTagging]!
+  thumbnailUrl: String!
   title: String!
 }
 
@@ -620,6 +626,7 @@ type Query {
   """ニコニコ動画から動画情報を取得する"""
   fetchNicovideo(input: FetchNicovideoInput!): FetchNicovideoPayload!
   findMylist(input: FindMylistInput!): Mylist
+  findNicovideoRegistrationRequest(input: FindNicovideoRegistrationRequestInput): NicovideoRegistrationRequest
   findNicovideoRegistrationRequests(input: FindNicovideoRegistrationRequestsInput!): NicovideoRegistrationRequestConnection!
   findNicovideoVideoSource(input: FindNicovideoVideoSourceInput!): NicovideoVideoSource
   findSemitags(input: FindSemitagsInput!): SemitagConnection!
@@ -813,6 +820,7 @@ input RequestNicovideoRegistrationInput {
   semitaggings: [RequestNicovideoRegistrationInputSemitagging!]!
   sourceId: String!
   taggings: [RequestNicovideoRegistrationInputTagging!]!
+  thumbnailUrl: String!
   title: String!
 }
 
