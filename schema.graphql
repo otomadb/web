@@ -60,15 +60,50 @@ type AddTagToVideoSucceededPayload {
   video: Video!
 }
 
+type AddVideoToMylistAlreadyRegisteredError {
+  registration: MylistRegistration!
+}
+
 input AddVideoToMylistInput {
   mylistId: ID!
   note: String
   videoId: ID!
 }
 
-type AddVideoToMylistPayload {
+enum AddVideoToMylistOtherErrorMessage {
+  INTERNAL_SERVER_ERROR
+}
+
+"""その他のエラー"""
+type AddVideoToMylistOtherErrorsFallback {
+  message: AddVideoToMylistOtherErrorMessage!
+}
+
+union AddVideoToMylistReturnUnion = AddVideoToMylistAlreadyRegisteredError | AddVideoToMylistOtherErrorsFallback | AddVideoToMylistSucceededPayload | MutationAuthenticationError | MutationInvalidMylistIdError | MutationInvalidVideoIdError | MutationMylistNotFoundError | MutationVideoNotFoundError | MutationWrongMylistHolderError
+
+type AddVideoToMylistSucceededPayload {
   registration: MylistRegistration!
 }
+
+input ChangeMylistShareRangeInput {
+  mylistId: ID!
+  range: MylistShareRange!
+}
+
+enum ChangeMylistShareRangeOtherErrorMessage {
+  INTERNAL_SERVER_ERROR
+}
+
+"""その他のエラー"""
+type ChangeMylistShareRangeOtherErrorsFallback {
+  message: ChangeMylistShareRangeOtherErrorMessage!
+}
+
+type ChangeMylistShareRangeSucceededPayload {
+  mylist: Mylist!
+}
+
+union ChangeMylistShareReturnUnion = ChangeMylistShareRangeOtherErrorsFallback | ChangeMylistShareRangeSucceededPayload | MutationAuthenticationError | MutationInvalidMylistIdError | MutationMylistNotFoundError | MutationWrongMylistHolderError
 
 input CreateMylistGroupInput {
   title: String!
@@ -83,7 +118,18 @@ input CreateMylistInput {
   title: String!
 }
 
-type CreateMylistPayload {
+enum CreateMylistOtherErrorMessage {
+  INTERNAL_SERVER_ERROR
+}
+
+"""その他のエラー"""
+type CreateMylistOtherErrorsFallback {
+  message: CreateMylistOtherErrorMessage!
+}
+
+union CreateMylistReturnUnion = CreateMylistOtherErrorsFallback | CreateMylistSucceededPayload | MutationAuthenticationError
+
+type CreateMylistSucceededPayload {
   mylist: Mylist!
 }
 
@@ -109,6 +155,22 @@ type FetchNicovideoPayload {
 
 input FindMylistInput {
   id: ID
+}
+
+input FindNicovideoRegistrationRequestInput {
+  id: ID
+  sourceId: String
+}
+
+input FindNicovideoRegistrationRequestsInput {
+  checked: Boolean
+  limit: Int! = 10
+  order: FindNicovideoRegistrationRequestsInputOrder! = {createdAt: DESC}
+  skip: Int! = 0
+}
+
+input FindNicovideoRegistrationRequestsInputOrder {
+  createdAt: SortOrder
 }
 
 input FindNicovideoVideoSourceInput {
@@ -194,20 +256,76 @@ type Mutation {
   addMylistToMylistGroup(input: AddMylistToMylistGroupInput!): AddMylistToMylistGroupPayload!
   addSemitagToVideo(input: AddSemitagToVideoInput!): AddSemitagToVideoPayload!
   addTagToVideo(input: AddTagToVideoInput!): AddTagToVideoPayload!
-  addVideoToMylist(input: AddVideoToMylistInput!): AddVideoToMylistPayload!
-  createMylist(input: CreateMylistInput!): CreateMylistPayload!
+  addVideoToMylist(input: AddVideoToMylistInput!): AddVideoToMylistReturnUnion!
+  changeMylistShareRange(input: ChangeMylistShareRangeInput!): ChangeMylistShareReturnUnion!
+  createMylist(input: CreateMylistInput!): CreateMylistReturnUnion!
   createMylistGroup(input: CreateMylistGroupInput!): CreateMylistGroupPayload!
   likeVideo(input: LikeVideoInput!): LikeVideoPayload!
   registerTag(input: RegisterTagInput!): RegisterTagPayload!
   registerVideo(input: RegisterVideoInput!): RegisterVideoPayload!
+  rejectNicovideoRegistrationRequest(input: RejectNicovideoRegistrationRequestInput!): RejectNicovideoRegistrationRequestReturnUnion!
   rejectSemitag(input: RejectSemitagInput!): RejectSemitagPayload!
   removeTagFromVideo(input: RemoveTagFromVideoInput!): RemoveTagFromVideoPayload!
   removeVideoFromMylist(input: RemoveVideoFromMylistInput!): RemoveVideoFromMylistPayload!
+  requestNicovideoRegistration(input: RequestNicovideoRegistrationInput!): RequestNicovideoRegistrationReturnUnion!
   resovleSemitag(input: ResolveSemitagInput!): ResolveSemitagPayload!
   signin(input: SigninInput!): SigninPayload!
   signout: SignoutPayload!
   signup(input: SignupInput!): SignupPayload!
   undoLikeVideo(input: UndoLikeVideoInput!): UndoLikeVideoPayload!
+}
+
+type MutationAuthenticationError {
+  requiredRole: UserRole!
+}
+
+"""MylistのIDとして無効なIDを入力した場合のエラー"""
+type MutationInvalidMylistIdError {
+  """無効なID"""
+  mylistId: String!
+}
+
+"""NicovideoRegistrationRequestのIDとして無効なIDを入力した場合のエラー"""
+type MutationInvalidNicovideoRegistrationRequestIdError {
+  """無効なID"""
+  requestId: String!
+}
+
+"""TagのIDとして無効なIDを入力した場合のエラー"""
+type MutationInvalidTagIdError {
+  """無効なID"""
+  tagId: String!
+}
+
+"""VideoのIDとして無効なIDを入力した場合のエラー"""
+type MutationInvalidVideoIdError {
+  """無効なID"""
+  videoId: String!
+}
+
+"""Mylistが見つからない場合のエラー"""
+type MutationMylistNotFoundError {
+  mylistId: String!
+}
+
+"""NicovideoRegistrationRequestが見つからない場合のエラー"""
+type MutationNicovideoRegistrationRequestNotFoundError {
+  requestId: String!
+}
+
+"""Tagが見つからない場合のエラー"""
+type MutationTagNotFoundError {
+  tagId: String!
+}
+
+"""Videoが見つからない場合のエラー"""
+type MutationVideoNotFoundError {
+  videoId: String!
+}
+
+"""Mylistの所有者が違う場合のエラー"""
+type MutationWrongMylistHolderError {
+  mylistId: String!
 }
 
 type Mylist implements Node {
@@ -390,6 +508,49 @@ type NicovideoOriginalSourceTagSearchTagsPayload {
   items: [NicovideoOriginalSourceTagSearchTagsItem!]!
 }
 
+type NicovideoRegistrationRequest {
+  checked: Boolean!
+  checking: NicovideoRegistrationRequestChecking
+  id: ID!
+  requestedBy: User!
+  semitaggings: [NicovideoRegistrationRequestSemitagging!]!
+  sourceId: String!
+  taggings: [NicovideoRegistrationRequestTagging!]!
+  thumbnailUrl: String!
+  title: String!
+}
+
+type NicovideoRegistrationRequestAccepting {
+  acceptedBy: User!
+  note: String
+  request: NicovideoRegistrationRequest!
+  video: Video!
+}
+
+union NicovideoRegistrationRequestChecking = NicovideoRegistrationRequestAccepting | NicovideoRegistrationRequestRejecting
+
+type NicovideoRegistrationRequestConnection {
+  nodes: [NicovideoRegistrationRequest!]!
+}
+
+type NicovideoRegistrationRequestRejecting {
+  note: String
+  rejectedBy: User!
+  request: NicovideoRegistrationRequest!
+}
+
+type NicovideoRegistrationRequestSemitagging {
+  id: ID!
+  name: String!
+  note: String
+}
+
+type NicovideoRegistrationRequestTagging {
+  id: ID!
+  note: String
+  tag: Tag!
+}
+
 type NicovideoVideoSource implements Node & VideoSource {
   embedUrl: String!
   events(input: NicovideoVideoSourceEventsInput!): NicovideoVideoSourceEventConnection!
@@ -467,6 +628,8 @@ type Query {
   """ニコニコ動画から動画情報を取得する"""
   fetchNicovideo(input: FetchNicovideoInput!): FetchNicovideoPayload!
   findMylist(input: FindMylistInput!): Mylist
+  findNicovideoRegistrationRequest(input: FindNicovideoRegistrationRequestInput): NicovideoRegistrationRequest
+  findNicovideoRegistrationRequests(input: FindNicovideoRegistrationRequestsInput!): NicovideoRegistrationRequestConnection!
   findNicovideoVideoSource(input: FindNicovideoVideoSourceInput!): NicovideoVideoSource
   findSemitags(input: FindSemitagsInput!): SemitagConnection!
   findTag(input: FindTagInput!): Tag
@@ -474,6 +637,7 @@ type Query {
   findUser(input: FindUserInput!): User
   findVideo(input: FindVideoInput!): Video
   findVideos(input: FindVideosInput!): VideoConnection!
+  getNicovideoRegistrationRequest(id: ID!): NicovideoRegistrationRequest!
   mylist(id: ID!): Mylist!
   mylistGroup(id: ID!): MylistGroup!
   nicovideoVideoSource(id: ID!): NicovideoVideoSource!
@@ -545,6 +709,31 @@ union RegisterVideoPayload = RegisterVideoFailedPayload | RegisterVideoSucceeded
 
 type RegisterVideoSucceededPayload {
   video: Video!
+}
+
+input RejectNicovideoRegistrationRequestInput {
+  note: String!
+  requestId: ID!
+}
+
+enum RejectNicovideoRegistrationRequestOtherErrorMessage {
+  INTERNAL_SERVER_ERROR
+}
+
+"""その他のエラー"""
+type RejectNicovideoRegistrationRequestOtherErrorsFallback {
+  message: RejectNicovideoRegistrationRequestOtherErrorMessage!
+}
+
+"""リクエストが既に処理されている場合のエラー"""
+type RejectNicovideoRegistrationRequestRequestAlreadyCheckedError {
+  request: NicovideoRegistrationRequest!
+}
+
+union RejectNicovideoRegistrationRequestReturnUnion = MutationAuthenticationError | MutationInvalidNicovideoRegistrationRequestIdError | MutationNicovideoRegistrationRequestNotFoundError | RejectNicovideoRegistrationRequestOtherErrorsFallback | RejectNicovideoRegistrationRequestRequestAlreadyCheckedError | RejectNicovideoRegistrationRequestSucceededPayload
+
+type RejectNicovideoRegistrationRequestSucceededPayload {
+  rejecting: NicovideoRegistrationRequestRejecting!
 }
 
 enum RejectSemitagFailedMessage {
@@ -627,6 +816,44 @@ union RemoveVideoFromMylistPayload = RemoveVideoFromMylistFailedPayload | Remove
 type RemoveVideoFromMylistSucceededPayload {
   mylist: Mylist!
   video: Video!
+}
+
+input RequestNicovideoRegistrationInput {
+  semitaggings: [RequestNicovideoRegistrationInputSemitagging!]!
+  sourceId: String!
+  taggings: [RequestNicovideoRegistrationInputTagging!]!
+  thumbnailUrl: String!
+  title: String!
+}
+
+input RequestNicovideoRegistrationInputSemitagging {
+  name: String!
+  note: String
+}
+
+input RequestNicovideoRegistrationInputTagging {
+  note: String
+  tagId: ID!
+}
+
+enum RequestNicovideoRegistrationOtherErrorMessage {
+  INTERNAL_SERVER_ERROR
+}
+
+"""その他のエラー"""
+type RequestNicovideoRegistrationOtherErrorsFallback {
+  message: RequestNicovideoRegistrationOtherErrorMessage!
+}
+
+union RequestNicovideoRegistrationReturnUnion = MutationAuthenticationError | MutationInvalidTagIdError | MutationTagNotFoundError | RequestNicovideoRegistrationOtherErrorsFallback | RequestNicovideoRegistrationSucceededPayload | RequestNicovideoRegistrationVideoAlreadyRegisteredError
+
+type RequestNicovideoRegistrationSucceededPayload {
+  request: NicovideoRegistrationRequest!
+}
+
+"""動画が既に登録されている場合のエラー"""
+type RequestNicovideoRegistrationVideoAlreadyRegisteredError {
+  source: NicovideoVideoSource!
 }
 
 enum ResolveSemitagFailedMessage {
@@ -1036,6 +1263,12 @@ input UserMylistsInput {
 input UserMylistsInputOrder {
   createdAt: SortOrder
   updatedAt: SortOrder
+}
+
+enum UserRole {
+  ADMINISTRATOR
+  EDITOR
+  USER
 }
 
 type Video implements Node {

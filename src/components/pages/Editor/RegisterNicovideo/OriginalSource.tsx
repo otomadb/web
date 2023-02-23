@@ -36,7 +36,15 @@ export const OriginalSource: React.FC<{
   toggleTag: (id: string) => void;
 }> = ({ className, fragment, toggleTag }) => {
   return (
-    <div className={clsx(className, ["flex", "gap-x-4"])}>
+    <div
+      className={clsx(
+        className,
+        ["flex", "gap-x-4"],
+        ["border"],
+        ["rounded-md"],
+        ["px-4", "py-4"]
+      )}
+    >
       <div
         className={clsx(
           ["flex-shrink-0"],
