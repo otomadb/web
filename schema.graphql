@@ -513,9 +513,9 @@ type NicovideoRegistrationRequest {
   checking: NicovideoRegistrationRequestChecking
   id: ID!
   requestedBy: User!
-  semitaggings: [NicovideoRegistrationRequestSemitagging]!
+  semitaggings: [NicovideoRegistrationRequestSemitagging!]!
   sourceId: String!
-  taggings: [NicovideoRegistrationRequestTagging]!
+  taggings: [NicovideoRegistrationRequestTagging!]!
   thumbnailUrl: String!
   title: String!
 }
@@ -540,11 +540,13 @@ type NicovideoRegistrationRequestRejecting {
 }
 
 type NicovideoRegistrationRequestSemitagging {
+  id: ID!
   name: String!
   note: String
 }
 
 type NicovideoRegistrationRequestTagging {
+  id: ID!
   note: String
   tag: Tag!
 }
