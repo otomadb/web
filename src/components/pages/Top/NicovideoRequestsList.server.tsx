@@ -1,10 +1,10 @@
 import "server-only";
 
 import clsx from "clsx";
-import Image from "next/image";
 
 import { LinkNicovideoRegistrationRequest } from "~/app/requests/nicovideo/[sourceId]/Link";
 import { LinkUser } from "~/app/users/[name]/Link";
+import { CoolImage } from "~/components/common/CoolImage";
 import { UserIcon2 } from "~/components/common/UserIcon";
 import { getFragment, graphql } from "~/gql";
 import {
@@ -42,12 +42,8 @@ export async function NicovideoRequestsList() {
   return (
     <div className={clsx(["flex", "flex-col"], ["gap-y-2"])}>
       {findNicovideoRegistrationRequests.nodes.map((node) => (
-        <LinkNicovideoRegistrationRequest
+        <div
           key={node.id}
-          fragment={getFragment(
-            Link_NicovideoRegistrationRequestFragmentDoc,
-            node
-          )}
           className={clsx(
             ["flex", "gap-x-4"],
             [["px-2"], ["py-1"]],
@@ -56,27 +52,40 @@ export async function NicovideoRequestsList() {
           )}
         >
           <div className={clsx(["flex-shrink-0"])}>
-            <div className={clsx(["flex"], ["w-36"], ["h-24"])}>
-              <Image
-                style={{ height: "auto", objectFit: "scale-down" }}
-                width={256}
-                height={128}
+            <LinkNicovideoRegistrationRequest
+              key={node.id}
+              fragment={getFragment(
+                Link_NicovideoRegistrationRequestFragmentDoc,
+                node
+              )}
+            >
+              <CoolImage
+                className={clsx(["w-32"], ["h-16"])}
                 src={node.thumbnailUrl}
                 alt={node.sourceId}
-                priority
+                width={196}
+                height={128}
               />
-            </div>
+            </LinkNicovideoRegistrationRequest>
           </div>
           <div
-            className={clsx(["flex-grow"], ["flex", "flex-col", "gap-y-0.5"])}
+            className={clsx(
+              ["flex-grow"],
+              ["py-1"],
+              ["flex", "flex-col", "gap-y-0.5"]
+            )}
           >
-            <div className={clsx()}>
-              <span className={clsx(["text-sm"])}>{node.title}</span>
-            </div>
-            <div>
-              <span className={clsx(["font-mono", "text-xs"])}>
-                {node.sourceId}
-              </span>
+            <div className={clsx(["flex", "flex-grow"])}>
+              <LinkNicovideoRegistrationRequest
+                key={node.id}
+                className={clsx(["text-xs"])}
+                fragment={getFragment(
+                  Link_NicovideoRegistrationRequestFragmentDoc,
+                  node
+                )}
+              >
+                {node.title}
+              </LinkNicovideoRegistrationRequest>
             </div>
             <div className={clsx(["flex", "items-center"])}>
               <LinkUser
@@ -100,7 +109,7 @@ export async function NicovideoRequestsList() {
               </div>
             </div>
           </div>
-        </LinkNicovideoRegistrationRequest>
+        </div>
       ))}
     </div>
   );
