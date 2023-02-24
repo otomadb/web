@@ -136,6 +136,9 @@ const RequestsExists: React.FC<{
         Link_NicovideoRegistrationRequestFragmentDoc,
         fragment
       )}
+      onClick={(e) => {
+        e.currentTarget.blur();
+      }}
     >
       <div className={clsx(["flex-shrink-0"])}>
         <CoolImage
@@ -193,6 +196,9 @@ const NeitherExists: React.FC<{
         ["hover:bg-sky-300/50", "focus:bg-sky-400/50"]
       )}
       params={{ sourceId }}
+      onClick={(e) => {
+        e.currentTarget.blur();
+      }}
     >
       <div className={clsx(["flex"])}>
         <p className={clsx("text-slate-700", "text-sm")}>
