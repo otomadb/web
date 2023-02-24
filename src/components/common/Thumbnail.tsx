@@ -8,7 +8,10 @@ import {
   Common_ThumbnailFragment,
   Component_ThumbnailFragment,
   Link_VideoFragmentDoc,
+  VideoThumbnailFragment,
 } from "~/gql/graphql";
+
+import { CoolImage } from "./CoolImage";
 
 graphql(`
   fragment Component_Thumbnail on Video {
@@ -132,4 +135,25 @@ export const Thumbnail2: React.FC<{
       priority={true}
     />
   </div>
+);
+
+graphql(`
+  fragment VideoThumbnail on Video {
+    title
+    thumbnailUrl
+  }
+`);
+export const VideoThumbnail: React.FC<{
+  className?: string;
+  fragment: VideoThumbnailFragment;
+  width?: number;
+  height?: number;
+}> = ({ className, fragment, width = 196, height = 128 }) => (
+  <CoolImage
+    className={className}
+    src={fragment.thumbnailUrl}
+    alt={fragment.title}
+    width={width}
+    height={height}
+  />
 );
