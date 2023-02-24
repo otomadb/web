@@ -8,6 +8,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      height: {
+        18: "4.5rem",
+      },
       zIndex: {
         0: 0,
         1: 1,

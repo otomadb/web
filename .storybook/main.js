@@ -9,8 +9,4 @@ module.exports = {
     name: "@storybook/nextjs",
     options: {},
   },
-  docs: {
-    docsPage: "automatic",
-    autodocs: true,
-  },
 };

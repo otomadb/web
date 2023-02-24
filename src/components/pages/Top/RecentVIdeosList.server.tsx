@@ -55,10 +55,7 @@ export async function RecentVideosList() {
           )}
         >
           <div>
-            <LinkVideo
-              key={node.id}
-              fragment={getFragment(Link_VideoFragmentDoc, node)}
-            >
+            <LinkVideo fragment={getFragment(Link_VideoFragmentDoc, node)}>
               <VideoThumbnail
                 className={clsx(["w-32"], ["h-16"])}
                 fragment={getFragment(VideoThumbnailFragmentDoc, node)}

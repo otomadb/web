@@ -1,64 +1,64 @@
 "use client";
+import "client-only";
+
 import clsx from "clsx";
 import React from "react";
 
 import { LinkVideo } from "~/app/videos/[serial]/Link";
-import { Thumbnail } from "~/components/common/Thumbnail";
 import { getFragment, graphql } from "~/gql";
 import {
-  Component_ThumbnailFragmentDoc,
-  GlobalNav_SearchBox_SearchVideosFragment,
-  GlobalNav_SearchBox_SearchVideosItemFragment,
-  GlobalNav_SearchBox_SearchVideosItemFragmentDoc,
   Link_VideoFragmentDoc,
+  SearchContents_SearchVideosFragment,
+  SearchContents_SearchVideosItemFragment,
+  SearchContents_SearchVideosItemFragmentDoc,
+  VideoThumbnailFragmentDoc,
 } from "~/gql/graphql";
 
+import { VideoThumbnail } from "../Thumbnail";
+
 graphql(`
-  fragment GlobalNav_SearchBox_SearchVideosItem on SearchVideosItem {
+  fragment SearchContents_SearchVideosItem on SearchVideosItem {
     matchedTitle
     video {
       id
       title
-      ...Component_Thumbnail
+      ...VideoThumbnail
       ...Link_Video
     }
   }
 `);
-export const SearchVideosItem: React.FC<{
+const SearchVideosItem: React.FC<{
   className?: string;
-  fragment: GlobalNav_SearchBox_SearchVideosItemFragment;
+  fragment: SearchContents_SearchVideosItemFragment;
 }> = ({ className, fragment }) => {
   const { matchedTitle, video } = fragment;
   return (
     <LinkVideo
       key={video.id}
-      tabIndex={0}
-      fragment={getFragment(Link_VideoFragmentDoc, video)}
       className={clsx(
         className,
+        ["px-2"],
         ["py-2"],
-        ["flex", ["items-center"]],
-        ["hover:bg-sky-300/50", "focus:bg-sky-400/50"],
-        ["divide-x", "border-slate-300/75"]
+        ["flex", ["items-center"], ["gap-x-4"]],
+        ["hover:bg-sky-300/50", "focus:bg-sky-400/50"]
       )}
       onClick={(e) => {
         e.currentTarget.blur();
       }}
+      tabIndex={0}
+      fragment={getFragment(Link_VideoFragmentDoc, video)}
     >
-      <div className={clsx(["flex-shrink-0"], ["px-2"])}>
-        <Thumbnail
-          fragment={getFragment(Component_ThumbnailFragmentDoc, video)}
-          className={clsx(["w-[80px]"], ["h-[60px]"])}
-          width={80}
-          height={60}
-          Wrapper={(props) => <div {...props} />}
+      <div className={clsx(["flex-shrink-0"])}>
+        <VideoThumbnail
+          className={clsx(["w-32"], ["h-16"])}
+          fragment={getFragment(VideoThumbnailFragmentDoc, video)}
         />
       </div>
       <div
         className={clsx(
           ["flex-grow"],
-          ["flex", "flex-col", "justify-center"],
-          ["px-2"]
+          ["py-1"],
+          ["flex", "flex-col", "gap-y-1", "justify-center"]
         )}
       >
         <div className={clsx(["text-slate-900"], ["text-sm"], ["font-bold"])}>
@@ -73,18 +73,18 @@ export const SearchVideosItem: React.FC<{
 };
 
 graphql(`
-  fragment GlobalNav_SearchBox_SearchVideos on SearchVideosPayload {
+  fragment SearchContents_SearchVideos on SearchVideosPayload {
     items {
-      ...GlobalNav_SearchBox_SearchVideosItem
+      ...SearchContents_SearchVideosItem
     }
   }
 `);
 export const SearchVideos: React.FC<{
   className?: string;
-  fragment: GlobalNav_SearchBox_SearchVideosFragment;
+  fragment: SearchContents_SearchVideosFragment;
 }> = ({ className, fragment }) => {
   const items = getFragment(
-    GlobalNav_SearchBox_SearchVideosItemFragmentDoc,
+    SearchContents_SearchVideosItemFragmentDoc,
     fragment.items
   );
 

@@ -3,7 +3,7 @@ import "server-only";
 import clsx from "clsx";
 import { Suspense } from "react";
 
-import { SearchBox } from "~/components/global/Navigation/SearchBox/SearchBox";
+import { SearchContents } from "~/components/common/SearchContents/SearchContents";
 import { NicovideoRequestsList } from "~/components/pages/Top/NicovideoRequestsList.server";
 import { RecentVideosList } from "~/components/pages/Top/RecentVIdeosList.server";
 
@@ -22,7 +22,7 @@ export default async function Page() {
         >
           <h2 className={clsx(["text-sm"])}>検索</h2>
           <div className={clsx(["mt-2"])}>
-            <SearchBox />
+            <SearchContents />
           </div>
         </section>
       </div>

@@ -4,9 +4,9 @@ import clsx from "clsx";
 import React from "react";
 
 import { LinkTop } from "~/app/Link";
+import { SearchContents } from "~/components/common/SearchContents/SearchContents";
 
 import { Profile } from "./Profile/Profile";
-import { SearchBox } from "./SearchBox/SearchBox";
 
 export const GlobalNavigation: React.FC<{ className?: string }> = ({
   className,
@@ -40,7 +40,7 @@ export const GlobalNavigation: React.FC<{ className?: string }> = ({
           <LinkTop className={clsx(["text-white"])}>otomadb</LinkTop>
         </div>
         <div className={clsx(["flex-grow"])}>
-          <SearchBox className={clsx(["mx-auto"])} />
+          <SearchContents className={clsx(["mx-auto"])} />
         </div>
         <div
           className={clsx(

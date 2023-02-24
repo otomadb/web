@@ -1,16 +1,18 @@
 "use client";
+import "client-only";
+
 import clsx from "clsx";
 import React from "react";
 
 import { LinkTag } from "~/app/tags/[serial]/Link";
 import { getFragment, graphql } from "~/gql";
 import {
-  GlobalNav_SearchBox_SearchTagsFragment,
   Link_TagFragmentDoc,
+  SearchContents_SearchTagsFragment,
 } from "~/gql/graphql";
 
 graphql(`
-  fragment GlobalNav_SearchBox_SearchTags on SearchTagsPayload {
+  fragment SearchContents_SearchTags on SearchTagsPayload {
     items {
       matchedName
       tag {
@@ -28,7 +30,7 @@ graphql(`
 `);
 export const SearchTags: React.FC<{
   className?: string;
-  fragment: GlobalNav_SearchBox_SearchTagsFragment;
+  fragment: SearchContents_SearchTagsFragment;
 }> = ({ className, fragment }) => {
   const { items } = fragment;
 
