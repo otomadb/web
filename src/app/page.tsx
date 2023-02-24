@@ -3,47 +3,61 @@ import "server-only";
 import clsx from "clsx";
 import { Suspense } from "react";
 
-import { ServerSideVideosList } from "~/components/common/VideoList.server";
+import { SearchBox } from "~/components/global/Navigation/SearchBox/SearchBox";
 import { NicovideoRequestsList } from "~/components/pages/Top/NicovideoRequestsList.server";
-import { graphql } from "~/gql";
-import { fetchGql } from "~/utils/fetchGql";
+import { RecentVideosList } from "~/components/pages/Top/RecentVIdeosList.server";
 
 export default async function Page() {
-  const promiseRecentVideos = fetchGql(
-    graphql(`
-      query TopPage_RecentRegisteredVideos {
-        findVideos(input: { limit: 24, order: { createdAt: DESC } }) {
-          nodes {
-            ...VideoList_Video
-          }
-        }
-      }
-    `),
-    {},
-    { next: { revalidate: 0 } }
-  ).then((v) => v.findVideos.nodes);
-
   return (
-    <>
-      <section>
-        <h2 className={clsx(["text-xl"])}>最近登録された動画</h2>
-        <Suspense fallback={<span>LOADING</span>}>
-          {/* @ts-expect-error for Server Component*/}
-          <ServerSideVideosList
-            className={clsx(["mt-4"])}
-            videosPromise={promiseRecentVideos}
-          />
-        </Suspense>
-      </section>
-      <div className={clsx(["grid", ["grid-cols-1", "lg:grid-cols-2"]])}>
+    <main
+      className={clsx(["container"], ["mx-auto"], ["flex", "gap-x-[12px]"])}
+    >
+      <div className={clsx(["flex-shrink-0"], ["flex-grow"])}>
         <section
           className={clsx(
-            [["px-4"], ["py-4"]],
+            [["px-2"], ["py-2"]],
             ["rounded"],
             ["border", "border-slate-300"]
           )}
         >
-          <h2>最近リクエストされたニコニコ動画の動画</h2>
+          <h2 className={clsx(["text-sm"])}>検索</h2>
+          <div className={clsx(["mt-2"])}>
+            <SearchBox />
+          </div>
+        </section>
+      </div>
+      <div
+        className={clsx(
+          ["flex-grow"],
+          ["max-w-[512px]"],
+          ["flex", "flex-col", "gap-y-2"]
+        )}
+      >
+        <section
+          className={clsx(
+            [["px-2"], ["py-2"]],
+            ["rounded"],
+            ["border", "border-slate-300"]
+          )}
+        >
+          <h2 className={clsx(["text-sm"])}>最近登録された動画</h2>
+          <div className={clsx(["mt-2"])}>
+            <Suspense fallback={<span>LOADING</span>}>
+              {/* @ts-expect-error for Server Component*/}
+              <RecentVideosList />
+            </Suspense>
+          </div>
+        </section>
+        <section
+          className={clsx(
+            [["px-2"], ["py-2"]],
+            ["rounded"],
+            ["border", "border-slate-300"]
+          )}
+        >
+          <h2 className={clsx(["text-sm"])}>
+            最近リクエストされたニコニコ動画の動画
+          </h2>
           <div className={clsx(["mt-2"])}>
             <Suspense fallback={<span>LOADING</span>}>
               {/* @ts-expect-error for Server Component*/}
@@ -52,6 +66,6 @@ export default async function Page() {
           </div>
         </section>
       </div>
-    </>
+    </main>
   );
 }

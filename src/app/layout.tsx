@@ -26,16 +26,7 @@ export default function RootLayout({
               ["z-1"]
             )}
           />
-          <div
-            className={clsx(
-              ["relative"],
-              ["min-h-[calc(100vh-64px)]"],
-              ["container"],
-              ["mx-auto"]
-            )}
-          >
-            {children}
-          </div>
+          <div className={clsx(["min-h-[calc(100vh-64px)]"])}>{children}</div>
           <Toaster />
         </Providers>
       </body>
