@@ -1,17 +1,19 @@
 import clsx from "clsx";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 
-import { LinkTag } from "~/app/tags/[serial]/Link";
 import { LinkUser } from "~/app/users/[name]/Link";
-import { CommonTag } from "~/components/common/Tag";
+import { CoolImage } from "~/components/common/CoolImage";
 import { UserIcon2 } from "~/components/common/UserIcon";
+import {
+  SemitagsList,
+  TagsList,
+} from "~/components/pages/Requests/Nicovideo/Tags.server";
 import { getFragment, graphql } from "~/gql";
 import {
-  CommonTagFragmentDoc,
   Component_UserIconFragmentDoc,
-  Link_TagFragmentDoc,
   Link_UserFragmentDoc,
+  NicovideoRequestPage_SemitagsListFragmentDoc,
+  NicovideoRequestPage_TagsListFragmentDoc,
 } from "~/gql/graphql";
 import { fetchGql } from "~/utils/fetchGql";
 
@@ -37,19 +39,8 @@ export default async function Page({
             ...Link_User
             ...Component_UserIcon
           }
-          taggings {
-            id
-            tag {
-              ...CommonTag
-              ...Link_Tag
-            }
-            note
-          }
-          semitaggings {
-            id
-            name
-            note
-          }
+          ...NicovideoRequestPage_TagsList
+          ...NicovideoRequestPage_SemitagsList
         }
       }
     `),
@@ -58,7 +49,7 @@ export default async function Page({
 
   if (!findNicovideoRegistrationRequest) return notFound();
 
-  const { title, sourceId, thumbnailUrl, requestedBy, taggings, semitaggings } =
+  const { title, sourceId, thumbnailUrl, requestedBy } =
     findNicovideoRegistrationRequest;
 
   return (
@@ -70,15 +61,13 @@ export default async function Page({
       </h1>
       <div className={clsx(["mt-4"], ["flex", "gap-x-4"])}>
         <div className={clsx(["flex-shrink-0"])}>
-          <div className={clsx(["w-64"], ["flex"])}>
-            <Image
-              src={thumbnailUrl}
-              alt={title}
-              width={196}
-              height={128}
-              style={{ height: "auto", objectFit: "scale-down" }}
-            />
-          </div>
+          <CoolImage
+            className={clsx(["w-64"], ["h-32"])}
+            src={thumbnailUrl}
+            alt={title}
+            width={196}
+            height={128}
+          />
         </div>
         <div className={clsx(["flex-grow"], ["flex", "flex-col", "gap-y-1"])}>
           <h1>{title}</h1>
@@ -107,35 +96,28 @@ export default async function Page({
         </div>
       </div>
       <div className={clsx(["mt-4"], ["grid", "grid-cols-2"])}>
-        <div className={clsx(["flex", "flex-col", "items-start", "gap-y-2"])}>
+        <section
+          className={clsx(["flex", "flex-col", "items-start", "gap-y-2"])}
+        >
           <h2>タグ</h2>
-          {taggings.map((tagging) => (
-            <div key={tagging.id}>
-              <div>
-                <LinkTag
-                  className={clsx(["block"])}
-                  fragment={getFragment(Link_TagFragmentDoc, tagging.tag)}
-                >
-                  <CommonTag
-                    fragment={getFragment(CommonTagFragmentDoc, tagging.tag)}
-                  />
-                </LinkTag>
-              </div>
-              <div>{tagging.note && <span>{tagging.note}</span>}</div>
-            </div>
-          ))}
-        </div>
-        <div className={clsx(["flex", "flex-col", "items-start", "gap-y-2"])}>
+          <TagsList
+            fragment={getFragment(
+              NicovideoRequestPage_TagsListFragmentDoc,
+              findNicovideoRegistrationRequest
+            )}
+          />
+        </section>
+        <section
+          className={clsx(["flex", "flex-col", "items-start", "gap-y-2"])}
+        >
           <h2>仮タグ</h2>
-          {semitaggings.map((semitaggings) => (
-            <div key={semitaggings.id}>
-              <div>
-                <span>{semitaggings.name}</span>
-              </div>
-              <div>{semitaggings.note && <span>{semitaggings.note}</span>}</div>
-            </div>
-          ))}
-        </div>
+          <SemitagsList
+            fragment={getFragment(
+              NicovideoRequestPage_SemitagsListFragmentDoc,
+              findNicovideoRegistrationRequest
+            )}
+          />
+        </section>
       </div>
     </main>
   );
