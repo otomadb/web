@@ -308,6 +308,11 @@ type MutationMylistNotFoundError {
   mylistId: String!
 }
 
+"""既にチェック済みのNicovideoRegistrationRequestをチェックしようとした場合のエラー"""
+type MutationNicovideoRegistrationRequestAlreadyCheckedError {
+  requestId: String!
+}
+
 """NicovideoRegistrationRequestが見つからない場合のエラー"""
 type MutationNicovideoRegistrationRequestNotFoundError {
   requestId: String!
@@ -511,9 +516,7 @@ type NicovideoOriginalSourceTagSearchTagsPayload {
 type NicovideoRegistrationRequest {
   checked: Boolean!
   checking: NicovideoRegistrationRequestChecking
-  embedUrl: String!
   id: ID!
-  originalUrl: String!
   requestedBy: User!
   semitaggings: [NicovideoRegistrationRequestSemitagging!]!
   sourceId: String!
@@ -691,6 +694,7 @@ type RegisterVideoFailedPayload {
 
 input RegisterVideoInput {
   extraTitles: [String!]! = []
+  nicovideoRequestId: ID
   primaryThumbnail: String!
   primaryTitle: String!
   semitags: [String!]! = []
@@ -707,7 +711,7 @@ enum RegisterVideoInputSourceType {
   NICOVIDEO
 }
 
-union RegisterVideoPayload = RegisterVideoFailedPayload | RegisterVideoSucceededPayload
+union RegisterVideoPayload = MutationInvalidNicovideoRegistrationRequestIdError | MutationNicovideoRegistrationRequestAlreadyCheckedError | MutationNicovideoRegistrationRequestNotFoundError | RegisterVideoFailedPayload | RegisterVideoSucceededPayload
 
 type RegisterVideoSucceededPayload {
   video: Video!
