@@ -41,7 +41,6 @@
             httpie
             nixpkgs-fmt
             nodejs-18_x
-            treefmt
           ];
           env = [
             {
