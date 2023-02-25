@@ -19,7 +19,7 @@ export async function NicovideoRequestsList() {
     graphql(`
       query TopPage_RecendNicovideoRegistrationRequests {
         findNicovideoRegistrationRequests(
-          input: { limit: 8, order: { createdAt: DESC } }
+          input: { limit: 8, order: { createdAt: DESC }, checked: false }
         ) {
           nodes {
             id
