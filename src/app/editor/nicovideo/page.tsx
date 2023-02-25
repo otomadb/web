@@ -1,8 +1,11 @@
 import clsx from "clsx";
+import type { Metadata } from "next";
 
 import { Form } from "~/components/pages/Editor/RegisterNicovideo/Form";
 
-export const dynamic = "force-dynamic";
+export const metadata: Metadata = {
+  title: "ニコニコ動画からの登録",
+};
 
 export default async function Page({
   searchParams,

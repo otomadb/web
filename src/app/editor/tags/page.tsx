@@ -1,8 +1,11 @@
 import clsx from "clsx";
+import type { Metadata } from "next";
 
 import { RegisterTagForm } from "~/components/pages/Editor/RegisterTag/Form";
 
-export const dynamic = "force-dynamic";
+export const metadata: Metadata = {
+  title: "タグの登録",
+};
 
 export default async function Page() {
   return (
