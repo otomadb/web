@@ -3,7 +3,7 @@ import "client-only";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
-import React, { ComponentProps, useCallback, useState } from "react";
+import React, { ComponentProps, useCallback } from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { useMutation } from "urql";
@@ -54,9 +54,6 @@ export const RegisterForm: React.FC<{
   sourceId: string | undefined;
   clearSourceId(): void;
 }> = ({ className, sourceId, clearSourceId }) => {
-  const [notyet, setNotyet] = useState<boolean | undefined>(undefined);
-  const [exists, setExists] = useState<boolean | undefined>(undefined);
-
   const { control, handleSubmit, register, setValue, watch, getValues, reset } =
     useForm<FormSchema>({
       resolver: zodResolver(formSchema),
@@ -108,25 +105,14 @@ export const RegisterForm: React.FC<{
       });
       reset({ title: "", thumbnailUrl: "", tags: [] });
       clearSourceId();
-      setExists(undefined);
-      setNotyet(undefined);
     },
     [callSuccessToast, clearSourceId, mutateRegisterTag, reset]
   );
   const setSource = useCallback(
-    (
-      source:
-        | undefined
-        | { sourceId: string; title: string; thumbnailUrl: string }
-    ) => {
-      if (!source) {
-        setExists(false);
-      } else {
-        setExists(true);
-        setValue("sourceId", source.sourceId);
-        setValue("title", source.title);
-        setValue("thumbnailUrl", source.thumbnailUrl);
-      }
+    (source: { sourceId: string; title: string; thumbnailUrl: string }) => {
+      setValue("sourceId", source.sourceId);
+      setValue("title", source.title);
+      setValue("thumbnailUrl", source.thumbnailUrl);
     },
     [setValue]
   );
@@ -167,19 +153,10 @@ export const RegisterForm: React.FC<{
     >
       <SourceChecker
         sourceId={sourceId}
-        setNotyet={(notyet) => setNotyet(notyet)}
         setSource={(source) => setSource(source)}
         toggleTag={(id) => toggleTag(id)}
-      />
-      {notyet && exists && (
-        <div
-          className={clsx(
-            ["flex", "flex-col", "gap-y-4"],
-            ["border"],
-            ["rounded-md"],
-            ["px-4", "py-4"]
-          )}
-        >
+      >
+        <div className={clsx(["flex", "flex-col", "gap-y-4"])}>
           <ConfirmForm
             TitleInput={function TitleInput(props) {
               return <input {...props} {...register("title")} />;
@@ -201,7 +178,7 @@ export const RegisterForm: React.FC<{
             </BlueButton>
           </div>
         </div>
-      )}
+      </SourceChecker>
     </form>
   );
 };

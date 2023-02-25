@@ -2,65 +2,55 @@
 import "client-only";
 
 import clsx from "clsx";
-import { useEffect } from "react";
+import { ReactNode, useEffect } from "react";
 import { useQuery } from "urql";
 
 import { getFragment, graphql } from "~/gql";
 import {
   EditorRegisterNicovideoPage_SourceAlreadyRegisteredFragmentDoc,
   RegisterNicovideoPage_OriginalSourceFragmentDoc,
-  RegisterNicovideoPage_SourceCheckerDocument,
 } from "~/gql/graphql";
 
 import { OriginalSource } from "./OriginalSource";
 import { SourceAlreadyExists as SourceAlreadyRegistered } from "./SourceAlreadyRegistered";
 
-graphql(`
-  query RegisterNicovideoPage_SourceChecker($sourceId: String!) {
-    fetchNicovideo(input: { sourceId: $sourceId }) {
-      source {
-        sourceId
-        title
-        thumbnailUrl
-        ...RegisterNicovideoPage_OriginalSource
-      }
-    }
-    findNicovideoVideoSource(input: { sourceId: $sourceId }) {
-      id
-      ...EditorRegisterNicovideoPage_SourceAlreadyRegistered
-    }
-  }
-`);
 export const SourceChecker: React.FC<{
   className?: string;
+  children: ReactNode;
+
   sourceId: string;
   toggleTag: (id: string) => void;
-  setSource: (
-    source:
-      | undefined
-      | { sourceId: string; title: string; thumbnailUrl: string }
-  ) => void;
-  setNotyet(already: boolean): void;
-}> = ({ className, sourceId, toggleTag, setSource, setNotyet }) => {
+
+  setSource: (source: {
+    sourceId: string;
+    title: string;
+    thumbnailUrl: string;
+  }) => void;
+}> = ({ className, children, sourceId, toggleTag, setSource }) => {
   const [{ data }] = useQuery({
-    query: RegisterNicovideoPage_SourceCheckerDocument,
+    query: graphql(`
+      query RegisterNicovideoPage_SourceChecker($sourceId: String!) {
+        fetchNicovideo(input: { sourceId: $sourceId }) {
+          source {
+            sourceId
+            title
+            thumbnailUrl
+            ...RegisterNicovideoPage_OriginalSource
+          }
+        }
+        findNicovideoVideoSource(input: { sourceId: $sourceId }) {
+          id
+          ...EditorRegisterNicovideoPage_SourceAlreadyRegistered
+        }
+      }
+    `),
     variables: { sourceId },
     requestPolicy: "cache-and-network",
   });
 
   useEffect(
     () => {
-      if (!data) return;
-      if (data?.findNicovideoVideoSource) {
-        setNotyet(false);
-        return;
-      }
-      if (!data?.fetchNicovideo.source) {
-        setSource(undefined);
-        return;
-      }
-
-      setNotyet(true);
+      if (!data?.fetchNicovideo.source) return;
 
       const { sourceId, title, thumbnailUrl } = data.fetchNicovideo.source;
       setSource({ sourceId, title, thumbnailUrl });
@@ -91,20 +81,37 @@ export const SourceChecker: React.FC<{
                 )}
               />
             )}
-            {!data.findNicovideoVideoSource && !data.fetchNicovideo.source && (
-              <div>
-                <span className={clsx(["font-mono"])}>{sourceId}</span>
-                に該当する動画は見つかりませんでした．
-              </div>
-            )}
-            {!data.findNicovideoVideoSource && data.fetchNicovideo.source && (
-              <OriginalSource
-                fragment={getFragment(
-                  RegisterNicovideoPage_OriginalSourceFragmentDoc,
-                  data.fetchNicovideo.source
+            {!data.findNicovideoVideoSource && (
+              <>
+                {!data.fetchNicovideo.source && (
+                  <>
+                    <div>
+                      <span className={clsx(["font-mono"])}>{sourceId}</span>
+                      に該当する動画は見つかりませんでした．
+                    </div>
+                  </>
                 )}
-                toggleTag={toggleTag}
-              />
+                {data.fetchNicovideo.source && (
+                  <div className={clsx(["flex", "flex-col", "gap-y-4"])}>
+                    <OriginalSource
+                      fragment={getFragment(
+                        RegisterNicovideoPage_OriginalSourceFragmentDoc,
+                        data.fetchNicovideo.source
+                      )}
+                      toggleTag={toggleTag}
+                    />
+                    <div
+                      className={clsx(
+                        ["border"],
+                        ["rounded-md"],
+                        ["px-4", "py-4"]
+                      )}
+                    >
+                      {children}
+                    </div>
+                  </div>
+                )}
+              </>
             )}
           </>
         )}
