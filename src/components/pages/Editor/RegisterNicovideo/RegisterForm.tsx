@@ -29,6 +29,7 @@ export const formSchema = z.object({
   thumbnailUrl: z.string(),
   tags: z.array(z.object({ tagId: z.string() })),
   semitags: z.array(z.object({ name: z.string() })),
+  nicovideoRequestId: z.nullable(z.string()),
 });
 export type FormSchema = z.infer<typeof formSchema>;
 
@@ -76,7 +77,14 @@ export const RegisterForm: React.FC<{
   );
   const callSuccessToast = useCallSuccessToast();
   const registerVideo: SubmitHandler<FormSchema> = useCallback(
-    async ({ sourceId, title, thumbnailUrl, tags, semitags }) => {
+    async ({
+      sourceId,
+      title,
+      thumbnailUrl,
+      tags,
+      semitags,
+      nicovideoRequestId,
+    }) => {
       const { data, error } = await mutateRegisterTag({
         input: {
           primaryTitle: title,
@@ -85,6 +93,7 @@ export const RegisterForm: React.FC<{
           tags: tags.map(({ tagId }) => tagId),
           semitags: semitags.map(({ name }) => name),
           sources: [{ sourceId, type: RegisterVideoInputSourceType.Nicovideo }],
+          nicovideoRequestId,
         },
       });
       if (error || !data) {
@@ -92,30 +101,34 @@ export const RegisterForm: React.FC<{
         return;
       }
 
-      if (data.registerVideo.__typename === "RegisterVideoFailedPayload") {
-        // TODO: 何かしら出す
-        return;
+      switch (data.registerVideo.__typename) {
+        case "RegisterVideoSucceededPayload":
+          callSuccessToast({
+            fragment: getFragment(
+              RegisterNicovideoPage_RegisterForm_SuccessToastFragmentDoc,
+              data.registerVideo.video
+            ),
+          });
+          reset({ title: "", thumbnailUrl: "", tags: [] });
+          clearSourceId();
+          return;
+        default:
+          // TODO: 何かしら出す
+          return;
       }
-
-      callSuccessToast({
-        fragment: getFragment(
-          RegisterNicovideoPage_RegisterForm_SuccessToastFragmentDoc,
-          data.registerVideo.video
-        ),
-      });
-      reset({ title: "", thumbnailUrl: "", tags: [] });
-      clearSourceId();
     },
     [callSuccessToast, clearSourceId, mutateRegisterTag, reset]
   );
-  const setSource = useCallback(
-    (source: { sourceId: string; title: string; thumbnailUrl: string }) => {
-      setValue("sourceId", source.sourceId);
-      setValue("title", source.title);
-      setValue("thumbnailUrl", source.thumbnailUrl);
-    },
-    [setValue]
-  );
+  const setSource: ComponentProps<typeof SourceChecker>["setSource"] =
+    useCallback(
+      (source) => {
+        setValue("sourceId", source.sourceId);
+        setValue("title", source.title);
+        setValue("thumbnailUrl", source.thumbnailUrl);
+        setValue("nicovideoRequestId", source.nicovideoRequestId);
+      },
+      [setValue]
+    );
   const toggleTag = useCallback(
     (id: string) => {
       const index = getValues("tags").findIndex(({ tagId }) => tagId === id);
@@ -123,6 +136,14 @@ export const RegisterForm: React.FC<{
       else removeTag(index);
     },
     [appendTag, getValues, removeTag]
+  );
+  const toggleSemitag = useCallback(
+    (n: string) => {
+      const index = getValues("semitags").findIndex(({ name }) => name === n);
+      if (index === -1) appendSemitag({ name: n });
+      else removeSemitag(index);
+    },
+    [appendSemitag, getValues, removeSemitag]
   );
 
   if (!sourceId)
@@ -155,6 +176,7 @@ export const RegisterForm: React.FC<{
         sourceId={sourceId}
         setSource={(source) => setSource(source)}
         toggleTag={(id) => toggleTag(id)}
+        toggleSemitag={(name) => toggleSemitag(name)}
       >
         <div className={clsx(["flex", "flex-col", "gap-y-4"])}>
           <ConfirmForm
