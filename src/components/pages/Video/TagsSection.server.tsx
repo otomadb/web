@@ -35,10 +35,10 @@ export const TagsSection = async ({
   className?: string;
   videoId: string;
 }) => {
-  const { video } = await fetchGql(
+  const { getVideo } = await fetchGql(
     graphql(`
       query VideoPage_TagsSection($id: ID!) {
-        video(id: $id) {
+        getVideo(id: $id) {
           ...VideoPage_TagsSection
         }
       }
@@ -49,7 +49,7 @@ export const TagsSection = async ({
 
   const taggings = getFragment(
     VideoPage_TagsSectionFragmentDoc,
-    video
+    getVideo
   ).taggings;
 
   return (

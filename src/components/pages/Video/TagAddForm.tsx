@@ -15,12 +15,12 @@ import {
 
 graphql(`
   query VideoPage_AddTagForm($videoId: ID!, $tagId: ID!) {
-    tag(id: $tagId) {
+    getTag(id: $tagId) {
       id
       ...Component_Tag
       canTagTo(videoId: $videoId)
     }
-    video(id: $videoId) {
+    getVideo(id: $videoId) {
       id
       hasTag(id: $tagId)
     }
@@ -71,14 +71,14 @@ export const AddTagForm: React.FC<{
         <>
           <div className={clsx(["mt-2"], ["flex", "items-center"])}>
             <Tag
-              tag={getFragment(Component_TagFragmentDoc, data.tag)}
+              tag={getFragment(Component_TagFragmentDoc, data.getTag)}
               className={clsx(["shadow"])}
               Wrapper={({ children, ...props }) => (
                 <div {...props}>{children}</div>
               )}
             />
           </div>
-          {data.tag.canTagTo === false && (
+          {data.getTag.canTagTo === false && (
             <div className={clsx(["mt-2"])}>
               <p className={clsx(["text-xs"], ["text-red-600"])}>
                 このタグを付けることは出来ません
@@ -90,7 +90,7 @@ export const AddTagForm: React.FC<{
           >
             <BlueButton
               className={clsx([["px-2"], ["py-1"]])}
-              disabled={!data?.tag.canTagTo}
+              disabled={!data?.getTag.canTagTo}
               onClick={async () => {
                 await trigger({ input: { tagId, videoId } });
                 clear();

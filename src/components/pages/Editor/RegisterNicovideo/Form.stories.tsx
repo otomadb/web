@@ -166,7 +166,7 @@ const meta = {
               case "t1":
                 return res(
                   ctx.data({
-                    tag: aTag({
+                    getTag: aTag({
                       id: "t1",
                       name: "ドナルド・マクドナルド",
                       explicitParent: null,
@@ -177,7 +177,7 @@ const meta = {
               case "t2":
                 return res(
                   ctx.data({
-                    tag: aTag({
+                    getTag: aTag({
                       id: "t2",
                       name: "U.N.オーエンは彼女なのか？",
                       explicitParent: null,
@@ -188,7 +188,7 @@ const meta = {
               case "t3":
                 return res(
                   ctx.data({
-                    tag: aTag({
+                    getTag: aTag({
                       id: "t3",
                       name: "最終鬼畜妹フランドール・Ｓ",
                       explicitParent: null,
@@ -199,7 +199,7 @@ const meta = {
               case "t4":
                 return res(
                   ctx.data({
-                    tag: aTag({
+                    getTag: aTag({
                       id: "t4",
                       name: "東方Project",
                       explicitParent: null,

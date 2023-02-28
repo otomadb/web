@@ -181,7 +181,7 @@ export const ConfirmForm: React.FC<{
 };
 graphql(`
   query RegisterNicovideoPage_RegisterForm_Tag($id: ID!) {
-    tag(id: $id) {
+    getTag(id: $id) {
       ...CommonTag
     }
   }
@@ -199,7 +199,7 @@ const TagItem: React.FC<{
   return (
     <button className={clsx(className)} onClick={() => remove()}>
       {data && (
-        <CommonTag fragment={getFragment(CommonTagFragmentDoc, data.tag)} />
+        <CommonTag fragment={getFragment(CommonTagFragmentDoc, data.getTag)} />
       )}
     </button>
   );

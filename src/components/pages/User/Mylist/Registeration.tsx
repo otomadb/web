@@ -22,6 +22,7 @@ graphql(`
       title
       ...Component_Thumbnail
       ...Link_Video
+      # TODO: tagsを使わない
       tags(input: { limit: 5 }) {
         id
         tag {
