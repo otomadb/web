@@ -4,6 +4,7 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "module": "esnext",
     "moduleResolution": "node",
+    "strictNullChecks": true,
     "jsx": "preserve",
     "noEmit": true,
     "baseUrl": "./",
