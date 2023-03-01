@@ -7,13 +7,13 @@ import { LinkUser } from "~/app/users/[name]/Link";
 import { CommonTag } from "~/components/common/Tag";
 import { UserIcon2 } from "~/components/common/UserIcon";
 import { getFragment, graphql } from "~/gql";
+import { fetchGql } from "~/gql/fetch";
 import {
   CommonTagFragmentDoc,
   Component_UserIconFragmentDoc,
   Link_TagFragmentDoc,
   Link_UserFragmentDoc,
 } from "~/gql/graphql";
-import { fetchGql } from "~/utils/fetchGql";
 
 export const dynamic = "force-dynamic";
 

@@ -5,13 +5,13 @@ import React from "react";
 
 import { Tag } from "~/components/common/Tag";
 import { getFragment, graphql } from "~/gql";
+import { fetchGql } from "~/gql/fetch";
 import {
   Component_TagFragmentDoc,
   VideoPage_TagsSectionFragmentDoc,
   VideoPage_TagTypesListFragment,
   VideoPage_TagTypesListFragmentDoc,
 } from "~/gql/graphql";
-import { fetchGql } from "~/utils/fetchGql";
 import { styleByTagType } from "~/utils/styleByTagType";
 
 graphql(`

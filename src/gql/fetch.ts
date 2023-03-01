@@ -12,6 +12,7 @@ export const fetchGql = async <T, V>(
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ query: print(document), variables }),
+      next: { revalidate: 0 },
       ...fetchOptions,
     }
   );

@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { graphql } from "~/gql";
-import { fetchGql } from "~/utils/fetchGql";
+import { fetchGql } from "~/gql/fetch";
 
 export async function generateMetadata({
   params,

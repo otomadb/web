@@ -7,11 +7,11 @@ import React from "react";
 import { Header } from "~/components/pages/User/Header";
 import { UserPageNav } from "~/components/pages/User/Nav";
 import { getFragment, graphql } from "~/gql";
+import { fetchGql } from "~/gql/fetch";
 import {
   UserPageLayout_HeaderFragmentDoc,
   UserPageLayout_NavFragmentDoc,
 } from "~/gql/graphql";
-import { fetchGql } from "~/utils/fetchGql";
 
 export default async function Layout({
   children,

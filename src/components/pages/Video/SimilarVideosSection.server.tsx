@@ -5,11 +5,11 @@ import React from "react";
 
 import { VideoList } from "~/components/common/VideoList";
 import { getFragment, graphql } from "~/gql";
+import { fetchGql } from "~/gql/fetch";
 import {
   VideoList_VideoFragmentDoc,
   VideoPage_SimilarVideosSectionFragmentDoc,
 } from "~/gql/graphql";
-import { fetchGql } from "~/utils/fetchGql";
 
 graphql(`
   fragment VideoPage_SimilarVideosSection on Video {
