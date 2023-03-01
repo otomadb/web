@@ -17,14 +17,14 @@ import {
 
 graphql(`
   query VideoPage_SemitagEditor_Semitag($semitagId: ID!) {
-    semitag(id: $semitagId) {
+    getSemitag(id: $semitagId) {
       id
       name
     }
   }
 
   query VideoPage_SemitagEditor_Tag($tagId: ID!) {
-    tag(id: $tagId) {
+    getTag(id: $tagId) {
       ...Component_Tag
     }
   }
@@ -51,7 +51,10 @@ export const SemitagEditor: React.FC<{
     query: VideoPage_SemitagEditor_SemitagDocument,
     variables: { semitagId },
   });
-  const semitagName = useMemo(() => semitagData?.semitag.name, [semitagData]);
+  const semitagName = useMemo(
+    () => semitagData?.getSemitag.name,
+    [semitagData]
+  );
 
   const [, trigger] = useMutation(VideoPage_ResolveSemitagDocument);
 
@@ -106,7 +109,7 @@ export const SemitagEditor: React.FC<{
               {tagData && (
                 <Tag
                   className={clsx(["inline-block"])}
-                  tag={getFragment(Component_TagFragmentDoc, tagData.tag)}
+                  tag={getFragment(Component_TagFragmentDoc, tagData.getTag)}
                   Wrapper={(props) => <span {...props} />}
                 />
               )}

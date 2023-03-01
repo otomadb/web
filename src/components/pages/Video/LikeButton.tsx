@@ -24,7 +24,7 @@ graphql(`
   }
 
   query VideoPage_LikeButtonCurrentLike($videoId: ID!) {
-    video(id: $videoId) {
+    getVideo(id: $videoId) {
       ...VideoPage_LikeButton
     }
   }
@@ -70,7 +70,7 @@ export const LikeButton: React.FC<{ className?: string; videoId: string }> = ({
   const liked = useMemo(() => {
     const l = getFragment(
       VideoPage_LikeButtonFragmentDoc,
-      currentResult.data?.video
+      currentResult.data?.getVideo
     );
     return l?.isLiked;
   }, [currentResult]);

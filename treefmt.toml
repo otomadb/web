@@ -1,8 +1,0 @@
-[formatter.alejandra]
-command = "nixpkgs-fmt"
-includes = ["*.nix"]
-
-[formatter.prettier]
-command = "prettier"
-options = ["--write"]
-includes = ["*.js", "*.jsx", "*.ts", "*.tsx", "*.css", "*.json", "*.md"]

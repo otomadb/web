@@ -95,7 +95,7 @@ const meta = {
               case "t2":
                 return res(
                   ctx.data({
-                    tag: aTag({
+                    getTag: aTag({
                       id: "t2",
                       name: "後藤ひとり",
                       pseudoType: PseudoTagType.Character,
@@ -109,7 +109,7 @@ const meta = {
               case "t3":
                 return res(
                   ctx.data({
-                    tag: aTag({
+                    getTag: aTag({
                       id: "t3",
                       name: "ぼっち・ざ・ろっく！",
                       pseudoType: PseudoTagType.Copyright,
@@ -127,7 +127,7 @@ const meta = {
               case "t2":
                 return res(
                   ctx.data({
-                    tag: aTag({
+                    getTag: aTag({
                       id: "t2",
                       name: "後藤ひとり",
                       pseudoType: PseudoTagType.Character,
@@ -141,7 +141,7 @@ const meta = {
               case "t3":
                 return res(
                   ctx.data({
-                    tag: aTag({
+                    getTag: aTag({
                       id: "t3",
                       name: "ぼっち・ざ・ろっく！",
                       pseudoType: PseudoTagType.Copyright,
@@ -183,31 +183,31 @@ const meta = {
               case "st1":
                 return res(
                   ctx.data({
-                    semitag: aSemitag({ id: "st1", name: "Semitag 1" }),
+                    getSemitag: aSemitag({ id: "st1", name: "Semitag 1" }),
                   })
                 );
               case "st2":
                 return res(
                   ctx.data({
-                    semitag: aSemitag({ id: "st2", name: "Semitag 2" }),
+                    getSemitag: aSemitag({ id: "st2", name: "Semitag 2" }),
                   })
                 );
               case "st3":
                 return res(
                   ctx.data({
-                    semitag: aSemitag({ id: "st3", name: "Semitag 3" }),
+                    getSemitag: aSemitag({ id: "st3", name: "Semitag 3" }),
                   })
                 );
               case "st4":
                 return res(
                   ctx.data({
-                    semitag: aSemitag({ id: "st4", name: "Semitag 4" }),
+                    getSemitag: aSemitag({ id: "st4", name: "Semitag 4" }),
                   })
                 );
               case "st5":
                 return res(
                   ctx.data({
-                    semitag: aSemitag({ id: "st5", name: "Semitag" }),
+                    getSemitag: aSemitag({ id: "st5", name: "Semitag" }),
                   })
                 );
               default:

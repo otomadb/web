@@ -10,10 +10,10 @@ export const NicovideoSourcesSection = async ({
   className?: string;
   videoId: string;
 }) => {
-  const { video } = await fetchGql(
+  const { getVideo } = await fetchGql(
     graphql(`
       query VideoPage_NicovideoSourcesSection($id: ID!) {
-        video(id: $id) {
+        getVideo(id: $id) {
           id
           nicovideoSources {
             id
@@ -43,7 +43,7 @@ export const NicovideoSourcesSection = async ({
             ]
           )}
         >
-          {video.nicovideoSources.map(({ id, sourceId, embedUrl }) => (
+          {getVideo.nicovideoSources.map(({ id, sourceId, embedUrl }) => (
             <div key={id}>
               <iframe height="160" src={embedUrl} />
               <div className={clsx(["font-mono"])}>{sourceId}</div>

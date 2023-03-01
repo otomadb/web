@@ -29,10 +29,10 @@ export const SemitagsSection = async ({
   className?: string;
   videoId: string;
 }) => {
-  const { video } = await fetchGql(
+  const { getVideo } = await fetchGql(
     graphql(`
       query VideoPage_SemitagsSection($id: ID!) {
-        video(id: $id) {
+        getVideo(id: $id) {
           ...VideoPage_SemitagsSection
         }
       }
@@ -49,14 +49,15 @@ export const SemitagsSection = async ({
         </h2>
       </div>
       <div className={clsx(["mt-2"], ["flex", "flex-col", "items-start"])}>
-        {getFragment(VideoPage_SemitagsSectionFragmentDoc, video).semitags.map(
-          (semitag) => (
-            <Semitag
-              key={semitag.id}
-              fragment={getFragment(VideoPage_SemitagFragmentDoc, semitag)}
-            />
-          )
-        )}
+        {getFragment(
+          VideoPage_SemitagsSectionFragmentDoc,
+          getVideo
+        ).semitags.map((semitag) => (
+          <Semitag
+            key={semitag.id}
+            fragment={getFragment(VideoPage_SemitagFragmentDoc, semitag)}
+          />
+        ))}
       </div>
     </section>
   );
