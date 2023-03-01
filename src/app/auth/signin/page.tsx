@@ -1,6 +1,11 @@
 import clsx from "clsx";
+import type { Metadata } from "next";
 
 import { SigninForm } from "~/components/pages/Auth/Signin/SigninForm";
+
+export const metadata: Metadata = {
+  title: "ログイン",
+};
 
 export default async function Page() {
   return (

@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { VideoList } from "~/components/common/VideoList";
@@ -7,6 +8,29 @@ import { VideoList_VideoFragmentDoc } from "~/gql/graphql";
 import { fetchGql } from "~/utils/fetchGql";
 
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { serial: string };
+}): Promise<Metadata> {
+  const { findTag } = await fetchGql(
+    graphql(`
+      query TagPage_Title($serial: Int!) {
+        findTag(input: { serial: $serial }) {
+          name
+        }
+      }
+    `),
+    { serial: parseInt(params.serial, 10) }
+  );
+
+  if (!findTag) return notFound(); // TODO: これ本当にこれでいいの？
+
+  return {
+    title: findTag.name,
+  };
+}
 
 export default async function Page({ params }: { params: { serial: string } }) {
   const { findTag } = await fetchGql(
