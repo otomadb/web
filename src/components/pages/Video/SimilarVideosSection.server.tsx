@@ -30,10 +30,10 @@ export const SimilarVideosSection = async ({
   className?: string;
   videoId: string;
 }) => {
-  const { video } = await fetchGql(
+  const { getVideo } = await fetchGql(
     graphql(`
       query VideoPage_SimilarVideosSection($id: ID!) {
-        video(id: $id) {
+        getVideo(id: $id) {
           id
           ...VideoPage_SimilarVideosSection
         }
@@ -45,7 +45,7 @@ export const SimilarVideosSection = async ({
 
   const videos = getFragment(
     VideoPage_SimilarVideosSectionFragmentDoc,
-    video
+    getVideo
   ).similarVideos.items.map(({ to }) =>
     getFragment(VideoList_VideoFragmentDoc, to)
   );

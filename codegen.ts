@@ -2,14 +2,9 @@ import type { CodegenConfig } from "@graphql-codegen/cli";
 
 const config: CodegenConfig = {
   overwrite: true,
-  schema: process.env.GRAPHQL_SCHEMA_PATH || "./schema.graphql",
+  schema: "./schema.graphql",
   documents: ["src/**/*.ts", "src/**/*.tsx", "src/**/*.graphql"],
   generates: {
-    ...(!process.env.CI && {
-      "schema.graphql": {
-        plugins: ["schema-ast"],
-      },
-    }),
     "src/gql/": {
       preset: "client",
       plugins: [

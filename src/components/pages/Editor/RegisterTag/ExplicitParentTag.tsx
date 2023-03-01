@@ -19,7 +19,7 @@ import {
 
 graphql(`
   query RegisterTagPage_ExplicitParentTag($id: ID!) {
-    tag(id: $id) {
+    getTag(id: $id) {
       ...Component_Tag
     }
   }
@@ -58,7 +58,7 @@ export const ExplicitParentTag: React.FC<{
       {explicitParentTagId && data && (
         <div className={clsx(["mt-2"], ["flex", ["gap-x-2"]])}>
           <div className={clsx(["flex-grow"])}>
-            <Tag tag={getFragment(Component_TagFragmentDoc, data.tag)} />
+            <Tag tag={getFragment(Component_TagFragmentDoc, data.getTag)} />
           </div>
           <RedButton
             type="button"

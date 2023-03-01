@@ -46,7 +46,7 @@ export default {
           (req, res, ctx) =>
             res(
               ctx.data({
-                semitag: aSemitag({
+                getSemitag: aSemitag({
                   id: "semitag:1",
                   name: "後藤ひとり(ぼっち・ざ・ろっく！)",
                 }),
@@ -56,7 +56,7 @@ export default {
         graphql.query(VideoPage_SemitagEditor_TagDocument, (req, res, ctx) =>
           res(
             ctx.data({
-              tag: aTag({
+              getTag: aTag({
                 id: `tag:1`,
                 name: "後藤ひとり",
                 pseudoType: PseudoTagType.Character,
