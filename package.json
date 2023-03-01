@@ -17,9 +17,9 @@
     "codegen:watch": "pnpm run codegen --watch",
     "schema:diff": "graphql-inspector diff $GRAPHQL_API_ENDPOINT ./schema.graphql",
     "schema:validate": "graphql-inspector validate \"./src/**/*.tsx\" ./schema.graphql -d",
-    "storybook": "storybook dev -p 6006 --no-open -s public",
-    "build-storybook": "storybook build",
-    "serve-storybook": "serve storybook-static"
+    "storybook": "storybook dev -p 6006 --no-open",
+    "storybook:build": "storybook build",
+    "storybook:preview": "serve storybook-static"
   },
   "engines": {
     "node": "^18"
