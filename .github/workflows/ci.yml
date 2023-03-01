@@ -50,4 +50,6 @@ jobs:
           cache: pnpm
       - run: pnpm install
       - run: pnpm run schema:diff
+        env:
+          GRAPHQL_API_ENDPOINT: "${{ secrets.GRAPHQL_API_ENDPOINT }}"
       - run: pnpm run schema:validate
