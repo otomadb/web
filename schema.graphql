@@ -516,7 +516,9 @@ type NicovideoOriginalSourceTagSearchTagsPayload {
 type NicovideoRegistrationRequest {
   checked: Boolean!
   checking: NicovideoRegistrationRequestChecking
+  embedUrl: String!
   id: ID!
+  originalUrl: String!
   requestedBy: User!
   semitaggings: [NicovideoRegistrationRequestSemitagging!]!
   sourceId: String!
@@ -642,16 +644,23 @@ type Query {
   findUser(input: FindUserInput!): User
   findVideo(input: FindVideoInput!): Video
   findVideos(input: FindVideosInput!): VideoConnection!
+  getMylist(id: ID!): Mylist!
+  getMylistGroup(id: ID!): MylistGroup!
   getNicovideoRegistrationRequest(id: ID!): NicovideoRegistrationRequest!
-  mylist(id: ID!): Mylist!
-  mylistGroup(id: ID!): MylistGroup!
-  nicovideoVideoSource(id: ID!): NicovideoVideoSource!
+  getNicovideoVideoSource(id: ID!): NicovideoVideoSource!
+  getSemitag(id: ID!): Semitag!
+  getTag(id: ID!): Tag!
+  getUser(id: ID!): User!
+  getVideo(id: ID!): Video!
+  mylist(id: ID!): Mylist! @deprecated
+  mylistGroup(id: ID!): MylistGroup! @deprecated
+  nicovideoVideoSource(id: ID!): NicovideoVideoSource! @deprecated
   searchTags(input: SearchTagInput!): SearchTagsPayload!
   searchVideos(input: SearchVideoInput!): SearchVideosPayload!
-  semitag(id: ID!): Semitag!
-  tag(id: ID!): Tag!
-  user(id: ID!): User!
-  video(id: ID!): Video!
+  semitag(id: ID!): Semitag! @deprecated
+  tag(id: ID!): Tag! @deprecated
+  user(id: ID!): User! @deprecated
+  video(id: ID!): Video! @deprecated
   whoami: User
 }
 
