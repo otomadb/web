@@ -4,8 +4,8 @@ import { notFound } from "next/navigation";
 
 import { VideoList } from "~/components/common/VideoList";
 import { getFragment, graphql } from "~/gql";
+import { fetchGql } from "~/gql/fetch";
 import { VideoList_VideoFragmentDoc } from "~/gql/graphql";
-import { fetchGql } from "~/utils/fetchGql";
 
 export const dynamic = "force-dynamic";
 

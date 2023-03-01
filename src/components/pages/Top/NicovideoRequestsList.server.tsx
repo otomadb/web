@@ -7,12 +7,12 @@ import { LinkUser } from "~/app/users/[name]/Link";
 import { CoolImage } from "~/components/common/CoolImage";
 import { UserIcon2 } from "~/components/common/UserIcon";
 import { getFragment, graphql } from "~/gql";
+import { fetchGql } from "~/gql/fetch";
 import {
   Component_UserIconFragmentDoc,
   Link_NicovideoRegistrationRequestFragmentDoc,
   Link_UserFragmentDoc,
 } from "~/gql/graphql";
-import { fetchGql } from "~/utils/fetchGql";
 
 export async function NicovideoRequestsList() {
   const { findNicovideoRegistrationRequests } = await fetchGql(

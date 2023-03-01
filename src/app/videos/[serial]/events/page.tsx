@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 
 import { MixedEventLists } from "~/components/pages/Video/Events/MixedEventLists";
 import { getFragment, graphql } from "~/gql";
+import { fetchGql } from "~/gql/fetch";
 import {
   VideoEventPage_NicovideoVideoSourceEventsFragmentDoc,
   VideoEventPage_SemitagEventsFragmentDoc,
@@ -11,7 +12,6 @@ import {
   VideoEventPage_VideoThumbnailEventsFragmentDoc,
   VideoEventPage_VideoTitleEventsFragmentDoc,
 } from "~/gql/graphql";
-import { fetchGql } from "~/utils/fetchGql";
 
 export const dynamic = "force-dynamic";
 
