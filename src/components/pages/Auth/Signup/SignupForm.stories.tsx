@@ -3,12 +3,7 @@ import { Meta, StoryObj } from "@storybook/react";
 import { userEvent, within } from "@storybook/testing-library";
 import { graphql } from "msw";
 
-import {
-  aUser,
-  SignupEmailAlreadyExistsError,
-  SignupNameAlreadyExistsError,
-  SignupPage_SignupDocument,
-} from "~/gql/graphql";
+import { aUser, SignupPage_SignupDocument } from "~/gql/graphql";
 
 import { SignupForm } from "./SignupForm";
 
@@ -89,7 +84,7 @@ export const UsernameAlready: StoryObj<typeof SignupForm> = {
               signup: {
                 __typename: "SignupNameAlreadyExistsError",
                 name: req.variables.name,
-              } satisfies SignupNameAlreadyExistsError,
+              },
             })
           );
         }),
@@ -132,7 +127,7 @@ export const EmailAlready: StoryObj<typeof SignupForm> = {
               signup: {
                 __typename: "SignupEmailAlreadyExistsError",
                 email: req.variables.email,
-              } satisfies SignupEmailAlreadyExistsError,
+              },
             })
           );
         }),
