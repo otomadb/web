@@ -67,9 +67,6 @@ const urqlClient = createUrqlClient({
         SignupSucceededPayload() {
           return null;
         },
-        SignupFailedPayload() {
-          return null;
-        },
         FetchNicovideoPayload() {
           return null;
         },

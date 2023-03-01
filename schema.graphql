@@ -488,6 +488,9 @@ type NicovideoOriginalSource {
 
   """動画の長さ"""
   duration: Int!
+
+  """タグのうち、「音MAD」など範囲が広すぎるので除外するもの"""
+  excludeTags: [String!]!
   registeredAt: DateTime!
   sourceId: String!
   tags: [NicovideoOriginalSourceTag!]!
@@ -1053,19 +1056,31 @@ type SignoutSucceededPayload {
   session: Session!
 }
 
-enum SignupFailedMessage {
-  """そのメールアドレスはすでに存在する"""
-  EXISTS_EMAIL
-
-  """そのユーザーネームはすでに存在する"""
-  EXISTS_USERNAME
-
-  """原因不明のエラー"""
-  UNKNOWN
+type SignupDisplayNameValidationError {
+  displayName: String!
+  enum: SignupDisplayValidationNameErrorEnum!
 }
 
-type SignupFailedPayload {
-  message: SignupFailedMessage!
+enum SignupDisplayValidationNameErrorEnum {
+  """x文字以下になっていない"""
+  INSUFFICIENT_MAX_LENGTH
+
+  """x文字以上になっていない"""
+  INSUFFICIENT_MIN_LENGTH
+}
+
+type SignupEmailAlreadyExistsError {
+  email: String!
+}
+
+type SignupEmailValidationError {
+  email: String!
+  enum: SignupEmailValidationErrorEnum!
+}
+
+enum SignupEmailValidationErrorEnum {
+  """メールアドレスの形式になっていない"""
+  INVALID_EMAIL_FORMAT
 }
 
 input SignupInput {
@@ -1075,7 +1090,44 @@ input SignupInput {
   password: String!
 }
 
-union SignupPayload = SignupFailedPayload | SignupSucceededPayload
+type SignupNameAlreadyExistsError {
+  name: String!
+}
+
+type SignupNameValidationError {
+  enum: SignupNameValidationErrorEnum!
+  name: String!
+}
+
+enum SignupNameValidationErrorEnum {
+  """x文字以下になっていない"""
+  INSUFFICIENT_MAX_LENGTH
+
+  """x文字以上になっていない"""
+  INSUFFICIENT_MIN_LENGTH
+
+  """使用不可能な文字が含まれている"""
+  WRONG_CHARACTER
+}
+
+type SignupOtherErrorsFallback {
+  enum: SignupOtherErrorsFallbackEnum!
+}
+
+enum SignupOtherErrorsFallbackEnum {
+  INTERNAL_SERVER_ERROR
+}
+
+type SignupPasswordValidationError {
+  enum: SignupPasswordValidationErrorEnum!
+}
+
+enum SignupPasswordValidationErrorEnum {
+  """x文字以上になっていない"""
+  INSUFFICIENT_MIN_LENGTH
+}
+
+union SignupPayload = SignupDisplayNameValidationError | SignupEmailAlreadyExistsError | SignupEmailValidationError | SignupNameAlreadyExistsError | SignupNameValidationError | SignupOtherErrorsFallback | SignupPasswordValidationError | SignupSucceededPayload
 
 type SignupSucceededPayload {
   user: User!

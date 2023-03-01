@@ -11,18 +11,13 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import React, { useCallback } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useMutation, useQuery } from "urql";
+import { useMutation } from "urql";
 import * as z from "zod";
 
 import { LinkSignin } from "~/app/auth/signin/Link";
 import { graphql } from "~/gql";
-import {
-  SignupFailedMessage,
-  SignupPage_FetchViewerDocument,
-  SignupPage_SignupDocument,
-} from "~/gql/graphql";
 
 import { AuthFormButton } from "../Button";
 import { AuthFormInput } from "../FormInput";
@@ -35,44 +30,8 @@ const formSchema = z.object({
   passwordRepeat: z.string().min(8, { message: "パスワードは8文字以上" }),
 });
 type FormSchema = z.infer<typeof formSchema>;
-
-graphql(`
-  mutation SignupPage_Signup(
-    $name: String!
-    $displayName: String!
-    $password: String!
-    $email: String!
-  ) {
-    signup(
-      input: {
-        name: $name
-        displayName: $displayName
-        password: $password
-        email: $email
-      }
-    ) {
-      ... on SignupSucceededPayload {
-        user {
-          id
-          ...GlobalNav_Profile
-        }
-      }
-      ... on SignupFailedPayload {
-        message
-      }
-    }
-  }
-
-  query SignupPage_FetchViewer {
-    whoami {
-      id
-      ...GlobalNav_Profile
-    }
-  }
-`);
 export const SignupForm: React.FC<{ className?: string }> = ({ className }) => {
   const router = useRouter();
-
   const {
     register,
     handleSubmit,
@@ -83,39 +42,70 @@ export const SignupForm: React.FC<{ className?: string }> = ({ className }) => {
     resolver: zodResolver(formSchema),
   });
 
-  const [{ data: viewerData }, aftersignin] = useQuery({
-    query: SignupPage_FetchViewerDocument,
-    requestPolicy: "cache-and-network",
-  });
-  useEffect(() => {
-    if (viewerData?.whoami) router.replace("/");
-  }, [viewerData, router]);
+  const [, signup] = useMutation(
+    graphql(`
+      mutation SignupPage_Signup(
+        $name: String!
+        $displayName: String!
+        $password: String!
+        $email: String!
+      ) {
+        signup(
+          input: {
+            name: $name
+            displayName: $displayName
+            password: $password
+            email: $email
+          }
+        ) {
+          ... on SignupNameAlreadyExistsError {
+            name
+          }
+          ... on SignupEmailAlreadyExistsError {
+            email
+          }
+          ... on SignupSucceededPayload {
+            user {
+              id
+              ...GlobalNav_Profile
+            }
+          }
+        }
+      }
+    `)
+  );
+  const onSubmit: SubmitHandler<FormSchema> = useCallback(
+    async ({ name, displayName, email, password }) => {
+      const { data, error } = await signup({
+        name,
+        displayName,
+        email,
+        password,
+      });
+      if (error || !data) {
+        // TODO: エラー処理
+        return;
+      }
 
-  const [{ data: signinData }, signup] = useMutation(SignupPage_SignupDocument);
-  useEffect(() => {
-    if (!signinData) return;
-
-    if (signinData.signup.__typename === "SignupFailedPayload") {
-      const { message } = signinData.signup;
-      switch (message) {
-        case SignupFailedMessage.ExistsUsername:
+      switch (data.signup.__typename) {
+        case "SignupSucceededPayload":
+          router.replace("/");
+          return;
+        case "SignupNameAlreadyExistsError":
           setError("name", { message: "既に登録されているユーザーネームです" });
-          break;
-        case SignupFailedMessage.ExistsEmail:
+          return;
+        case "SignupEmailAlreadyExistsError":
           setError("email", {
             message: "既に登録されているメールアドレスです",
           });
-          break;
+          return;
+        default:
+          // TODO: 他のエラー処理
+          return;
       }
-    } else aftersignin();
-  }, [aftersignin, signinData, setError]);
-
-  const onSubmit: SubmitHandler<FormSchema> = async ({
-    name,
-    displayName,
-    email,
-    password,
-  }) => signup({ name, displayName, email, password });
+    },
+    [router, setError, signup]
+  );
 
   return (
     <form
