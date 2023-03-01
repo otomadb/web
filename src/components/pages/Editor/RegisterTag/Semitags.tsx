@@ -23,7 +23,7 @@ import { FormSchema } from "./FormSchema";
 
 graphql(`
   query RegisterTagPage_Semitags_Selected($id: ID!) {
-    semitag(id: $id) {
+    getSemitag(id: $id) {
       id
       name
       video {
@@ -59,10 +59,12 @@ export const Selected: React.FC<{
       {data && (
         <>
           <div className={clsx(["flex"])}>
-            <div className={clsx(["text-xs"])}>{data.semitag.name}</div>
+            <div className={clsx(["text-xs"])}>{data.getSemitag.name}</div>
           </div>
           <div className={clsx(["flex"])}>
-            <div className={clsx(["text-xs"])}>{data.semitag.video.title}</div>
+            <div className={clsx(["text-xs"])}>
+              {data.getSemitag.video.title}
+            </div>
           </div>
         </>
       )}
