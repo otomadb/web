@@ -5,7 +5,8 @@ import { graphql } from "msw";
 
 import {
   aUser,
-  SignupFailedMessage,
+  SignupEmailAlreadyExistsError,
+  SignupNameAlreadyExistsError,
   SignupPage_SignupDocument,
 } from "~/gql/graphql";
 
@@ -86,9 +87,9 @@ export const UsernameAlready: StoryObj<typeof SignupForm> = {
           return res(
             ctx.data({
               signup: {
-                __typename: "SignupFailedPayload",
-                message: SignupFailedMessage.ExistsUsername,
-              },
+                __typename: "SignupNameAlreadyExistsError",
+                name: req.variables.name,
+              } satisfies SignupNameAlreadyExistsError,
             })
           );
         }),
@@ -129,9 +130,9 @@ export const EmailAlready: StoryObj<typeof SignupForm> = {
           return res(
             ctx.data({
               signup: {
-                __typename: "SignupFailedPayload",
-                message: SignupFailedMessage.ExistsEmail,
-              },
+                __typename: "SignupEmailAlreadyExistsError",
+                email: req.variables.email,
+              } satisfies SignupEmailAlreadyExistsError,
             })
           );
         }),
