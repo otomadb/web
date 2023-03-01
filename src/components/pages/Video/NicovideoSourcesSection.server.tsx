@@ -1,7 +1,7 @@
 import clsx from "clsx";
 
 import { graphql } from "~/gql";
-import { fetchGql } from "~/utils/fetchGql";
+import { fetchGql } from "~/gql/fetch";
 
 export const NicovideoSourcesSection = async ({
   className,

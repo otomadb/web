@@ -4,11 +4,11 @@ import clsx from "clsx";
 import React from "react";
 
 import { getFragment, graphql } from "~/gql";
+import { fetchGql } from "~/gql/fetch";
 import {
   VideoPage_SemitagFragmentDoc,
   VideoPage_SemitagsSectionFragmentDoc,
 } from "~/gql/graphql";
-import { fetchGql } from "~/utils/fetchGql";
 
 import { Semitag } from "./Semitag";
 

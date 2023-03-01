@@ -4,8 +4,8 @@ import { notFound } from "next/navigation";
 import { AttentionYou } from "~/components/pages/User/AttentionYou";
 import { UserMylists } from "~/components/pages/User/Mylists";
 import { getFragment, graphql } from "~/gql";
+import { fetchGql } from "~/gql/fetch";
 import { UserMylistsPage_MylistsFragmentDoc } from "~/gql/graphql";
-import { fetchGql } from "~/utils/fetchGql";
 
 export default async function Page({ params }: { params: { name: string } }) {
   const { findUser } = await fetchGql(
