@@ -516,7 +516,9 @@ type NicovideoOriginalSourceTagSearchTagsPayload {
 type NicovideoRegistrationRequest {
   checked: Boolean!
   checking: NicovideoRegistrationRequestChecking
+  embedUrl: String!
   id: ID!
+  originalUrl: String!
   requestedBy: User!
   semitaggings: [NicovideoRegistrationRequestSemitagging!]!
   sourceId: String!

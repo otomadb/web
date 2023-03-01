@@ -22,11 +22,12 @@ graphql(`
       title
       ...Component_Thumbnail
       ...Link_Video
-      # TODO: tagsを使わない
-      tags(input: { limit: 5 }) {
-        id
-        tag {
-          ...Component_Tag
+      taggings(input: { limit: 5 }) {
+        nodes {
+          id
+          tag {
+            ...Component_Tag
+          }
         }
       }
     }
@@ -76,7 +77,7 @@ export const Registeration: React.FC<{
             ["flex", ["flex-wrap"], ["gap-x-1"], ["gap-y-1"]]
           )}
         >
-          {video.tags.map((tagging) => (
+          {video.taggings.nodes.map((tagging) => (
             <Tag
               key={tagging.id}
               tag={getFragment(Component_TagFragmentDoc, tagging.tag)}
