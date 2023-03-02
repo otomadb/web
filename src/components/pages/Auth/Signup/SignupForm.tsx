@@ -10,12 +10,12 @@ import {
 } from "@heroicons/react/24/solid";
 import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
-import { useRouter } from "next/navigation";
-import React, { useCallback } from "react";
+import React, { useCallback, useContext } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useMutation } from "urql";
 import * as z from "zod";
 
+import { AuthPageGuardContext } from "~/app/auth/Guard";
 import { LinkSignin } from "~/app/auth/signin/Link";
 import { graphql } from "~/gql";
 
@@ -31,7 +31,8 @@ const formSchema = z.object({
 });
 type FormSchema = z.infer<typeof formSchema>;
 export const SignupForm: React.FC<{ className?: string }> = ({ className }) => {
-  const router = useRouter();
+  const updateGuard = useContext(AuthPageGuardContext);
+
   const {
     register,
     handleSubmit,
@@ -89,7 +90,7 @@ export const SignupForm: React.FC<{ className?: string }> = ({ className }) => {
 
       switch (data.signup.__typename) {
         case "SignupSucceededPayload":
-          router.replace("/");
+          updateGuard();
           return;
         case "SignupNameAlreadyExistsError":
           setError("name", { message: "既に登録されているユーザーネームです" });
@@ -104,7 +105,7 @@ export const SignupForm: React.FC<{ className?: string }> = ({ className }) => {
           return;
       }
     },
-    [router, setError, signup]
+    [setError, signup, updateGuard]
   );
 
   return (

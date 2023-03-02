@@ -10,7 +10,6 @@ import { getFragment, graphql } from "~/gql";
 import {
   Component_UserIconFragmentDoc,
   GlobalNav_Profile_AccordionFragmentDoc,
-  GlobalNav_ProfileDocument,
 } from "~/gql/graphql";
 
 import { Accordion } from "./Accordion";
@@ -21,18 +20,18 @@ graphql(`
     ...Component_UserIcon
     ...GlobalNav_Profile_Accordion
   }
-
-  query GlobalNav_Profile {
-    whoami {
-      id
-      ...Component_UserIcon
-      ...GlobalNav_Profile_Accordion
-    }
-  }
 `);
 export const Profile: React.FC<{ className?: string }> = ({ className }) => {
   const [{ data, fetching }] = useQuery({
-    query: GlobalNav_ProfileDocument,
+    query: graphql(`
+      query GlobalNav_Profile {
+        whoami {
+          id
+          ...Component_UserIcon
+          ...GlobalNav_Profile_Accordion
+        }
+      }
+    `),
   });
   return (
     <div className={clsx(className, ["flex"])}>
