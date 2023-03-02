@@ -4,7 +4,7 @@ import React, { ReactNode } from "react";
 
 import { LinkUser } from "~/app/users/[name]/Link";
 import { Tag } from "~/components/common/Tag";
-import { UserIcon2 } from "~/components/common/UserIcon";
+import { UserIcon } from "~/components/common/UserIcon";
 import { getFragment, graphql } from "~/gql";
 import {
   Component_TagFragmentDoc,
@@ -86,7 +86,7 @@ export const EventTemplate: React.FC<{
           fragment={fragment.user}
           className={clsx(["flex", ["items-center"]])}
         >
-          <UserIcon2
+          <UserIcon
             fragment={getFragment(Component_UserIconFragmentDoc, fragment.user)}
             size={24}
           />

@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { LinkTag } from "~/app/tags/[serial]/Link";
 import { LinkUser } from "~/app/users/[name]/Link";
 import { CommonTag } from "~/components/common/Tag";
-import { UserIcon2 } from "~/components/common/UserIcon";
+import { UserIcon } from "~/components/common/UserIcon";
 import { getFragment, graphql } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
 import {
@@ -85,7 +85,7 @@ export default async function Page({
           </div>
           <div className={clsx(["flex", "items-center"])}>
             <LinkUser fragment={requestedBy}>
-              <UserIcon2
+              <UserIcon
                 size={24}
                 fragment={getFragment(
                   Component_UserIconFragmentDoc,

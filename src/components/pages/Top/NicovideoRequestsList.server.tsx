@@ -5,7 +5,7 @@ import clsx from "clsx";
 import { LinkNicovideoRegistrationRequest } from "~/app/requests/nicovideo/[sourceId]/Link";
 import { LinkUser } from "~/app/users/[name]/Link";
 import { CoolImage } from "~/components/common/CoolImage";
-import { UserIcon2 } from "~/components/common/UserIcon";
+import { UserIcon } from "~/components/common/UserIcon";
 import { getFragment, graphql } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
 import { Component_UserIconFragmentDoc } from "~/gql/graphql";
@@ -78,7 +78,7 @@ export async function NicovideoRequestsList() {
             </div>
             <div className={clsx(["flex", "items-center"])}>
               <LinkUser fragment={node.requestedBy}>
-                <UserIcon2
+                <UserIcon
                   size={24}
                   fragment={getFragment(
                     Component_UserIconFragmentDoc,

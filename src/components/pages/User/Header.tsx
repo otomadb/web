@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import React from "react";
 
-import { UserIcon2 } from "~/components/common/UserIcon";
+import { UserIcon } from "~/components/common/UserIcon";
 import { getFragment, graphql } from "~/gql";
 import {
   Component_UserIconFragmentDoc,
@@ -37,7 +37,7 @@ export const Header: React.FC<{
       >
         <div className={clsx(["w-[96px]", "h-[96px]"])}>
           {fragment && (
-            <UserIcon2
+            <UserIcon
               size={96}
               fragment={
                 getFragment(Component_UserIconFragmentDoc, fragment) ||

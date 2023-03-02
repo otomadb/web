@@ -12,7 +12,7 @@ const Fragment = graphql(`
     icon
   }
 `);
-export const UserIcon2: React.FC<{
+export const UserIcon: React.FC<{
   className?: string;
   fragment: FragmentType<typeof Fragment>;
   size?: number;

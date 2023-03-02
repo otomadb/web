@@ -2,7 +2,7 @@ import clsx from "clsx";
 import React from "react";
 
 import { Thumbnail } from "~/components/common/Thumbnail";
-import { UserIcon2 } from "~/components/common/UserIcon";
+import { UserIcon } from "~/components/common/UserIcon";
 import { getFragment, graphql } from "~/gql";
 import {
   Component_ThumbnailFragmentDoc,
@@ -66,7 +66,7 @@ export const LargeMylistListItem: React.FC<{
           </p>
         </div>
         <div className={clsx(["mt-1"], ["flex", "items-center"])}>
-          <UserIcon2
+          <UserIcon
             fragment={getFragment(Component_UserIconFragmentDoc, holder)}
             size={24}
           />

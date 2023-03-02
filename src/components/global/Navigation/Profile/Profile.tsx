@@ -5,7 +5,7 @@ import React from "react";
 import { useQuery } from "urql";
 
 import { LinkSignin } from "~/app/auth/signin/Link";
-import { UserIcon2 } from "~/components/common/UserIcon";
+import { UserIcon } from "~/components/common/UserIcon";
 import { getFragment, graphql } from "~/gql";
 import {
   Component_UserIconFragmentDoc,
@@ -68,7 +68,7 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
       {data?.whoami && (
         <div className={clsx(["relative"], ["group"], ["flex"])}>
           <div tabIndex={0}>
-            <UserIcon2
+            <UserIcon
               className={clsx(["w-[32px]"], ["h-[32px]"])}
               fragment={getFragment(Component_UserIconFragmentDoc, data.whoami)}
               size={32}

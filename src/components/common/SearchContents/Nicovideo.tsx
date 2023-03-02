@@ -20,7 +20,7 @@ import {
 import { CoolImage } from "../CoolImage";
 import { CommonTag } from "../Tag";
 import { VideoThumbnail } from "../Thumbnail";
-import { UserIcon2 } from "../UserIcon";
+import { UserIcon } from "../UserIcon";
 
 graphql(`
   fragment SearchContents_NicovideoVideoSourceExists on NicovideoVideoSource {
@@ -159,7 +159,7 @@ const RequestsExists: React.FC<{
           </p>
         </div>
         <div className={clsx(["mt-2"], ["flex-grow"], ["flex"])}>
-          <UserIcon2
+          <UserIcon
             size={24}
             fragment={getFragment(
               Component_UserIconFragmentDoc,

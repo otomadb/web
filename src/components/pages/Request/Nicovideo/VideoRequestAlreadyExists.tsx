@@ -5,7 +5,7 @@ import Image from "next/image";
 
 import { LinkNicovideoRegistrationRequest } from "~/app/requests/nicovideo/[sourceId]/Link";
 import { LinkUser } from "~/app/users/[name]/Link";
-import { UserIcon2 } from "~/components/common/UserIcon";
+import { UserIcon } from "~/components/common/UserIcon";
 import { getFragment, graphql } from "~/gql";
 import {
   Component_UserIconFragmentDoc,
@@ -53,7 +53,7 @@ export const VideoRequestAlreadyExists: React.FC<{
         </div>
         <div className={clsx(["flex", "items-center"])}>
           <LinkUser fragment={fragment.requestedBy}>
-            <UserIcon2
+            <UserIcon
               size={32}
               fragment={getFragment(
                 Component_UserIconFragmentDoc,
