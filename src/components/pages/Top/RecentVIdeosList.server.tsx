@@ -5,10 +5,10 @@ import clsx from "clsx";
 import { LinkTag } from "~/app/tags/[serial]/Link";
 import { LinkVideo } from "~/app/videos/[serial]/Link";
 import { CommonTag } from "~/components/common/Tag";
-import { VideoThumbnail } from "~/components/common/Thumbnail";
+import { VideoThumbnail } from "~/components/common/VideoThumbnail";
 import { getFragment, graphql } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
-import { CommonTagFragmentDoc, VideoThumbnailFragmentDoc } from "~/gql/graphql";
+import { CommonTagFragmentDoc } from "~/gql/graphql";
 
 export async function RecentVideosList() {
   const { findVideos } = await fetchGql(
@@ -53,7 +53,7 @@ export async function RecentVideosList() {
             <LinkVideo fragment={node}>
               <VideoThumbnail
                 className={clsx(["w-32"], ["h-16"])}
-                fragment={getFragment(VideoThumbnailFragmentDoc, node)}
+                fragment={node}
               />
             </LinkVideo>
           </div>

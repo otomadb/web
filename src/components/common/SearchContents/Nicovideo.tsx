@@ -13,13 +13,12 @@ import {
   SearchContents_NicovideoRequestExistsFragmentDoc,
   SearchContents_NicovideoVideoSourceExistsFragment,
   SearchContents_NicovideoVideoSourceExistsFragmentDoc,
-  VideoThumbnailFragmentDoc,
 } from "~/gql/graphql";
 
 import { CoolImage } from "../CoolImage";
 import { CommonTag } from "../Tag";
-import { VideoThumbnail } from "../Thumbnail";
 import { UserIcon } from "../UserIcon";
+import { VideoThumbnail } from "../VideoThumbnail";
 
 graphql(`
   fragment SearchContents_NicovideoVideoSourceExists on NicovideoVideoSource {
@@ -63,7 +62,7 @@ const SourceExists: React.FC<{
       <div className={clsx(["flex-shrink-0"])}>
         <VideoThumbnail
           className={clsx(["w-36"], ["h-18"])}
-          fragment={getFragment(VideoThumbnailFragmentDoc, fragment.video)}
+          fragment={fragment.video}
         />
       </div>
       <div
