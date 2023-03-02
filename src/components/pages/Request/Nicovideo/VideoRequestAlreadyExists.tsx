@@ -5,12 +5,9 @@ import Image from "next/image";
 
 import { LinkNicovideoRegistrationRequest } from "~/app/requests/nicovideo/[sourceId]/Link";
 import { LinkUser } from "~/app/users/[name]/Link";
-import { UserIcon2 } from "~/components/common/UserIcon";
-import { getFragment, graphql } from "~/gql";
-import {
-  Component_UserIconFragmentDoc,
-  RequestNicovideoRegistrationPage_VideoRequestAlreadyExistsFragment,
-} from "~/gql/graphql";
+import { UserIcon } from "~/components/common/UserIcon";
+import { graphql } from "~/gql";
+import { RequestNicovideoRegistrationPage_VideoRequestAlreadyExistsFragment } from "~/gql/graphql";
 
 graphql(`
   fragment RequestNicovideoRegistrationPage_VideoRequestAlreadyExists on NicovideoRegistrationRequest {
@@ -23,7 +20,7 @@ graphql(`
       id
       name
       ...Link_User
-      ...Component_UserIcon
+      ...UserIcon
     }
   }
 `);
@@ -53,13 +50,7 @@ export const VideoRequestAlreadyExists: React.FC<{
         </div>
         <div className={clsx(["flex", "items-center"])}>
           <LinkUser fragment={fragment.requestedBy}>
-            <UserIcon2
-              size={32}
-              fragment={getFragment(
-                Component_UserIconFragmentDoc,
-                fragment.requestedBy
-              )}
-            />
+            <UserIcon size={32} fragment={fragment.requestedBy} />
           </LinkUser>
           <div className={clsx(["ml-1"])}>
             <LinkUser

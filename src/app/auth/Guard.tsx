@@ -20,7 +20,7 @@ export const AuthPagesGuard: React.FC<{ children: ReactNode }> = ({
       query AuthPages_Guard {
         whoami {
           id
-          ...Component_UserIcon
+          ...UserIcon
           ...GlobalNav_Profile_Accordion
         }
       }

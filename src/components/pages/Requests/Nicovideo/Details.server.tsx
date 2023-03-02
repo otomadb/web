@@ -4,9 +4,8 @@ import clsx from "clsx";
 
 import { LinkUser } from "~/app/users/[name]/Link";
 import { CoolImage } from "~/components/common/CoolImage";
-import { UserIcon2 } from "~/components/common/UserIcon";
+import { UserIcon } from "~/components/common/UserIcon";
 import { FragmentType, getFragment, graphql } from "~/gql";
-import { Component_UserIconFragmentDoc } from "~/gql/graphql";
 
 import { Editor } from "./Editor";
 
@@ -20,7 +19,7 @@ const Fragment = graphql(`
       id
       name
       ...Link_User
-      ...Component_UserIcon
+      ...UserIcon
     }
   }
 `);
@@ -46,10 +45,7 @@ export function Details(props: { fragment: FragmentType<typeof Fragment> }) {
         </div>
         <div className={clsx(["flex", "items-center"])}>
           <LinkUser fragment={requestedBy}>
-            <UserIcon2
-              size={24}
-              fragment={getFragment(Component_UserIconFragmentDoc, requestedBy)}
-            />
+            <UserIcon size={24} fragment={requestedBy} />
           </LinkUser>
           <div className={clsx(["ml-1"])}>
             <LinkUser className={clsx(["text-xs"])} fragment={requestedBy}>
