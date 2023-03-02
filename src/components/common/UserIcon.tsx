@@ -6,7 +6,7 @@ import React, { useMemo } from "react";
 import { FragmentType, getFragment, graphql } from "~/gql";
 
 const Fragment = graphql(`
-  fragment Component_UserIcon on User {
+  fragment UserIcon on User {
     name
     displayName
     icon

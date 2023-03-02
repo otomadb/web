@@ -9,7 +9,6 @@ import { LinkVideo } from "~/app/videos/[serial]/Link";
 import { getFragment, graphql } from "~/gql";
 import {
   CommonTagFragmentDoc,
-  Component_UserIconFragmentDoc,
   SearchContents_NicovideoRequestExistsFragment,
   SearchContents_NicovideoRequestExistsFragmentDoc,
   SearchContents_NicovideoVideoSourceExistsFragment,
@@ -113,7 +112,7 @@ graphql(`
       id
       name
       ...Link_User
-      ...Component_UserIcon
+      ...UserIcon
     }
   }
 `);
@@ -159,13 +158,7 @@ const RequestsExists: React.FC<{
           </p>
         </div>
         <div className={clsx(["mt-2"], ["flex-grow"], ["flex"])}>
-          <UserIcon
-            size={24}
-            fragment={getFragment(
-              Component_UserIconFragmentDoc,
-              fragment.requestedBy
-            )}
-          />
+          <UserIcon size={24} fragment={fragment.requestedBy} />
           <div className={clsx(["ml-1"])}>
             <span className={clsx(["text-xs"])}>
               {fragment.requestedBy.name}

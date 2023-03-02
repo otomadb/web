@@ -8,7 +8,6 @@ import { LinkSignin } from "~/app/auth/signin/Link";
 import { UserIcon } from "~/components/common/UserIcon";
 import { getFragment, graphql } from "~/gql";
 import {
-  Component_UserIconFragmentDoc,
   GlobalNav_Profile_AccordionFragmentDoc,
   GlobalNav_ProfileDocument,
 } from "~/gql/graphql";
@@ -18,14 +17,14 @@ import { Accordion } from "./Accordion";
 graphql(`
   fragment GlobalNav_Profile on User {
     id
-    ...Component_UserIcon
+    ...UserIcon
     ...GlobalNav_Profile_Accordion
   }
 
   query GlobalNav_Profile {
     whoami {
       id
-      ...Component_UserIcon
+      ...UserIcon
       ...GlobalNav_Profile_Accordion
     }
   }
@@ -70,7 +69,7 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
           <div tabIndex={0}>
             <UserIcon
               className={clsx(["w-[32px]"], ["h-[32px]"])}
-              fragment={getFragment(Component_UserIconFragmentDoc, data.whoami)}
+              fragment={data.whoami}
               size={32}
             />
           </div>

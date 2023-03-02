@@ -6,9 +6,8 @@ import { LinkNicovideoRegistrationRequest } from "~/app/requests/nicovideo/[sour
 import { LinkUser } from "~/app/users/[name]/Link";
 import { CoolImage } from "~/components/common/CoolImage";
 import { UserIcon } from "~/components/common/UserIcon";
-import { getFragment, graphql } from "~/gql";
+import { graphql } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
-import { Component_UserIconFragmentDoc } from "~/gql/graphql";
 
 export async function NicovideoRequestsList() {
   const { findNicovideoRegistrationRequests } = await fetchGql(
@@ -27,7 +26,7 @@ export async function NicovideoRequestsList() {
               id
               name
               ...Link_User
-              ...Component_UserIcon
+              ...UserIcon
             }
           }
         }
@@ -78,13 +77,7 @@ export async function NicovideoRequestsList() {
             </div>
             <div className={clsx(["flex", "items-center"])}>
               <LinkUser fragment={node.requestedBy}>
-                <UserIcon
-                  size={24}
-                  fragment={getFragment(
-                    Component_UserIconFragmentDoc,
-                    node.requestedBy
-                  )}
-                />
+                <UserIcon size={24} fragment={node.requestedBy} />
               </LinkUser>
               <div className={clsx(["ml-1"])}>
                 <LinkUser

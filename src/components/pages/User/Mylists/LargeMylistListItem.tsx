@@ -6,7 +6,6 @@ import { UserIcon } from "~/components/common/UserIcon";
 import { getFragment, graphql } from "~/gql";
 import {
   Component_ThumbnailFragmentDoc,
-  Component_UserIconFragmentDoc,
   MylistPageCommon_LinkSwitchFragmentDoc,
   UserMylistsPage_LargeMylistListItemFragment,
 } from "~/gql/graphql";
@@ -25,7 +24,7 @@ graphql(`
       name
       displayName
       icon
-      ...Component_UserIcon
+      ...UserIcon
     }
     registrations(input: { limit: 5, order: { createdAt: DESC } }) {
       nodes {
@@ -66,10 +65,7 @@ export const LargeMylistListItem: React.FC<{
           </p>
         </div>
         <div className={clsx(["mt-1"], ["flex", "items-center"])}>
-          <UserIcon
-            fragment={getFragment(Component_UserIconFragmentDoc, holder)}
-            size={24}
-          />
+          <UserIcon fragment={holder} size={24} />
           <div className={clsx(["ml-1"], ["text-xs"])}>
             <span className={clsx(["text-slate-900"])}>
               {holder.displayName}

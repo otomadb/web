@@ -8,7 +8,6 @@ import { UserIcon } from "~/components/common/UserIcon";
 import { getFragment, graphql } from "~/gql";
 import {
   Component_TagFragmentDoc,
-  Component_UserIconFragmentDoc,
   VideoEventPage_EventFragment,
   VideoEventPage_EventTemplateFragment,
   VideoEventPage_EventTemplateFragmentDoc,
@@ -49,7 +48,7 @@ graphql(`
   fragment VideoEventPage_EventTemplate on Event {
     id
     user {
-      ...Component_UserIcon
+      ...UserIcon
       ...Link_User
       id
       name
@@ -86,10 +85,7 @@ export const EventTemplate: React.FC<{
           fragment={fragment.user}
           className={clsx(["flex", ["items-center"]])}
         >
-          <UserIcon
-            fragment={getFragment(Component_UserIconFragmentDoc, fragment.user)}
-            size={24}
-          />
+          <UserIcon fragment={fragment.user} size={24} />
         </LinkUser>
         <div className={clsx(["ml-2"], ["flex", ["items-center"]])}>
           <time

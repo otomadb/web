@@ -8,10 +8,7 @@ import { CommonTag } from "~/components/common/Tag";
 import { UserIcon } from "~/components/common/UserIcon";
 import { getFragment, graphql } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
-import {
-  CommonTagFragmentDoc,
-  Component_UserIconFragmentDoc,
-} from "~/gql/graphql";
+import { CommonTagFragmentDoc } from "~/gql/graphql";
 
 export const dynamic = "force-dynamic";
 
@@ -33,7 +30,7 @@ export default async function Page({
             id
             name
             ...Link_User
-            ...Component_UserIcon
+            ...UserIcon
           }
           taggings {
             id
@@ -85,13 +82,7 @@ export default async function Page({
           </div>
           <div className={clsx(["flex", "items-center"])}>
             <LinkUser fragment={requestedBy}>
-              <UserIcon
-                size={24}
-                fragment={getFragment(
-                  Component_UserIconFragmentDoc,
-                  requestedBy
-                )}
-              />
+              <UserIcon size={24} fragment={requestedBy} />
             </LinkUser>
             <div className={clsx(["ml-1"])}>
               <LinkUser className={clsx(["text-xs"])} fragment={requestedBy}>
