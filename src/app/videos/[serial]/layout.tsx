@@ -6,8 +6,8 @@ import { DetailsSection } from "~/components/pages/Video/DetailsSection.server";
 import { SemitagsSection } from "~/components/pages/Video/SemitagsSection.server";
 import { TagsSection } from "~/components/pages/Video/TagsSection.server";
 import { getFragment, graphql } from "~/gql";
+import { fetchGql } from "~/gql/fetch";
 import { VideoPage_DetailsSectionFragmentDoc } from "~/gql/graphql";
-import { fetchGql } from "~/utils/fetchGql";
 
 export default async function Layout({
   children,

@@ -9,13 +9,13 @@ import {
   TagsList,
 } from "~/components/pages/Requests/Nicovideo/Tags.server";
 import { getFragment, graphql } from "~/gql";
+import { fetchGql } from "~/gql/fetch";
 import {
   Component_UserIconFragmentDoc,
   Link_UserFragmentDoc,
   NicovideoRequestPage_SemitagsListFragmentDoc,
   NicovideoRequestPage_TagsListFragmentDoc,
 } from "~/gql/graphql";
-import { fetchGql } from "~/utils/fetchGql";
 
 export const dynamic = "force-dynamic";
 

@@ -6,7 +6,7 @@ import { Suspense } from "react";
 import { NicovideoSourcesSection } from "~/components/pages/Video/NicovideoSourcesSection.server";
 import { SimilarVideosSection } from "~/components/pages/Video/SimilarVideosSection.server";
 import { graphql } from "~/gql";
-import { fetchGql } from "~/utils/fetchGql";
+import { fetchGql } from "~/gql/fetch";
 
 export const dynamic = "force-dynamic";
 

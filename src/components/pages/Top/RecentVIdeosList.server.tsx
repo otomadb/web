@@ -7,13 +7,13 @@ import { LinkVideo } from "~/app/videos/[serial]/Link";
 import { CommonTag } from "~/components/common/Tag";
 import { VideoThumbnail } from "~/components/common/Thumbnail";
 import { getFragment, graphql } from "~/gql";
+import { fetchGql } from "~/gql/fetch";
 import {
   CommonTagFragmentDoc,
   Link_TagFragmentDoc,
   Link_VideoFragmentDoc,
   VideoThumbnailFragmentDoc,
 } from "~/gql/graphql";
-import { fetchGql } from "~/utils/fetchGql";
 
 export async function RecentVideosList() {
   const { findVideos } = await fetchGql(

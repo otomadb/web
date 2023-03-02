@@ -2,8 +2,8 @@ import { notFound } from "next/navigation";
 
 import { UserMylist } from "~/components/pages/User/Mylist";
 import { getFragment, graphql } from "~/gql";
+import { fetchGql } from "~/gql/fetch";
 import { UserMylistPageFragmentDoc } from "~/gql/graphql";
-import { fetchGql } from "~/utils/fetchGql";
 
 export const revalidate = 0;
 

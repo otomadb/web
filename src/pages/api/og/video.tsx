@@ -2,7 +2,7 @@ import { ImageResponse } from "@vercel/og";
 import { NextApiHandler } from "next";
 
 import { graphql } from "~/gql";
-import { fetchGql } from "~/utils/fetchGql";
+import { fetchGql } from "~/gql/fetch";
 
 export const config = { runtime: "experimental-edge" };
 
