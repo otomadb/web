@@ -1,15 +1,14 @@
 import Link from "next/link";
 import { stringify } from "querystring";
 import React, { ComponentProps } from "react";
-// import { stringify } from "node:querystring";
 
-export type SearchParams = { page?: string };
+export type SearchParams = { after?: string };
 
-export const LinkVideo: React.FC<
+export const RecentVideosLink: React.FC<
   Omit<ComponentProps<typeof Link>, "href"> & SearchParams
-> = ({ children, page, ...props }) => {
+> = ({ children, after, ...props }) => {
   return (
-    <Link href={`/recent/videos?${stringify({ page })}`} {...props}>
+    <Link href={`/recent/videos?${stringify({ after })}`} {...props}>
       {children}
     </Link>
   );
