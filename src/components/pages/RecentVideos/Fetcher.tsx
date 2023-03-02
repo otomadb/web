@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useMemo } from "react";
 import { useIntersection } from "react-use";
 import { useQuery } from "urql";
