@@ -14,7 +14,7 @@ export async function RecentVideosList() {
   const { findVideos } = await fetchGql(
     graphql(`
       query TopPage_RecentRegisteredVideos {
-        findVideos(input: { limit: 8, order: { createdAt: DESC } }) {
+        findVideos(first: 8) {
           nodes {
             id
             title
