@@ -6,10 +6,7 @@ import { LinkUser } from "~/app/users/[name]/Link";
 import { CoolImage } from "~/components/common/CoolImage";
 import { UserIcon2 } from "~/components/common/UserIcon";
 import { FragmentType, getFragment, graphql } from "~/gql";
-import {
-  Component_UserIconFragmentDoc,
-  Link_UserFragmentDoc,
-} from "~/gql/graphql";
+import { Component_UserIconFragmentDoc } from "~/gql/graphql";
 
 import { Editor } from "./Editor";
 
@@ -48,17 +45,14 @@ export function Details(props: { fragment: FragmentType<typeof Fragment> }) {
           <span className={clsx(["text-sm"], ["font-mono"])}>{sourceId}</span>
         </div>
         <div className={clsx(["flex", "items-center"])}>
-          <LinkUser fragment={getFragment(Link_UserFragmentDoc, requestedBy)}>
+          <LinkUser fragment={requestedBy}>
             <UserIcon2
               size={24}
               fragment={getFragment(Component_UserIconFragmentDoc, requestedBy)}
             />
           </LinkUser>
           <div className={clsx(["ml-1"])}>
-            <LinkUser
-              className={clsx(["text-xs"])}
-              fragment={getFragment(Link_UserFragmentDoc, requestedBy)}
-            >
+            <LinkUser className={clsx(["text-xs"])} fragment={requestedBy}>
               {requestedBy.name}
             </LinkUser>
           </div>
