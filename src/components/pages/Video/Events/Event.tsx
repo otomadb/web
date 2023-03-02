@@ -14,7 +14,7 @@ import {
 
 import { Semitag } from "../Semitag";
 
-const EventTemplateF = graphql(`
+const EventTemplateFragment = graphql(`
   fragment VideoEventPage_EventTemplate on Event {
     id
     user {
@@ -28,10 +28,10 @@ const EventTemplateF = graphql(`
   }
 `);
 export const EventTemplate: React.FC<{
-  fragment: FragmentType<typeof EventTemplateF>;
+  fragment: FragmentType<typeof EventTemplateFragment>;
   children: ReactNode;
 }> = ({ children, ...props }) => {
-  const fragment = getFragment(EventTemplateF, props.fragment);
+  const fragment = getFragment(EventTemplateFragment, props.fragment);
   return (
     <div
       className={clsx(
