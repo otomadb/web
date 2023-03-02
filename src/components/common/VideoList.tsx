@@ -2,19 +2,16 @@ import clsx from "clsx";
 import React from "react";
 
 import { LinkVideo } from "~/app/videos/[serial]/Link";
-import { getFragment, graphql } from "~/gql";
-import {
-  Component_ThumbnailFragmentDoc,
-  VideoList_VideoFragment,
-} from "~/gql/graphql";
+import { graphql } from "~/gql";
+import { VideoList_VideoFragment } from "~/gql/graphql";
 
-import { Thumbnail } from "./Thumbnail";
+import { VideoThumbnail } from "./Thumbnail";
 
 graphql(`
   fragment VideoList_Video on Video {
+    ...VideoThumbnail
     id
     title
-    ...Component_Thumbnail
     ...Link_Video
   }
 `);
@@ -47,8 +44,8 @@ export const VideoList: React.FC<{
         >
           {videos.map((video) => (
             <div key={video.id}>
-              <Thumbnail
-                fragment={getFragment(Component_ThumbnailFragmentDoc, video)}
+              <VideoThumbnail
+                fragment={video}
                 className={clsx(
                   ["w-full"],
                   ["h-32"],

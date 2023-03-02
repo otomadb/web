@@ -5,21 +5,18 @@ import clsx from "clsx";
 import React from "react";
 
 import { LinkVideo } from "~/app/videos/[serial]/Link";
-import { Thumbnail2 } from "~/components/common/Thumbnail";
-import { getFragment, graphql } from "~/gql";
-import {
-  Common_ThumbnailFragmentDoc,
-  EditorRegisterNicovideoPage_SourceAlreadyRegisteredFragment,
-} from "~/gql/graphql";
+import { VideoThumbnail } from "~/components/common/Thumbnail";
+import { graphql } from "~/gql";
+import { EditorRegisterNicovideoPage_SourceAlreadyRegisteredFragment } from "~/gql/graphql";
 
 graphql(`
   fragment EditorRegisterNicovideoPage_SourceAlreadyRegistered on NicovideoVideoSource {
     sourceId
     video {
+      ...VideoThumbnail
       id
       title
       ...Link_Video
-      ...Common_Thumbnail
     }
   }
 `);
@@ -29,11 +26,7 @@ export const SourceAlreadyExists: React.FC<{
 }> = ({ className, fragment }) => (
   <div className={clsx(className, ["flex", "gap-x-4"])}>
     <LinkVideo className={clsx(["block"], ["w-64"])} fragment={fragment.video}>
-      <Thumbnail2
-        width={260}
-        height={200}
-        fragment={getFragment(Common_ThumbnailFragmentDoc, fragment.video)}
-      />
+      <VideoThumbnail width={260} height={200} fragment={fragment.video} />
     </LinkVideo>
     <div>
       <p className={clsx(["text-sm"], ["text-slate-900"])}>
