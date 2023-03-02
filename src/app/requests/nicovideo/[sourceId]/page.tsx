@@ -11,8 +11,6 @@ import { fetchGql } from "~/gql/fetch";
 import {
   CommonTagFragmentDoc,
   Component_UserIconFragmentDoc,
-  Link_TagFragmentDoc,
-  Link_UserFragmentDoc,
 } from "~/gql/graphql";
 
 export const dynamic = "force-dynamic";
@@ -86,7 +84,7 @@ export default async function Page({
             <span className={clsx(["text-sm"], ["font-mono"])}>{sourceId}</span>
           </div>
           <div className={clsx(["flex", "items-center"])}>
-            <LinkUser fragment={getFragment(Link_UserFragmentDoc, requestedBy)}>
+            <LinkUser fragment={requestedBy}>
               <UserIcon2
                 size={24}
                 fragment={getFragment(
@@ -96,10 +94,7 @@ export default async function Page({
               />
             </LinkUser>
             <div className={clsx(["ml-1"])}>
-              <LinkUser
-                className={clsx(["text-xs"])}
-                fragment={getFragment(Link_UserFragmentDoc, requestedBy)}
-              >
+              <LinkUser className={clsx(["text-xs"])} fragment={requestedBy}>
                 {requestedBy.name}
               </LinkUser>
             </div>
@@ -112,10 +107,7 @@ export default async function Page({
           {taggings.map((tagging) => (
             <div key={tagging.id}>
               <div>
-                <LinkTag
-                  className={clsx(["block"])}
-                  fragment={getFragment(Link_TagFragmentDoc, tagging.tag)}
-                >
+                <LinkTag className={clsx(["block"])} fragment={tagging.tag}>
                   <CommonTag
                     fragment={getFragment(CommonTagFragmentDoc, tagging.tag)}
                   />

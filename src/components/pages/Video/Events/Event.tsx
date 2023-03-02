@@ -9,7 +9,6 @@ import { getFragment, graphql } from "~/gql";
 import {
   Component_TagFragmentDoc,
   Component_UserIconFragmentDoc,
-  Link_UserFragmentDoc,
   VideoEventPage_EventFragment,
   VideoEventPage_EventTemplateFragment,
   VideoEventPage_EventTemplateFragmentDoc,
@@ -84,7 +83,7 @@ export const EventTemplate: React.FC<{
         )}
       >
         <LinkUser
-          fragment={getFragment(Link_UserFragmentDoc, fragment.user)}
+          fragment={fragment.user}
           className={clsx(["flex", ["items-center"]])}
         >
           <UserIcon2

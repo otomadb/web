@@ -6,8 +6,8 @@ import { useQuery } from "urql";
 import { LinkUser } from "~/app/users/[name]/Link";
 import { LinkYouLikes } from "~/app/you/likes/Link";
 import { LinkYouMylists } from "~/app/you/mylists/Link";
-import { getFragment, graphql } from "~/gql";
-import { Link_UserFragmentDoc, YouPageLayout_NavDocument } from "~/gql/graphql";
+import { graphql } from "~/gql";
+import { YouPageLayout_NavDocument } from "~/gql/graphql";
 
 import { Item, NavWrapper } from "../Nav";
 
@@ -33,7 +33,7 @@ export const YouPageNav: React.FC = () => {
         Wrapper={(props) =>
           data?.whoami?.name ? (
             <LinkUser
-              fragment={getFragment(Link_UserFragmentDoc, data?.whoami)}
+              fragment={data?.whoami}
               aria-current={highlight === "PROFILE" ? "page" : undefined}
               {...props}
             />
