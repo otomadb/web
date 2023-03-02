@@ -1,16 +1,13 @@
 import clsx from "clsx";
 import React from "react";
 
-import { UserIcon2 } from "~/components/common/UserIcon";
-import { getFragment, graphql } from "~/gql";
-import {
-  Component_UserIconFragmentDoc,
-  UserPageLayout_HeaderFragment,
-} from "~/gql/graphql";
+import { UserIcon } from "~/components/common/UserIcon";
+import { graphql } from "~/gql";
+import { UserPageLayout_HeaderFragment } from "~/gql/graphql";
 
 graphql(`
   fragment UserPageLayout_Header on User {
-    ...Component_UserIcon
+    ...UserIcon
     name
     displayName
   }
@@ -36,15 +33,7 @@ export const Header: React.FC<{
         )}
       >
         <div className={clsx(["w-[96px]", "h-[96px]"])}>
-          {fragment && (
-            <UserIcon2
-              size={96}
-              fragment={
-                getFragment(Component_UserIconFragmentDoc, fragment) ||
-                undefined
-              }
-            />
-          )}
+          {fragment && <UserIcon size={96} fragment={fragment || undefined} />}
         </div>
         <div className={clsx(["ml-4"])}>
           <p className={clsx(["text-xl"], ["text-slate-900"])}>
