@@ -4,11 +4,10 @@ import React from "react";
 
 import { LinkVideo } from "~/app/videos/[serial]/Link";
 import { Tag } from "~/components/common/Tag";
-import { Thumbnail } from "~/components/common/Thumbnail";
+import { VideoThumbnail } from "~/components/common/VideoThumbnail";
 import { getFragment, graphql } from "~/gql";
 import {
   Component_TagFragmentDoc,
-  Component_ThumbnailFragmentDoc,
   MylistPage_RegistrationFragment,
 } from "~/gql/graphql";
 
@@ -17,9 +16,9 @@ graphql(`
     id
     note
     video {
+      ...VideoThumbnail
       id
       title
-      ...Component_Thumbnail
       ...Link_Video
       taggings(input: { limit: 5 }) {
         nodes {
@@ -52,8 +51,8 @@ export const Registeration: React.FC<{
         ["flex"]
       )}
     >
-      <Thumbnail
-        fragment={getFragment(Component_ThumbnailFragmentDoc, video)}
+      <VideoThumbnail
+        fragment={video}
         className={clsx(
           ["flex-shrink-0"],
           ["w-[144px]", "@[1024px]/registration:w-[112px]"],
@@ -62,7 +61,6 @@ export const Registeration: React.FC<{
         )}
         width={144}
         height={108}
-        Wrapper={(props) => <div {...props} />}
       />
       <div className={clsx(["flex-grow"], ["px-4"], ["flex", "flex-col"])}>
         <div className={clsx()}>

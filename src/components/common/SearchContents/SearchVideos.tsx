@@ -10,10 +10,9 @@ import {
   SearchContents_SearchVideosFragment,
   SearchContents_SearchVideosItemFragment,
   SearchContents_SearchVideosItemFragmentDoc,
-  VideoThumbnailFragmentDoc,
 } from "~/gql/graphql";
 
-import { VideoThumbnail } from "../Thumbnail";
+import { VideoThumbnail } from "../VideoThumbnail";
 
 graphql(`
   fragment SearchContents_SearchVideosItem on SearchVideosItem {
@@ -48,10 +47,7 @@ const SearchVideosItem: React.FC<{
       fragment={video}
     >
       <div className={clsx(["flex-shrink-0"])}>
-        <VideoThumbnail
-          className={clsx(["w-32"], ["h-16"])}
-          fragment={getFragment(VideoThumbnailFragmentDoc, video)}
-        />
+        <VideoThumbnail className={clsx(["w-32"], ["h-16"])} fragment={video} />
       </div>
       <div
         className={clsx(
