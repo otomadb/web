@@ -1,8 +1,8 @@
 import clsx from "clsx";
 import React from "react";
 
-import { VideoThumbnail } from "~/components/common/Thumbnail";
 import { UserIcon2 } from "~/components/common/UserIcon";
+import { VideoThumbnail } from "~/components/common/VideoThumbnail";
 import { getFragment, graphql } from "~/gql";
 import {
   Component_UserIconFragmentDoc,

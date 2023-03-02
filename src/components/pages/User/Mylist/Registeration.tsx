@@ -4,7 +4,7 @@ import React from "react";
 
 import { LinkVideo } from "~/app/videos/[serial]/Link";
 import { Tag } from "~/components/common/Tag";
-import { VideoThumbnail } from "~/components/common/Thumbnail";
+import { VideoThumbnail } from "~/components/common/VideoThumbnail";
 import { getFragment, graphql } from "~/gql";
 import {
   Component_TagFragmentDoc,

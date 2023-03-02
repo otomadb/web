@@ -4,7 +4,7 @@ import clsx from "clsx";
 import React from "react";
 
 import { LinkVideoEvents } from "~/app/videos/[serial]/events/Link";
-import { VideoThumbnail } from "~/components/common/Thumbnail";
+import { VideoThumbnail } from "~/components/common/VideoThumbnail";
 import { graphql } from "~/gql";
 import { VideoPage_DetailsSectionFragment } from "~/gql/graphql";
 

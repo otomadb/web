@@ -5,7 +5,7 @@ import clsx from "clsx";
 import React from "react";
 
 import { LinkVideo } from "~/app/videos/[serial]/Link";
-import { VideoThumbnail } from "~/components/common/Thumbnail";
+import { VideoThumbnail } from "~/components/common/VideoThumbnail";
 import { graphql } from "~/gql";
 import { EditorRegisterNicovideoPage_SourceAlreadyRegisteredFragment } from "~/gql/graphql";
 

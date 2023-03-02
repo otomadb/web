@@ -5,7 +5,7 @@ import { LinkVideo } from "~/app/videos/[serial]/Link";
 import { graphql } from "~/gql";
 import { VideoList_VideoFragment } from "~/gql/graphql";
 
-import { VideoThumbnail } from "./Thumbnail";
+import { VideoThumbnail } from "./VideoThumbnail";
 
 graphql(`
   fragment VideoList_Video on Video {
