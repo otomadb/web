@@ -1,20 +1,22 @@
 import Link from "next/link";
 import React, { ComponentProps } from "react";
 
-import { graphql } from "~/gql";
-import { Link_VideoFragment } from "~/gql/graphql";
+import { FragmentType, getFragment, graphql } from "~/gql";
 
-graphql(`
+const Fragment = graphql(`
   fragment Link_Video on Video {
     serial
   }
 `);
 export const LinkVideo: React.FC<
   Omit<ComponentProps<typeof Link>, "href"> & {
-    fragment: Link_VideoFragment;
+    fragment: FragmentType<typeof Fragment>;
   }
-> = ({ children, fragment: { serial }, ...props }) => (
-  <Link href={`/videos/${serial}`} {...props}>
-    {children}
-  </Link>
-);
+> = ({ children, fragment, ...props }) => {
+  const { serial } = getFragment(Fragment, fragment);
+  return (
+    <Link href={`/videos/${serial}`} {...props}>
+      {children}
+    </Link>
+  );
+};

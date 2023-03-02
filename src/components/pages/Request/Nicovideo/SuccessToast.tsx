@@ -6,11 +6,8 @@ import React, { ComponentProps, useCallback } from "react";
 import { toast } from "react-hot-toast";
 
 import { LinkNicovideoRegistrationRequest } from "~/app/requests/nicovideo/[sourceId]/Link";
-import { getFragment, graphql } from "~/gql";
-import {
-  Link_NicovideoRegistrationRequestFragmentDoc,
-  RequestNicovideoRegistrationPage_SuccessToastFragment,
-} from "~/gql/graphql";
+import { graphql } from "~/gql";
+import { RequestNicovideoRegistrationPage_SuccessToastFragment } from "~/gql/graphql";
 
 graphql(`
   fragment RequestNicovideoRegistrationPage_SuccessToast on RequestNicovideoRegistrationSucceededPayload {
@@ -28,10 +25,7 @@ export const SuccessToast: React.FC<{
     <div>
       <p>
         <LinkNicovideoRegistrationRequest
-          fragment={getFragment(
-            Link_NicovideoRegistrationRequestFragmentDoc,
-            fragment.request
-          )}
+          fragment={fragment.request}
           className={clsx(["font-bold"], ["text-blue-400"])}
         >
           {fragment.request.sourceId}

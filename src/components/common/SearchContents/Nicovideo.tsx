@@ -10,8 +10,6 @@ import { getFragment, graphql } from "~/gql";
 import {
   CommonTagFragmentDoc,
   Component_UserIconFragmentDoc,
-  Link_NicovideoRegistrationRequestFragmentDoc,
-  Link_VideoFragmentDoc,
   SearchContents_NicovideoRequestExistsFragment,
   SearchContents_NicovideoRequestExistsFragmentDoc,
   SearchContents_NicovideoVideoSourceExistsFragment,
@@ -51,7 +49,7 @@ const SourceExists: React.FC<{
 }> = ({ className, fragment }) => {
   return (
     <LinkVideo
-      fragment={getFragment(Link_VideoFragmentDoc, fragment.video)}
+      fragment={fragment.video}
       onClick={(e) => {
         e.currentTarget.blur();
       }}
@@ -132,10 +130,7 @@ const RequestsExists: React.FC<{
         ["flex", ["gap-x-4"]],
         ["hover:bg-sky-300/50", "focus:bg-sky-400/50"]
       )}
-      fragment={getFragment(
-        Link_NicovideoRegistrationRequestFragmentDoc,
-        fragment
-      )}
+      fragment={fragment}
       onClick={(e) => {
         e.currentTarget.blur();
       }}

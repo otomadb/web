@@ -9,7 +9,6 @@ import { getFragment, graphql } from "~/gql";
 import {
   Component_TagFragmentDoc,
   Component_ThumbnailFragmentDoc,
-  Link_VideoFragmentDoc,
   MylistPage_RegistrationFragment,
 } from "~/gql/graphql";
 
@@ -40,7 +39,7 @@ export const Registeration: React.FC<{
   const { note, video } = registration;
   return (
     <LinkVideo
-      fragment={getFragment(Link_VideoFragmentDoc, registration.video)}
+      fragment={registration.video}
       className={clsx(
         className,
         ["@container/registration"],

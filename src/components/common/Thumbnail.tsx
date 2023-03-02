@@ -3,11 +3,10 @@ import Image from "next/image";
 import React, { ReactNode } from "react";
 
 import { LinkVideo } from "~/app/videos/[serial]/Link";
-import { getFragment, graphql } from "~/gql";
+import { graphql } from "~/gql";
 import {
   Common_ThumbnailFragment,
   Component_ThumbnailFragment,
-  Link_VideoFragmentDoc,
   VideoThumbnailFragment,
 } from "~/gql/graphql";
 
@@ -31,12 +30,7 @@ export const Thumbnail: React.FC<{
   fragment,
   width = 256,
   height = 192,
-  Wrapper = (props) => (
-    <LinkVideo
-      fragment={getFragment(Link_VideoFragmentDoc, fragment)}
-      {...props}
-    />
-  ),
+  Wrapper = (props) => <LinkVideo fragment={fragment} {...props} />,
 }) => {
   const { title, thumbnailUrl } = fragment;
 

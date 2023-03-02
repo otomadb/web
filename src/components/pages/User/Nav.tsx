@@ -8,11 +8,8 @@ import { LinkUser } from "~/app/users/[name]/Link";
 import { LinkUserMylists } from "~/app/users/[name]/mylists/Link";
 import { LinkYouLikes } from "~/app/you/likes/Link";
 import { LinkYouMylists } from "~/app/you/mylists/Link";
-import { getFragment, graphql } from "~/gql";
+import { graphql } from "~/gql";
 import {
-  Link_UserFragmentDoc,
-  Link_UserLikesFragmentDoc,
-  Link_UserMylistsFragmentDoc,
   UserPageLayout_NavFragment,
   YouPageLayout_NavDocument,
 } from "~/gql/graphql";
@@ -101,7 +98,7 @@ export const UserPageNav: React.FC<{
         className={clsx()}
         Wrapper={(props) => (
           <LinkUser
-            fragment={getFragment(Link_UserFragmentDoc, fragment)}
+            fragment={fragment}
             aria-current={highlight === "PROFILE" ? "page" : undefined}
             {...props}
           />
@@ -124,7 +121,7 @@ export const UserPageNav: React.FC<{
           className={clsx()}
           Wrapper={(props) => (
             <LinkUserLikes
-              fragment={getFragment(Link_UserLikesFragmentDoc, fragment)}
+              fragment={fragment}
               aria-current={highlight === "LIKES" ? "page" : undefined}
               {...props}
             />
@@ -141,7 +138,7 @@ export const UserPageNav: React.FC<{
             <LinkYouMylists {...props} />
           ) : (
             <LinkUserMylists
-              fragment={getFragment(Link_UserMylistsFragmentDoc, fragment)}
+              fragment={fragment}
               aria-current={highlight === "MYLISTS" ? "page" : undefined}
               {...props}
             />

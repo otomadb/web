@@ -2,11 +2,10 @@ import clsx from "clsx";
 import React, { ReactNode, useMemo } from "react";
 
 import { LinkTag } from "~/app/tags/[serial]/Link";
-import { getFragment, graphql } from "~/gql";
+import { graphql } from "~/gql";
 import {
   CommonTagFragment,
   Component_TagFragment,
-  Link_TagFragmentDoc,
   PseudoTagType,
 } from "~/gql/graphql";
 
@@ -29,9 +28,7 @@ export const Tag: React.FC<{
 }> = ({
   className,
   tag,
-  Wrapper = (props) => (
-    <LinkTag fragment={getFragment(Link_TagFragmentDoc, tag)} {...props} />
-  ),
+  Wrapper = (props) => <LinkTag fragment={tag} {...props} />,
 }) => {
   const type = useMemo(() => tag?.pseudoType, [tag]);
 

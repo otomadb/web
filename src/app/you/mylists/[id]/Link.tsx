@@ -1,20 +1,22 @@
 import Link from "next/link";
 import React, { ComponentProps } from "react";
 
-import { graphql } from "~/gql";
-import { Link_YouMylistFragment } from "~/gql/graphql";
+import { FragmentType, getFragment, graphql } from "~/gql";
 
-graphql(`
+const Fragment = graphql(`
   fragment Link_YouMylist on Mylist {
     id
   }
 `);
 export const LinkYouMylist: React.FC<
   Omit<ComponentProps<typeof Link>, "href"> & {
-    fragment: Link_YouMylistFragment;
+    fragment: FragmentType<typeof Fragment>;
   }
-> = ({ children, fragment, ...props }) => (
-  <Link href={`/you/mylists/${fragment.id}`} {...props}>
-    {children}
-  </Link>
-);
+> = ({ children, fragment, ...props }) => {
+  const { id } = getFragment(Fragment, fragment);
+  return (
+    <Link href={`/you/mylists/${id}`} {...props}>
+      {children}
+    </Link>
+  );
+};

@@ -13,7 +13,6 @@ import { LinkVideo } from "~/app/videos/[serial]/Link";
 import { BlueButton } from "~/components/common/Button";
 import { getFragment, graphql } from "~/gql";
 import {
-  Link_VideoFragmentDoc,
   RegisterNicovideoPage_RegisterForm_RegisterVideoDocument,
   RegisterNicovideoPage_RegisterForm_SuccessToastFragment,
   RegisterNicovideoPage_RegisterForm_SuccessToastFragmentDoc,
@@ -218,7 +217,7 @@ export const SuccessToast: React.FC<{
   return (
     <div>
       <LinkVideo
-        fragment={getFragment(Link_VideoFragmentDoc, fragment)}
+        fragment={fragment}
         className={clsx(["font-bold"], ["text-blue-400"])}
       >
         {fragment.title}
