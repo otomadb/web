@@ -5,7 +5,7 @@ import clsx from "clsx";
 import { LinkUser } from "~/app/users/[name]/Link";
 import { CoolImage } from "~/components/common/CoolImage";
 import { UserIcon } from "~/components/common/UserIcon";
-import { FragmentType, getFragment, graphql } from "~/gql";
+import { FragmentType, getFragment as useFragment, graphql } from "~/gql";
 
 import { Editor } from "./Editor";
 
@@ -24,7 +24,7 @@ const Fragment = graphql(`
   }
 `);
 export function Details(props: { fragment: FragmentType<typeof Fragment> }) {
-  const fragment = getFragment(Fragment, props.fragment);
+  const fragment = useFragment(Fragment, props.fragment);
   const { title, sourceId, thumbnailUrl, requestedBy } = fragment;
 
   return (

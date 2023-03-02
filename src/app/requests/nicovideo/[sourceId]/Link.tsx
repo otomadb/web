@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React, { ComponentProps } from "react";
 
-import { FragmentType, getFragment, graphql } from "~/gql";
+import { FragmentType, getFragment as useFragment, graphql } from "~/gql";
 
 const Fragment = graphql(`
   fragment Link_NicovideoRegistrationRequest on NicovideoRegistrationRequest {
@@ -13,7 +13,7 @@ export const LinkNicovideoRegistrationRequest: React.FC<
     fragment: FragmentType<typeof Fragment>;
   }
 > = ({ children, fragment, ...props }) => {
-  const { sourceId } = getFragment(Fragment, fragment);
+  const { sourceId } = useFragment(Fragment, fragment);
   return (
     <Link href={`/requests/nicovideo/${sourceId}`} {...props}>
       {children}

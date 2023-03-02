@@ -5,7 +5,7 @@ import "client-only";
 import React from "react";
 import { useQuery } from "urql";
 
-import { getFragment, getFragment as useFragment, graphql } from "~/gql";
+import { getFragment as useFragment, graphql } from "~/gql";
 import {
   MylistPageCommon_SideMylistListFragmentDoc,
   UserMylistPage_DetailsFragmentDoc,
@@ -35,7 +35,7 @@ export const Inner: React.FC = () => {
     query: YouLikesPageDocument,
   });
 
-  const sidelist = getFragment(
+  const sidelist = useFragment(
     MylistPageCommon_SideMylistListFragmentDoc,
     data?.whoami?.mylists
   );
@@ -43,7 +43,7 @@ export const Inner: React.FC = () => {
     UserMylistPage_DetailsFragmentDoc,
     data?.whoami?.likes
   );
-  const registrations = getFragment(
+  const registrations = useFragment(
     UserMylistPage_RegistrationsFragmentDoc,
     data?.whoami?.likes
   );

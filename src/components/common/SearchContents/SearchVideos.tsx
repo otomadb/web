@@ -5,7 +5,7 @@ import clsx from "clsx";
 import React from "react";
 
 import { LinkVideo } from "~/app/videos/[serial]/Link";
-import { getFragment, graphql } from "~/gql";
+import { getFragment as useFragment, graphql } from "~/gql";
 import {
   SearchContents_SearchVideosFragment,
   SearchContents_SearchVideosItemFragment,
@@ -78,7 +78,7 @@ export const SearchVideos: React.FC<{
   className?: string;
   fragment: SearchContents_SearchVideosFragment;
 }> = ({ className, fragment }) => {
-  const items = getFragment(
+  const items = useFragment(
     SearchContents_SearchVideosItemFragmentDoc,
     fragment.items
   );

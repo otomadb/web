@@ -5,7 +5,7 @@ import React, { ReactNode } from "react";
 import { LinkUser } from "~/app/users/[name]/Link";
 import { Tag } from "~/components/common/Tag";
 import { UserIcon } from "~/components/common/UserIcon";
-import { FragmentType, getFragment, graphql } from "~/gql";
+import { FragmentType, getFragment as useFragment, graphql } from "~/gql";
 import {
   Component_TagFragmentDoc,
   VideoPage_SemitagFragmentDoc,
@@ -30,7 +30,7 @@ export const EventTemplate: React.FC<{
   fragment: FragmentType<typeof EventTemplateFragment>;
   children: ReactNode;
 }> = ({ children, ...props }) => {
-  const fragment = getFragment(EventTemplateFragment, props.fragment);
+  const fragment = useFragment(EventTemplateFragment, props.fragment);
   return (
     <div
       className={clsx(
@@ -78,7 +78,7 @@ const VideoRegisterEventFragment = graphql(`
 export const VideoRegisterEvent: React.FC<{
   fragment: FragmentType<typeof VideoRegisterEventFragment>;
 }> = (props) => {
-  const fragment = getFragment(VideoRegisterEventFragment, props.fragment);
+  const fragment = useFragment(VideoRegisterEventFragment, props.fragment);
   return (
     <EventTemplate fragment={fragment}>
       <div className={clsx(["flex", "flex-col", "justify-center"])}>
@@ -104,7 +104,7 @@ const VideoTitleCreateEventFragment = graphql(`
 export const VideoTitleCreateEvent: React.FC<{
   fragment: FragmentType<typeof VideoTitleCreateEventFragment>;
 }> = (props) => {
-  const fragment = getFragment(VideoTitleCreateEventFragment, props.fragment);
+  const fragment = useFragment(VideoTitleCreateEventFragment, props.fragment);
   return (
     <EventTemplate fragment={fragment}>
       <div className={clsx(["flex", "items-center"], ["text-[10px]"])}>
@@ -138,7 +138,7 @@ const VideoTitleSetPrimaryEventFragment = graphql(`
 export const VideoTitleSetPrimaryEvent: React.FC<{
   fragment: FragmentType<typeof VideoTitleSetPrimaryEventFragment>;
 }> = (props) => {
-  const fragment = getFragment(
+  const fragment = useFragment(
     VideoTitleSetPrimaryEventFragment,
     props.fragment
   );
@@ -175,7 +175,7 @@ const VideoTitleUnsetPrimaryEventFragment = graphql(`
 export const VideoTitleUnsetPrimaryEvent: React.FC<{
   fragment: FragmentType<typeof VideoTitleUnsetPrimaryEventFragment>;
 }> = (props) => {
-  const fragment = getFragment(
+  const fragment = useFragment(
     VideoTitleUnsetPrimaryEventFragment,
     props.fragment
   );
@@ -211,7 +211,7 @@ const VideoThumbnailCreateEventFragment = graphql(`
 export const VideoThumbnailCreateEvent: React.FC<{
   fragment: FragmentType<typeof VideoThumbnailCreateEventFragment>;
 }> = (props) => {
-  const fragment = getFragment(
+  const fragment = useFragment(
     VideoThumbnailCreateEventFragment,
     props.fragment
   );
@@ -251,7 +251,7 @@ const VideoThumbnailSetPrimaryEventFragment = graphql(`
 export const VideoThumbnailSetPrimaryEvent: React.FC<{
   fragment: FragmentType<typeof VideoThumbnailSetPrimaryEventFragment>;
 }> = (props) => {
-  const fragment = getFragment(
+  const fragment = useFragment(
     VideoThumbnailSetPrimaryEventFragment,
     props.fragment
   );
@@ -291,7 +291,7 @@ const VideoThumbnailUnsetPrimaryEventFragment = graphql(`
 export const VideoThumbnailUnsetPrimaryEvent: React.FC<{
   fragment: FragmentType<typeof VideoThumbnailUnsetPrimaryEventFragment>;
 }> = (props) => {
-  const fragment = getFragment(
+  const fragment = useFragment(
     VideoThumbnailUnsetPrimaryEventFragment,
     props.fragment
   );
@@ -333,13 +333,13 @@ const VideoTagAttachEventFragment = graphql(`
 export const VideoTagAttachEvent: React.FC<{
   fragment: FragmentType<typeof VideoTagAttachEventFragment>;
 }> = (props) => {
-  const fragment = getFragment(VideoTagAttachEventFragment, props.fragment);
+  const fragment = useFragment(VideoTagAttachEventFragment, props.fragment);
   return (
     <EventTemplate fragment={fragment}>
       <div className={clsx(["flex", "items-center"], ["text-[10px]"])}>
         タグ
         <Tag
-          tag={getFragment(Component_TagFragmentDoc, fragment.videoTag.tag)}
+          tag={useFragment(Component_TagFragmentDoc, fragment.videoTag.tag)}
         />
         が追加されました。
       </div>
@@ -360,13 +360,13 @@ const VideoTagDetachEventFragment = graphql(`
 export const VideoTagDetachEvent: React.FC<{
   fragment: FragmentType<typeof VideoTagDetachEventFragment>;
 }> = (props) => {
-  const fragment = getFragment(VideoTagDetachEventFragment, props.fragment);
+  const fragment = useFragment(VideoTagDetachEventFragment, props.fragment);
   return (
     <EventTemplate fragment={fragment}>
       <div className={clsx(["flex", "items-center"], ["text-[10px]"])}>
         タグ
         <Tag
-          tag={getFragment(Component_TagFragmentDoc, fragment.videoTag.tag)}
+          tag={useFragment(Component_TagFragmentDoc, fragment.videoTag.tag)}
         />
         が外されました
       </div>
@@ -382,7 +382,7 @@ const VideoTagReattachEventFragment = graphql(`
 export const VideoTagReattachEvent: React.FC<{
   fragment: FragmentType<typeof VideoTagReattachEventFragment>;
 }> = (props) => {
-  const fragment = getFragment(VideoTagReattachEventFragment, props.fragment);
+  const fragment = useFragment(VideoTagReattachEventFragment, props.fragment);
   return (
     <EventTemplate fragment={fragment}>
       <div className={clsx(["text-slate-800"], ["text-[10px]"])}>
@@ -403,7 +403,7 @@ const SemitagAttachEventFragment = graphql(`
 export const SemitagAttachEvent: React.FC<{
   fragment: FragmentType<typeof SemitagAttachEventFragment>;
 }> = (props) => {
-  const fragment = getFragment(SemitagAttachEventFragment, props.fragment);
+  const fragment = useFragment(SemitagAttachEventFragment, props.fragment);
   return (
     <EventTemplate fragment={fragment}>
       <div
@@ -415,7 +415,7 @@ export const SemitagAttachEvent: React.FC<{
       >
         仮タグ
         <Semitag
-          fragment={getFragment(VideoPage_SemitagFragmentDoc, fragment.semitag)}
+          fragment={useFragment(VideoPage_SemitagFragmentDoc, fragment.semitag)}
         />
         を追加しました。
       </div>
@@ -441,7 +441,7 @@ const SemitagResolveEventFragment = graphql(`
 export const SemitagResolveEvent: React.FC<{
   fragment: FragmentType<typeof SemitagResolveEventFragment>;
 }> = (props) => {
-  const fragment = getFragment(SemitagResolveEventFragment, props.fragment);
+  const fragment = useFragment(SemitagResolveEventFragment, props.fragment);
   return (
     <EventTemplate fragment={fragment}>
       <div
@@ -453,14 +453,14 @@ export const SemitagResolveEvent: React.FC<{
       >
         仮タグ
         <Semitag
-          fragment={getFragment(
+          fragment={useFragment(
             VideoPage_SemitagFragmentDoc,
             fragment.resolving.semitag
           )}
         />
         は
         <Tag
-          tag={getFragment(
+          tag={useFragment(
             Component_TagFragmentDoc,
             fragment.resolving.resolveTo.tag
           )}
@@ -484,7 +484,7 @@ const SemitagRejectEventFragment = graphql(`
 export const SemitagRejectEvent: React.FC<{
   fragment: FragmentType<typeof SemitagRejectEventFragment>;
 }> = (props) => {
-  const fragment = getFragment(SemitagRejectEventFragment, props.fragment);
+  const fragment = useFragment(SemitagRejectEventFragment, props.fragment);
   return (
     <EventTemplate fragment={fragment}>
       <div
@@ -496,7 +496,7 @@ export const SemitagRejectEvent: React.FC<{
       >
         仮タグ
         <Semitag
-          fragment={getFragment(
+          fragment={useFragment(
             VideoPage_SemitagFragmentDoc,
             fragment.rejecting.semitag
           )}
@@ -519,7 +519,7 @@ const NicovideoVideoSourceCreateEventFragment = graphql(`
 export const NicovideoVideoSourceCreateEvent: React.FC<{
   fragment: FragmentType<typeof NicovideoVideoSourceCreateEventFragment>;
 }> = (props) => {
-  const fragment = getFragment(
+  const fragment = useFragment(
     NicovideoVideoSourceCreateEventFragment,
     props.fragment
   );
@@ -600,7 +600,7 @@ export const EventSwitch: React.FC<{
   className?: string;
   fragment: FragmentType<typeof EventSwitchFragment>;
 }> = (props) => {
-  const fragment = getFragment(EventSwitchFragment, props.fragment);
+  const fragment = useFragment(EventSwitchFragment, props.fragment);
   switch (fragment.__typename) {
     case "VideoRegisterEvent":
       return <VideoRegisterEvent {...props} fragment={fragment} />;

@@ -1,4 +1,4 @@
-import { FragmentType, getFragment, graphql } from "~/gql";
+import { FragmentType, getFragment as useFragment, graphql } from "~/gql";
 
 const Fragment = graphql(`
   fragment NicovideoRequestPage_SemitagsList on NicovideoRegistrationRequest {
@@ -14,7 +14,7 @@ export function SemitagsList({
 }: {
   fragment: FragmentType<typeof Fragment>;
 }) {
-  const { semitaggings } = getFragment(Fragment, fragment);
+  const { semitaggings } = useFragment(Fragment, fragment);
 
   return (
     <div>

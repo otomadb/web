@@ -7,7 +7,7 @@ import React, { useCallback, useState } from "react";
 import { useQuery } from "urql";
 
 import { DelayedInput } from "~/components/common/DelayedInput";
-import { getFragment, graphql } from "~/gql";
+import { getFragment, getFragment as useFragment, graphql } from "~/gql";
 import {
   Component_TagFragmentDoc,
   TagSearcher_ItemFragment,
@@ -42,8 +42,7 @@ export const TagSearcher: React.FC<{
     pause: query === "",
     variables: query !== "" ? { query, limit } : undefined,
   });
-
-  const items = getFragment(
+  const items = useFragment(
     TagSearcher_ItemFragmentDoc,
     data?.searchTags.items
   );

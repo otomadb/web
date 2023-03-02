@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import React from "react";
 
-import { getFragment, graphql } from "~/gql";
+import { getFragment as useFragment, graphql } from "~/gql";
 import {
   UserMylistsPage_LargeMylistListFragment,
   UserMylistsPage_LargeMylistListItemFragmentDoc,
@@ -21,7 +21,7 @@ export const LargeMylistList: React.FC<{
   className?: string;
   fallback: UserMylistsPage_LargeMylistListFragment;
 }> = ({ className, fallback }) => {
-  const items = getFragment(
+  const items = useFragment(
     UserMylistsPage_LargeMylistListItemFragmentDoc,
     fallback.nodes
   );

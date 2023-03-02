@@ -5,7 +5,7 @@ import "client-only";
 import React from "react";
 import { useQuery } from "urql";
 
-import { getFragment, graphql } from "~/gql";
+import { getFragment as useFragment, graphql } from "~/gql";
 import {
   UserMylistsPage_MylistsFragmentDoc,
   YouMylistsPageDocument,
@@ -28,7 +28,7 @@ export const Inner: React.FC = () => {
     query: YouMylistsPageDocument,
   });
 
-  const mylists = getFragment(
+  const mylists = useFragment(
     UserMylistsPage_MylistsFragmentDoc,
     data?.whoami?.mylists
   );
