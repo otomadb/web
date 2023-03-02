@@ -8,12 +8,7 @@ import { CommonTag } from "~/components/common/Tag";
 import { VideoThumbnail } from "~/components/common/Thumbnail";
 import { getFragment, graphql } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
-import {
-  CommonTagFragmentDoc,
-  Link_TagFragmentDoc,
-  Link_VideoFragmentDoc,
-  VideoThumbnailFragmentDoc,
-} from "~/gql/graphql";
+import { CommonTagFragmentDoc, VideoThumbnailFragmentDoc } from "~/gql/graphql";
 
 export async function RecentVideosList() {
   const { findVideos } = await fetchGql(
@@ -55,7 +50,7 @@ export async function RecentVideosList() {
           )}
         >
           <div>
-            <LinkVideo fragment={getFragment(Link_VideoFragmentDoc, node)}>
+            <LinkVideo fragment={node}>
               <VideoThumbnail
                 className={clsx(["w-32"], ["h-16"])}
                 fragment={getFragment(VideoThumbnailFragmentDoc, node)}
@@ -73,7 +68,7 @@ export async function RecentVideosList() {
               <LinkVideo
                 key={node.id}
                 className={clsx(["text-xs"])}
-                fragment={getFragment(Link_VideoFragmentDoc, node)}
+                fragment={node}
               >
                 {node.title}
               </LinkVideo>
@@ -87,9 +82,7 @@ export async function RecentVideosList() {
               <div className={clsx(["flex", "flex-wrap", "gap-x-1"])}>
                 {node.taggings.nodes.map((tagging) => (
                   <div key={tagging.id} className={clsx()}>
-                    <LinkTag
-                      fragment={getFragment(Link_TagFragmentDoc, tagging.tag)}
-                    >
+                    <LinkTag fragment={tagging.tag}>
                       <CommonTag
                         fragment={getFragment(
                           CommonTagFragmentDoc,

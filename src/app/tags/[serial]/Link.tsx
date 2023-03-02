@@ -1,19 +1,22 @@
 import Link from "next/link";
 import React, { ComponentProps } from "react";
 
-import { graphql } from "~/gql";
-import { Link_TagFragment } from "~/gql/graphql";
+import { FragmentType, getFragment, graphql } from "~/gql";
 
-graphql(`
+const Fragment = graphql(`
   fragment Link_Tag on Tag {
-    id
     serial
   }
 `);
 export const LinkTag: React.FC<
-  Omit<ComponentProps<typeof Link>, "href"> & { fragment: Link_TagFragment }
-> = ({ children, fragment: { serial }, ...props }) => (
-  <Link href={`/tags/${serial}`} {...props}>
-    {children}
-  </Link>
-);
+  Omit<ComponentProps<typeof Link>, "href"> & {
+    fragment: FragmentType<typeof Fragment>;
+  }
+> = ({ children, fragment, ...props }) => {
+  const { serial } = getFragment(Fragment, fragment);
+  return (
+    <Link href={`/tags/${serial}`} {...props}>
+      {children}
+    </Link>
+  );
+};

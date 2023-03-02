@@ -8,11 +8,7 @@ import { CoolImage } from "~/components/common/CoolImage";
 import { UserIcon2 } from "~/components/common/UserIcon";
 import { getFragment, graphql } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
-import {
-  Component_UserIconFragmentDoc,
-  Link_NicovideoRegistrationRequestFragmentDoc,
-  Link_UserFragmentDoc,
-} from "~/gql/graphql";
+import { Component_UserIconFragmentDoc } from "~/gql/graphql";
 
 export async function NicovideoRequestsList() {
   const { findNicovideoRegistrationRequests } = await fetchGql(
@@ -54,13 +50,7 @@ export async function NicovideoRequestsList() {
           )}
         >
           <div className={clsx(["flex-shrink-0"])}>
-            <LinkNicovideoRegistrationRequest
-              key={node.id}
-              fragment={getFragment(
-                Link_NicovideoRegistrationRequestFragmentDoc,
-                node
-              )}
-            >
+            <LinkNicovideoRegistrationRequest key={node.id} fragment={node}>
               <CoolImage
                 className={clsx(["w-32"], ["h-16"])}
                 src={node.thumbnailUrl}
@@ -81,18 +71,13 @@ export async function NicovideoRequestsList() {
               <LinkNicovideoRegistrationRequest
                 key={node.id}
                 className={clsx(["text-xs"])}
-                fragment={getFragment(
-                  Link_NicovideoRegistrationRequestFragmentDoc,
-                  node
-                )}
+                fragment={node}
               >
                 {node.title}
               </LinkNicovideoRegistrationRequest>
             </div>
             <div className={clsx(["flex", "items-center"])}>
-              <LinkUser
-                fragment={getFragment(Link_UserFragmentDoc, node.requestedBy)}
-              >
+              <LinkUser fragment={node.requestedBy}>
                 <UserIcon2
                   size={24}
                   fragment={getFragment(
@@ -104,7 +89,7 @@ export async function NicovideoRequestsList() {
               <div className={clsx(["ml-1"])}>
                 <LinkUser
                   className={clsx(["text-xs"])}
-                  fragment={getFragment(Link_UserFragmentDoc, node.requestedBy)}
+                  fragment={node.requestedBy}
                 >
                   {node.requestedBy.name}
                 </LinkUser>

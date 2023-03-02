@@ -1,20 +1,22 @@
 import Link from "next/link";
 import React, { ComponentProps } from "react";
 
-import { graphql } from "~/gql";
-import { Link_UserLikesFragment } from "~/gql/graphql";
+import { FragmentType, getFragment, graphql } from "~/gql";
 
-graphql(`
+const Fragment = graphql(`
   fragment Link_UserLikes on User {
     name
   }
 `);
 export const LinkUserLikes: React.FC<
   Omit<ComponentProps<typeof Link>, "href"> & {
-    fragment: Link_UserLikesFragment;
+    fragment: FragmentType<typeof Fragment>;
   }
-> = ({ children, fragment, ...props }) => (
-  <Link href={`/users/${fragment.name}/likes`} {...props}>
-    {children}
-  </Link>
-);
+> = ({ children, fragment, ...props }) => {
+  const { name } = getFragment(Fragment, fragment);
+  return (
+    <Link href={`/users/${name}/likes`} {...props}>
+      {children}
+    </Link>
+  );
+};

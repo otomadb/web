@@ -1,20 +1,22 @@
 import Link from "next/link";
 import React, { ComponentProps } from "react";
 
-import { graphql } from "~/gql";
-import { Link_NicovideoRegistrationRequestFragment } from "~/gql/graphql";
+import { FragmentType, getFragment, graphql } from "~/gql";
 
-graphql(`
+const Fragment = graphql(`
   fragment Link_NicovideoRegistrationRequest on NicovideoRegistrationRequest {
     sourceId
   }
 `);
 export const LinkNicovideoRegistrationRequest: React.FC<
   Omit<ComponentProps<typeof Link>, "href"> & {
-    fragment: Link_NicovideoRegistrationRequestFragment;
+    fragment: FragmentType<typeof Fragment>;
   }
-> = ({ children, fragment: fragmnet, ...props }) => (
-  <Link href={`/requests/nicovideo/${fragmnet.sourceId}`} {...props}>
-    {children}
-  </Link>
-);
+> = ({ children, fragment, ...props }) => {
+  const { sourceId } = getFragment(Fragment, fragment);
+  return (
+    <Link href={`/requests/nicovideo/${sourceId}`} {...props}>
+      {children}
+    </Link>
+  );
+};

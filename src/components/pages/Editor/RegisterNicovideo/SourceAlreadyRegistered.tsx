@@ -10,7 +10,6 @@ import { getFragment, graphql } from "~/gql";
 import {
   Common_ThumbnailFragmentDoc,
   EditorRegisterNicovideoPage_SourceAlreadyRegisteredFragment,
-  Link_VideoFragmentDoc,
 } from "~/gql/graphql";
 
 graphql(`
@@ -29,10 +28,7 @@ export const SourceAlreadyExists: React.FC<{
   fragment: EditorRegisterNicovideoPage_SourceAlreadyRegisteredFragment;
 }> = ({ className, fragment }) => (
   <div className={clsx(className, ["flex", "gap-x-4"])}>
-    <LinkVideo
-      className={clsx(["block"], ["w-64"])}
-      fragment={getFragment(Link_VideoFragmentDoc, fragment.video)}
-    >
+    <LinkVideo className={clsx(["block"], ["w-64"])} fragment={fragment.video}>
       <Thumbnail2
         width={260}
         height={200}
@@ -42,10 +38,7 @@ export const SourceAlreadyExists: React.FC<{
     <div>
       <p className={clsx(["text-sm"], ["text-slate-900"])}>
         <span className={clsx(["font-mono"])}>{fragment.sourceId}</span>は
-        <LinkVideo
-          className={clsx(["font-bold"])}
-          fragment={getFragment(Link_VideoFragmentDoc, fragment.video)}
-        >
+        <LinkVideo className={clsx(["font-bold"])} fragment={fragment.video}>
           {fragment.video.title}
         </LinkVideo>
         として既に登録されています。

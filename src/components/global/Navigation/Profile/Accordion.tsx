@@ -16,7 +16,6 @@ import {
   GlobalNav_Profile_Accordion_ProfileFragment,
   GlobalNav_Profile_Accordion_ProfileFragmentDoc,
   GlobalNav_Profile_AccordionFragment,
-  Link_UserFragmentDoc,
 } from "~/gql/graphql";
 
 const MenuItem: React.FC<{
@@ -118,12 +117,7 @@ export const Accordion: React.FC<{
           </div>
           <div className={clsx(["grid"], ["grid-cols-1"])}>
             <MenuItem
-              Wrapper={(props) => (
-                <LinkUser
-                  fragment={getFragment(Link_UserFragmentDoc, fragment)}
-                  {...props}
-                />
-              )}
+              Wrapper={(props) => <LinkUser fragment={fragment} {...props} />}
             >
               プロフィール
             </MenuItem>

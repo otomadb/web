@@ -8,7 +8,6 @@ import { Thumbnail } from "~/components/common/Thumbnail";
 import { getFragment, graphql } from "~/gql";
 import {
   Component_ThumbnailFragmentDoc,
-  Link_VideoEventsFragmentDoc,
   VideoPage_DetailsSectionFragment,
 } from "~/gql/graphql";
 
@@ -46,11 +45,7 @@ export const DetailsSection: React.FC<{
           {fragment.title}
         </h1>
         <LikeButton className={clsx(["mt-2"])} videoId={fragment.id} />
-        <LinkVideoEvents
-          fragment={getFragment(Link_VideoEventsFragmentDoc, fragment)}
-        >
-          編集履歴を見る
-        </LinkVideoEvents>
+        <LinkVideoEvents fragment={fragment}>編集履歴を見る</LinkVideoEvents>
       </div>
     </section>
   );
