@@ -5,7 +5,6 @@ import { LinkVideo } from "~/app/videos/[serial]/Link";
 import { getFragment, graphql } from "~/gql";
 import {
   Component_ThumbnailFragmentDoc,
-  Link_VideoFragmentDoc,
   VideoList_VideoFragment,
 } from "~/gql/graphql";
 
@@ -64,7 +63,7 @@ export const VideoList: React.FC<{
                   [["px-1"], ["py-1"]],
                   ["text-sm", "@[768px]/videolist:text-xs"]
                 )}
-                fragment={getFragment(Link_VideoFragmentDoc, video)}
+                fragment={video}
               >
                 {video.title}
               </LinkVideo>

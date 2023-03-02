@@ -11,7 +11,6 @@ import { fetchGql } from "~/gql/fetch";
 import {
   CommonTagFragmentDoc,
   Link_TagFragmentDoc,
-  Link_VideoFragmentDoc,
   VideoThumbnailFragmentDoc,
 } from "~/gql/graphql";
 
@@ -55,7 +54,7 @@ export async function RecentVideosList() {
           )}
         >
           <div>
-            <LinkVideo fragment={getFragment(Link_VideoFragmentDoc, node)}>
+            <LinkVideo fragment={node}>
               <VideoThumbnail
                 className={clsx(["w-32"], ["h-16"])}
                 fragment={getFragment(VideoThumbnailFragmentDoc, node)}
@@ -73,7 +72,7 @@ export async function RecentVideosList() {
               <LinkVideo
                 key={node.id}
                 className={clsx(["text-xs"])}
-                fragment={getFragment(Link_VideoFragmentDoc, node)}
+                fragment={node}
               >
                 {node.title}
               </LinkVideo>

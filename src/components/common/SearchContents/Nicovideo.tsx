@@ -11,7 +11,6 @@ import {
   CommonTagFragmentDoc,
   Component_UserIconFragmentDoc,
   Link_NicovideoRegistrationRequestFragmentDoc,
-  Link_VideoFragmentDoc,
   SearchContents_NicovideoRequestExistsFragment,
   SearchContents_NicovideoRequestExistsFragmentDoc,
   SearchContents_NicovideoVideoSourceExistsFragment,
@@ -51,7 +50,7 @@ const SourceExists: React.FC<{
 }> = ({ className, fragment }) => {
   return (
     <LinkVideo
-      fragment={getFragment(Link_VideoFragmentDoc, fragment.video)}
+      fragment={fragment.video}
       onClick={(e) => {
         e.currentTarget.blur();
       }}

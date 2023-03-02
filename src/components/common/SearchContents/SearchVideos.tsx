@@ -7,7 +7,6 @@ import React from "react";
 import { LinkVideo } from "~/app/videos/[serial]/Link";
 import { getFragment, graphql } from "~/gql";
 import {
-  Link_VideoFragmentDoc,
   SearchContents_SearchVideosFragment,
   SearchContents_SearchVideosItemFragment,
   SearchContents_SearchVideosItemFragmentDoc,
@@ -46,7 +45,7 @@ const SearchVideosItem: React.FC<{
         e.currentTarget.blur();
       }}
       tabIndex={0}
-      fragment={getFragment(Link_VideoFragmentDoc, video)}
+      fragment={video}
     >
       <div className={clsx(["flex-shrink-0"])}>
         <VideoThumbnail
