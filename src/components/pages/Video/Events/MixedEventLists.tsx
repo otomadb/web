@@ -1,9 +1,8 @@
 import clsx from "clsx";
 import React from "react";
 
-import { getFragment, graphql } from "~/gql";
+import { graphql } from "~/gql";
 import {
-  VideoEventPage_EventFragmentDoc,
   VideoEventPage_NicovideoVideoSourceEventsFragment,
   VideoEventPage_SemitagEventsFragment,
   VideoEventPage_VideoEventsFragment,
@@ -82,10 +81,7 @@ export const MixedEventLists: React.FC<{
       className={clsx(className, ["w-full"], ["flex", "flex-col"], ["gap-y-1"])}
     >
       {events.map((event) => (
-        <EventSwitch
-          key={event.series}
-          fragment={getFragment(VideoEventPage_EventFragmentDoc, event)}
-        />
+        <EventSwitch key={event.series} fragment={event} />
       ))}
     </div>
   );
