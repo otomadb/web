@@ -1343,6 +1343,7 @@ type Video implements Node {
   hasTag(id: ID!): Boolean!
   id: ID!
   isLiked: Boolean!
+  like: MylistRegistration
   nicovideoSources: [NicovideoVideoSource!]!
   registeredAt: DateTime!
   semitags(checked: Boolean): [Semitag!]!
