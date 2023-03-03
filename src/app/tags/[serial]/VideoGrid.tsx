@@ -53,13 +53,16 @@ const Fetcher: React.FC<{
   >({
     pushAfter,
     useQuery() {
-      const [{ data }] = useQuery({
+      const [{ data, fetching }] = useQuery({
         query: Query,
         variables: { tagId, first: 12, after },
       });
       return {
-        nodes: data?.getTag.taggedVideos.nodes,
-        pageInfo: data?.getTag.taggedVideos.pageInfo,
+        fetching,
+        data: {
+          nodes: data?.getTag.taggedVideos.nodes,
+          pageInfo: data?.getTag.taggedVideos.pageInfo,
+        },
       };
     },
     Item({ node }) {

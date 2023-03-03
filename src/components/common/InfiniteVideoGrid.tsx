@@ -3,13 +3,7 @@
 import "client-only";
 
 import clsx from "clsx";
-import React, {
-  ReactNode,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import React, { ReactNode, useCallback, useEffect, useState } from "react";
 import { useIntersection } from "react-use";
 
 import { PageInfo } from "~/gql/graphql";
@@ -42,42 +36,36 @@ export function FetcherContainer<TNode extends { id: string }>({
   pushAfter,
 }: {
   useQuery: () => {
-    nodes?: TNode[];
-    pageInfo?: Pick<PageInfo, "endCursor" | "hasNextPage">;
+    data: {
+      nodes?: TNode[];
+      pageInfo?: Pick<PageInfo, "endCursor" | "hasNextPage">;
+    };
+    fetching: boolean;
   };
   Item: React.FC<{ node: TNode }>;
   pushAfter(after: string): void;
 }): JSX.Element {
-  const { nodes, pageInfo } = useQuery();
+  const {
+    data: { nodes, pageInfo },
+    fetching,
+  } = useQuery();
   const intersectionRef = React.useRef(null);
-  const intersection = useIntersection(intersectionRef, { threshold: 1 });
-  const readnext = useMemo(
-    () =>
-      pageInfo?.hasNextPage &&
-      (!intersection || 1 <= intersection.intersectionRatio),
-    [intersection, pageInfo?.hasNextPage]
-  );
+  const intersection = useIntersection(intersectionRef, { threshold: 0 });
+
   useEffect(() => {
-    if (readnext && pageInfo?.endCursor) {
-      pushAfter(pageInfo?.endCursor);
+    if (!fetching && intersection?.isIntersecting && pageInfo?.endCursor) {
+      pushAfter(pageInfo.endCursor);
     }
-  }, [pageInfo?.endCursor, pushAfter, readnext]);
+  }, [pushAfter, pageInfo?.endCursor, intersection?.isIntersecting, fetching]);
 
   return (
-    <div>
+    <div ref={intersectionRef}>
       {nodes && (
-        <>
-          <Block>
-            {nodes.map((node) => (
-              <Item key={node.id} node={node} />
-            ))}
-          </Block>
-          {!readnext && (
-            <div ref={intersectionRef}>
-              <span>LOADING</span>
-            </div>
-          )}
-        </>
+        <Block>
+          {nodes.map((node) => (
+            <Item key={node.id} node={node} />
+          ))}
+        </Block>
       )}
     </div>
   );
