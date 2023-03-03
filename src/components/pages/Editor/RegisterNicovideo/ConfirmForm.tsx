@@ -6,11 +6,8 @@ import { useQuery } from "urql";
 
 import { CommonTag } from "~/components/common/Tag";
 import { TagSearcher } from "~/components/common/TagSearcher";
-import { getFragment, graphql } from "~/gql";
-import {
-  CommonTagFragmentDoc,
-  RegisterNicovideoPage_RegisterForm_TagDocument,
-} from "~/gql/graphql";
+import { graphql } from "~/gql";
+import { RegisterNicovideoPage_RegisterForm_TagDocument } from "~/gql/graphql";
 
 export const ConfirmForm: React.FC<{
   className?: string;
@@ -182,6 +179,7 @@ export const ConfirmForm: React.FC<{
 graphql(`
   query RegisterNicovideoPage_RegisterForm_Tag($id: ID!) {
     getTag(id: $id) {
+      id
       ...CommonTag
     }
   }
@@ -199,7 +197,10 @@ const TagItem: React.FC<{
   return (
     <button className={clsx(className)} onClick={() => remove()}>
       {data && (
-        <CommonTag fragment={getFragment(CommonTagFragmentDoc, data.getTag)} />
+        <CommonTag
+          fragment={data.getTag}
+          className={clsx(["text-xs"], ["px-1"], ["py-0.5"])}
+        />
       )}
     </button>
   );

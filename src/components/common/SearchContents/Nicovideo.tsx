@@ -8,7 +8,6 @@ import { LinkNicovideoRegistrationRequest } from "~/app/requests/nicovideo/[sour
 import { LinkVideo } from "~/app/videos/[serial]/Link";
 import { getFragment, graphql } from "~/gql";
 import {
-  CommonTagFragmentDoc,
   SearchContents_NicovideoRequestExistsFragment,
   SearchContents_NicovideoRequestExistsFragmentDoc,
   SearchContents_NicovideoVideoSourceExistsFragment,
@@ -33,6 +32,7 @@ graphql(`
         nodes {
           id
           tag {
+            id
             ...Link_Tag
             ...CommonTag
           }
@@ -89,7 +89,8 @@ const SourceExists: React.FC<{
             {fragment.video.taggings.nodes.map((tagging) => (
               <div key={tagging.id} className={clsx()}>
                 <CommonTag
-                  fragment={getFragment(CommonTagFragmentDoc, tagging.tag)}
+                  fragment={tagging.tag}
+                  className={clsx(["text-xs"], ["px-1"], ["py-0.5"])}
                 />
               </div>
             ))}
