@@ -42,13 +42,16 @@ const Fetcher: React.FC<{
   FetcherContainer<ResultOf<typeof Query>["findVideos"]["nodes"][number]>({
     pushAfter,
     useQuery() {
-      const [{ data }] = useQuery({
+      const [{ data, fetching }] = useQuery({
         query: Query,
         variables: { first: 12, after },
       });
       return {
-        nodes: data?.findVideos.nodes,
-        pageInfo: data?.findVideos.pageInfo,
+        fetching,
+        data: {
+          nodes: data?.findVideos.nodes,
+          pageInfo: data?.findVideos.pageInfo,
+        },
       };
     },
     Item({ node }) {
