@@ -5,7 +5,7 @@ import "client-only";
 import React from "react";
 import { useQuery } from "urql";
 
-import { getFragment as useFragment, graphql } from "~/gql";
+import { useFragment as useFragment, graphql } from "~/gql";
 import {
   UserMylistsPage_MylistsFragmentDoc,
   YouMylistsPageDocument,

@@ -6,7 +6,7 @@ import clsx from "clsx";
 import { useQuery } from "urql";
 
 import { LinkRegisterNicovideo } from "~/app/editor/nicovideo/Link";
-import { FragmentType, getFragment as useFragment, graphql } from "~/gql";
+import { FragmentType, graphql, useFragment } from "~/gql";
 
 const Fragment = graphql(`
   fragment NicovideoRequestPage_EditorButtonFragment on NicovideoRegistrationRequest {

@@ -4,7 +4,7 @@ import clsx from "clsx";
 import React from "react";
 
 import { VideoList } from "~/components/common/VideoList";
-import { getFragment, graphql } from "~/gql";
+import { graphql, useFragment } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
 import {
   VideoList_VideoFragmentDoc,
@@ -43,11 +43,11 @@ export const SimilarVideosSection = async ({
     { next: { revalidate: 0 } }
   );
 
-  const videos = getFragment(
+  const videos = useFragment(
     VideoPage_SimilarVideosSectionFragmentDoc,
     getVideo
   ).similarVideos.items.map(({ to }) =>
-    getFragment(VideoList_VideoFragmentDoc, to)
+    useFragment(VideoList_VideoFragmentDoc, to)
   );
 
   return (

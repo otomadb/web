@@ -7,7 +7,7 @@ import { useQuery } from "urql";
 
 import { OriginalSource } from "~/components/pages/Editor/RegisterNicovideo/OriginalSource";
 import { SourceAlreadyExists as VideoSourceAlreadyExists } from "~/components/pages/Editor/RegisterNicovideo/SourceAlreadyRegistered";
-import { getFragment, graphql } from "~/gql";
+import { graphql, useFragment } from "~/gql";
 import {
   EditorRegisterNicovideoPage_SourceAlreadyRegisteredFragmentDoc,
   RegisterNicovideoPage_OriginalSourceFragmentDoc,
@@ -79,7 +79,7 @@ export const SourceChecker: React.FC<{
           <>
             {data.findNicovideoRegistrationRequest && (
               <VideoRequestAlreadyExists
-                fragment={getFragment(
+                fragment={useFragment(
                   RequestNicovideoRegistrationPage_VideoRequestAlreadyExistsFragmentDoc,
                   data.findNicovideoRegistrationRequest
                 )}
@@ -87,7 +87,7 @@ export const SourceChecker: React.FC<{
             )}
             {data.findNicovideoVideoSource && (
               <VideoSourceAlreadyExists
-                fragment={getFragment(
+                fragment={useFragment(
                   EditorRegisterNicovideoPage_SourceAlreadyRegisteredFragmentDoc,
                   data.findNicovideoVideoSource
                 )}
@@ -105,7 +105,7 @@ export const SourceChecker: React.FC<{
                   {data.fetchNicovideo.source && (
                     <div className={clsx(["flex", "flex-col", "gap-y-4"])}>
                       <OriginalSource
-                        fragment={getFragment(
+                        fragment={useFragment(
                           RegisterNicovideoPage_OriginalSourceFragmentDoc,
                           data.fetchNicovideo.source
                         )}

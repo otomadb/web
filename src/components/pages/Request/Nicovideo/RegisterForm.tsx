@@ -8,7 +8,7 @@ import * as z from "zod";
 
 import { BlueButton } from "~/components/common/Button";
 import { ConfirmForm } from "~/components/pages/Editor/RegisterNicovideo/ConfirmForm";
-import { getFragment, graphql } from "~/gql";
+import { graphql, useFragment } from "~/gql";
 import { RequestNicovideoRegistrationPage_SuccessToastFragmentDoc } from "~/gql/graphql";
 
 import { SourceChecker } from "./SourceChecker";
@@ -66,7 +66,7 @@ export const useRequest = (reset: () => void) => {
       switch (data.requestNicovideoRegistration.__typename) {
         case "RequestNicovideoRegistrationSucceededPayload":
           callSuccessToast(
-            getFragment(
+            useFragment(
               RequestNicovideoRegistrationPage_SuccessToastFragmentDoc,
               data.requestNicovideoRegistration
             )

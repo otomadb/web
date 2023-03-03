@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 
 import { UserMylist } from "~/components/pages/User/Mylist";
-import { getFragment, graphql } from "~/gql";
+import { graphql, useFragment } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
 import { UserMylistPageFragmentDoc } from "~/gql/graphql";
 
@@ -30,7 +30,7 @@ export default async function Page({ params }: { params: { name: string } }) {
 
   return (
     <UserMylist
-      fragment={getFragment(UserMylistPageFragmentDoc, findUser.likes)}
+      fragment={useFragment(UserMylistPageFragmentDoc, findUser.likes)}
     />
   );
 }

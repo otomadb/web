@@ -23,11 +23,7 @@ const config: CodegenConfig = {
           DateTime: "string",
         },
       },
-      presetConfig: {
-        fragmentMasking: {
-          unmaskFunctionName: "getFragment",
-        },
-      },
+      presetConfig: {},
     },
   },
 };

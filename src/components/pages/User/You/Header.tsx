@@ -2,7 +2,7 @@
 import clsx from "clsx";
 import { useQuery } from "urql";
 
-import { getFragment as useFragment, graphql } from "~/gql";
+import { graphql, useFragment } from "~/gql";
 import {
   UserPageLayout_HeaderFragmentDoc,
   YouPageLayout_HeaderDocument,

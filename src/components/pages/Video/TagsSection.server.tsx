@@ -5,7 +5,7 @@ import React from "react";
 
 import { LinkTag } from "~/app/tags/[serial]/Link";
 import { CommonTag } from "~/components/common/Tag";
-import { getFragment, graphql } from "~/gql";
+import { graphql, useFragment } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
 import {
   VideoPage_TagsSectionFragmentDoc,
@@ -47,7 +47,7 @@ export const TagsSection = async ({
     { id: videoId },
     { next: { revalidate: 0 } }
   );
-  const fragment = getFragment(VideoPage_TagsSectionFragmentDoc, getVideo);
+  const fragment = useFragment(VideoPage_TagsSectionFragmentDoc, getVideo);
 
   return (
     <section className={clsx(className)}>
@@ -57,7 +57,7 @@ export const TagsSection = async ({
         </h2>
       </div>
       <TagTypesList
-        fragment={getFragment(
+        fragment={useFragment(
           VideoPage_TagTypesListFragmentDoc,
           fragment.taggings
         )}

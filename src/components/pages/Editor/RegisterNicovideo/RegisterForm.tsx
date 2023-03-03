@@ -11,7 +11,7 @@ import * as z from "zod";
 
 import { LinkVideo } from "~/app/videos/[serial]/Link";
 import { BlueButton } from "~/components/common/Button";
-import { getFragment, graphql } from "~/gql";
+import { graphql, useFragment } from "~/gql";
 import {
   RegisterNicovideoPage_RegisterForm_RegisterVideoDocument,
   RegisterNicovideoPage_RegisterForm_SuccessToastFragment,
@@ -103,7 +103,7 @@ export const RegisterForm: React.FC<{
       switch (data.registerVideo.__typename) {
         case "RegisterVideoSucceededPayload":
           callSuccessToast({
-            fragment: getFragment(
+            fragment: useFragment(
               RegisterNicovideoPage_RegisterForm_SuccessToastFragmentDoc,
               data.registerVideo.video
             ),

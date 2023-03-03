@@ -1,4 +1,4 @@
-import { getFragment, graphql } from "~/gql";
+import { graphql, useFragment } from "~/gql";
 import {
   MylistPageCommon_SideMylistListFragmentDoc,
   UserMylistPage_DetailsFragmentDoc,
@@ -24,12 +24,12 @@ export const UserMylist: React.FC<{
 }> = ({ fragment }) => {
   return (
     <UserMylistTemplate
-      sidelist={getFragment(
+      sidelist={useFragment(
         MylistPageCommon_SideMylistListFragmentDoc,
         fragment.holder.mylists
       )}
-      details={getFragment(UserMylistPage_DetailsFragmentDoc, fragment)}
-      registrations={getFragment(
+      details={useFragment(UserMylistPage_DetailsFragmentDoc, fragment)}
+      registrations={useFragment(
         UserMylistPage_RegistrationsFragmentDoc,
         fragment
       )}

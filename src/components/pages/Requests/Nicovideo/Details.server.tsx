@@ -5,7 +5,7 @@ import clsx from "clsx";
 import { LinkUser } from "~/app/users/[name]/Link";
 import { CoolImage } from "~/components/common/CoolImage";
 import { UserIcon } from "~/components/common/UserIcon";
-import { FragmentType, getFragment as useFragment, graphql } from "~/gql";
+import { FragmentType, graphql, useFragment } from "~/gql";
 
 import { Editor } from "./Editor";
 

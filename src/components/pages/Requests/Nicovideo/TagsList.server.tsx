@@ -2,7 +2,7 @@ import clsx from "clsx";
 
 import { LinkTag } from "~/app/tags/[serial]/Link";
 import { CommonTag } from "~/components/common/Tag";
-import { FragmentType, getFragment as useFragment, graphql } from "~/gql";
+import { FragmentType, graphql, useFragment } from "~/gql";
 
 const Fragment = graphql(`
   fragment NicovideoRequestPage_TagsList on NicovideoRegistrationRequest {

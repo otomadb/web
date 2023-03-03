@@ -3,7 +3,7 @@ import React from "react";
 
 import { LinkVideo } from "~/app/videos/[serial]/Link";
 import { VideoThumbnail } from "~/components/common/VideoThumbnail";
-import { FragmentType, getFragment, graphql } from "~/gql";
+import { FragmentType, graphql, useFragment } from "~/gql";
 
 const Fragment = graphql(`
   fragment InfiniteVideosGrid_Video on Video {
@@ -16,7 +16,7 @@ export const Video: React.FC<{
   className?: string;
   fragment: FragmentType<typeof Fragment>;
 }> = ({ className, ...props }) => {
-  const fragment = getFragment(Fragment, props.fragment);
+  const fragment = useFragment(Fragment, props.fragment);
   return (
     <div className={clsx(className)}>
       <LinkVideo fragment={fragment}>

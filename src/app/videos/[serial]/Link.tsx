@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React, { ComponentProps } from "react";
 
-import { FragmentType, getFragment as useFragment, graphql } from "~/gql";
+import { FragmentType, useFragment as useFragment, graphql } from "~/gql";
 
 const Fragment = graphql(`
   fragment Link_Video on Video {

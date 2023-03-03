@@ -3,7 +3,7 @@ import "server-only";
 import clsx from "clsx";
 import React from "react";
 
-import { getFragment, graphql } from "~/gql";
+import { graphql, useFragment } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
 import {
   VideoPage_SemitagFragmentDoc,
@@ -49,13 +49,13 @@ export const SemitagsSection = async ({
         </h2>
       </div>
       <div className={clsx(["mt-2"], ["flex", "flex-col", "items-start"])}>
-        {getFragment(
+        {useFragment(
           VideoPage_SemitagsSectionFragmentDoc,
           getVideo
         ).semitags.map((semitag) => (
           <Semitag
             key={semitag.id}
-            fragment={getFragment(VideoPage_SemitagFragmentDoc, semitag)}
+            fragment={useFragment(VideoPage_SemitagFragmentDoc, semitag)}
           />
         ))}
       </div>

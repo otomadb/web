@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { notFound } from "next/navigation";
 
 import { MixedEventLists } from "~/components/pages/Video/Events/MixedEventLists";
-import { getFragment, graphql } from "~/gql";
+import { graphql, useFragment } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
 import {
   VideoEventPage_NicovideoVideoSourceEventsFragmentDoc,
@@ -66,30 +66,30 @@ export default async function Page({ params }: { params: { serial: string } }) {
         <h2 className={clsx(["text-lg"])}>この動画に関する全ての変更</h2>
         <MixedEventLists
           className={clsx(["mt-2"])}
-          eventsVideo={getFragment(
+          eventsVideo={useFragment(
             VideoEventPage_VideoEventsFragmentDoc,
             video.events
           )}
           eventsTitles={video.titles.map((title) =>
-            getFragment(
+            useFragment(
               VideoEventPage_VideoTitleEventsFragmentDoc,
               title.events
             )
           )}
           eventsThumbnails={video.thumbnails.map((title) =>
-            getFragment(
+            useFragment(
               VideoEventPage_VideoThumbnailEventsFragmentDoc,
               title.events
             )
           )}
           eventsTags={video.taggings.nodes.map((tag) =>
-            getFragment(VideoEventPage_VideoTagEventsFragmentDoc, tag.events)
+            useFragment(VideoEventPage_VideoTagEventsFragmentDoc, tag.events)
           )}
           eventsSemitags={video.semitags.map((semitag) =>
-            getFragment(VideoEventPage_SemitagEventsFragmentDoc, semitag.events)
+            useFragment(VideoEventPage_SemitagEventsFragmentDoc, semitag.events)
           )}
           eventsNicovideoSources={video.nicovideoSources.map((source) =>
-            getFragment(
+            useFragment(
               VideoEventPage_NicovideoVideoSourceEventsFragmentDoc,
               source.events
             )

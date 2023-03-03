@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { VideoList } from "~/components/common/VideoList";
-import { getFragment, graphql } from "~/gql";
+import { useFragment, graphql } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
 import { VideoList_VideoFragmentDoc } from "~/gql/graphql";
 
@@ -60,7 +60,7 @@ export default async function Page({ params }: { params: { serial: string } }) {
       <div className={clsx(["mt-4"])}>
         <VideoList
           className={clsx()}
-          videos={getFragment(VideoList_VideoFragmentDoc, findTag.taggedVideos)}
+          videos={useFragment(VideoList_VideoFragmentDoc, findTag.taggedVideos)}
         />
       </div>
     </>

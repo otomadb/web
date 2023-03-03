@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import React from "react";
 
-import { FragmentType, getFragment, graphql } from "~/gql";
+import { FragmentType, graphql, useFragment } from "~/gql";
 
 import { Video } from "./Video";
 
@@ -16,7 +16,7 @@ const Fragment = graphql(`
 export const Block: React.FC<{
   fragment: FragmentType<typeof Fragment>;
 }> = ({ fragment }) => {
-  const { nodes } = getFragment(Fragment, fragment);
+  const { nodes } = useFragment(Fragment, fragment);
   return (
     <div className={clsx(["@container/row"])}>
       <div

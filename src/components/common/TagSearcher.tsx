@@ -7,7 +7,7 @@ import React, { useCallback, useState } from "react";
 import { useQuery } from "urql";
 
 import { DelayedInput } from "~/components/common/DelayedInput";
-import { getFragment, getFragment as useFragment, graphql } from "~/gql";
+import { graphql, useFragment } from "~/gql";
 import {
   TagSearcher_ItemFragment,
   TagSearcher_ItemFragmentDoc,

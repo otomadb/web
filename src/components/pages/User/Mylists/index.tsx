@@ -5,7 +5,7 @@ import "client-only";
 import clsx from "clsx";
 import React from "react";
 
-import { getFragment, graphql } from "~/gql";
+import { useFragment, graphql } from "~/gql";
 import {
   MylistPageCommon_SideMylistListFragmentDoc,
   UserMylistsPage_LargeMylistListFragmentDoc,
@@ -27,7 +27,7 @@ export const UserMylists: React.FC<{
 }> = ({ fallback }) => {
   return (
     <MetaTemplate
-      sidelist={getFragment(
+      sidelist={useFragment(
         MylistPageCommon_SideMylistListFragmentDoc,
         fallback
       )}
@@ -38,7 +38,7 @@ export const UserMylists: React.FC<{
             ["flex-grow", "xl:flex-grow-0"],
             ["xl:w-[1024px]"]
           )}
-          fallback={getFragment(
+          fallback={useFragment(
             UserMylistsPage_LargeMylistListFragmentDoc,
             fallback
           )}

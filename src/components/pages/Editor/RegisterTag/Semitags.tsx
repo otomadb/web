@@ -11,7 +11,7 @@ import {
 } from "react-hook-form";
 import { useQuery } from "urql";
 
-import { getFragment, graphql } from "~/gql";
+import { graphql, useFragment } from "~/gql";
 import {
   RegisterTagPage_Semitags_FindSemitagsDocument,
   RegisterTagPage_Semitags_SelectedDocument,
@@ -203,7 +203,7 @@ export const Semitags: React.FC<{
             {data?.findSemitags.nodes.map((semitag) => (
               <UnselectedRaw
                 key={semitag.id}
-                fragment={getFragment(
+                fragment={useFragment(
                   RegisterTagPage_Semitags_UnselectedFragmentDoc,
                   semitag
                 )}

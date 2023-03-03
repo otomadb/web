@@ -3,7 +3,7 @@ import clsx from "clsx";
 import React from "react";
 import { useQuery } from "urql";
 
-import { getFragment, graphql } from "~/gql";
+import { useFragment, graphql } from "~/gql";
 import {
   SearchContents_SearchTagsFragmentDoc,
   SearchContents_SearchVideosFragmentDoc,
@@ -60,7 +60,7 @@ export const Dropdown: React.FC<{
           {data?.searchTags && (
             <SearchTags
               className={clsx()}
-              fragment={getFragment(
+              fragment={useFragment(
                 SearchContents_SearchTagsFragmentDoc,
                 data.searchTags
               )}
@@ -81,7 +81,7 @@ export const Dropdown: React.FC<{
           {data?.searchVideos && (
             <SearchVideos
               className={clsx()}
-              fragment={getFragment(
+              fragment={useFragment(
                 SearchContents_SearchVideosFragmentDoc,
                 data.searchVideos
               )}

@@ -9,7 +9,7 @@ import { toast } from "react-hot-toast";
 import { useMutation } from "urql";
 
 import { CommonTag } from "~/components/common/Tag";
-import { getFragment, graphql } from "~/gql";
+import { graphql, useFragment } from "~/gql";
 import {
   RegisterTagPage_RegisterTagDocument,
   RegisterTagPage_SuccessToastFragment,
@@ -94,7 +94,7 @@ export const useRegister = ({
 
       onSuccess();
       callSuccessToast({
-        fragment: getFragment(
+        fragment: useFragment(
           RegisterTagPage_SuccessToastFragmentDoc,
           data.registerTag.tag
         ),

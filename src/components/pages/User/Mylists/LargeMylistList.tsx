@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import React from "react";
 
-import { getFragment as useFragment, graphql } from "~/gql";
+import { useFragment as useFragment, graphql } from "~/gql";
 import {
   UserMylistsPage_LargeMylistListFragment,
   UserMylistsPage_LargeMylistListItemFragmentDoc,

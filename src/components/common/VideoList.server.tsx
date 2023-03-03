@@ -3,7 +3,7 @@ import "server-only";
 import clsx from "clsx";
 
 import { VideoList } from "~/components/common/VideoList";
-import { FragmentType, getFragment as useFragment } from "~/gql";
+import { FragmentType, useFragment as useFragment } from "~/gql";
 import { VideoList_VideoFragmentDoc } from "~/gql/graphql";
 
 export async function ServerSideVideosList({

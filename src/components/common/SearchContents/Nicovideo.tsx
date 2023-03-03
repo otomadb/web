@@ -6,7 +6,7 @@ import { useQuery } from "urql";
 import { LinkRequestNicovideo } from "~/app/request/nicovideo/Link";
 import { LinkNicovideoRegistrationRequest } from "~/app/requests/nicovideo/[sourceId]/Link";
 import { LinkVideo } from "~/app/videos/[serial]/Link";
-import { getFragment, graphql } from "~/gql";
+import { graphql, useFragment } from "~/gql";
 import {
   SearchContents_NicovideoRequestExistsFragment,
   SearchContents_NicovideoRequestExistsFragmentDoc,
@@ -225,7 +225,7 @@ export const SearchNicovideo: React.FC<{
         <>
           {data.findNicovideoVideoSource && (
             <SourceExists
-              fragment={getFragment(
+              fragment={useFragment(
                 SearchContents_NicovideoVideoSourceExistsFragmentDoc,
                 data.findNicovideoVideoSource
               )}
@@ -234,7 +234,7 @@ export const SearchNicovideo: React.FC<{
           {!data.findNicovideoVideoSource &&
             data.findNicovideoRegistrationRequest && (
               <RequestsExists
-                fragment={getFragment(
+                fragment={useFragment(
                   SearchContents_NicovideoRequestExistsFragmentDoc,
                   data.findNicovideoRegistrationRequest
                 )}
