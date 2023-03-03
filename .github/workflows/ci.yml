@@ -29,7 +29,6 @@ jobs:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           report-json: ".eslint-report.json"
 
-
   typecheck:
     runs-on: ubuntu-latest
     steps:
