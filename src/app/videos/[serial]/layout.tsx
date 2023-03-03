@@ -5,7 +5,7 @@ import { Suspense } from "react";
 import { DetailsSection } from "~/components/pages/Video/DetailsSection.server";
 import { SemitagsSection } from "~/components/pages/Video/SemitagsSection.server";
 import { TagsSection } from "~/components/pages/Video/TagsSection.server";
-import { graphql, useFragment } from "~/gql";
+import { graphql, useFragment as getFragment } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
 import { VideoPage_DetailsSectionFragmentDoc } from "~/gql/graphql";
 
@@ -51,7 +51,7 @@ export default async function Layout({
       </div>
       <div className={clsx(["flex-grow"], ["flex", "flex-col", "gap-y-4"])}>
         <DetailsSection
-          fragment={useFragment(VideoPage_DetailsSectionFragmentDoc, findVideo)}
+          fragment={getFragment(VideoPage_DetailsSectionFragmentDoc, findVideo)}
         />
         <div>{children}</div>
       </div>

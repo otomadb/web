@@ -5,7 +5,7 @@ import clsx from "clsx";
 import React from "react";
 
 import { LinkVideo } from "~/app/videos/[serial]/Link";
-import { useFragment as useFragment, graphql } from "~/gql";
+import { graphql,useFragment } from "~/gql";
 import {
   SearchContents_SearchVideosFragment,
   SearchContents_SearchVideosItemFragment,

@@ -6,7 +6,7 @@ import { useQuery } from "urql";
 
 import { LinkSignin } from "~/app/auth/signin/Link";
 import { UserIcon } from "~/components/common/UserIcon";
-import { useFragment, graphql } from "~/gql";
+import { graphql } from "~/gql";
 import { GlobalNav_Profile_AccordionFragmentDoc } from "~/gql/graphql";
 
 import { Accordion } from "./Accordion";
@@ -83,7 +83,7 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
               [["right-0", "xl:right-auto"], ["xl:-left-[7rem]"]],
               ["mx-auto"]
             )}
-            fragment={useFragment(
+            fragment={getFragment(
               GlobalNav_Profile_AccordionFragmentDoc,
               data.whoami
             )}

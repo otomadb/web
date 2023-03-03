@@ -8,7 +8,7 @@ import clsx from "clsx";
 import React, { useCallback, useMemo } from "react";
 import { useMutation, useQuery } from "urql";
 
-import { graphql, useFragment } from "~/gql";
+import { graphql, useFragment as getFragment } from "~/gql";
 import {
   VideoPage_LikeButtonAddLikeDocument,
   VideoPage_LikeButtonCurrentLikeDocument,
@@ -68,7 +68,7 @@ export const LikeButton: React.FC<{ className?: string; videoId: string }> = ({
   });
 
   const liked = useMemo(() => {
-    const l = useFragment(
+    const l = getFragment(
       VideoPage_LikeButtonFragmentDoc,
       currentResult.data?.getVideo
     );

@@ -3,7 +3,7 @@ import React from "react";
 
 import { UserIcon } from "~/components/common/UserIcon";
 import { VideoThumbnail } from "~/components/common/VideoThumbnail";
-import { useFragment, graphql } from "~/gql";
+import { graphql,useFragment } from "~/gql";
 import {
   MylistPageCommon_LinkSwitchFragmentDoc,
   UserMylistsPage_LargeMylistListItemFragment,

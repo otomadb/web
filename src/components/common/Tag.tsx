@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import React, { ReactNode } from "react";
 
-import { FragmentType, useFragment, graphql } from "~/gql";
+import { FragmentType, graphql,useFragment } from "~/gql";
 import { PseudoTagType } from "~/gql/graphql";
 
 const Fragment = graphql(`

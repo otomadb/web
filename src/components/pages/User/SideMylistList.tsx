@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import React from "react";
 
-import { graphql, useFragment } from "~/gql";
+import { graphql, useFragment as getFragment } from "~/gql";
 import {
   MylistPageCommon_LinkSwitchFragmentDoc,
   MylistPageCommon_SideMylistListFragment,
@@ -41,7 +41,7 @@ export const SideMylistList: React.FC<{
         <MylistLinkSwitch
           key={fragment.id}
           className={clsx(["px-4"], ["py-2"], ["hover:bg-blue-200"])}
-          fragment={useFragment(
+          fragment={getFragment(
             MylistPageCommon_LinkSwitchFragmentDoc,
             fragment
           )}

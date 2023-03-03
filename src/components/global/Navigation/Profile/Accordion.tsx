@@ -11,7 +11,7 @@ import { LinkUser } from "~/app/users/[name]/Link";
 import { LinkYouLikes } from "~/app/you/likes/Link";
 import { LinkYouMylists } from "~/app/you/mylists/Link";
 import { LogoutButton } from "~/components/common/LogoutButton";
-import { useFragment, graphql } from "~/gql";
+import { graphql,useFragment } from "~/gql";
 import {
   GlobalNav_Profile_Accordion_ProfileFragment,
   GlobalNav_Profile_Accordion_ProfileFragmentDoc,
