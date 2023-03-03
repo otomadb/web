@@ -19,11 +19,11 @@ export const VideoGrid: React.FC<{ initAfter?: string }> = ({ initAfter }) => (
 );
 
 const Query = graphql(`
-  query InfiniteVideosGrid_FetchBlock($first: Int!, $after: String) {
+  query RecentVideosPage_VideosGrid_Block($first: Int!, $after: String) {
     findVideos(first: $first, after: $after) {
       nodes {
         id
-        ...InfiniteVideosGrid_Video
+        ...RecentVideosPage_VideosGrid_Video
       }
       pageInfo {
         hasNextPage
@@ -54,7 +54,7 @@ const Fetcher: React.FC<{
   });
 
 const Fragment = graphql(`
-  fragment InfiniteVideosGrid_Video on Video {
+  fragment RecentVideosPage_VideosGrid_Video on Video {
     ...Link_Video
     ...VideoThumbnail
     title
