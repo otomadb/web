@@ -19,3 +19,6 @@ src/gql
 
 # storybook
 storybook-static
+
+# ESLint
+.eslint-report.json
