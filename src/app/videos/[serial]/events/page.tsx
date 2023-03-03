@@ -34,7 +34,7 @@ export default async function Page({ params }: { params: { serial: string } }) {
               ...VideoEventPage_VideoThumbnailEvents
             }
           }
-          taggings(input: {}) {
+          taggings {
             nodes {
               events(input: {}) {
                 ...VideoEventPage_VideoTagEvents

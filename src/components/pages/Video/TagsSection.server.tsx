@@ -17,7 +17,7 @@ import { styleByTagType } from "~/utils/styleByTagType";
 graphql(`
   fragment VideoPage_TagsSection on Video {
     id
-    taggings(input: {}) {
+    taggings {
       ...VideoPage_TagTypesList
       nodes {
         tag {
