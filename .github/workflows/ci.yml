@@ -19,8 +19,15 @@ jobs:
           node-version: 18
           cache: pnpm
       - run: pnpm install
-      - run: pnpm run lint:eslint
+
       - run: pnpm run lint:prettier
+
+      - run: pnpm run lint:eslint:report
+      - name: Annotate ESLint results
+        uses: ataylorme/eslint-annotate-action@v2
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          report-json: ".eslint-report.json"
 
   typecheck:
     runs-on: ubuntu-latest
