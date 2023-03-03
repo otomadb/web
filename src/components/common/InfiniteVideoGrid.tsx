@@ -36,16 +36,16 @@ export const InfiniteVideosGrid: React.FC<{
   );
 };
 
-export function FetcherContainer<TNode>({
+export function FetcherContainer<TNode extends { id: string }>({
   useQuery,
-  Presentation,
+  Item,
   pushAfter,
 }: {
   useQuery: () => {
-    nodes?: TNode;
+    nodes?: TNode[];
     pageInfo?: Pick<PageInfo, "endCursor" | "hasNextPage">;
   };
-  Presentation: React.FC<{ nodes: TNode }>;
+  Item: React.FC<{ node: TNode }>;
   pushAfter(after: string): void;
 }): JSX.Element {
   const { nodes, pageInfo } = useQuery();
@@ -68,7 +68,9 @@ export function FetcherContainer<TNode>({
       {nodes && (
         <>
           <Block>
-            <Presentation nodes={nodes} />
+            {nodes.map((node) => (
+              <Item key={node.id} node={node} />
+            ))}
           </Block>
           {!readnext && (
             <div ref={intersectionRef}>

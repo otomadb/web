@@ -28,7 +28,7 @@ export const Fetcher: React.FC<{
   after?: string;
   pushAfter(after: string): void;
 }> = ({ after, pushAfter }) =>
-  FetcherContainer<ResultOf<typeof Query>["findVideos"]["nodes"]>({
+  FetcherContainer<ResultOf<typeof Query>["findVideos"]["nodes"][number]>({
     pushAfter,
     useQuery() {
       const [{ data }] = useQuery({
@@ -40,14 +40,8 @@ export const Fetcher: React.FC<{
         pageInfo: data?.findVideos.pageInfo,
       };
     },
-    Presentation({ nodes }) {
-      return (
-        <>
-          {nodes.map((node) => (
-            <Video key={node.id} fragment={node} />
-          ))}
-        </>
-      );
+    Item({ node }) {
+      return <Video fragment={node} />;
     },
   });
 
