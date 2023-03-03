@@ -6,114 +6,105 @@ import { HeartIcon as OutlikeHeartIcon } from "@heroicons/react/24/outline";
 import { HeartIcon as SolidHeartIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 import React, { useCallback, useMemo } from "react";
+import { toast } from "react-hot-toast";
 import { useMutation, useQuery } from "urql";
 
 import { getFragment, graphql } from "~/gql";
-import {
-  VideoPage_LikeButtonAddLikeDocument,
-  VideoPage_LikeButtonCurrentLikeDocument,
-  VideoPage_LikeButtonFragmentDoc,
-  VideoPage_LikeButtonRemoveLikeDocument,
-} from "~/gql/graphql";
-import { useIsLogin } from "~/hooks/useIsLogin";
 
-graphql(`
-  fragment VideoPage_LikeButton on Video {
-    id
-    isLiked
-  }
-
-  query VideoPage_LikeButtonCurrentLike($videoId: ID!) {
-    getVideo(id: $videoId) {
-      ...VideoPage_LikeButton
-    }
-  }
-
-  mutation VideoPage_LikeButtonAddLike($videoId: ID!) {
-    likeVideo(input: { videoId: $videoId }) {
-      ... on LikeVideoSucceededPayload {
-        registration {
-          id
-          video {
-            ...VideoPage_LikeButton
-          }
-        }
-      }
-    }
-  }
-
-  mutation VideoPage_LikeButtonRemoveLike($videoId: ID!) {
-    undoLikeVideo(input: { videoId: $videoId }) {
-      ... on UndoLikeVideoSucceededPayload {
-        registration {
-          id
-          video {
-            ...VideoPage_LikeButton
-          }
-        }
-      }
+const VideoFragment = graphql(`
+  fragment VideoPage_LikeButton_Video on Video {
+    like {
+      id
     }
   }
 `);
-
 export const LikeButton: React.FC<{ className?: string; videoId: string }> = ({
   className,
   videoId,
 }) => {
-  const isLogin = useIsLogin();
-  const [currentResult] = useQuery({
-    query: VideoPage_LikeButtonCurrentLikeDocument,
-    pause: !isLogin,
+  const [{ data: currentData, fetching }] = useQuery({
+    query: graphql(`
+      query VideoPage_LikeButtonCurrentLike($videoId: ID!) {
+        whoami {
+          id
+        }
+        getVideo(id: $videoId) {
+          id
+          ...VideoPage_LikeButton_Video
+        }
+      }
+    `),
     variables: { videoId },
   });
+  const video = getFragment(VideoFragment, currentData?.getVideo);
+  const liked = useMemo(() => video?.like, [video?.like]);
 
-  const liked = useMemo(() => {
-    const l = getFragment(
-      VideoPage_LikeButtonFragmentDoc,
-      currentResult.data?.getVideo
-    );
-    return l?.isLiked;
-  }, [currentResult]);
-
-  const [, triggerAddLike] = useMutation(VideoPage_LikeButtonAddLikeDocument);
-  const [, triggerRemoveLike] = useMutation(
-    VideoPage_LikeButtonRemoveLikeDocument
+  const [, triggerAddLike] = useMutation(
+    graphql(`
+      mutation VideoPage_LikeButton_AddLike($videoId: ID!) {
+        likeVideo(input: { videoId: $videoId }) {
+          ... on LikeVideoSucceededPayload {
+            registration {
+              id
+              video {
+                id
+                ...VideoPage_LikeButton_Video
+              }
+            }
+          }
+        }
+      }
+    `)
   );
-
-  const handleClicked = useCallback(async () => {
-    if (liked === undefined) return;
-
-    if (liked) {
-      await triggerRemoveLike({ videoId });
-    } else {
-      await triggerAddLike({ videoId });
+  const [, triggerRemoveLike] = useMutation(
+    graphql(`
+      mutation VideoPage_LikeButton_RemoveLike($videoId: ID!) {
+        undoLikeVideo(input: { videoId: $videoId }) {
+          ... on UndoLikeVideoSucceededPayload {
+            registration {
+              id
+              video {
+                id
+                ...VideoPage_LikeButton_Video
+              }
+            }
+          }
+        }
+      }
+    `)
+  );
+  const handleClick = useCallback(() => {
+    if (currentData?.whoami === null) {
+      // TODO: you need to login
+      toast("動画をいいねするにはログインが必要です。");
+      return;
     }
-  }, [liked, videoId, triggerAddLike, triggerRemoveLike]);
+    if (liked) triggerRemoveLike({ videoId });
+    else triggerAddLike({ videoId });
+  }, [currentData?.whoami, liked, triggerAddLike, triggerRemoveLike, videoId]);
 
   return (
     <button
-      disabled={liked === undefined}
+      disabled={fetching}
       className={clsx(
         className,
         "group",
         [["px-2"], ["py-1"]],
         ["transition-colors", "duration-100"],
-        ["disabled:animate-pulse"],
         [
           "border",
-          "disabled:border-slate-300",
+
           liked && ["border-pink-400"],
           !liked && ["border-slate-400"],
         ],
         [
-          "disabled:bg-slate-200",
           liked && [["bg-opacity-25", "hover:bg-opacity-40"], "bg-pink-300"],
           !liked && [["bg-opacity-25", "hover:bg-opacity-50"], "bg-slate-300"],
         ],
         ["rounded-md"],
         ["flex", ["items-center"]]
       )}
-      onClick={() => handleClicked()}
+      onClick={() => handleClick()}
     >
       <div>
         {liked && (
@@ -152,10 +143,7 @@ export const LikeButton: React.FC<{ className?: string; videoId: string }> = ({
               ["w-4"],
               ["h-4"],
               ["transition-colors", "duration-75"],
-              [
-                "group-disabled:text-slate-300",
-                ["text-slate-500", "group-hover:text-slate-600"],
-              ]
+              [["text-slate-500", "group-hover:text-slate-600"]]
             )}
           />
         )}
@@ -166,7 +154,6 @@ export const LikeButton: React.FC<{ className?: string; videoId: string }> = ({
           ["text-sm"],
           ["transition-colors", "duration-75"],
           [
-            "group-disabled:text-slate-300",
             liked && ["text-pink-600", "group-hover:text-pink-500"],
             !liked && ["text-slate-500", "group-hover:text-slate-600"],
           ]
