@@ -1,12 +1,10 @@
 import clsx from "clsx";
 import React from "react";
 
-import { Thumbnail } from "~/components/common/Thumbnail";
-import { UserIcon2 } from "~/components/common/UserIcon";
+import { UserIcon } from "~/components/common/UserIcon";
+import { VideoThumbnail } from "~/components/common/VideoThumbnail";
 import { getFragment, graphql } from "~/gql";
 import {
-  Component_ThumbnailFragmentDoc,
-  Component_UserIconFragmentDoc,
   MylistPageCommon_LinkSwitchFragmentDoc,
   UserMylistsPage_LargeMylistListItemFragment,
 } from "~/gql/graphql";
@@ -25,14 +23,14 @@ graphql(`
       name
       displayName
       icon
-      ...Component_UserIcon
+      ...UserIcon
     }
     registrations(input: { limit: 5, order: { createdAt: DESC } }) {
       nodes {
         id
         video {
+          ...VideoThumbnail
           id
-          ...Component_Thumbnail
         }
       }
     }
@@ -66,10 +64,7 @@ export const LargeMylistListItem: React.FC<{
           </p>
         </div>
         <div className={clsx(["mt-1"], ["flex", "items-center"])}>
-          <UserIcon2
-            fragment={getFragment(Component_UserIconFragmentDoc, holder)}
-            size={24}
-          />
+          <UserIcon fragment={holder} size={24} />
           <div className={clsx(["ml-1"], ["text-xs"])}>
             <span className={clsx(["text-slate-900"])}>
               {holder.displayName}
@@ -100,12 +95,11 @@ export const LargeMylistListItem: React.FC<{
         <div className={clsx(["z-0"], ["flex", "gap-x-2"], ["h-[72px]"])}>
           {registrations.nodes.map(({ id, video }) => (
             <div key={id}>
-              <Thumbnail
+              <VideoThumbnail
                 className={clsx(["w-[96px]"], ["h-full"])}
-                fragment={getFragment(Component_ThumbnailFragmentDoc, video)}
+                fragment={video}
                 width={96}
                 height={72}
-                Wrapper={(props) => <div {...props} />}
               />
             </div>
           ))}

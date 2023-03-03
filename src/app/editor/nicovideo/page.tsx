@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 
 import { Form } from "~/components/pages/Editor/RegisterNicovideo/Form";
 
+import { SearchParams } from "./Link";
+
 export const metadata: Metadata = {
   title: "ニコニコ動画からの登録",
 };
@@ -10,7 +12,7 @@ export const metadata: Metadata = {
 export default async function Page({
   searchParams,
 }: {
-  searchParams: { sourceId?: string };
+  searchParams: SearchParams;
 }) {
   return (
     <main className={clsx(["max-w-screen-lg"], ["mx-auto"])}>

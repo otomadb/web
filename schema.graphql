@@ -219,15 +219,8 @@ input FindVideoInput {
   serial: Int
 }
 
-input FindVideosInput {
-  limit: Int! = 10
-  order: FindVideosInputOrder! = {createdAt: DESC}
-  skip: Int! = 0
-}
-
-input FindVideosInputOrder {
+input FindVideosOrderBy {
   createdAt: SortOrder
-  updatedAt: SortOrder
 }
 
 enum LikeVideoFailedMessage {
@@ -599,6 +592,13 @@ interface Node {
   id: ID!
 }
 
+type PageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+}
+
 enum PseudoTagType {
   """キャラクター"""
   CHARACTER
@@ -646,7 +646,7 @@ type Query {
   findTags(input: FindTagsInput!): TagConnection!
   findUser(input: FindUserInput!): User
   findVideo(input: FindVideoInput!): Video
-  findVideos(input: FindVideosInput!): VideoConnection!
+  findVideos(after: String, before: String, first: Int, last: Int, orderBy: FindVideosOrderBy! = {createdAt: DESC}): VideoConnection!
   getMylist(id: ID!): Mylist!
   getMylistGroup(id: ID!): MylistGroup!
   getNicovideoRegistrationRequest(id: ID!): NicovideoRegistrationRequest!
@@ -1358,7 +1358,15 @@ type Video implements Node {
 }
 
 type VideoConnection {
+  edges: [VideoEdge!]!
   nodes: [Video!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type VideoEdge {
+  cursor: String!
+  node: Video!
 }
 
 interface VideoEvent implements Event & Node {

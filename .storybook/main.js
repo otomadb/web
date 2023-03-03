@@ -10,4 +10,9 @@ module.exports = {
     name: "@storybook/nextjs",
     options: {},
   },
+  webpackFinal: async (config) => {
+    config.resolve.fallback.querystring = false;
+
+    return config;
+  },
 };

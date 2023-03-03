@@ -3,27 +3,33 @@ import "client-only";
 
 import { useRouter } from "next/navigation";
 import React, { ReactNode, useEffect } from "react";
-import { useQuery } from "urql";
+import { useQuery, UseQueryResponse } from "urql";
 
 import { graphql } from "~/gql";
 
+export const AuthPageGuardContext = React.createContext<UseQueryResponse[1]>(
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  () => {}
+);
 export const AuthPagesGuard: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const router = useRouter();
-  const [{ data, fetching }] = useQuery({
+  const [{ data, fetching }, update] = useQuery({
     query: graphql(`
       query AuthPages_Guard {
         whoami {
           id
+          ...UserIcon
+          ...GlobalNav_Profile_Accordion
         }
       }
     `),
-    requestPolicy: "network-only",
+    requestPolicy: "cache-and-network",
   });
 
   useEffect(() => {
-    if (data?.whoami?.id) router.replace("/");
+    if (data?.whoami?.id) router.back();
   }, [data, router]);
 
   if (fetching)
@@ -33,5 +39,9 @@ export const AuthPagesGuard: React.FC<{ children: ReactNode }> = ({
       </div>
     );
 
-  return <>{children}</>;
+  return (
+    <AuthPageGuardContext.Provider value={update}>
+      {children}
+    </AuthPageGuardContext.Provider>
+  );
 };

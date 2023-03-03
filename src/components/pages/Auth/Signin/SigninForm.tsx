@@ -5,12 +5,12 @@ import "client-only";
 import { AtSymbolIcon, LockClosedIcon } from "@heroicons/react/24/solid";
 import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
-import { useRouter } from "next/navigation";
-import React, { useCallback } from "react";
+import React, { useCallback, useContext } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useMutation } from "urql";
 import * as z from "zod";
 
+import { AuthPageGuardContext } from "~/app/auth/Guard";
 import { LinkSignup } from "~/app/auth/signup/Link";
 import { graphql } from "~/gql";
 import { SigninFailedMessage } from "~/gql/graphql";
@@ -25,7 +25,7 @@ const formSchema = z.object({
 type FormSchema = z.infer<typeof formSchema>;
 
 export const SigninForm: React.FC<{ className?: string }> = ({ className }) => {
-  const router = useRouter();
+  const updateGuard = useContext(AuthPageGuardContext);
 
   const {
     register,
@@ -62,7 +62,7 @@ export const SigninForm: React.FC<{ className?: string }> = ({ className }) => {
       }
       switch (data.signin.__typename) {
         case "SigninSucceededPayload":
-          router.replace("/");
+          updateGuard();
           return;
         case "SigninFailedPayload":
           {
@@ -79,7 +79,7 @@ export const SigninForm: React.FC<{ className?: string }> = ({ className }) => {
           return;
       }
     },
-    [router, setError, signin]
+    [setError, signin, updateGuard]
   );
 
   return (
