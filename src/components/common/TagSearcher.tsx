@@ -9,13 +9,12 @@ import { useQuery } from "urql";
 import { DelayedInput } from "~/components/common/DelayedInput";
 import { getFragment, graphql } from "~/gql";
 import {
-  Component_TagFragmentDoc,
   TagSearcher_ItemFragment,
   TagSearcher_ItemFragmentDoc,
   TagSearcher_SearchDocument,
 } from "~/gql/graphql";
 
-import { Tag } from "./Tag";
+import { CommonTag } from "./Tag";
 
 graphql(`
   query TagSearcher_Search($query: String!, $limit: Int!) {
@@ -121,8 +120,8 @@ export const TagSearcher: React.FC<{
           >
             {items.map((fragment) => (
               <Item
-                className={clsx()}
                 key={fragment.tag.id}
+                className={clsx()}
                 fragment={fragment}
                 handleSelect={handleSelect}
               />
@@ -150,16 +149,16 @@ graphql(`
   fragment TagSearcher_Item on SearchTagsItem {
     matchedName
     tag {
+      ...CommonTag
       id
       name
-      ...Component_Tag
     }
   }
 `);
 const Item: React.FC<{
   className?: string;
   handleSelect(id: string): void;
-  fragment: TagSearcher_ItemFragment;
+  fragment: TagSearcher_ItemFragment; // TODO: そのうち直す
 }> = ({ className, handleSelect, fragment }) => {
   return (
     <button
@@ -178,10 +177,7 @@ const Item: React.FC<{
         e.currentTarget.blur();
       }}
     >
-      <Tag
-        tag={getFragment(Component_TagFragmentDoc, fragment.tag)}
-        Wrapper={(props) => <div {...props} />}
-      />
+      <CommonTag fragment={fragment.tag} />
       {fragment.tag.name !== fragment.matchedName && (
         <div className={clsx(["text-xs"], ["text-slate-700"])}>
           {fragment.matchedName}

@@ -3,11 +3,10 @@ import Image from "next/image";
 import React, { ReactNode } from "react";
 
 import { LinkUser } from "~/app/users/[name]/Link";
-import { Tag } from "~/components/common/Tag";
+import { CommonTag } from "~/components/common/Tag";
 import { UserIcon } from "~/components/common/UserIcon";
 import { getFragment, graphql } from "~/gql";
 import {
-  Component_TagFragmentDoc,
   VideoEventPage_EventFragment,
   VideoEventPage_EventTemplateFragment,
   VideoEventPage_EventTemplateFragmentDoc,
@@ -347,7 +346,7 @@ graphql(`
     ...VideoEventPage_EventTemplate
     videoTag {
       tag {
-        ...Component_Tag
+        ...CommonTag
       }
     }
   }
@@ -361,9 +360,7 @@ export const VideoTagAttachEvent: React.FC<{
     >
       <div className={clsx(["flex", "items-center"], ["text-[10px]"])}>
         タグ
-        <Tag
-          tag={getFragment(Component_TagFragmentDoc, fragment.videoTag.tag)}
-        />
+        <CommonTag fragment={fragment.videoTag.tag} />
         が追加されました。
       </div>
     </EventTemplate>
@@ -375,7 +372,7 @@ graphql(`
     ...VideoEventPage_EventTemplate
     videoTag {
       tag {
-        ...Component_Tag
+        ...CommonTag
       }
     }
   }
@@ -389,9 +386,7 @@ export const VideoTagDetachEvent: React.FC<{
     >
       <div className={clsx(["flex", "items-center"], ["text-[10px]"])}>
         タグ
-        <Tag
-          tag={getFragment(Component_TagFragmentDoc, fragment.videoTag.tag)}
-        />
+        <CommonTag fragment={fragment.videoTag.tag} />
         が外されました
       </div>
     </EventTemplate>
@@ -457,7 +452,7 @@ graphql(`
       }
       resolveTo {
         tag {
-          ...Component_Tag
+          ...CommonTag
         }
       }
     }
@@ -485,12 +480,7 @@ export const SemitagResolveEvent: React.FC<{
           )}
         />
         は
-        <Tag
-          tag={getFragment(
-            Component_TagFragmentDoc,
-            fragment.resolving.resolveTo.tag
-          )}
-        />
+        <CommonTag fragment={fragment.resolving.resolveTo.tag} />
         に解決しました。
       </div>
     </EventTemplate>

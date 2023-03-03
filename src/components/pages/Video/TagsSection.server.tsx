@@ -3,11 +3,10 @@ import "server-only";
 import clsx from "clsx";
 import React from "react";
 
-import { Tag } from "~/components/common/Tag";
+import { CommonTag } from "~/components/common/Tag";
 import { getFragment, graphql } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
 import {
-  Component_TagFragmentDoc,
   VideoPage_TagsSectionFragmentDoc,
   VideoPage_TagTypesListFragment,
   VideoPage_TagTypesListFragmentDoc,
@@ -22,7 +21,7 @@ graphql(`
       nodes {
         tag {
           id
-          ...Component_Tag
+          ...CommonTag
         }
       }
     }
@@ -64,10 +63,7 @@ export const TagsSection = async ({
       />
       <div className={clsx(["mt-2"], ["flex", "flex-col", "items-start"])}>
         {taggings.nodes.map((tagging) => (
-          <Tag
-            key={tagging.tag.id}
-            tag={getFragment(Component_TagFragmentDoc, tagging.tag)}
-          />
+          <CommonTag key={tagging.tag.id} fragment={tagging.tag} />
         ))}
       </div>
     </section>

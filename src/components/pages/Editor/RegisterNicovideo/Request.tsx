@@ -3,11 +3,8 @@ import clsx from "clsx";
 import React from "react";
 
 import { CommonTag } from "~/components/common/Tag";
-import { getFragment, graphql } from "~/gql";
-import {
-  CommonTagFragmentDoc,
-  RegisterNicovideoPage_RequestFragment,
-} from "~/gql/graphql";
+import { graphql } from "~/gql";
+import { RegisterNicovideoPage_RequestFragment } from "~/gql/graphql";
 
 graphql(`
   fragment RegisterNicovideoPage_Request on NicovideoRegistrationRequest {
@@ -69,9 +66,7 @@ export const Request: React.FC<{
                   }}
                   className={clsx(["flex"])}
                 >
-                  <CommonTag
-                    fragment={getFragment(CommonTagFragmentDoc, tagging.tag)}
-                  />
+                  <CommonTag fragment={tagging.tag} />
                 </button>
               </div>
             ))}

@@ -3,7 +3,6 @@ import clsx from "clsx";
 import { LinkTag } from "~/app/tags/[serial]/Link";
 import { CommonTag } from "~/components/common/Tag";
 import { FragmentType, getFragment, graphql } from "~/gql";
-import { CommonTagFragmentDoc } from "~/gql/graphql";
 
 const Fragment = graphql(`
   fragment NicovideoRequestPage_TagsList on NicovideoRegistrationRequest {
@@ -30,9 +29,7 @@ export function TagsList({
         <div key={tagging.id}>
           <div>
             <LinkTag className={clsx(["block"])} fragment={tagging.tag}>
-              <CommonTag
-                fragment={getFragment(CommonTagFragmentDoc, tagging.tag)}
-              />
+              <CommonTag fragment={tagging.tag} />
             </LinkTag>
           </div>
           <div>{tagging.note && <span>{tagging.note}</span>}</div>

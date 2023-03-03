@@ -6,9 +6,8 @@ import { LinkTag } from "~/app/tags/[serial]/Link";
 import { LinkVideo } from "~/app/videos/[serial]/Link";
 import { CommonTag } from "~/components/common/Tag";
 import { VideoThumbnail } from "~/components/common/VideoThumbnail";
-import { getFragment, graphql } from "~/gql";
+import { graphql } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
-import { CommonTagFragmentDoc } from "~/gql/graphql";
 
 export async function RecentVideosList() {
   const { findVideos } = await fetchGql(
@@ -83,12 +82,7 @@ export async function RecentVideosList() {
                 {node.taggings.nodes.map((tagging) => (
                   <div key={tagging.id} className={clsx()}>
                     <LinkTag fragment={tagging.tag}>
-                      <CommonTag
-                        fragment={getFragment(
-                          CommonTagFragmentDoc,
-                          tagging.tag
-                        )}
-                      />
+                      <CommonTag fragment={tagging.tag} />
                     </LinkTag>
                   </div>
                 ))}
