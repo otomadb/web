@@ -3,13 +3,10 @@ import clsx from "clsx";
 import React from "react";
 
 import { LinkVideo } from "~/app/videos/[serial]/Link";
-import { Tag } from "~/components/common/Tag";
+import { CommonTag } from "~/components/common/Tag";
 import { VideoThumbnail } from "~/components/common/VideoThumbnail";
-import { getFragment, graphql } from "~/gql";
-import {
-  Component_TagFragmentDoc,
-  MylistPage_RegistrationFragment,
-} from "~/gql/graphql";
+import { graphql } from "~/gql";
+import { MylistPage_RegistrationFragment } from "~/gql/graphql";
 
 graphql(`
   fragment MylistPage_Registration on MylistRegistration {
@@ -24,7 +21,7 @@ graphql(`
         nodes {
           id
           tag {
-            ...Component_Tag
+            ...CommonTag
           }
         }
       }
@@ -75,10 +72,10 @@ export const Registeration: React.FC<{
           )}
         >
           {video.taggings.nodes.map((tagging) => (
-            <Tag
+            <CommonTag
               key={tagging.id}
-              tag={getFragment(Component_TagFragmentDoc, tagging.tag)}
-              Wrapper={(props) => <div {...props} />}
+              className={clsx(["text-xs"], ["px-1"], ["py-0.5"])}
+              fragment={tagging.tag}
             />
           ))}
         </div>
