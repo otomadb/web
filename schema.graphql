@@ -1353,8 +1353,7 @@ type Video implements Node {
   semitags(checked: Boolean): [Semitag!]!
   serial: Int!
   similarVideos(input: VideoSimilarVideosInput!): VideoSimilarVideosPayload!
-  taggings(after: String, before: String, first: Int, input: VideoTaggingsInput!, last: Int, orderBy: VideoTaggingsOrderBy! = {createdAt: DESC}): VideoTagConnection!
-  tags(input: VideoTagsInput!): [VideoTag!]! @deprecated
+  taggings(after: String, before: String, first: Int, last: Int, orderBy: VideoTaggingsOrderBy! = {createdAt: DESC}): VideoTagConnection!
   thumbnailUrl: String!
   thumbnails: [VideoThumbnail!]!
   title: String!
@@ -1480,26 +1479,8 @@ type VideoTagReattachEvent implements Event & Node & VideoTagEvent {
   videoTag: VideoTag!
 }
 
-input VideoTaggingsInput {
-  """nullなら全てを取得する"""
-  limit: Int
-  skip: Int! = 0
-}
-
 input VideoTaggingsOrderBy {
   createdAt: SortOrder
-}
-
-input VideoTagsInput {
-  """未指定なら全てを取得する"""
-  limit: Int
-  order: VideoTagsInputOrder! = {updatedAt: DESC}
-  skip: Int! = 0
-}
-
-input VideoTagsInputOrder {
-  createdAt: SortOrder
-  updatedAt: SortOrder
 }
 
 type VideoThumbnail {
