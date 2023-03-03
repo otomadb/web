@@ -1153,7 +1153,7 @@ type Tag implements Node {
   parents(meaningless: Boolean): [TagParent!]!
   pseudoType: PseudoTagType!
   serial: Int!
-  taggedVideos: [Video!]!
+  taggedVideos(after: String, before: String, first: Int, last: Int, orderBy: TagTaggedVideosOrderBy! = {createdAt: DESC}): VideoTagConnection!
 }
 
 type TagConnection {
@@ -1284,6 +1284,10 @@ type TagRegisterEvent implements Event & Node & TagEvent {
   user: User!
 }
 
+input TagTaggedVideosOrderBy {
+  createdAt: SortOrder
+}
+
 enum UndoLikeVideoFailedMessage {
   FORBIDDEN
   INVALID_VIDEO_ID
@@ -1342,14 +1346,14 @@ type Video implements Node {
   events(input: VideoEventsInput!): VideoEventsConnection!
   hasTag(id: ID!): Boolean!
   id: ID!
-  isLiked: Boolean!
+  isLiked: Boolean! @deprecated
+  like: MylistRegistration
   nicovideoSources: [NicovideoVideoSource!]!
   registeredAt: DateTime!
   semitags(checked: Boolean): [Semitag!]!
   serial: Int!
   similarVideos(input: VideoSimilarVideosInput!): VideoSimilarVideosPayload!
-  taggings(input: VideoTaggingsInput!): VideoTagConnection!
-  tags(input: VideoTagsInput!): [VideoTag!]! @deprecated
+  taggings(after: String, before: String, first: Int, last: Int, orderBy: VideoTaggingsOrderBy! = {createdAt: DESC}): VideoTagConnection!
   thumbnailUrl: String!
   thumbnails: [VideoThumbnail!]!
   title: String!
@@ -1431,7 +1435,10 @@ type VideoTagAttachEvent implements Event & Node & VideoTagEvent {
 }
 
 type VideoTagConnection {
+  edges: [VideoTagEdge!]!
   nodes: [VideoTag!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
 }
 
 type VideoTagDetachEvent implements Event & Node & VideoTagEvent {
@@ -1440,6 +1447,11 @@ type VideoTagDetachEvent implements Event & Node & VideoTagEvent {
   series: String!
   user: User!
   videoTag: VideoTag!
+}
+
+type VideoTagEdge {
+  cursor: String!
+  node: VideoTag!
 }
 
 interface VideoTagEvent implements Event & Node {
@@ -1467,22 +1479,8 @@ type VideoTagReattachEvent implements Event & Node & VideoTagEvent {
   videoTag: VideoTag!
 }
 
-input VideoTaggingsInput {
-  """nullなら全てを取得する"""
-  limit: Int
-  skip: Int! = 0
-}
-
-input VideoTagsInput {
-  """未指定なら全てを取得する"""
-  limit: Int
-  order: VideoTagsInputOrder! = {updatedAt: DESC}
-  skip: Int! = 0
-}
-
-input VideoTagsInputOrder {
+input VideoTaggingsOrderBy {
   createdAt: SortOrder
-  updatedAt: SortOrder
 }
 
 type VideoThumbnail {
