@@ -88,7 +88,10 @@ const SourceExists: React.FC<{
           <div className={clsx(["flex", "flex-wrap", "gap-x-1"])}>
             {fragment.video.taggings.nodes.map((tagging) => (
               <div key={tagging.id} className={clsx()}>
-                <CommonTag fragment={tagging.tag} />
+                <CommonTag
+                  fragment={tagging.tag}
+                  className={clsx(["text-xs"], ["px-1"], ["py-0.5"])}
+                />
               </div>
             ))}
           </div>

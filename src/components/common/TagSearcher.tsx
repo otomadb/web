@@ -177,7 +177,10 @@ const Item: React.FC<{
         e.currentTarget.blur();
       }}
     >
-      <CommonTag fragment={fragment.tag} />
+      <CommonTag
+        fragment={fragment.tag}
+        className={clsx(["text-xs"], ["px-1"], ["py-0.5"])}
+      />
       {fragment.tag.name !== fragment.matchedName && (
         <div className={clsx(["text-xs"], ["text-slate-700"])}>
           {fragment.matchedName}

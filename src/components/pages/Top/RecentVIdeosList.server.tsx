@@ -82,7 +82,10 @@ export async function RecentVideosList() {
                 {node.taggings.nodes.map((tagging) => (
                   <div key={tagging.id} className={clsx()}>
                     <LinkTag fragment={tagging.tag}>
-                      <CommonTag fragment={tagging.tag} />
+                      <CommonTag
+                        className={clsx(["text-xs"], ["px-1"], ["py-0.5"])}
+                        fragment={tagging.tag}
+                      />
                     </LinkTag>
                   </div>
                 ))}

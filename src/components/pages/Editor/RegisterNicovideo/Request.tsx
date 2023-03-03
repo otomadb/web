@@ -66,7 +66,10 @@ export const Request: React.FC<{
                   }}
                   className={clsx(["flex"])}
                 >
-                  <CommonTag fragment={tagging.tag} />
+                  <CommonTag
+                    className={clsx(["text-xs"], ["px-1"], ["py-0.5"])}
+                    fragment={tagging.tag}
+                  />
                 </button>
               </div>
             ))}

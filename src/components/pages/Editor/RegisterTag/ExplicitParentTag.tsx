@@ -55,7 +55,10 @@ export const ExplicitParentTag: React.FC<{
       {explicitParentTagId && data && (
         <div className={clsx(["mt-2"], ["flex", ["gap-x-2"]])}>
           <div className={clsx(["flex-grow"])}>
-            <CommonTag fragment={data.getTag} />
+            <CommonTag
+              className={clsx(["text-xs"], ["px-1"], ["py-0.5"])}
+              fragment={data.getTag}
+            />
           </div>
           <RedButton
             type="button"

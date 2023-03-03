@@ -71,7 +71,12 @@ const ListItem: React.FC<{
   return (
     <div className={clsx(className, ["flex", "gap-x-2"])}>
       <div className={clsx(["flex-grow"])}>
-        {data && <CommonTag fragment={data.getTag} />}
+        {data && (
+          <CommonTag
+            fragment={data.getTag}
+            className={clsx(["text-xs"], ["px-1"], ["py-0.5"])}
+          />
+        )}
       </div>
       <RedButton
         type="button"

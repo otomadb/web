@@ -72,7 +72,11 @@ export const Registeration: React.FC<{
           )}
         >
           {video.taggings.nodes.map((tagging) => (
-            <CommonTag key={tagging.id} fragment={tagging.tag} />
+            <CommonTag
+              key={tagging.id}
+              className={clsx(["text-xs"], ["px-1"], ["py-0.5"])}
+              fragment={tagging.tag}
+            />
           ))}
         </div>
         {note && note !== "" && (

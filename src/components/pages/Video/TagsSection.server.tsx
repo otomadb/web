@@ -3,6 +3,7 @@ import "server-only";
 import clsx from "clsx";
 import React from "react";
 
+import { LinkTag } from "~/app/tags/[serial]/Link";
 import { CommonTag } from "~/components/common/Tag";
 import { getFragment, graphql } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
@@ -20,8 +21,9 @@ graphql(`
       ...VideoPage_TagTypesList
       nodes {
         tag {
-          id
+          ...Link_Tag
           ...CommonTag
+          id
         }
       }
     }
@@ -45,11 +47,7 @@ export const TagsSection = async ({
     { id: videoId },
     { next: { revalidate: 0 } }
   );
-
-  const taggings = getFragment(
-    VideoPage_TagsSectionFragmentDoc,
-    getVideo
-  ).taggings;
+  const fragment = getFragment(VideoPage_TagsSectionFragmentDoc, getVideo);
 
   return (
     <section className={clsx(className)}>
@@ -59,11 +57,19 @@ export const TagsSection = async ({
         </h2>
       </div>
       <TagTypesList
-        fragment={getFragment(VideoPage_TagTypesListFragmentDoc, taggings)}
+        fragment={getFragment(
+          VideoPage_TagTypesListFragmentDoc,
+          fragment.taggings
+        )}
       />
       <div className={clsx(["mt-2"], ["flex", "flex-col", "items-start"])}>
-        {taggings.nodes.map((tagging) => (
-          <CommonTag key={tagging.tag.id} fragment={tagging.tag} />
+        {fragment.taggings.nodes.map((tagging) => (
+          <LinkTag key={tagging.tag.id} fragment={tagging.tag}>
+            <CommonTag
+              className={clsx(["text-xs"], ["px-1"], ["py-0.5"])}
+              fragment={tagging.tag}
+            />
+          </LinkTag>
         ))}
       </div>
     </section>

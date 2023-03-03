@@ -196,7 +196,12 @@ const TagItem: React.FC<{
 
   return (
     <button className={clsx(className)} onClick={() => remove()}>
-      {data && <CommonTag fragment={data.getTag} />}
+      {data && (
+        <CommonTag
+          fragment={data.getTag}
+          className={clsx(["text-xs"], ["px-1"], ["py-0.5"])}
+        />
+      )}
     </button>
   );
 };
