@@ -27,7 +27,7 @@ export const InfiniteVideosGrid: React.FC<{
     []
   );
   return (
-    <div className={clsx(className, ["flex", "flex-col"])}>
+    <div className={clsx(className, ["flex", "flex-col", ["gap-y-2"]])}>
       {!initAfter && <Fetcher pushAfter={pushAfter} />}
       {afters.map((after) => (
         <Fetcher key={after} after={after} pushAfter={pushAfter} />
