@@ -1,56 +1,88 @@
 "use client";
 
-import React, { useEffect, useMemo } from "react";
-import { useIntersection } from "react-use";
+import { ResultOf } from "@graphql-typed-document-node/core";
+import clsx from "clsx";
+import React from "react";
 import { useQuery } from "urql";
 
-import { graphql } from "~/gql";
+import { LinkVideo } from "~/app/videos/[serial]/Link";
+import { FetcherContainer } from "~/components/common/InfiniteVideoGrid";
+import { VideoThumbnail } from "~/components/common/VideoThumbnail";
+import { FragmentType, getFragment, graphql } from "~/gql";
 
-import { Block } from "./Block";
-
+const Query = graphql(`
+  query InfiniteVideosGrid_FetchBlock($first: Int!, $after: String) {
+    findVideos(first: $first, after: $after) {
+      nodes {
+        id
+        ...InfiniteVideosGrid_Video
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+    }
+  }
+`);
 export const Fetcher: React.FC<{
   after?: string;
   pushAfter(after: string): void;
-}> = ({ after, pushAfter }) => {
-  const [{ data, fetching }] = useQuery({
-    query: graphql(`
-      query InfiniteVideosGrid_FetchBlock($first: Int!, $after: String) {
-        findVideos(first: $first, after: $after) {
-          ...InfiniteVideosGrid_Block
-          pageInfo {
-            hasNextPage
-            endCursor
-          }
-        }
-      }
-    `),
-    variables: { first: 24, after },
+}> = ({ after, pushAfter }) =>
+  FetcherContainer<ResultOf<typeof Query>["findVideos"]["nodes"]>({
+    pushAfter,
+    useQuery() {
+      const [{ data }] = useQuery({
+        query: Query,
+        variables: { first: 12, after },
+      });
+      return {
+        nodes: data?.findVideos.nodes,
+        pageInfo: data?.findVideos.pageInfo,
+      };
+    },
+    Presentation({ nodes }) {
+      return (
+        <>
+          {nodes.map((node) => (
+            <Video key={node.id} fragment={node} />
+          ))}
+        </>
+      );
+    },
   });
 
-  const intersectionRef = React.useRef(null);
-  const intersection = useIntersection(intersectionRef, { threshold: 1 });
-  const readnext = useMemo(
-    () => !fetching && (!intersection || 1 <= intersection.intersectionRatio),
-    [fetching, intersection]
-  );
-  useEffect(() => {
-    if (
-      readnext &&
-      data?.findVideos.pageInfo.hasNextPage &&
-      data.findVideos.pageInfo.endCursor
-    ) {
-      pushAfter(data.findVideos.pageInfo.endCursor);
-    }
-  }, [data, pushAfter, readnext]);
-
+const Fragment = graphql(`
+  fragment InfiniteVideosGrid_Video on Video {
+    ...Link_Video
+    ...VideoThumbnail
+    title
+  }
+`);
+const Video: React.FC<{
+  className?: string;
+  fragment: FragmentType<typeof Fragment>;
+}> = ({ className, ...props }) => {
+  const fragment = getFragment(Fragment, props.fragment);
   return (
-    <div>
-      {data && <Block fragment={data.findVideos} />}
-      {!readnext && (
-        <div ref={intersectionRef}>
-          <span>LOADING</span>
-        </div>
-      )}
+    <div className={clsx(className)}>
+      <LinkVideo fragment={fragment}>
+        <VideoThumbnail
+          fragment={fragment}
+          className={clsx(["w-full"], ["h-32"], ["border", "border-slate-400"])}
+          width={256}
+          height={192}
+        />
+      </LinkVideo>
+      <LinkVideo
+        fragment={fragment}
+        className={clsx(
+          ["block"],
+          [["px-1"], ["py-1"]],
+          ["text-sm", "@[768px]/videolist:text-xs"]
+        )}
+      >
+        {fragment.title}
+      </LinkVideo>
     </div>
   );
 };
