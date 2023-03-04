@@ -93,28 +93,39 @@ export const UnselectedRaw: React.FC<{
       type="button"
       className={clsx(
         className,
+        ["group"],
         ["px-4", "py-1"],
-        ["hover:bg-blue-200"],
-        ["grid", "grid-cols-2"]
+        ["grid", "grid-cols-2"],
+        ["disabled:bg-slate-200", "hover:bg-blue-200"]
       )}
       onClick={() => append()}
       disabled={disabled}
     >
-      <div className={clsx(["flex"])}>
-        <div className={clsx(["text-xs"], ["text-left"])}>{fragment.name}</div>
+      <div
+        className={clsx(
+          ["text-xs"],
+          ["text-slate-900", "group-disabled:text-slate-300"],
+          ["text-left"]
+        )}
+      >
+        {fragment.name}
       </div>
-      <div className={clsx(["flex"])}>
-        <div className={clsx(["text-xs"], ["text-left"])}>
-          {fragment.video.title}
-        </div>
+      <div
+        className={clsx(
+          ["text-xs"],
+          ["text-slate-900", "group-disabled:text-slate-300"],
+          ["text-left"]
+        )}
+      >
+        {fragment.video.title}
       </div>
     </button>
   );
 };
 
 graphql(`
-  query RegisterTagPage_Semitags_FindSemitags($except: [ID!]!) {
-    findSemitags(input: { except: $except, resolved: false }) {
+  query RegisterTagPage_Semitags_FindSemitags {
+    findSemitags(checked: true) {
       nodes {
         ...RegisterTagPage_Semitags_Unselected
         id
@@ -140,7 +151,9 @@ export const Semitags: React.FC<{
   );
   const [{ data, fetching }, refetch] = useQuery({
     query: RegisterTagPage_Semitags_FindSemitagsDocument,
-    variables: { except: selectedIds },
+    variables: {
+      // except: selectedIds
+    },
     requestPolicy: "network-only",
   });
   useEffect(() => refetch(), [fields, refetch]);
@@ -211,7 +224,7 @@ export const Semitags: React.FC<{
                   append({ semitagId: semitag.id });
                   setTemporaryPrimaryTitle(semitag.name);
                 }}
-                disabled={fetching}
+                disabled={selectedIds.includes(semitag.id)}
               />
             ))}
           </div>
