@@ -7,8 +7,8 @@ import { SearchContents } from "~/components/common/SearchContents/SearchContent
 import { NicovideoRequestsList } from "~/components/pages/Top/NicovideoRequestsList.server";
 import { RecentVideosList } from "~/components/pages/Top/RecentVIdeosList.server";
 
-import { RecentVideosLink } from "./recent/videos/Link";
 import { AllNicovideoRequestsPageLink } from "./requests/nicovideo/Link";
+import { AllVideosPageLink } from "./videos/Link";
 
 export default async function Page() {
   return (
@@ -52,7 +52,7 @@ export default async function Page() {
           </div>
           <div className={clsx(["mt-2"])}>
             <p className={clsx(["text-sm"])}>
-              <RecentVideosLink>もっと見る</RecentVideosLink>
+              <AllVideosPageLink>もっと見る</AllVideosPageLink>
             </p>
           </div>
         </section>
