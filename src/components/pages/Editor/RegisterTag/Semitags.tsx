@@ -13,7 +13,6 @@ import { useQuery } from "urql";
 
 import { getFragment, graphql } from "~/gql";
 import {
-  RegisterTagPage_Semitags_FindSemitagsDocument,
   RegisterTagPage_Semitags_SelectedDocument,
   RegisterTagPage_Semitags_UnselectedFragment,
   RegisterTagPage_Semitags_UnselectedFragmentDoc,
@@ -123,9 +122,9 @@ export const UnselectedRaw: React.FC<{
   );
 };
 
-graphql(`
+const Query = graphql(`
   query RegisterTagPage_Semitags_FindSemitags {
-    findSemitags(checked: true) {
+    findSemitags(checked: false) {
       nodes {
         ...RegisterTagPage_Semitags_Unselected
         id
@@ -150,7 +149,7 @@ export const Semitags: React.FC<{
     [fields]
   );
   const [{ data, fetching }, refetch] = useQuery({
-    query: RegisterTagPage_Semitags_FindSemitagsDocument,
+    query: Query,
     variables: {
       // except: selectedIds
     },
