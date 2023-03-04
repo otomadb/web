@@ -7,7 +7,7 @@ import { SearchContents } from "~/components/common/SearchContents/SearchContent
 import { NicovideoRequestsList } from "~/components/pages/Top/NicovideoRequestsList.server";
 import { RecentVideosList } from "~/components/pages/Top/RecentVIdeosList.server";
 
-import { RecentVideosLink } from "./recent/videos/Link";
+import { RecentVideosLink } from "./videos/Link";
 
 export default async function Page() {
   return (
