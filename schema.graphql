@@ -162,14 +162,7 @@ input FindNicovideoRegistrationRequestInput {
   sourceId: String
 }
 
-input FindNicovideoRegistrationRequestsInput {
-  checked: Boolean
-  limit: Int! = 10
-  order: FindNicovideoRegistrationRequestsInputOrder! = {createdAt: DESC}
-  skip: Int! = 0
-}
-
-input FindNicovideoRegistrationRequestsInputOrder {
+input FindNicovideoRegistrationRequestsOrderBy {
   createdAt: SortOrder
 }
 
@@ -177,15 +170,7 @@ input FindNicovideoVideoSourceInput {
   sourceId: String
 }
 
-input FindSemitagsInput {
-  except: [ID!]! = []
-  limit: Int! = 10
-  order: FindSemitagsInputOrder! = {updatedAt: DESC}
-  resolved: Boolean
-  skip: Int! = 0
-}
-
-input FindSemitagsInputOrder {
+input FindSemitagsOrderBy {
   createdAt: SortOrder
   updatedAt: SortOrder
 }
@@ -533,7 +518,15 @@ type NicovideoRegistrationRequestAccepting {
 union NicovideoRegistrationRequestChecking = NicovideoRegistrationRequestAccepting | NicovideoRegistrationRequestRejecting
 
 type NicovideoRegistrationRequestConnection {
+  edges: [NicovideoRegistrationRequestEdge!]!
   nodes: [NicovideoRegistrationRequest!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type NicovideoRegistrationRequestEdge {
+  cursor: String!
+  node: NicovideoRegistrationRequest!
 }
 
 type NicovideoRegistrationRequestRejecting {
@@ -639,9 +632,9 @@ type Query {
   fetchNicovideo(input: FetchNicovideoInput!): FetchNicovideoPayload!
   findMylist(input: FindMylistInput!): Mylist
   findNicovideoRegistrationRequest(input: FindNicovideoRegistrationRequestInput): NicovideoRegistrationRequest
-  findNicovideoRegistrationRequests(input: FindNicovideoRegistrationRequestsInput!): NicovideoRegistrationRequestConnection!
+  findNicovideoRegistrationRequests(after: String, before: String, checked: Boolean, first: Int, last: Int, orderBy: FindNicovideoRegistrationRequestsOrderBy! = {createdAt: DESC}): NicovideoRegistrationRequestConnection!
   findNicovideoVideoSource(input: FindNicovideoVideoSourceInput!): NicovideoVideoSource
-  findSemitags(input: FindSemitagsInput!): SemitagConnection!
+  findSemitags(after: String, before: String, checked: Boolean, expect: [ID!]! = [] @deprecated, first: Int, last: Int, orderBy: FindSemitagsOrderBy! = {createdAt: DESC}): SemitagConnection!
   findTag(input: FindTagInput!): Tag
   findTags(input: FindTagsInput!): TagConnection!
   findUser(input: FindUserInput!): User
@@ -955,7 +948,15 @@ type SemitagAttachEvent implements Event & Node & SemitagEvent {
 union SemitagChecking = SemitagRejecting | SemitagResolving
 
 type SemitagConnection {
+  edges: [SemitagEdge!]!
   nodes: [Semitag!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type SemitagEdge {
+  cursor: String!
+  node: Semitag!
 }
 
 interface SemitagEvent implements Event & Node {

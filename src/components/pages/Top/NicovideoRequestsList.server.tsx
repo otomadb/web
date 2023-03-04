@@ -13,9 +13,7 @@ export async function NicovideoRequestsList() {
   const { findNicovideoRegistrationRequests } = await fetchGql(
     graphql(`
       query TopPage_RecendNicovideoRegistrationRequests {
-        findNicovideoRegistrationRequests(
-          input: { limit: 8, order: { createdAt: DESC }, checked: false }
-        ) {
+        findNicovideoRegistrationRequests(first: 8, checked: false) {
           nodes {
             id
             title
