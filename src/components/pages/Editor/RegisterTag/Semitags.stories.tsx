@@ -45,16 +45,16 @@ const meta = {
                 findSemitags: {
                   nodes: (() => {
                     const rtn: Semitag[] = [];
-                    if (!req.variables.except.includes("st1"))
-                      rtn.push(aSemitag({ id: "st1", name: "Semitag 1" }));
-                    if (!req.variables.except.includes("st2"))
-                      rtn.push(aSemitag({ id: "st2", name: "Semitag 2" }));
-                    if (!req.variables.except.includes("st3"))
-                      rtn.push(aSemitag({ id: "st3", name: "Semitag 3" }));
-                    if (!req.variables.except.includes("st4"))
-                      rtn.push(aSemitag({ id: "st4", name: "Semitag 4" }));
-                    if (!req.variables.except.includes("st5"))
-                      rtn.push(aSemitag({ id: "st5", name: "Semitag 5" }));
+                    // if (!req.variables.except.includes("st1"))
+                    rtn.push(aSemitag({ id: "st1", name: "Semitag 1" }));
+                    // if (!req.variables.except.includes("st2"))
+                    rtn.push(aSemitag({ id: "st2", name: "Semitag 2" }));
+                    // if (!req.variables.except.includes("st3"))
+                    rtn.push(aSemitag({ id: "st3", name: "Semitag 3" }));
+                    // if (!req.variables.except.includes("st4"))
+                    rtn.push(aSemitag({ id: "st4", name: "Semitag 4" }));
+                    // if (!req.variables.except.includes("st5"))
+                    rtn.push(aSemitag({ id: "st5", name: "Semitag 5" }));
                     return rtn;
                   })(),
                 },
