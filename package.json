@@ -29,6 +29,7 @@
     "@emotion/css": "^11.10.5",
     "@heroicons/react": "^2.0.13",
     "@hookform/resolvers": "2.9.10",
+    "@marsidev/react-turnstile": "^0.0.7",
     "@urql/exchange-graphcache": "^5.0.8",
     "@vercel/og": "^0.2.0",
     "client-only": "^0.0.1",

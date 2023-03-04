@@ -11,6 +11,7 @@ specifiers:
   '@graphql-typed-document-node/core': ^3.1.1
   '@heroicons/react': ^2.0.13
   '@hookform/resolvers': 2.9.10
+  '@marsidev/react-turnstile': ^0.0.7
   '@storybook/addon-actions': 7.0.0-beta.54
   '@storybook/addon-essentials': 7.0.0-beta.54
   '@storybook/addon-interactions': 7.0.0-beta.54
@@ -70,6 +71,7 @@ dependencies:
   '@emotion/css': 11.10.6
   '@heroicons/react': 2.0.16_react@18.2.0
   '@hookform/resolvers': 2.9.10_react-hook-form@7.43.3
+  '@marsidev/react-turnstile': 0.0.7_biqbaboplfbrettd7655fr4n2y
   '@urql/exchange-graphcache': 5.0.9_graphql@16.6.0
   '@vercel/og': 0.2.0
   client-only: 0.0.1
@@ -3061,6 +3063,16 @@ packages:
   /@juggle/resize-observer/3.4.0:
     resolution: {integrity: sha512-dfLbk+PwWvFzSxwk3n5ySL0hfBog779o8h68wK/7/APo/7cgyWp5jcXockbxdk5kFRkbeXWm4Fbi9FrdN381sA==}
     dev: true
+
+  /@marsidev/react-turnstile/0.0.7_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-BWXZ6/ddE96cP/U3jkLO8wbJi6qOpE4wH67h6EkD57TRy4RSauBBYKRZkuUEpfgm2wdWoPukPz4LfnoV5KJGrQ==}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    dev: false
 
   /@mdx-js/react/2.3.0_react@18.2.0:
     resolution: {integrity: sha512-zQH//gdOmuu7nt2oJR29vFhDv88oGPmVw6BggmrHeMI+xgEkp1B2dX9/bMBSYtK0dyLX/aOmesKS09g222K1/g==}
