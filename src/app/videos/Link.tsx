@@ -4,7 +4,7 @@ import React, { ComponentProps } from "react";
 
 export type SearchParams = { after?: string };
 
-export const RecentVideosLink: React.FC<
+export const AllVideosPageLink: React.FC<
   Omit<ComponentProps<typeof Link>, "href"> & SearchParams
 > = ({ children, after, ...props }) => {
   return (
