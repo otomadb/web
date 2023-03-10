@@ -31,7 +31,7 @@
     "@hookform/resolvers": "2.9.10",
     "@marsidev/react-turnstile": "^0.0.8",
     "@urql/exchange-graphcache": "^5.0.8",
-    "@vercel/og": "^0.3.0",
+    "@vercel/og": "^0.4.0",
     "client-only": "^0.0.1",
     "clsx": "^1.2.1",
     "date-fns": "^2.29.3",
