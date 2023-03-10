@@ -9,13 +9,10 @@ import { FieldArrayWithId } from "react-hook-form";
 import { useQuery } from "urql";
 
 import { RedButton } from "~/components/common/Button";
-import { Tag } from "~/components/common/Tag";
+import { CommonTag } from "~/components/common/Tag";
 import { TagSearcher } from "~/components/common/TagSearcher";
-import { getFragment, graphql } from "~/gql";
-import {
-  Component_TagFragmentDoc,
-  RegisterTagPage_ImplicitParentTagDocument,
-} from "~/gql/graphql";
+import { graphql } from "~/gql";
+import { RegisterTagPage_ImplicitParentTagDocument } from "~/gql/graphql";
 
 import { FormSchema } from "./FormSchema";
 
@@ -57,7 +54,7 @@ export const ImplictParentTags: React.FC<{
 graphql(`
   query RegisterTagPage_ImplicitParentTag($id: ID!) {
     getTag(id: $id) {
-      ...Component_Tag
+      ...CommonTag
     }
   }
 `);
@@ -75,7 +72,10 @@ const ListItem: React.FC<{
     <div className={clsx(className, ["flex", "gap-x-2"])}>
       <div className={clsx(["flex-grow"])}>
         {data && (
-          <Tag tag={getFragment(Component_TagFragmentDoc, data.getTag)} />
+          <CommonTag
+            fragment={data.getTag}
+            className={clsx(["text-xs"], ["px-1"], ["py-0.5"])}
+          />
         )}
       </div>
       <RedButton

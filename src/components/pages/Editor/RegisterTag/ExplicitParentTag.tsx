@@ -9,18 +9,15 @@ import { FieldError } from "react-hook-form";
 import { useQuery } from "urql";
 
 import { RedButton } from "~/components/common/Button";
-import { Tag } from "~/components/common/Tag";
+import { CommonTag } from "~/components/common/Tag";
 import { TagSearcher } from "~/components/common/TagSearcher";
-import { getFragment, graphql } from "~/gql";
-import {
-  Component_TagFragmentDoc,
-  RegisterTagPage_ExplicitParentTagDocument,
-} from "~/gql/graphql";
+import { graphql } from "~/gql";
+import { RegisterTagPage_ExplicitParentTagDocument } from "~/gql/graphql";
 
 graphql(`
   query RegisterTagPage_ExplicitParentTag($id: ID!) {
     getTag(id: $id) {
-      ...Component_Tag
+      ...CommonTag
     }
   }
 `);
@@ -58,7 +55,10 @@ export const ExplicitParentTag: React.FC<{
       {explicitParentTagId && data && (
         <div className={clsx(["mt-2"], ["flex", ["gap-x-2"]])}>
           <div className={clsx(["flex-grow"])}>
-            <Tag tag={getFragment(Component_TagFragmentDoc, data.getTag)} />
+            <CommonTag
+              className={clsx(["text-xs"], ["px-1"], ["py-0.5"])}
+              fragment={data.getTag}
+            />
           </div>
           <RedButton
             type="button"

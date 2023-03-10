@@ -3,50 +3,26 @@ import { toSvg } from "jdenticon";
 import Image from "next/image";
 import React, { useMemo } from "react";
 
-import { graphql } from "~/gql";
-import { Component_UserIconFragment } from "~/gql/graphql";
+import { FragmentType, getFragment, graphql } from "~/gql";
 
-export const UserIcon: React.FC<{
-  className?: string;
-  name: string;
-  src: string | null | undefined;
-  size?: number;
-}> = ({ className, src, name, size = 64 }) => {
-  const ensuresrc = useMemo(() => {
-    if (src) return src;
-    const base64 = Buffer.from(toSvg(name, size)).toString("base64");
-    return `data:image/svg+xml;base64,${base64}`;
-  }, [name, size, src]);
-
-  return (
-    <Image
-      className={clsx([className], ["rounded-sm"])}
-      width={size}
-      height={size}
-      src={ensuresrc}
-      alt={name}
-    />
-  );
-};
-
-graphql(`
-  fragment Component_UserIcon on User {
+const Fragment = graphql(`
+  fragment UserIcon on User {
     name
     displayName
     icon
   }
 `);
-export const UserIcon2: React.FC<{
+export const UserIcon: React.FC<{
   className?: string;
-  fragment: Component_UserIconFragment;
+  fragment: FragmentType<typeof Fragment>;
   size?: number;
-}> = ({ className, fragment, size = 64 }) => {
+}> = ({ className, size = 64, ...props }) => {
+  const { displayName, name, icon } = getFragment(Fragment, props.fragment);
   const src = useMemo(() => {
-    if (fragment?.icon) return fragment.icon;
-
-    const base64 = Buffer.from(toSvg(fragment.name, size)).toString("base64");
+    if (icon) return icon;
+    const base64 = Buffer.from(toSvg(name, size)).toString("base64");
     return `data:image/svg+xml;base64,${base64}`;
-  }, [fragment.icon, fragment.name, size]);
+  }, [icon, name, size]);
 
   return (
     <div
@@ -58,7 +34,7 @@ export const UserIcon2: React.FC<{
         width={size}
         height={size}
         src={src}
-        alt={fragment.displayName}
+        alt={displayName}
       />
     </div>
   );

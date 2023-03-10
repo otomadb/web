@@ -7,6 +7,9 @@ import { SearchContents } from "~/components/common/SearchContents/SearchContent
 import { NicovideoRequestsList } from "~/components/pages/Top/NicovideoRequestsList.server";
 import { RecentVideosList } from "~/components/pages/Top/RecentVIdeosList.server";
 
+import { AllNicovideoRequestsPageLink } from "./requests/nicovideo/Link";
+import { AllVideosPageLink } from "./videos/Link";
+
 export default async function Page() {
   return (
     <main
@@ -47,6 +50,11 @@ export default async function Page() {
               <RecentVideosList />
             </Suspense>
           </div>
+          <div className={clsx(["mt-2"])}>
+            <p className={clsx(["text-sm"])}>
+              <AllVideosPageLink>もっと見る</AllVideosPageLink>
+            </p>
+          </div>
         </section>
         <section
           className={clsx(
@@ -63,6 +71,13 @@ export default async function Page() {
               {/* @ts-expect-error for Server Component*/}
               <NicovideoRequestsList />
             </Suspense>
+          </div>
+          <div className={clsx(["mt-2"])}>
+            <p className={clsx(["text-sm"])}>
+              <AllNicovideoRequestsPageLink>
+                もっと見る
+              </AllNicovideoRequestsPageLink>
+            </p>
           </div>
         </section>
       </div>

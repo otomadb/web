@@ -8,19 +8,16 @@ import { LinkNicovideoRegistrationRequest } from "~/app/requests/nicovideo/[sour
 import { LinkVideo } from "~/app/videos/[serial]/Link";
 import { getFragment, graphql } from "~/gql";
 import {
-  CommonTagFragmentDoc,
-  Component_UserIconFragmentDoc,
   SearchContents_NicovideoRequestExistsFragment,
   SearchContents_NicovideoRequestExistsFragmentDoc,
   SearchContents_NicovideoVideoSourceExistsFragment,
   SearchContents_NicovideoVideoSourceExistsFragmentDoc,
-  VideoThumbnailFragmentDoc,
 } from "~/gql/graphql";
 
 import { CoolImage } from "../CoolImage";
 import { CommonTag } from "../Tag";
-import { VideoThumbnail } from "../Thumbnail";
-import { UserIcon2 } from "../UserIcon";
+import { UserIcon } from "../UserIcon";
+import { VideoThumbnail } from "../VideoThumbnail";
 
 graphql(`
   fragment SearchContents_NicovideoVideoSourceExists on NicovideoVideoSource {
@@ -31,10 +28,11 @@ graphql(`
       title
       ...VideoThumbnail
       ...Link_Video
-      taggings(input: { limit: 5 }) {
+      taggings(first: 3) {
         nodes {
           id
           tag {
+            id
             ...Link_Tag
             ...CommonTag
           }
@@ -64,7 +62,7 @@ const SourceExists: React.FC<{
       <div className={clsx(["flex-shrink-0"])}>
         <VideoThumbnail
           className={clsx(["w-36"], ["h-18"])}
-          fragment={getFragment(VideoThumbnailFragmentDoc, fragment.video)}
+          fragment={fragment.video}
         />
       </div>
       <div
@@ -91,7 +89,8 @@ const SourceExists: React.FC<{
             {fragment.video.taggings.nodes.map((tagging) => (
               <div key={tagging.id} className={clsx()}>
                 <CommonTag
-                  fragment={getFragment(CommonTagFragmentDoc, tagging.tag)}
+                  fragment={tagging.tag}
+                  className={clsx(["text-xs"], ["px-1"], ["py-0.5"])}
                 />
               </div>
             ))}
@@ -113,7 +112,7 @@ graphql(`
       id
       name
       ...Link_User
-      ...Component_UserIcon
+      ...UserIcon
     }
   }
 `);
@@ -159,13 +158,7 @@ const RequestsExists: React.FC<{
           </p>
         </div>
         <div className={clsx(["mt-2"], ["flex-grow"], ["flex"])}>
-          <UserIcon2
-            size={24}
-            fragment={getFragment(
-              Component_UserIconFragmentDoc,
-              fragment.requestedBy
-            )}
-          />
+          <UserIcon size={24} fragment={fragment.requestedBy} />
           <div className={clsx(["ml-1"])}>
             <span className={clsx(["text-xs"])}>
               {fragment.requestedBy.name}

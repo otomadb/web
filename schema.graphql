@@ -144,6 +144,31 @@ interface Event implements Node {
   user: User!
 }
 
+"""その他のエラー"""
+type ExplicitizeTagAlreadyExplicitError {
+  already: TagParent!
+}
+
+enum ExplicitizeTagOtherErrorMessage {
+  INTERNAL_SERVER_ERROR
+}
+
+"""その他のエラー"""
+type ExplicitizeTagOtherErrorsFallback {
+  message: ExplicitizeTagOtherErrorMessage!
+}
+
+input ExplicitizeTagParentInput {
+  """親子関係のID"""
+  relationId: ID!
+}
+
+union ExplicitizeTagParentReturnUnion = ExplicitizeTagAlreadyExplicitError | ExplicitizeTagOtherErrorsFallback | ExplicitizeTagSucceededPayload | MutationAuthenticationError | MutationInvalidTagParentIdError | MutationTagParentNotFoundError
+
+type ExplicitizeTagSucceededPayload {
+  relation: TagParent!
+}
+
 input FetchNicovideoInput {
   """ニコニコ動画の動画ID（sm2057168など）"""
   sourceId: String!
@@ -162,14 +187,7 @@ input FindNicovideoRegistrationRequestInput {
   sourceId: String
 }
 
-input FindNicovideoRegistrationRequestsInput {
-  checked: Boolean
-  limit: Int! = 10
-  order: FindNicovideoRegistrationRequestsInputOrder! = {createdAt: DESC}
-  skip: Int! = 0
-}
-
-input FindNicovideoRegistrationRequestsInputOrder {
+input FindNicovideoRegistrationRequestsOrderBy {
   createdAt: SortOrder
 }
 
@@ -177,15 +195,7 @@ input FindNicovideoVideoSourceInput {
   sourceId: String
 }
 
-input FindSemitagsInput {
-  except: [ID!]! = []
-  limit: Int! = 10
-  order: FindSemitagsInputOrder! = {updatedAt: DESC}
-  resolved: Boolean
-  skip: Int! = 0
-}
-
-input FindSemitagsInputOrder {
+input FindSemitagsOrderBy {
   createdAt: SortOrder
   updatedAt: SortOrder
 }
@@ -219,15 +229,8 @@ input FindVideoInput {
   serial: Int
 }
 
-input FindVideosInput {
-  limit: Int! = 10
-  order: FindVideosInputOrder! = {createdAt: DESC}
-  skip: Int! = 0
-}
-
-input FindVideosInputOrder {
+input FindVideosOrderBy {
   createdAt: SortOrder
-  updatedAt: SortOrder
 }
 
 enum LikeVideoFailedMessage {
@@ -260,8 +263,13 @@ type Mutation {
   changeMylistShareRange(input: ChangeMylistShareRangeInput!): ChangeMylistShareReturnUnion!
   createMylist(input: CreateMylistInput!): CreateMylistReturnUnion!
   createMylistGroup(input: CreateMylistGroupInput!): CreateMylistGroupPayload!
+
+  """非明示的なタグの親子関係を明示的に昇格する"""
+  explicitizeTagParent(input: ExplicitizeTagParentInput!): ExplicitizeTagParentReturnUnion!
   likeVideo(input: LikeVideoInput!): LikeVideoPayload!
-  registerTag(input: RegisterTagInput!): RegisterTagPayload!
+  registerCategoryTag(input: RegisterCategoryTagInput!): RegisterCategoryTagResultUnion!
+  registerTag(input: RegisterTagInput!): RegisterTagReturnUnion!
+  registerTagParentRelation(input: RegisterTagParentRelationInput!): RegisterTagParentRelationResultUnion!
   registerVideo(input: RegisterVideoInput!): RegisterVideoPayload!
   rejectNicovideoRegistrationRequest(input: RejectNicovideoRegistrationRequestInput!): RejectNicovideoRegistrationRequestReturnUnion!
   rejectSemitag(input: RejectSemitagInput!): RejectSemitagPayload!
@@ -291,10 +299,20 @@ type MutationInvalidNicovideoRegistrationRequestIdError {
   requestId: String!
 }
 
+"""SemitagのIDとして無効なIDを入力した場合のエラー"""
+type MutationInvalidSemitagIdError {
+  semitagId: String!
+}
+
 """TagのIDとして無効なIDを入力した場合のエラー"""
 type MutationInvalidTagIdError {
   """無効なID"""
   tagId: String!
+}
+
+"""TagParentのIDとして不正なIDを入力した場合のMutation用エラー"""
+type MutationInvalidTagParentIdError {
+  relationId: String!
 }
 
 """VideoのIDとして無効なIDを入力した場合のエラー"""
@@ -318,9 +336,19 @@ type MutationNicovideoRegistrationRequestNotFoundError {
   requestId: String!
 }
 
+"""Semitagが見つからない場合のエラー"""
+type MutationSemitagNotFoundError {
+  semitagId: String!
+}
+
 """Tagが見つからない場合のエラー"""
 type MutationTagNotFoundError {
   tagId: String!
+}
+
+"""TagParentが見つからない場合のMutation用エラー"""
+type MutationTagParentNotFoundError {
+  relationId: String!
 }
 
 """Videoが見つからない場合のエラー"""
@@ -350,7 +378,15 @@ type Mylist implements Node {
 }
 
 type MylistConnection {
+  edges: [MylistEdge!]!
   nodes: [Mylist!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type MylistEdge {
+  cursor: String!
+  node: Mylist!
 }
 
 type MylistGroup implements Node {
@@ -540,7 +576,15 @@ type NicovideoRegistrationRequestAccepting {
 union NicovideoRegistrationRequestChecking = NicovideoRegistrationRequestAccepting | NicovideoRegistrationRequestRejecting
 
 type NicovideoRegistrationRequestConnection {
+  edges: [NicovideoRegistrationRequestEdge!]!
   nodes: [NicovideoRegistrationRequest!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type NicovideoRegistrationRequestEdge {
+  cursor: String!
+  node: NicovideoRegistrationRequest!
 }
 
 type NicovideoRegistrationRequestRejecting {
@@ -599,6 +643,13 @@ interface Node {
   id: ID!
 }
 
+type PageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+}
+
 enum PseudoTagType {
   """キャラクター"""
   CHARACTER
@@ -639,14 +690,14 @@ type Query {
   fetchNicovideo(input: FetchNicovideoInput!): FetchNicovideoPayload!
   findMylist(input: FindMylistInput!): Mylist
   findNicovideoRegistrationRequest(input: FindNicovideoRegistrationRequestInput): NicovideoRegistrationRequest
-  findNicovideoRegistrationRequests(input: FindNicovideoRegistrationRequestsInput!): NicovideoRegistrationRequestConnection!
+  findNicovideoRegistrationRequests(after: String, before: String, checked: Boolean, first: Int, last: Int, orderBy: FindNicovideoRegistrationRequestsOrderBy! = {createdAt: DESC}): NicovideoRegistrationRequestConnection!
   findNicovideoVideoSource(input: FindNicovideoVideoSourceInput!): NicovideoVideoSource
-  findSemitags(input: FindSemitagsInput!): SemitagConnection!
+  findSemitags(after: String, before: String, checked: Boolean, expect: [ID!]! = [] @deprecated, first: Int, last: Int, orderBy: FindSemitagsOrderBy! = {createdAt: DESC}): SemitagConnection!
   findTag(input: FindTagInput!): Tag
   findTags(input: FindTagsInput!): TagConnection!
   findUser(input: FindUserInput!): User
   findVideo(input: FindVideoInput!): Video
-  findVideos(input: FindVideosInput!): VideoConnection!
+  findVideos(after: String, before: String, first: Int, last: Int, orderBy: FindVideosOrderBy! = {createdAt: DESC}): VideoConnection!
   getMylist(id: ID!): Mylist!
   getMylistGroup(id: ID!): MylistGroup!
   getNicovideoRegistrationRequest(id: ID!): NicovideoRegistrationRequest!
@@ -667,30 +718,96 @@ type Query {
   whoami: User
 }
 
-enum RegisterTagFailedMessage {
-  FORBIDDEN
-  INVALID_SEMITAG_ID
-  INVALID_TAG_ID
-  UNKNOWN
+input RegisterCategoryTagInput {
+  primaryName: String!
 }
 
-type RegisterTagFailedPayload {
-  message: RegisterTagFailedMessage!
+enum RegisterCategoryTagOtherErrorMessage {
+  INTERNAL_SERVER_ERROR
+}
+
+"""その他のエラー"""
+type RegisterCategoryTagOtherErrorsFallback {
+  message: RegisterCategoryTagOtherErrorMessage!
+}
+
+union RegisterCategoryTagResultUnion = MutationAuthenticationError | RegisterCategoryTagOtherErrorsFallback | RegisterCategoryTagSucceededPayload
+
+type RegisterCategoryTagSucceededPayload {
+  tag: Tag!
+}
+
+"""非明示的な親タグのIDが重複している"""
+type RegisterTagImplicitParentIdsDuplicatedError {
+  tagId: String!
 }
 
 input RegisterTagInput {
   explicitParent: ID
   extraNames: [String!]! = []
   implicitParents: [ID!]! = []
-  meaningless: Boolean! = false
   primaryName: String!
   resolveSemitags: [ID!]! = []
 }
 
-union RegisterTagPayload = RegisterTagFailedPayload | RegisterTagSucceededPayload
+type RegisterTagOtherErrorsFallback {
+  message: RegisterTagOtherErrorsFallbackMessage!
+}
+
+enum RegisterTagOtherErrorsFallbackMessage {
+  UNKNOWN
+}
+
+"""子タグに既に明示的な親子関係が存在する場合のエラー"""
+type RegisterTagParentRelationChildTagAlreadyHadExplicitParentError {
+  relation: TagParent!
+}
+
+input RegisterTagParentRelationInput {
+  childId: ID!
+  explicit: Boolean!
+  parentId: ID!
+}
+
+enum RegisterTagParentRelationOtherErrorMessage {
+  INTERNAL_SERVER_ERROR
+}
+
+"""その他のエラー"""
+type RegisterTagParentRelationOtherErrorsFallback {
+  message: RegisterTagParentRelationOtherErrorMessage!
+}
+
+"""既に登録されていた場合のエラー"""
+type RegisterTagParentRelationRelationAlreadyRegisteredError {
+  relation: TagParent!
+}
+
+union RegisterTagParentRelationResultUnion = MutationAuthenticationError | MutationInvalidTagIdError | MutationTagNotFoundError | RegisterTagParentRelationChildTagAlreadyHadExplicitParentError | RegisterTagParentRelationOtherErrorsFallback | RegisterTagParentRelationRelationAlreadyRegisteredError | RegisterTagParentRelationSucceededPayload
+
+type RegisterTagParentRelationSucceededPayload {
+  relation: TagParent!
+}
+
+"""解決されるSemitagが既にチェック済みである"""
+type RegisterTagResolveSemitagAlreadyCheckedError {
+  semitagId: String!
+}
+
+"""解決されるSemitagのIDが重複している"""
+type RegisterTagResolveSemitagIdsDuplicatedError {
+  semitagId: String!
+}
+
+union RegisterTagReturnUnion = MutationAuthenticationError | MutationInvalidSemitagIdError | MutationInvalidTagIdError | MutationSemitagNotFoundError | MutationTagNotFoundError | RegisterTagImplicitParentIdsDuplicatedError | RegisterTagOtherErrorsFallback | RegisterTagResolveSemitagAlreadyCheckedError | RegisterTagResolveSemitagIdsDuplicatedError | RegisterTagSucceededPayload | RegisterTagTagIdCollidedBetweenExplicitAndImplicitError
 
 type RegisterTagSucceededPayload {
   tag: Tag!
+}
+
+"""明示的な親タグのIDと非明示的な親タグのIDが重複している"""
+type RegisterTagTagIdCollidedBetweenExplicitAndImplicitError {
+  tagId: String!
 }
 
 enum RegisterVideoFailedMessage {
@@ -955,7 +1072,15 @@ type SemitagAttachEvent implements Event & Node & SemitagEvent {
 union SemitagChecking = SemitagRejecting | SemitagResolving
 
 type SemitagConnection {
+  edges: [SemitagEdge!]!
   nodes: [Semitag!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type SemitagEdge {
+  cursor: String!
+  node: Semitag!
 }
 
 interface SemitagEvent implements Event & Node {
@@ -1144,6 +1269,7 @@ type Tag implements Node {
     """動画のID"""
     videoId: ID!
   ): Boolean!
+  children(after: String, before: String, first: Int, last: Int, orderBy: TagChildrenOrderBy! = {createdAt: DESC}): TagParentConnection!
   events(input: TagEventsInput!): TagEventsConnection!
   explicitParent: Tag
   id: ID!
@@ -1153,7 +1279,11 @@ type Tag implements Node {
   parents(meaningless: Boolean): [TagParent!]!
   pseudoType: PseudoTagType!
   serial: Int!
-  taggedVideos: [Video!]!
+  taggedVideos(after: String, before: String, first: Int, last: Int, orderBy: TagTaggedVideosOrderBy! = {createdAt: DESC}): VideoTagConnection!
+}
+
+input TagChildrenOrderBy {
+  createdAt: SortOrder
 }
 
 type TagConnection {
@@ -1230,8 +1360,14 @@ type TagParent {
   events(input: TagParentEventsInput!): TagParentEventConnection!
   explicit: Boolean!
   id: ID!
-  name: String!
   parent: Tag!
+}
+
+type TagParentConnection {
+  edges: [TagParentEdge!]!
+  nodes: [TagParent!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
 }
 
 type TagParentCreateEvent implements Event & Node & TagParentEvent {
@@ -1240,6 +1376,11 @@ type TagParentCreateEvent implements Event & Node & TagParentEvent {
   series: String!
   tagParent: TagParent!
   user: User!
+}
+
+type TagParentEdge {
+  cursor: String!
+  node: TagParent!
 }
 
 interface TagParentEvent implements Event & Node {
@@ -1284,6 +1425,10 @@ type TagRegisterEvent implements Event & Node & TagEvent {
   user: User!
 }
 
+input TagTaggedVideosOrderBy {
+  createdAt: SortOrder
+}
+
 enum UndoLikeVideoFailedMessage {
   FORBIDDEN
   INVALID_VIDEO_ID
@@ -1316,20 +1461,12 @@ type User implements Node {
   isEditor: Boolean!
   likes: Mylist
   mylist(id: ID!): Mylist
-  mylists(input: UserMylistsInput!): MylistConnection!
+  mylists(after: String, before: String, first: Int, last: Int, orderBy: UserMylistsOrderBy! = {createdAt: DESC}, range: [MylistShareRange!]! = [PUBLIC]): MylistConnection!
   name: String!
 }
 
-input UserMylistsInput {
-  limit: Int! = 10
-  order: UserMylistsInputOrder! = {createdAt: ASC}
-  range: [MylistShareRange!]! = [PUBLIC]
-  skip: Int! = 0
-}
-
-input UserMylistsInputOrder {
+input UserMylistsOrderBy {
   createdAt: SortOrder
-  updatedAt: SortOrder
 }
 
 enum UserRole {
@@ -1342,14 +1479,14 @@ type Video implements Node {
   events(input: VideoEventsInput!): VideoEventsConnection!
   hasTag(id: ID!): Boolean!
   id: ID!
-  isLiked: Boolean!
+  isLiked: Boolean! @deprecated
+  like: MylistRegistration
   nicovideoSources: [NicovideoVideoSource!]!
   registeredAt: DateTime!
   semitags(checked: Boolean): [Semitag!]!
   serial: Int!
   similarVideos(input: VideoSimilarVideosInput!): VideoSimilarVideosPayload!
-  taggings(input: VideoTaggingsInput!): VideoTagConnection!
-  tags(input: VideoTagsInput!): [VideoTag!]! @deprecated
+  taggings(after: String, before: String, first: Int, last: Int, orderBy: VideoTaggingsOrderBy! = {createdAt: DESC}): VideoTagConnection!
   thumbnailUrl: String!
   thumbnails: [VideoThumbnail!]!
   title: String!
@@ -1357,7 +1494,15 @@ type Video implements Node {
 }
 
 type VideoConnection {
+  edges: [VideoEdge!]!
   nodes: [Video!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type VideoEdge {
+  cursor: String!
+  node: Video!
 }
 
 interface VideoEvent implements Event & Node {
@@ -1423,7 +1568,10 @@ type VideoTagAttachEvent implements Event & Node & VideoTagEvent {
 }
 
 type VideoTagConnection {
+  edges: [VideoTagEdge!]!
   nodes: [VideoTag!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
 }
 
 type VideoTagDetachEvent implements Event & Node & VideoTagEvent {
@@ -1432,6 +1580,11 @@ type VideoTagDetachEvent implements Event & Node & VideoTagEvent {
   series: String!
   user: User!
   videoTag: VideoTag!
+}
+
+type VideoTagEdge {
+  cursor: String!
+  node: VideoTag!
 }
 
 interface VideoTagEvent implements Event & Node {
@@ -1459,22 +1612,8 @@ type VideoTagReattachEvent implements Event & Node & VideoTagEvent {
   videoTag: VideoTag!
 }
 
-input VideoTaggingsInput {
-  """nullなら全てを取得する"""
-  limit: Int
-  skip: Int! = 0
-}
-
-input VideoTagsInput {
-  """未指定なら全てを取得する"""
-  limit: Int
-  order: VideoTagsInputOrder! = {updatedAt: DESC}
-  skip: Int! = 0
-}
-
-input VideoTagsInputOrder {
+input VideoTaggingsOrderBy {
   createdAt: SortOrder
-  updatedAt: SortOrder
 }
 
 type VideoThumbnail {

@@ -3,12 +3,10 @@ import Image from "next/image";
 import React, { ReactNode } from "react";
 
 import { LinkUser } from "~/app/users/[name]/Link";
-import { Tag } from "~/components/common/Tag";
-import { UserIcon2 } from "~/components/common/UserIcon";
+import { CommonTag } from "~/components/common/Tag";
+import { UserIcon } from "~/components/common/UserIcon";
 import { FragmentType, getFragment, graphql } from "~/gql";
 import {
-  Component_TagFragmentDoc,
-  Component_UserIconFragmentDoc,
   VideoPage_SemitagFragmentDoc,
 } from "~/gql/graphql";
 
@@ -18,7 +16,7 @@ const EventTemplateFragment = graphql(`
   fragment VideoEventPage_EventTemplate on Event {
     id
     user {
-      ...Component_UserIcon
+      ...UserIcon
       ...Link_User
       id
       name
@@ -56,10 +54,7 @@ export const EventTemplate: React.FC<{
           fragment={fragment.user}
           className={clsx(["flex", ["items-center"]])}
         >
-          <UserIcon2
-            fragment={getFragment(Component_UserIconFragmentDoc, fragment.user)}
-            size={24}
-          />
+          <UserIcon fragment={fragment.user} size={24} />
         </LinkUser>
         <div className={clsx(["ml-2"], ["flex", ["items-center"]])}>
           <time
@@ -329,7 +324,7 @@ const VideoTagAttachEventFragment = graphql(`
     ...VideoEventPage_EventTemplate
     videoTag {
       tag {
-        ...Component_Tag
+        ...CommonTag
       }
     }
   }
@@ -342,9 +337,7 @@ export const VideoTagAttachEvent: React.FC<{
     <EventTemplate fragment={fragment}>
       <div className={clsx(["flex", "items-center"], ["text-[10px]"])}>
         タグ
-        <Tag
-          tag={getFragment(Component_TagFragmentDoc, fragment.videoTag.tag)}
-        />
+        <CommonTag fragment={fragment.videoTag.tag} />
         が追加されました。
       </div>
     </EventTemplate>
@@ -356,7 +349,7 @@ const VideoTagDetachEventFragment = graphql(`
     ...VideoEventPage_EventTemplate
     videoTag {
       tag {
-        ...Component_Tag
+        ...CommonTag
       }
     }
   }
@@ -369,9 +362,7 @@ export const VideoTagDetachEvent: React.FC<{
     <EventTemplate fragment={fragment}>
       <div className={clsx(["flex", "items-center"], ["text-[10px]"])}>
         タグ
-        <Tag
-          tag={getFragment(Component_TagFragmentDoc, fragment.videoTag.tag)}
-        />
+        <CommonTag fragment={fragment.videoTag.tag} />
         が外されました
       </div>
     </EventTemplate>
@@ -436,7 +427,7 @@ const SemitagResolveEventFragment = graphql(`
       }
       resolveTo {
         tag {
-          ...Component_Tag
+          ...CommonTag
         }
       }
     }
@@ -463,12 +454,7 @@ export const SemitagResolveEvent: React.FC<{
           )}
         />
         は
-        <Tag
-          tag={getFragment(
-            Component_TagFragmentDoc,
-            fragment.resolving.resolveTo.tag
-          )}
-        />
+        <CommonTag fragment={fragment.resolving.resolveTo.tag} />
         に解決しました。
       </div>
     </EventTemplate>

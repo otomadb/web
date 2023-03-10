@@ -3,11 +3,11 @@ import "server-only";
 import clsx from "clsx";
 import React from "react";
 
-import { Tag } from "~/components/common/Tag";
+import { LinkTag } from "~/app/tags/[serial]/Link";
+import { CommonTag } from "~/components/common/Tag";
 import { getFragment, graphql } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
 import {
-  Component_TagFragmentDoc,
   VideoPage_TagsSectionFragmentDoc,
   VideoPage_TagTypesListFragment,
   VideoPage_TagTypesListFragmentDoc,
@@ -17,12 +17,13 @@ import { styleByTagType } from "~/utils/styleByTagType";
 graphql(`
   fragment VideoPage_TagsSection on Video {
     id
-    taggings(input: {}) {
+    taggings {
       ...VideoPage_TagTypesList
       nodes {
         tag {
+          ...Link_Tag
+          ...CommonTag
           id
-          ...Component_Tag
         }
       }
     }
@@ -46,11 +47,7 @@ export const TagsSection = async ({
     { id: videoId },
     { next: { revalidate: 0 } }
   );
-
-  const taggings = getFragment(
-    VideoPage_TagsSectionFragmentDoc,
-    getVideo
-  ).taggings;
+  const fragment = getFragment(VideoPage_TagsSectionFragmentDoc, getVideo);
 
   return (
     <section className={clsx(className)}>
@@ -60,14 +57,19 @@ export const TagsSection = async ({
         </h2>
       </div>
       <TagTypesList
-        fragment={getFragment(VideoPage_TagTypesListFragmentDoc, taggings)}
+        fragment={getFragment(
+          VideoPage_TagTypesListFragmentDoc,
+          fragment.taggings
+        )}
       />
       <div className={clsx(["mt-2"], ["flex", "flex-col", "items-start"])}>
-        {taggings.nodes.map((tagging) => (
-          <Tag
-            key={tagging.tag.id}
-            tag={getFragment(Component_TagFragmentDoc, tagging.tag)}
-          />
+        {fragment.taggings.nodes.map((tagging) => (
+          <LinkTag key={tagging.tag.id} fragment={tagging.tag}>
+            <CommonTag
+              className={clsx(["text-xs"], ["px-1"], ["py-0.5"])}
+              fragment={tagging.tag}
+            />
+          </LinkTag>
         ))}
       </div>
     </section>

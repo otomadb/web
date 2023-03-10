@@ -6,11 +6,8 @@ import Image from "next/image";
 import React from "react";
 
 import { CommonTag } from "~/components/common/Tag";
-import { getFragment, graphql } from "~/gql";
-import {
-  CommonTagFragmentDoc,
-  RegisterNicovideoPage_OriginalSourceFragment,
-} from "~/gql/graphql";
+import { graphql } from "~/gql";
+import { RegisterNicovideoPage_OriginalSourceFragment } from "~/gql/graphql";
 
 graphql(`
   fragment RegisterNicovideoPage_OriginalSource on NicovideoOriginalSource {
@@ -106,7 +103,8 @@ export const OriginalSource: React.FC<{
                       className={clsx(["flex"])}
                     >
                       <CommonTag
-                        fragment={getFragment(CommonTagFragmentDoc, item.tag)}
+                        fragment={item.tag}
+                        className={clsx(["text-xs"], ["px-1"], ["py-0.5"])}
                       />
                     </button>
                   ))}

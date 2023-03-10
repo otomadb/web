@@ -1,7 +1,13 @@
 import { css } from "@emotion/css";
 import { Meta, StoryObj } from "@storybook/react";
 
-import { aMylistRegistration, aTag, aVideo, aVideoTag } from "~/gql/graphql";
+import {
+  aMylistRegistration,
+  aTag,
+  aVideo,
+  aVideoTag,
+  aVideoTagConnection,
+} from "~/gql/graphql";
 
 import { Registeration } from "./Registeration";
 
@@ -18,18 +24,20 @@ export default {
         id: "video_1",
         title: "Video1",
         thumbnailUrl: "/storybook/960x540.jpg",
-        tags: [
-          aVideoTag({
-            tag: aTag({
-              id: "tag_1",
-              name: "child",
-              explicitParent: aTag({
-                id: "tag_2",
-                name: "parent",
+        taggings: aVideoTagConnection({
+          nodes: [
+            aVideoTag({
+              tag: aTag({
+                id: "tag_1",
+                name: "child",
+                explicitParent: aTag({
+                  id: "tag_2",
+                  name: "parent",
+                }),
               }),
             }),
-          }),
-        ],
+          ],
+        }),
       }),
     }),
   },
@@ -65,15 +73,17 @@ export const NoNote: StoryObj<typeof Registeration> = {
         id: "video_1",
         title: "Video1",
         thumbnailUrl: "/storybook/960x540.jpg",
-        tags: [
-          aVideoTag({
-            tag: aTag({
-              id: "tag_1",
-              name: "child",
-              explicitParent: aTag({ id: "tag_2", name: "parent" }),
+        taggings: aVideoTagConnection({
+          nodes: [
+            aVideoTag({
+              tag: aTag({
+                id: "tag_1",
+                name: "child",
+                explicitParent: aTag({ id: "tag_2", name: "parent" }),
+              }),
             }),
-          }),
-        ],
+          ],
+        }),
       }),
     }),
   },

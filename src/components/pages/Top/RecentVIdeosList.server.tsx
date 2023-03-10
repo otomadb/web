@@ -5,22 +5,21 @@ import clsx from "clsx";
 import { LinkTag } from "~/app/tags/[serial]/Link";
 import { LinkVideo } from "~/app/videos/[serial]/Link";
 import { CommonTag } from "~/components/common/Tag";
-import { VideoThumbnail } from "~/components/common/Thumbnail";
-import { getFragment, graphql } from "~/gql";
+import { VideoThumbnail } from "~/components/common/VideoThumbnail";
+import { graphql } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
-import { CommonTagFragmentDoc, VideoThumbnailFragmentDoc } from "~/gql/graphql";
 
 export async function RecentVideosList() {
   const { findVideos } = await fetchGql(
     graphql(`
       query TopPage_RecentRegisteredVideos {
-        findVideos(input: { limit: 8, order: { createdAt: DESC } }) {
+        findVideos(first: 8) {
           nodes {
             id
             title
             ...VideoThumbnail
             ...Link_Video
-            taggings(input: { limit: 5 }) {
+            taggings(first: 3) {
               nodes {
                 id
                 tag {
@@ -53,7 +52,7 @@ export async function RecentVideosList() {
             <LinkVideo fragment={node}>
               <VideoThumbnail
                 className={clsx(["w-32"], ["h-16"])}
-                fragment={getFragment(VideoThumbnailFragmentDoc, node)}
+                fragment={node}
               />
             </LinkVideo>
           </div>
@@ -84,10 +83,8 @@ export async function RecentVideosList() {
                   <div key={tagging.id} className={clsx()}>
                     <LinkTag fragment={tagging.tag}>
                       <CommonTag
-                        fragment={getFragment(
-                          CommonTagFragmentDoc,
-                          tagging.tag
-                        )}
+                        className={clsx(["text-xs"], ["px-1"], ["py-0.5"])}
+                        fragment={tagging.tag}
                       />
                     </LinkTag>
                   </div>
