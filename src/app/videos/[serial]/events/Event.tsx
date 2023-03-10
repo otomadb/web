@@ -10,7 +10,7 @@ import {
   VideoPage_SemitagFragmentDoc,
 } from "~/gql/graphql";
 
-import { Semitag } from "../Semitag";
+import { Semitag } from "../../../../components/pages/Video/Semitag";
 
 const EventTemplateFragment = graphql(`
   fragment VideoEventPage_EventTemplate on Event {

@@ -1,7 +1,6 @@
 import clsx from "clsx";
 import { notFound } from "next/navigation";
 
-import { MixedEventLists } from "~/components/pages/Video/Events/MixedEventLists";
 import { getFragment, graphql } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
 import {
@@ -12,6 +11,8 @@ import {
   VideoEventPage_VideoThumbnailEventsFragmentDoc,
   VideoEventPage_VideoTitleEventsFragmentDoc,
 } from "~/gql/graphql";
+
+import { MixedEventLists } from "./MixedEventLists";
 
 export const dynamic = "force-dynamic";
 
