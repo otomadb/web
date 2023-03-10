@@ -144,6 +144,31 @@ interface Event implements Node {
   user: User!
 }
 
+"""その他のエラー"""
+type ExplicitizeTagAlreadyExplicitError {
+  already: TagParent!
+}
+
+enum ExplicitizeTagOtherErrorMessage {
+  INTERNAL_SERVER_ERROR
+}
+
+"""その他のエラー"""
+type ExplicitizeTagOtherErrorsFallback {
+  message: ExplicitizeTagOtherErrorMessage!
+}
+
+input ExplicitizeTagParentInput {
+  """親子関係のID"""
+  relationId: ID!
+}
+
+union ExplicitizeTagParentReturnUnion = ExplicitizeTagAlreadyExplicitError | ExplicitizeTagOtherErrorsFallback | ExplicitizeTagSucceededPayload | MutationAuthenticationError | MutationInvalidTagParentIdError | MutationTagParentNotFoundError
+
+type ExplicitizeTagSucceededPayload {
+  relation: TagParent!
+}
+
 input FetchNicovideoInput {
   """ニコニコ動画の動画ID（sm2057168など）"""
   sourceId: String!
@@ -238,8 +263,13 @@ type Mutation {
   changeMylistShareRange(input: ChangeMylistShareRangeInput!): ChangeMylistShareReturnUnion!
   createMylist(input: CreateMylistInput!): CreateMylistReturnUnion!
   createMylistGroup(input: CreateMylistGroupInput!): CreateMylistGroupPayload!
+
+  """非明示的なタグの親子関係を明示的に昇格する"""
+  explicitizeTagParent(input: ExplicitizeTagParentInput!): ExplicitizeTagParentReturnUnion!
   likeVideo(input: LikeVideoInput!): LikeVideoPayload!
-  registerTag(input: RegisterTagInput!): RegisterTagPayload!
+  registerCategoryTag(input: RegisterCategoryTagInput!): RegisterCategoryTagResultUnion!
+  registerTag(input: RegisterTagInput!): RegisterTagReturnUnion!
+  registerTagParentRelation(input: RegisterTagParentRelationInput!): RegisterTagParentRelationResultUnion!
   registerVideo(input: RegisterVideoInput!): RegisterVideoPayload!
   rejectNicovideoRegistrationRequest(input: RejectNicovideoRegistrationRequestInput!): RejectNicovideoRegistrationRequestReturnUnion!
   rejectSemitag(input: RejectSemitagInput!): RejectSemitagPayload!
@@ -269,10 +299,20 @@ type MutationInvalidNicovideoRegistrationRequestIdError {
   requestId: String!
 }
 
+"""SemitagのIDとして無効なIDを入力した場合のエラー"""
+type MutationInvalidSemitagIdError {
+  semitagId: String!
+}
+
 """TagのIDとして無効なIDを入力した場合のエラー"""
 type MutationInvalidTagIdError {
   """無効なID"""
   tagId: String!
+}
+
+"""TagParentのIDとして不正なIDを入力した場合のMutation用エラー"""
+type MutationInvalidTagParentIdError {
+  relationId: String!
 }
 
 """VideoのIDとして無効なIDを入力した場合のエラー"""
@@ -296,9 +336,19 @@ type MutationNicovideoRegistrationRequestNotFoundError {
   requestId: String!
 }
 
+"""Semitagが見つからない場合のエラー"""
+type MutationSemitagNotFoundError {
+  semitagId: String!
+}
+
 """Tagが見つからない場合のエラー"""
 type MutationTagNotFoundError {
   tagId: String!
+}
+
+"""TagParentが見つからない場合のMutation用エラー"""
+type MutationTagParentNotFoundError {
+  relationId: String!
 }
 
 """Videoが見つからない場合のエラー"""
@@ -328,7 +378,15 @@ type Mylist implements Node {
 }
 
 type MylistConnection {
+  edges: [MylistEdge!]!
   nodes: [Mylist!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type MylistEdge {
+  cursor: String!
+  node: Mylist!
 }
 
 type MylistGroup implements Node {
@@ -660,30 +718,96 @@ type Query {
   whoami: User
 }
 
-enum RegisterTagFailedMessage {
-  FORBIDDEN
-  INVALID_SEMITAG_ID
-  INVALID_TAG_ID
-  UNKNOWN
+input RegisterCategoryTagInput {
+  primaryName: String!
 }
 
-type RegisterTagFailedPayload {
-  message: RegisterTagFailedMessage!
+enum RegisterCategoryTagOtherErrorMessage {
+  INTERNAL_SERVER_ERROR
+}
+
+"""その他のエラー"""
+type RegisterCategoryTagOtherErrorsFallback {
+  message: RegisterCategoryTagOtherErrorMessage!
+}
+
+union RegisterCategoryTagResultUnion = MutationAuthenticationError | RegisterCategoryTagOtherErrorsFallback | RegisterCategoryTagSucceededPayload
+
+type RegisterCategoryTagSucceededPayload {
+  tag: Tag!
+}
+
+"""非明示的な親タグのIDが重複している"""
+type RegisterTagImplicitParentIdsDuplicatedError {
+  tagId: String!
 }
 
 input RegisterTagInput {
   explicitParent: ID
   extraNames: [String!]! = []
   implicitParents: [ID!]! = []
-  meaningless: Boolean! = false
   primaryName: String!
   resolveSemitags: [ID!]! = []
 }
 
-union RegisterTagPayload = RegisterTagFailedPayload | RegisterTagSucceededPayload
+type RegisterTagOtherErrorsFallback {
+  message: RegisterTagOtherErrorsFallbackMessage!
+}
+
+enum RegisterTagOtherErrorsFallbackMessage {
+  UNKNOWN
+}
+
+"""子タグに既に明示的な親子関係が存在する場合のエラー"""
+type RegisterTagParentRelationChildTagAlreadyHadExplicitParentError {
+  relation: TagParent!
+}
+
+input RegisterTagParentRelationInput {
+  childId: ID!
+  explicit: Boolean!
+  parentId: ID!
+}
+
+enum RegisterTagParentRelationOtherErrorMessage {
+  INTERNAL_SERVER_ERROR
+}
+
+"""その他のエラー"""
+type RegisterTagParentRelationOtherErrorsFallback {
+  message: RegisterTagParentRelationOtherErrorMessage!
+}
+
+"""既に登録されていた場合のエラー"""
+type RegisterTagParentRelationRelationAlreadyRegisteredError {
+  relation: TagParent!
+}
+
+union RegisterTagParentRelationResultUnion = MutationAuthenticationError | MutationInvalidTagIdError | MutationTagNotFoundError | RegisterTagParentRelationChildTagAlreadyHadExplicitParentError | RegisterTagParentRelationOtherErrorsFallback | RegisterTagParentRelationRelationAlreadyRegisteredError | RegisterTagParentRelationSucceededPayload
+
+type RegisterTagParentRelationSucceededPayload {
+  relation: TagParent!
+}
+
+"""解決されるSemitagが既にチェック済みである"""
+type RegisterTagResolveSemitagAlreadyCheckedError {
+  semitagId: String!
+}
+
+"""解決されるSemitagのIDが重複している"""
+type RegisterTagResolveSemitagIdsDuplicatedError {
+  semitagId: String!
+}
+
+union RegisterTagReturnUnion = MutationAuthenticationError | MutationInvalidSemitagIdError | MutationInvalidTagIdError | MutationSemitagNotFoundError | MutationTagNotFoundError | RegisterTagImplicitParentIdsDuplicatedError | RegisterTagOtherErrorsFallback | RegisterTagResolveSemitagAlreadyCheckedError | RegisterTagResolveSemitagIdsDuplicatedError | RegisterTagSucceededPayload | RegisterTagTagIdCollidedBetweenExplicitAndImplicitError
 
 type RegisterTagSucceededPayload {
   tag: Tag!
+}
+
+"""明示的な親タグのIDと非明示的な親タグのIDが重複している"""
+type RegisterTagTagIdCollidedBetweenExplicitAndImplicitError {
+  tagId: String!
 }
 
 enum RegisterVideoFailedMessage {
@@ -1145,6 +1269,7 @@ type Tag implements Node {
     """動画のID"""
     videoId: ID!
   ): Boolean!
+  children(after: String, before: String, first: Int, last: Int, orderBy: TagChildrenOrderBy! = {createdAt: DESC}): TagParentConnection!
   events(input: TagEventsInput!): TagEventsConnection!
   explicitParent: Tag
   id: ID!
@@ -1155,6 +1280,10 @@ type Tag implements Node {
   pseudoType: PseudoTagType!
   serial: Int!
   taggedVideos(after: String, before: String, first: Int, last: Int, orderBy: TagTaggedVideosOrderBy! = {createdAt: DESC}): VideoTagConnection!
+}
+
+input TagChildrenOrderBy {
+  createdAt: SortOrder
 }
 
 type TagConnection {
@@ -1231,8 +1360,14 @@ type TagParent {
   events(input: TagParentEventsInput!): TagParentEventConnection!
   explicit: Boolean!
   id: ID!
-  name: String!
   parent: Tag!
+}
+
+type TagParentConnection {
+  edges: [TagParentEdge!]!
+  nodes: [TagParent!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
 }
 
 type TagParentCreateEvent implements Event & Node & TagParentEvent {
@@ -1241,6 +1376,11 @@ type TagParentCreateEvent implements Event & Node & TagParentEvent {
   series: String!
   tagParent: TagParent!
   user: User!
+}
+
+type TagParentEdge {
+  cursor: String!
+  node: TagParent!
 }
 
 interface TagParentEvent implements Event & Node {
@@ -1321,20 +1461,12 @@ type User implements Node {
   isEditor: Boolean!
   likes: Mylist
   mylist(id: ID!): Mylist
-  mylists(input: UserMylistsInput!): MylistConnection!
+  mylists(after: String, before: String, first: Int, last: Int, orderBy: UserMylistsOrderBy! = {createdAt: DESC}, range: [MylistShareRange!]! = [PUBLIC]): MylistConnection!
   name: String!
 }
 
-input UserMylistsInput {
-  limit: Int! = 10
-  order: UserMylistsInputOrder! = {createdAt: ASC}
-  range: [MylistShareRange!]! = [PUBLIC]
-  skip: Int! = 0
-}
-
-input UserMylistsInputOrder {
+input UserMylistsOrderBy {
   createdAt: SortOrder
-  updatedAt: SortOrder
 }
 
 enum UserRole {

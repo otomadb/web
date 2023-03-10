@@ -44,13 +44,11 @@ graphql(`
   mutation RegisterTagPage_RegisterTag($input: RegisterTagInput!) {
     registerTag(input: $input) {
       __typename
+
       ... on RegisterTagSucceededPayload {
         tag {
           ...RegisterTagPage_SuccessToast
         }
-      }
-      ... on RegisterTagFailedPayload {
-        message
       }
     }
   }
@@ -87,18 +85,21 @@ export const useRegister = ({
         return;
       }
 
-      if (data.registerTag.__typename === "RegisterTagFailedPayload") {
-        // TODO: 何かしら出す
-        return;
+      switch (data.registerTag.__typename) {
+        case "RegisterTagSucceededPayload": {
+          onSuccess();
+          callSuccessToast({
+            fragment: getFragment(
+              RegisterTagPage_SuccessToastFragmentDoc,
+              data.registerTag.tag
+            ),
+          });
+          return;
+        }
+        default: {
+          return;
+        }
       }
-
-      onSuccess();
-      callSuccessToast({
-        fragment: getFragment(
-          RegisterTagPage_SuccessToastFragmentDoc,
-          data.registerTag.tag
-        ),
-      });
     },
     [callSuccessToast, mutateRegisterTag, onSuccess]
   );
