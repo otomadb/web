@@ -3,10 +3,10 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
-import { NicovideoSourcesSection } from "~/components/pages/Video/NicovideoSourcesSection.server";
 import { graphql } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
 
+import { NicovideoSourcesSection } from "./NicovideoSourcesSection.server";
 import { SimilarVideos } from "./SimilarVideos.server";
 
 export const dynamic = "force-dynamic";

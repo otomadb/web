@@ -1,11 +1,10 @@
 import clsx from "clsx";
 import { notFound } from "next/navigation";
 
-import { DetailsSection } from "~/components/pages/Video/DetailsSection.server";
-import { getFragment, graphql } from "~/gql";
+import { graphql } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
-import { VideoPage_DetailsSectionFragmentDoc } from "~/gql/graphql";
 
+import { Details } from "./Details";
 import { SemitagsList } from "./SemitagsList";
 import { TagsList } from "./TagsList";
 import { TagTypesList } from "./TagTypesList";
@@ -23,7 +22,6 @@ export default async function Layout({
         findVideo(input: { serial: $serial }) {
           ...VideoPage_DetailsSection
           ...VideoPage_SemitagsSection
-          id
           taggings {
             ...VideoPageLayout_TagsList
             ...VideoPageLayout_TagTypesList
@@ -45,9 +43,7 @@ export default async function Layout({
         ["flex", "flex-col", "gap-y-4"]
       )}
     >
-      <DetailsSection
-        fragment={getFragment(VideoPage_DetailsSectionFragmentDoc, findVideo)}
-      />
+      <Details fragment={findVideo} />
       <div className={clsx(["flex", "gap-x-4"])}>
         <div
           className={clsx(

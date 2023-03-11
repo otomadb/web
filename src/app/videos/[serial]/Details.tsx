@@ -1,28 +1,30 @@
-import "server-only";
-
 import clsx from "clsx";
 import React from "react";
 
 import { LinkVideoEvents } from "~/app/videos/[serial]/events/Link";
 import { VideoThumbnail } from "~/components/common/VideoThumbnail";
-import { graphql } from "~/gql";
-import { VideoPage_DetailsSectionFragment } from "~/gql/graphql";
+import { FragmentType, getFragment as useFragment, graphql } from "~/gql";
 
 import { LikeButton } from "./LikeButton";
 
-graphql(`
+export const Fragment = graphql(`
   fragment VideoPage_DetailsSection on Video {
     ...VideoThumbnail
+    ...Link_VideoEvents
     id
     title
-    ...Link_VideoEvents
+    nicovideoSources {
+      id
+      sourceId
+      embedUrl
+    }
   }
 `);
-
-export const DetailsSection: React.FC<{
+export const Details: React.FC<{
   className?: string;
-  fragment: VideoPage_DetailsSectionFragment;
-}> = ({ className, fragment }) => {
+  fragment: FragmentType<typeof Fragment>;
+}> = ({ className, ...props }) => {
+  const fragment = useFragment(Fragment, props.fragment);
   return (
     <section className={clsx(className, ["flex", ["flex-row"]], ["gap-x-8"])}>
       <VideoThumbnail
