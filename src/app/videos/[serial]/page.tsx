@@ -57,15 +57,22 @@ export default async function Page({ params }: { params: { serial: string } }) {
 
   return (
     <div className={clsx(["flex", "flex-col", "gap-y-4"])}>
-      <Suspense>
-        {/* @ts-expect-error Server Component*/}
-        <NicovideoSourcesSection videoId={video.id} />
-      </Suspense>
       <section>
-        <h2>似ている動画</h2>
+        <h2 className={clsx(["text-md"], ["text-slate-900"])}>似ている動画</h2>
         <div className={clsx(["mt-2"])}>
           <Suspense>
             <SimilarVideos videoId={video.id} />
+          </Suspense>
+        </div>
+      </section>
+      <section>
+        <h2 className={clsx(["text-md"], ["text-slate-900"])}>
+          ニコニコ動画のソース
+        </h2>
+        <div className={clsx(["mt-2"])}>
+          <Suspense>
+            {/* @ts-expect-error Server Component*/}
+            <NicovideoSourcesSection videoId={video.id} />
           </Suspense>
         </div>
       </section>

@@ -1,19 +1,19 @@
 import clsx from "clsx";
 import React from "react";
 
-import { graphql } from "~/gql";
-import { VideoPage_SemitagFragment } from "~/gql/graphql";
+import { FragmentType, getFragment, graphql } from "~/gql";
 
-graphql(`
+const Fragment = graphql(`
   fragment VideoPage_Semitag on Semitag {
-    id
     name
   }
 `);
 export const Semitag: React.FC<{
   className?: string;
-  fragment: VideoPage_SemitagFragment;
-}> = ({ className, fragment }) => {
+  fragment: FragmentType<typeof Fragment>;
+}> = ({ className, ...props }) => {
+  const fragment = getFragment(Fragment, props.fragment);
+
   return (
     <div
       className={clsx(className, ["flex", "items-center", "justify-between"])}

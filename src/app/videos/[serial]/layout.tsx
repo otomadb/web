@@ -1,13 +1,14 @@
 import clsx from "clsx";
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
 
 import { DetailsSection } from "~/components/pages/Video/DetailsSection.server";
-import { SemitagsSection } from "~/components/pages/Video/SemitagsSection.server";
-import { TagsSection } from "~/components/pages/Video/TagsSection.server";
 import { getFragment, graphql } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
 import { VideoPage_DetailsSectionFragmentDoc } from "~/gql/graphql";
+
+import { SemitagsList } from "./SemitagsList";
+import { TagsList } from "./TagsList";
+import { TagTypesList } from "./TagTypesList";
 
 export default async function Layout({
   children,
@@ -18,10 +19,15 @@ export default async function Layout({
 }) {
   const { findVideo } = await fetchGql(
     graphql(`
-      query VideoPage_Layout($serial: Int!) {
+      query VideoPageLayout($serial: Int!) {
         findVideo(input: { serial: $serial }) {
-          id
           ...VideoPage_DetailsSection
+          ...VideoPage_SemitagsSection
+          id
+          taggings {
+            ...VideoPageLayout_TagsList
+            ...VideoPageLayout_TagTypesList
+          }
         }
       }
     `),
@@ -31,30 +37,41 @@ export default async function Layout({
   if (!findVideo) return notFound();
 
   return (
-    <div className={clsx(["flex"], ["gap-x-4"])}>
-      <div
-        className={clsx(
-          ["flex-shrink-0"],
-          ["hidden", "lg:block"],
-          ["w-72"],
-          ["space-y-4"]
-        )}
-      >
-        <Suspense>
-          {/* @ts-expect-error Server Component*/}
-          <TagsSection videoId={findVideo.id} />
-        </Suspense>
-        <Suspense>
-          {/* @ts-expect-error Server Component*/}
-          <SemitagsSection videoId={findVideo.id} />
-        </Suspense>
+    <main
+      className={clsx(
+        ["container"],
+        ["mx-auto"],
+        ["flex-grow"],
+        ["flex", "flex-col", "gap-y-4"]
+      )}
+    >
+      <DetailsSection
+        fragment={getFragment(VideoPage_DetailsSectionFragmentDoc, findVideo)}
+      />
+      <div className={clsx(["flex", "gap-x-4"])}>
+        <div
+          className={clsx(
+            ["flex-shrink-0"],
+            ["min-w-[256px]"],
+            ["flex", "flex-col", "gap-y-4"]
+          )}
+        >
+          <section>
+            <h2 className={clsx(["text-md"], ["text-slate-900"])}>タグ</h2>
+            <div className={clsx(["mt-2"])}>
+              <TagTypesList fragment={findVideo.taggings} />
+              <TagsList fragment={findVideo.taggings} />
+            </div>
+          </section>
+          <section>
+            <h2 className={clsx(["text-md"], ["text-slate-900"])}>仮タグ</h2>
+            <div className={clsx(["mt-2"])}>
+              <SemitagsList fragment={findVideo} />
+            </div>
+          </section>
+        </div>
+        <div className={clsx(["flex-grow"])}>{children}</div>
       </div>
-      <div className={clsx(["flex-grow"], ["flex", "flex-col", "gap-y-4"])}>
-        <DetailsSection
-          fragment={getFragment(VideoPage_DetailsSectionFragmentDoc, findVideo)}
-        />
-        <div>{children}</div>
-      </div>
-    </div>
+    </main>
   );
 }
