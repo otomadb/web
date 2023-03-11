@@ -50,8 +50,7 @@ export const Details: React.FC<{
               className={clsx(
                 ["hover:bg-blue-200"],
                 ["px-1", "py-1"],
-                ["text-left", "text-xs", "text-slate-700"],
-                ["flex", "flex-col"]
+                ["flex", "flex-col", "justify-start"]
               )}
             >
               <span
@@ -68,7 +67,7 @@ export const Details: React.FC<{
                 className={clsx(
                   ["hover:bg-blue-200"],
                   ["px-1", "py-1"],
-                  ["flex", "flex-col"]
+                  ["flex", "flex-col", "justify-start"]
                 )}
               >
                 <span className={clsx(["text-xs", "text-slate-700"])}>
