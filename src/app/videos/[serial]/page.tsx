@@ -6,7 +6,6 @@ import { Suspense } from "react";
 import { graphql } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
 
-import { NicovideoSourcesSection } from "./NicovideoSourcesSection.server";
 import { SimilarVideos } from "./SimilarVideos.server";
 
 export const dynamic = "force-dynamic";
@@ -62,17 +61,6 @@ export default async function Page({ params }: { params: { serial: string } }) {
         <div className={clsx(["mt-2"])}>
           <Suspense>
             <SimilarVideos videoId={video.id} />
-          </Suspense>
-        </div>
-      </section>
-      <section>
-        <h2 className={clsx(["text-md"], ["text-slate-900"])}>
-          ニコニコ動画のソース
-        </h2>
-        <div className={clsx(["mt-2"])}>
-          <Suspense>
-            {/* @ts-expect-error Server Component*/}
-            <NicovideoSourcesSection videoId={video.id} />
           </Suspense>
         </div>
       </section>
