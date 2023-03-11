@@ -4,9 +4,10 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
 import { NicovideoSourcesSection } from "~/components/pages/Video/NicovideoSourcesSection.server";
-import { SimilarVideosSection } from "~/components/pages/Video/SimilarVideosSection.server";
 import { graphql } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
+
+import { SimilarVideos } from "./SimilarVideos.server";
 
 export const dynamic = "force-dynamic";
 
@@ -60,10 +61,14 @@ export default async function Page({ params }: { params: { serial: string } }) {
         {/* @ts-expect-error Server Component*/}
         <NicovideoSourcesSection videoId={video.id} />
       </Suspense>
-      <Suspense>
-        {/* @ts-expect-error Server Component*/}
-        <SimilarVideosSection videoId={video.id} />
-      </Suspense>
+      <section>
+        <h2>似ている動画</h2>
+        <div className={clsx(["mt-2"])}>
+          <Suspense>
+            <SimilarVideos videoId={video.id} />
+          </Suspense>
+        </div>
+      </section>
     </div>
   );
 }
