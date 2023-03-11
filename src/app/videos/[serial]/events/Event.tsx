@@ -6,9 +6,8 @@ import { LinkUser } from "~/app/users/[name]/Link";
 import { CommonTag } from "~/components/common/Tag";
 import { UserIcon } from "~/components/common/UserIcon";
 import { FragmentType, getFragment as useFragment, graphql } from "~/gql";
-import { VideoPage_SemitagFragmentDoc } from "~/gql/graphql";
 
-import { Semitag } from "../../../../components/pages/Video/Semitag";
+import { Semitag } from "../Semitag";
 
 const EventTemplateFragment = graphql(`
   fragment VideoEventPage_EventTemplate on Event {
@@ -407,9 +406,7 @@ export const SemitagAttachEvent: React.FC<{
         )}
       >
         仮タグ
-        <Semitag
-          fragment={useFragment(VideoPage_SemitagFragmentDoc, fragment.semitag)}
-        />
+        <Semitag fragment={fragment.semitag} />
         を追加しました。
       </div>
     </EventTemplate>
@@ -421,6 +418,7 @@ const SemitagResolveEventFragment = graphql(`
     ...VideoEventPage_EventTemplate
     resolving {
       semitag {
+        id
         ...VideoPage_Semitag
       }
       resolveTo {
@@ -445,12 +443,7 @@ export const SemitagResolveEvent: React.FC<{
         )}
       >
         仮タグ
-        <Semitag
-          fragment={useFragment(
-            VideoPage_SemitagFragmentDoc,
-            fragment.resolving.semitag
-          )}
-        />
+        <Semitag fragment={fragment.resolving.semitag} />
         は
         <CommonTag fragment={fragment.resolving.resolveTo.tag} />
         に解決しました。
@@ -483,12 +476,7 @@ export const SemitagRejectEvent: React.FC<{
         )}
       >
         仮タグ
-        <Semitag
-          fragment={useFragment(
-            VideoPage_SemitagFragmentDoc,
-            fragment.rejecting.semitag
-          )}
-        />
+        <Semitag fragment={fragment.rejecting.semitag} />
         を棄却しました。
       </div>
     </EventTemplate>
