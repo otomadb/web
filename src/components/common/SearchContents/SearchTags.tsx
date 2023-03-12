@@ -16,7 +16,7 @@ graphql(`
         ...Link_Tag
         id
         name
-        pseudoType
+        type
         explicitParent {
           id
           name
@@ -80,15 +80,15 @@ export const SearchTags: React.FC<{
               <div className={clsx(["flex"])}>
                 <div
                   className={clsx(["text-xs"], ["italic"], {
-                    "text-copyright-500": tag.pseudoType === "COPYRIGHT",
-                    "text-character-500": tag.pseudoType === "CHARACTER",
-                    "text-class-500": tag.pseudoType === "CLASS",
-                    "text-music-500": tag.pseudoType === "MUSIC",
-                    "text-series-500": tag.pseudoType === "SERIES",
-                    "text-phrase-500": tag.pseudoType === "PHRASE",
+                    "text-copyright-500": tag.type === "COPYRIGHT",
+                    "text-character-500": tag.type === "CHARACTER",
+                    "text-class-500": tag.type === "CLASS",
+                    "text-music-500": tag.type === "MUSIC",
+                    "text-series-500": tag.type === "SERIES",
+                    "text-phrase-500": tag.type === "PHRASE",
                   })}
                 >
-                  {tag.pseudoType}
+                  {tag.type}
                 </div>
               </div>
             </div>

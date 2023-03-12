@@ -10,7 +10,6 @@ import {
   aSearchTagsItem,
   aSemitag,
   aTag,
-  PseudoTagType,
   RegisterTagPage_ExplicitParentTagDocument,
   RegisterTagPage_ImplicitParentTagDocument,
   RegisterTagPage_RegisterTagDocument,
@@ -18,6 +17,7 @@ import {
   RegisterTagPage_Semitags_SelectedDocument,
   Semitag,
   TagSearcher_SearchDocument,
+  TagType,
 } from "~/gql/graphql";
 
 import { RegisterTagForm } from "./Form";
@@ -67,7 +67,7 @@ const meta = {
                     tag: aTag({
                       id: "t2",
                       name: "後藤ひとり",
-                      pseudoType: PseudoTagType.Character,
+                      type: TagType.Character,
                       explicitParent: aTag({
                         id: "t3",
                         name: "ぼっち・ざ・ろっく！",
@@ -79,7 +79,7 @@ const meta = {
                     tag: aTag({
                       id: "t3",
                       name: "ぼっち・ざ・ろっく！",
-                      pseudoType: PseudoTagType.Copyright,
+                      type: TagType.Copyright,
                       explicitParent: null,
                     }),
                   }),
@@ -98,7 +98,7 @@ const meta = {
                     getTag: aTag({
                       id: "t2",
                       name: "後藤ひとり",
-                      pseudoType: PseudoTagType.Character,
+                      type: TagType.Character,
                       explicitParent: aTag({
                         id: "t3",
                         name: "ぼっち・ざ・ろっく！",
@@ -112,7 +112,7 @@ const meta = {
                     getTag: aTag({
                       id: "t3",
                       name: "ぼっち・ざ・ろっく！",
-                      pseudoType: PseudoTagType.Copyright,
+                      type: TagType.Copyright,
                       explicitParent: null,
                     }),
                   })
@@ -130,7 +130,7 @@ const meta = {
                     getTag: aTag({
                       id: "t2",
                       name: "後藤ひとり",
-                      pseudoType: PseudoTagType.Character,
+                      type: TagType.Character,
                       explicitParent: aTag({
                         id: "t3",
                         name: "ぼっち・ざ・ろっく！",
@@ -144,7 +144,7 @@ const meta = {
                     getTag: aTag({
                       id: "t3",
                       name: "ぼっち・ざ・ろっく！",
-                      pseudoType: PseudoTagType.Copyright,
+                      type: TagType.Copyright,
                       explicitParent: null,
                     }),
                   })

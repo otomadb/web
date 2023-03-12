@@ -1,15 +1,11 @@
-import { PseudoTagType } from "~/gql/graphql";
+import { TagType } from "~/gql/graphql";
 
-export const styleByTagType = (
-  type: PseudoTagType,
-  prefix: string,
-  s = 400
-) => [
+export const styleByTagType = (type: TagType, prefix: string, s = 400) => [
   {
-    [`${prefix}-character-${s}`]: type === PseudoTagType.Character,
-    [`${prefix}-music-${s}`]: type === PseudoTagType.Music,
-    [`${prefix}-copyright-${s}`]: type === PseudoTagType.Copyright,
-    [`${prefix}-event-${s}`]: type === PseudoTagType.Event,
-    [`${prefix}-series-${s}`]: type === PseudoTagType.Series,
+    [`${prefix}-character-${s}`]: type === TagType.Character,
+    [`${prefix}-music-${s}`]: type === TagType.Music,
+    [`${prefix}-copyright-${s}`]: type === TagType.Copyright,
+    [`${prefix}-event-${s}`]: type === TagType.Event,
+    [`${prefix}-series-${s}`]: type === TagType.Series,
   },
 ];

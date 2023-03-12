@@ -12,11 +12,11 @@ import {
   aSearchTagsItem,
   aTag,
   aVideo,
-  PseudoTagType,
   RegisterNicovideoPage_RegisterForm_RegisterVideoDocument,
   RegisterNicovideoPage_RegisterForm_TagDocument,
   RegisterNicovideoPage_SourceCheckerDocument,
   TagSearcher_SearchDocument,
+  TagType,
 } from "~/gql/graphql";
 
 import { RegisterForm } from "./RegisterForm";
@@ -71,7 +71,7 @@ export const Primary: StoryObj<typeof meta> = {
                                   id: "t1",
                                   name: "ドナルド・マクドナルド",
                                   explicitParent: null,
-                                  pseudoType: PseudoTagType.Character,
+                                  type: TagType.Character,
                                 }),
                               },
                             ],
@@ -87,7 +87,7 @@ export const Primary: StoryObj<typeof meta> = {
                                   id: "t2",
                                   name: "U.N.オーエンは彼女なのか？",
                                   explicitParent: null,
-                                  pseudoType: PseudoTagType.Music,
+                                  type: TagType.Music,
                                 }),
                               },
                             ],
@@ -103,7 +103,7 @@ export const Primary: StoryObj<typeof meta> = {
                                   id: "t3",
                                   name: "最終鬼畜妹フランドール・Ｓ",
                                   explicitParent: null,
-                                  pseudoType: PseudoTagType.Music,
+                                  type: TagType.Music,
                                 }),
                               },
                             ],
@@ -126,7 +126,7 @@ export const Primary: StoryObj<typeof meta> = {
                                   id: "t1",
                                   name: "ドナルド・マクドナルド",
                                   explicitParent: null,
-                                  pseudoType: PseudoTagType.Character,
+                                  type: TagType.Character,
                                 }),
                               },
                               {
@@ -134,7 +134,7 @@ export const Primary: StoryObj<typeof meta> = {
                                   id: "t4",
                                   name: "東方Project",
                                   explicitParent: null,
-                                  pseudoType: PseudoTagType.Unknown,
+                                  type: TagType.Unknown,
                                 }),
                               },
                             ],
@@ -157,7 +157,7 @@ export const Primary: StoryObj<typeof meta> = {
                                   id: "t1",
                                   name: "ドナルド・マクドナルド",
                                   explicitParent: null,
-                                  pseudoType: PseudoTagType.Character,
+                                  type: TagType.Character,
                                 }),
                               },
                             ],
@@ -181,7 +181,7 @@ export const Primary: StoryObj<typeof meta> = {
                       id: "t1",
                       name: "ドナルド・マクドナルド",
                       explicitParent: null,
-                      pseudoType: PseudoTagType.Character,
+                      type: TagType.Character,
                     }),
                   })
                 );
@@ -192,7 +192,7 @@ export const Primary: StoryObj<typeof meta> = {
                       id: "t2",
                       name: "U.N.オーエンは彼女なのか？",
                       explicitParent: null,
-                      pseudoType: PseudoTagType.Music,
+                      type: TagType.Music,
                     }),
                   })
                 );
@@ -203,7 +203,7 @@ export const Primary: StoryObj<typeof meta> = {
                       id: "t3",
                       name: "最終鬼畜妹フランドール・Ｓ",
                       explicitParent: null,
-                      pseudoType: PseudoTagType.Music,
+                      type: TagType.Music,
                     }),
                   })
                 );
@@ -214,7 +214,7 @@ export const Primary: StoryObj<typeof meta> = {
                       id: "t4",
                       name: "東方Project",
                       explicitParent: null,
-                      pseudoType: PseudoTagType.Unknown,
+                      type: TagType.Unknown,
                     }),
                   })
                 );
@@ -234,7 +234,7 @@ export const Primary: StoryObj<typeof meta> = {
                       id: "t1",
                       name: "ドナルド・マクドナルド",
                       explicitParent: null,
-                      pseudoType: PseudoTagType.Character,
+                      type: TagType.Character,
                     }),
                   }),
                   aSearchTagsItem({
@@ -243,7 +243,7 @@ export const Primary: StoryObj<typeof meta> = {
                       id: "t2",
                       name: "U.N.オーエンは彼女なのか？",
                       explicitParent: null,
-                      pseudoType: PseudoTagType.Music,
+                      type: TagType.Music,
                     }),
                   }),
                   aSearchTagsItem({
@@ -252,7 +252,7 @@ export const Primary: StoryObj<typeof meta> = {
                       id: "t3",
                       name: "最終鬼畜妹フランドール・Ｓ",
                       explicitParent: null,
-                      pseudoType: PseudoTagType.Music,
+                      type: TagType.Music,
                     }),
                   }),
                 ],

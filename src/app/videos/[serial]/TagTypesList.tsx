@@ -8,7 +8,7 @@ const Fragment = graphql(`
   fragment VideoPageLayout_TagTypesList on VideoTagConnection {
     nodes {
       tag {
-        pseudoType
+        type
       }
     }
   }
@@ -19,7 +19,7 @@ export const TagTypesList: React.FC<{
 }> = ({ className, ...props }) => {
   const fragment = getFragment(Fragment, props.fragment);
   const types = fragment.nodes
-    .map(({ tag: { pseudoType } }) => pseudoType)
+    .map(({ tag: { type } }) => type)
     .filter((v1, i, arr) => i === arr.findIndex((v2) => v1 === v2));
 
   return (
