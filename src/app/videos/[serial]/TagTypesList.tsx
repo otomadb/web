@@ -2,7 +2,7 @@ import clsx from "clsx";
 import React from "react";
 
 import { FragmentType, getFragment, graphql } from "~/gql";
-import { styleByTagType } from "~/utils/styleByTagType";
+import { TagType } from "~/gql/graphql";
 
 const Fragment = graphql(`
   fragment VideoPageLayout_TagTypesList on VideoTagConnection {
@@ -29,7 +29,16 @@ export const TagTypesList: React.FC<{
           <span
             className={clsx(
               ["select-all"],
-              ["text-xs", styleByTagType(type, "text")]
+              [
+                "text-xs",
+                {
+                  "text-copyright-400": type === TagType.Copyright,
+                  "text-character-400": type === TagType.Character,
+                  "text-music-400": type === TagType.Music,
+                  "text-event-400": type === TagType.Event,
+                  "text-series-400": type === TagType.Series,
+                },
+              ]
             )}
           >
             {type}
