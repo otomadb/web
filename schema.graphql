@@ -268,6 +268,7 @@ type Mutation {
   explicitizeTagParent(input: ExplicitizeTagParentInput!): ExplicitizeTagParentReturnUnion!
   likeVideo(input: LikeVideoInput!): LikeVideoPayload!
   registerCategoryTag(input: RegisterCategoryTagInput!): RegisterCategoryTagResultUnion!
+  registerCategoryTagTyping(input: RegisterCategoryTagTypingInput!): RegisterCategoryTagTypingResultUnion!
   registerTag(input: RegisterTagInput!): RegisterTagReturnUnion!
   registerTagParentRelation(input: RegisterTagParentRelationInput!): RegisterTagParentRelationResultUnion!
   registerVideo(input: RegisterVideoInput!): RegisterVideoPayload!
@@ -735,6 +736,45 @@ union RegisterCategoryTagResultUnion = MutationAuthenticationError | RegisterCat
 
 type RegisterCategoryTagSucceededPayload {
   tag: Tag!
+}
+
+"""指定されたタイプのカテゴリータグが既に存在する場合のエラー"""
+type RegisterCategoryTagTypingAlreadyTypeExistsError {
+  already: Tag!
+}
+
+"""指定されたカテゴリータグに既にタイプがある場合のエラー"""
+type RegisterCategoryTagTypingAlreadyTypedError {
+  tag: Tag!
+}
+
+input RegisterCategoryTagTypingInput {
+  tagId: ID!
+  type: TagType!
+}
+
+"""指定されたタグはカテゴリータグでは無い場合のエラー"""
+type RegisterCategoryTagTypingNotCategoryTagError {
+  tag: Tag!
+}
+
+enum RegisterCategoryTagTypingOtherErrorMessage {
+  INTERNAL_SERVER_ERROR
+}
+
+"""その他のエラー"""
+type RegisterCategoryTagTypingOtherErrorsFallback {
+  message: RegisterCategoryTagTypingOtherErrorMessage!
+}
+
+union RegisterCategoryTagTypingResultUnion = MutationAuthenticationError | MutationInvalidTagIdError | MutationTagNotFoundError | RegisterCategoryTagTypingAlreadyTypeExistsError | RegisterCategoryTagTypingAlreadyTypedError | RegisterCategoryTagTypingNotCategoryTagError | RegisterCategoryTagTypingOtherErrorsFallback | RegisterCategoryTagTypingSucceededPayload | RegisterCategoryTagTypingUnsupportedTagType
+
+type RegisterCategoryTagTypingSucceededPayload {
+  tag: Tag!
+}
+
+type RegisterCategoryTagTypingUnsupportedTagType {
+  type: TagType!
 }
 
 """非明示的な親タグのIDが重複している"""
@@ -1273,13 +1313,15 @@ type Tag implements Node {
   events(input: TagEventsInput!): TagEventsConnection!
   explicitParent: Tag
   id: ID!
-  meaningless: Boolean!
+  isCategoryTag: Boolean!
+  meaningless: Boolean! @deprecated
   name: String!
   names: [TagName!]!
-  parents(meaningless: Boolean): [TagParent!]!
-  pseudoType: PseudoTagType!
+  parents(categoryTag: Boolean): [TagParent!]!
+  pseudoType: PseudoTagType! @deprecated
   serial: Int!
   taggedVideos(after: String, before: String, first: Int, last: Int, orderBy: TagTaggedVideosOrderBy! = {createdAt: DESC}): VideoTagConnection!
+  type: TagType!
 }
 
 input TagChildrenOrderBy {
@@ -1427,6 +1469,41 @@ type TagRegisterEvent implements Event & Node & TagEvent {
 
 input TagTaggedVideosOrderBy {
   createdAt: SortOrder
+}
+
+enum TagType {
+  """キャラクター"""
+  CHARACTER
+
+  """動画の内容に依らない情報，分類など"""
+  CLASS
+
+  """作品名"""
+  COPYRIGHT
+
+  """合作などのイベント"""
+  EVENT
+
+  """曲"""
+  MUSIC
+
+  """特徴的なセリフなど"""
+  PHRASE
+
+  """シリーズ"""
+  SERIES
+
+  """動画そのものに対しての性質，作風など"""
+  STYLE
+
+  """2つ以上のタイプが算出された場合"""
+  SUBTLE
+
+  """戦法"""
+  TACTICS
+
+  """タイプを算出できなかった場合"""
+  UNKNOWN
 }
 
 enum UndoLikeVideoFailedMessage {

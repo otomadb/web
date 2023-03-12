@@ -12,10 +12,10 @@ import {
   aNicovideoOriginalSourceTagSearchTagsPayload,
   aTag,
   aVideo,
-  PseudoTagType,
   RegisterNicovideoPage_RegisterForm_RegisterVideoDocument,
   RegisterNicovideoPage_RegisterForm_TagDocument,
   RegisterNicovideoPage_SourceCheckerDocument,
+  TagType,
 } from "~/gql/graphql";
 
 import { Form } from "./Form";
@@ -60,7 +60,7 @@ const meta = {
                                   id: "t1",
                                   name: "ドナルド・マクドナルド",
                                   explicitParent: null,
-                                  pseudoType: PseudoTagType.Character,
+                                  type: TagType.Character,
                                 }),
                               },
                             ],
@@ -76,7 +76,7 @@ const meta = {
                                   id: "t2",
                                   name: "U.N.オーエンは彼女なのか？",
                                   explicitParent: null,
-                                  pseudoType: PseudoTagType.Music,
+                                  type: TagType.Music,
                                 }),
                               },
                             ],
@@ -92,7 +92,7 @@ const meta = {
                                   id: "t3",
                                   name: "最終鬼畜妹フランドール・Ｓ",
                                   explicitParent: null,
-                                  pseudoType: PseudoTagType.Music,
+                                  type: TagType.Music,
                                 }),
                               },
                             ],
@@ -115,7 +115,7 @@ const meta = {
                                   id: "t1",
                                   name: "ドナルド・マクドナルド",
                                   explicitParent: null,
-                                  pseudoType: PseudoTagType.Character,
+                                  type: TagType.Character,
                                 }),
                               },
                               {
@@ -123,7 +123,7 @@ const meta = {
                                   id: "t4",
                                   name: "東方Project",
                                   explicitParent: null,
-                                  pseudoType: PseudoTagType.Unknown,
+                                  type: TagType.Unknown,
                                 }),
                               },
                             ],
@@ -146,7 +146,7 @@ const meta = {
                                   id: "t1",
                                   name: "ドナルド・マクドナルド",
                                   explicitParent: null,
-                                  pseudoType: PseudoTagType.Character,
+                                  type: TagType.Character,
                                 }),
                               },
                             ],
@@ -170,7 +170,7 @@ const meta = {
                       id: "t1",
                       name: "ドナルド・マクドナルド",
                       explicitParent: null,
-                      pseudoType: PseudoTagType.Character,
+                      type: TagType.Character,
                     }),
                   })
                 );
@@ -181,7 +181,7 @@ const meta = {
                       id: "t2",
                       name: "U.N.オーエンは彼女なのか？",
                       explicitParent: null,
-                      pseudoType: PseudoTagType.Music,
+                      type: TagType.Music,
                     }),
                   })
                 );
@@ -192,7 +192,7 @@ const meta = {
                       id: "t3",
                       name: "最終鬼畜妹フランドール・Ｓ",
                       explicitParent: null,
-                      pseudoType: PseudoTagType.Music,
+                      type: TagType.Music,
                     }),
                   })
                 );
@@ -203,7 +203,7 @@ const meta = {
                       id: "t4",
                       name: "東方Project",
                       explicitParent: null,
-                      pseudoType: PseudoTagType.Unknown,
+                      type: TagType.Unknown,
                     }),
                   })
                 );
