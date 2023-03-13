@@ -1316,7 +1316,7 @@ type Tag implements Node {
   isCategoryTag: Boolean!
   meaningless: Boolean! @deprecated
   name: String!
-  names: [TagName!]!
+  names(primary: Boolean): [TagName!]!
   parents(categoryTag: Boolean): [TagParent!]!
   pseudoType: PseudoTagType! @deprecated
   serial: Int!
