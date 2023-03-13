@@ -14,6 +14,19 @@ export default async function Layout({
   children: React.ReactNode;
   params: { serial: string };
 }) {
+  const precheck = await fetchGql(
+    graphql(`
+      query TagPageLayout_Precheck($serial: Int!) {
+        findTag(input: { serial: $serial }) {
+          serial
+          isCategoryTag
+        }
+      }
+    `),
+    { serial: parseInt(params.serial, 10) }
+  );
+  if (precheck.findTag?.isCategoryTag) return notFound(); // TODO: `/category/`とかに飛ばすとかでも良いと思う
+
   const { findTag } = await fetchGql(
     graphql(`
       query TagPageLayout($serial: Int!) {
