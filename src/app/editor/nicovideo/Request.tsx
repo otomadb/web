@@ -3,10 +3,9 @@ import clsx from "clsx";
 import React from "react";
 
 import { CommonTag } from "~/components/common/Tag";
-import { graphql } from "~/gql";
-import { RegisterNicovideoPage_RequestFragment } from "~/gql/graphql";
+import { FragmentType, getFragment, graphql } from "~/gql";
 
-graphql(`
+const Fragment = graphql(`
   fragment RegisterNicovideoPage_Request on NicovideoRegistrationRequest {
     id
     title
@@ -27,10 +26,12 @@ graphql(`
 `);
 export const Request: React.FC<{
   className?: string;
-  fragment: RegisterNicovideoPage_RequestFragment;
+  fragment: FragmentType<typeof Fragment>;
   toggleTag: (id: string) => void;
   toggleSemitag: (name: string) => void;
-}> = ({ className, fragment, toggleTag, toggleSemitag }) => {
+}> = ({ className, toggleTag, toggleSemitag, ...props }) => {
+  const fragment = getFragment(Fragment, props.fragment);
+
   return (
     <div
       className={clsx(

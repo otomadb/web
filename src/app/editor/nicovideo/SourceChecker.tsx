@@ -6,11 +6,7 @@ import { ReactNode, useEffect } from "react";
 import { useQuery } from "urql";
 
 import { getFragment, graphql } from "~/gql";
-import {
-  EditorRegisterNicovideoPage_SourceAlreadyRegisteredFragmentDoc,
-  RegisterNicovideoPage_OriginalSourceFragmentDoc,
-  RegisterNicovideoPage_RequestFragmentDoc,
-} from "~/gql/graphql";
+import { RegisterNicovideoPage_OriginalSourceFragmentDoc } from "~/gql/graphql";
 
 import { OriginalSource } from "./OriginalSource";
 import { Request } from "./Request";
@@ -95,10 +91,7 @@ export const SourceChecker: React.FC<{
           <>
             {data.findNicovideoVideoSource && (
               <SourceAlreadyRegistered
-                fragment={getFragment(
-                  EditorRegisterNicovideoPage_SourceAlreadyRegisteredFragmentDoc,
-                  data.findNicovideoVideoSource
-                )}
+                fragment={data.findNicovideoVideoSource}
               />
             )}
             {!data.findNicovideoVideoSource && (
@@ -122,10 +115,7 @@ export const SourceChecker: React.FC<{
                     />
                     {data.findNicovideoRegistrationRequest && (
                       <Request
-                        fragment={getFragment(
-                          RegisterNicovideoPage_RequestFragmentDoc,
-                          data.findNicovideoRegistrationRequest
-                        )}
+                        fragment={data.findNicovideoRegistrationRequest}
                         toggleTag={toggleTag}
                         toggleSemitag={toggleSemitag}
                       />

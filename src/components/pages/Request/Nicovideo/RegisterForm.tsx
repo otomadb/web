@@ -6,8 +6,8 @@ import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { useMutation } from "urql";
 import * as z from "zod";
 
+import { ConfirmForm } from "~/app/editor/nicovideo/ConfirmForm";
 import { BlueButton } from "~/components/common/Button";
-import { ConfirmForm } from "~/components/pages/Editor/RegisterNicovideo/ConfirmForm";
 import { getFragment, graphql } from "~/gql";
 import { RequestNicovideoRegistrationPage_SuccessToastFragmentDoc } from "~/gql/graphql";
 
