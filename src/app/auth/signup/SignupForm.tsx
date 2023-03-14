@@ -17,12 +17,14 @@ import { useMutation } from "urql";
 import * as z from "zod";
 
 import { AuthPageGuardContext } from "~/app/auth/Guard";
-import { LinkSignin } from "~/app/auth/signin/Link";
+import { SigninLinkPage } from "~/app/auth/signin/Link";
 import { BlueButton } from "~/components/common/Button";
+import { PasswordInput } from "~/components/common/PasswordInput";
+import { TextInput } from "~/components/common/TextInput";
 import { graphql } from "~/gql";
 import { TurnstileVerifyResponse } from "~/turnstile";
 
-import { AuthFormInput } from "../FormInput";
+import { InputWithIcon } from "../InputWithIcon";
 
 const formSchema = z.object({
   name: z.string().min(3, { message: "ユーザーネームは3文字以上です" }),
@@ -141,74 +143,99 @@ export const SignupForm: React.FC<{ className?: string }> = ({ className }) => {
       )}
     >
       <div className={clsx(["grid"], ["grid-cols-1"], ["gap-y-4"])}>
-        <AuthFormInput
-          Input={(props) => (
-            <input
-              {...register("name")}
-              {...props}
-              type={"text"}
-              placeholder="ユーザーネーム"
-            ></input>
+        <label className={clsx(["flex", "flex-col"])}>
+          <InputWithIcon
+            Icon={AtSymbolIcon}
+            Input={(props) => (
+              <TextInput
+                {...props}
+                {...register("name")}
+                placeholder="ユーザーネーム"
+              />
+            )}
+          />
+          {errors.name && (
+            <p className={clsx(["mt-1"], ["text-xs"], ["text-red-600"])}>
+              {errors.name.message}
+            </p>
           )}
-          Icon={(props) => <AtSymbolIcon {...props} />}
-          error={errors.name}
-        />
-        <AuthFormInput
-          Input={(props) => (
-            <input
-              {...register("displayName")}
-              {...props}
-              type={"text"}
-              placeholder="表示される名前"
-            ></input>
+        </label>
+        <label className={clsx(["flex", "flex-col"])}>
+          <InputWithIcon
+            Icon={UserIcon}
+            Input={(props) => (
+              <TextInput
+                {...props}
+                {...register("displayName")}
+                placeholder="表示される名前"
+              />
+            )}
+          />
+          {errors.displayName && (
+            <p className={clsx(["mt-1"], ["text-xs"], ["text-red-600"])}>
+              {errors.displayName.message}
+            </p>
           )}
-          Icon={(props) => <UserIcon {...props} />}
-          error={errors.displayName}
-        />
-        <AuthFormInput
-          Input={(props) => (
-            <input
-              {...register("email")}
-              {...props}
-              type={"text"}
-              placeholder="メールアドレス"
-            ></input>
+        </label>
+        <label className={clsx(["flex", "flex-col"])}>
+          <InputWithIcon
+            Icon={EnvelopeIcon}
+            Input={(props) => (
+              <TextInput
+                {...props}
+                {...register("email")}
+                placeholder="メールアドレス"
+              />
+            )}
+          />
+          {errors.email && (
+            <p className={clsx(["mt-1"], ["text-xs"], ["text-red-600"])}>
+              {errors.email.message}
+            </p>
           )}
-          Icon={(props) => <EnvelopeIcon {...props} />}
-          error={errors.email}
-        />
-        <AuthFormInput
-          Input={(props) => (
-            <input
-              {...register("password")}
-              {...props}
-              type={"password"}
-              placeholder="パスワード"
-            ></input>
+        </label>
+        <label className={clsx(["flex", "flex-col"])}>
+          <InputWithIcon
+            Icon={LockClosedIcon}
+            Input={(props) => (
+              <PasswordInput
+                {...props}
+                {...register("password")}
+                placeholder="パスワード"
+              />
+            )}
+          />
+          {errors.password && (
+            <p className={clsx(["mt-1"], ["text-xs"], ["text-red-600"])}>
+              {errors.password.message}
+            </p>
           )}
-          Icon={(props) => <LockClosedIcon {...props} />}
-          error={errors.password}
-        />
-        <AuthFormInput
-          Input={(props) => (
-            <input
-              {...register("passwordRepeat", {
-                validate: (value) => {
-                  console.log(getValues("password"), value);
-                  return (
-                    getValues("password") === value ||
-                    "パスワードが一致しません"
-                  );
-                },
-              })}
-              {...props}
-              type={"password"}
-              placeholder="パスワードの再入力"
-            ></input>
+        </label>
+        <label className={clsx(["flex", "flex-col"])}>
+          <InputWithIcon
+            Icon={LockClosedIcon}
+            Input={(props) => (
+              <PasswordInput
+                {...props}
+                {...register("passwordRepeat", {
+                  validate: (value) => {
+                    console.log(getValues("password"), value);
+                    return (
+                      getValues("password") === value ||
+                      "パスワードが一致しません"
+                    );
+                  },
+                })}
+                placeholder="パスワードの再入力"
+              />
+            )}
+          />
+          {errors.passwordRepeat && (
+            <p className={clsx(["mt-1"], ["text-xs"], ["text-red-600"])}>
+              {errors.passwordRepeat.message}
+            </p>
           )}
-          Icon={(props) => <LockClosedIcon {...props} />}
-          error={errors.passwordRepeat}
-        />
+        </label>
       </div>
       <div>
         <Turnstile
@@ -229,14 +256,14 @@ export const SignupForm: React.FC<{ className?: string }> = ({ className }) => {
       </div>
       <div className={clsx(["mt-4"])}>
         <p>
-          <LinkSignin
+          <SigninLinkPage
             className={clsx(
               ["text-blue-400", "hover:text-blue-500"],
               ["text-sm"]
             )}
           >
             ユーザー登録が既に済んでいるなら
-          </LinkSignin>
+          </SigninLinkPage>
         </p>
       </div>
     </form>

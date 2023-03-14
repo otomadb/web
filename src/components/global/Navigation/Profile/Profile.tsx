@@ -4,7 +4,7 @@ import clsx from "clsx";
 import React from "react";
 import { useQuery } from "urql";
 
-import { LinkSignin } from "~/app/auth/signin/Link";
+import { SigninLinkPage } from "~/app/auth/signin/Link";
 import { UserIcon } from "~/components/common/UserIcon";
 import { getFragment, graphql } from "~/gql";
 import { GlobalNav_Profile_AccordionFragmentDoc } from "~/gql/graphql";
@@ -44,7 +44,7 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
         ></div>
       )}
       {data?.whoami === null && (
-        <LinkSignin
+        <SigninLinkPage
           className={clsx(
             ["flex"],
             ["flex-row"],
@@ -59,7 +59,7 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
           )}
         >
           <span>ログイン</span>
-        </LinkSignin>
+        </SigninLinkPage>
       )}
       {data?.whoami && (
         <div className={clsx(["relative"], ["group"], ["flex"])}>
