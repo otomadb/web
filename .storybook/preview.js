@@ -1,4 +1,5 @@
 import "../src/styles/globals.css";
+import "reactflow/dist/style.css";
 
 import { initialize as initializeMSW, mswDecorator } from "msw-storybook-addon";
 

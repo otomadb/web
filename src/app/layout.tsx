@@ -1,4 +1,5 @@
 import "~/styles/globals.css";
+import "reactflow/dist/style.css";
 
 import clsx from "clsx";
 import type { Metadata } from "next";
