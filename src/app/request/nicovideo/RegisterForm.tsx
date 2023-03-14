@@ -8,8 +8,7 @@ import * as z from "zod";
 
 import { ConfirmForm } from "~/app/editor/nicovideo/ConfirmForm";
 import { BlueButton } from "~/components/common/Button";
-import { getFragment, graphql } from "~/gql";
-import { RequestNicovideoRegistrationPage_SuccessToastFragmentDoc } from "~/gql/graphql";
+import { graphql } from "~/gql";
 
 import { SourceChecker } from "./SourceChecker";
 import { useCallSuccessToast } from "./SuccessToast";
@@ -65,12 +64,7 @@ export const useRequest = (reset: () => void) => {
 
       switch (data.requestNicovideoRegistration.__typename) {
         case "RequestNicovideoRegistrationSucceededPayload":
-          callSuccessToast(
-            getFragment(
-              RequestNicovideoRegistrationPage_SuccessToastFragmentDoc,
-              data.requestNicovideoRegistration
-            )
-          );
+          callSuccessToast(data.requestNicovideoRegistration);
           reset();
           break;
         case "RequestNicovideoRegistrationVideoAlreadyRegisteredError":

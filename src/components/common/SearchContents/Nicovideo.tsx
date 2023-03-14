@@ -3,7 +3,7 @@ import clsx from "clsx";
 import React from "react";
 import { useQuery } from "urql";
 
-import { LinkRequestNicovideo } from "~/app/request/nicovideo/Link";
+import { NicovideoRequestPageLink } from "~/app/request/nicovideo/Link";
 import { LinkNicovideoRegistrationRequest } from "~/app/requests/nicovideo/[sourceId]/Link";
 import { LinkVideo } from "~/app/videos/[serial]/Link";
 import { getFragment, graphql } from "~/gql";
@@ -175,7 +175,7 @@ const NeitherExists: React.FC<{
   sourceId: string;
 }> = ({ className, sourceId }) => {
   return (
-    <LinkRequestNicovideo
+    <NicovideoRequestPageLink
       className={clsx(
         className,
         ["px-4"],
@@ -197,7 +197,7 @@ const NeitherExists: React.FC<{
           </span>
         </p>
       </div>
-    </LinkRequestNicovideo>
+    </NicovideoRequestPageLink>
   );
 };
 

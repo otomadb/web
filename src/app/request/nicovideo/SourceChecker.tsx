@@ -7,8 +7,7 @@ import { useQuery } from "urql";
 
 import { OriginalSource } from "~/app/editor/nicovideo/OriginalSource";
 import { SourceAlreadyExists as VideoSourceAlreadyExists } from "~/app/editor/nicovideo/SourceAlreadyRegistered";
-import { getFragment, graphql } from "~/gql";
-import { RequestNicovideoRegistrationPage_VideoRequestAlreadyExistsFragmentDoc } from "~/gql/graphql";
+import { graphql } from "~/gql";
 
 import { VideoRequestAlreadyExists } from "./VideoRequestAlreadyExists";
 
@@ -75,10 +74,7 @@ export const SourceChecker: React.FC<{
           <>
             {data.findNicovideoRegistrationRequest && (
               <VideoRequestAlreadyExists
-                fragment={getFragment(
-                  RequestNicovideoRegistrationPage_VideoRequestAlreadyExistsFragmentDoc,
-                  data.findNicovideoRegistrationRequest
-                )}
+                fragment={data.findNicovideoRegistrationRequest}
               />
             )}
             {data.findNicovideoVideoSource && (

@@ -1,6 +1,6 @@
 import clsx from "clsx";
 
-import { RequestForm } from "~/components/pages/Request/Nicovideo/Form";
+import { RequestForm } from "./Form";
 
 export const dynamic = "force-dynamic";
 
