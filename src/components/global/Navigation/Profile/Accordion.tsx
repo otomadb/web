@@ -3,7 +3,7 @@
 import clsx from "clsx";
 import React, { ReactNode } from "react";
 
-import { LinkRegisterNicovideo } from "~/app/editor/nicovideo/Link";
+import { NicovideoRegisterPageLink } from "~/app/editor/nicovideo/Link";
 import { LinkRegisterSemitag } from "~/app/editor/semitags/Link";
 import { LinkRegisterTag } from "~/app/editor/tags/Link";
 import { NicovideoRequestPageLink } from "~/app/request/nicovideo/Link";
@@ -151,7 +151,7 @@ export const Accordion: React.FC<{
             <div className={clsx(["grid"], ["grid-cols-2"])}>
               <MenuItem
                 className={clsx(["col-span-2"])}
-                Wrapper={(props) => <LinkRegisterNicovideo {...props} />}
+                Wrapper={(props) => <NicovideoRegisterPageLink {...props} />}
               >
                 ニコニコ動画から登録
               </MenuItem>
