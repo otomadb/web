@@ -9,7 +9,7 @@ import React, { useCallback, useMemo } from "react";
 import { toast } from "react-hot-toast";
 import { useMutation, useQuery } from "urql";
 
-import { getFragment, graphql } from "~/gql";
+import { graphql, useFragment } from "~/gql";
 
 const VideoFragment = graphql(`
   fragment VideoPage_LikeButton_Video on Video {
@@ -36,7 +36,7 @@ export const LikeButton: React.FC<{ className?: string; videoId: string }> = ({
     `),
     variables: { videoId },
   });
-  const video = getFragment(VideoFragment, currentData?.getVideo);
+  const video = useFragment(VideoFragment, currentData?.getVideo);
   const liked = useMemo(() => video?.like, [video?.like]);
 
   const [, triggerAddLike] = useMutation(

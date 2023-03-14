@@ -1,8 +1,6 @@
 import clsx from "clsx";
 import { notFound } from "next/navigation";
 
-import { MixedEventLists } from "~/components/pages/Video/Events/MixedEventLists";
-import { graphql } from "~/gql";
 import { graphql } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
 

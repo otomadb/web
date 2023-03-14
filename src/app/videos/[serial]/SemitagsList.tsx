@@ -1,6 +1,6 @@
 import clsx from "clsx";
 
-import { FragmentType, getFragment, graphql } from "~/gql";
+import { FragmentType, graphql, useFragment } from "~/gql";
 
 import { Semitag } from "./Semitag";
 
@@ -20,7 +20,7 @@ export function SemitagsList({
   className?: string;
   fragment: FragmentType<typeof Fragment>;
 }): JSX.Element {
-  const fragment = getFragment(Fragment, props.fragment);
+  const fragment = useFragment(Fragment, props.fragment);
 
   return (
     <div className={clsx(className, ["flex", "flex-col", "gap-y-0.5"])}>

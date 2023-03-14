@@ -12,7 +12,7 @@ import { InfiniteVideosGrid } from "~/components/common/InfiniteVideoGrid";
 import { FetcherContainer } from "~/components/common/InfiniteVideoGrid";
 import { CommonTag } from "~/components/common/Tag";
 import { VideoThumbnail } from "~/components/common/VideoThumbnail";
-import { FragmentType, getFragment, graphql } from "~/gql";
+import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const VideoGrid: React.FC<{ initAfter?: string }> = ({ initAfter }) => (
   <InfiniteVideosGrid
@@ -80,7 +80,7 @@ const Video: React.FC<{
   className?: string;
   fragment: FragmentType<typeof Fragment>;
 }> = ({ className, ...props }) => {
-  const fragment = getFragment(Fragment, props.fragment);
+  const fragment = useFragment(Fragment, props.fragment);
   return (
     <div
       className={clsx(

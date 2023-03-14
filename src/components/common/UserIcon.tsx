@@ -3,7 +3,7 @@ import { toSvg } from "jdenticon";
 import Image from "next/image";
 import React, { useMemo } from "react";
 
-import { FragmentType, graphql,useFragment } from "~/gql";
+import { FragmentType, graphql, useFragment } from "~/gql";
 
 const Fragment = graphql(`
   fragment UserIcon on User {

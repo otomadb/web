@@ -6,7 +6,7 @@ import { useQuery } from "urql";
 
 import { LinkSignin } from "~/app/auth/signin/Link";
 import { UserIcon } from "~/components/common/UserIcon";
-import { graphql } from "~/gql";
+import { graphql, useFragment as getFragment } from "~/gql";
 import { GlobalNav_Profile_AccordionFragmentDoc } from "~/gql/graphql";
 
 import { Accordion } from "./Accordion";

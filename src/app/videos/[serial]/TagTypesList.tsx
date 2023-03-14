@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import React from "react";
 
-import { FragmentType, getFragment, graphql } from "~/gql";
+import { FragmentType, graphql, useFragment } from "~/gql";
 import { TagType } from "~/gql/graphql";
 
 const Fragment = graphql(`
@@ -17,7 +17,7 @@ export const TagTypesList: React.FC<{
   className?: string;
   fragment: FragmentType<typeof Fragment>;
 }> = ({ className, ...props }) => {
-  const fragment = getFragment(Fragment, props.fragment);
+  const fragment = useFragment(Fragment, props.fragment);
   const types = fragment.nodes
     .map(({ tag: { type } }) => type)
     .filter((v1, i, arr) => i === arr.findIndex((v2) => v1 === v2));

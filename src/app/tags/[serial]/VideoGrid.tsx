@@ -9,7 +9,7 @@ import { LinkVideo } from "~/app/videos/[serial]/Link";
 import { InfiniteVideosGrid } from "~/components/common/InfiniteVideoGrid";
 import { FetcherContainer } from "~/components/common/InfiniteVideoGrid";
 import { VideoThumbnail } from "~/components/common/VideoThumbnail";
-import { FragmentType, getFragment, graphql } from "~/gql";
+import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const VideoGrid: React.FC<{ tagId: string; initAfter?: string }> = ({
   tagId,
@@ -81,7 +81,7 @@ const Video: React.FC<{
   className?: string;
   fragment: FragmentType<typeof Fragment>;
 }> = ({ className, ...props }) => {
-  const fragment = getFragment(Fragment, props.fragment);
+  const fragment = useFragment(Fragment, props.fragment);
   return (
     <div
       className={clsx(className, ["border"], ["rounded"], ["px-2"], ["py-2"])}
