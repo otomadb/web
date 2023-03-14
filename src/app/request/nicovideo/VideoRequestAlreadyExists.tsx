@@ -6,10 +6,9 @@ import Image from "next/image";
 import { LinkNicovideoRegistrationRequest } from "~/app/requests/nicovideo/[sourceId]/Link";
 import { LinkUser } from "~/app/users/[name]/Link";
 import { UserIcon } from "~/components/common/UserIcon";
-import { graphql } from "~/gql";
-import { RequestNicovideoRegistrationPage_VideoRequestAlreadyExistsFragment } from "~/gql/graphql";
+import { FragmentType, getFragment, graphql } from "~/gql";
 
-graphql(`
+const Fragment = graphql(`
   fragment RequestNicovideoRegistrationPage_VideoRequestAlreadyExists on NicovideoRegistrationRequest {
     id
     sourceId
@@ -26,8 +25,9 @@ graphql(`
 `);
 export const VideoRequestAlreadyExists: React.FC<{
   className?: string;
-  fragment: RequestNicovideoRegistrationPage_VideoRequestAlreadyExistsFragment;
-}> = ({ className, fragment }) => {
+  fragment: FragmentType<typeof Fragment>;
+}> = ({ className, ...props }) => {
+  const fragment = getFragment(Fragment, props.fragment);
   return (
     <div className={clsx(className, ["flex", "gap-x-4"])}>
       <div className={clsx(["flex-shrink-0"])}>

@@ -12,13 +12,15 @@ import { useMutation } from "urql";
 import * as z from "zod";
 
 import { AuthPageGuardContext } from "~/app/auth/Guard";
-import { LinkSignup } from "~/app/auth/signup/Link";
+import { SignupPageLink } from "~/app/auth/signup/Link";
 import { BlueButton } from "~/components/common/Button";
+import { PasswordInput } from "~/components/common/PasswordInput";
+import { TextInput } from "~/components/common/TextInput";
 import { graphql } from "~/gql";
 import { SigninFailedMessage } from "~/gql/graphql";
 import { TurnstileVerifyResponse } from "~/turnstile";
 
-import { AuthFormInput } from "../FormInput";
+import { InputWithIcon } from "../InputWithIcon";
 
 const formSchema = z.object({
   username: z.string({ required_error: "ユーザーネームを入力してください" }),
@@ -115,30 +117,40 @@ export const SigninForm: React.FC<{ className?: string }> = ({ className }) => {
       )}
     >
       <div className={clsx(["grid"], ["grid-cols-1"], ["gap-y-4"])}>
-        <AuthFormInput
-          Input={(props) => (
-            <input
-              {...register("username")}
-              {...props}
-              type={"text"}
-              placeholder="ユーザーネーム"
-            ></input>
+        <label className={clsx(["flex", "flex-col"])}>
+          <InputWithIcon
+            Icon={AtSymbolIcon}
+            Input={(props) => (
+              <TextInput
+                {...props}
+                {...register("username")}
+                placeholder="ユーザーネーム"
+              />
+            )}
+          />
+          {errors.username && (
+            <p className={clsx(["mt-1"], ["text-xs"], ["text-red-600"])}>
+              {errors.username.message}
+            </p>
           )}
-          Icon={(props) => <AtSymbolIcon {...props} />}
-          error={errors.username}
-        />
-        <AuthFormInput
-          Icon={(props) => <LockClosedIcon {...props} />}
-          Input={(props) => (
-            <input
-              {...register("password")}
-              {...props}
-              type={"password"}
-              placeholder="パスワード"
-            ></input>
+        </label>
+        <label className={clsx(["flex", "flex-col"])}>
+          <InputWithIcon
+            Icon={LockClosedIcon}
+            Input={(props) => (
+              <PasswordInput
+                {...props}
+                {...register("password")}
+                placeholder="パスワード"
+              />
+            )}
+          />
+          {errors.password && (
+            <p className={clsx(["mt-1"], ["text-xs"], ["text-red-600"])}>
+              {errors.password.message}
+            </p>
           )}
-          error={errors.password}
-        />
+        </label>
       </div>
       <div>
         <Turnstile
@@ -159,14 +171,14 @@ export const SigninForm: React.FC<{ className?: string }> = ({ className }) => {
       </div>
       <div className={clsx(["mt-4"])}>
         <p>
-          <LinkSignup
+          <SignupPageLink
             className={clsx(
               ["text-blue-400", "hover:text-blue-500"],
               ["text-sm"]
             )}
           >
             ユーザー登録をしていないなら
-          </LinkSignup>
+          </SignupPageLink>
         </p>
       </div>
     </form>

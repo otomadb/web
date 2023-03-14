@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React, { ComponentProps } from "react";
 
-export const LinkRequestNicovideo: React.FC<
+export const NicovideoRequestPageLink: React.FC<
   Omit<ComponentProps<typeof Link>, "href"> & {
     params?: { sourceId: string };
   }
