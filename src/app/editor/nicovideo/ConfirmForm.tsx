@@ -7,7 +7,6 @@ import { useQuery } from "urql";
 import { CommonTag } from "~/components/common/Tag";
 import { TagSearcher } from "~/components/common/TagSearcher";
 import { graphql } from "~/gql";
-import { RegisterNicovideoPage_RegisterForm_TagDocument } from "~/gql/graphql";
 
 export const ConfirmForm: React.FC<{
   className?: string;
@@ -176,21 +175,21 @@ export const ConfirmForm: React.FC<{
     </div>
   );
 };
-graphql(`
-  query RegisterNicovideoPage_RegisterForm_Tag($id: ID!) {
-    getTag(id: $id) {
-      id
-      ...CommonTag
-    }
-  }
-`);
+
 const TagItem: React.FC<{
   className?: string;
   tagId: string;
   remove(): void;
 }> = ({ className, tagId, remove }) => {
   const [{ data }] = useQuery({
-    query: RegisterNicovideoPage_RegisterForm_TagDocument,
+    query: graphql(`
+      query RegisterNicovideoPage_RegisterForm_Tag($id: ID!) {
+        getTag(id: $id) {
+          id
+          ...CommonTag
+        }
+      }
+    `),
     variables: { id: tagId },
   });
 

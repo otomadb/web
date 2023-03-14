@@ -5,16 +5,11 @@ import clsx from "clsx";
 import { ReactNode, useEffect } from "react";
 import { useQuery } from "urql";
 
-import { getFragment, graphql } from "~/gql";
-import {
-  EditorRegisterNicovideoPage_SourceAlreadyRegisteredFragmentDoc,
-  RegisterNicovideoPage_OriginalSourceFragmentDoc,
-  RegisterNicovideoPage_RequestFragmentDoc,
-} from "~/gql/graphql";
+import { graphql } from "~/gql";
 
 import { OriginalSource } from "./OriginalSource";
 import { Request } from "./Request";
-import { SourceAlreadyExists as SourceAlreadyRegistered } from "./SourceAlreadyRegistered";
+import { SourceAlreadyExists } from "./SourceAlreadyRegistered";
 
 export const SourceChecker: React.FC<{
   className?: string;
@@ -94,12 +89,7 @@ export const SourceChecker: React.FC<{
         {data && (
           <>
             {data.findNicovideoVideoSource && (
-              <SourceAlreadyRegistered
-                fragment={getFragment(
-                  EditorRegisterNicovideoPage_SourceAlreadyRegisteredFragmentDoc,
-                  data.findNicovideoVideoSource
-                )}
-              />
+              <SourceAlreadyExists fragment={data.findNicovideoVideoSource} />
             )}
             {!data.findNicovideoVideoSource && (
               <>
@@ -114,18 +104,12 @@ export const SourceChecker: React.FC<{
                 {data.fetchNicovideo.source && (
                   <div className={clsx(["flex", "flex-col", "gap-y-4"])}>
                     <OriginalSource
-                      fragment={getFragment(
-                        RegisterNicovideoPage_OriginalSourceFragmentDoc,
-                        data.fetchNicovideo.source
-                      )}
+                      fragment={data.fetchNicovideo.source}
                       toggleTag={toggleTag}
                     />
                     {data.findNicovideoRegistrationRequest && (
                       <Request
-                        fragment={getFragment(
-                          RegisterNicovideoPage_RequestFragmentDoc,
-                          data.findNicovideoRegistrationRequest
-                        )}
+                        fragment={data.findNicovideoRegistrationRequest}
                         toggleTag={toggleTag}
                         toggleSemitag={toggleSemitag}
                       />
