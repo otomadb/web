@@ -11,7 +11,6 @@ import { getFragment, graphql } from "~/gql";
 import {
   EditorRegisterNicovideoPage_SourceAlreadyRegisteredFragmentDoc,
   RegisterNicovideoPage_OriginalSourceFragmentDoc,
-  RequestNicovideoRegistrationPage_VideoRequestAlreadyExistsFragmentDoc,
 } from "~/gql/graphql";
 
 import { VideoRequestAlreadyExists } from "./VideoRequestAlreadyExists";
@@ -79,10 +78,7 @@ export const SourceChecker: React.FC<{
           <>
             {data.findNicovideoRegistrationRequest && (
               <VideoRequestAlreadyExists
-                fragment={getFragment(
-                  RequestNicovideoRegistrationPage_VideoRequestAlreadyExistsFragmentDoc,
-                  data.findNicovideoRegistrationRequest
-                )}
+                fragment={data.findNicovideoRegistrationRequest}
               />
             )}
             {data.findNicovideoVideoSource && (
