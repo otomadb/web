@@ -2,10 +2,10 @@ import clsx from "clsx";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { VideoList } from "~/components/common/VideoList";
-import { graphql, useFragment as getFragment } from "~/gql";
+import { graphql } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
-import { VideoList_VideoFragmentDoc } from "~/gql/graphql";
+
+import { VideoGrid } from "./VideoGrid";
 
 export const dynamic = "force-dynamic";
 
@@ -37,10 +37,8 @@ export default async function Page({ params }: { params: { serial: string } }) {
     graphql(`
       query TagPage($serial: Int!) {
         findTag(input: { serial: $serial }) {
+          id
           name
-          taggedVideos {
-            ...VideoList_Video
-          }
         }
       }
     `),
@@ -51,18 +49,13 @@ export default async function Page({ params }: { params: { serial: string } }) {
   if (!findTag) return notFound();
 
   return (
-    <>
-      <h1 className={clsx(["flex"], ["items-center"])}>
-        <span className={clsx(["block"], ["text-2xl"], ["text-slate-800"])}>
-          {findTag.name}
-        </span>
-      </h1>
-      <div className={clsx(["mt-4"])}>
-        <VideoList
-          className={clsx()}
-          videos={getFragment(VideoList_VideoFragmentDoc, findTag.taggedVideos)}
-        />
-      </div>
-    </>
+    <main className={clsx(["container"], ["mx-auto"], ["flex", "flex-col"])}>
+      <header>
+        <h1 className={clsx(["text-xl"])}>{findTag.name}</h1>
+      </header>
+      <section className={clsx(["mt-4"], ["w-full"])}>
+        <VideoGrid tagId={findTag.id} />
+      </section>
+    </main>
   );
 }

@@ -1,7 +1,7 @@
 import clsx from "clsx";
 
 import { SearchParams } from "./Link";
-import { VideoGrid } from "./VideoGrid";
+import { VideoGrid } from "./VideosGrid";
 
 export const dynamic = "force-dynamic";
 

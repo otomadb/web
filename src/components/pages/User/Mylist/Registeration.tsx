@@ -17,7 +17,7 @@ graphql(`
       id
       title
       ...Link_Video
-      taggings(input: { limit: 5 }) {
+      taggings(first: 5) {
         nodes {
           id
           tag {

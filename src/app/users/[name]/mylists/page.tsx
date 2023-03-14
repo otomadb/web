@@ -14,7 +14,7 @@ export default async function Page({ params }: { params: { name: string } }) {
         findUser(input: { name: $name }) {
           id
           ...UserPageLayout_Nav
-          mylists(input: { limit: 20 }) {
+          mylists(range: [PUBLIC]) {
             ...UserMylistsPage_Mylists
           }
         }

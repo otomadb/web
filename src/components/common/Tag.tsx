@@ -1,14 +1,14 @@
 import clsx from "clsx";
 import React, { ReactNode } from "react";
 
-import { FragmentType, graphql,useFragment } from "~/gql";
-import { PseudoTagType } from "~/gql/graphql";
+import { FragmentType, graphql, useFragment } from "~/gql";
+import { TagType } from "~/gql/graphql";
 
 const Fragment = graphql(`
   fragment CommonTag on Tag {
     id
     name
-    pseudoType
+    type
     explicitParent {
       id
       name
@@ -31,7 +31,7 @@ export const CommonTag: React.FC<{
   ...props
 }) => {
   const fragment = useFragment(Fragment, props.fragment);
-  const { pseudoType, explicitParent } = fragment;
+  const { type, explicitParent } = fragment;
   return (
     <span
       className={clsx(
@@ -42,11 +42,11 @@ export const CommonTag: React.FC<{
           "border",
           [
             {
-              "border-l-character-400": pseudoType === PseudoTagType.Character,
-              "border-l-music-400": pseudoType === PseudoTagType.Music,
-              "border-l-copyright-400": pseudoType === PseudoTagType.Copyright,
-              "border-l-event-400": pseudoType === PseudoTagType.Event,
-              "border-l-series-400": pseudoType === PseudoTagType.Series,
+              "border-l-character-400": type === TagType.Character,
+              "border-l-music-400": type === TagType.Music,
+              "border-l-copyright-400": type === TagType.Copyright,
+              "border-l-event-400": type === TagType.Event,
+              "border-l-series-400": type === TagType.Series,
             },
           ],
         ]

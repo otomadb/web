@@ -13,7 +13,7 @@ graphql(`
     ...UserMylistPage_Registrations
     ...UserMylistPage_Details
     holder {
-      mylists(input: { limit: 20 }) {
+      mylists(range: [PUBLIC]) {
         ...MylistPageCommon_SideMylistList
       }
     }

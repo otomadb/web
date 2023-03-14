@@ -10,7 +10,6 @@ import {
   aSearchTagsItem,
   aSemitag,
   aTag,
-  PseudoTagType,
   RegisterTagPage_ExplicitParentTagDocument,
   RegisterTagPage_ImplicitParentTagDocument,
   RegisterTagPage_RegisterTagDocument,
@@ -18,6 +17,7 @@ import {
   RegisterTagPage_Semitags_SelectedDocument,
   Semitag,
   TagSearcher_SearchDocument,
+  TagType,
 } from "~/gql/graphql";
 
 import { RegisterTagForm } from "./Form";
@@ -67,7 +67,7 @@ const meta = {
                     tag: aTag({
                       id: "t2",
                       name: "後藤ひとり",
-                      pseudoType: PseudoTagType.Character,
+                      type: TagType.Character,
                       explicitParent: aTag({
                         id: "t3",
                         name: "ぼっち・ざ・ろっく！",
@@ -79,7 +79,7 @@ const meta = {
                     tag: aTag({
                       id: "t3",
                       name: "ぼっち・ざ・ろっく！",
-                      pseudoType: PseudoTagType.Copyright,
+                      type: TagType.Copyright,
                       explicitParent: null,
                     }),
                   }),
@@ -98,7 +98,7 @@ const meta = {
                     getTag: aTag({
                       id: "t2",
                       name: "後藤ひとり",
-                      pseudoType: PseudoTagType.Character,
+                      type: TagType.Character,
                       explicitParent: aTag({
                         id: "t3",
                         name: "ぼっち・ざ・ろっく！",
@@ -112,7 +112,7 @@ const meta = {
                     getTag: aTag({
                       id: "t3",
                       name: "ぼっち・ざ・ろっく！",
-                      pseudoType: PseudoTagType.Copyright,
+                      type: TagType.Copyright,
                       explicitParent: null,
                     }),
                   })
@@ -130,7 +130,7 @@ const meta = {
                     getTag: aTag({
                       id: "t2",
                       name: "後藤ひとり",
-                      pseudoType: PseudoTagType.Character,
+                      type: TagType.Character,
                       explicitParent: aTag({
                         id: "t3",
                         name: "ぼっち・ざ・ろっく！",
@@ -144,7 +144,7 @@ const meta = {
                     getTag: aTag({
                       id: "t3",
                       name: "ぼっち・ざ・ろっく！",
-                      pseudoType: PseudoTagType.Copyright,
+                      type: TagType.Copyright,
                       explicitParent: null,
                     }),
                   })
@@ -160,16 +160,16 @@ const meta = {
                 findSemitags: {
                   nodes: (() => {
                     const rtn: Semitag[] = [];
-                    if (!req.variables.except.includes("st1"))
-                      rtn.push(aSemitag({ id: "st1", name: "Semitag 1" }));
-                    if (!req.variables.except.includes("st2"))
-                      rtn.push(aSemitag({ id: "st2", name: "Semitag 2" }));
-                    if (!req.variables.except.includes("st3"))
-                      rtn.push(aSemitag({ id: "st3", name: "Semitag 3" }));
-                    if (!req.variables.except.includes("st4"))
-                      rtn.push(aSemitag({ id: "st4", name: "Semitag 4" }));
-                    if (!req.variables.except.includes("st5"))
-                      rtn.push(aSemitag({ id: "st5", name: "Semitag 5" }));
+                    // if (!req.variables.except.includes("st1"))
+                    rtn.push(aSemitag({ id: "st1", name: "Semitag 1" }));
+                    // if (!req.variables.except.includes("st2"))
+                    rtn.push(aSemitag({ id: "st2", name: "Semitag 2" }));
+                    // if (!req.variables.except.includes("st3"))
+                    rtn.push(aSemitag({ id: "st3", name: "Semitag 3" }));
+                    // if (!req.variables.except.includes("st4"))
+                    rtn.push(aSemitag({ id: "st4", name: "Semitag 4" }));
+                    // if (!req.variables.except.includes("st5"))
+                    rtn.push(aSemitag({ id: "st5", name: "Semitag 5" }));
                     return rtn;
                   })(),
                 },

@@ -17,7 +17,7 @@ graphql(`
   query YouMylistsPage {
     whoami {
       id
-      mylists(input: { limit: 20, range: [PUBLIC, KNOW_LINK, PRIVATE] }) {
+      mylists(range: [PUBLIC, KNOW_LINK, PRIVATE]) {
         ...UserMylistsPage_Mylists
       }
     }

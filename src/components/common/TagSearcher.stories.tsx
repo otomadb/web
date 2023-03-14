@@ -12,8 +12,8 @@ import {
   aSearchTagsItem,
   aSearchTagsPayload,
   aTag,
-  PseudoTagType,
   TagSearcher_SearchDocument,
+  TagType,
 } from "~/gql/graphql";
 
 import { TagSearcher } from "./TagSearcher";
@@ -47,7 +47,7 @@ export default {
                     tag: aTag({
                       id: `tag:1`,
                       name: "後藤ひとり",
-                      pseudoType: PseudoTagType.Character,
+                      type: TagType.Character,
                       explicitParent: aTag({
                         id: "tag_2",
                         name: "ぼっち・ざ・ろっく！",
@@ -59,7 +59,7 @@ export default {
                     tag: aTag({
                       id: `tag:2`,
                       name: "ぼっち・ざ・ろっく！",
-                      pseudoType: PseudoTagType.Copyright,
+                      type: TagType.Copyright,
                       explicitParent: null,
                     }),
                   }),
@@ -68,7 +68,7 @@ export default {
                     tag: aTag({
                       id: `tag:3`,
                       name: "ドナルド・マクドナルド",
-                      pseudoType: PseudoTagType.Character,
+                      type: TagType.Character,
                       explicitParent: null,
                     }),
                   }),
