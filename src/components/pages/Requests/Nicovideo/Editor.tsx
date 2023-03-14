@@ -5,7 +5,7 @@ import "client-only";
 import clsx from "clsx";
 import { useQuery } from "urql";
 
-import { LinkRegisterNicovideo } from "~/app/editor/nicovideo/Link";
+import { NicovideoRegisterPageLink } from "~/app/editor/nicovideo/Link";
 import { FragmentType, getFragment, graphql } from "~/gql";
 
 const Fragment = graphql(`
@@ -33,9 +33,9 @@ export const Editor: React.FC<{
   return (
     <div className={clsx(className)}>
       {data?.whoami?.isEditor && (
-        <LinkRegisterNicovideo sourceId={sourceId}>
+        <NicovideoRegisterPageLink sourceId={sourceId}>
           登録する
-        </LinkRegisterNicovideo>
+        </NicovideoRegisterPageLink>
       )}
     </div>
   );
