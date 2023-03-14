@@ -1,4 +1,3 @@
-import clsx from "clsx";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -49,13 +48,8 @@ export default async function Page({ params }: { params: { serial: string } }) {
   if (!findTag) return notFound();
 
   return (
-    <main className={clsx(["container"], ["mx-auto"], ["flex", "flex-col"])}>
-      <header>
-        <h1 className={clsx(["text-xl"])}>{findTag.name}</h1>
-      </header>
-      <section className={clsx(["mt-4"], ["w-full"])}>
-        <VideoGrid tagId={findTag.id} />
-      </section>
-    </main>
+    <div>
+      <VideoGrid tagId={findTag.id} />
+    </div>
   );
 }
