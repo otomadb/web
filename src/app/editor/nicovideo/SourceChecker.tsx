@@ -5,8 +5,7 @@ import clsx from "clsx";
 import { ReactNode, useEffect } from "react";
 import { useQuery } from "urql";
 
-import { getFragment, graphql } from "~/gql";
-import { RegisterNicovideoPage_OriginalSourceFragmentDoc } from "~/gql/graphql";
+import { graphql } from "~/gql";
 
 import { OriginalSource } from "./OriginalSource";
 import { Request } from "./Request";
@@ -105,10 +104,7 @@ export const SourceChecker: React.FC<{
                 {data.fetchNicovideo.source && (
                   <div className={clsx(["flex", "flex-col", "gap-y-4"])}>
                     <OriginalSource
-                      fragment={getFragment(
-                        RegisterNicovideoPage_OriginalSourceFragmentDoc,
-                        data.fetchNicovideo.source
-                      )}
+                      fragment={data.fetchNicovideo.source}
                       toggleTag={toggleTag}
                     />
                     {data.findNicovideoRegistrationRequest && (

@@ -8,10 +8,7 @@ import { useQuery } from "urql";
 import { OriginalSource } from "~/app/editor/nicovideo/OriginalSource";
 import { SourceAlreadyExists as VideoSourceAlreadyExists } from "~/app/editor/nicovideo/SourceAlreadyRegistered";
 import { getFragment, graphql } from "~/gql";
-import {
-  RegisterNicovideoPage_OriginalSourceFragmentDoc,
-  RequestNicovideoRegistrationPage_VideoRequestAlreadyExistsFragmentDoc,
-} from "~/gql/graphql";
+import { RequestNicovideoRegistrationPage_VideoRequestAlreadyExistsFragmentDoc } from "~/gql/graphql";
 
 import { VideoRequestAlreadyExists } from "./VideoRequestAlreadyExists";
 
@@ -101,10 +98,7 @@ export const SourceChecker: React.FC<{
                   {data.fetchNicovideo.source && (
                     <div className={clsx(["flex", "flex-col", "gap-y-4"])}>
                       <OriginalSource
-                        fragment={getFragment(
-                          RegisterNicovideoPage_OriginalSourceFragmentDoc,
-                          data.fetchNicovideo.source
-                        )}
+                        fragment={data.fetchNicovideo.source}
                         toggleTag={toggleTag}
                       />
                       <div
