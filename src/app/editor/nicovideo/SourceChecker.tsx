@@ -10,7 +10,7 @@ import { RegisterNicovideoPage_OriginalSourceFragmentDoc } from "~/gql/graphql";
 
 import { OriginalSource } from "./OriginalSource";
 import { Request } from "./Request";
-import { SourceAlreadyExists as SourceAlreadyRegistered } from "./SourceAlreadyRegistered";
+import { SourceAlreadyExists } from "./SourceAlreadyRegistered";
 
 export const SourceChecker: React.FC<{
   className?: string;
@@ -90,9 +90,7 @@ export const SourceChecker: React.FC<{
         {data && (
           <>
             {data.findNicovideoVideoSource && (
-              <SourceAlreadyRegistered
-                fragment={data.findNicovideoVideoSource}
-              />
+              <SourceAlreadyExists fragment={data.findNicovideoVideoSource} />
             )}
             {!data.findNicovideoVideoSource && (
               <>

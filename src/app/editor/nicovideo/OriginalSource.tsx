@@ -6,10 +6,9 @@ import Image from "next/image";
 import React from "react";
 
 import { CommonTag } from "~/components/common/Tag";
-import { graphql } from "~/gql";
-import { RegisterNicovideoPage_OriginalSourceFragment } from "~/gql/graphql";
+import { FragmentType, getFragment, graphql } from "~/gql";
 
-graphql(`
+const Fragment = graphql(`
   fragment RegisterNicovideoPage_OriginalSource on NicovideoOriginalSource {
     sourceId
     title
@@ -29,9 +28,10 @@ graphql(`
 `);
 export const OriginalSource: React.FC<{
   className?: string;
-  fragment: RegisterNicovideoPage_OriginalSourceFragment;
+  fragment: FragmentType<typeof Fragment>;
   toggleTag: (id: string) => void;
-}> = ({ className, fragment, toggleTag }) => {
+}> = ({ className, toggleTag, ...props }) => {
+  const fragment = getFragment(Fragment, props.fragment);
   return (
     <div
       className={clsx(
