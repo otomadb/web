@@ -3,7 +3,7 @@ import clsx from "clsx";
 import React from "react";
 
 import { CommonTag } from "~/components/common/Tag";
-import { FragmentType, getFragment, graphql } from "~/gql";
+import { FragmentType, graphql, useFragment } from "~/gql";
 
 const Fragment = graphql(`
   fragment RegisterNicovideoPage_Request on NicovideoRegistrationRequest {
@@ -30,7 +30,7 @@ export const Request: React.FC<{
   toggleTag: (id: string) => void;
   toggleSemitag: (name: string) => void;
 }> = ({ className, toggleTag, toggleSemitag, ...props }) => {
-  const fragment = getFragment(Fragment, props.fragment);
+  const fragment = useFragment(Fragment, props.fragment);
 
   return (
     <div

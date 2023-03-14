@@ -6,7 +6,7 @@ import React from "react";
 
 import { LinkVideo } from "~/app/videos/[serial]/Link";
 import { VideoThumbnail } from "~/components/common/VideoThumbnail";
-import { FragmentType, getFragment, graphql } from "~/gql";
+import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const Fragment = graphql(`
   fragment EditorRegisterNicovideoPage_SourceAlreadyRegistered on NicovideoVideoSource {
@@ -23,7 +23,7 @@ export const SourceAlreadyExists: React.FC<{
   className?: string;
   fragment: FragmentType<typeof Fragment>;
 }> = ({ className, ...props }) => {
-  const fragment = getFragment(Fragment, props.fragment);
+  const fragment = useFragment(Fragment, props.fragment);
 
   return (
     <div className={clsx(className, ["flex", "gap-x-4"])}>

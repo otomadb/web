@@ -6,7 +6,7 @@ import React, { ComponentProps, useCallback } from "react";
 import { toast } from "react-hot-toast";
 
 import { LinkNicovideoRegistrationRequest } from "~/app/requests/nicovideo/[sourceId]/Link";
-import { FragmentType, getFragment, graphql } from "~/gql";
+import { FragmentType, graphql, useFragment } from "~/gql";
 
 const Fragment = graphql(`
   fragment RequestNicovideoRegistrationPage_SuccessToast on RequestNicovideoRegistrationSucceededPayload {
@@ -20,7 +20,7 @@ const Fragment = graphql(`
 export const SuccessToast: React.FC<{
   fragment: FragmentType<typeof Fragment>;
 }> = ({ ...props }) => {
-  const fragment = getFragment(Fragment, props.fragment);
+  const fragment = useFragment(Fragment, props.fragment);
   return (
     <div>
       <p>
