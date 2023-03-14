@@ -8,21 +8,15 @@ export const InputWithIcon: React.FC<{
   Input: React.FC<{ className?: string }>;
 }> = ({ className, Icon, Input }) => {
   return (
-    <div
-      className={clsx(
-        className,
-        ["flex"],
-        ["border", "border-slate-300"],
-        ["rounded-md"],
-        ["overflow-hidden"]
-      )}
-    >
+    <div className={clsx(className, ["flex"])}>
       <div
         className={clsx(
           ["flex-shrink-0"],
           ["flex"],
           ["px-4"],
-          [["bg-teal-400"]]
+          ["rounded-l-md"],
+          [["bg-teal-400"]],
+          ["border-l", "border-b", "border-t", "border-teal-500"]
         )}
       >
         <Icon
@@ -34,7 +28,12 @@ export const InputWithIcon: React.FC<{
         />
       </div>
       <Input
-        className={clsx(["flex-grow"], ["px-4", "py-2"], ["rounded-r-md"])}
+        className={clsx(
+          ["flex-grow"],
+          ["px-4", "py-2"],
+          ["rounded-r-md"],
+          ["border-r", "border-b", "border-t", "border-slate-300"]
+        )}
       />
     </div>
   );
