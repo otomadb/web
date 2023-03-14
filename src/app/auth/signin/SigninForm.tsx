@@ -18,7 +18,7 @@ import { graphql } from "~/gql";
 import { SigninFailedMessage } from "~/gql/graphql";
 import { TurnstileVerifyResponse } from "~/turnstile";
 
-import { AuthFormInput } from "./FormInput";
+import { InputWithIcon } from "../InputWithIcon";
 
 const formSchema = z.object({
   username: z.string({ required_error: "ユーザーネームを入力してください" }),
@@ -115,30 +115,32 @@ export const SigninForm: React.FC<{ className?: string }> = ({ className }) => {
       )}
     >
       <div className={clsx(["grid"], ["grid-cols-1"], ["gap-y-4"])}>
-        <AuthFormInput
-          Input={(props) => (
-            <input
-              {...register("username")}
-              {...props}
-              type={"text"}
-              placeholder="ユーザーネーム"
-            ></input>
+        <label className={clsx(["flex", "flex-col"])}>
+          <InputWithIcon
+            Icon={AtSymbolIcon}
+            {...register("username")}
+            type={"text"}
+            placeholder="ユーザーネーム"
+          />
+          {errors.username && (
+            <p className={clsx(["mt-1"], ["text-xs"], ["text-red-600"])}>
+              {errors.username.message}
+            </p>
           )}
-          Icon={(props) => <AtSymbolIcon {...props} />}
-          error={errors.username}
-        />
-        <AuthFormInput
-          Icon={(props) => <LockClosedIcon {...props} />}
-          Input={(props) => (
-            <input
-              {...register("password")}
-              {...props}
-              type={"password"}
-              placeholder="パスワード"
-            ></input>
+        </label>
+        <label className={clsx(["flex", "flex-col"])}>
+          <InputWithIcon
+            Icon={LockClosedIcon}
+            {...register("password")}
+            type={"password"}
+            placeholder="パスワード"
+          />
+          {errors.password && (
+            <p className={clsx(["mt-1"], ["text-xs"], ["text-red-600"])}>
+              {errors.password.message}
+            </p>
           )}
-          error={errors.password}
-        />
+        </label>
       </div>
       <div>
         <Turnstile

@@ -1,8 +1,7 @@
 import clsx from "clsx";
 import type { Metadata } from "next";
 
-import { SigninForm } from "~/components/pages/Auth/Signin/SigninForm";
-
+import { SigninForm } from "./SigninForm";
 export const metadata: Metadata = {
   title: "ログイン",
 };

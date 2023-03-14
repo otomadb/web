@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import type { Metadata } from "next";
 
-import { SignupForm } from "~/components/pages/Auth/Signup/SignupForm";
+import { SignupForm } from "./SignupForm";
 
 export const metadata: Metadata = {
   title: "ユーザー登録",
