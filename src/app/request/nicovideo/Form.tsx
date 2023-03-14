@@ -5,7 +5,7 @@ import "client-only";
 import clsx from "clsx";
 import React, { useState } from "react";
 
-import { SourceIdInputForm } from "~/components/pages/Editor/RegisterNicovideo/SourceIdInputForm";
+import { SourceIdInputForm } from "~/app/editor/nicovideo/SourceIdInputForm";
 
 import { RegisterForm } from "./RegisterForm";
 

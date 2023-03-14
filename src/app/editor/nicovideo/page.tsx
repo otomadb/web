@@ -1,8 +1,7 @@
 import clsx from "clsx";
 import type { Metadata } from "next";
 
-import { Form } from "~/components/pages/Editor/RegisterNicovideo/Form";
-
+import { Form } from "./Form";
 import { SearchParams } from "./Link";
 
 export const metadata: Metadata = {

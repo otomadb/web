@@ -5,13 +5,9 @@ import clsx from "clsx";
 import { ReactNode, useEffect } from "react";
 import { useQuery } from "urql";
 
-import { OriginalSource } from "~/components/pages/Editor/RegisterNicovideo/OriginalSource";
-import { SourceAlreadyExists as VideoSourceAlreadyExists } from "~/components/pages/Editor/RegisterNicovideo/SourceAlreadyRegistered";
-import { getFragment, graphql } from "~/gql";
-import {
-  EditorRegisterNicovideoPage_SourceAlreadyRegisteredFragmentDoc,
-  RegisterNicovideoPage_OriginalSourceFragmentDoc,
-} from "~/gql/graphql";
+import { OriginalSource } from "~/app/editor/nicovideo/OriginalSource";
+import { SourceAlreadyExists as VideoSourceAlreadyExists } from "~/app/editor/nicovideo/SourceAlreadyRegistered";
+import { graphql } from "~/gql";
 
 import { VideoRequestAlreadyExists } from "./VideoRequestAlreadyExists";
 
@@ -83,10 +79,7 @@ export const SourceChecker: React.FC<{
             )}
             {data.findNicovideoVideoSource && (
               <VideoSourceAlreadyExists
-                fragment={getFragment(
-                  EditorRegisterNicovideoPage_SourceAlreadyRegisteredFragmentDoc,
-                  data.findNicovideoVideoSource
-                )}
+                fragment={data.findNicovideoVideoSource}
               />
             )}
             {!data.findNicovideoVideoSource &&
@@ -101,10 +94,7 @@ export const SourceChecker: React.FC<{
                   {data.fetchNicovideo.source && (
                     <div className={clsx(["flex", "flex-col", "gap-y-4"])}>
                       <OriginalSource
-                        fragment={getFragment(
-                          RegisterNicovideoPage_OriginalSourceFragmentDoc,
-                          data.fetchNicovideo.source
-                        )}
+                        fragment={data.fetchNicovideo.source}
                         toggleTag={toggleTag}
                       />
                       <div
