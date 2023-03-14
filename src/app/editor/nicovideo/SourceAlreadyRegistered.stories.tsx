@@ -5,9 +5,10 @@ import {
   Provider as UrqlProvider,
 } from "urql";
 
+import { makeFragmentData } from "~/gql";
 import { aNicovideoVideoSource, aVideo } from "~/gql/graphql";
 
-import { SourceAlreadyExists } from "./SourceAlreadyRegistered";
+import { Fragment, SourceAlreadyExists } from "./SourceAlreadyRegistered";
 
 const meta = {
   component: SourceAlreadyExists,
@@ -29,12 +30,15 @@ export default meta;
 
 export const Primary: StoryObj<typeof meta> = {
   args: {
-    fragment: aNicovideoVideoSource({
-      sourceId: "sm2057168",
-      video: aVideo({
-        title: "M.C.ドナルドはダンスに夢中なのか？最終鬼畜道化師ドナルド・Ｍ",
-        thumbnailUrl: "/960x540.jpg",
+    fragment: makeFragmentData(
+      aNicovideoVideoSource({
+        sourceId: "sm2057168",
+        video: aVideo({
+          title: "M.C.ドナルドはダンスに夢中なのか？最終鬼畜道化師ドナルド・Ｍ",
+          thumbnailUrl: "/960x540.jpg",
+        }),
       }),
-    }),
+      Fragment
+    ),
   },
 };
