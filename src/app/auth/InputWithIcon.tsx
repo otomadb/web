@@ -2,12 +2,11 @@
 import clsx from "clsx";
 import React from "react";
 
-export const InputWithIcon: React.FC<
-  { Icon: React.FC<{ className?: string }> } & React.DetailedHTMLProps<
-    React.InputHTMLAttributes<HTMLInputElement>,
-    HTMLInputElement
-  >
-> = ({ className, Icon, ...props }) => {
+export const InputWithIcon: React.FC<{
+  className?: string;
+  Icon: React.FC<{ className?: string }>;
+  Input: React.FC<{ className?: string }>;
+}> = ({ className, Icon, Input }) => {
   return (
     <div
       className={clsx(
@@ -34,16 +33,8 @@ export const InputWithIcon: React.FC<
           )}
         />
       </div>
-      <input
-        className={clsx(
-          ["flex-grow"],
-          ["px-4", "py-2"],
-          ["rounded-r-md"],
-          ["bg-slate-50"],
-          ["outline-teal-300"],
-          [["text-slate-900"], ["placeholder:text-slate-300"]]
-        )}
-        {...props}
+      <Input
+        className={clsx(["flex-grow"], ["px-4", "py-2"], ["rounded-r-md"])}
       />
     </div>
   );

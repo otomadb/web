@@ -19,6 +19,8 @@ import * as z from "zod";
 import { AuthPageGuardContext } from "~/app/auth/Guard";
 import { SigninLinkPage } from "~/app/auth/signin/Link";
 import { BlueButton } from "~/components/common/Button";
+import { PasswordInput } from "~/components/common/PasswordInput";
+import { TextInput } from "~/components/common/TextInput";
 import { graphql } from "~/gql";
 import { TurnstileVerifyResponse } from "~/turnstile";
 
@@ -144,9 +146,13 @@ export const SignupForm: React.FC<{ className?: string }> = ({ className }) => {
         <label className={clsx(["flex", "flex-col"])}>
           <InputWithIcon
             Icon={AtSymbolIcon}
-            {...register("name")}
-            type={"text"}
-            placeholder="ユーザーネーム"
+            Input={(props) => (
+              <TextInput
+                {...props}
+                {...register("name")}
+                placeholder="ユーザーネーム"
+              />
+            )}
           />
           {errors.name && (
             <p className={clsx(["mt-1"], ["text-xs"], ["text-red-600"])}>
@@ -157,9 +163,13 @@ export const SignupForm: React.FC<{ className?: string }> = ({ className }) => {
         <label className={clsx(["flex", "flex-col"])}>
           <InputWithIcon
             Icon={UserIcon}
-            {...register("displayName")}
-            type={"text"}
-            placeholder="表示される名前"
+            Input={(props) => (
+              <TextInput
+                {...props}
+                {...register("displayName")}
+                placeholder="表示される名前"
+              />
+            )}
           />
           {errors.displayName && (
             <p className={clsx(["mt-1"], ["text-xs"], ["text-red-600"])}>
@@ -170,9 +180,13 @@ export const SignupForm: React.FC<{ className?: string }> = ({ className }) => {
         <label className={clsx(["flex", "flex-col"])}>
           <InputWithIcon
             Icon={EnvelopeIcon}
-            {...register("email")}
-            type={"text"}
-            placeholder="メールアドレス"
+            Input={(props) => (
+              <TextInput
+                {...props}
+                {...register("email")}
+                placeholder="メールアドレス"
+              />
+            )}
           />
           {errors.email && (
             <p className={clsx(["mt-1"], ["text-xs"], ["text-red-600"])}>
@@ -183,9 +197,13 @@ export const SignupForm: React.FC<{ className?: string }> = ({ className }) => {
         <label className={clsx(["flex", "flex-col"])}>
           <InputWithIcon
             Icon={LockClosedIcon}
-            {...register("password")}
-            type={"password"}
-            placeholder="パスワード"
+            Input={(props) => (
+              <PasswordInput
+                {...props}
+                {...register("password")}
+                placeholder="パスワード"
+              />
+            )}
           />
           {errors.password && (
             <p className={clsx(["mt-1"], ["text-xs"], ["text-red-600"])}>
@@ -196,16 +214,21 @@ export const SignupForm: React.FC<{ className?: string }> = ({ className }) => {
         <label className={clsx(["flex", "flex-col"])}>
           <InputWithIcon
             Icon={LockClosedIcon}
-            {...register("passwordRepeat", {
-              validate: (value) => {
-                console.log(getValues("password"), value);
-                return (
-                  getValues("password") === value || "パスワードが一致しません"
-                );
-              },
-            })}
-            type={"password"}
-            placeholder="パスワードの再入力"
+            Input={(props) => (
+              <PasswordInput
+                {...props}
+                {...register("passwordRepeat", {
+                  validate: (value) => {
+                    console.log(getValues("password"), value);
+                    return (
+                      getValues("password") === value ||
+                      "パスワードが一致しません"
+                    );
+                  },
+                })}
+                placeholder="パスワードの再入力"
+              />
+            )}
           />
           {errors.passwordRepeat && (
             <p className={clsx(["mt-1"], ["text-xs"], ["text-red-600"])}>

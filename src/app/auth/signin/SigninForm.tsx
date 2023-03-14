@@ -14,6 +14,8 @@ import * as z from "zod";
 import { AuthPageGuardContext } from "~/app/auth/Guard";
 import { SignupPageLink } from "~/app/auth/signup/Link";
 import { BlueButton } from "~/components/common/Button";
+import { PasswordInput } from "~/components/common/PasswordInput";
+import { TextInput } from "~/components/common/TextInput";
 import { graphql } from "~/gql";
 import { SigninFailedMessage } from "~/gql/graphql";
 import { TurnstileVerifyResponse } from "~/turnstile";
@@ -118,9 +120,13 @@ export const SigninForm: React.FC<{ className?: string }> = ({ className }) => {
         <label className={clsx(["flex", "flex-col"])}>
           <InputWithIcon
             Icon={AtSymbolIcon}
-            {...register("username")}
-            type={"text"}
-            placeholder="ユーザーネーム"
+            Input={(props) => (
+              <TextInput
+                {...props}
+                {...register("username")}
+                placeholder="ユーザーネーム"
+              />
+            )}
           />
           {errors.username && (
             <p className={clsx(["mt-1"], ["text-xs"], ["text-red-600"])}>
@@ -131,9 +137,13 @@ export const SigninForm: React.FC<{ className?: string }> = ({ className }) => {
         <label className={clsx(["flex", "flex-col"])}>
           <InputWithIcon
             Icon={LockClosedIcon}
-            {...register("password")}
-            type={"password"}
-            placeholder="パスワード"
+            Input={(props) => (
+              <PasswordInput
+                {...props}
+                {...register("password")}
+                placeholder="パスワード"
+              />
+            )}
           />
           {errors.password && (
             <p className={clsx(["mt-1"], ["text-xs"], ["text-red-600"])}>
