@@ -17,7 +17,7 @@ import { useMutation } from "urql";
 import * as z from "zod";
 
 import { AuthPageGuardContext } from "~/app/auth/Guard";
-import { LinkSignin } from "~/app/auth/signin/Link";
+import { SigninLinkPage } from "~/app/auth/signin/Link";
 import { BlueButton } from "~/components/common/Button";
 import { graphql } from "~/gql";
 import { TurnstileVerifyResponse } from "~/turnstile";
@@ -229,14 +229,14 @@ export const SignupForm: React.FC<{ className?: string }> = ({ className }) => {
       </div>
       <div className={clsx(["mt-4"])}>
         <p>
-          <LinkSignin
+          <SigninLinkPage
             className={clsx(
               ["text-blue-400", "hover:text-blue-500"],
               ["text-sm"]
             )}
           >
             ユーザー登録が既に済んでいるなら
-          </LinkSignin>
+          </SigninLinkPage>
         </p>
       </div>
     </form>

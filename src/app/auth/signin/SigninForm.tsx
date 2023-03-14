@@ -12,7 +12,7 @@ import { useMutation } from "urql";
 import * as z from "zod";
 
 import { AuthPageGuardContext } from "~/app/auth/Guard";
-import { LinkSignup } from "~/app/auth/signup/Link";
+import { SignupPageLink } from "~/app/auth/signup/Link";
 import { BlueButton } from "~/components/common/Button";
 import { graphql } from "~/gql";
 import { SigninFailedMessage } from "~/gql/graphql";
@@ -159,14 +159,14 @@ export const SigninForm: React.FC<{ className?: string }> = ({ className }) => {
       </div>
       <div className={clsx(["mt-4"])}>
         <p>
-          <LinkSignup
+          <SignupPageLink
             className={clsx(
               ["text-blue-400", "hover:text-blue-500"],
               ["text-sm"]
             )}
           >
             ユーザー登録をしていないなら
-          </LinkSignup>
+          </SignupPageLink>
         </p>
       </div>
     </form>
