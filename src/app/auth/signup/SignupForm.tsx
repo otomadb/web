@@ -22,7 +22,7 @@ import { BlueButton } from "~/components/common/Button";
 import { graphql } from "~/gql";
 import { TurnstileVerifyResponse } from "~/turnstile";
 
-import { AuthFormInput } from "../FormInput";
+import { AuthFormInput } from "../signin/FormInput";
 
 const formSchema = z.object({
   name: z.string().min(3, { message: "ユーザーネームは3文字以上です" }),

@@ -18,7 +18,7 @@ import { graphql } from "~/gql";
 import { SigninFailedMessage } from "~/gql/graphql";
 import { TurnstileVerifyResponse } from "~/turnstile";
 
-import { AuthFormInput } from "../FormInput";
+import { AuthFormInput } from "./FormInput";
 
 const formSchema = z.object({
   username: z.string({ required_error: "ユーザーネームを入力してください" }),
