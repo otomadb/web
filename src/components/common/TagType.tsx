@@ -1,6 +1,6 @@
 import clsx from "clsx";
 
-import { FragmentType, getFragment, graphql } from "~/gql";
+import { FragmentType, graphql, useFragment } from "~/gql";
 import { TagType as Type } from "~/gql/graphql";
 
 const Fragment = graphql(`
@@ -12,7 +12,7 @@ export const TagType: React.FC<{
   className?: string;
   fragment: FragmentType<typeof Fragment>;
 }> = ({ className, ...props }) => {
-  const { type } = getFragment(Fragment, props.fragment);
+  const { type } = useFragment(Fragment, props.fragment);
   return (
     <span
       className={clsx(

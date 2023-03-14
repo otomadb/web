@@ -1,7 +1,7 @@
 import clsx from "clsx";
 
 import { CommonTag } from "~/components/common/Tag";
-import { FragmentType, getFragment, graphql } from "~/gql";
+import { FragmentType, graphql, useFragment } from "~/gql";
 
 import { LinkTag } from "./Link";
 
@@ -24,7 +24,7 @@ export const Parents: React.FC<{
   className?: string;
   fragment: FragmentType<typeof Fragment>;
 }> = ({ className, ...props }) => {
-  const { parents } = getFragment(Fragment, props.fragment);
+  const { parents } = useFragment(Fragment, props.fragment);
 
   if (parents.nodes.length === 0) return null;
 
