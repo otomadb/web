@@ -5,10 +5,9 @@ import clsx from "clsx";
 import React from "react";
 
 import { LinkTag } from "~/app/tags/[serial]/Link";
-import { graphql } from "~/gql";
-import { SearchContents_SearchTagsFragment } from "~/gql/graphql";
+import { FragmentType, graphql, useFragment } from "~/gql";
 
-graphql(`
+const Fragment = graphql(`
   fragment SearchContents_SearchTags on SearchTagsPayload {
     items {
       matchedName
@@ -27,9 +26,9 @@ graphql(`
 `);
 export const SearchTags: React.FC<{
   className?: string;
-  fragment: SearchContents_SearchTagsFragment;
-}> = ({ className, fragment }) => {
-  const { items } = fragment;
+  fragment: FragmentType<typeof Fragment>;
+}> = ({ className, ...props }) => {
+  const { items } = useFragment(Fragment, props.fragment);
 
   return (
     <div className={clsx(className)}>

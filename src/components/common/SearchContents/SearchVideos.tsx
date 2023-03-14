@@ -5,16 +5,11 @@ import clsx from "clsx";
 import React from "react";
 
 import { LinkVideo } from "~/app/videos/[serial]/Link";
-import { graphql, useFragment } from "~/gql";
-import {
-  SearchContents_SearchVideosFragment,
-  SearchContents_SearchVideosItemFragment,
-  SearchContents_SearchVideosItemFragmentDoc,
-} from "~/gql/graphql";
+import { FragmentType, graphql, useFragment } from "~/gql";
 
 import { VideoThumbnail } from "../VideoThumbnail";
 
-graphql(`
+const ItemFragment = graphql(`
   fragment SearchContents_SearchVideosItem on SearchVideosItem {
     matchedTitle
     video {
@@ -27,9 +22,9 @@ graphql(`
 `);
 const SearchVideosItem: React.FC<{
   className?: string;
-  fragment: SearchContents_SearchVideosItemFragment;
-}> = ({ className, fragment }) => {
-  const { matchedTitle, video } = fragment;
+  fragment: FragmentType<typeof ItemFragment>;
+}> = ({ className, ...props }) => {
+  const { matchedTitle, video } = useFragment(ItemFragment, props.fragment);
   return (
     <LinkVideo
       key={video.id}
@@ -67,7 +62,7 @@ const SearchVideosItem: React.FC<{
   );
 };
 
-graphql(`
+const Fragment = graphql(`
   fragment SearchContents_SearchVideos on SearchVideosPayload {
     items {
       ...SearchContents_SearchVideosItem
@@ -76,12 +71,9 @@ graphql(`
 `);
 export const SearchVideos: React.FC<{
   className?: string;
-  fragment: SearchContents_SearchVideosFragment;
-}> = ({ className, fragment }) => {
-  const items = useFragment(
-    SearchContents_SearchVideosItemFragmentDoc,
-    fragment.items
-  );
+  fragment: FragmentType<typeof Fragment>;
+}> = ({ className, ...props }) => {
+  const { items } = useFragment(Fragment, props.fragment);
 
   return (
     <div className={clsx(className)}>

@@ -3,11 +3,7 @@ import clsx from "clsx";
 import React from "react";
 import { useQuery } from "urql";
 
-import { graphql, useFragment as getFragment } from "~/gql";
-import {
-  SearchContents_SearchTagsFragmentDoc,
-  SearchContents_SearchVideosFragmentDoc,
-} from "~/gql/graphql";
+import { graphql } from "~/gql";
 
 import { SearchNicovideo } from "./Nicovideo";
 import { SearchTags } from "./SearchTags";
@@ -58,13 +54,7 @@ export const Dropdown: React.FC<{
             タグ
           </div>
           {data?.searchTags && (
-            <SearchTags
-              className={clsx()}
-              fragment={getFragment(
-                SearchContents_SearchTagsFragmentDoc,
-                data.searchTags
-              )}
-            />
+            <SearchTags className={clsx()} fragment={data.searchTags} />
           )}
         </div>
         <div className={clsx()}>
@@ -79,13 +69,7 @@ export const Dropdown: React.FC<{
             動画
           </div>
           {data?.searchVideos && (
-            <SearchVideos
-              className={clsx()}
-              fragment={getFragment(
-                SearchContents_SearchVideosFragmentDoc,
-                data.searchVideos
-              )}
-            />
+            <SearchVideos className={clsx()} fragment={data.searchVideos} />
           )}
         </div>
         {regexNicovideoSourceID.test(query) && (
