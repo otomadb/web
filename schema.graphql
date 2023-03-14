@@ -1317,7 +1317,7 @@ type Tag implements Node {
   meaningless: Boolean! @deprecated
   name: String!
   names(primary: Boolean): [TagName!]!
-  parents(categoryTag: Boolean): [TagParent!]!
+  parents(after: String, before: String, categoryTag: Boolean, first: Int, last: Int, orderBy: TagParentsOrderBy! = {createdAt: DESC}): TagParentConnection!
   pseudoType: PseudoTagType! @deprecated
   serial: Int!
   taggedVideos(after: String, before: String, first: Int, last: Int, orderBy: TagTaggedVideosOrderBy! = {createdAt: DESC}): VideoTagConnection!
@@ -1456,6 +1456,10 @@ type TagParentUnsetPrimaryEvent implements Event & Node & TagParentEvent {
   series: String!
   tagParent: TagParent!
   user: User!
+}
+
+input TagParentsOrderBy {
+  createdAt: SortOrder
 }
 
 """Tagを追加した際に発生．（初回のみ）"""

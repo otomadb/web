@@ -5,6 +5,7 @@ import { graphql } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
 
 import { AliasesDetail } from "./AliasesDetail";
+import { Parents } from "./Parents";
 import { TypeDetail } from "./TypeDetail";
 
 export default async function Layout({
@@ -33,6 +34,7 @@ export default async function Layout({
         findTag(input: { serial: $serial }) {
           ...TagPageLayout_TypeDetail
           ...TagPageLayout_AliasesDetail
+          ...TagPageLayout_Parents
           id
           name
           type
@@ -53,19 +55,24 @@ export default async function Layout({
 
   return (
     <main className={clsx(["container"], ["mx-auto"])}>
-      <header className={clsx(["flex", "flex-col", "gap-y-1"])}>
-        <h1 className={clsx(["text-xl"])}>
-          <span className={clsx(["text-slate-900", "font-bold"])}>{name}</span>
-          {explicitParent && (
-            <span className={clsx(["ml-1"], ["text-slate-500"])}>
-              ({explicitParent.name})
+      <header className={clsx(["flex"])}>
+        <div className={clsx(["flex-grow"], ["flex", "flex-col", "gap-y-1"])}>
+          <h1 className={clsx(["text-xl"])}>
+            <span className={clsx(["text-slate-900", "font-bold"])}>
+              {name}
             </span>
-          )}
-        </h1>
-        <TypeDetail fragment={findTag} />
-        <AliasesDetail fragment={findTag} />
+            {explicitParent && (
+              <span className={clsx(["ml-1"], ["text-slate-500"])}>
+                ({explicitParent.name})
+              </span>
+            )}
+          </h1>
+          <TypeDetail fragment={findTag} />
+          <AliasesDetail fragment={findTag} />
+          <Parents fragment={findTag} />
+        </div>
       </header>
-      <div>{children}</div>
+      <div className={clsx(["mt-4"])}>{children}</div>
     </main>
   );
 }
