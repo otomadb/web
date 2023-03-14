@@ -1,12 +1,10 @@
-import "server-only";
-
 import clsx from "clsx";
 
 import { LinkTag } from "~/app/tags/[serial]/Link";
 import { CommonTag } from "~/components/common/Tag";
 import { FragmentType, getFragment, graphql } from "~/gql";
 
-const Fragment = graphql(`
+export const Fragment = graphql(`
   fragment VideoPageLayout_TagsList on VideoTagConnection {
     nodes {
       tag {
@@ -26,7 +24,14 @@ export const TagsList = ({
 }): JSX.Element => {
   const fragment = getFragment(Fragment, props.fragment);
   return (
-    <div className={clsx(className, ["flex", "flex-col", "gap-y-0.5"])}>
+    <div
+      className={clsx(className, [
+        "flex",
+        "flex-col",
+        "items-start",
+        "gap-y-0.5",
+      ])}
+    >
       {fragment.nodes.map((tagging) => (
         <LinkTag key={tagging.tag.id} fragment={tagging.tag}>
           <CommonTag
