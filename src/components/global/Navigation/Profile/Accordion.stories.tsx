@@ -1,9 +1,10 @@
 import { css } from "@emotion/css";
 import { Meta, StoryObj } from "@storybook/react";
 
+import { makeFragmentData } from "~/gql";
 import { aUser } from "~/gql/graphql";
 
-import { Accordion } from "./Accordion";
+import { Accordion, Fragment } from "./Accordion";
 
 export default {
   component: Accordion,
@@ -17,41 +18,50 @@ export default {
 export const Normal: StoryObj<typeof Accordion> = {
   name: "通常ユーザ",
   args: {
-    fragment: aUser({
-      id: "1",
-      name: "sno2wman",
-      displayName: "SnO2WMaN",
-      icon: "/storybook/512x512.png",
-      isEditor: false,
-      isAdministrator: false,
-    }),
+    fragment: makeFragmentData(
+      aUser({
+        id: "1",
+        name: "sno2wman",
+        displayName: "SnO2WMaN",
+        icon: "/storybook/512x512.png",
+        isEditor: false,
+        isAdministrator: false,
+      }),
+      Fragment
+    ),
   },
 };
 
 export const Editor: StoryObj<typeof Accordion> = {
   name: "編集者",
   args: {
-    fragment: aUser({
-      id: "1",
-      name: "sno2wman",
-      displayName: "SnO2WMaN",
-      icon: "/storybook/512x512.png",
-      isEditor: true,
-      isAdministrator: false,
-    }),
+    fragment: makeFragmentData(
+      aUser({
+        id: "1",
+        name: "sno2wman",
+        displayName: "SnO2WMaN",
+        icon: "/storybook/512x512.png",
+        isEditor: true,
+        isAdministrator: false,
+      }),
+      Fragment
+    ),
   },
 };
 
 export const Adnimistrator: StoryObj<typeof Accordion> = {
   name: "管理者",
   args: {
-    fragment: aUser({
-      id: "1",
-      name: "sno2wman",
-      displayName: "SnO2WMaN",
-      icon: "/storybook/512x512.png",
-      isEditor: true,
-      isAdministrator: true,
-    }),
+    fragment: makeFragmentData(
+      aUser({
+        id: "1",
+        name: "sno2wman",
+        displayName: "SnO2WMaN",
+        icon: "/storybook/512x512.png",
+        isEditor: true,
+        isAdministrator: true,
+      }),
+      Fragment
+    ),
   },
 };

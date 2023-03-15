@@ -66,7 +66,7 @@ const Profile: React.FC<{
   );
 };
 
-const Fragment = graphql(`
+export const Fragment = graphql(`
   fragment GlobalNav_Profile_Accordion on User {
     name
     isEditor

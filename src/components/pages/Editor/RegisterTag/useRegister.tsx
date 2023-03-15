@@ -9,23 +9,19 @@ import { toast } from "react-hot-toast";
 import { useMutation } from "urql";
 
 import { CommonTag } from "~/components/common/Tag";
-import { graphql, useFragment as getFragment } from "~/gql";
-import {
-  RegisterTagPage_RegisterTagDocument,
-  RegisterTagPage_SuccessToastFragment,
-  RegisterTagPage_SuccessToastFragmentDoc,
-} from "~/gql/graphql";
+import { FragmentType, graphql, useFragment } from "~/gql";
 
 import { FormSchema } from "./FormSchema";
 
-graphql(`
+const Fragment = graphql(`
   fragment RegisterTagPage_SuccessToast on Tag {
     ...CommonTag
   }
 `);
 export const SuccessToast: React.FC<{
-  fragment: RegisterTagPage_SuccessToastFragment;
-}> = ({ fragment }) => {
+  fragment: FragmentType<typeof Fragment>;
+}> = ({ ...props }) => {
+  const fragment = useFragment(Fragment, props.fragment);
   return (
     <div>
       <CommonTag
@@ -40,26 +36,25 @@ export const useCallSuccessToast =
   () => (props: Pick<ComponentProps<typeof SuccessToast>, "fragment">) =>
     toast(() => <SuccessToast {...props} />);
 
-graphql(`
-  mutation RegisterTagPage_RegisterTag($input: RegisterTagInput!) {
-    registerTag(input: $input) {
-      __typename
-
-      ... on RegisterTagSucceededPayload {
-        tag {
-          ...RegisterTagPage_SuccessToast
-        }
-      }
-    }
-  }
-`);
 export const useRegister = ({
   onSuccess,
 }: {
   onSuccess(): void;
 }): SubmitHandler<FormSchema> => {
   const [, mutateRegisterTag] = useMutation(
-    RegisterTagPage_RegisterTagDocument
+    graphql(`
+      mutation RegisterTagPage_RegisterTag($input: RegisterTagInput!) {
+        registerTag(input: $input) {
+          __typename
+
+          ... on RegisterTagSucceededPayload {
+            tag {
+              ...RegisterTagPage_SuccessToast
+            }
+          }
+        }
+      }
+    `)
   );
   const callSuccessToast = useCallSuccessToast();
 
@@ -88,12 +83,7 @@ export const useRegister = ({
       switch (data.registerTag.__typename) {
         case "RegisterTagSucceededPayload": {
           onSuccess();
-          callSuccessToast({
-            fragment: getFragment(
-              RegisterTagPage_SuccessToastFragmentDoc,
-              data.registerTag.tag
-            ),
-          });
+          callSuccessToast({ fragment: data.registerTag.tag });
           return;
         }
         default: {
