@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import type { Metadata } from "next";
 
-import { RegisterTagForm } from "~/components/pages/Editor/RegisterTag/Form";
+import { RegisterTagForm } from "./Form";
 
 export const metadata: Metadata = {
   title: "タグの登録",

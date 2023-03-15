@@ -4,9 +4,9 @@ import clsx from "clsx";
 import { Suspense } from "react";
 
 import { SearchContents } from "~/components/common/SearchContents/SearchContents";
-import { NicovideoRequestsList } from "~/components/pages/Top/NicovideoRequestsList.server";
-import { RecentVideosList } from "~/components/pages/Top/RecentVIdeosList.server";
 
+import { NicovideoRequestsList } from "./NicovideoRequestsList.server";
+import { RecentVideosList } from "./RecentVIdeosList.server";
 import { AllNicovideoRequestsPageLink } from "./requests/nicovideo/Link";
 import { AllVideosPageLink } from "./videos/Link";
 
