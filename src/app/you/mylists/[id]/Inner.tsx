@@ -5,6 +5,7 @@ import "client-only";
 import React from "react";
 import { useQuery } from "urql";
 
+import { UserMylistTemplate } from "~/app/users/[name]/mylists/[id]/Template";
 import { graphql, useFragment } from "~/gql";
 import {
   MylistPageCommon_SideMylistListFragmentDoc,
@@ -12,8 +13,6 @@ import {
   UserMylistPage_RegistrationsFragmentDoc,
   YouMylistPageDocument,
 } from "~/gql/graphql";
-
-import { UserMylistTemplate } from "../../Mylist/Template";
 
 graphql(`
   query YouMylistPage($mylistId: ID!) {

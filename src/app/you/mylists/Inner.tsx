@@ -5,13 +5,12 @@ import "client-only";
 import React from "react";
 import { useQuery } from "urql";
 
+import { UserMylists } from "~/app/users/[name]/mylists";
 import { graphql, useFragment } from "~/gql";
 import {
   UserMylistsPage_MylistsFragmentDoc,
   YouMylistsPageDocument,
 } from "~/gql/graphql";
-
-import { UserMylists } from "../../Mylists";
 
 graphql(`
   query YouMylistsPage {

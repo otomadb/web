@@ -8,7 +8,7 @@ import {
   UserMylistPage_RegistrationsFragment,
 } from "~/gql/graphql";
 
-import { MetaTemplate } from "../MetaTemplate";
+import { MetaTemplate } from "../../MetaTemplate";
 import { Details } from "./Details";
 import { Registrations } from "./Registrations";
 
