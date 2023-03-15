@@ -1,10 +1,11 @@
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 
-import { graphql, useFragment } from "~/gql";
+import { graphql } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
-import { UserMylistPageFragmentDoc } from "~/gql/graphql";
 
-export const revalidate = 0;
+import { Details } from "../mylists/[id]/Details.server";
+import { RegistrationsList } from "../mylists/[id]/RegistrationsList.server";
 
 export default async function Page({ params }: { params: { name: string } }) {
   const data = await fetchGql(
@@ -12,14 +13,13 @@ export default async function Page({ params }: { params: { name: string } }) {
       query UserLikesPage($userName: String!) {
         findUser(input: { name: $userName }) {
           likes {
-            id
+            ...UserMylistPage_Details
+            ...UserMylistPage_RegistrationsList
           }
         }
       }
     `),
-    {
-      userName: params.name,
-    }
+    { userName: params.name }
   );
 
   if (!data.findUser) notFound();
@@ -28,8 +28,19 @@ export default async function Page({ params }: { params: { name: string } }) {
   if (!findUser.likes) notFound();
 
   return (
-    <UserMylist
-      fragment={useFragment(UserMylistPageFragmentDoc, findUser.likes)}
-    />
+    <main>
+      <header>
+        <Suspense>
+          {/* @ts-expect-error for Server Component*/}
+          <Details fragment={findUser.likes} />
+        </Suspense>
+      </header>
+      <section>
+        <Suspense>
+          {/* @ts-expect-error for Server Component*/}
+          <RegistrationsList fragment={findUser.likes} />
+        </Suspense>
+      </section>
+    </main>
   );
 }

@@ -2,7 +2,7 @@
 
 import React, { ReactNode } from "react";
 
-import { LinkUserMylist } from "~/app/users/[name]/mylists/[id]/Link";
+import { UserMylistPageLink } from "~/app/users/[name]/mylists/[id]/Link";
 import { LinkYouLikes } from "~/app/you/likes/Link";
 import { LinkYouMylist } from "~/app/you/mylists/[id]/Link";
 import { graphql } from "~/gql";
@@ -28,7 +28,7 @@ export const MylistLinkSwitch: React.FC<{
   const [{ data: viewer }] = useViewer();
 
   if (viewer?.whoami?.id !== fragment.holder.id)
-    return <LinkUserMylist fragment={fragment} {...props} />;
+    return <UserMylistPageLink fragment={fragment} {...props} />;
 
   if (fragment.isLikeList) return <LinkYouLikes {...props} />;
   else return <LinkYouMylist fragment={fragment} {...props} />;

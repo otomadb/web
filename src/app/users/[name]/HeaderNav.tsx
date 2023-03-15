@@ -2,7 +2,7 @@
 import clsx from "clsx";
 import React, { ReactNode } from "react";
 
-import { UserLikesLink } from "~/app/users/[name]/likes/Link";
+import { UserLikesPageLink } from "~/app/users/[name]/likes/Link";
 import { LinkUser } from "~/app/users/[name]/Link";
 import { UserMylistsPageLink } from "~/app/users/[name]/mylists/Link";
 import { FragmentType, graphql, useFragment } from "~/gql";
@@ -46,7 +46,7 @@ export const HeaderNav: React.FC<{
       <Item
         className={clsx()}
         Wrapper={(props) => (
-          <UserLikesLink
+          <UserLikesPageLink
             fragment={fragment}
             aria-current={highlight === "LIKES" ? "page" : undefined}
             {...props}
