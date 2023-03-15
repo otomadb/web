@@ -7,7 +7,7 @@ import { CommonTag } from "~/components/common/Tag";
 import { VideoThumbnail } from "~/components/common/VideoThumbnail";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-const Fragment = graphql(`
+export const Fragment = graphql(`
   fragment UserMylistPage_RegistrationsListItem on MylistRegistration {
     id
     note
