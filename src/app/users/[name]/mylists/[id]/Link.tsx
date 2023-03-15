@@ -5,8 +5,8 @@ import { FragmentType, graphql, useFragment } from "~/gql";
 
 const Fragment = graphql(`
   fragment Link_UserMylist on Mylist {
+    id
     holder {
-      id
       name
     }
   }
@@ -17,7 +17,8 @@ export const LinkUserMylist: React.FC<
   }
 > = ({ children, fragment, ...props }) => {
   const {
-    holder: { id, name },
+    id,
+    holder: { name },
   } = useFragment(Fragment, fragment);
   return (
     <Link href={`/users/${name}/mylists/${id}`} {...props}>

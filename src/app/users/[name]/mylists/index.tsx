@@ -8,16 +8,14 @@ import React from "react";
 import { graphql, useFragment as getFragment } from "~/gql";
 import {
   MylistPageCommon_SideMylistListFragmentDoc,
-  UserMylistsPage_LargeMylistListFragmentDoc,
   UserMylistsPage_MylistsFragment,
 } from "~/gql/graphql";
 
 import { MetaTemplate } from "../MetaTemplate";
-import { LargeMylistList } from "./LargeMylistList";
+import { MylistList } from "./MylistsList.server";
 
 graphql(`
   fragment UserMylistsPage_Mylists on MylistConnection {
-    ...UserMylistsPage_LargeMylistList
     ...MylistPageCommon_SideMylistList
   }
 `);
@@ -32,16 +30,13 @@ export const UserMylists: React.FC<{
         fallback
       )}
       Main={() => (
-        <LargeMylistList
+        <MylistList
           className={clsx(
             ["flex-shrink-0"],
             ["flex-grow", "xl:flex-grow-0"],
             ["xl:w-[1024px]"]
           )}
-          fallback={getFragment(
-            UserMylistsPage_LargeMylistListFragmentDoc,
-            fallback
-          )}
+          fallback={fallback}
         />
       )}
     />

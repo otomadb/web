@@ -2,7 +2,7 @@
 import clsx from "clsx";
 import React, { ComponentProps } from "react";
 
-import { SideMylistList } from "./SideMylistList";
+import { SideMylistList } from "./mylists/SideMylistList";
 
 export const MetaTemplate: React.FC<{
   sidelist?: ComponentProps<typeof SideMylistList>["fallback"];
@@ -18,7 +18,7 @@ export const MetaTemplate: React.FC<{
           ["h-[calc(100vh-64px)]"]
         )}
       >
-        {sidelist && <SideMylistList fallback={sidelist} />}
+        {sidelist && <SideMylistList fragment={sidelist} />}
       </div>
       <div
         className={clsx(

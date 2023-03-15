@@ -5,7 +5,7 @@ import { useQuery } from "urql";
 
 import { UserLikesLink } from "~/app/users/[name]/likes/Link";
 import { LinkUser } from "~/app/users/[name]/Link";
-import { LinkUserMylists } from "~/app/users/[name]/mylists/Link";
+import { UserMylistsPageLink } from "~/app/users/[name]/mylists/Link";
 import { LinkYouLikes } from "~/app/you/likes/Link";
 import { LinkYouMylists } from "~/app/you/mylists/Link";
 import { graphql } from "~/gql";
@@ -137,7 +137,7 @@ export const UserPageNav: React.FC<{
           viewerData?.whoami?.id === fragment.id ? (
             <LinkYouMylists {...props} />
           ) : (
-            <LinkUserMylists
+            <UserMylistsPageLink
               fragment={fragment}
               aria-current={highlight === "MYLISTS" ? "page" : undefined}
               {...props}

@@ -8,7 +8,7 @@ const Fragment = graphql(`
     name
   }
 `);
-export const LinkUserMylists: React.FC<
+export const UserMylistsPageLink: React.FC<
   Omit<ComponentProps<typeof Link>, "href"> & {
     fragment: FragmentType<typeof Fragment>;
   }

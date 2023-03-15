@@ -1,22 +1,19 @@
 import clsx from "clsx";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 
-import { AttentionYou } from "~/components/pages/User/AttentionYou";
-import { UserMylists } from "~/components/pages/User/Mylists";
-import { graphql, useFragment } from "~/gql";
+import { graphql } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
-import { UserMylistsPage_MylistsFragmentDoc } from "~/gql/graphql";
+
+import { MylistList } from "./MylistsList.server";
 
 export default async function Page({ params }: { params: { name: string } }) {
   const { findUser } = await fetchGql(
     graphql(`
       query UserMylistsPage($name: String!) {
         findUser(input: { name: $name }) {
-          id
+          ...UserMylistsPage_MylistsList
           ...UserPageLayout_Nav
-          mylists(range: [PUBLIC]) {
-            ...UserMylistsPage_Mylists
-          }
         }
       }
     `),
@@ -26,19 +23,11 @@ export default async function Page({ params }: { params: { name: string } }) {
   if (!findUser) notFound();
 
   return (
-    <>
-      <div>
-        <AttentionYou
-          className={clsx(["w-full"], ["my-4"])}
-          pageUserId={findUser.id}
-        />
-        <UserMylists
-          fallback={useFragment(
-            UserMylistsPage_MylistsFragmentDoc,
-            findUser.mylists
-          )}
-        />
-      </div>
-    </>
+    <div className={clsx()}>
+      <Suspense>
+        {/* @ts-expect-error for Server Component*/}
+        <MylistList fragment={findUser} />
+      </Suspense>
+    </div>
   );
 }
