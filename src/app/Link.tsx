@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React, { ComponentProps } from "react";
 
-export const LinkTop: React.FC<Omit<ComponentProps<typeof Link>, "href">> = ({
+export const TopLink: React.FC<Omit<ComponentProps<typeof Link>, "href">> = ({
   children,
   ...props
 }) => (

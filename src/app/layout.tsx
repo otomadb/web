@@ -7,7 +7,7 @@ import React from "react";
 import { Toaster } from "~/components/common/Toaster";
 import { GlobalNavigation } from "~/components/global/Navigation/Navigation";
 
-import Providers from "./providers";
+import { UrqlProvider } from "./UrqlProvider";
 
 export const metadata: Metadata = {
   title: "Otomadb",
@@ -32,7 +32,7 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body className={clsx(["relative"], ["bg-slate-50"])}>
-        <Providers>
+        <UrqlProvider>
           <GlobalNavigation
             className={clsx(
               ["sticky"],
@@ -46,7 +46,7 @@ export default function RootLayout({
             {children}
           </div>
           <Toaster />
-        </Providers>
+        </UrqlProvider>
       </body>
     </html>
   );
