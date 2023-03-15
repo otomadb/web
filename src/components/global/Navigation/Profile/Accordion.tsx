@@ -5,7 +5,7 @@ import React, { ReactNode } from "react";
 
 import { NicovideoRegisterPageLink } from "~/app/editor/nicovideo/Link";
 import { LinkRegisterSemitag } from "~/app/editor/semitags/Link";
-import { LinkRegisterTag } from "~/app/editor/tags/Link";
+import { TagRegisterPageLink } from "~/app/editor/tags/Link";
 import { NicovideoRequestPageLink } from "~/app/request/nicovideo/Link";
 import { LinkUser } from "~/app/users/[name]/Link";
 import { LinkYouLikes } from "~/app/you/likes/Link";
@@ -149,7 +149,7 @@ export const Accordion: React.FC<{
               </MenuItem>
               <MenuItem
                 className={clsx(["col-span-1"])}
-                Wrapper={(props) => <LinkRegisterTag {...props} />}
+                Wrapper={(props) => <TagRegisterPageLink {...props} />}
               >
                 タグの登録
               </MenuItem>
