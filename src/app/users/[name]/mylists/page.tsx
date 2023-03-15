@@ -13,7 +13,6 @@ export default async function Page({ params }: { params: { name: string } }) {
       query UserMylistsPage($name: String!) {
         findUser(input: { name: $name }) {
           ...UserMylistsPage_MylistsList
-          ...UserPageLayout_Nav
         }
       }
     `),

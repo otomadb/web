@@ -17,7 +17,6 @@ export default async function Page({
     graphql(`
       query UserMylistPage($userName: String!, $mylistId: ID!) {
         findUser(input: { name: $userName }) {
-          ...UserPageLayout_Nav
           mylist(id: $mylistId) {
             ...UserMylistPage
           }

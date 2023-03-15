@@ -9,7 +9,7 @@ import { LinkYouMylists } from "~/app/you/mylists/Link";
 import { graphql } from "~/gql";
 import { YouPageLayout_NavDocument } from "~/gql/graphql";
 
-import { Item, NavWrapper } from "../users/[name]/Nav";
+import { Item, NavWrapper } from "../users/[name]/HeaderNav";
 
 graphql(`
   query YouPageLayout_Nav {

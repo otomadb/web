@@ -6,13 +6,10 @@ import React from "react";
 
 import { graphql, useFragment } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
-import {
-  UserPageLayout_HeaderFragmentDoc,
-  UserPageLayout_NavFragmentDoc,
-} from "~/gql/graphql";
+import { UserPageLayout_HeaderFragmentDoc } from "~/gql/graphql";
 
 import { Header } from "./Header";
-import { UserPageNav } from "./Nav";
+import { HeaderNav } from "./HeaderNav";
 
 export default async function Layout({
   children,
@@ -26,7 +23,7 @@ export default async function Layout({
       query UserPageLayout($name: String!) {
         findUser(input: { name: $name }) {
           ...UserPageLayout_Header
-          ...UserPageLayout_Nav
+          ...UserPageLayout_HeaderNav
         }
       }
     `),
@@ -42,10 +39,7 @@ export default async function Layout({
           className={clsx(["container", "max-w-screen-xl", "mx-auto"])}
           fragment={useFragment(UserPageLayout_HeaderFragmentDoc, findUser)}
         />
-        <UserPageNav
-          // highlight="MYLISTS"
-          fragment={useFragment(UserPageLayout_NavFragmentDoc, findUser)}
-        />
+        <HeaderNav fragment={findUser} />
         {children}
       </div>
     </div>
