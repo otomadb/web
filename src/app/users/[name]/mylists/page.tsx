@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 
 import { AttentionYou } from "~/components/pages/User/AttentionYou";
 import { UserMylists } from "~/components/pages/User/Mylists";
-import { getFragment, graphql } from "~/gql";
+import { graphql, useFragment } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
 import { UserMylistsPage_MylistsFragmentDoc } from "~/gql/graphql";
 
@@ -33,7 +33,7 @@ export default async function Page({ params }: { params: { name: string } }) {
           pageUserId={findUser.id}
         />
         <UserMylists
-          fallback={getFragment(
+          fallback={useFragment(
             UserMylistsPage_MylistsFragmentDoc,
             findUser.mylists
           )}

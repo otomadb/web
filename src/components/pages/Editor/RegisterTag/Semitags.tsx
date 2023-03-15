@@ -11,12 +11,8 @@ import {
 } from "react-hook-form";
 import { useQuery } from "urql";
 
-import { getFragment, graphql } from "~/gql";
-import {
-  RegisterTagPage_Semitags_SelectedDocument,
-  RegisterTagPage_Semitags_UnselectedFragment,
-  RegisterTagPage_Semitags_UnselectedFragmentDoc,
-} from "~/gql/graphql";
+import { FragmentType, graphql, useFragment } from "~/gql";
+import { RegisterTagPage_Semitags_SelectedDocument } from "~/gql/graphql";
 
 import { FormSchema } from "./FormSchema";
 
@@ -71,7 +67,7 @@ export const Selected: React.FC<{
   );
 };
 
-graphql(`
+const Fragment = graphql(`
   fragment RegisterTagPage_Semitags_Unselected on Semitag {
     id
     name
@@ -84,9 +80,10 @@ graphql(`
 export const UnselectedRaw: React.FC<{
   className?: string;
   append(): void;
-  fragment: RegisterTagPage_Semitags_UnselectedFragment;
+  fragment: FragmentType<typeof Fragment>;
   disabled: boolean;
-}> = ({ className, fragment, append, disabled }) => {
+}> = ({ className, append, disabled, ...props }) => {
+  const fragment = useFragment(Fragment, props.fragment);
   return (
     <button
       type="button"
@@ -215,10 +212,7 @@ export const Semitags: React.FC<{
             {data?.findSemitags.nodes.map((semitag) => (
               <UnselectedRaw
                 key={semitag.id}
-                fragment={getFragment(
-                  RegisterTagPage_Semitags_UnselectedFragmentDoc,
-                  semitag
-                )}
+                fragment={semitag}
                 append={() => {
                   append({ semitagId: semitag.id });
                   setTemporaryPrimaryTitle(semitag.name);

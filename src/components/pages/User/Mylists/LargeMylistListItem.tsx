@@ -3,7 +3,7 @@ import React from "react";
 
 import { UserIcon } from "~/components/common/UserIcon";
 import { VideoThumbnail } from "~/components/common/VideoThumbnail";
-import { getFragment, graphql } from "~/gql";
+import { graphql, useFragment } from "~/gql";
 import {
   MylistPageCommon_LinkSwitchFragmentDoc,
   UserMylistsPage_LargeMylistListItemFragment,
@@ -44,7 +44,7 @@ export const LargeMylistListItem: React.FC<{
 
   return (
     <MylistLinkSwitch
-      fragment={getFragment(MylistPageCommon_LinkSwitchFragmentDoc, fragment)}
+      fragment={useFragment(MylistPageCommon_LinkSwitchFragmentDoc, fragment)}
       className={clsx(
         className,
         ["border", "border-slate-300"],

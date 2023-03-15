@@ -1,7 +1,7 @@
 import clsx from "clsx";
 
 import { VideoThumbnail } from "~/components/common/VideoThumbnail";
-import { FragmentType, getFragment as useFragment, graphql } from "~/gql";
+import { FragmentType, graphql, useFragment } from "~/gql";
 
 import { LinkVideo } from "./Link";
 

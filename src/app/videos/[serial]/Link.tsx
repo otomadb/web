@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React, { ComponentProps } from "react";
 
-import { FragmentType, getFragment, graphql } from "~/gql";
+import { FragmentType, graphql, useFragment } from "~/gql";
 
 const Fragment = graphql(`
   fragment Link_Video on Video {
@@ -13,7 +13,7 @@ export const LinkVideo: React.FC<
     fragment: FragmentType<typeof Fragment>;
   }
 > = ({ children, fragment, ...props }) => {
-  const { serial } = getFragment(Fragment, fragment);
+  const { serial } = useFragment(Fragment, fragment);
   return (
     <Link href={`/videos/${serial}`} {...props}>
       {children}

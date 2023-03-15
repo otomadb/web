@@ -2,7 +2,7 @@ import clsx from "clsx";
 
 import { LinkTag } from "~/app/tags/[serial]/Link";
 import { CommonTag } from "~/components/common/Tag";
-import { FragmentType, getFragment, graphql } from "~/gql";
+import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const Fragment = graphql(`
   fragment VideoPageLayout_TagsList on VideoTagConnection {
@@ -22,7 +22,7 @@ export const TagsList = ({
   className?: string;
   fragment: FragmentType<typeof Fragment>;
 }): JSX.Element => {
-  const fragment = getFragment(Fragment, props.fragment);
+  const fragment = useFragment(Fragment, props.fragment);
   return (
     <div
       className={clsx(className, [

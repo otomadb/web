@@ -1,6 +1,6 @@
 import clsx from "clsx";
 
-import { FragmentType, getFragment, graphql } from "~/gql";
+import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const Fragment = graphql(`
   fragment TagPageLayout_AliasesDetail on Tag {
@@ -15,7 +15,7 @@ export const AliasesDetail: React.FC<{
   className?: string;
   fragment: FragmentType<typeof Fragment>;
 }> = ({ className, ...props }) => {
-  const { names } = getFragment(Fragment, props.fragment);
+  const { names } = useFragment(Fragment, props.fragment);
   if (names.length === 0) return null;
 
   return (

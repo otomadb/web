@@ -6,7 +6,7 @@ import React from "react";
 
 import { Header } from "~/components/pages/User/Header";
 import { UserPageNav } from "~/components/pages/User/Nav";
-import { getFragment, graphql } from "~/gql";
+import { graphql, useFragment } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
 import {
   UserPageLayout_HeaderFragmentDoc,
@@ -39,11 +39,11 @@ export default async function Layout({
       <div className={clsx(["container", "max-w-screen-xl", "mx-auto"])}>
         <Header
           className={clsx(["container", "max-w-screen-xl", "mx-auto"])}
-          fragment={getFragment(UserPageLayout_HeaderFragmentDoc, findUser)}
+          fragment={useFragment(UserPageLayout_HeaderFragmentDoc, findUser)}
         />
         <UserPageNav
           // highlight="MYLISTS"
-          fragment={getFragment(UserPageLayout_NavFragmentDoc, findUser)}
+          fragment={useFragment(UserPageLayout_NavFragmentDoc, findUser)}
         />
         {children}
       </div>

@@ -5,7 +5,7 @@ import "client-only";
 import clsx from "clsx";
 import React from "react";
 
-import { getFragment, graphql } from "~/gql";
+import { graphql, useFragment as getFragment } from "~/gql";
 import {
   MylistPageCommon_SideMylistListFragmentDoc,
   UserMylistsPage_LargeMylistListFragmentDoc,

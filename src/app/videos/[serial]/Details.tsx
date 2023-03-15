@@ -7,7 +7,7 @@ import React, { useState } from "react";
 
 import { LinkVideoEvents } from "~/app/videos/[serial]/events/Link";
 import { VideoThumbnail } from "~/components/common/VideoThumbnail";
-import { FragmentType, getFragment as useFragment, graphql } from "~/gql";
+import { FragmentType, graphql, useFragment } from "~/gql";
 
 import { LikeButton } from "./LikeButton";
 

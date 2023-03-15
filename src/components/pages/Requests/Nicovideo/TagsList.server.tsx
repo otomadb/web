@@ -2,7 +2,7 @@ import clsx from "clsx";
 
 import { LinkTag } from "~/app/tags/[serial]/Link";
 import { CommonTag } from "~/components/common/Tag";
-import { FragmentType, getFragment, graphql } from "~/gql";
+import { FragmentType, graphql, useFragment } from "~/gql";
 
 const Fragment = graphql(`
   fragment NicovideoRequestPage_TagsList on NicovideoRegistrationRequest {
@@ -21,7 +21,7 @@ export function TagsList({
 }: {
   fragment: FragmentType<typeof Fragment>;
 }) {
-  const { taggings } = getFragment(Fragment, fragment);
+  const { taggings } = useFragment(Fragment, fragment);
 
   return (
     <div>

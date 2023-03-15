@@ -2,7 +2,7 @@
 import clsx from "clsx";
 import { useQuery } from "urql";
 
-import { getFragment, graphql } from "~/gql";
+import { graphql, useFragment } from "~/gql";
 import {
   UserPageLayout_HeaderFragmentDoc,
   YouPageLayout_HeaderDocument,
@@ -22,7 +22,7 @@ export const YouPageHeader = () => {
   const [{ data }] = useQuery({
     query: YouPageLayout_HeaderDocument,
   });
-  const fragment = getFragment(UserPageLayout_HeaderFragmentDoc, data?.whoami);
+  const fragment = useFragment(UserPageLayout_HeaderFragmentDoc, data?.whoami);
 
   return (
     <Header

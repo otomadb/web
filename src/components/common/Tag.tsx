@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import React, { ReactNode } from "react";
 
-import { FragmentType, getFragment, graphql } from "~/gql";
+import { FragmentType, graphql, useFragment } from "~/gql";
 import { TagType } from "~/gql/graphql";
 
 const Fragment = graphql(`
@@ -30,7 +30,7 @@ export const CommonTag: React.FC<{
   ),
   ...props
 }) => {
-  const fragment = getFragment(Fragment, props.fragment);
+  const fragment = useFragment(Fragment, props.fragment);
   const { type, explicitParent } = fragment;
   return (
     <span

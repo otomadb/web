@@ -5,7 +5,7 @@ import "client-only";
 import clsx from "clsx";
 import React from "react";
 
-import { getFragment, graphql } from "~/gql";
+import { graphql, useFragment } from "~/gql";
 import {
   MylistPage_RegistrationFragmentDoc,
   UserMylistPage_RegistrationsFragment,
@@ -28,7 +28,7 @@ export const Registrations: React.FC<{
   className?: string;
   fallback: UserMylistPage_RegistrationsFragment;
 }> = ({ className, fallback }) => {
-  const nodes = getFragment(
+  const nodes = useFragment(
     MylistPage_RegistrationFragmentDoc,
     fallback.registrations.nodes
   );

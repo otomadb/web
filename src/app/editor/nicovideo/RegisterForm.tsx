@@ -11,7 +11,7 @@ import * as z from "zod";
 
 import { LinkVideo } from "~/app/videos/[serial]/Link";
 import { BlueButton } from "~/components/common/Button";
-import { FragmentType, getFragment, graphql } from "~/gql";
+import { FragmentType, graphql, useFragment } from "~/gql";
 import { RegisterVideoInputSourceType } from "~/gql/graphql";
 
 import { ConfirmForm } from "./ConfirmForm";
@@ -203,7 +203,7 @@ const Fragment = graphql(`
 export const SuccessToast: React.FC<{
   fragment: FragmentType<typeof Fragment>;
 }> = ({ ...props }) => {
-  const fragment = getFragment(Fragment, props.fragment);
+  const fragment = useFragment(Fragment, props.fragment);
 
   return (
     <div>

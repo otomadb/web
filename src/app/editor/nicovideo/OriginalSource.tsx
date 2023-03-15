@@ -6,7 +6,7 @@ import Image from "next/image";
 import React from "react";
 
 import { CommonTag } from "~/components/common/Tag";
-import { FragmentType, getFragment, graphql } from "~/gql";
+import { FragmentType, graphql, useFragment } from "~/gql";
 
 const Fragment = graphql(`
   fragment RegisterNicovideoPage_OriginalSource on NicovideoOriginalSource {
@@ -31,7 +31,7 @@ export const OriginalSource: React.FC<{
   fragment: FragmentType<typeof Fragment>;
   toggleTag: (id: string) => void;
 }> = ({ className, toggleTag, ...props }) => {
-  const fragment = getFragment(Fragment, props.fragment);
+  const fragment = useFragment(Fragment, props.fragment);
   return (
     <div
       className={clsx(

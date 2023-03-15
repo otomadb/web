@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React, { ComponentProps } from "react";
 
-import { FragmentType, getFragment, graphql } from "~/gql";
+import { FragmentType, graphql, useFragment } from "~/gql";
 
 const Fragment = graphql(`
   fragment Link_UserMylist on Mylist {
@@ -18,7 +18,7 @@ export const LinkUserMylist: React.FC<
 > = ({ children, fragment, ...props }) => {
   const {
     holder: { id, name },
-  } = getFragment(Fragment, fragment);
+  } = useFragment(Fragment, fragment);
   return (
     <Link href={`/users/${name}/mylists/${id}`} {...props}>
       {children}

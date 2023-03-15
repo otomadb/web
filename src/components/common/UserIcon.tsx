@@ -3,7 +3,7 @@ import { toSvg } from "jdenticon";
 import Image from "next/image";
 import React, { useMemo } from "react";
 
-import { FragmentType, getFragment, graphql } from "~/gql";
+import { FragmentType, graphql, useFragment } from "~/gql";
 
 const Fragment = graphql(`
   fragment UserIcon on User {
@@ -17,7 +17,7 @@ export const UserIcon: React.FC<{
   fragment: FragmentType<typeof Fragment>;
   size?: number;
 }> = ({ className, size = 64, ...props }) => {
-  const { displayName, name, icon } = getFragment(Fragment, props.fragment);
+  const { displayName, name, icon } = useFragment(Fragment, props.fragment);
   const src = useMemo(() => {
     if (icon) return icon;
     const base64 = Buffer.from(toSvg(name, size)).toString("base64");

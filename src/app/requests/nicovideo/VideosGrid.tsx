@@ -8,10 +8,12 @@ import { useQuery } from "urql";
 
 import { LinkUser } from "~/app/users/[name]/Link";
 import { CoolImage } from "~/components/common/CoolImage";
-import { InfiniteVideosGrid } from "~/components/common/InfiniteVideoGrid";
-import { FetcherContainer } from "~/components/common/InfiniteVideoGrid";
+import {
+  FetcherContainer,
+  InfiniteVideosGrid,
+} from "~/components/common/InfiniteVideoGrid";
 import { UserIcon } from "~/components/common/UserIcon";
-import { FragmentType, getFragment, graphql } from "~/gql";
+import { FragmentType, graphql, useFragment } from "~/gql";
 
 import { LinkNicovideoRegistrationRequest } from "./[sourceId]/Link";
 
@@ -86,7 +88,7 @@ const Video: React.FC<{
   className?: string;
   fragment: FragmentType<typeof Fragment>;
 }> = ({ className, ...props }) => {
-  const fragment = getFragment(Fragment, props.fragment);
+  const fragment = useFragment(Fragment, props.fragment);
   return (
     <div
       className={clsx(

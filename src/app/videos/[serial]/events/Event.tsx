@@ -5,7 +5,7 @@ import React, { ReactNode } from "react";
 import { LinkUser } from "~/app/users/[name]/Link";
 import { CommonTag } from "~/components/common/Tag";
 import { UserIcon } from "~/components/common/UserIcon";
-import { FragmentType, getFragment as useFragment, graphql } from "~/gql";
+import { FragmentType, graphql, useFragment } from "~/gql";
 
 import { Semitag } from "../Semitag";
 

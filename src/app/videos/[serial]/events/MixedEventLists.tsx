@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import React from "react";
 
-import { FragmentType, getFragment as useFragment, graphql } from "~/gql";
+import { FragmentType, graphql, useFragment } from "~/gql";
 
 import { EventSwitch } from "./Event";
 
