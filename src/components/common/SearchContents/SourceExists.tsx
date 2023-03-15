@@ -1,8 +1,10 @@
 "use client";
 import clsx from "clsx";
 import React from "react";
+
 import { LinkVideo } from "~/app/videos/[serial]/Link";
 import { FragmentType, graphql, useFragment } from "~/gql";
+
 import { CommonTag } from "../Tag";
 import { VideoThumbnail } from "../VideoThumbnail";
 
