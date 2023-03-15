@@ -6,11 +6,10 @@ import {
   createClient as createUrqlClient,
   dedupExchange,
   fetchExchange,
-  Provider as UrqlProvider,
+  Provider,
 } from "urql";
 
 import { GraphCacheConfig } from "~/gql/graphql";
-export const handlers = [];
 
 const urqlClient = createUrqlClient({
   url: new URL("/graphql", process.env.NEXT_PUBLIC_API_ENDPOINT).toString(),
@@ -91,6 +90,6 @@ const urqlClient = createUrqlClient({
   ],
 });
 
-export default function Providers({ children }: { children: ReactNode }) {
-  return <UrqlProvider value={urqlClient}>{children}</UrqlProvider>;
+export function UrqlProvider({ children }: { children: ReactNode }) {
+  return <Provider value={urqlClient}>{children}</Provider>;
 }
