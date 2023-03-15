@@ -25,7 +25,7 @@ graphql(`
       icon
       ...UserIcon
     }
-    registrations(input: { limit: 5, order: { createdAt: DESC } }) {
+    registrations(first: 5, orderBy: { createdAt: DESC }) {
       nodes {
         id
         video {

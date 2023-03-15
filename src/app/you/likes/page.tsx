@@ -1,8 +1,8 @@
-import { Inner } from "~/components/pages/User/You/Likes/Inner";
-
 export const dynamic = "force-dynamic";
 
 import type { Metadata } from "next";
+
+import { Inner } from "./Inner";
 export const metadata: Metadata = {
   title: "あなたがいいねした動画",
 };

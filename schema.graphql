@@ -373,7 +373,7 @@ type Mylist implements Node {
   isLikeList: Boolean!
   range: MylistShareRange!
   recommendedVideos(input: MylistRecommendedVideosInput!): MylistRecommendedVideosPayload!
-  registrations(input: MylistRegistrationsInput!): MylistRegistrationConnection!
+  registrations(after: String, before: String, first: Int, last: Int, orderBy: MylistRegistrationsOrderBy! = {createdAt: DESC}): MylistRegistrationConnection!
   title: String!
   updatedAt: DateTime!
 }
@@ -485,18 +485,19 @@ type MylistRegistration implements Node {
 }
 
 type MylistRegistrationConnection {
+  edges: [MylistRegistrationEdge!]!
   nodes: [MylistRegistration!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
 }
 
-input MylistRegistrationsInput {
-  limit: Int! = 10
-  order: MylistRegistrationsInputOrder! = {}
-  skip: Int! = 0
+type MylistRegistrationEdge {
+  cursor: String!
+  node: MylistRegistration!
 }
 
-input MylistRegistrationsInputOrder {
+input MylistRegistrationsOrderBy {
   createdAt: SortOrder
-  updatedAt: SortOrder
 }
 
 enum MylistShareRange {

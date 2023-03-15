@@ -1,10 +1,9 @@
 import clsx from "clsx";
 import React from "react";
 
-import { YouPageHeader } from "~/components/pages/User/You/Header";
-import { YouPageNav } from "~/components/pages/User/You/Nav";
-
 import { YouPageGuard } from "./Guard";
+import { YouPageHeader } from "./Header";
+import { YouPageNav } from "./Nav";
 
 export default async function Layout({
   children,

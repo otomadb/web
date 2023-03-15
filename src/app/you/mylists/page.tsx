@@ -1,8 +1,8 @@
-import { Inner } from "~/components/pages/User/You/Mylists/Inner";
-
 export const dynamic = "force-dynamic";
 
 import type { Metadata } from "next";
+
+import { Inner } from "./Inner";
 export const metadata: Metadata = {
   title: "あなたのマイリスト",
 };

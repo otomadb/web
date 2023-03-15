@@ -3,7 +3,7 @@ import clsx from "clsx";
 import React, { ReactNode } from "react";
 import { useQuery } from "urql";
 
-import { LinkUserLikes } from "~/app/users/[name]/likes/Link";
+import { UserLikesLink } from "~/app/users/[name]/likes/Link";
 import { LinkUser } from "~/app/users/[name]/Link";
 import { LinkUserMylists } from "~/app/users/[name]/mylists/Link";
 import { LinkYouLikes } from "~/app/you/likes/Link";
@@ -120,7 +120,7 @@ export const UserPageNav: React.FC<{
         <Item
           className={clsx()}
           Wrapper={(props) => (
-            <LinkUserLikes
+            <UserLikesLink
               fragment={fragment}
               aria-current={highlight === "LIKES" ? "page" : undefined}
               {...props}
