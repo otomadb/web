@@ -19,7 +19,6 @@ graphql(`
     whoami {
       id
       mylist(id: $mylistId) {
-        ...UserMylistPage_Registrations
         ...UserMylistPage_Details
       }
       mylists(range: [PUBLIC, KNOW_LINK, PRIVATE]) {

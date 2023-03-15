@@ -9,8 +9,8 @@ import {
 } from "~/gql/graphql";
 
 import { MetaTemplate } from "../../MetaTemplate";
-import { Details } from "./Details";
-import { Registrations } from "./Registrations";
+import { Details } from "./Details.server";
+import { RegistrationsList } from "./RegistrationsList.server.tsx";
 
 export const UserMylistTemplate: React.FC<{
   sidelist: MylistPageCommon_SideMylistListFragment | undefined;
@@ -22,9 +22,9 @@ export const UserMylistTemplate: React.FC<{
       sidelist={sidelist}
       Main={() => (
         <main className={clsx()}>
-          {details && <Details fallback={details} />}
+          {details && <Details fragment={details} />}
           {registrations && (
-            <Registrations
+            <RegistrationsList
               className={clsx(["mt-2"])}
               fallback={registrations}
             />

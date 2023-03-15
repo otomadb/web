@@ -4,8 +4,6 @@ import { graphql, useFragment } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
 import { UserMylistPageFragmentDoc } from "~/gql/graphql";
 
-import { UserMylist } from "../mylists/[id]/UserMylist";
-
 export const revalidate = 0;
 
 export default async function Page({ params }: { params: { name: string } }) {
@@ -14,7 +12,7 @@ export default async function Page({ params }: { params: { name: string } }) {
       query UserLikesPage($userName: String!) {
         findUser(input: { name: $userName }) {
           likes {
-            ...UserMylistPage
+            id
           }
         }
       }

@@ -5,11 +5,10 @@ import React from "react";
 import { LinkVideo } from "~/app/videos/[serial]/Link";
 import { CommonTag } from "~/components/common/Tag";
 import { VideoThumbnail } from "~/components/common/VideoThumbnail";
-import { graphql } from "~/gql";
-import { MylistPage_RegistrationFragment } from "~/gql/graphql";
+import { FragmentType, graphql, useFragment } from "~/gql";
 
-graphql(`
-  fragment MylistPage_Registration on MylistRegistration {
+const Fragment = graphql(`
+  fragment UserMylistPage_RegistrationsListItem on MylistRegistration {
     id
     note
     video {
@@ -28,14 +27,16 @@ graphql(`
     }
   }
 `);
-export const Registeration: React.FC<{
+export const RegistrationsListItem: React.FC<{
   className?: string;
-  registration: MylistPage_RegistrationFragment;
-}> = ({ className, registration }) => {
-  const { note, video } = registration;
+  fragment: FragmentType<typeof Fragment>;
+}> = ({ className, ...props }) => {
+  const fragment = useFragment(Fragment, props.fragment);
+  const { video, note } = fragment;
+
   return (
     <LinkVideo
-      fragment={registration.video}
+      fragment={fragment.video}
       className={clsx(
         className,
         ["@container/registration"],

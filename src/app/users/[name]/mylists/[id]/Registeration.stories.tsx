@@ -9,15 +9,15 @@ import {
   aVideoTagConnection,
 } from "~/gql/graphql";
 
-import { Registeration } from "./Registeration";
+import { RegistrationsListItem } from "./RegistrationsListItem";
 
 export default {
-  component: Registeration,
+  component: RegistrationsListItem,
   args: {
     className: css`
       width: 1024px;
     `,
-    registration: aMylistRegistration({
+    fragment: aMylistRegistration({
       id: "mylistRegistration:1",
       note: "これはサンプル文章です",
       video: aVideo({
@@ -44,9 +44,9 @@ export default {
   parameters: {
     layout: "centered",
   },
-} as Meta<typeof Registeration>;
+} as Meta<typeof RegistrationsListItem>;
 
-export const W768: StoryObj<typeof Registeration> = {
+export const W768: StoryObj<typeof RegistrationsListItem> = {
   name: "width: 768px",
   args: {
     className: css`
@@ -55,7 +55,7 @@ export const W768: StoryObj<typeof Registeration> = {
   },
 };
 
-export const W1024: StoryObj<typeof Registeration> = {
+export const W1024: StoryObj<typeof RegistrationsListItem> = {
   name: "width: 1024px",
   args: {
     className: css`
@@ -64,9 +64,9 @@ export const W1024: StoryObj<typeof Registeration> = {
   },
 };
 
-export const NoNote: StoryObj<typeof Registeration> = {
+export const NoNote: StoryObj<typeof RegistrationsListItem> = {
   args: {
-    registration: aMylistRegistration({
+    fragment: aMylistRegistration({
       id: "mylistRegistration:1",
       note: null,
       video: aVideo({

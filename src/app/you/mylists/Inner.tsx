@@ -16,9 +16,11 @@ graphql(`
   query YouMylistsPage {
     whoami {
       id
+      """
       mylists(range: [PUBLIC, KNOW_LINK, PRIVATE]) {
         ...UserMylistsPage_Mylists
       }
+      """
     }
   }
 `);

@@ -1,12 +1,11 @@
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 
-import { graphql, useFragment } from "~/gql";
+import { graphql } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
-import { UserMylistPageFragmentDoc } from "~/gql/graphql";
 
-import { UserMylist } from "./UserMylist";
-
-export const revalidate = 0;
+import { Details } from "./Details.server";
+import { RegistrationsList } from "./RegistrationsList.server";
 
 export default async function Page({
   params,
@@ -18,7 +17,8 @@ export default async function Page({
       query UserMylistPage($userName: String!, $mylistId: ID!) {
         findUser(input: { name: $userName }) {
           mylist(id: $mylistId) {
-            ...UserMylistPage
+            ...UserMylistPage_Details
+            ...UserMylistPage_RegistrationsList
           }
         }
       }
@@ -35,8 +35,19 @@ export default async function Page({
   if (!findUser.mylist) notFound();
 
   return (
-    <UserMylist
-      fragment={useFragment(UserMylistPageFragmentDoc, findUser.mylist)}
-    />
+    <main>
+      <header>
+        <Suspense>
+          {/* @ts-expect-error for Server Component*/}
+          <Details fragment={findUser.mylist} />
+        </Suspense>
+      </header>
+      <section>
+        <Suspense>
+          {/* @ts-expect-error for Server Component*/}
+          <RegistrationsList fragment={findUser.mylist} />
+        </Suspense>
+      </section>
+    </main>
   );
 }

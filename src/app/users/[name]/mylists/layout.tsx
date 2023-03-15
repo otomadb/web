@@ -30,8 +30,8 @@ export default async function Layout({
   if (!findUser) notFound();
 
   return (
-    <div className={clsx([])}>
-      <div className={clsx(["flex-shrink-0"])}>
+    <div className={clsx(["flex"])}>
+      <div className={clsx(["flex-shrink-0"], ["w-72"])}>
         <Suspense>
           {/* @ts-expect-error for Server Component*/}
           <SideMylistList fragment={findUser} />
