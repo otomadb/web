@@ -1,58 +1,33 @@
+import { ResultOf } from "@graphql-typed-document-node/core";
 import clsx from "clsx";
 import React from "react";
 
 import { MylistLinkSwitch } from "~/components/common/MylistLinkSwitch";
 import { MylistTitle } from "~/components/common/MylistTitle";
-import { FragmentType, graphql, useFragment } from "~/gql";
-import { fetchGql } from "~/gql/fetch";
+import { graphql } from "~/gql";
 
-graphql(`
-  fragment MylistPageCommon_SideMylistList on MylistConnection {
-    nodes {
-      ...MylistPageCommon_LinkSwitch
+export const Query = graphql(`
+  query UserMylistsPageLayout_SideMylistsList_Fetch($id: ID!) {
+    getUser(id: $id) {
       id
-      title
-      isLikeList
-      holder {
-        id
-        name
-        displayName
+      mylists(range: [PUBLIC]) {
+        nodes {
+          ...MylistTitle
+          ...MylistLinkSwitch
+          id
+        }
       }
     }
   }
 `);
-
-const Fragment = graphql(`
-  fragment UserMylistsPageLayout_SideMylistsList on User {
-    id
-  }
-`);
 export const SideMylistList = async ({
   className,
-  ...props
+  fetcher,
 }: {
   className?: string;
-  fragment: FragmentType<typeof Fragment>;
+  fetcher: Promise<ResultOf<typeof Query>>;
 }) => {
-  const fragment = useFragment(Fragment, props.fragment);
-
-  const { getUser } = await fetchGql(
-    graphql(`
-      query UserMylistsPageLayout_SideMylistsList_Fetch($id: ID!) {
-        getUser(id: $id) {
-          id
-          mylists(range: [PUBLIC]) {
-            nodes {
-              ...MylistTitle
-              ...MylistLinkSwitch
-              id
-            }
-          }
-        }
-      }
-    `),
-    { id: fragment.id }
-  );
+  const { getUser } = await fetcher;
 
   return (
     <div

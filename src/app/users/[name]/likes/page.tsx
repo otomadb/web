@@ -4,8 +4,11 @@ import { Suspense } from "react";
 import { graphql } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
 
-import { Details } from "../mylists/[id]/Details.server";
-import { RegistrationsList } from "../mylists/[id]/RegistrationsList.server";
+import { Details, Query as DetailsQuery } from "../mylists/[id]/Details.server";
+import {
+  Query as RegistrationsListQuery,
+  RegistrationsList,
+} from "../mylists/[id]/RegistrationsList.server";
 
 export default async function Page({ params }: { params: { name: string } }) {
   const data = await fetchGql(
@@ -13,8 +16,7 @@ export default async function Page({ params }: { params: { name: string } }) {
       query UserLikesPage($userName: String!) {
         findUser(input: { name: $userName }) {
           likes {
-            ...UserMylistPage_Details
-            ...UserMylistPage_RegistrationsList
+            id
           }
         }
       }
@@ -32,13 +34,21 @@ export default async function Page({ params }: { params: { name: string } }) {
       <header>
         <Suspense>
           {/* @ts-expect-error for Server Component*/}
-          <Details fragment={findUser.likes} />
+          <Details
+            fetcher={fetchGql(DetailsQuery, {
+              id: findUser.likes.id,
+            })}
+          />
         </Suspense>
       </header>
       <section>
         <Suspense>
           {/* @ts-expect-error for Server Component*/}
-          <RegistrationsList fragment={findUser.likes} />
+          <RegistrationsList
+            fetcher={fetchGql(RegistrationsListQuery, {
+              id: findUser.likes.id,
+            })}
+          />
         </Suspense>
       </section>
     </main>

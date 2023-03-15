@@ -5,14 +5,14 @@ import { Suspense } from "react";
 import { graphql } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
 
-import { MylistList } from "./MylistsList.server";
+import { MylistList, Query } from "./MylistsList.server";
 
 export default async function Page({ params }: { params: { name: string } }) {
   const { findUser } = await fetchGql(
     graphql(`
       query UserMylistsPage($name: String!) {
         findUser(input: { name: $name }) {
-          ...UserMylistsPage_MylistsList
+          id
         }
       }
     `),
@@ -25,7 +25,7 @@ export default async function Page({ params }: { params: { name: string } }) {
     <div className={clsx()}>
       <Suspense>
         {/* @ts-expect-error for Server Component*/}
-        <MylistList fragment={findUser} />
+        <MylistList fetcher={fetchGql(Query, { id: findUser.id })} />
       </Suspense>
     </div>
   );

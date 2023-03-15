@@ -1,12 +1,11 @@
 import clsx from "clsx";
 import React from "react";
 
+import { MylistLinkSwitch } from "~/components/common/MylistLinkSwitch";
+import { MylistTitle } from "~/components/common/MylistTitle";
 import { UserIcon } from "~/components/common/UserIcon";
 import { VideoThumbnail } from "~/components/common/VideoThumbnail";
 import { FragmentType, graphql, useFragment } from "~/gql";
-
-import { MylistLinkSwitch } from "../../../../components/common/MylistLinkSwitch";
-import { MylistTitle } from "../../../../components/common/MylistTitle";
 
 export const Fragment = graphql(`
   fragment UserMylistsPage_MylistsListItem on Mylist {

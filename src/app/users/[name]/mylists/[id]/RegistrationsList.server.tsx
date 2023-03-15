@@ -1,40 +1,31 @@
+import { ResultOf } from "@graphql-typed-document-node/core";
 import clsx from "clsx";
 import React from "react";
 
-import { FragmentType, graphql, useFragment } from "~/gql";
-import { fetchGql } from "~/gql/fetch";
+import { graphql } from "~/gql";
 
 import { RegistrationsListItem } from "./RegistrationsListItem";
 
-const Fragment = graphql(`
-  fragment UserMylistPage_RegistrationsList on Mylist {
-    id
+export const Query = graphql(`
+  query UserMylistPage_RegistrationsList_Fetch($id: ID!) {
+    getMylist(id: $id) {
+      registrations(first: 20, orderBy: { createdAt: DESC }) {
+        nodes {
+          id
+          ...UserMylistPage_RegistrationsListItem
+        }
+      }
+    }
   }
 `);
 export const RegistrationsList = async ({
   className,
-  ...props
+  fetcher,
 }: {
   className?: string;
-  fragment: FragmentType<typeof Fragment>;
+  fetcher: Promise<ResultOf<typeof Query>>;
 }) => {
-  const fragment = useFragment(Fragment, props.fragment);
-
-  const { getMylist } = await fetchGql(
-    graphql(`
-      query UserMylistPage_RegistrationsList_Fetch($id: ID!) {
-        getMylist(id: $id) {
-          registrations(first: 20, orderBy: { createdAt: DESC }) {
-            nodes {
-              id
-              ...UserMylistPage_RegistrationsListItem
-            }
-          }
-        }
-      }
-    `),
-    { id: fragment.id }
-  );
+  const { getMylist } = await fetcher;
 
   return (
     <div className={clsx(className, ["flex", ["flex-col"], ["gap-y-4"]])}>

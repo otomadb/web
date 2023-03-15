@@ -4,8 +4,11 @@ import { Suspense } from "react";
 import { graphql } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
 
-import { Details } from "./Details.server";
-import { RegistrationsList } from "./RegistrationsList.server";
+import { Details, Query as DetailsQuery } from "./Details.server";
+import {
+  Query as RegistrationsListQuery,
+  RegistrationsList,
+} from "./RegistrationsList.server";
 
 export default async function Page({
   params,
@@ -17,8 +20,7 @@ export default async function Page({
       query UserMylistPage($userName: String!, $mylistId: ID!) {
         findUser(input: { name: $userName }) {
           mylist(id: $mylistId) {
-            ...UserMylistPage_Details
-            ...UserMylistPage_RegistrationsList
+            id
           }
         }
       }
@@ -39,13 +41,21 @@ export default async function Page({
       <header>
         <Suspense>
           {/* @ts-expect-error for Server Component*/}
-          <Details fragment={findUser.mylist} />
+          <Details
+            fetcher={fetchGql(DetailsQuery, {
+              id: findUser.mylist.id,
+            })}
+          />
         </Suspense>
       </header>
       <section>
         <Suspense>
           {/* @ts-expect-error for Server Component*/}
-          <RegistrationsList fragment={findUser.mylist} />
+          <RegistrationsList
+            fetcher={fetchGql(RegistrationsListQuery, {
+              id: findUser.mylist.id,
+            })}
+          />
         </Suspense>
       </section>
     </main>

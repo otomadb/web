@@ -1,39 +1,29 @@
+import { ResultOf } from "@graphql-typed-document-node/core";
 import clsx from "clsx";
 
-import { FragmentType, graphql, useFragment } from "~/gql";
-import { fetchGql } from "~/gql/fetch";
+import { graphql } from "~/gql";
 
-const Fragment = graphql(`
-  fragment UserMylistPage_Details on Mylist {
-    id
+export const Query = graphql(`
+  query UserMylistPage_Details_Fetch($id: ID!) {
+    getMylist(id: $id) {
+      title
+      isLikeList
+      range
+      holder {
+        id
+        displayName
+      }
+    }
   }
 `);
 export const Details = async ({
   className,
-  ...props
+  fetcher,
 }: {
   className?: string;
-  fragment: FragmentType<typeof Fragment>;
+  fetcher: Promise<ResultOf<typeof Query>>;
 }) => {
-  const fragment = useFragment(Fragment, props.fragment);
-
-  const { getMylist } = await fetchGql(
-    graphql(`
-      query UserMylistPage_Details_Fetch($id: ID!) {
-        getMylist(id: $id) {
-          title
-          isLikeList
-          range
-          holder {
-            id
-            displayName
-          }
-        }
-      }
-    `),
-    { id: fragment.id }
-  );
-
+  const { getMylist } = await fetcher;
   const { title, holder, isLikeList, range } = getMylist;
 
   return (
