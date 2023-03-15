@@ -3,7 +3,7 @@
 import clsx from "clsx";
 import React from "react";
 
-import { LinkTop } from "~/app/Link";
+import { TopLink } from "~/app/Link";
 import { SearchContents } from "~/components/common/SearchContents/SearchContents";
 
 import { Profile } from "./Profile/Profile";
@@ -37,7 +37,7 @@ export const GlobalNavigation: React.FC<{ className?: string }> = ({
             ["flex-shrink-0"]
           )}
         >
-          <LinkTop className={clsx(["text-white"])}>otomadb</LinkTop>
+          <TopLink className={clsx(["text-white"])}>otomadb</TopLink>
         </div>
         <div className={clsx(["flex-grow"])}>
           <SearchContents className={clsx(["mx-auto"])} />
