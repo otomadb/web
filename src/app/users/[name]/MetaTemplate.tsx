@@ -2,7 +2,7 @@
 import clsx from "clsx";
 import React, { ComponentProps } from "react";
 
-import { SideMylistList } from "./mylists/SideMylistList";
+import { SideMylistList } from "./mylists/SideMylistList.server";
 
 export const MetaTemplate: React.FC<{
   sidelist?: ComponentProps<typeof SideMylistList>["fallback"];

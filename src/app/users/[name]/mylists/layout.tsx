@@ -7,7 +7,7 @@ import React, { Suspense } from "react";
 import { graphql } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
 
-import { SideMylistList } from "./SideMylistList";
+import { SideMylistList } from "./SideMylistList.server";
 
 export default async function Layout({
   children,
