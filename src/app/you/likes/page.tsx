@@ -14,7 +14,7 @@ import {
 import { graphql } from "~/gql";
 import { fetchGql2 } from "~/gql/fetch";
 
-export const runtime = "edge";
+export const runtime = "experimental-edge";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {

@@ -6,7 +6,7 @@ import React from "react";
 import { graphql } from "~/gql";
 import { fetchGql2 } from "~/gql/fetch";
 
-export const runtime = "edge";
+export const runtime = "experimental-edge";
 export const dynamic = "force-dynamic";
 
 export default async function Layout({
