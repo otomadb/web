@@ -1,5 +1,3 @@
-export const dynamic = "force-dynamic";
-
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
@@ -15,6 +13,9 @@ import {
 } from "~/app/users/[name]/mylists/[id]/RegistrationsList.server";
 import { graphql } from "~/gql";
 import { fetchGql2 } from "~/gql/fetch";
+
+export const dynamic = "force-dynamic";
+export const runtime = "experimental-edge";
 
 export const metadata: Metadata = {
   title: "あなたがいいねした動画",
