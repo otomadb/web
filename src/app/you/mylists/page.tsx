@@ -1,5 +1,3 @@
-export const dynamic = "force-dynamic";
-
 import clsx from "clsx";
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
@@ -10,6 +8,9 @@ import { graphql } from "~/gql";
 import { fetchGql2 } from "~/gql/fetch";
 
 import { MylistsList, Query } from "./MylistsList.server";
+
+export const runtime = "edge";
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "あなたのマイリスト",

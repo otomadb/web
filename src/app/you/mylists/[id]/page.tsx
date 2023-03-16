@@ -1,4 +1,3 @@
-export const dynamic = "force-dynamic";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
@@ -13,6 +12,9 @@ import {
 } from "~/app/users/[name]/mylists/[id]/RegistrationsList.server";
 import { graphql } from "~/gql";
 import { fetchGql2 } from "~/gql/fetch";
+
+export const runtime = "edge";
+export const dynamic = "force-dynamic";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const cookieStore = cookies();
