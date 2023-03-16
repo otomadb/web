@@ -1,7 +1,7 @@
+import Avatar from "boring-avatars";
 import clsx from "clsx";
-import { toSvg } from "jdenticon";
 import Image from "next/image";
-import React, { useMemo } from "react";
+import React from "react";
 
 import { FragmentType, graphql, useFragment } from "~/gql";
 
@@ -18,24 +18,29 @@ export const UserIcon: React.FC<{
   size?: number;
 }> = ({ className, size = 64, ...props }) => {
   const { displayName, name, icon } = useFragment(Fragment, props.fragment);
-  const src = useMemo(() => {
-    if (icon) return icon;
-    const base64 = Buffer.from(toSvg(name, size)).toString("base64");
-    return `data:image/svg+xml;base64,${base64}`;
-  }, [icon, name, size]);
 
   return (
     <div
       className={clsx(className, ["rounded-md", "overflow-hidden"])}
       style={{ width: size, height: size }}
     >
-      <Image
-        className={clsx(["w-full"], ["h-full"])}
-        width={size}
-        height={size}
-        src={src}
-        alt={displayName}
-      />
+      {icon && (
+        <Image
+          className={clsx(["w-full"], ["h-full"])}
+          width={size}
+          height={size}
+          src={icon}
+          alt={displayName}
+        />
+      )}
+      {!icon && (
+        <Avatar
+          size={size}
+          name={name}
+          variant="marble"
+          colors={["#92A1C6", "#146A7C", "#F0AB3D", "#C271B4", "#C20D90"]}
+        />
+      )}
     </div>
   );
 };
