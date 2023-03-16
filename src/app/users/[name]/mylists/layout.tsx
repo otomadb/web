@@ -31,7 +31,14 @@ export default async function Layout({
 
   return (
     <div className={clsx(["flex"])}>
-      <div className={clsx(["flex-shrink-0"], ["w-72"])}>
+      <div
+        className={clsx(
+          ["flex-shrink-0"],
+          ["w-72"],
+          ["h-[calc(100vh-64px)]"],
+          ["sticky", "top-[64px]"]
+        )}
+      >
         <Suspense>
           {/* @ts-expect-error for Server Component*/}
           <SideMylistList
