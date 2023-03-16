@@ -9,8 +9,8 @@ import { fetchGql2 } from "~/gql/fetch";
 
 import { MylistsList, Query } from "./MylistsList.server";
 
-export const runtime = "experimental-edge";
 export const dynamic = "force-dynamic";
+export const runtime = "experimental-edge";
 
 export const metadata: Metadata = {
   title: "あなたのマイリスト",
