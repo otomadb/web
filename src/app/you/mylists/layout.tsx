@@ -9,9 +9,6 @@ import { MylistShareRange } from "~/gql/graphql";
 
 import { Query, SideMylistList } from "./SideMylistList.server";
 
-export const runtime = "experimental-edge";
-export const dynamic = "force-dynamic";
-
 export default async function Layout({
   children,
 }: {

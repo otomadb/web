@@ -6,9 +6,6 @@ import React from "react";
 import { graphql } from "~/gql";
 import { fetchGql2 } from "~/gql/fetch";
 
-export const runtime = "experimental-edge";
-export const dynamic = "force-dynamic";
-
 export default async function Layout({
   children,
 }: {
@@ -16,10 +13,6 @@ export default async function Layout({
 }) {
   const cookieStore = cookies();
   const session = cookieStore.get(process.env.SESSION_COOKIE_KEY)?.value;
-
-  console.dir(cookieStore.getAll());
-  console.log(process.env.SESSION_COOKIE_KEY);
-  console.log(session);
 
   const { whoami } = await fetchGql2(
     {
