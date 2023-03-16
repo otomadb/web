@@ -50,7 +50,7 @@ export default async function Page({ params }: { params: { id: string } }) {
                   id: whoami.mylist.id,
                 },
               },
-              {}
+              { session }
             )}
           />
         </Suspense>
@@ -64,7 +64,7 @@ export default async function Page({ params }: { params: { id: string } }) {
                 document: RegistrationsListQuery,
                 variables: { id: whoami.mylist.id },
               },
-              {}
+              { session }
             )}
           />
         </Suspense>

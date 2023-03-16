@@ -3,13 +3,11 @@ import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import React, { Suspense } from "react";
 
-import {
-  Query,
-  SideMylistList,
-} from "~/app/users/[name]/mylists/SideMylistList.server";
 import { graphql } from "~/gql";
 import { fetchGql2 } from "~/gql/fetch";
 import { MylistShareRange } from "~/gql/graphql";
+
+import { Query, SideMylistList } from "./SideMylistList.server";
 
 export default async function Layout({
   children,

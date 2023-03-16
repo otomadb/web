@@ -6,13 +6,10 @@ import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
-import {
-  MylistsList,
-  Query,
-} from "~/app/users/[name]/mylists/MylistsList.server";
 import { graphql } from "~/gql";
 import { fetchGql2 } from "~/gql/fetch";
-import { MylistShareRange } from "~/gql/graphql";
+
+import { MylistsList, Query } from "./MylistsList.server";
 
 export const metadata: Metadata = {
   title: "あなたのマイリスト",
@@ -44,17 +41,7 @@ export default async function Page() {
         {/* @ts-expect-error for Server Component*/}
         <MylistsList
           fetcher={fetchGql2(
-            {
-              document: Query,
-              variables: {
-                id: whoami.id,
-                ranges: [
-                  MylistShareRange.Public,
-                  MylistShareRange.KnowLink,
-                  MylistShareRange.Private,
-                ],
-              },
-            },
+            { document: Query, variables: { id: whoami.id } },
             { session }
           )}
         />

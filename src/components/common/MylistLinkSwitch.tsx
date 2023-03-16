@@ -22,6 +22,6 @@ export const MylistLinkSwitch: React.FC<
 > = ({ fragment: ft, ...props }) => {
   const fragment = useFragment(Fragment, ft);
   if (fragment.isLikeList)
-    return <UserMylistPageLink fragment={fragment} {...props} />;
+    return <UserLikesPageLink fragment={fragment.holder} {...props} />;
   else return <UserMylistPageLink fragment={fragment} {...props} />;
 };

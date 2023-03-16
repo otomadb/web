@@ -4,8 +4,8 @@ import React from "react";
 import { useQuery } from "urql";
 
 import { LinkUser } from "~/app/users/[name]/Link";
-import { LinkYouLikes } from "~/app/you/likes/Link";
-import { LinkYouMylists } from "~/app/you/mylists/Link";
+import { YouLikesPageLink } from "~/app/you/likes/Link";
+import { YouMylistsPageLink } from "~/app/you/mylists/Link";
 import { graphql } from "~/gql";
 import { YouPageLayout_NavDocument } from "~/gql/graphql";
 
@@ -48,7 +48,7 @@ export const YouPageNav: React.FC = () => {
       <Item
         className={clsx()}
         Wrapper={(props) => (
-          <LinkYouLikes
+          <YouLikesPageLink
             aria-current={highlight === "LIKES" ? "page" : undefined}
             {...props}
           />
@@ -60,7 +60,7 @@ export const YouPageNav: React.FC = () => {
       <Item
         className={clsx()}
         Wrapper={(props) => (
-          <LinkYouMylists
+          <YouMylistsPageLink
             aria-current={highlight === "MYLISTS" ? "page" : undefined}
             {...props}
           />
