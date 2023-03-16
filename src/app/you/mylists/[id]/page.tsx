@@ -14,6 +14,7 @@ import { graphql } from "~/gql";
 import { fetchGql2 } from "~/gql/fetch";
 
 export const dynamic = "force-dynamic";
+export const runtime = "experimental-edge";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const cookieStore = cookies();
