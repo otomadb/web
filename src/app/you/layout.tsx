@@ -14,6 +14,8 @@ export default async function Layout({
   const cookieStore = cookies();
   const session = cookieStore.get(process.env.SESSION_COOKIE_KEY)?.value;
 
+  console.dir(cookieStore.getAll());
+  console.log(process.env.SESSION_COOKIE_KEY);
   console.log(session);
 
   const { whoami } = await fetchGql2(
