@@ -7,10 +7,13 @@ import { MylistTitle } from "~/components/common/MylistTitle";
 import { graphql } from "~/gql";
 
 export const Query = graphql(`
-  query UserMylistsPageLayout_SideMylistsList_Fetch($id: ID!) {
+  query UserMylistsPageLayout_SideMylistsList_Fetch(
+    $id: ID!
+    $ranges: [MylistShareRange!]!
+  ) {
     getUser(id: $id) {
       id
-      mylists(range: [PUBLIC]) {
+      mylists(range: $ranges) {
         nodes {
           ...MylistTitle
           ...MylistLinkSwitch

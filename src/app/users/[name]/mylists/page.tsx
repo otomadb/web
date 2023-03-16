@@ -4,8 +4,9 @@ import { Suspense } from "react";
 
 import { graphql } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
+import { MylistShareRange } from "~/gql/graphql";
 
-import { MylistList, Query } from "./MylistsList.server";
+import { MylistsList, Query } from "./MylistsList.server";
 
 export default async function Page({ params }: { params: { name: string } }) {
   const { findUser } = await fetchGql(
@@ -25,7 +26,12 @@ export default async function Page({ params }: { params: { name: string } }) {
     <div className={clsx()}>
       <Suspense>
         {/* @ts-expect-error for Server Component*/}
-        <MylistList fetcher={fetchGql(Query, { id: findUser.id })} />
+        <MylistsList
+          fetcher={fetchGql(Query, {
+            id: findUser.id,
+            ranges: [MylistShareRange.Public],
+          })}
+        />
       </Suspense>
     </div>
   );

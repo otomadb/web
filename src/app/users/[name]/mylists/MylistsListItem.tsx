@@ -11,7 +11,6 @@ export const Fragment = graphql(`
   fragment UserMylistsPage_MylistsListItem on Mylist {
     ...MylistTitle
     ...MylistLinkSwitch
-    ...MylistPageCommon_LinkSwitch
     id
     isLikeList
     range

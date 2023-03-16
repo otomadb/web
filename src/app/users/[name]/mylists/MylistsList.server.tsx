@@ -6,9 +6,12 @@ import { graphql } from "~/gql";
 import { MylistListItem } from "./MylistsListItem";
 
 export const Query = graphql(`
-  query UserMylistsPage_MylistsList_Fetch($id: ID!) {
+  query UserMylistsPage_MylistsList_Fetch(
+    $id: ID!
+    $ranges: [MylistShareRange!]!
+  ) {
     getUser(id: $id) {
-      mylists(range: [PUBLIC]) {
+      mylists(range: $ranges) {
         nodes {
           id
           ...UserMylistsPage_MylistsListItem
@@ -17,7 +20,7 @@ export const Query = graphql(`
     }
   }
 `);
-export const MylistList = async ({
+export const MylistsList = async ({
   className,
   fetcher,
 }: {
