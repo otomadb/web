@@ -68,7 +68,7 @@ export default async function Page() {
             fetcher={fetchGql2(
               {
                 document: RegistrationsListQuery,
-                variables: { id: whoami.likes?.id },
+                variables: { id: whoami.likes.id },
               },
               {}
             )}

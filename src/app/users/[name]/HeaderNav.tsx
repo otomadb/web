@@ -10,8 +10,8 @@ import { FragmentType, graphql, useFragment } from "~/gql";
 const Fragment = graphql(`
   fragment UserPageLayout_HeaderNav on User {
     ...Link_User
-    ...Link_UserLikes
-    ...Link_UserMylists
+    ...UserLikesPageLink
+    ...UserMylistsPageLink
   }
 `);
 export const HeaderNav: React.FC<{

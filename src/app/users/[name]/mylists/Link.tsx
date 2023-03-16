@@ -4,7 +4,7 @@ import React, { ComponentProps } from "react";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 const Fragment = graphql(`
-  fragment Link_UserMylists on User {
+  fragment UserMylistsPageLink on User {
     name
   }
 `);
