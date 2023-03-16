@@ -19,7 +19,12 @@ export const UserLikesPageLink: React.FC<
 > = ({ children, fragment, ...props }) => {
   const { likes } = useFragment(Fragment, fragment);
 
-  if (!likes) return <span>{children}</span>;
+  if (!likes)
+    return (
+      <span {...props} aria-disabled>
+        {children}
+      </span>
+    );
 
   return (
     <Link href={`/users/${likes.holder.name}/likes`} {...props}>
