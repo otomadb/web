@@ -34,7 +34,6 @@ export default async function Page({ params }: { params: { name: string } }) {
       query UserPage($name: String!) {
         findUser(input: { name: $name }) {
           id
-          ...UserPageLayout_Nav
         }
       }
     `),

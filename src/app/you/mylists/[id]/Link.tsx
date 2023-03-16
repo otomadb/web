@@ -4,11 +4,11 @@ import React, { ComponentProps } from "react";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 const Fragment = graphql(`
-  fragment Link_YouMylist on Mylist {
+  fragment YouMylistPageLink on Mylist {
     id
   }
 `);
-export const LinkYouMylist: React.FC<
+export const YouMylistPageLink: React.FC<
   Omit<ComponentProps<typeof Link>, "href"> & {
     fragment: FragmentType<typeof Fragment>;
   }

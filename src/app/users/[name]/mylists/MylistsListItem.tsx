@@ -1,31 +1,25 @@
 import clsx from "clsx";
 import React from "react";
 
+import { MylistLinkSwitch } from "~/components/common/MylistLinkSwitch";
+import { MylistTitle } from "~/components/common/MylistTitle";
 import { UserIcon } from "~/components/common/UserIcon";
 import { VideoThumbnail } from "~/components/common/VideoThumbnail";
-import { graphql, useFragment } from "~/gql";
-import {
-  MylistPageCommon_LinkSwitchFragmentDoc,
-  UserMylistsPage_LargeMylistListItemFragment,
-} from "~/gql/graphql";
+import { FragmentType, graphql, useFragment } from "~/gql";
 
-import { MylistLinkSwitch } from "../LinkSwitch";
-
-graphql(`
-  fragment UserMylistsPage_LargeMylistListItem on Mylist {
-    ...MylistPageCommon_LinkSwitch
+export const Fragment = graphql(`
+  fragment UserMylistsPage_MylistsListItem on Mylist {
+    ...MylistTitle
+    ...MylistLinkSwitch
     id
-    title
     isLikeList
     range
     holder {
-      id
+      ...UserIcon
       name
       displayName
-      icon
-      ...UserIcon
     }
-    registrations(input: { limit: 5, order: { createdAt: DESC } }) {
+    registrations(first: 5, orderBy: { createdAt: DESC }) {
       nodes {
         id
         video {
@@ -36,15 +30,14 @@ graphql(`
     }
   }
 `);
-export const LargeMylistListItem: React.FC<{
+export const MylistListItem: React.FC<{
   className?: string;
-  fragment: UserMylistsPage_LargeMylistListItemFragment;
-}> = ({ className, fragment }) => {
-  const { isLikeList, title, holder, registrations } = fragment;
-
+  fragment: FragmentType<typeof Fragment>;
+}> = ({ className, ...props }) => {
+  const fragment = useFragment(Fragment, props.fragment);
+  const { holder, registrations } = fragment;
   return (
-    <MylistLinkSwitch
-      fragment={useFragment(MylistPageCommon_LinkSwitchFragmentDoc, fragment)}
+    <div
       className={clsx(
         className,
         ["border", "border-slate-300"],
@@ -58,10 +51,9 @@ export const LargeMylistListItem: React.FC<{
     >
       <div className={clsx(["flex-grow"], ["flex-col"])}>
         <div>
-          <p className={clsx(["text-lg"])}>
-            {!isLikeList && title}
-            {isLikeList && `${holder.displayName}のいいね欄`}
-          </p>
+          <MylistLinkSwitch fragment={fragment}>
+            <MylistTitle fragment={fragment} />
+          </MylistLinkSwitch>
         </div>
         <div className={clsx(["mt-1"], ["flex", "items-center"])}>
           <UserIcon fragment={holder} size={24} />
@@ -122,6 +114,6 @@ export const LargeMylistListItem: React.FC<{
           </p>
         </div>
       </div>
-    </MylistLinkSwitch>
+    </div>
   );
 };

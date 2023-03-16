@@ -4,18 +4,30 @@ import React, { ComponentProps } from "react";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 const Fragment = graphql(`
-  fragment Link_UserLikes on User {
-    name
+  fragment UserLikesPageLink on User {
+    likes {
+      holder {
+        name
+      }
+    }
   }
 `);
-export const LinkUserLikes: React.FC<
+export const UserLikesPageLink: React.FC<
   Omit<ComponentProps<typeof Link>, "href"> & {
     fragment: FragmentType<typeof Fragment>;
   }
 > = ({ children, fragment, ...props }) => {
-  const { name } = useFragment(Fragment, fragment);
+  const { likes } = useFragment(Fragment, fragment);
+
+  if (!likes)
+    return (
+      <span {...props} aria-disabled>
+        {children}
+      </span>
+    );
+
   return (
-    <Link href={`/users/${name}/likes`} {...props}>
+    <Link href={`/users/${likes.holder.name}/likes`} {...props}>
       {children}
     </Link>
   );

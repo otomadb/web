@@ -8,8 +8,8 @@ import { LinkRegisterSemitag } from "~/app/editor/semitags/Link";
 import { TagRegisterPageLink } from "~/app/editor/tags/Link";
 import { NicovideoRequestPageLink } from "~/app/request/nicovideo/Link";
 import { LinkUser } from "~/app/users/[name]/Link";
-import { LinkYouLikes } from "~/app/you/likes/Link";
-import { LinkYouMylists } from "~/app/you/mylists/Link";
+import { YouLikesPageLink } from "~/app/you/likes/Link";
+import { YouMylistsPageLink } from "~/app/you/mylists/Link";
 import { LogoutButton } from "~/components/common/LogoutButton";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
@@ -113,10 +113,10 @@ export const Accordion: React.FC<{
             >
               プロフィール
             </MenuItem>
-            <MenuItem Wrapper={(props) => <LinkYouLikes {...props} />}>
+            <MenuItem Wrapper={(props) => <YouLikesPageLink {...props} />}>
               いいねした動画
             </MenuItem>
-            <MenuItem Wrapper={(props) => <LinkYouMylists {...props} />}>
+            <MenuItem Wrapper={(props) => <YouMylistsPageLink {...props} />}>
               マイリスト
             </MenuItem>
             <MenuItem

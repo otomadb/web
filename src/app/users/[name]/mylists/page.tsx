@@ -1,11 +1,12 @@
 import clsx from "clsx";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 
-import { AttentionYou } from "~/components/pages/User/AttentionYou";
-import { UserMylists } from "~/components/pages/User/Mylists";
-import { graphql, useFragment } from "~/gql";
+import { graphql } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
-import { UserMylistsPage_MylistsFragmentDoc } from "~/gql/graphql";
+import { MylistShareRange } from "~/gql/graphql";
+
+import { MylistsList, Query } from "./MylistsList.server";
 
 export default async function Page({ params }: { params: { name: string } }) {
   const { findUser } = await fetchGql(
@@ -13,10 +14,6 @@ export default async function Page({ params }: { params: { name: string } }) {
       query UserMylistsPage($name: String!) {
         findUser(input: { name: $name }) {
           id
-          ...UserPageLayout_Nav
-          mylists(range: [PUBLIC]) {
-            ...UserMylistsPage_Mylists
-          }
         }
       }
     `),
@@ -26,19 +23,16 @@ export default async function Page({ params }: { params: { name: string } }) {
   if (!findUser) notFound();
 
   return (
-    <>
-      <div>
-        <AttentionYou
-          className={clsx(["w-full"], ["my-4"])}
-          pageUserId={findUser.id}
+    <div className={clsx()}>
+      <Suspense>
+        {/* @ts-expect-error for Server Component*/}
+        <MylistsList
+          fetcher={fetchGql(Query, {
+            id: findUser.id,
+            ranges: [MylistShareRange.Public],
+          })}
         />
-        <UserMylists
-          fallback={useFragment(
-            UserMylistsPage_MylistsFragmentDoc,
-            findUser.mylists
-          )}
-        />
-      </div>
-    </>
+      </Suspense>
+    </div>
   );
 }
