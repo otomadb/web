@@ -1,12 +1,10 @@
 import clsx from "clsx";
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
 
 import { graphql } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
-import { MylistShareRange } from "~/gql/graphql";
 
-import { MylistsList, Query } from "./MylistsList.server";
+import { MylistsList } from "./MylistsList";
 
 export default async function Page({ params }: { params: { name: string } }) {
   const { findUser } = await fetchGql(
@@ -14,6 +12,9 @@ export default async function Page({ params }: { params: { name: string } }) {
       query UserMylistsPage($name: String!) {
         findUser(input: { name: $name }) {
           id
+          mylists(range: [PUBLIC]) {
+            ...UserMylistsPage_MylistsList
+          }
         }
       }
     `),
@@ -24,15 +25,7 @@ export default async function Page({ params }: { params: { name: string } }) {
 
   return (
     <div className={clsx()}>
-      <Suspense>
-        {/* @ts-expect-error for Server Component*/}
-        <MylistsList
-          fetcher={fetchGql(Query, {
-            id: findUser.id,
-            ranges: [MylistShareRange.Public],
-          })}
-        />
-      </Suspense>
+      <MylistsList fetcher={findUser.mylists} />
     </div>
   );
 }

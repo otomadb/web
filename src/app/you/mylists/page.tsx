@@ -1,15 +1,14 @@
-export const dynamic = "force-dynamic";
-
 import clsx from "clsx";
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
 
 import { graphql } from "~/gql";
 import { fetchGql2 } from "~/gql/fetch";
 
-import { MylistsList, Query } from "./MylistsList.server";
+import { MylistsList } from "./MylistsList";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "あなたのマイリスト",
@@ -24,6 +23,7 @@ export default async function Page() {
       document: graphql(`
         query YouMylistsPage {
           whoami {
+            ...YouMylistsPage_MylistsList
             id
           }
         }
@@ -37,15 +37,7 @@ export default async function Page() {
 
   return (
     <div className={clsx()}>
-      <Suspense>
-        {/* @ts-expect-error for Server Component*/}
-        <MylistsList
-          fetcher={fetchGql2(
-            { document: Query, variables: { id: whoami.id } },
-            { session }
-          )}
-        />
-      </Suspense>
+      <MylistsList fragment={whoami} />
     </div>
   );
 }

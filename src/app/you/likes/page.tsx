@@ -3,16 +3,9 @@ export const dynamic = "force-dynamic";
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
 
-import {
-  Details,
-  Query as DetailsQuery,
-} from "~/app/users/[name]/mylists/[id]/Details.server";
-import {
-  Query as RegistrationsListQuery,
-  RegistrationsList,
-} from "~/app/users/[name]/mylists/[id]/RegistrationsList.server";
+import { Details } from "~/app/users/[name]/mylists/[id]/Details";
+import { RegistrationsList } from "~/app/users/[name]/mylists/[id]/RegistrationsList";
 import { graphql } from "~/gql";
 import { fetchGql2 } from "~/gql/fetch";
 
@@ -30,6 +23,8 @@ export default async function Page() {
         query YouLikesPage {
           whoami {
             likes {
+              ...UserMylistPage_Details
+              ...UserMylistPage_RegistrationsList
               id
             }
           }
@@ -46,34 +41,10 @@ export default async function Page() {
   return (
     <div>
       <header>
-        <Suspense>
-          {/* @ts-expect-error for Server Component*/}
-          <Details
-            fetcher={fetchGql2(
-              {
-                document: DetailsQuery,
-                variables: {
-                  id: whoami.likes.id,
-                },
-              },
-              {}
-            )}
-          />
-        </Suspense>
+        <Details fragment={whoami.likes} />
       </header>
       <section>
-        <Suspense>
-          {/* @ts-expect-error for Server Component*/}
-          <RegistrationsList
-            fetcher={fetchGql2(
-              {
-                document: RegistrationsListQuery,
-                variables: { id: whoami.likes.id },
-              },
-              {}
-            )}
-          />
-        </Suspense>
+        <RegistrationsList fragment={whoami.likes} />
       </section>
     </div>
   );
