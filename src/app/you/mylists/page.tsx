@@ -7,7 +7,7 @@ import { Suspense } from "react";
 import { graphql } from "~/gql";
 import { fetchGql2 } from "~/gql/fetch";
 
-import { MylistsList, Query } from "./MylistsList.server";
+import { MylistsList } from "./MylistsList.server";
 
 export const dynamic = "force-dynamic";
 export const runtime = "experimental-edge";
@@ -25,7 +25,7 @@ export default async function Page() {
       document: graphql(`
         query YouMylistsPage {
           whoami {
-            id
+            ...YouMylistsPage_MylistsList
           }
         }
       `),
@@ -40,12 +40,7 @@ export default async function Page() {
     <div className={clsx()}>
       <Suspense>
         {/* @ts-expect-error for Server Component*/}
-        <MylistsList
-          fetcher={fetchGql2(
-            { document: Query, variables: { id: whoami.id } },
-            { session }
-          )}
-        />
+        <MylistsList fragment={whoami} />
       </Suspense>
     </div>
   );

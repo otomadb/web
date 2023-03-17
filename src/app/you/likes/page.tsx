@@ -57,7 +57,7 @@ export default async function Page() {
                   id: whoami.likes.id,
                 },
               },
-              {}
+              { session }
             )}
           />
         </Suspense>
@@ -71,7 +71,7 @@ export default async function Page() {
                 document: RegistrationsListQuery,
                 variables: { id: whoami.likes.id },
               },
-              {}
+              { session }
             )}
           />
         </Suspense>

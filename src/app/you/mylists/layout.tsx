@@ -5,11 +5,11 @@ import React, { Suspense } from "react";
 
 import { graphql } from "~/gql";
 import { fetchGql2 } from "~/gql/fetch";
-import { MylistShareRange } from "~/gql/graphql";
 
-import { Query, SideMylistList } from "./SideMylistList.server";
+import { SideMylistList } from "./SideMylistList.server";
 
 export const dynamic = "force-dynamic";
+export const runtime = "experimental-edge";
 
 export default async function Layout({
   children,
@@ -46,22 +46,7 @@ export default async function Layout({
       >
         <Suspense>
           {/* @ts-expect-error for Server Component*/}
-          <SideMylistList
-            fetcher={fetchGql2(
-              {
-                document: Query,
-                variables: {
-                  id: whoami.id,
-                  ranges: [
-                    MylistShareRange.Public,
-                    MylistShareRange.KnowLink,
-                    MylistShareRange.Private,
-                  ],
-                },
-              },
-              { session }
-            )}
-          />
+          <SideMylistList fragment={whoami} />
         </Suspense>
       </div>
       <div className={clsx(["flex-grow"])}>{children}</div>

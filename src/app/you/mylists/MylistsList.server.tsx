@@ -1,29 +1,44 @@
-import { ResultOf } from "@graphql-typed-document-node/core";
 import clsx from "clsx";
+import { cookies } from "next/headers";
 
 import { MylistListItem } from "~/app/users/[name]/mylists/MylistsListItem";
-import { graphql } from "~/gql";
+import { FragmentType, graphql, useFragment } from "~/gql";
+import { fetchGql2 } from "~/gql/fetch";
 
-export const Query = graphql(`
-  query YouMylistsPage_MylistsList_Fetch($id: ID!) {
-    getUser(id: $id) {
-      mylists(range: [PUBLIC, KNOW_LINK, PRIVATE]) {
-        nodes {
-          id
-          ...UserMylistsPage_MylistsListItem
-        }
-      }
-    }
+export const Fragment = graphql(`
+  fragment YouMylistsPage_MylistsList on User {
+    id
   }
 `);
 export const MylistsList = async ({
   className,
-  fetcher,
+  ...props
 }: {
   className?: string;
-  fetcher: Promise<ResultOf<typeof Query>>;
+  fragment: FragmentType<typeof Fragment>;
 }) => {
-  const { getUser } = await fetcher;
+  const cookieStore = cookies();
+  const session = cookieStore.get(process.env.SESSION_COOKIE_KEY)?.value;
+
+  const { id } = useFragment(Fragment, props.fragment);
+  const { getUser } = await fetchGql2(
+    {
+      document: graphql(`
+        query YouMylistsPage_MylistsList_Fetch($id: ID!) {
+          getUser(id: $id) {
+            mylists(range: [PUBLIC, KNOW_LINK, PRIVATE]) {
+              nodes {
+                id
+                ...UserMylistsPage_MylistsListItem
+              }
+            }
+          }
+        }
+      `),
+      variables: { id },
+    },
+    { session }
+  );
 
   return (
     <div

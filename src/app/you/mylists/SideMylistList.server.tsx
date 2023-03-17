@@ -1,33 +1,47 @@
-import { ResultOf } from "@graphql-typed-document-node/core";
 import clsx from "clsx";
-import React from "react";
+import { cookies } from "next/headers";
 
 import { MylistTitle } from "~/components/common/MylistTitle";
 import { YouMylistLinkSwitch } from "~/components/common/YouMylistLinkSwitch";
-import { graphql } from "~/gql";
+import { FragmentType, graphql, useFragment } from "~/gql";
+import { fetchGql2 } from "~/gql/fetch";
 
-export const Query = graphql(`
-  query YouMylistsPageLayout_SideMylistsList_Fetch($id: ID!) {
-    getUser(id: $id) {
-      id
-      mylists(range: [PUBLIC, KNOW_LINK, PRIVATE]) {
-        nodes {
-          ...MylistTitle
-          ...YouMylistLinkSwitch
-          id
-        }
-      }
-    }
+export const Fragment = graphql(`
+  fragment YouMylistsPageLayout_SideMylistList on User {
+    id
   }
 `);
 export const SideMylistList = async ({
   className,
-  fetcher,
+  ...props
 }: {
   className?: string;
-  fetcher: Promise<ResultOf<typeof Query>>;
+  fragment: FragmentType<typeof Fragment>;
 }) => {
-  const { getUser } = await fetcher;
+  const cookieStore = cookies();
+  const session = cookieStore.get(process.env.SESSION_COOKIE_KEY)?.value;
+
+  const { id } = useFragment(Fragment, props.fragment);
+  const { getUser } = await fetchGql2(
+    {
+      document: graphql(`
+        query YouMylistsPageLayout_SideMylistsList_Fetch($id: ID!) {
+          getUser(id: $id) {
+            id
+            mylists(range: [PUBLIC, KNOW_LINK, PRIVATE]) {
+              nodes {
+                ...MylistTitle
+                ...YouMylistLinkSwitch
+                id
+              }
+            }
+          }
+        }
+      `),
+      variables: { id },
+    },
+    { session }
+  );
 
   return (
     <div
