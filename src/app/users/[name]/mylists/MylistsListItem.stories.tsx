@@ -20,6 +20,7 @@ import { Fragment, MylistListItem } from "./MylistsListItem";
 
 const meta = {
   component: MylistListItem,
+  args: { Link: (props) => <a {...props} /> },
   render(args) {
     return (
       <UrqlProvider value={createUrqlClient({ url: "/graphql" })}>

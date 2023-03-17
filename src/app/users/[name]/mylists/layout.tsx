@@ -1,13 +1,11 @@
 import clsx from "clsx";
 import { notFound } from "next/navigation";
-import React, { Suspense } from "react";
+import React from "react";
 
 import { graphql } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
-import { MylistShareRange } from "~/gql/graphql";
 
-import { SideMylistList } from "./SideMylistList.server";
-import { Query } from "./SideMylistList.server";
+import { SideMylistList } from "./SideMylistList";
 
 export default async function Layout({
   children,
@@ -21,6 +19,9 @@ export default async function Layout({
       query UserMylistsPageLayout($name: String!) {
         findUser(input: { name: $name }) {
           id
+          mylists(range: [PUBLIC]) {
+            ...UserMylistsPageLayout_SideMylistList
+          }
         }
       }
     `),
@@ -39,15 +40,7 @@ export default async function Layout({
           ["sticky", "top-[64px]"]
         )}
       >
-        <Suspense>
-          {/* @ts-expect-error for Server Component*/}
-          <SideMylistList
-            fetcher={fetchGql(Query, {
-              id: findUser.id,
-              ranges: [MylistShareRange.Public],
-            })}
-          />
-        </Suspense>
+        <SideMylistList fetcher={findUser.mylists} />
       </div>
       <div className={clsx(["flex-grow"])}>{children}</div>
     </div>

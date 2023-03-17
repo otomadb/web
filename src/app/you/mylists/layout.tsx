@@ -1,19 +1,14 @@
 import clsx from "clsx";
-import { cookies } from "next/headers";
-import { notFound } from "next/navigation";
-import React, { Suspense } from "react";
+import React from "react";
 
-import { graphql } from "~/gql";
-import { fetchGql2 } from "~/gql/fetch";
-import { MylistShareRange } from "~/gql/graphql";
-
-import { Query, SideMylistList } from "./SideMylistList.server";
+import { SideMylistList } from "./SideMylistList";
 
 export default async function Layout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  /*
   const cookieStore = cookies();
   const session = cookieStore.get(process.env.SESSION_COOKIE_KEY)?.value;
 
@@ -22,6 +17,7 @@ export default async function Layout({
       document: graphql(`
         query YouMylistsPageLayout {
           whoami {
+            ...YouMylistsPageLayout_SideMylistsList
             id
           }
         }
@@ -31,6 +27,7 @@ export default async function Layout({
     { session }
   );
   if (!whoami) return notFound();
+  */
 
   return (
     <div className={clsx(["flex"], ["relative"])}>
@@ -42,25 +39,7 @@ export default async function Layout({
           ["sticky", "top-[64px]"]
         )}
       >
-        <Suspense>
-          {/* @ts-expect-error for Server Component*/}
-          <SideMylistList
-            fetcher={fetchGql2(
-              {
-                document: Query,
-                variables: {
-                  id: whoami.id,
-                  ranges: [
-                    MylistShareRange.Public,
-                    MylistShareRange.KnowLink,
-                    MylistShareRange.Private,
-                  ],
-                },
-              },
-              { session }
-            )}
-          />
-        </Suspense>
+        <SideMylistList />
       </div>
       <div className={clsx(["flex-grow"])}>{children}</div>
     </div>
