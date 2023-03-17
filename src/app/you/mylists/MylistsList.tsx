@@ -4,6 +4,7 @@ import clsx from "clsx";
 import { useQuery } from "urql";
 
 import { MylistListItem } from "~/app/users/[name]/mylists/MylistsListItem";
+import { YouMylistLinkSwitch } from "~/components/common/YouMylistLinkSwitch";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const Fragment = graphql(`
@@ -23,6 +24,7 @@ export const MylistsList: React.FC<{
           id
           mylists(range: [PUBLIC, KNOW_LINK, PRIVATE]) {
             nodes {
+              ...YouMylistLinkSwitch
               ...UserMylistsPage_MylistsListItem
               id
             }
@@ -50,7 +52,11 @@ export const MylistsList: React.FC<{
         <p>取得可能なマイリストは存在しませんでした</p>
       )}
       {data.getUser.mylists.nodes.map((mylist) => (
-        <MylistListItem key={mylist.id} fragment={mylist} />
+        <MylistListItem
+          key={mylist.id}
+          fragment={mylist}
+          Link={(props) => <YouMylistLinkSwitch fragment={mylist} {...props} />}
+        />
       ))}
     </div>
   );

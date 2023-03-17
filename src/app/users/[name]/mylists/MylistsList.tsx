@@ -1,5 +1,6 @@
 import clsx from "clsx";
 
+import { MylistLinkSwitch } from "~/components/common/MylistLinkSwitch";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 import { MylistListItem } from "./MylistsListItem";
@@ -7,8 +8,9 @@ import { MylistListItem } from "./MylistsListItem";
 export const Fragment = graphql(`
   fragment UserMylistsPage_MylistsList on MylistConnection {
     nodes {
-      id
+      ...MylistLinkSwitch
       ...UserMylistsPage_MylistsListItem
+      id
     }
   }
 `);
@@ -31,7 +33,11 @@ export const MylistsList: React.FC<{
         <p>取得可能なマイリストは存在しませんでした</p>
       )}
       {fragment.nodes.map((mylist) => (
-        <MylistListItem key={mylist.id} fragment={mylist} />
+        <MylistListItem
+          key={mylist.id}
+          fragment={mylist}
+          Link={(props) => <MylistLinkSwitch fragment={mylist} {...props} />}
+        />
       ))}
     </div>
   );

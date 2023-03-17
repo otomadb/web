@@ -1,7 +1,6 @@
 import clsx from "clsx";
-import React from "react";
+import React, { ReactNode } from "react";
 
-import { MylistLinkSwitch } from "~/components/common/MylistLinkSwitch";
 import { MylistTitle } from "~/components/common/MylistTitle";
 import { UserIcon } from "~/components/common/UserIcon";
 import { VideoThumbnail } from "~/components/common/VideoThumbnail";
@@ -33,7 +32,8 @@ export const Fragment = graphql(`
 export const MylistListItem: React.FC<{
   className?: string;
   fragment: FragmentType<typeof Fragment>;
-}> = ({ className, ...props }) => {
+  Link: React.FC<{ className?: string; children: ReactNode }>;
+}> = ({ className, Link, ...props }) => {
   const fragment = useFragment(Fragment, props.fragment);
   const { holder, registrations } = fragment;
   return (
@@ -51,9 +51,9 @@ export const MylistListItem: React.FC<{
     >
       <div className={clsx(["flex-grow"], ["flex-col"])}>
         <div>
-          <MylistLinkSwitch fragment={fragment}>
+          <Link>
             <MylistTitle fragment={fragment} />
-          </MylistLinkSwitch>
+          </Link>
         </div>
         <div className={clsx(["mt-1"], ["flex", "items-center"])}>
           <UserIcon fragment={holder} size={24} />
