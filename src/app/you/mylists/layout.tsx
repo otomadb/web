@@ -1,10 +1,5 @@
 import clsx from "clsx";
-import { cookies } from "next/headers";
-import { notFound } from "next/navigation";
-import React, { Suspense } from "react";
-
-import { graphql } from "~/gql";
-import { fetchGql2 } from "~/gql/fetch";
+import React from "react";
 
 import { SideMylistList } from "./SideMylistList";
 
@@ -13,6 +8,7 @@ export default async function Layout({
 }: {
   children: React.ReactNode;
 }) {
+  /*
   const cookieStore = cookies();
   const session = cookieStore.get(process.env.SESSION_COOKIE_KEY)?.value;
 
@@ -31,6 +27,7 @@ export default async function Layout({
     { session }
   );
   if (!whoami) return notFound();
+  */
 
   return (
     <div className={clsx(["flex"], ["relative"])}>
@@ -42,9 +39,7 @@ export default async function Layout({
           ["sticky", "top-[64px]"]
         )}
       >
-        <Suspense>
-          <SideMylistList fragment={whoami} />
-        </Suspense>
+        <SideMylistList />
       </div>
       <div className={clsx(["flex-grow"])}>{children}</div>
     </div>

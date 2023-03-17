@@ -1,13 +1,10 @@
 export const dynamic = "force-dynamic";
-import { cookies } from "next/headers";
-import { notFound } from "next/navigation";
 
-import { Details } from "~/app/users/[name]/mylists/[id]/Details";
-import { RegistrationsList } from "~/app/users/[name]/mylists/[id]/RegistrationsList";
-import { graphql } from "~/gql";
-import { fetchGql2 } from "~/gql/fetch";
+import { Details } from "./Details";
+import { RegistrationsList } from "./RegistrationsList";
 
 export default async function Page({ params }: { params: { id: string } }) {
+  /*
   const cookieStore = cookies();
   const session = cookieStore.get(process.env.SESSION_COOKIE_KEY)?.value;
 
@@ -31,14 +28,15 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   if (!whoami) return notFound();
   if (!whoami.mylist) return notFound();
+  */
 
   return (
     <div>
       <header>
-        <Details fragment={whoami.mylist} />
+        <Details mylistId={params.id} />
       </header>
       <section>
-        <RegistrationsList fragment={whoami.mylist} />
+        <RegistrationsList mylistId={params.id} />
       </section>
     </div>
   );

@@ -1,19 +1,16 @@
 export const dynamic = "force-dynamic";
 
 import type { Metadata } from "next";
-import { cookies } from "next/headers";
-import { notFound } from "next/navigation";
 
-import { Details } from "~/app/users/[name]/mylists/[id]/Details";
-import { RegistrationsList } from "~/app/users/[name]/mylists/[id]/RegistrationsList";
-import { graphql } from "~/gql";
-import { fetchGql2 } from "~/gql/fetch";
+import { Details } from "./Details";
+import { RegistrationsList } from "./RegistrationsList";
 
 export const metadata: Metadata = {
   title: "あなたがいいねした動画",
 };
 
 export default async function Page() {
+  /*
   const cookieStore = cookies();
   const session = cookieStore.get(process.env.SESSION_COOKIE_KEY)?.value;
 
@@ -37,14 +34,15 @@ export default async function Page() {
 
   if (!whoami) return notFound();
   if (!whoami.likes) return notFound();
+  */
 
   return (
     <div>
       <header>
-        <Details fragment={whoami.likes} />
+        <Details />
       </header>
       <section>
-        <RegistrationsList fragment={whoami.likes} />
+        <RegistrationsList />
       </section>
     </div>
   );
