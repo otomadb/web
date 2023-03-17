@@ -1,8 +1,6 @@
 import clsx from "clsx";
 import React from "react";
 
-import { YouPageGuard } from "./Guard";
-
 export default async function Layout({
   children,
 }: {
@@ -11,7 +9,7 @@ export default async function Layout({
   return (
     <div className={clsx(["h-full"])}>
       <div className={clsx(["container", "max-w-screen-xl", "mx-auto"])}>
-        <YouPageGuard>{children}</YouPageGuard>
+        {children}
       </div>
     </div>
   );
