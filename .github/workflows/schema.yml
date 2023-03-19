@@ -1,0 +1,26 @@
+name: Schema check
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  merge_group:
+
+jobs:
+  schema:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: pnpm
+      - run: pnpm install
+      - run: pnpm run schema:diff
+        env:
+          GRAPHQL_API_ENDPOINT: "${{ secrets.GRAPHQL_API_ENDPOINT }}"
+      - run: pnpm run schema:validate
