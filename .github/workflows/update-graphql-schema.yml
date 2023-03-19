@@ -1,0 +1,29 @@
+name: Update GraphQL Schema
+
+on:
+  schedule:
+    - cron: "0 */4 * * *"
+  workflow_dispatch:
+
+jobs:
+  update:
+    name: Update schema
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
+      - run: |
+          pnpm add --global
+            @graphql-inspector/ci
+            @graphql-inspector/introspect-command
+      - run: graphql-inspector introspect $GRAPHQL_API_ENDPOINT --write schema.graphql
+        env:
+          GRAPHQL_API_ENDPOINT: "${{ secrets.GRAPHQL_API_ENDPOINT }}"
+      - uses: peter-evans/create-pull-request@v4
+        with:
+          title: "chore(schema): Update `graphql.schema`"
+          commit-message: "chore(schema): Update `graphql.schema`"
+          branch: chore/update-graphql-schema
+          delete-branch: true
