@@ -22,7 +22,7 @@ const NeitherExists: React.FC<{
         ["flex", ["gap-x-4"]],
         ["hover:bg-sky-300/50", "focus:bg-sky-400/50"]
       )}
-      params={{ sourceId }}
+      sourceId={sourceId}
       onClick={(e) => {
         e.currentTarget.blur();
       }}

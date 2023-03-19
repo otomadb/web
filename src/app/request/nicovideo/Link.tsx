@@ -1,15 +1,20 @@
 import Link from "next/link";
 import React, { ComponentProps } from "react";
 
+export type SearchParams = { sourceId?: string };
+
 export const NicovideoRequestPageLink: React.FC<
-  Omit<ComponentProps<typeof Link>, "href"> & {
-    params?: { sourceId: string };
-  }
-> = ({ children, params, ...props }) => {
-  let url = `/request/nicovideo`;
-  if (params?.sourceId) url += `?sourceId=${params?.sourceId}`;
+  Omit<ComponentProps<typeof Link>, "href"> & SearchParams
+> = ({ children, sourceId, ...props }) => {
   return (
-    <Link href={url.toString()} {...props}>
+    <Link
+      href={
+        sourceId
+          ? `/request/nicovideo?sourceId=${sourceId}`
+          : "/request/nicovideo"
+      }
+      {...props}
+    >
       {children}
     </Link>
   );
