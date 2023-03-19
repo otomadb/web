@@ -233,6 +233,31 @@ input FindVideosOrderBy {
   createdAt: SortOrder
 }
 
+"""指定したTagParentRelationがそもそも非明示的だった場合のエラー"""
+type ImplicitizeTagAlreadyImplicitError {
+  relation: TagParent!
+}
+
+enum ImplicitizeTagOtherErrorMessage {
+  INTERNAL_SERVER_ERROR
+}
+
+"""その他のエラー"""
+type ImplicitizeTagOtherErrorsFallback {
+  message: ImplicitizeTagOtherErrorMessage!
+}
+
+input ImplicitizeTagParentInput {
+  """親子関係のID"""
+  relationId: ID!
+}
+
+union ImplicitizeTagParentReturnUnion = ImplicitizeTagAlreadyImplicitError | ImplicitizeTagOtherErrorsFallback | ImplicitizeTagSucceededPayload | MutationAuthenticationError | MutationInvalidTagParentIdError | MutationTagParentNotFoundError
+
+type ImplicitizeTagSucceededPayload {
+  relation: TagParent!
+}
+
 enum LikeVideoFailedMessage {
   FORBIDDEN
   INVALID_VIDEO_ID
@@ -266,6 +291,9 @@ type Mutation {
 
   """非明示的なタグの親子関係を明示的に昇格する"""
   explicitizeTagParent(input: ExplicitizeTagParentInput!): ExplicitizeTagParentReturnUnion!
+
+  """明示的なタグの親子関係を非明示的に降格する"""
+  implicitizeTagParent(input: ImplicitizeTagParentInput!): ImplicitizeTagParentReturnUnion!
   likeVideo(input: LikeVideoInput!): LikeVideoPayload!
   registerCategoryTag(input: RegisterCategoryTagInput!): RegisterCategoryTagResultUnion!
   registerCategoryTagTyping(input: RegisterCategoryTagTypingInput!): RegisterCategoryTagTypingResultUnion!
@@ -694,7 +722,7 @@ type Query {
   findNicovideoRegistrationRequest(input: FindNicovideoRegistrationRequestInput): NicovideoRegistrationRequest
   findNicovideoRegistrationRequests(after: String, before: String, checked: Boolean, first: Int, last: Int, orderBy: FindNicovideoRegistrationRequestsOrderBy! = {createdAt: DESC}): NicovideoRegistrationRequestConnection!
   findNicovideoVideoSource(input: FindNicovideoVideoSourceInput!): NicovideoVideoSource
-  findSemitags(after: String, before: String, checked: Boolean, expect: [ID!]! = [] @deprecated, first: Int, last: Int, orderBy: FindSemitagsOrderBy! = {createdAt: DESC}): SemitagConnection!
+  findSemitags(after: String, before: String, checked: Boolean, first: Int, last: Int, orderBy: FindSemitagsOrderBy! = {createdAt: DESC}): SemitagConnection!
   findTag(input: FindTagInput!): Tag
   findTags(input: FindTagsInput!): TagConnection!
   findUser(input: FindUserInput!): User
