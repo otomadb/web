@@ -2,21 +2,16 @@ import clsx from "clsx";
 import type { Metadata } from "next";
 
 import { Form } from "./Form";
-import { SearchParams } from "./Link";
 
 export const metadata: Metadata = {
   title: "ニコニコ動画からの登録",
 };
 
-export default async function Page({
-  searchParams,
-}: {
-  searchParams: SearchParams;
-}) {
+export default async function Page() {
   return (
     <main className={clsx(["max-w-screen-lg"], ["mx-auto"])}>
       <h1>ニコニコ動画からの追加</h1>
-      <Form className={clsx(["mt-4"])} initSourceId={searchParams.sourceId} />
+      <Form className={clsx(["mt-4"])} />
     </main>
   );
 }
