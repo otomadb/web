@@ -15,13 +15,11 @@ export const AuthPagesGuard: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const router = useRouter();
-  const [{ data, fetching }, update] = useQuery({
+  const [{ data }, update] = useQuery({
     query: graphql(`
-      query AuthPages_Guard {
+      query AuthPagesLayout_Guard {
         whoami {
           id
-          ...UserIcon
-          ...GlobalNav_Profile_Accordion
         }
       }
     `),
@@ -31,13 +29,6 @@ export const AuthPagesGuard: React.FC<{ children: ReactNode }> = ({
   useEffect(() => {
     if (data?.whoami?.id) router.back();
   }, [data, router]);
-
-  if (fetching)
-    return (
-      <div>
-        <p>LOADING</p>
-      </div>
-    );
 
   return (
     <AuthPageGuardContext.Provider value={update}>
