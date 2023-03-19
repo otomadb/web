@@ -4,7 +4,7 @@ import React, { ReactNode } from "react";
 import { FragmentType, graphql, useFragment } from "~/gql";
 import { TagType } from "~/gql/graphql";
 
-const Fragment = graphql(`
+export const Fragment = graphql(`
   fragment CommonTag on Tag {
     id
     name
