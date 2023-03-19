@@ -4,9 +4,8 @@ import "client-only";
 
 import { AtSymbolIcon, LockClosedIcon } from "@heroicons/react/24/solid";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Turnstile, type TurnstileInstance } from "@marsidev/react-turnstile";
 import clsx from "clsx";
-import React, { useCallback, useContext, useRef, useState } from "react";
+import React, { useCallback, useContext } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useMutation } from "urql";
 import * as z from "zod";
@@ -16,9 +15,9 @@ import { SignupPageLink } from "~/app/auth/signup/Link";
 import { BlueButton } from "~/components/common/Button";
 import { PasswordInput } from "~/components/common/PasswordInput";
 import { TextInput } from "~/components/common/TextInput";
+import { useTurnstileGuard } from "~/components/TurnstileGuard";
 import { graphql } from "~/gql";
 import { SigninFailedMessage } from "~/gql/graphql";
-import { TurnstileVerifyResponse } from "~/turnstile";
 
 import { InputWithIcon } from "../InputWithIcon";
 
@@ -29,8 +28,7 @@ const formSchema = z.object({
 type FormSchema = z.infer<typeof formSchema>;
 
 export const SigninForm: React.FC<{ className?: string }> = ({ className }) => {
-  const turnstileRef = useRef<TurnstileInstance>(null);
-  const [turnstileToken, setTurnstileToken] = useState<string>();
+  const { verify: verifyTurnstile } = useTurnstileGuard();
 
   const updateGuard = useContext(AuthPageGuardContext);
 
@@ -62,16 +60,7 @@ export const SigninForm: React.FC<{ className?: string }> = ({ className }) => {
   );
   const onSubmit: SubmitHandler<FormSchema> = useCallback(
     async ({ username, password }) => {
-      if (!turnstileToken) {
-        // TODO: 何らかの警告を出す
-        return;
-      }
-      const verifyTurnstile: TurnstileVerifyResponse = await fetch(
-        "/api/turnstile",
-        { method: "POST", body: new URLSearchParams({ token: turnstileToken }) }
-      ).then((r) => r.json());
-      if (!verifyTurnstile.success) {
-        turnstileRef.current?.reset();
+      if (!(await verifyTurnstile())) {
         // TODO: 何らかの警告を出す
         return;
       }
@@ -100,7 +89,7 @@ export const SigninForm: React.FC<{ className?: string }> = ({ className }) => {
           return;
       }
     },
-    [setError, signin, turnstileToken, updateGuard]
+    [setError, signin, updateGuard, verifyTurnstile]
   );
 
   return (
@@ -153,21 +142,7 @@ export const SigninForm: React.FC<{ className?: string }> = ({ className }) => {
         </label>
       </div>
       <div>
-        <Turnstile
-          ref={turnstileRef}
-          siteKey={process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY}
-          onSuccess={(token) => {
-            setTurnstileToken(token);
-          }}
-        />
-      </div>
-      <div>
-        <BlueButton
-          className={clsx(["w-full"], ["py-2"])}
-          disabled={!turnstileToken}
-        >
-          ログイン
-        </BlueButton>
+        <BlueButton className={clsx(["w-full"], ["py-2"])}>ログイン</BlueButton>
       </div>
       <div className={clsx(["mt-4"])}>
         <p>

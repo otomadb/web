@@ -8,9 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  return (
-    <div className={clsx(["flex", ["justify-center"], ["items-center"]])}>
-      <SignupForm className={clsx(["w-full", "md:w-96"])} />
-    </div>
-  );
+  return <SignupForm className={clsx(["w-full", "max-w-[24rem]"])} />;
 }
