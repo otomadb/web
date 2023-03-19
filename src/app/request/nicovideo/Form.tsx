@@ -3,6 +3,7 @@
 import "client-only";
 
 import clsx from "clsx";
+import { useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 
 import { SourceIdInputForm } from "~/app/editor/nicovideo/SourceIdInputForm";
@@ -11,9 +12,10 @@ import { RegisterForm } from "./RegisterForm";
 
 export const RequestForm: React.FC<{
   className?: string;
-  initSourceId?: string;
-}> = ({ className, initSourceId }) => {
-  const [sourceId, setSourceId] = useState<string | undefined>(initSourceId);
+}> = ({ className }) => {
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const searchParams = useSearchParams()!;
+  const [sourceId, setSourceId] = useState(searchParams.get("sourceId"));
 
   return (
     <div
@@ -30,7 +32,7 @@ export const RequestForm: React.FC<{
       <RegisterForm
         sourceId={sourceId}
         clearSourceId={() => {
-          setSourceId(undefined);
+          setSourceId(null);
         }}
       />
     </div>

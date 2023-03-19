@@ -96,7 +96,7 @@ export const formSchema = z.object({
 export type FormSchema = z.infer<typeof formSchema>;
 export const RegisterForm: React.FC<{
   className?: string;
-  sourceId: string | undefined;
+  sourceId: string | null;
   clearSourceId(): void;
 }> = ({ className, sourceId, clearSourceId }) => {
   const { control, handleSubmit, register, setValue, watch, getValues, reset } =
