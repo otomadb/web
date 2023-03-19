@@ -5,7 +5,7 @@ import React from "react";
 import { LinkVideo } from "~/app/videos/[serial]/Link";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-import { CommonTag } from "../Tag";
+import { CommonTag } from "../../CommonTag";
 import { VideoThumbnail } from "../VideoThumbnail";
 
 const Fragment = graphql(`

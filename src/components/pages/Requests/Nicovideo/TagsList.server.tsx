@@ -1,7 +1,7 @@
 import clsx from "clsx";
 
 import { LinkTag } from "~/app/tags/[serial]/Link";
-import { CommonTag } from "~/components/common/Tag";
+import { CommonTag } from "~/components/CommonTag";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 const Fragment = graphql(`

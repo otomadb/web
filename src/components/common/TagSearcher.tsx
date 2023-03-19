@@ -14,7 +14,7 @@ import {
   TagSearcher_SearchDocument,
 } from "~/gql/graphql";
 
-import { CommonTag } from "./Tag";
+import { CommonTag } from "../CommonTag";
 
 graphql(`
   query TagSearcher_Search($query: String!, $limit: Int!) {

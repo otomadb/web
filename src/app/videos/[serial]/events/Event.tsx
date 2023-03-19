@@ -3,8 +3,8 @@ import Image from "next/image";
 import React, { ReactNode } from "react";
 
 import { LinkUser } from "~/app/users/[name]/Link";
-import { CommonTag } from "~/components/common/Tag";
 import { UserIcon } from "~/components/common/UserIcon";
+import { CommonTag } from "~/components/CommonTag";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 import { Semitag } from "../Semitag";
