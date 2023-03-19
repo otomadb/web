@@ -3,7 +3,6 @@ import "server-only";
 import clsx from "clsx";
 
 import { LinkUser } from "~/app/users/[name]/Link";
-import { CoolImage } from "~/components/common/CoolImage";
 import { UserIcon } from "~/components/common/UserIcon";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
@@ -14,7 +13,7 @@ const Fragment = graphql(`
     ...NicovideoRequestPage_EditorButtonFragment
     title
     sourceId
-    thumbnailUrl
+    embedUrl
     requestedBy {
       id
       name
@@ -25,17 +24,16 @@ const Fragment = graphql(`
 `);
 export function Details(props: { fragment: FragmentType<typeof Fragment> }) {
   const fragment = useFragment(Fragment, props.fragment);
-  const { title, sourceId, thumbnailUrl, requestedBy } = fragment;
+  const { title, sourceId, requestedBy, embedUrl } = fragment;
 
   return (
     <div className={clsx(["mt-4"], ["flex", "gap-x-4"])}>
       <div className={clsx(["flex-shrink-0"])}>
-        <CoolImage
-          className={clsx(["w-64"], ["h-32"])}
-          src={thumbnailUrl}
-          alt={title}
-          width={196}
-          height={128}
+        <iframe
+          src={embedUrl}
+          className={clsx(["w-[384px]"], ["h-[192px]"])}
+          width={384}
+          height={192}
         />
       </div>
       <div className={clsx(["flex-grow"], ["flex", "flex-col", "gap-y-1"])}>
