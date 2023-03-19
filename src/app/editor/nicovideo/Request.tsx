@@ -2,7 +2,7 @@
 import clsx from "clsx";
 import React from "react";
 
-import { CommonTag } from "~/components/common/Tag";
+import { CommonTag } from "~/components/CommonTag";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 const Fragment = graphql(`

@@ -3,8 +3,8 @@ import clsx from "clsx";
 import React from "react";
 
 import { LinkVideo } from "~/app/videos/[serial]/Link";
-import { CommonTag } from "~/components/common/Tag";
 import { VideoThumbnail } from "~/components/common/VideoThumbnail";
+import { CommonTag } from "~/components/CommonTag";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const Fragment = graphql(`

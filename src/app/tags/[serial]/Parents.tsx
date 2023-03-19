@@ -1,6 +1,6 @@
 import clsx from "clsx";
 
-import { CommonTag } from "~/components/common/Tag";
+import { CommonTag } from "~/components/CommonTag";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 import { LinkTag } from "./Link";

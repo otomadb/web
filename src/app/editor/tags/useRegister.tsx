@@ -8,7 +8,7 @@ import { SubmitHandler } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { useMutation } from "urql";
 
-import { CommonTag } from "~/components/common/Tag";
+import { CommonTag } from "~/components/CommonTag";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 import { FormSchema } from "./FormSchema";

@@ -4,8 +4,8 @@ import Image from "next/image";
 import React from "react";
 import { useQuery } from "urql";
 
-import { CommonTag } from "~/components/common/Tag";
 import { TagSearcher } from "~/components/common/TagSearcher";
+import { CommonTag } from "~/components/CommonTag";
 import { graphql } from "~/gql";
 
 export const ConfirmForm: React.FC<{

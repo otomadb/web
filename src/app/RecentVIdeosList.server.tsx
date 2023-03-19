@@ -4,8 +4,8 @@ import clsx from "clsx";
 
 import { LinkTag } from "~/app/tags/[serial]/Link";
 import { LinkVideo } from "~/app/videos/[serial]/Link";
-import { CommonTag } from "~/components/common/Tag";
 import { VideoThumbnail } from "~/components/common/VideoThumbnail";
+import { CommonTag } from "~/components/CommonTag";
 import { graphql } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
 
