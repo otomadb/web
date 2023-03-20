@@ -16,8 +16,7 @@
     "lintfix:eslint": "pnpm run lint:eslint --fix",
     "codegen": "graphql-codegen --config codegen.ts",
     "codegen:watch": "pnpm run codegen --watch",
-    "schema:diff": "graphql-inspector diff $GRAPHQL_API_ENDPOINT ./schema.graphql",
-    "schema:validate": "graphql-inspector validate \"./src/**/*.tsx\" ./schema.graphql -d",
+    "graphql:validate": "graphql-inspector validate \"./src/**/*.{ts,tsx}\" ./schema.graphql",
     "storybook": "storybook dev -p 6006 --no-open",
     "storybook:build": "storybook build",
     "storybook:preview": "serve storybook-static"
