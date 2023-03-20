@@ -28,5 +28,5 @@ jobs:
       - uses: pnpm/action-setup@v2
         with:
           version: 7
-      - run: pnpm add --global @graphql-inspector/ci @graphql-inspector/validate
+      - run: pnpm add --global @graphql-inspector/ci @graphql-inspector/validate-command
       - run: graphql-inspector validate "./src/**/*.{ts,tsx}" ./schema.graphql
