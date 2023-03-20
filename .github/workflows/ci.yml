@@ -25,11 +25,17 @@ jobs:
       - diff-graphql-schema
     steps:
       - uses: actions/checkout@v3
+
       - uses: pnpm/action-setup@v2
         with:
           version: 7
-      - run: pnpm add --global graphql @graphql-inspector/ci @graphql-inspector/validate-command
-      - run: graphql-inspector validate "src/**/*.{ts,tsx}" schema.graphql
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: pnpm
+
+      - run: pnpm install
+      - run: pnpm run graphql:validate
 
   lint:
     runs-on: ubuntu-latest
