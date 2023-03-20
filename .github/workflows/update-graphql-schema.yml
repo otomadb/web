@@ -14,10 +14,7 @@ jobs:
       - uses: pnpm/action-setup@v2
         with:
           version: 7
-      - run: |
-          pnpm add --global
-            @graphql-inspector/ci
-            @graphql-inspector/introspect-command
+      - run: pnpm add --global @graphql-inspector/ci @graphql-inspector/introspect-command
       - run: graphql-inspector introspect $GRAPHQL_API_ENDPOINT --write schema.graphql
         env:
           GRAPHQL_API_ENDPOINT: "${{ secrets.GRAPHQL_API_ENDPOINT }}"
