@@ -21,21 +21,16 @@ jobs:
   validate-graphql-queries:
     name: Validate GraphQL Queries
     runs-on: ubuntu-latest
-    needs:
-      - diff-graphql-schema
+    # needs:
+    #   - diff-graphql-schema
     steps:
       - uses: actions/checkout@v3
-
       - uses: pnpm/action-setup@v2
         with:
           version: 7
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-          cache: pnpm
-
-      - run: pnpm install
-      - run: pnpm run graphql:validate
+      - run: pnpm add --global graphql @graphql-inspector/cli
+        # @graphql-inspector/ci @graphql-inspector/validate-command では動かなかったので当面これで
+      - run: graphql-inspector validate "src/**/*.{ts,tsx}" schema.graphql
 
   lint:
     runs-on: ubuntu-latest
