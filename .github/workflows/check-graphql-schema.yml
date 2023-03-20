@@ -8,7 +8,8 @@ on:
   merge_group:
 
 jobs:
-  check:
+  diff:
+    name: Diff schema
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -16,3 +17,19 @@ jobs:
         with:
           schema: "schema.graphql"
           endpoint: "${{ secrets.GRAPHQL_API_ENDPOINT }}"
+
+  validate:
+    name: Validate queries
+    runs-on: ubuntu-latest
+    needs:
+      - diff
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
+      - run: |
+          pnpm add --global
+            @graphql-inspector/ci
+            @graphql-inspector/validate
+      - run: graphql-inspector validate "./src/**/*.{ts,tsx}" ./schema.graphql
