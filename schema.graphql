@@ -1113,6 +1113,7 @@ type Semitag implements Node {
   name: String!
   resolved: Boolean! @deprecated
   resolvedTag: Tag @deprecated
+  suggestTags(limit: Int! = 3, skip: Int! = 0): SemitagSuggestTagsPayload!
   video: Video!
 }
 
@@ -1179,6 +1180,10 @@ type SemitagResolving {
   note: String
   resolveTo: VideoTag!
   semitag: Semitag!
+}
+
+type SemitagSuggestTagsPayload {
+  items: [TagSearchItemByName!]!
 }
 
 type Session {
