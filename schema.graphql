@@ -574,12 +574,8 @@ input NicovideoOriginalSourceTagSearchTagsInput {
   skip: Int! = 0
 }
 
-type NicovideoOriginalSourceTagSearchTagsItem {
-  tag: Tag!
-}
-
 type NicovideoOriginalSourceTagSearchTagsPayload {
-  items: [NicovideoOriginalSourceTagSearchTagsItem!]!
+  items: [TagSearchItemByName!]!
 }
 
 type NicovideoRegistrationRequest {
@@ -1095,13 +1091,8 @@ input SearchTagInput {
   skip: Int! = 0
 }
 
-type SearchTagsItem {
-  matchedName: String!
-  tag: Tag!
-}
-
 type SearchTagsPayload {
-  items: [SearchTagsItem!]!
+  items: [TagSearchItemByName!]!
 }
 
 input SearchVideoInput {
@@ -1110,13 +1101,8 @@ input SearchVideoInput {
   skip: Int! = 0
 }
 
-type SearchVideosItem {
-  matchedTitle: String!
-  video: Video!
-}
-
 type SearchVideosPayload {
-  items: [SearchVideosItem!]!
+  items: [VideoSearchItemByTitle!]!
 }
 
 type Semitag implements Node {
@@ -1127,6 +1113,7 @@ type Semitag implements Node {
   name: String!
   resolved: Boolean! @deprecated
   resolvedTag: Tag @deprecated
+  suggestTags(limit: Int! = 3, skip: Int! = 0): SemitagSuggestTagsPayload!
   video: Video!
 }
 
@@ -1193,6 +1180,10 @@ type SemitagResolving {
   note: String
   resolveTo: VideoTag!
   semitag: Semitag!
+}
+
+type SemitagSuggestTagsPayload {
+  items: [TagSearchItemByName!]!
 }
 
 type Session {
@@ -1500,6 +1491,11 @@ type TagRegisterEvent implements Event & Node & TagEvent {
   user: User!
 }
 
+type TagSearchItemByName {
+  name: TagName!
+  tag: Tag!
+}
+
 input TagTaggedVideosOrderBy {
   createdAt: SortOrder
 }
@@ -1643,6 +1639,11 @@ type VideoRegisterEvent implements Event & Node & VideoEvent {
   id: ID!
   series: String!
   user: User!
+  video: Video!
+}
+
+type VideoSearchItemByTitle {
+  title: VideoTitle!
   video: Video!
 }
 

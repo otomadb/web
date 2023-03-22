@@ -7,9 +7,10 @@ import {
 } from "urql";
 
 import {
-  aSearchTagsItem,
   aSemitag,
   aTag,
+  aTagName,
+  aTagSearchItemByName,
   RegisterTagPage_ExplicitParentTagDocument,
   RegisterTagPage_ImplicitParentTagDocument,
   RegisterTagPage_RegisterTagDocument,
@@ -62,8 +63,10 @@ const meta = {
             ctx.data({
               searchTags: {
                 items: [
-                  aSearchTagsItem({
-                    matchedName: "後藤ひとり",
+                  aTagSearchItemByName({
+                    name: aTagName({
+                      name: "後藤ひとり",
+                    }),
                     tag: aTag({
                       id: "t2",
                       name: "後藤ひとり",
@@ -74,8 +77,10 @@ const meta = {
                       }),
                     }),
                   }),
-                  aSearchTagsItem({
-                    matchedName: "ぼっち・ざ・ろっく！",
+                  aTagSearchItemByName({
+                    name: aTagName({
+                      name: "ぼっち・ざ・ろっく！",
+                    }),
                     tag: aTag({
                       id: "t3",
                       name: "ぼっち・ざ・ろっく！",

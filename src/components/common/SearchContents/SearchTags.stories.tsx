@@ -1,8 +1,14 @@
 import { Meta, StoryObj } from "@storybook/react";
 
-import { aSearchTagsItem, aSearchTagsPayload, aTag } from "~/gql/graphql";
+import { makeFragmentData } from "~/gql";
+import {
+  aSearchTagsPayload,
+  aTag,
+  aTagName,
+  aTagSearchItemByName,
+} from "~/gql/graphql";
 
-import { SearchTags } from "./SearchTags";
+import { Fragment, SearchTags } from "./SearchTags";
 
 const meta = {
   component: SearchTags,
@@ -12,29 +18,41 @@ export default meta;
 
 export const Primary: StoryObj<typeof meta> = {
   args: {
-    fragment: aSearchTagsPayload({
-      items: [
-        aSearchTagsItem({
-          matchedName: "name1",
-          tag: aTag({
-            id: "t1",
+    fragment: makeFragmentData(
+      aSearchTagsPayload({
+        items: [
+          aTagSearchItemByName({
+            name: aTagName({
+              name: "name1",
+            }),
+            tag: aTag({
+              id: "t1",
+              name: "name1",
+            }),
           }),
-        }),
-        aSearchTagsItem({
-          matchedName: "name2",
-          tag: aTag({
-            id: "t2",
+          aTagSearchItemByName({
+            name: aTagName({
+              name: "name2",
+            }),
+            tag: aTag({
+              id: "t2",
+              name: "Name 2",
+            }),
           }),
-        }),
-      ],
-    }),
+        ],
+      }),
+      Fragment
+    ),
   },
 };
 
 export const NoMatch: StoryObj<typeof meta> = {
   args: {
-    fragment: aSearchTagsPayload({
-      items: [],
-    }),
+    fragment: makeFragmentData(
+      aSearchTagsPayload({
+        items: [],
+      }),
+      Fragment
+    ),
   },
 };
