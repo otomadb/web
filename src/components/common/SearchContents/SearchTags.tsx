@@ -7,7 +7,7 @@ import React from "react";
 import { LinkTag } from "~/app/tags/[serial]/Link";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-const Fragment = graphql(`
+export const Fragment = graphql(`
   fragment SearchContents_SearchTags on SearchTagsPayload {
     items {
       name {

@@ -64,7 +64,7 @@ const SearchVideosItem: React.FC<{
   );
 };
 
-const Fragment = graphql(`
+export const Fragment = graphql(`
   fragment SearchContents_SearchVideos on SearchVideosPayload {
     items {
       ...SearchContents_SearchVideosItem
