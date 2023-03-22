@@ -7,6 +7,8 @@ import React from "react";
 import { LinkTag } from "~/app/tags/[serial]/Link";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
+import { TagType } from "../TagType";
+
 export const Fragment = graphql(`
   fragment SearchContents_SearchTags on SearchTagsPayload {
     items {
@@ -15,6 +17,7 @@ export const Fragment = graphql(`
       }
       tag {
         ...Link_Tag
+        ...TagType
         id
         name
         type
@@ -30,7 +33,8 @@ export const SearchTags: React.FC<{
   className?: string;
   fragment: FragmentType<typeof Fragment>;
 }> = ({ className, ...props }) => {
-  const { items } = useFragment(Fragment, props.fragment);
+  const fragment = useFragment(Fragment, props.fragment);
+  const { items } = fragment;
 
   return (
     <div className={clsx(className)}>
@@ -79,18 +83,7 @@ export const SearchTags: React.FC<{
                 {tag.name}
               </div>
               <div className={clsx(["flex"])}>
-                <div
-                  className={clsx(["text-xs"], ["italic"], {
-                    "text-copyright-500": tag.type === "COPYRIGHT",
-                    "text-character-500": tag.type === "CHARACTER",
-                    "text-class-500": tag.type === "CLASS",
-                    "text-music-500": tag.type === "MUSIC",
-                    "text-series-500": tag.type === "SERIES",
-                    "text-phrase-500": tag.type === "PHRASE",
-                  })}
-                >
-                  {tag.type}
-                </div>
+                <TagType className={clsx(["text-xs"])} fragment={tag} />
               </div>
             </div>
           </LinkTag>
