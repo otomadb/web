@@ -1,12 +1,12 @@
 # Web frontend for _[Otomadb.com](https://otomadb.com/)_
 
-[![GitHub](https://img.shields.io/github/license/otomad-database/web?style=flat)](https://github.com/otomad-database/web/blob/main/LICENSE)
+[![GitHub](https://img.shields.io/github/license/otomadb/web?style=flat)](https://github.com/otomadb/web/blob/main/LICENSE)
 
 [Otomadb.com](https://otomadb.com/)の Web フロントエンドです．
 
 ## バグ報告など
 
-バグ報告や機能の要望などは[Issues](https://github.com/otomad-database/web/issues)へ書いてもらえると助かります．
+バグ報告や機能の要望などは[Issues](https://github.com/otomadb/web/issues)へ書いてもらえると助かります．
 GitHub のアカウントがない場合は[開発者の Twitter など](#連絡先)にメンションを送ってください．
 
 ## 編集者へ
@@ -60,7 +60,7 @@ graphql-codegen によって API の型定義が生成されます．
 `pnpm run codegen:watch`でファイル更新がある度に型定義ファイルを更新します．`pnpm run dev`または`pnpm run storybook`の起動中は同時に起動することを推奨します．（`pnpm run dev`でこれが呼ばれることはありません．）
 
 デフォルトでは`./schema.graphql`から型定義ファイルを生成しますが，`GRAPHQL_SCHEMA_PATH`によって変更可能です．
-例えば，手元で[GraphQL API](https://github.com/otomad-database/api)を`localhost:8080`で動かしているなら，`GRAPHQL_SCHEMA_PATH="http://localhost:8080/graphql"`などに設定してください．
+例えば，手元で[GraphQL API](https://github.com/otomadb/api)を`localhost:8080`で動かしているなら，`GRAPHQL_SCHEMA_PATH="http://localhost:8080/graphql"`などに設定してください．
 
 #### `pnpm run storybook`
 
@@ -68,7 +68,7 @@ graphql-codegen によって API の型定義が生成されます．
 
 ## ライセンス
 
-[MIT License](https://github.com/otomad-database/web/blob/main/LICENSE)
+[MIT License](https://github.com/otomadb/web/blob/main/LICENSE)
 
 ## 連絡先
 
