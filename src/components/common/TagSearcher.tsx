@@ -145,8 +145,10 @@ export const TagSearcher: React.FC<{
 };
 
 graphql(`
-  fragment TagSearcher_Item on SearchTagsItem {
-    matchedName
+  fragment TagSearcher_Item on TagSearchItemByName {
+    name {
+      name
+    }
     tag {
       ...CommonTag
       id
@@ -180,9 +182,9 @@ const Item: React.FC<{
         fragment={fragment.tag}
         className={clsx(["text-xs"], ["px-1"], ["py-0.5"])}
       />
-      {fragment.tag.name !== fragment.matchedName && (
+      {fragment.tag.name !== fragment.name.name && (
         <div className={clsx(["text-xs"], ["text-slate-700"])}>
-          {fragment.matchedName}
+          {fragment.name.name}
         </div>
       )}
     </button>

@@ -11,6 +11,7 @@ import {
   aNicovideoOriginalSource,
   aNicovideoOriginalSourceTagSearchTagsPayload,
   aTag,
+  aTagSearchItemByName,
   aVideo,
   RegisterNicovideoPage_RegisterForm_RegisterVideoDocument,
   RegisterNicovideoPage_RegisterForm_TagDocument,
@@ -55,14 +56,14 @@ const meta = {
                         searchTags:
                           aNicovideoOriginalSourceTagSearchTagsPayload({
                             items: [
-                              {
+                              aTagSearchItemByName({
                                 tag: aTag({
                                   id: "t1",
                                   name: "ドナルド・マクドナルド",
                                   explicitParent: null,
                                   type: TagType.Character,
                                 }),
-                              },
+                              }),
                             ],
                           }),
                       },
@@ -71,14 +72,14 @@ const meta = {
                         searchTags:
                           aNicovideoOriginalSourceTagSearchTagsPayload({
                             items: [
-                              {
+                              aTagSearchItemByName({
                                 tag: aTag({
                                   id: "t2",
                                   name: "U.N.オーエンは彼女なのか？",
                                   explicitParent: null,
                                   type: TagType.Music,
                                 }),
-                              },
+                              }),
                             ],
                           }),
                       },
@@ -87,14 +88,14 @@ const meta = {
                         searchTags:
                           aNicovideoOriginalSourceTagSearchTagsPayload({
                             items: [
-                              {
+                              aTagSearchItemByName({
                                 tag: aTag({
                                   id: "t3",
                                   name: "最終鬼畜妹フランドール・Ｓ",
                                   explicitParent: null,
                                   type: TagType.Music,
                                 }),
-                              },
+                              }),
                             ],
                           }),
                       },
@@ -110,22 +111,22 @@ const meta = {
                         searchTags:
                           aNicovideoOriginalSourceTagSearchTagsPayload({
                             items: [
-                              {
+                              aTagSearchItemByName({
                                 tag: aTag({
                                   id: "t1",
                                   name: "ドナルド・マクドナルド",
                                   explicitParent: null,
                                   type: TagType.Character,
                                 }),
-                              },
-                              {
+                              }),
+                              aTagSearchItemByName({
                                 tag: aTag({
                                   id: "t4",
                                   name: "東方Project",
                                   explicitParent: null,
                                   type: TagType.Unknown,
                                 }),
-                              },
+                              }),
                             ],
                           }),
                       },
@@ -141,14 +142,14 @@ const meta = {
                         searchTags:
                           aNicovideoOriginalSourceTagSearchTagsPayload({
                             items: [
-                              {
+                              aTagSearchItemByName({
                                 tag: aTag({
                                   id: "t1",
                                   name: "ドナルド・マクドナルド",
                                   explicitParent: null,
                                   type: TagType.Character,
                                 }),
-                              },
+                              }),
                             ],
                           }),
                       },

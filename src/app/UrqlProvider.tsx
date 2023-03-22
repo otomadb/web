@@ -24,13 +24,13 @@ const urqlClient = createUrqlClient({
         SearchTagsPayload() {
           return null;
         },
-        SearchTagsItem() {
+        TagSearchItemByName() {
           return null;
         },
         SearchVideosPayload() {
           return null;
         },
-        SearchVideosItem() {
+        VideoSearchItemByTitle() {
           return null;
         },
         TagConnection() {
@@ -73,9 +73,6 @@ const urqlClient = createUrqlClient({
           return null;
         },
         NicovideoOriginalSourceTag() {
-          return null;
-        },
-        NicovideoOriginalSourceTagSearchTagsItem() {
           return null;
         },
         NicovideoOriginalSourceTagSearchTagsPayload() {

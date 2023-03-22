@@ -10,7 +10,9 @@ import { FragmentType, graphql, useFragment } from "~/gql";
 const Fragment = graphql(`
   fragment SearchContents_SearchTags on SearchTagsPayload {
     items {
-      matchedName
+      name {
+        name
+      }
       tag {
         ...Link_Tag
         id
@@ -38,7 +40,7 @@ export const SearchTags: React.FC<{
         </div>
       )}
       <div className={clsx(["divide-y", "divide-slate-400/75"])}>
-        {items.map(({ tag, matchedName }) => (
+        {items.map(({ tag, name }) => (
           <LinkTag
             key={tag.id}
             fragment={tag}
@@ -61,7 +63,7 @@ export const SearchTags: React.FC<{
                   ["text-right"]
                 )}
               >
-                {matchedName}
+                {name.name}
               </div>
             </div>
             <div

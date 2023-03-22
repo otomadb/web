@@ -10,8 +10,10 @@ import { FragmentType, graphql, useFragment } from "~/gql";
 import { VideoThumbnail } from "../VideoThumbnail";
 
 const ItemFragment = graphql(`
-  fragment SearchContents_SearchVideosItem on SearchVideosItem {
-    matchedTitle
+  fragment SearchContents_SearchVideosItem on VideoSearchItemByTitle {
+    title {
+      title
+    }
     video {
       id
       title
@@ -24,7 +26,7 @@ const SearchVideosItem: React.FC<{
   className?: string;
   fragment: FragmentType<typeof ItemFragment>;
 }> = ({ className, ...props }) => {
-  const { matchedTitle, video } = useFragment(ItemFragment, props.fragment);
+  const { title, video } = useFragment(ItemFragment, props.fragment);
   return (
     <LinkVideo
       key={video.id}
@@ -52,7 +54,7 @@ const SearchVideosItem: React.FC<{
         )}
       >
         <div className={clsx(["text-slate-900"], ["text-sm"], ["font-bold"])}>
-          {matchedTitle}
+          {title.title}
         </div>
         <div className={clsx(["text-slate-500"], ["text-xs"])}>
           {video.title}
