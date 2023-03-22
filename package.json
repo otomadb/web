@@ -1,5 +1,5 @@
 {
-  "name": "@otomad-database/web",
+  "name": "@otomadb/web",
   "private": true,
   "scripts": {
     "dev": "next dev",
