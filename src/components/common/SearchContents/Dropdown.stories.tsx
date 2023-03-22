@@ -8,14 +8,16 @@ import {
 import {
   aNicovideoRegistrationRequest,
   aNicovideoVideoSource,
-  aSearchTagsItem,
   aSearchTagsPayload,
-  aSearchVideosItem,
   aSearchVideosPayload,
   aTag,
+  aTagName,
+  aTagSearchItemByName,
   aVideo,
+  aVideoSearchItemByTitle,
   aVideoTag,
   aVideoTagConnection,
+  aVideoTitle,
   SearchContents_SearchNicovideoDocument,
   SearchContentsDocument,
 } from "~/gql/graphql";
@@ -40,14 +42,18 @@ const meta = {
             ctx.data({
               searchTags: aSearchTagsPayload({
                 items: [
-                  aSearchTagsItem({
-                    matchedName: "name1",
+                  aTagSearchItemByName({
+                    name: aTagName({
+                      name: "name1",
+                    }),
                     tag: aTag({
                       id: "t1",
                     }),
                   }),
-                  aSearchTagsItem({
-                    matchedName: "name2",
+                  aTagSearchItemByName({
+                    name: aTagName({
+                      name: "name2",
+                    }),
                     tag: aTag({
                       id: "t2",
                     }),
@@ -56,16 +62,20 @@ const meta = {
               }),
               searchVideos: aSearchVideosPayload({
                 items: [
-                  aSearchVideosItem({
-                    matchedTitle: "title1",
+                  aVideoSearchItemByTitle({
+                    title: aVideoTitle({
+                      title: "title1",
+                    }),
                     video: aVideo({
                       id: "v1",
                       title: "Title 1",
                       thumbnailUrl: "/960x540.jpg",
                     }),
                   }),
-                  aSearchVideosItem({
-                    matchedTitle: "title2",
+                  aVideoSearchItemByTitle({
+                    title: aVideoTitle({
+                      title: "title2",
+                    }),
                     video: aVideo({
                       id: "v2",
                       title: "Title 2",

@@ -9,8 +9,9 @@ import {
 import {
   aNicovideoOriginalSource,
   aNicovideoOriginalSourceTagSearchTagsPayload,
-  aSearchTagsItem,
   aTag,
+  aTagName,
+  aTagSearchItemByName,
   aVideo,
   RegisterNicovideoPage_RegisterForm_RegisterVideoDocument,
   RegisterNicovideoPage_RegisterForm_TagDocument,
@@ -66,14 +67,14 @@ export const Primary: StoryObj<typeof meta> = {
                         searchTags:
                           aNicovideoOriginalSourceTagSearchTagsPayload({
                             items: [
-                              {
+                              aTagSearchItemByName({
                                 tag: aTag({
                                   id: "t1",
                                   name: "ドナルド・マクドナルド",
                                   explicitParent: null,
                                   type: TagType.Character,
                                 }),
-                              },
+                              }),
                             ],
                           }),
                       },
@@ -82,14 +83,14 @@ export const Primary: StoryObj<typeof meta> = {
                         searchTags:
                           aNicovideoOriginalSourceTagSearchTagsPayload({
                             items: [
-                              {
+                              aTagSearchItemByName({
                                 tag: aTag({
                                   id: "t2",
                                   name: "U.N.オーエンは彼女なのか？",
                                   explicitParent: null,
                                   type: TagType.Music,
                                 }),
-                              },
+                              }),
                             ],
                           }),
                       },
@@ -98,14 +99,14 @@ export const Primary: StoryObj<typeof meta> = {
                         searchTags:
                           aNicovideoOriginalSourceTagSearchTagsPayload({
                             items: [
-                              {
+                              aTagSearchItemByName({
                                 tag: aTag({
                                   id: "t3",
                                   name: "最終鬼畜妹フランドール・Ｓ",
                                   explicitParent: null,
                                   type: TagType.Music,
                                 }),
-                              },
+                              }),
                             ],
                           }),
                       },
@@ -121,22 +122,22 @@ export const Primary: StoryObj<typeof meta> = {
                         searchTags:
                           aNicovideoOriginalSourceTagSearchTagsPayload({
                             items: [
-                              {
+                              aTagSearchItemByName({
                                 tag: aTag({
                                   id: "t1",
                                   name: "ドナルド・マクドナルド",
                                   explicitParent: null,
                                   type: TagType.Character,
                                 }),
-                              },
-                              {
+                              }),
+                              aTagSearchItemByName({
                                 tag: aTag({
                                   id: "t4",
                                   name: "東方Project",
                                   explicitParent: null,
                                   type: TagType.Unknown,
                                 }),
-                              },
+                              }),
                             ],
                           }),
                       },
@@ -152,14 +153,14 @@ export const Primary: StoryObj<typeof meta> = {
                         searchTags:
                           aNicovideoOriginalSourceTagSearchTagsPayload({
                             items: [
-                              {
+                              aTagSearchItemByName({
                                 tag: aTag({
                                   id: "t1",
                                   name: "ドナルド・マクドナルド",
                                   explicitParent: null,
                                   type: TagType.Character,
                                 }),
-                              },
+                              }),
                             ],
                           }),
                       },
@@ -228,8 +229,10 @@ export const Primary: StoryObj<typeof meta> = {
             ctx.data({
               searchTags: {
                 items: [
-                  aSearchTagsItem({
-                    matchedName: "ドナルド・マクドナルド",
+                  aTagSearchItemByName({
+                    name: aTagName({
+                      name: "ドナルド・マクドナルド",
+                    }),
                     tag: aTag({
                       id: "t1",
                       name: "ドナルド・マクドナルド",
@@ -237,8 +240,10 @@ export const Primary: StoryObj<typeof meta> = {
                       type: TagType.Character,
                     }),
                   }),
-                  aSearchTagsItem({
-                    matchedName: "U.N.オーエンは彼女なのか？",
+                  aTagSearchItemByName({
+                    name: aTagName({
+                      name: "U.N.オーエンは彼女なのか？",
+                    }),
                     tag: aTag({
                       id: "t2",
                       name: "U.N.オーエンは彼女なのか？",
@@ -246,8 +251,10 @@ export const Primary: StoryObj<typeof meta> = {
                       type: TagType.Music,
                     }),
                   }),
-                  aSearchTagsItem({
-                    matchedName: "最終鬼畜妹フランドール・Ｓ",
+                  aTagSearchItemByName({
+                    name: aTagName({
+                      name: "最終鬼畜妹フランドール・Ｓ",
+                    }),
                     tag: aTag({
                       id: "t3",
                       name: "最終鬼畜妹フランドール・Ｓ",

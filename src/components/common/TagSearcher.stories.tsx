@@ -9,9 +9,10 @@ import {
 } from "urql";
 
 import {
-  aSearchTagsItem,
   aSearchTagsPayload,
   aTag,
+  aTagName,
+  aTagSearchItemByName,
   TagSearcher_SearchDocument,
   TagType,
 } from "~/gql/graphql";
@@ -42,8 +43,10 @@ export default {
             ctx.data({
               searchTags: aSearchTagsPayload({
                 items: [
-                  aSearchTagsItem({
-                    matchedName: "後藤ひとり",
+                  aTagSearchItemByName({
+                    name: aTagName({
+                      name: "後藤ひとり",
+                    }),
                     tag: aTag({
                       id: `tag:1`,
                       name: "後藤ひとり",
@@ -54,8 +57,10 @@ export default {
                       }),
                     }),
                   }),
-                  aSearchTagsItem({
-                    matchedName: "ぼっち・ざ・ろっく！",
+                  aTagSearchItemByName({
+                    name: aTagName({
+                      name: "ぼっち・ざ・ろっく！",
+                    }),
                     tag: aTag({
                       id: `tag:2`,
                       name: "ぼっち・ざ・ろっく！",
@@ -63,8 +68,10 @@ export default {
                       explicitParent: null,
                     }),
                   }),
-                  aSearchTagsItem({
-                    matchedName: "ドナルド",
+                  aTagSearchItemByName({
+                    name: aTagName({
+                      name: "ドナルド",
+                    }),
                     tag: aTag({
                       id: `tag:3`,
                       name: "ドナルド・マクドナルド",

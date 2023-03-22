@@ -9,6 +9,7 @@ import {
   aNicovideoOriginalSource,
   aNicovideoOriginalSourceTagSearchTagsPayload,
   aTag,
+  aTagSearchItemByName,
   TagType,
 } from "~/gql/graphql";
 
@@ -43,14 +44,14 @@ export const Primary: StoryObj<typeof meta> = {
           name: "ドナルド",
           searchTags: aNicovideoOriginalSourceTagSearchTagsPayload({
             items: [
-              {
+              aTagSearchItemByName({
                 tag: aTag({
                   id: "t1",
                   name: "ドナルド・マクドナルド",
                   explicitParent: null,
                   type: TagType.Character,
                 }),
-              },
+              }),
             ],
           }),
         },
@@ -58,14 +59,14 @@ export const Primary: StoryObj<typeof meta> = {
           name: "U.N.オーエンは彼女なのか？",
           searchTags: aNicovideoOriginalSourceTagSearchTagsPayload({
             items: [
-              {
+              aTagSearchItemByName({
                 tag: aTag({
                   id: "t2",
                   name: "U.N.オーエンは彼女なのか？",
                   explicitParent: null,
                   type: TagType.Music,
                 }),
-              },
+              }),
             ],
           }),
         },
@@ -73,14 +74,14 @@ export const Primary: StoryObj<typeof meta> = {
           name: "最終鬼畜妹フランドール・Ｓ",
           searchTags: aNicovideoOriginalSourceTagSearchTagsPayload({
             items: [
-              {
+              aTagSearchItemByName({
                 tag: aTag({
                   id: "t3",
                   name: "最終鬼畜妹フランドール・Ｓ",
                   explicitParent: null,
                   type: TagType.Music,
                 }),
-              },
+              }),
             ],
           }),
         },
@@ -94,22 +95,22 @@ export const Primary: StoryObj<typeof meta> = {
           name: "東方乱々流",
           searchTags: aNicovideoOriginalSourceTagSearchTagsPayload({
             items: [
-              {
+              aTagSearchItemByName({
                 tag: aTag({
                   id: "t1",
                   name: "ドナルド・マクドナルド",
                   explicitParent: null,
                   type: TagType.Character,
                 }),
-              },
-              {
+              }),
+              aTagSearchItemByName({
                 tag: aTag({
                   id: "t4",
                   name: "東方Project",
                   explicitParent: null,
                   type: TagType.Unknown,
                 }),
-              },
+              }),
             ],
           }),
         },
@@ -123,14 +124,14 @@ export const Primary: StoryObj<typeof meta> = {
           name: "ドナルド教",
           searchTags: aNicovideoOriginalSourceTagSearchTagsPayload({
             items: [
-              {
+              aTagSearchItemByName({
                 tag: aTag({
                   id: "t1",
                   name: "ドナルド・マクドナルド",
                   explicitParent: null,
                   type: TagType.Character,
                 }),
-              },
+              }),
             ],
           }),
         },
