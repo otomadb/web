@@ -8,7 +8,7 @@ import React from "react";
 import { CommonTag } from "~/components/CommonTag";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-const Fragment = graphql(`
+export const Fragment = graphql(`
   fragment RegisterNicovideoPage_OriginalSource on NicovideoOriginalSource {
     sourceId
     title
