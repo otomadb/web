@@ -197,6 +197,7 @@ input FindNicovideoVideoSourceInput {
 
 input FindSemitagsOrderBy {
   createdAt: SortOrder
+  name: SortOrder
   updatedAt: SortOrder
 }
 
@@ -718,7 +719,7 @@ type Query {
   findNicovideoRegistrationRequest(input: FindNicovideoRegistrationRequestInput): NicovideoRegistrationRequest
   findNicovideoRegistrationRequests(after: String, before: String, checked: Boolean, first: Int, last: Int, orderBy: FindNicovideoRegistrationRequestsOrderBy! = {createdAt: DESC}): NicovideoRegistrationRequestConnection!
   findNicovideoVideoSource(input: FindNicovideoVideoSourceInput!): NicovideoVideoSource
-  findSemitags(after: String, before: String, checked: Boolean, first: Int, last: Int, orderBy: FindSemitagsOrderBy! = {createdAt: DESC}): SemitagConnection!
+  findSemitags(after: String, before: String, checked: Boolean, first: Int, last: Int, orderBy: FindSemitagsOrderBy! = {name: ASC}): SemitagConnection!
   findTag(input: FindTagInput!): Tag
   findTags(input: FindTagsInput!): TagConnection!
   findUser(input: FindUserInput!): User
