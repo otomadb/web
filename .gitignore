@@ -35,3 +35,6 @@ storybook-static
 # ESLint
 .eslintcache
 .eslint-report.json
+
+# GraphQL Inspector
+.inspector-validate-report.json
