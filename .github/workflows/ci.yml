@@ -36,7 +36,7 @@ jobs:
         with:
           node-version: 18
           cache: pnpm
-      - run: pnpm install --frozen-lockfile
+      - run: pnpm install
       - run: pnpm run schema:validate --output ./.inspector-validate-report.json
 
   lint:
