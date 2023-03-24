@@ -14,16 +14,8 @@ import { RequestExists } from "./RequestExists";
 export const SourceChecker: React.FC<{
   className?: string;
   sourceId: string;
-  toggleTag: (id: string) => void;
-
-  setSource: (source: {
-    sourceId: string;
-    title: string;
-    thumbnailUrl: string;
-  }) => void;
-
   children: ReactNode;
-}> = ({ className, children, sourceId, toggleTag, setSource }) => {
+}> = ({ className, children, sourceId }) => {
   const [{ data }] = useQuery({
     query: graphql(`
       query RequestNicovideoRegistrationPage_SourceChecker($sourceId: String!) {
@@ -46,19 +38,6 @@ export const SourceChecker: React.FC<{
     variables: { sourceId },
     requestPolicy: "cache-and-network",
   });
-
-  /*
-  useEffect(
-    () => {
-      if (!data?.fetchNicovideo.source) return;
-
-      const { sourceId, title, thumbnailUrl } = data.fetchNicovideo.source;
-      setSource({ sourceId, title, thumbnailUrl });
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [data]
-  );
-  */
 
   return (
     <div className={clsx(className, ["mt-2"])}>

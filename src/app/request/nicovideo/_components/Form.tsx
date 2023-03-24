@@ -1,11 +1,12 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
-import React, { useCallback } from "react";
+import React from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import * as z from "zod";
 
 import { Confirm } from "~/app/editor/nicovideo/_components/Confirm/Confirm";
+import { RegisterContext } from "~/app/editor/nicovideo/_components/Original/Context";
 import { BlueButton } from "~/components/common/Button";
 import {
   useClearSourceId,
@@ -39,29 +40,11 @@ export const RequestForm: React.FC<{
     append: appendTag,
     remove: removeTag,
   } = useFieldArray({ control, name: "tags" });
-  const toggleTag = useCallback(
-    (id: string) => {
-      const index = getValues("tags").findIndex(({ tagId }) => tagId === id);
-      if (index === -1) appendTag({ tagId: id });
-      else removeTag(index);
-    },
-    [appendTag, getValues, removeTag]
-  );
-
   const {
     fields: semitags,
     append: appendSemitag,
     remove: removeSemitag,
   } = useFieldArray({ control, name: "semitags" });
-
-  const setSource = useCallback(
-    (source: { sourceId: string; title: string; thumbnailUrl: string }) => {
-      setValue("sourceId", source.sourceId);
-      setValue("title", source.title);
-      setValue("thumbnailUrl", source.thumbnailUrl);
-    },
-    [setValue]
-  );
 
   const clearSourceId = useClearSourceId();
   const callSuccededToast = useCallSuccessedToast();
@@ -80,51 +63,67 @@ export const RequestForm: React.FC<{
   });
 
   return (
-    <form
-      className={clsx(
-        className,
-        ["flex", "flex-col", "gap-y-4"],
-        ["border"],
-        ["rounded-md"],
-        ["px-4", "py-4"]
-      )}
-      onSubmit={handleSubmit(requestVideo)}
+    <RegisterContext.Provider
+      value={{
+        setTitle: (s) => setValue("title", s),
+        setSourceId: (s) => setValue("sourceId", s),
+        setThumbnailUrl: (s) => setValue("thumbnailUrl", s),
+        toggleTag: (tagId: string) => {
+          const i = getValues("tags").findIndex((t) => t.tagId === tagId);
+          if (i === -1) appendTag({ tagId });
+          else removeTag(i);
+        },
+        toggleSemitag: (name: string) => {
+          const i = getValues("semitags").findIndex(
+            (semitag) => semitag.name === name
+          );
+          if (i === -1) appendSemitag({ name });
+          else removeSemitag(i);
+        },
+      }}
     >
-      {!sourceId && (
-        <div>
-          <p className={clsx(["text-sm"])}>動画IDを入力してください。</p>
-        </div>
-      )}
-      {sourceId && (
-        <SourceChecker
-          sourceId={sourceId}
-          setSource={(source) => setSource(source)}
-          toggleTag={(id) => toggleTag(id)}
-        >
-          <div className={clsx(["flex", "flex-col", "gap-y-4"])}>
-            <Confirm
-              TitleInput={function TitleInput(props) {
-                return <input {...props} {...register("title")} />;
-              }}
-              thumbnailUrl={thumbnailUrl}
-              tags={tags}
-              addTag={(tagId) => {
-                if (!getValues("tags").find(({ tagId: t }) => t === tagId))
-                  appendTag({ tagId });
-              }}
-              removeTag={removeTag}
-              semitags={semitags}
-              addSemitag={(name) => appendSemitag({ name })}
-              removeSemitag={removeSemitag}
-            />
-            <div>
-              <BlueButton type="submit" className={clsx(["px-4"], ["py-1"])}>
-                リクエスト
-              </BlueButton>
-            </div>
+      <form
+        className={clsx(
+          className,
+          ["flex", "flex-col", "gap-y-4"],
+          ["border"],
+          ["rounded-md"],
+          ["px-4", "py-4"]
+        )}
+        onSubmit={handleSubmit(requestVideo)}
+      >
+        {!sourceId && (
+          <div>
+            <p className={clsx(["text-sm"])}>動画IDを入力してください。</p>
           </div>
-        </SourceChecker>
-      )}
-    </form>
+        )}
+        {sourceId && (
+          <SourceChecker sourceId={sourceId}>
+            <div className={clsx(["flex", "flex-col", "gap-y-4"])}>
+              <Confirm
+                TitleInput={function TitleInput(props) {
+                  return <input {...props} {...register("title")} />;
+                }}
+                thumbnailUrl={thumbnailUrl}
+                tags={tags}
+                addTag={(tagId) => {
+                  if (!getValues("tags").find(({ tagId: t }) => t === tagId))
+                    appendTag({ tagId });
+                }}
+                removeTag={removeTag}
+                semitags={semitags}
+                addSemitag={(name) => appendSemitag({ name })}
+                removeSemitag={removeSemitag}
+              />
+              <div>
+                <BlueButton type="submit" className={clsx(["px-4"], ["py-1"])}>
+                  リクエスト
+                </BlueButton>
+              </div>
+            </div>
+          </SourceChecker>
+        )}
+      </form>
+    </RegisterContext.Provider>
   );
 };
