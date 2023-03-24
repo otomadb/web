@@ -7,7 +7,7 @@ export const RegisterContext = React.createContext<{
   setTitle(title: string): void;
   setSourceId(sourceId: string): void;
   setThumbnailUrl(url: string): void;
-  setNicovideoRequestId(reqId: string | null): void;
+  setRequestId(reqId: string | null): void;
 
   toggleTag(id: string): void;
   toggleSemitag(name: string): void;
@@ -16,7 +16,7 @@ export const RegisterContext = React.createContext<{
   setTitle: () => {},
   setSourceId: () => {},
   setThumbnailUrl: () => {},
-  setNicovideoRequestId: () => {},
+  setRequestId: () => {},
   toggleTag: () => {},
   toggleSemitag: () => {},
   /* eslint-enable @typescript-eslint/no-empty-function */

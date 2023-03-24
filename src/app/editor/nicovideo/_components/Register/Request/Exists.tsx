@@ -10,7 +10,7 @@ import ToggleTagButton from "../ToggleTagButton";
 import ToggleSemitagButton from "./ToggleSemitagButton";
 
 export const Fragment = graphql(`
-  fragment RegisterNicovideoPage_Request on NicovideoRegistrationRequest {
+  fragment RegisterNicovideoPage_Request_Exists on NicovideoRegistrationRequest {
     id
     title
     checked
@@ -27,12 +27,12 @@ export const Fragment = graphql(`
     }
   }
 `);
-export const Request: React.FC<{
+export const Exists: React.FC<{
   className?: string;
   fragment: FragmentType<typeof Fragment>;
 }> = ({ className, ...props }) => {
   const fragment = useFragment(Fragment, props.fragment);
-  const { setNicovideoRequestId } = useContext(RegisterContext);
+  const { setRequestId: setNicovideoRequestId } = useContext(RegisterContext);
 
   useEffect(() => {
     setNicovideoRequestId(fragment.id);

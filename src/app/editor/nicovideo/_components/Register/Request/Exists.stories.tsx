@@ -7,10 +7,10 @@ import { TagType } from "~/gql/graphql";
 
 import { RegisterContext } from "../Context";
 import { Fragment as ToggleTagButtonFragment } from "../ToggleTagButton";
-import { Fragment, Request } from "./Request";
+import { Exists, Fragment } from "./Exists";
 
 const meta = {
-  component: Request,
+  component: Exists,
   args: {},
   render(args) {
     return (
@@ -19,16 +19,16 @@ const meta = {
           setTitle: action("setTitle"),
           setSourceId: action("setSourceId"),
           setThumbnailUrl: action("setThumbnailUrl"),
-          setNicovideoRequestId: action("setNicovideoRequestId"),
+          setRequestId: action("setNicovideoRequestId"),
           toggleSemitag: action("toggleSemitag"),
           toggleTag: action("toggleTag"),
         }}
       >
-        <Request {...args} />
+        <Exists {...args} />
       </RegisterContext.Provider>
     );
   },
-} as Meta<typeof Request>;
+} as Meta<typeof Exists>;
 export default meta;
 
 export const Primary: StoryObj<typeof meta> = {

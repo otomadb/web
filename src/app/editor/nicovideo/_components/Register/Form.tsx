@@ -78,7 +78,7 @@ export const RegisterForm: React.FC<{
         setTitle: (s) => setValue("title", s),
         setSourceId: (s) => setValue("sourceId", s),
         setThumbnailUrl: (s) => setValue("thumbnailUrl", s),
-        setNicovideoRequestId: (s) => setValue("nicovideoRequestId", s),
+        setRequestId: (s) => setValue("nicovideoRequestId", s),
         toggleTag: (tagId: string) => {
           const i = getValues("tags").findIndex((t) => t.tagId === tagId);
           if (i === -1) appendTag({ tagId });
