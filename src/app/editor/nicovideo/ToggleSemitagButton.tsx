@@ -36,7 +36,7 @@ export default function ToggleSemitagButton({
       )}
       type="button"
       onClick={() => {
-        toggleSemitag(fragment.id);
+        toggleSemitag(fragment.name);
       }}
     >
       {fragment.name}
