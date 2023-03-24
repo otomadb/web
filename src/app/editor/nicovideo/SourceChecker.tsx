@@ -8,7 +8,7 @@ import { useQuery } from "urql";
 import { graphql } from "~/gql";
 
 import { OriginalSource } from "./OriginalSource";
-import { Request } from "./Request";
+import { RequestFormPart } from "./RequestFormPart";
 import { SourceAlreadyExists } from "./SourceAlreadyRegistered";
 
 export const SourceChecker: React.FC<{
@@ -108,7 +108,7 @@ export const SourceChecker: React.FC<{
                       toggleTag={toggleTag}
                     />
                     {data.findNicovideoRegistrationRequest && (
-                      <Request
+                      <RequestFormPart
                         fragment={data.findNicovideoRegistrationRequest}
                         toggleTag={toggleTag}
                         toggleSemitag={toggleSemitag}

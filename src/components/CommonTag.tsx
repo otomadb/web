@@ -6,7 +6,6 @@ import { TagType } from "~/gql/graphql";
 
 export const Fragment = graphql(`
   fragment CommonTag on Tag {
-    id
     name
     type
     explicitParent {
