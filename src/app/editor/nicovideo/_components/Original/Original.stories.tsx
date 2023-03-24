@@ -25,7 +25,6 @@ const meta = {
           setTitle: action("setTitle"),
           setSourceId: action("setSourceId"),
           setThumbnailUrl: action("setThumbnailUrl"),
-          setRequestId: action("setNicovideoRequestId"),
           toggleSemitag: action("toggleSemitag"),
           toggleTag: action("toggleTag"),
         }}

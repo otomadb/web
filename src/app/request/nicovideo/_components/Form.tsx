@@ -7,6 +7,7 @@ import { useFieldArray, useForm } from "react-hook-form";
 import * as z from "zod";
 
 import { RegisterContext } from "~/app/editor/nicovideo/_components/Original/Context";
+import { TagButton } from "~/app/editor/nicovideo/_components/TagButton";
 import { BlueButton } from "~/components/common/Button";
 import { TagSearcher } from "~/components/common/TagSearcher";
 import {
