@@ -5,8 +5,8 @@ import clsx from "clsx";
 import Image from "next/image";
 import React from "react";
 
-import { CommonTag } from "~/components/CommonTag";
 import { FragmentType, graphql, useFragment } from "~/gql";
+import ToggleTagButton from "./ToggleTagButton";
 
 export const Fragment = graphql(`
   fragment RegisterNicovideoPage_OriginalSource on NicovideoOriginalSource {
@@ -19,7 +19,7 @@ export const Fragment = graphql(`
         items {
           tag {
             id
-            ...CommonTag
+            ...RegisterNicovideoPage_RequestFormPart_ToggleTagButton
           }
         }
       }
@@ -29,8 +29,7 @@ export const Fragment = graphql(`
 export const OriginalSource: React.FC<{
   className?: string;
   fragment: FragmentType<typeof Fragment>;
-  toggleTag: (id: string) => void;
-}> = ({ className, toggleTag, ...props }) => {
+}> = ({ className, ...props }) => {
   const fragment = useFragment(Fragment, props.fragment);
   return (
     <div
@@ -89,24 +88,12 @@ export const OriginalSource: React.FC<{
                   className={clsx([
                     "flex",
                     "flex-col",
-                    "items-stretch",
-                    "gap-y-1",
+                    "items-start",
+                    "gap-y-0.5",
                   ])}
                 >
                   {tag.searchTags.items.map((item, i) => (
-                    <button
-                      key={i}
-                      type="button"
-                      onClick={() => {
-                        toggleTag(item.tag.id);
-                      }}
-                      className={clsx(["flex"])}
-                    >
-                      <CommonTag
-                        fragment={item.tag}
-                        className={clsx(["text-xs"], ["px-1"], ["py-0.5"])}
-                      />
-                    </button>
+                    <ToggleTagButton key={i} fragment={item.tag} />
                   ))}
                 </div>
               </div>

@@ -27,9 +27,8 @@ export const Fragment = graphql(`
 export const RequestFormPart: React.FC<{
   className?: string;
   fragment: FragmentType<typeof Fragment>;
-  toggleTag: (id: string) => void;
   toggleSemitag: (name: string) => void;
-}> = ({ className, toggleTag, toggleSemitag, ...props }) => {
+}> = ({ className, toggleSemitag, ...props }) => {
   const fragment = useFragment(Fragment, props.fragment);
 
   return (
@@ -61,11 +60,7 @@ export const RequestFormPart: React.FC<{
             className={clsx(["flex", ["gap-x-1"], ["gap-y-0.5"], "flex-wrap"])}
           >
             {fragment.taggings.map((tagging) => (
-              <ToggleTagButton
-                key={tagging.id}
-                fragment={tagging.tag}
-                toggleTag={toggleTag}
-              />
+              <ToggleTagButton key={tagging.id} fragment={tagging.tag} />
             ))}
           </div>
         </div>
