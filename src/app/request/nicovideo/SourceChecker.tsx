@@ -5,8 +5,8 @@ import clsx from "clsx";
 import { ReactNode, useEffect } from "react";
 import { useQuery } from "urql";
 
-import { OriginalSource } from "~/app/editor/nicovideo/OriginalSource";
-import { SourceAlreadyExists as VideoSourceAlreadyExists } from "~/app/editor/nicovideo/SourceAlreadyRegistered";
+import { Original } from "~/app/editor/nicovideo/_components/Register/Original/Original";
+import { VideoSource } from "~/app/editor/nicovideo/_components/Register/VideoSource/VideoSource";
 import { graphql } from "~/gql";
 
 import { VideoRequestAlreadyExists } from "./VideoRequestAlreadyExists";
@@ -36,7 +36,7 @@ export const SourceChecker: React.FC<{
           }
         }
         findNicovideoVideoSource(input: { sourceId: $sourceId }) {
-          ...EditorRegisterNicovideoPage_SourceAlreadyRegistered
+          ...EditorRegisterNicovideoPage_VideoSource
         }
         findNicovideoRegistrationRequest(input: { sourceId: $sourceId }) {
           ...RequestNicovideoRegistrationPage_VideoRequestAlreadyExists
@@ -78,9 +78,7 @@ export const SourceChecker: React.FC<{
               />
             )}
             {data.findNicovideoVideoSource && (
-              <VideoSourceAlreadyExists
-                fragment={data.findNicovideoVideoSource}
-              />
+              <VideoSource fragment={data.findNicovideoVideoSource} />
             )}
             {!data.findNicovideoVideoSource &&
               !data.findNicovideoRegistrationRequest && (
@@ -93,10 +91,7 @@ export const SourceChecker: React.FC<{
                   )}
                   {data.fetchNicovideo.source && (
                     <div className={clsx(["flex", "flex-col", "gap-y-4"])}>
-                      <OriginalSource
-                        fragment={data.fetchNicovideo.source}
-                        toggleTag={toggleTag}
-                      />
+                      <Original fragment={data.fetchNicovideo.source} />
                       <div
                         className={clsx(
                           ["border"],

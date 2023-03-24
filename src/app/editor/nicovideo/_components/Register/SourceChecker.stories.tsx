@@ -17,24 +17,31 @@ import {
   TagType,
 } from "~/gql/graphql";
 
-import { EnsureSource } from "./EnsureSource";
+import { RegisterContext } from "./Context";
+import { SourceChecker } from "./SourceChecker";
 
 const meta = {
-  component: EnsureSource,
-  args: {
-    toggleTag: action("toggleTag"),
-    setNotyet: action("setSource"),
-    setSource: action("setSource"),
-  },
+  component: SourceChecker,
   render(args) {
     return (
       <UrqlProvider value={createUrqlClient({ url: "/graphql" })}>
-        <EnsureSource {...args} />
+        <RegisterContext.Provider
+          value={{
+            setTitle: action("setTitle"),
+            setSourceId: action("setSourceId"),
+            setThumbnailUrl: action("setThumbnailUrl"),
+            setNicovideoRequestId: action("setNicovideoRequestId"),
+            toggleSemitag: action("toggleSemitag"),
+            toggleTag: action("toggleTag"),
+          }}
+        >
+          <SourceChecker {...args} />
+        </RegisterContext.Provider>
       </UrqlProvider>
     );
   },
   parameters: {},
-} as Meta<typeof EnsureSource>;
+} as Meta<typeof SourceChecker>;
 export default meta;
 
 export const Loading: StoryObj<typeof meta> = {

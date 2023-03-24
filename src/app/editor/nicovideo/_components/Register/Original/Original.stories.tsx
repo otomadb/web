@@ -1,9 +1,5 @@
 import { action } from "@storybook/addon-actions";
 import { Meta, StoryObj } from "@storybook/react";
-import {
-  createClient as createUrqlClient,
-  Provider as UrqlProvider,
-} from "urql";
 
 import { makeFragmentData } from "~/gql";
 import {
@@ -14,24 +10,34 @@ import {
   TagType,
 } from "~/gql/graphql";
 
-import { Fragment, OriginalSource } from "./OriginalSource";
+import { RegisterContext } from "../Context";
+import { Fragment, Original } from "./Original";
 
 const meta = {
-  component: OriginalSource,
+  component: Original,
   args: {
     toggleTag: action("toggleTag"),
   },
   render(args) {
     return (
-      <UrqlProvider value={createUrqlClient({ url: "/graphql" })}>
-        <OriginalSource {...args} />
-      </UrqlProvider>
+      <RegisterContext.Provider
+        value={{
+          setTitle: action("setTitle"),
+          setSourceId: action("setSourceId"),
+          setThumbnailUrl: action("setThumbnailUrl"),
+          setNicovideoRequestId: action("setNicovideoRequestId"),
+          toggleSemitag: action("toggleSemitag"),
+          toggleTag: action("toggleTag"),
+        }}
+      >
+        <Original {...args} />
+      </RegisterContext.Provider>
     );
   },
   parameters: {
     msw: { handlers: [] },
   },
-} as Meta<typeof OriginalSource>;
+} as Meta<typeof Original>;
 export default meta;
 
 export const Primary: StoryObj<typeof meta> = {

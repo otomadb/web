@@ -20,7 +20,7 @@ import {
   TagType,
 } from "~/gql/graphql";
 
-import { RegisterForm } from "./RegisterForm";
+import { RegisterForm } from "./Form";
 
 const meta = {
   component: RegisterForm,

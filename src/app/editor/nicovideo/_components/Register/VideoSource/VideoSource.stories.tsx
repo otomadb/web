@@ -1,31 +1,20 @@
-import { action } from "@storybook/addon-actions";
 import { Meta, StoryObj } from "@storybook/react";
-import {
-  createClient as createUrqlClient,
-  Provider as UrqlProvider,
-} from "urql";
 
 import { makeFragmentData } from "~/gql";
 import { aNicovideoVideoSource, aVideo } from "~/gql/graphql";
 
-import { AlreadyRegistered, Fragment } from "./AlreadyRegistered";
+import { Fragment, VideoSource } from "./VideoSource";
 
 const meta = {
-  component: AlreadyRegistered,
-  args: {
-    toggleTag: action("toggleTag"),
-  },
+  component: VideoSource,
+  args: {},
   render(args) {
-    return (
-      <UrqlProvider value={createUrqlClient({ url: "/graphql" })}>
-        <AlreadyRegistered {...args} />
-      </UrqlProvider>
-    );
+    return <VideoSource {...args} />;
   },
   parameters: {
     msw: { handlers: [] },
   },
-} as Meta<typeof AlreadyRegistered>;
+} as Meta<typeof VideoSource>;
 export default meta;
 
 export const Primary: StoryObj<typeof meta> = {

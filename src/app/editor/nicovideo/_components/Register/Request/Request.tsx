@@ -1,10 +1,11 @@
 "use client";
 
 import clsx from "clsx";
-import React from "react";
+import React, { useContext, useEffect } from "react";
 
 import { FragmentType, graphql, useFragment } from "~/gql";
 
+import { RegisterContext } from "../Context";
 import ToggleTagButton from "../ToggleTagButton";
 import ToggleSemitagButton from "./ToggleSemitagButton";
 
@@ -26,11 +27,16 @@ export const Fragment = graphql(`
     }
   }
 `);
-export const RequestFormPart: React.FC<{
+export const Request: React.FC<{
   className?: string;
   fragment: FragmentType<typeof Fragment>;
 }> = ({ className, ...props }) => {
   const fragment = useFragment(Fragment, props.fragment);
+  const { setNicovideoRequestId } = useContext(RegisterContext);
+
+  useEffect(() => {
+    setNicovideoRequestId(fragment.id);
+  }, [fragment.id, setNicovideoRequestId]);
 
   return (
     <div

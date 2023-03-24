@@ -8,7 +8,7 @@ import { TagSearcher } from "~/components/common/TagSearcher";
 import { CommonTag } from "~/components/CommonTag";
 import { graphql } from "~/gql";
 
-export const ConfirmForm: React.FC<{
+export const Confirm: React.FC<{
   className?: string;
   TitleInput: React.FC<
     React.DetailedHTMLProps<
@@ -136,7 +136,6 @@ export const ConfirmForm: React.FC<{
                         </div>
                       </div>
                     );
-
                   return (
                     <div>
                       <button

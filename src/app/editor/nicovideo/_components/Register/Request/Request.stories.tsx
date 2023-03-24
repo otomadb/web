@@ -1,19 +1,34 @@
+import { action } from "@storybook/addon-actions";
 import { Meta, StoryObj } from "@storybook/react";
 
 import { Fragment as CommonTagFragment } from "~/components/CommonTag";
 import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
 
+import { RegisterContext } from "../Context";
 import { Fragment as ToggleTagButtonFragment } from "../ToggleTagButton";
-import { Fragment, RequestFormPart } from "./Request";
+import { Fragment, Request } from "./Request";
 
 const meta = {
-  component: RequestFormPart,
+  component: Request,
   args: {},
   render(args) {
-    return <RequestFormPart {...args} />;
+    return (
+      <RegisterContext.Provider
+        value={{
+          setTitle: action("setTitle"),
+          setSourceId: action("setSourceId"),
+          setThumbnailUrl: action("setThumbnailUrl"),
+          setNicovideoRequestId: action("setNicovideoRequestId"),
+          toggleSemitag: action("toggleSemitag"),
+          toggleTag: action("toggleTag"),
+        }}
+      >
+        <Request {...args} />
+      </RegisterContext.Provider>
+    );
   },
-} as Meta<typeof RequestFormPart>;
+} as Meta<typeof Request>;
 export default meta;
 
 export const Primary: StoryObj<typeof meta> = {

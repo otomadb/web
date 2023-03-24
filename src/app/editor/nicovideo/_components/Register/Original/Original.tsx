@@ -3,10 +3,11 @@ import "client-only";
 
 import clsx from "clsx";
 import Image from "next/image";
-import React from "react";
+import React, { useContext, useEffect } from "react";
 
 import { FragmentType, graphql, useFragment } from "~/gql";
 
+import { RegisterContext } from "../Context";
 import ToggleTagButton from "../ToggleTagButton";
 
 export const Fragment = graphql(`
@@ -27,11 +28,27 @@ export const Fragment = graphql(`
     }
   }
 `);
-export const OriginalSource: React.FC<{
+export const Original: React.FC<{
   className?: string;
   fragment: FragmentType<typeof Fragment>;
 }> = ({ className, ...props }) => {
   const fragment = useFragment(Fragment, props.fragment);
+  const { setTitle, setThumbnailUrl, setSourceId } =
+    useContext(RegisterContext);
+
+  useEffect(() => {
+    setTitle(fragment.title);
+    setThumbnailUrl(fragment.thumbnailUrl);
+    setSourceId(fragment.sourceId);
+  }, [
+    fragment.sourceId,
+    fragment.thumbnailUrl,
+    fragment.title,
+    setSourceId,
+    setThumbnailUrl,
+    setTitle,
+  ]);
+
   return (
     <div
       className={clsx(

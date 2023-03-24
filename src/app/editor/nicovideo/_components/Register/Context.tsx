@@ -4,20 +4,20 @@ import "client-only";
 import React from "react";
 
 export const RegisterContext = React.createContext<{
-  setSource: (source: {
-    sourceId: string;
-    title: string;
-    thumbnailUrl: string;
-    nicovideoRequestId: string | null;
-  }) => void;
+  setTitle(title: string): void;
+  setSourceId(sourceId: string): void;
+  setThumbnailUrl(url: string): void;
+  setNicovideoRequestId(reqId: string): void;
 
   toggleTag(id: string): void;
   toggleSemitag(name: string): void;
 }>({
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  /* eslint-disable @typescript-eslint/no-empty-function */
+  setTitle: () => {},
+  setSourceId: () => {},
+  setThumbnailUrl: () => {},
+  setNicovideoRequestId: () => {},
   toggleTag: () => {},
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   toggleSemitag: () => {},
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  setSource: () => {},
+  /* eslint-enable @typescript-eslint/no-empty-function */
 });

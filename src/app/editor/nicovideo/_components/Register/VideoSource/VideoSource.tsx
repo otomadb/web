@@ -9,7 +9,7 @@ import { VideoThumbnail } from "~/components/common/VideoThumbnail";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const Fragment = graphql(`
-  fragment EditorRegisterNicovideoPage_SourceAlreadyRegistered on NicovideoVideoSource {
+  fragment EditorRegisterNicovideoPage_VideoSource on NicovideoVideoSource {
     sourceId
     video {
       ...VideoThumbnail
@@ -19,7 +19,7 @@ export const Fragment = graphql(`
     }
   }
 `);
-export const AlreadyRegistered: React.FC<{
+export const VideoSource: React.FC<{
   className?: string;
   fragment: FragmentType<typeof Fragment>;
 }> = ({ className, ...props }) => {

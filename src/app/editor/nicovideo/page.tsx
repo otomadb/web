@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import type { Metadata } from "next";
 
-import { RegisterForm } from "./_components/Register/RegisterForm";
+import { RegisterForm } from "./_components/Register/Form";
 import { SourceIdInputForm } from "./_components/SourceId/Form";
 import { SourceIdProvider } from "./_components/SourceIdProvider";
 
