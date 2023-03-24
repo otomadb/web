@@ -24,6 +24,7 @@ export default function ({
   const fragment = useFragment(Fragment, props.fragment);
   return (
     <button
+      className={clsx(["flex"], ["text-left"])}
       type="button"
       onClick={() => {
         toggleTag(fragment.id);
