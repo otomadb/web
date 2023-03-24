@@ -5,11 +5,10 @@ import { useContext } from "react";
 
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-import { RegisterContext } from "./_components/Register/Context";
+import { RegisterContext } from "../Context";
 
 export const Fragment = graphql(`
   fragment RegisterNicovideoPage_RequestFormPart_ToggleSemitagButton on NicovideoRegistrationRequestSemitagging {
-    id
     name
   }
 `);

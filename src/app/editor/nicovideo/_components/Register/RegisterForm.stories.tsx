@@ -38,15 +38,8 @@ const meta = {
 } as Meta<typeof RegisterForm>;
 export default meta;
 
-export const NoSourceId: StoryObj<typeof meta> = {
-  args: {
-    sourceId: undefined,
-  },
-};
+export const NoSourceId: StoryObj<typeof meta> = {};
 export const Primary: StoryObj<typeof meta> = {
-  args: {
-    sourceId: "sm2057168",
-  },
   parameters: {
     msw: {
       handlers: [

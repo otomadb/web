@@ -8,24 +8,24 @@ import {
 import { makeFragmentData } from "~/gql";
 import { aNicovideoVideoSource, aVideo } from "~/gql/graphql";
 
-import { Fragment, SourceAlreadyExists } from "./SourceAlreadyRegistered";
+import { AlreadyRegistered, Fragment } from "./AlreadyRegistered";
 
 const meta = {
-  component: SourceAlreadyExists,
+  component: AlreadyRegistered,
   args: {
     toggleTag: action("toggleTag"),
   },
   render(args) {
     return (
       <UrqlProvider value={createUrqlClient({ url: "/graphql" })}>
-        <SourceAlreadyExists {...args} />
+        <AlreadyRegistered {...args} />
       </UrqlProvider>
     );
   },
   parameters: {
     msw: { handlers: [] },
   },
-} as Meta<typeof SourceAlreadyExists>;
+} as Meta<typeof AlreadyRegistered>;
 export default meta;
 
 export const Primary: StoryObj<typeof meta> = {

@@ -4,8 +4,8 @@ import { Fragment as CommonTagFragment } from "~/components/CommonTag";
 import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
 
-import { Fragment, RequestFormPart } from "./RequestFormPart";
-import { Fragment as ToggleTagButtonFragment } from "./ToggleTagButton";
+import { Fragment as ToggleTagButtonFragment } from "../ToggleTagButton";
+import { Fragment, RequestFormPart } from "./Request";
 
 const meta = {
   component: RequestFormPart,

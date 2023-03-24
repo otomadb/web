@@ -17,10 +17,10 @@ import {
   TagType,
 } from "~/gql/graphql";
 
-import { SourceChecker } from "./SourceChecker";
+import { EnsureSource } from "./EnsureSource";
 
 const meta = {
-  component: SourceChecker,
+  component: EnsureSource,
   args: {
     toggleTag: action("toggleTag"),
     setNotyet: action("setSource"),
@@ -29,12 +29,12 @@ const meta = {
   render(args) {
     return (
       <UrqlProvider value={createUrqlClient({ url: "/graphql" })}>
-        <SourceChecker {...args} />
+        <EnsureSource {...args} />
       </UrqlProvider>
     );
   },
   parameters: {},
-} as Meta<typeof SourceChecker>;
+} as Meta<typeof EnsureSource>;
 export default meta;
 
 export const Loading: StoryObj<typeof meta> = {

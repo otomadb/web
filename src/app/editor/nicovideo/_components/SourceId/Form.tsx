@@ -7,6 +7,8 @@ import * as z from "zod";
 
 import { BlueButton } from "~/components/common/Button";
 
+import { useSetSourceId } from "../SourceIdProvider";
+
 const formSchema = z.object({
   sourceId: z
     .string({ required_error: "ニコニコ動画の動画IDを入力してください" })
@@ -17,8 +19,8 @@ const formSchema = z.object({
 type FormSchema = z.infer<typeof formSchema>;
 export const SourceIdInputForm: React.FC<{
   className?: string;
-  set(sourceId: string): void;
-}> = ({ className, set }) => {
+}> = ({ className }) => {
+  const setSourceId = useSetSourceId();
   const {
     register,
     handleSubmit,
@@ -29,10 +31,10 @@ export const SourceIdInputForm: React.FC<{
   });
   const onSubmit: SubmitHandler<FormSchema> = useCallback(
     ({ sourceId }) => {
-      set(sourceId);
+      setSourceId(sourceId);
       reset({ sourceId: "" });
     },
-    [reset, set]
+    [reset, setSourceId]
   );
 
   return (

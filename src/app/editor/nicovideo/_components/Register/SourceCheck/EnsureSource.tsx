@@ -2,37 +2,21 @@
 import "client-only";
 
 import clsx from "clsx";
-import { ReactNode, useEffect } from "react";
+import React, { ReactNode, useContext, useEffect } from "react";
 import { useQuery } from "urql";
 
 import { graphql } from "~/gql";
 
+import { RegisterContext } from "../Context";
+import { RequestFormPart } from "../Request/Request";
+import { AlreadyRegistered } from "./AlreadyRegistered";
 import { OriginalSource } from "./OriginalSource";
-import { RequestFormPart } from "./RequestFormPart";
-import { SourceAlreadyExists } from "./SourceAlreadyRegistered";
 
-export const SourceChecker: React.FC<{
-  className?: string;
-  children: ReactNode;
-
+export const EnsureSource: React.FC<{
   sourceId: string;
-  toggleTag: (id: string) => void;
-  toggleSemitag: (name: string) => void;
-
-  setSource: (source: {
-    sourceId: string;
-    title: string;
-    thumbnailUrl: string;
-    nicovideoRequestId: string | null;
-  }) => void;
-}> = ({
-  className,
-  children,
-  sourceId,
-  toggleTag,
-  toggleSemitag,
-  setSource,
-}) => {
+  children: ReactNode;
+}> = ({ sourceId, children }) => {
+  const { setSource } = useContext(RegisterContext);
   const [{ data }] = useQuery({
     query: graphql(`
       query RegisterNicovideoPage_SourceChecker($sourceId: String!) {
@@ -58,26 +42,21 @@ export const SourceChecker: React.FC<{
     requestPolicy: "cache-and-network",
   });
 
-  useEffect(
-    () => {
-      if (!data?.fetchNicovideo.source) return;
+  useEffect(() => {
+    if (!data?.fetchNicovideo.source) return;
 
-      const { sourceId, title, thumbnailUrl } = data.fetchNicovideo.source;
-      setSource({
-        sourceId,
-        title,
-        thumbnailUrl,
-        nicovideoRequestId: data.findNicovideoRegistrationRequest?.id ?? null,
-      });
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [data]
-  );
+    const { sourceId, title, thumbnailUrl } = data.fetchNicovideo.source;
+    setSource({
+      sourceId,
+      title,
+      thumbnailUrl,
+      nicovideoRequestId: data.findNicovideoRegistrationRequest?.id ?? null,
+    });
+  }, [data, setSource]);
 
   return (
     <div
       className={clsx(
-        className,
         ["flex", "flex-col"],
         ["border"],
         ["rounded-md"],
@@ -89,7 +68,7 @@ export const SourceChecker: React.FC<{
         {data && (
           <>
             {data.findNicovideoVideoSource && (
-              <SourceAlreadyExists fragment={data.findNicovideoVideoSource} />
+              <AlreadyRegistered fragment={data.findNicovideoVideoSource} />
             )}
             {!data.findNicovideoVideoSource && (
               <>

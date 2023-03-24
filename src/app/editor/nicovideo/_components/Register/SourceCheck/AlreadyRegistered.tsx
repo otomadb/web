@@ -19,7 +19,7 @@ export const Fragment = graphql(`
     }
   }
 `);
-export const SourceAlreadyExists: React.FC<{
+export const AlreadyRegistered: React.FC<{
   className?: string;
   fragment: FragmentType<typeof Fragment>;
 }> = ({ className, ...props }) => {

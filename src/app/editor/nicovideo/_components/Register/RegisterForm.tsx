@@ -14,9 +14,10 @@ import { BlueButton } from "~/components/common/Button";
 import { FragmentType, graphql, useFragment } from "~/gql";
 import { RegisterVideoInputSourceType } from "~/gql/graphql";
 
-import { RegisterContext } from "./_components/Register/Context";
-import { ConfirmForm } from "./ConfirmForm";
-import { SourceChecker } from "./SourceChecker";
+import { useClearSourceId } from "../SourceIdProvider";
+import { ConfirmForm } from "./Confirm/Confirm";
+import { RegisterContext } from "./Context";
+import { EnsureSourceId } from "./SourceCheck/EnsureSourceId";
 
 export const formSchema = z.object({
   sourceId: z.string(),
@@ -30,9 +31,8 @@ export type FormSchema = z.infer<typeof formSchema>;
 
 export const RegisterForm: React.FC<{
   className?: string;
-  sourceId: string | null;
-  clearSourceId(): void;
-}> = ({ className, sourceId, clearSourceId }) => {
+}> = ({ className }) => {
+  const clearSourceId = useClearSourceId();
   const { control, handleSubmit, register, setValue, watch, getValues, reset } =
     useForm<FormSchema>({
       resolver: zodResolver(formSchema),
@@ -108,31 +108,6 @@ export const RegisterForm: React.FC<{
     },
     [callSuccessToast, clearSourceId, mutateRegisterTag, reset]
   );
-  const setSource: ComponentProps<typeof SourceChecker>["setSource"] =
-    useCallback(
-      (source) => {
-        setValue("sourceId", source.sourceId);
-        setValue("title", source.title);
-        setValue("thumbnailUrl", source.thumbnailUrl);
-        setValue("nicovideoRequestId", source.nicovideoRequestId);
-      },
-      [setValue]
-    );
-
-  if (!sourceId)
-    return (
-      <div
-        className={clsx(
-          className,
-          ["flex", "flex-col", "gap-y-4"],
-          ["border"],
-          ["rounded-md"],
-          ["px-4", "py-4"]
-        )}
-      >
-        <p className={clsx(["text-sm"])}>動画IDを入力してください。</p>
-      </div>
-    );
 
   return (
     <RegisterContext.Provider
@@ -149,6 +124,12 @@ export const RegisterForm: React.FC<{
           if (i === -1) appendSemitag({ name });
           else removeSemitag(i);
         },
+        setSource: (source) => {
+          setValue("sourceId", source.sourceId);
+          setValue("title", source.title);
+          setValue("thumbnailUrl", source.thumbnailUrl);
+          setValue("nicovideoRequestId", source.nicovideoRequestId);
+        },
       }}
     >
       <form
@@ -161,12 +142,7 @@ export const RegisterForm: React.FC<{
         )}
         onSubmit={handleSubmit(registerVideo)}
       >
-        <SourceChecker
-          sourceId={sourceId}
-          setSource={(source) => setSource(source)}
-          toggleTag={(id) => toggleTag(id)}
-          toggleSemitag={(name) => toggleSemitag(name)}
-        >
+        <EnsureSourceId>
           <div className={clsx(["flex", "flex-col", "gap-y-4"])}>
             <ConfirmForm
               TitleInput={function TitleInput(props) {
@@ -189,7 +165,7 @@ export const RegisterForm: React.FC<{
               </BlueButton>
             </div>
           </div>
-        </SourceChecker>
+        </EnsureSourceId>
       </form>
     </RegisterContext.Provider>
   );

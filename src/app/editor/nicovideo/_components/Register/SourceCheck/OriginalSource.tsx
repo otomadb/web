@@ -7,7 +7,7 @@ import React from "react";
 
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-import ToggleTagButton from "./ToggleTagButton";
+import ToggleTagButton from "../ToggleTagButton";
 
 export const Fragment = graphql(`
   fragment RegisterNicovideoPage_OriginalSource on NicovideoOriginalSource {
