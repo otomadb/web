@@ -16,6 +16,7 @@ import { RegisterVideoInputSourceType } from "~/gql/graphql";
 
 import { ConfirmForm } from "./ConfirmForm";
 import { SourceChecker } from "./SourceChecker";
+import { RegisterContext } from "./_components/Register/Context";
 
 export const formSchema = z.object({
   sourceId: z.string(),
@@ -117,22 +118,6 @@ export const RegisterForm: React.FC<{
       },
       [setValue]
     );
-  const toggleTag = useCallback(
-    (id: string) => {
-      const index = getValues("tags").findIndex(({ tagId }) => tagId === id);
-      if (index === -1) appendTag({ tagId: id });
-      else removeTag(index);
-    },
-    [appendTag, getValues, removeTag]
-  );
-  const toggleSemitag = useCallback(
-    (n: string) => {
-      const index = getValues("semitags").findIndex(({ name }) => name === n);
-      if (index === -1) appendSemitag({ name: n });
-      else removeSemitag(index);
-    },
-    [appendSemitag, getValues, removeSemitag]
-  );
 
   if (!sourceId)
     return (
@@ -150,46 +135,63 @@ export const RegisterForm: React.FC<{
     );
 
   return (
-    <form
-      className={clsx(
-        className,
-        ["flex", "flex-col", "gap-y-4"],
-        ["border"],
-        ["rounded-md"],
-        ["px-4", "py-4"]
-      )}
-      onSubmit={handleSubmit(registerVideo)}
+    <RegisterContext.Provider
+      value={{
+        toggleTag: (tagId: string) => {
+          const i = getValues("tags").findIndex((t) => t.tagId === tagId);
+          if (i === -1) appendTag({ tagId: tagId });
+          else removeTag(i);
+        },
+        toggleSemitag: (name: string) => {
+          const i = getValues("semitags").findIndex(
+            (semitag) => semitag.name === name
+          );
+          if (i === -1) appendSemitag({ name: name });
+          else removeSemitag(i);
+        },
+      }}
     >
-      <SourceChecker
-        sourceId={sourceId}
-        setSource={(source) => setSource(source)}
-        toggleTag={(id) => toggleTag(id)}
-        toggleSemitag={(name) => toggleSemitag(name)}
+      <form
+        className={clsx(
+          className,
+          ["flex", "flex-col", "gap-y-4"],
+          ["border"],
+          ["rounded-md"],
+          ["px-4", "py-4"]
+        )}
+        onSubmit={handleSubmit(registerVideo)}
       >
-        <div className={clsx(["flex", "flex-col", "gap-y-4"])}>
-          <ConfirmForm
-            TitleInput={function TitleInput(props) {
-              return <input {...props} {...register("title")} />;
-            }}
-            thumbnailUrl={thumbnailUrl}
-            tags={tags}
-            addTag={(tagId) => {
-              if (!getValues("tags").find(({ tagId: t }) => t === tagId))
-                appendTag({ tagId });
-            }}
-            removeTag={removeTag}
-            semitags={semitags}
-            addSemitag={(name) => appendSemitag({ name })}
-            removeSemitag={removeSemitag}
-          />
-          <div>
-            <BlueButton type="submit" className={clsx(["px-4"], ["py-1"])}>
-              登録
-            </BlueButton>
+        <SourceChecker
+          sourceId={sourceId}
+          setSource={(source) => setSource(source)}
+          toggleTag={(id) => toggleTag(id)}
+          toggleSemitag={(name) => toggleSemitag(name)}
+        >
+          <div className={clsx(["flex", "flex-col", "gap-y-4"])}>
+            <ConfirmForm
+              TitleInput={function TitleInput(props) {
+                return <input {...props} {...register("title")} />;
+              }}
+              thumbnailUrl={thumbnailUrl}
+              tags={tags}
+              addTag={(tagId) => {
+                if (!getValues("tags").find(({ tagId: t }) => t === tagId))
+                  appendTag({ tagId });
+              }}
+              removeTag={removeTag}
+              semitags={semitags}
+              addSemitag={(name) => appendSemitag({ name })}
+              removeSemitag={removeSemitag}
+            />
+            <div>
+              <BlueButton type="submit" className={clsx(["px-4"], ["py-1"])}>
+                登録
+              </BlueButton>
+            </div>
           </div>
-        </div>
-      </SourceChecker>
-    </form>
+        </SourceChecker>
+      </form>
+    </RegisterContext.Provider>
   );
 };
 
