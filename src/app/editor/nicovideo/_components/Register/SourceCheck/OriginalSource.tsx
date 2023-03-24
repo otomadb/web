@@ -75,28 +75,25 @@ export const OriginalSource: React.FC<{
           )}
         >
           {fragment.tags.map((tag) => (
-            <div key={tag.name}>
+            <div
+              key={tag.name}
+              className={clsx(["flex", "flex-col", "gap-y-1"])}
+            >
               <div className={clsx(["text-sm"])}>{tag.name}</div>
-              <div className={clsx(["mt-1"])}>
-                {tag.searchTags.items.length === 0 && (
-                  <div>
-                    <div className={clsx(["text-xs", "select-none"])}>
-                      候補なし
-                    </div>
-                  </div>
-                )}
-                <div
-                  className={clsx([
-                    "flex",
-                    "flex-col",
-                    "items-start",
-                    "gap-y-0.5",
-                  ])}
-                >
-                  {tag.searchTags.items.map((item, i) => (
-                    <ToggleTagButton key={i} fragment={item.tag} />
-                  ))}
-                </div>
+              {tag.searchTags.items.length === 0 && (
+                <div className={clsx(["text-xs", "select-none"])}>候補なし</div>
+              )}
+              <div
+                className={clsx([
+                  "flex",
+                  "flex-col",
+                  "items-start",
+                  "gap-y-0.5",
+                ])}
+              >
+                {tag.searchTags.items.map((item, i) => (
+                  <ToggleTagButton key={i} fragment={item.tag} />
+                ))}
               </div>
             </div>
           ))}
