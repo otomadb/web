@@ -8,6 +8,7 @@ import { useQuery } from "urql";
 import { graphql } from "~/gql";
 
 import { Original } from "./Original/Original";
+import { NotExists } from "./Request/NotExists";
 import { Request } from "./Request/Request";
 import { VideoSource } from "./VideoSource/VideoSource";
 
@@ -66,11 +67,26 @@ export const SourceChecker: React.FC<{
                 {data.fetchNicovideo.source && (
                   <div className={clsx(["flex", "flex-col", "gap-y-4"])}>
                     <Original fragment={data.fetchNicovideo.source} />
-                    {data.findNicovideoRegistrationRequest && (
-                      <Request
-                        fragment={data.findNicovideoRegistrationRequest}
-                      />
-                    )}
+                    <div
+                      className={clsx(
+                        ["flex", "flex-col", "gap-y-2"],
+                        ["border"],
+                        ["rounded-md"],
+                        ["px-4", "py-2"]
+                      )}
+                    >
+                      <div className={clsx(["text-sm"])}>リクエスト</div>
+                      <div>
+                        {data.findNicovideoRegistrationRequest && (
+                          <Request
+                            fragment={data.findNicovideoRegistrationRequest}
+                          />
+                        )}
+                        {!data.findNicovideoRegistrationRequest && (
+                          <NotExists />
+                        )}
+                      </div>
+                    </div>
                     <div
                       className={clsx(
                         ["border"],

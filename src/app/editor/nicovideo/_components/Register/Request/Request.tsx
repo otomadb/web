@@ -39,15 +39,7 @@ export const Request: React.FC<{
   }, [fragment.id, setNicovideoRequestId]);
 
   return (
-    <div
-      className={clsx(
-        className,
-        ["flex", "gap-x-4"],
-        ["border"],
-        ["rounded-md"],
-        ["px-4", "py-4"]
-      )}
-    >
+    <div className={clsx(className, ["flex", "gap-x-4"])}>
       <div
         className={clsx(
           ["flex-shrink-0"],

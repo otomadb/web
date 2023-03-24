@@ -13,7 +13,7 @@ import { useClearSourceId, useSourceId } from "../SourceIdProvider";
 import { Confirm } from "./Confirm/Confirm";
 import { RegisterContext } from "./Context";
 import { SourceChecker } from "./SourceChecker";
-import { useCallSuccessToast } from "./Toast";
+import { useCallSuccessededToast } from "./SuccessedToast";
 import { useRegisterVideo } from "./useRegisterVideo";
 
 export const formSchema = z.object({
@@ -30,11 +30,18 @@ export const RegisterForm: React.FC<{
   className?: string;
 }> = ({ className }) => {
   const sourceId = useSourceId();
-  const { control, handleSubmit, register, setValue, watch, getValues, reset } =
-    useForm<FormSchema>({
-      defaultValues: { nicovideoRequestId: null },
-      resolver: zodResolver(formSchema),
-    });
+  const {
+    control,
+    handleSubmit,
+    register,
+    setValue,
+    watch,
+    getValues,
+    reset: resetForm,
+  } = useForm<FormSchema>({
+    defaultValues: { nicovideoRequestId: null },
+    resolver: zodResolver(formSchema),
+  });
 
   const thumbnailUrl = watch("thumbnailUrl");
   const {
@@ -48,13 +55,20 @@ export const RegisterForm: React.FC<{
     remove: removeSemitag,
   } = useFieldArray({ control, name: "semitags" });
 
-  const callSuccessToast = useCallSuccessToast();
   const clearSourceId = useClearSourceId();
+  const callSuccededToast = useCallSuccessededToast();
   const registerVideo = useRegisterVideo({
     onSuccess(data) {
-      callSuccessToast({ fragment: data.video });
-      reset({ title: "", thumbnailUrl: "", tags: [], semitags: [] });
+      resetForm({
+        title: undefined,
+        thumbnailUrl: undefined,
+        sourceId: undefined,
+        tags: [],
+        semitags: [],
+        nicovideoRequestId: undefined,
+      });
       clearSourceId();
+      callSuccededToast({ fragment: data.video });
     },
   });
 

@@ -13,7 +13,7 @@ const Mutation = graphql(`
       __typename
       ... on RegisterVideoSucceededPayload {
         video {
-          ...RegisterNicovideoPage_RegisterForm_SuccessToast
+          ...RegisterNicovideoPage_RegisterForm_SuccessedToast
         }
       }
     }

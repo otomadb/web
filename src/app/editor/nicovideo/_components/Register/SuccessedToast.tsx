@@ -7,13 +7,13 @@ import { LinkVideo } from "~/app/videos/[serial]/Link";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 const Fragment = graphql(`
-  fragment RegisterNicovideoPage_RegisterForm_SuccessToast on Video {
+  fragment RegisterNicovideoPage_RegisterForm_SuccessedToast on Video {
     id
     title
     ...Link_Video
   }
 `);
-export const SuccessToast: React.FC<{
+const SucceededToast: React.FC<{
   fragment: FragmentType<typeof Fragment>;
 }> = ({ ...props }) => {
   const fragment = useFragment(Fragment, props.fragment);
@@ -31,6 +31,6 @@ export const SuccessToast: React.FC<{
   );
 };
 
-export const useCallSuccessToast =
-  () => (props: Pick<ComponentProps<typeof SuccessToast>, "fragment">) =>
-    toast(() => <SuccessToast {...props} />);
+export const useCallSuccessededToast =
+  () => (props: Pick<ComponentProps<typeof SucceededToast>, "fragment">) =>
+    toast(() => <SucceededToast {...props} />);

@@ -7,7 +7,7 @@ export const RegisterContext = React.createContext<{
   setTitle(title: string): void;
   setSourceId(sourceId: string): void;
   setThumbnailUrl(url: string): void;
-  setNicovideoRequestId(reqId: string): void;
+  setNicovideoRequestId(reqId: string | null): void;
 
   toggleTag(id: string): void;
   toggleSemitag(name: string): void;
