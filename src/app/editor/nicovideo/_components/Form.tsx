@@ -3,21 +3,23 @@ import "client-only";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
+import Image from "next/image";
 import React from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import * as z from "zod";
 
 import { BlueButton } from "~/components/common/Button";
+import { TagSearcher } from "~/components/common/TagSearcher";
 import {
   useClearSourceId,
   useSourceId,
 } from "~/components/NicovideoSourceIdForm/SourceIdProvider";
 
-import { Confirm } from "./Confirm/Confirm";
 import { RegisterContext } from "./Original/Context";
 import { RequestContext } from "./Request/Context";
 import { SourceChecker } from "./SourceChecker";
 import { useCallSuccessededToast } from "./SuccessedToast";
+import { TagButton } from "./TagButton";
 import { useRegisterVideo } from "./useRegisterVideo";
 
 export const formSchema = z.object({
@@ -124,21 +126,156 @@ export const RegisterForm: React.FC<{
           {sourceId && (
             <SourceChecker sourceId={sourceId}>
               <div className={clsx(["flex", "flex-col", "gap-y-4"])}>
-                <Confirm
-                  TitleInput={function TitleInput(props) {
-                    return <input {...props} {...register("title")} />;
-                  }}
-                  thumbnailUrl={thumbnailUrl}
-                  tags={tags}
-                  addTag={(tagId) => {
-                    if (!getValues("tags").find(({ tagId: t }) => t === tagId))
-                      appendTag({ tagId });
-                  }}
-                  removeTag={removeTag}
-                  semitags={semitags}
-                  addSemitag={(name) => appendSemitag({ name })}
-                  removeSemitag={removeSemitag}
-                />
+                <div>
+                  <label className={clsx(["flex", "flex-col", "gap-y-1"])}>
+                    <div className={clsx(["text-xs"])}>タイトル</div>
+                    <input
+                      {...register("title")}
+                      className={clsx(
+                        ["px-2"],
+                        ["py-1"],
+                        ["text-sm"],
+                        ["bg-white"],
+                        ["border", "border-gray-300"],
+                        ["rounded"]
+                      )}
+                    />
+                  </label>
+                </div>
+                <div className={clsx(["flex", "gap-x-4"])}>
+                  <label
+                    className={clsx(
+                      ["w-72"],
+                      ["flex-shrink-0"],
+                      ["flex", "flex-col", "gap-y-1"]
+                    )}
+                  >
+                    <div className={clsx(["text-xs"])}>サムネイル</div>
+                    {thumbnailUrl && (
+                      <Image
+                        className={clsx(["object-scale-down"], ["w-48"])}
+                        src={thumbnailUrl}
+                        width={260}
+                        height={200}
+                        alt={`サムネイル候補`}
+                      />
+                    )}
+                  </label>
+                  <div className={clsx(["flex-grow"], ["flex", "flex-col"])}>
+                    <div
+                      className={clsx(["flex-grow"], ["grid", "grid-cols-2"])}
+                    >
+                      <div className={clsx(["flex", "flex-col", "gap-y-1"])}>
+                        <div className={clsx(["text-xs"])}>追加されるタグ</div>
+                        <div
+                          className={clsx([
+                            "flex",
+                            "flex-wrap",
+                            "gap-x-2",
+                            "gap-y-2",
+                          ])}
+                        >
+                          {tags.map(({ id, tagId }) => (
+                            <TagButton key={id} tagId={tagId} />
+                          ))}
+                        </div>
+                      </div>
+                      <div className={clsx(["flex", "flex-col", "gap-y-1"])}>
+                        <div className={clsx(["text-xs"])}>
+                          追加される仮タグ
+                        </div>
+                        <div
+                          className={clsx([
+                            "flex",
+                            "flex-wrap",
+                            "gap-x-2",
+                            "gap-y-2",
+                          ])}
+                        >
+                          {semitags.map(({ id, name }, index) => (
+                            <button
+                              key={id}
+                              className={clsx(
+                                ["flex"],
+                                ["text-left"],
+                                ["text-xs"],
+                                ["px-1"],
+                                ["py-0.5"],
+                                ["border"]
+                              )}
+                              onClick={() => removeSemitag(index)}
+                            >
+                              {name}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                    <div className={clsx(["flex-shrink-0"])}>
+                      <TagSearcher
+                        handleSelect={(tagId) => {
+                          if (
+                            !getValues("tags").find(
+                              ({ tagId: t }) => t === tagId
+                            )
+                          )
+                            appendTag({ tagId });
+                        }}
+                        Optional={({ query, clearQuery }) => {
+                          if (semitags.find(({ name }) => name === query))
+                            return (
+                              <div>
+                                <div className={clsx(["text-xs"])}>
+                                  <span
+                                    className={clsx(
+                                      ["bg-white"],
+                                      ["border", "border-gray-200"],
+                                      ["rounded"],
+                                      ["px-2", "py-0.5"]
+                                    )}
+                                  >
+                                    {query}
+                                  </span>
+                                  <span>
+                                    は既に仮タグとして追加されています
+                                  </span>
+                                </div>
+                              </div>
+                            );
+                          return (
+                            <div>
+                              <button
+                                className={clsx(
+                                  ["text-sm"],
+                                  ["border"],
+                                  ["rounded"],
+                                  ["px-2", "py-1"],
+                                  ["bg-white", "hover:bg-blue-200"]
+                                )}
+                                onClick={() => {
+                                  appendSemitag({ name: query });
+                                  clearQuery();
+                                }}
+                              >
+                                <span
+                                  className={clsx(
+                                    ["bg-white"],
+                                    ["border", "border-gray-200"],
+                                    ["rounded"],
+                                    ["px-2", "py-0.5"]
+                                  )}
+                                >
+                                  {query}
+                                </span>
+                                <span>を仮タグとして追加</span>
+                              </button>
+                            </div>
+                          );
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
                 <div>
                   <BlueButton
                     type="submit"

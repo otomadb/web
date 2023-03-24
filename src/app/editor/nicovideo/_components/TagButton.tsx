@@ -5,7 +5,7 @@ import { useQuery } from "urql";
 
 import { graphql } from "~/gql";
 
-import ToggleTagButton from "../ToggleTagButton";
+import ToggleTagButton from "./ToggleTagButton";
 
 export const TagButton: React.FC<{
   className?: string;
