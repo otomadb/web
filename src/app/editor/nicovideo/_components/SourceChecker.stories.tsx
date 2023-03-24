@@ -17,19 +17,30 @@ import {
   TagType,
 } from "~/gql/graphql";
 
+import { RegisterContext } from "./Original/Context";
+import { RequestContext } from "./Request/Context";
 import { SourceChecker } from "./SourceChecker";
 
 const meta = {
   component: SourceChecker,
-  args: {
-    toggleTag: action("toggleTag"),
-    setNotyet: action("setSource"),
-    setSource: action("setSource"),
-  },
   render(args) {
     return (
       <UrqlProvider value={createUrqlClient({ url: "/graphql" })}>
-        <SourceChecker {...args} />
+        <RegisterContext.Provider
+          value={{
+            setTitle: action("setTitle"),
+            setSourceId: action("setSourceId"),
+            setThumbnailUrl: action("setThumbnailUrl"),
+            toggleSemitag: action("toggleSemitag"),
+            toggleTag: action("toggleTag"),
+          }}
+        >
+          <RequestContext.Provider
+            value={{ setRequestId: action("setRequestId") }}
+          >
+            <SourceChecker {...args} />
+          </RequestContext.Provider>
+        </RegisterContext.Provider>
       </UrqlProvider>
     );
   },

@@ -3,10 +3,17 @@ import "client-only";
 
 import clsx from "clsx";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 
-import { CommonTag } from "~/components/CommonTag";
 import { FragmentType, graphql, useFragment } from "~/gql";
+
+import ToggleTagButton from "../ToggleTagButton";
+import {
+  useSetSourceId,
+  useSetThumbnailUrl,
+  useSetTitle,
+  useToggleSemitag,
+} from "./Context";
 
 export const Fragment = graphql(`
   fragment RegisterNicovideoPage_OriginalSource on NicovideoOriginalSource {
@@ -19,29 +26,35 @@ export const Fragment = graphql(`
         items {
           tag {
             id
-            ...CommonTag
+            ...RegisterNicovideoPage_RequestFormPart_ToggleTagButton
           }
         }
       }
     }
   }
 `);
-export const OriginalSource: React.FC<{
+export const Original: React.FC<{
   className?: string;
   fragment: FragmentType<typeof Fragment>;
-  toggleTag: (id: string) => void;
-}> = ({ className, toggleTag, ...props }) => {
+}> = ({ className, ...props }) => {
   const fragment = useFragment(Fragment, props.fragment);
+  const setTitle = useSetTitle();
+  const setThumbnailUrl = useSetThumbnailUrl();
+  const setSourceId = useSetSourceId();
+  const toggleSemitag = useToggleSemitag();
+
+  useEffect(
+    () => {
+      setTitle(fragment.title);
+      setThumbnailUrl(fragment.thumbnailUrl);
+      setSourceId(fragment.sourceId);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [fragment]
+  );
+
   return (
-    <div
-      className={clsx(
-        className,
-        ["flex", "gap-x-4"],
-        ["border"],
-        ["rounded-md"],
-        ["px-4", "py-4"]
-      )}
-    >
+    <div className={clsx(className, ["flex", "gap-x-4"])}>
       <div
         className={clsx(
           ["flex-shrink-0"],
@@ -75,40 +88,34 @@ export const OriginalSource: React.FC<{
           )}
         >
           {fragment.tags.map((tag) => (
-            <div key={tag.name}>
-              <div className={clsx(["text-sm"])}>{tag.name}</div>
-              <div className={clsx(["mt-1"])}>
-                {tag.searchTags.items.length === 0 && (
-                  <div>
-                    <div className={clsx(["text-xs", "select-none"])}>
-                      候補なし
-                    </div>
-                  </div>
-                )}
-                <div
-                  className={clsx([
-                    "flex",
-                    "flex-col",
-                    "items-stretch",
-                    "gap-y-1",
-                  ])}
-                >
-                  {tag.searchTags.items.map((item, i) => (
-                    <button
-                      key={i}
-                      type="button"
-                      onClick={() => {
-                        toggleTag(item.tag.id);
-                      }}
-                      className={clsx(["flex"])}
-                    >
-                      <CommonTag
-                        fragment={item.tag}
-                        className={clsx(["text-xs"], ["px-1"], ["py-0.5"])}
-                      />
-                    </button>
-                  ))}
-                </div>
+            <div
+              key={tag.name}
+              className={clsx(["flex", "flex-col", "gap-y-1"])}
+            >
+              <button
+                type="button"
+                className={clsx(["text-sm", "text-left"])}
+                onClick={(e) => {
+                  e.preventDefault();
+                  toggleSemitag(tag.name);
+                }}
+              >
+                {tag.name}
+              </button>
+              {tag.searchTags.items.length === 0 && (
+                <div className={clsx(["text-xs", "select-none"])}>候補なし</div>
+              )}
+              <div
+                className={clsx([
+                  "flex",
+                  "flex-col",
+                  "items-start",
+                  "gap-y-0.5",
+                ])}
+              >
+                {tag.searchTags.items.map((item, i) => (
+                  <ToggleTagButton key={i} fragment={item.tag} />
+                ))}
               </div>
             </div>
           ))}

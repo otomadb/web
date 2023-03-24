@@ -1,19 +1,38 @@
+import { action } from "@storybook/addon-actions";
 import { Meta, StoryObj } from "@storybook/react";
 
 import { Fragment as CommonTagFragment } from "~/components/CommonTag";
 import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
 
-import { Fragment, RequestFormPart } from "./RequestFormPart";
-import { Fragment as ToggleTagButtonFragment } from "./ToggleTagButton";
+import { RegisterContext } from "../Original/Context";
+import { Fragment as ToggleTagButtonFragment } from "../ToggleTagButton";
+import { RequestContext } from "./Context";
+import { Exists, Fragment } from "./Exists";
 
 const meta = {
-  component: RequestFormPart,
+  component: Exists,
   args: {},
   render(args) {
-    return <RequestFormPart {...args} />;
+    return (
+      <RegisterContext.Provider
+        value={{
+          setTitle: action("setTitle"),
+          setSourceId: action("setSourceId"),
+          setThumbnailUrl: action("setThumbnailUrl"),
+          toggleSemitag: action("toggleSemitag"),
+          toggleTag: action("toggleTag"),
+        }}
+      >
+        <RequestContext.Provider
+          value={{ setRequestId: action("setRequestId") }}
+        >
+          <Exists {...args} />
+        </RequestContext.Provider>
+      </RegisterContext.Provider>
+    );
   },
-} as Meta<typeof RequestFormPart>;
+} as Meta<typeof Exists>;
 export default meta;
 
 export const Primary: StoryObj<typeof meta> = {
@@ -85,7 +104,7 @@ export const Primary: StoryObj<typeof meta> = {
             },
           },
           {
-            id: "tagging1",
+            id: "tagging4",
             tag: {
               id: "tag4",
               ...makeFragmentData(
@@ -105,7 +124,7 @@ export const Primary: StoryObj<typeof meta> = {
             },
           },
           {
-            id: "tagging1",
+            id: "tagging5",
             tag: {
               id: "tag5",
               ...makeFragmentData(

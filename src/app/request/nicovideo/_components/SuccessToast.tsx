@@ -17,7 +17,7 @@ const Fragment = graphql(`
     }
   }
 `);
-export const SuccessToast: React.FC<{
+export const SucceededToast: React.FC<{
   fragment: FragmentType<typeof Fragment>;
 }> = ({ ...props }) => {
   const fragment = useFragment(Fragment, props.fragment);
@@ -36,10 +36,10 @@ export const SuccessToast: React.FC<{
   );
 };
 
-export const useCallSuccessToast = () => {
+export const useCallSuccessedToast = () => {
   return useCallback(
-    (fragment: ComponentProps<typeof SuccessToast>["fragment"]) =>
-      toast(() => <SuccessToast fragment={fragment} />),
+    (fragment: ComponentProps<typeof SucceededToast>["fragment"]) =>
+      toast(() => <SucceededToast fragment={fragment} />),
     []
   );
 };

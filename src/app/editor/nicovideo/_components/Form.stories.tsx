@@ -6,6 +6,7 @@ import {
   Provider as UrqlProvider,
 } from "urql";
 
+import { SourceIdContext } from "~/components/NicovideoSourceIdForm/SourceIdProvider";
 import {
   aNicovideoOriginalSource,
   aNicovideoOriginalSourceTagSearchTagsPayload,
@@ -13,14 +14,14 @@ import {
   aTagName,
   aTagSearchItemByName,
   aVideo,
+  RegisterNicovideoPage_RegisterForm_Confirm_TagDocument,
   RegisterNicovideoPage_RegisterForm_RegisterVideoDocument,
-  RegisterNicovideoPage_RegisterForm_TagDocument,
   RegisterNicovideoPage_SourceCheckerDocument,
   TagSearcher_SearchDocument,
   TagType,
 } from "~/gql/graphql";
 
-import { RegisterForm } from "./RegisterForm";
+import { RegisterForm } from "./Form";
 
 const meta = {
   component: RegisterForm,
@@ -30,7 +31,15 @@ const meta = {
   render(args) {
     return (
       <UrqlProvider value={createUrqlClient({ url: "/graphql" })}>
-        <RegisterForm {...args} />
+        <SourceIdContext.Provider
+          value={{
+            sourceId: "sm2057168",
+            setSourceId: action("setSourceId"),
+            clearSourceId: action("clearSourceId"),
+          }}
+        >
+          <RegisterForm {...args} />
+        </SourceIdContext.Provider>
       </UrqlProvider>
     );
   },
@@ -38,15 +47,8 @@ const meta = {
 } as Meta<typeof RegisterForm>;
 export default meta;
 
-export const NoSourceId: StoryObj<typeof meta> = {
-  args: {
-    sourceId: undefined,
-  },
-};
+export const NoSourceId: StoryObj<typeof meta> = {};
 export const Primary: StoryObj<typeof meta> = {
-  args: {
-    sourceId: "sm2057168",
-  },
   parameters: {
     msw: {
       handlers: [
@@ -172,7 +174,7 @@ export const Primary: StoryObj<typeof meta> = {
             )
         ),
         graphql.query(
-          RegisterNicovideoPage_RegisterForm_TagDocument,
+          RegisterNicovideoPage_RegisterForm_Confirm_TagDocument,
           (req, res, ctx) => {
             switch (req.variables.id) {
               case "t1":

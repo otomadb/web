@@ -23,7 +23,7 @@ const Fragment = graphql(`
     }
   }
 `);
-export const VideoRequestAlreadyExists: React.FC<{
+export const RequestExists: React.FC<{
   className?: string;
   fragment: FragmentType<typeof Fragment>;
 }> = ({ className, ...props }) => {

@@ -1,11 +1,7 @@
 import { action } from "@storybook/addon-actions";
 import { Meta, StoryObj } from "@storybook/react";
-import {
-  createClient as createUrqlClient,
-  Provider as UrqlProvider,
-} from "urql";
 
-import { SourceIdInputForm } from "./SourceIdInputForm";
+import { SourceIdInputForm } from "./Form";
 
 const meta = {
   component: SourceIdInputForm,
@@ -13,11 +9,7 @@ const meta = {
     set: action("set"),
   },
   render(args) {
-    return (
-      <UrqlProvider value={createUrqlClient({ url: "/graphql" })}>
-        <SourceIdInputForm {...args} />
-      </UrqlProvider>
-    );
+    return <SourceIdInputForm {...args} />;
   },
   parameters: {
     msw: { handlers: [] },

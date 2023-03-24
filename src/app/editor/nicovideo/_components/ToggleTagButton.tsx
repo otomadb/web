@@ -1,10 +1,11 @@
 "use client";
 
 import clsx from "clsx";
-import React from "react";
 
 import { CommonTag } from "~/components/CommonTag";
 import { FragmentType, graphql, useFragment } from "~/gql";
+
+import { useToggleTag } from "./Original/Context";
 
 export const Fragment = graphql(`
   fragment RegisterNicovideoPage_RequestFormPart_ToggleTagButton on Tag {
@@ -15,17 +16,17 @@ export const Fragment = graphql(`
 
 export default function ToggleTagButton({
   className,
-  toggleTag,
   ...props
 }: {
   className?: string;
-  toggleTag: (id: string) => void;
   fragment: FragmentType<typeof Fragment>;
 }) {
   const fragment = useFragment(Fragment, props.fragment);
+  const toggleTag = useToggleTag();
+
   return (
     <button
-      className={clsx(["flex"], ["text-left"])}
+      className={clsx(className, ["flex"], ["text-left"])}
       type="button"
       onClick={() => {
         toggleTag(fragment.id);

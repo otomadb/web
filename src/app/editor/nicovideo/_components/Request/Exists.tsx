@@ -1,14 +1,16 @@
 "use client";
 
 import clsx from "clsx";
-import React from "react";
+import React, { useEffect } from "react";
 
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-import ToggleTagButton from "./ToggleTagButton";
+import ToggleTagButton from "../ToggleTagButton";
+import { useSetRequestId } from "./Context";
+import ToggleSemitagButton from "./ToggleSemitagButton";
 
 export const Fragment = graphql(`
-  fragment RegisterNicovideoPage_Request on NicovideoRegistrationRequest {
+  fragment RegisterNicovideoPage_Request_Exists on NicovideoRegistrationRequest {
     id
     title
     checked
@@ -21,28 +23,27 @@ export const Fragment = graphql(`
     }
     semitaggings {
       id
-      name
+      ...RegisterNicovideoPage_RequestFormPart_ToggleSemitagButton
     }
   }
 `);
-export const RequestFormPart: React.FC<{
+export const Exists: React.FC<{
   className?: string;
   fragment: FragmentType<typeof Fragment>;
-  toggleTag: (id: string) => void;
-  toggleSemitag: (name: string) => void;
-}> = ({ className, toggleTag, toggleSemitag, ...props }) => {
+}> = ({ className, ...props }) => {
   const fragment = useFragment(Fragment, props.fragment);
+  const setNicovideoRequestId = useSetRequestId();
+
+  useEffect(
+    () => {
+      setNicovideoRequestId(fragment.id);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [fragment.id]
+  );
 
   return (
-    <div
-      className={clsx(
-        className,
-        ["flex", "gap-x-4"],
-        ["border"],
-        ["rounded-md"],
-        ["px-4", "py-4"]
-      )}
-    >
+    <div className={clsx(className, ["flex", "gap-x-4"])}>
       <div
         className={clsx(
           ["flex-shrink-0"],
@@ -55,18 +56,14 @@ export const RequestFormPart: React.FC<{
           <div className={clsx(["text-sm", "font-bold"])}>{fragment.title}</div>
         </div>
       </div>
-      <div className={clsx(["flex-grow"], ["flex", "flex-col"])}>
+      <div className={clsx(["flex-grow"], ["flex", "flex-col", "gap-y-2"])}>
         <div className={clsx(["flex-grow"], ["flex", "flex-col", "gap-y-0.5"])}>
           <div className={clsx(["text-xs"])}>タグ</div>
           <div
             className={clsx(["flex", ["gap-x-1"], ["gap-y-0.5"], "flex-wrap"])}
           >
             {fragment.taggings.map((tagging) => (
-              <ToggleTagButton
-                key={tagging.id}
-                fragment={tagging.tag}
-                toggleTag={toggleTag}
-              />
+              <ToggleTagButton key={tagging.id} fragment={tagging.tag} />
             ))}
           </div>
         </div>
@@ -76,23 +73,10 @@ export const RequestFormPart: React.FC<{
             className={clsx(["flex", ["gap-x-1"], ["gap-y-0.5"], "flex-wrap"])}
           >
             {fragment.semitaggings.map((semitagging) => (
-              <div key={semitagging.id}>
-                <button
-                  type="button"
-                  onClick={() => {
-                    toggleSemitag(semitagging.name);
-                  }}
-                  className={clsx(
-                    ["text-sm"],
-                    ["bg-white"],
-                    ["border", "border-gray-200"],
-                    ["rounded"],
-                    ["px-2", "py-0.5"]
-                  )}
-                >
-                  {semitagging.name}
-                </button>
-              </div>
+              <ToggleSemitagButton
+                key={semitagging.id}
+                fragment={semitagging}
+              />
             ))}
           </div>
         </div>
