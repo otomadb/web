@@ -1,13 +1,10 @@
 import { Meta, StoryObj } from "@storybook/react";
 
+import { Fragment as CommonTagFragment } from "~/components/CommonTag";
 import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
 
-import { Fragment as CommonTagFragment } from "~/components/CommonTag";
-import {
-  Fragment,
-  RequestFormPart as RequestFormPart,
-} from "./RequestFormPart";
+import { Fragment, RequestFormPart } from "./RequestFormPart";
 import { Fragment as ToggleTagButtonFragment } from "./ToggleTagButton";
 
 const meta = {

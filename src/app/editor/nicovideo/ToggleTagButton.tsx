@@ -1,9 +1,11 @@
 "use client";
 
 import clsx from "clsx";
-import React, { useContext } from "react";
+import { useContext } from "react";
+
 import { CommonTag } from "~/components/CommonTag";
 import { FragmentType, graphql, useFragment } from "~/gql";
+
 import { RegisterContext } from "./_components/Register/Context";
 
 export const Fragment = graphql(`
@@ -13,7 +15,7 @@ export const Fragment = graphql(`
   }
 `);
 
-export default function ({
+export default function ToggleTagButton({
   className,
   ...props
 }: {
