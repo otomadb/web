@@ -2,6 +2,7 @@
 
 import clsx from "clsx";
 import React from "react";
+
 import { CommonTag } from "~/components/CommonTag";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
@@ -12,7 +13,7 @@ export const Fragment = graphql(`
   }
 `);
 
-export default function ({
+export default function ToggleTagButton({
   className,
   toggleTag,
   ...props
