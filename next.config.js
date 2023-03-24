@@ -4,6 +4,7 @@ const nextConfig = {
   swcMinify: true,
   images: {
     domains: ["nicovideo.cdn.nimg.jp", "img.cdn.nimg.jp"],
+    unoptimized: true,
   },
   experimental: {
     appDir: true,
