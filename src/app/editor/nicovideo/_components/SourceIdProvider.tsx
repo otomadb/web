@@ -4,7 +4,7 @@ import "client-only";
 import { useSearchParams } from "next/navigation";
 import React, { ReactNode, useContext, useState } from "react";
 
-const Context = React.createContext<{
+export const SourceIdContext = React.createContext<{
   sourceId: string | null;
   setSourceId(id: string): void;
   clearSourceId(): void;
@@ -22,7 +22,7 @@ export const SourceIdProvider: React.FC<{ children: ReactNode }> = ({
   const [sourceId, setSourceId] = useState(searchParams.get("sourceId"));
 
   return (
-    <Context.Provider
+    <SourceIdContext.Provider
       value={{
         sourceId,
         setSourceId: (i) => setSourceId(i),
@@ -30,21 +30,21 @@ export const SourceIdProvider: React.FC<{ children: ReactNode }> = ({
       }}
     >
       {children}
-    </Context.Provider>
+    </SourceIdContext.Provider>
   );
 };
 
 export const useSourceId = () => {
-  const { sourceId } = useContext(Context);
+  const { sourceId } = useContext(SourceIdContext);
   return sourceId;
 };
 
 export const useSetSourceId = () => {
-  const { setSourceId } = useContext(Context);
+  const { setSourceId } = useContext(SourceIdContext);
   return setSourceId;
 };
 
 export const useClearSourceId = () => {
-  const { clearSourceId } = useContext(Context);
+  const { clearSourceId } = useContext(SourceIdContext);
   return clearSourceId;
 };

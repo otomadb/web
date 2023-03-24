@@ -3,21 +3,18 @@ import "client-only";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
-import React, { ComponentProps, useCallback } from "react";
-import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
-import { toast } from "react-hot-toast";
-import { useMutation } from "urql";
+import React from "react";
+import { useFieldArray, useForm } from "react-hook-form";
 import * as z from "zod";
 
-import { LinkVideo } from "~/app/videos/[serial]/Link";
 import { BlueButton } from "~/components/common/Button";
-import { FragmentType, graphql, useFragment } from "~/gql";
-import { RegisterVideoInputSourceType } from "~/gql/graphql";
 
 import { useClearSourceId, useSourceId } from "../SourceIdProvider";
 import { Confirm } from "./Confirm/Confirm";
 import { RegisterContext } from "./Context";
 import { SourceChecker } from "./SourceChecker";
+import { useCallSuccessToast } from "./Toast";
+import { useRegisterVideo } from "./useRegisterVideo";
 
 export const formSchema = z.object({
   sourceId: z.string(),
@@ -33,9 +30,9 @@ export const RegisterForm: React.FC<{
   className?: string;
 }> = ({ className }) => {
   const sourceId = useSourceId();
-  const clearSourceId = useClearSourceId();
   const { control, handleSubmit, register, setValue, watch, getValues, reset } =
     useForm<FormSchema>({
+      defaultValues: { nicovideoRequestId: null },
       resolver: zodResolver(formSchema),
     });
 
@@ -51,64 +48,15 @@ export const RegisterForm: React.FC<{
     remove: removeSemitag,
   } = useFieldArray({ control, name: "semitags" });
 
-  const [, mutateRegisterTag] = useMutation(
-    graphql(`
-      mutation RegisterNicovideoPage_RegisterForm_RegisterVideo(
-        $input: RegisterVideoInput!
-      ) {
-        registerVideo(input: $input) {
-          __typename
-          ... on RegisterVideoSucceededPayload {
-            video {
-              ...RegisterNicovideoPage_RegisterForm_SuccessToast
-            }
-          }
-          ... on RegisterVideoFailedPayload {
-            message
-          }
-        }
-      }
-    `)
-  );
   const callSuccessToast = useCallSuccessToast();
-  const registerVideo: SubmitHandler<FormSchema> = useCallback(
-    async ({
-      sourceId,
-      title,
-      thumbnailUrl,
-      tags,
-      semitags,
-      nicovideoRequestId,
-    }) => {
-      const { data, error } = await mutateRegisterTag({
-        input: {
-          primaryTitle: title,
-          extraTitles: [],
-          primaryThumbnail: thumbnailUrl,
-          tags: tags.map(({ tagId }) => tagId),
-          semitags: semitags.map(({ name }) => name),
-          sources: [{ sourceId, type: RegisterVideoInputSourceType.Nicovideo }],
-          nicovideoRequestId,
-        },
-      });
-      if (error || !data) {
-        // TODO 重大な例外処理
-        return;
-      }
-
-      switch (data.registerVideo.__typename) {
-        case "RegisterVideoSucceededPayload":
-          callSuccessToast({ fragment: data.registerVideo.video });
-          reset({ title: "", thumbnailUrl: "", tags: [] });
-          clearSourceId();
-          return;
-        default:
-          // TODO: 何かしら出す
-          return;
-      }
+  const clearSourceId = useClearSourceId();
+  const registerVideo = useRegisterVideo({
+    onSuccess(data) {
+      callSuccessToast({ fragment: data.video });
+      reset({ title: "", thumbnailUrl: "", tags: [], semitags: [] });
+      clearSourceId();
     },
-    [callSuccessToast, clearSourceId, mutateRegisterTag, reset]
-  );
+  });
 
   return (
     <RegisterContext.Provider
@@ -139,7 +87,12 @@ export const RegisterForm: React.FC<{
           ["rounded-md"],
           ["px-4", "py-4"]
         )}
-        onSubmit={handleSubmit(registerVideo)}
+        onSubmit={handleSubmit(
+          (props) => registerVideo(props),
+          (error) => {
+            console.dir(error);
+          }
+        )}
       >
         {!sourceId && (
           <div>
@@ -176,31 +129,3 @@ export const RegisterForm: React.FC<{
     </RegisterContext.Provider>
   );
 };
-
-const Fragment = graphql(`
-  fragment RegisterNicovideoPage_RegisterForm_SuccessToast on Video {
-    id
-    title
-    ...Link_Video
-  }
-`);
-export const SuccessToast: React.FC<{
-  fragment: FragmentType<typeof Fragment>;
-}> = ({ ...props }) => {
-  const fragment = useFragment(Fragment, props.fragment);
-
-  return (
-    <div>
-      <LinkVideo
-        fragment={fragment}
-        className={clsx(["font-bold"], ["text-blue-400"])}
-      >
-        {fragment.title}
-      </LinkVideo>
-      <span className={clsx(["text-slate-700"])}>を登録しました．</span>
-    </div>
-  );
-};
-export const useCallSuccessToast =
-  () => (props: Pick<ComponentProps<typeof SuccessToast>, "fragment">) =>
-    toast(() => <SuccessToast {...props} />);

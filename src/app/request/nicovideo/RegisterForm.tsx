@@ -6,7 +6,7 @@ import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { useMutation } from "urql";
 import * as z from "zod";
 
-import { ConfirmForm } from "~/app/editor/nicovideo/ConfirmForm";
+import { Confirm } from "~/app/editor/nicovideo/_components/Register/Confirm/Confirm";
 import { BlueButton } from "~/components/common/Button";
 import { graphql } from "~/gql";
 
@@ -165,7 +165,7 @@ export const RegisterForm: React.FC<{
         toggleTag={(id) => toggleTag(id)}
       >
         <div className={clsx(["flex", "flex-col", "gap-y-4"])}>
-          <ConfirmForm
+          <Confirm
             TitleInput={function TitleInput(props) {
               return <input {...props} {...register("title")} />;
             }}

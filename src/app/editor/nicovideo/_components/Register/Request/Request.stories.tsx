@@ -100,7 +100,7 @@ export const Primary: StoryObj<typeof meta> = {
             },
           },
           {
-            id: "tagging1",
+            id: "tagging4",
             tag: {
               id: "tag4",
               ...makeFragmentData(
@@ -120,7 +120,7 @@ export const Primary: StoryObj<typeof meta> = {
             },
           },
           {
-            id: "tagging1",
+            id: "tagging5",
             tag: {
               id: "tag5",
               ...makeFragmentData(

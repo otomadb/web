@@ -36,18 +36,15 @@ export const Original: React.FC<{
   const { setTitle, setThumbnailUrl, setSourceId } =
     useContext(RegisterContext);
 
-  useEffect(() => {
-    setTitle(fragment.title);
-    setThumbnailUrl(fragment.thumbnailUrl);
-    setSourceId(fragment.sourceId);
-  }, [
-    fragment.sourceId,
-    fragment.thumbnailUrl,
-    fragment.title,
-    setSourceId,
-    setThumbnailUrl,
-    setTitle,
-  ]);
+  useEffect(
+    () => {
+      setTitle(fragment.title);
+      setThumbnailUrl(fragment.thumbnailUrl);
+      setSourceId(fragment.sourceId);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [fragment]
+  );
 
   return (
     <div

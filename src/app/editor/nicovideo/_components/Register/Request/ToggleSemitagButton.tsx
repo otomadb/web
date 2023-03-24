@@ -31,7 +31,8 @@ export default function ToggleSemitagButton({
         ["text-left"],
         ["text-xs"],
         ["px-1"],
-        ["py-0.5"]
+        ["py-0.5"],
+        ["border"]
       )}
       type="button"
       onClick={() => {

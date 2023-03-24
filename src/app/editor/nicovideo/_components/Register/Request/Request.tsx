@@ -60,7 +60,7 @@ export const Request: React.FC<{
           <div className={clsx(["text-sm", "font-bold"])}>{fragment.title}</div>
         </div>
       </div>
-      <div className={clsx(["flex-grow"], ["flex", "flex-col"])}>
+      <div className={clsx(["flex-grow"], ["flex", "flex-col", "gap-y-2"])}>
         <div className={clsx(["flex-grow"], ["flex", "flex-col", "gap-y-0.5"])}>
           <div className={clsx(["text-xs"])}>タグ</div>
           <div

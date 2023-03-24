@@ -6,7 +6,7 @@ import clsx from "clsx";
 import { useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 
-import { SourceIdInputForm } from "~/app/editor/nicovideo/SourceIdInputForm";
+import { SourceIdInputForm } from "~/app/editor/nicovideo/_components/SourceId/Form";
 
 import { RegisterForm } from "./RegisterForm";
 
@@ -28,7 +28,7 @@ export const RequestForm: React.FC<{
         ["flex", "flex-col", "gap-y-4"]
       )}
     >
-      <SourceIdInputForm className={clsx()} set={(s) => setSourceId(s)} />
+      <SourceIdInputForm className={clsx()} />
       <RegisterForm
         sourceId={sourceId}
         clearSourceId={() => {

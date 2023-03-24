@@ -2,11 +2,10 @@
 import clsx from "clsx";
 import Image from "next/image";
 import React from "react";
-import { useQuery } from "urql";
 
 import { TagSearcher } from "~/components/common/TagSearcher";
-import { CommonTag } from "~/components/CommonTag";
-import { graphql } from "~/gql";
+
+import { TagButton } from "./TagButton";
 
 export const Confirm: React.FC<{
   className?: string;
@@ -32,7 +31,6 @@ export const Confirm: React.FC<{
   thumbnailUrl,
   tags,
   addTag,
-  removeTag,
   semitags,
   addSemitag,
   removeSemitag,
@@ -82,12 +80,8 @@ export const Confirm: React.FC<{
                 <div
                   className={clsx(["flex", "flex-wrap", "gap-x-2", "gap-y-2"])}
                 >
-                  {tags.map(({ id, tagId }, index) => (
-                    <TagItem
-                      key={id}
-                      tagId={tagId}
-                      remove={() => removeTag(index)}
-                    />
+                  {tags.map(({ id, tagId }) => (
+                    <TagButton key={id} tagId={tagId} />
                   ))}
                 </div>
               </div>
@@ -100,11 +94,12 @@ export const Confirm: React.FC<{
                     <button
                       key={id}
                       className={clsx(
-                        ["text-sm"],
-                        ["bg-white"],
-                        ["border", "border-gray-200"],
-                        ["rounded"],
-                        ["px-2", "py-0.5"]
+                        ["flex"],
+                        ["text-left"],
+                        ["text-xs"],
+                        ["px-1"],
+                        ["py-0.5"],
+                        ["border"]
                       )}
                       onClick={() => removeSemitag(index)}
                     >
@@ -172,34 +167,5 @@ export const Confirm: React.FC<{
         </div>
       </div>
     </div>
-  );
-};
-
-const TagItem: React.FC<{
-  className?: string;
-  tagId: string;
-  remove(): void;
-}> = ({ className, tagId, remove }) => {
-  const [{ data }] = useQuery({
-    query: graphql(`
-      query RegisterNicovideoPage_RegisterForm_Tag($id: ID!) {
-        getTag(id: $id) {
-          id
-          ...CommonTag
-        }
-      }
-    `),
-    variables: { id: tagId },
-  });
-
-  return (
-    <button className={clsx(className)} onClick={() => remove()}>
-      {data && (
-        <CommonTag
-          fragment={data.getTag}
-          className={clsx(["text-xs"], ["px-1"], ["py-0.5"])}
-        />
-      )}
-    </button>
   );
 };
