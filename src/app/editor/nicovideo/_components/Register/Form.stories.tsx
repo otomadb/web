@@ -6,6 +6,7 @@ import {
   Provider as UrqlProvider,
 } from "urql";
 
+import { SourceIdContext } from "~/components/NicovideoSourceIdForm/SourceIdProvider";
 import {
   aNicovideoOriginalSource,
   aNicovideoOriginalSourceTagSearchTagsPayload,
@@ -20,7 +21,6 @@ import {
   TagType,
 } from "~/gql/graphql";
 
-import { SourceIdContext } from "../SourceIdProvider";
 import { RegisterForm } from "./Form";
 
 const meta = {
