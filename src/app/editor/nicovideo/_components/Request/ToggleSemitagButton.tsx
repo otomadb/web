@@ -5,7 +5,7 @@ import { useContext } from "react";
 
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-import { RegisterContext } from "../Context";
+import { RegisterContext } from "../Original/Context";
 
 export const Fragment = graphql(`
   fragment RegisterNicovideoPage_RequestFormPart_ToggleSemitagButton on NicovideoRegistrationRequestSemitagging {

@@ -17,7 +17,8 @@ import {
   TagType,
 } from "~/gql/graphql";
 
-import { RegisterContext } from "./Context";
+import { RegisterContext } from "./Original/Context";
+import { RequestContext } from "./Request/Context";
 import { SourceChecker } from "./SourceChecker";
 
 const meta = {
@@ -30,12 +31,15 @@ const meta = {
             setTitle: action("setTitle"),
             setSourceId: action("setSourceId"),
             setThumbnailUrl: action("setThumbnailUrl"),
-            setRequestId: action("setRequestId"),
             toggleSemitag: action("toggleSemitag"),
             toggleTag: action("toggleTag"),
           }}
         >
-          <SourceChecker {...args} />
+          <RequestContext.Provider
+            value={{ setRequestId: action("setRequestId") }}
+          >
+            <SourceChecker {...args} />
+          </RequestContext.Provider>
         </RegisterContext.Provider>
       </UrqlProvider>
     );

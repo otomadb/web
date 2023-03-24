@@ -3,12 +3,12 @@ import "client-only";
 
 import clsx from "clsx";
 import Image from "next/image";
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-import { RegisterContext } from "../Context";
 import ToggleTagButton from "../ToggleTagButton";
+import { useSetSourceId, useSetThumbnailUrl, useSetTitle } from "./Context";
 
 export const Fragment = graphql(`
   fragment RegisterNicovideoPage_OriginalSource on NicovideoOriginalSource {
@@ -33,8 +33,9 @@ export const Original: React.FC<{
   fragment: FragmentType<typeof Fragment>;
 }> = ({ className, ...props }) => {
   const fragment = useFragment(Fragment, props.fragment);
-  const { setTitle, setThumbnailUrl, setSourceId } =
-    useContext(RegisterContext);
+  const setTitle = useSetTitle();
+  const setThumbnailUrl = useSetThumbnailUrl();
+  const setSourceId = useSetSourceId();
 
   useEffect(
     () => {

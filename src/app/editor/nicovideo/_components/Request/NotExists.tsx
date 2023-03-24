@@ -1,10 +1,11 @@
 import clsx from "clsx";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 
-import { RegisterContext } from "../Context";
+import { useSetRequestId } from "./Context";
 
 export const NotExists: React.FC = () => {
-  const { setRequestId } = useContext(RegisterContext);
+  const setRequestId = useSetRequestId();
+
   useEffect(
     () => {
       setRequestId(null);

@@ -10,7 +10,7 @@ import {
   TagType,
 } from "~/gql/graphql";
 
-import { RegisterContext } from "../Context";
+import { RegisterContext } from "./Context";
 import { Fragment, Original } from "./Original";
 
 const meta = {

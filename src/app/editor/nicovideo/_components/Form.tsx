@@ -14,7 +14,8 @@ import {
 } from "~/components/NicovideoSourceIdForm/SourceIdProvider";
 
 import { Confirm } from "./Confirm/Confirm";
-import { RegisterContext } from "./Context";
+import { RegisterContext } from "./Original/Context";
+import { RequestContext } from "./Request/Context";
 import { SourceChecker } from "./SourceChecker";
 import { useCallSuccessededToast } from "./SuccessedToast";
 import { useRegisterVideo } from "./useRegisterVideo";
@@ -81,7 +82,6 @@ export const RegisterForm: React.FC<{
         setTitle: (s) => setValue("title", s),
         setSourceId: (s) => setValue("sourceId", s),
         setThumbnailUrl: (s) => setValue("thumbnailUrl", s),
-        setRequestId: (s) => setValue("nicovideoRequestId", s),
         toggleTag: (tagId: string) => {
           const i = getValues("tags").findIndex((t) => t.tagId === tagId);
           if (i === -1) appendTag({ tagId });
@@ -96,53 +96,62 @@ export const RegisterForm: React.FC<{
         },
       }}
     >
-      <form
-        className={clsx(
-          className,
-          ["flex", "flex-col", "gap-y-4"],
-          ["border"],
-          ["rounded-md"],
-          ["px-4", "py-4"]
-        )}
-        onSubmit={handleSubmit(
-          (props) => registerVideo(props),
-          (error) => {
-            console.dir(error);
-          }
-        )}
+      <RequestContext.Provider
+        value={{
+          setRequestId: (s) => setValue("nicovideoRequestId", s),
+        }}
       >
-        {!sourceId && (
-          <div>
-            <p className={clsx(["text-sm"])}>動画IDを入力してください。</p>
-          </div>
-        )}
-        {sourceId && (
-          <SourceChecker sourceId={sourceId}>
-            <div className={clsx(["flex", "flex-col", "gap-y-4"])}>
-              <Confirm
-                TitleInput={function TitleInput(props) {
-                  return <input {...props} {...register("title")} />;
-                }}
-                thumbnailUrl={thumbnailUrl}
-                tags={tags}
-                addTag={(tagId) => {
-                  if (!getValues("tags").find(({ tagId: t }) => t === tagId))
-                    appendTag({ tagId });
-                }}
-                removeTag={removeTag}
-                semitags={semitags}
-                addSemitag={(name) => appendSemitag({ name })}
-                removeSemitag={removeSemitag}
-              />
-              <div>
-                <BlueButton type="submit" className={clsx(["px-4"], ["py-1"])}>
-                  登録
-                </BlueButton>
-              </div>
+        <form
+          className={clsx(
+            className,
+            ["flex", "flex-col", "gap-y-4"],
+            ["border"],
+            ["rounded-md"],
+            ["px-4", "py-4"]
+          )}
+          onSubmit={handleSubmit(
+            (props) => registerVideo(props),
+            (error) => {
+              console.dir(error);
+            }
+          )}
+        >
+          {!sourceId && (
+            <div>
+              <p className={clsx(["text-sm"])}>動画IDを入力してください。</p>
             </div>
-          </SourceChecker>
-        )}
-      </form>
+          )}
+          {sourceId && (
+            <SourceChecker sourceId={sourceId}>
+              <div className={clsx(["flex", "flex-col", "gap-y-4"])}>
+                <Confirm
+                  TitleInput={function TitleInput(props) {
+                    return <input {...props} {...register("title")} />;
+                  }}
+                  thumbnailUrl={thumbnailUrl}
+                  tags={tags}
+                  addTag={(tagId) => {
+                    if (!getValues("tags").find(({ tagId: t }) => t === tagId))
+                      appendTag({ tagId });
+                  }}
+                  removeTag={removeTag}
+                  semitags={semitags}
+                  addSemitag={(name) => appendSemitag({ name })}
+                  removeSemitag={removeSemitag}
+                />
+                <div>
+                  <BlueButton
+                    type="submit"
+                    className={clsx(["px-4"], ["py-1"])}
+                  >
+                    登録
+                  </BlueButton>
+                </div>
+              </div>
+            </SourceChecker>
+          )}
+        </form>
+      </RequestContext.Provider>
     </RegisterContext.Provider>
   );
 };

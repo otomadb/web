@@ -1,12 +1,12 @@
 "use client";
 
 import clsx from "clsx";
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-import { RegisterContext } from "../Context";
 import ToggleTagButton from "../ToggleTagButton";
+import { useSetRequestId } from "./Context";
 import ToggleSemitagButton from "./ToggleSemitagButton";
 
 export const Fragment = graphql(`
@@ -32,11 +32,15 @@ export const Exists: React.FC<{
   fragment: FragmentType<typeof Fragment>;
 }> = ({ className, ...props }) => {
   const fragment = useFragment(Fragment, props.fragment);
-  const { setRequestId: setNicovideoRequestId } = useContext(RegisterContext);
+  const setNicovideoRequestId = useSetRequestId();
 
-  useEffect(() => {
-    setNicovideoRequestId(fragment.id);
-  }, [fragment.id, setNicovideoRequestId]);
+  useEffect(
+    () => {
+      setNicovideoRequestId(fragment.id);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [fragment.id]
+  );
 
   return (
     <div className={clsx(className, ["flex", "gap-x-4"])}>

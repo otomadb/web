@@ -5,8 +5,9 @@ import { Fragment as CommonTagFragment } from "~/components/CommonTag";
 import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
 
-import { RegisterContext } from "../Context";
+import { RegisterContext } from "../Original/Context";
 import { Fragment as ToggleTagButtonFragment } from "../ToggleTagButton";
+import { RequestContext } from "./Context";
 import { Exists, Fragment } from "./Exists";
 
 const meta = {
@@ -19,12 +20,15 @@ const meta = {
           setTitle: action("setTitle"),
           setSourceId: action("setSourceId"),
           setThumbnailUrl: action("setThumbnailUrl"),
-          setRequestId: action("setNicovideoRequestId"),
           toggleSemitag: action("toggleSemitag"),
           toggleTag: action("toggleTag"),
         }}
       >
-        <Exists {...args} />
+        <RequestContext.Provider
+          value={{ setRequestId: action("setRequestId") }}
+        >
+          <Exists {...args} />
+        </RequestContext.Provider>
       </RegisterContext.Provider>
     );
   },
