@@ -6,7 +6,7 @@ import clsx from "clsx";
 import { useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 
-import { SourceIdInputForm } from "~/app/editor/nicovideo/_components/SourceId/Form";
+import { SourceIdInputForm } from "~/components/NicovideoSourceIdForm/Form";
 
 import { RegisterForm } from "./RegisterForm";
 

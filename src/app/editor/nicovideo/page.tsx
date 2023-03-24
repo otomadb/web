@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import { SourceIdInputForm } from "~/components/NicovideoSourceIdForm/Form";
 import { SourceIdProvider } from "~/components/NicovideoSourceIdForm/SourceIdProvider";
 
-import { RegisterForm } from "./_components/Register/Form";
+import { RegisterForm } from "./_components/Form";
 
 export const metadata: Metadata = {
   title: "ニコニコ動画からの登録",

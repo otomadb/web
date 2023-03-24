@@ -5,8 +5,8 @@ import clsx from "clsx";
 import { ReactNode, useEffect } from "react";
 import { useQuery } from "urql";
 
-import { Original } from "~/app/editor/nicovideo/_components/Register/Original/Original";
-import { VideoSource } from "~/app/editor/nicovideo/_components/Register/VideoSource/VideoSource";
+import { Original } from "~/app/editor/nicovideo/_components/Original/Original";
+import { VideoSource } from "~/app/editor/nicovideo/_components/VideoSource/VideoSource";
 import { graphql } from "~/gql";
 
 import { VideoRequestAlreadyExists } from "./VideoRequestAlreadyExists";

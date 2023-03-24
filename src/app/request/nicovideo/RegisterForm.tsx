@@ -6,7 +6,7 @@ import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { useMutation } from "urql";
 import * as z from "zod";
 
-import { Confirm } from "~/app/editor/nicovideo/_components/Register/Confirm/Confirm";
+import { Confirm } from "~/app/editor/nicovideo/_components/Confirm/Confirm";
 import { BlueButton } from "~/components/common/Button";
 import { graphql } from "~/gql";
 
