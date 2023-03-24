@@ -3,6 +3,8 @@ import clsx from "clsx";
 import { SourceIdInputForm } from "~/components/NicovideoSourceIdForm/Form";
 import { SourceIdProvider } from "~/components/NicovideoSourceIdForm/SourceIdProvider";
 
+import { RequestForm } from "./_components/Form";
+
 export const dynamic = "force-dynamic";
 
 export default async function Page() {
@@ -20,6 +22,7 @@ export default async function Page() {
           )}
         >
           <SourceIdInputForm className={clsx()} />
+          <RequestForm />
         </div>
       </SourceIdProvider>
     </main>
