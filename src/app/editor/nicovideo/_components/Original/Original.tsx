@@ -8,7 +8,12 @@ import React, { useEffect } from "react";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 import ToggleTagButton from "../ToggleTagButton";
-import { useSetSourceId, useSetThumbnailUrl, useSetTitle } from "./Context";
+import {
+  useSetSourceId,
+  useSetThumbnailUrl,
+  useSetTitle,
+  useToggleSemitag,
+} from "./Context";
 
 export const Fragment = graphql(`
   fragment RegisterNicovideoPage_OriginalSource on NicovideoOriginalSource {
@@ -36,6 +41,7 @@ export const Original: React.FC<{
   const setTitle = useSetTitle();
   const setThumbnailUrl = useSetThumbnailUrl();
   const setSourceId = useSetSourceId();
+  const toggleSemitag = useToggleSemitag();
 
   useEffect(
     () => {
@@ -86,7 +92,16 @@ export const Original: React.FC<{
               key={tag.name}
               className={clsx(["flex", "flex-col", "gap-y-1"])}
             >
-              <div className={clsx(["text-sm"])}>{tag.name}</div>
+              <button
+                type="button"
+                className={clsx(["text-sm", "text-left"])}
+                onClick={(e) => {
+                  e.preventDefault();
+                  toggleSemitag(tag.name);
+                }}
+              >
+                {tag.name}
+              </button>
               {tag.searchTags.items.length === 0 && (
                 <div className={clsx(["text-xs", "select-none"])}>候補なし</div>
               )}
