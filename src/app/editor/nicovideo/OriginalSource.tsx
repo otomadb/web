@@ -6,6 +6,7 @@ import Image from "next/image";
 import React from "react";
 
 import { FragmentType, graphql, useFragment } from "~/gql";
+
 import ToggleTagButton from "./ToggleTagButton";
 
 export const Fragment = graphql(`

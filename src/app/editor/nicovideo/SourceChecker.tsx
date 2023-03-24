@@ -103,15 +103,10 @@ export const SourceChecker: React.FC<{
                 )}
                 {data.fetchNicovideo.source && (
                   <div className={clsx(["flex", "flex-col", "gap-y-4"])}>
-                    <OriginalSource
-                      fragment={data.fetchNicovideo.source}
-                      toggleTag={toggleTag}
-                    />
+                    <OriginalSource fragment={data.fetchNicovideo.source} />
                     {data.findNicovideoRegistrationRequest && (
                       <RequestFormPart
                         fragment={data.findNicovideoRegistrationRequest}
-                        toggleTag={toggleTag}
-                        toggleSemitag={toggleSemitag}
                       />
                     )}
                     <div

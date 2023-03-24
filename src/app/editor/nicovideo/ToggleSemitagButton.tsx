@@ -3,19 +3,18 @@
 import clsx from "clsx";
 import { useContext } from "react";
 
-import { CommonTag } from "~/components/CommonTag";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 import { RegisterContext } from "./_components/Register/Context";
 
 export const Fragment = graphql(`
-  fragment RegisterNicovideoPage_RequestFormPart_ToggleTagButton on Tag {
+  fragment RegisterNicovideoPage_RequestFormPart_ToggleSemitagButton on NicovideoRegistrationRequestSemitagging {
     id
-    ...CommonTag
+    name
   }
 `);
 
-export default function ToggleTagButton({
+export default function ToggleSemitagButton({
   className,
   ...props
 }: {
@@ -23,20 +22,24 @@ export default function ToggleTagButton({
   fragment: FragmentType<typeof Fragment>;
 }) {
   const fragment = useFragment(Fragment, props.fragment);
-  const { toggleTag } = useContext(RegisterContext);
+  const { toggleSemitag } = useContext(RegisterContext);
 
   return (
     <button
-      className={clsx(className, ["flex"], ["text-left"])}
+      className={clsx(
+        className,
+        ["flex"],
+        ["text-left"],
+        ["text-xs"],
+        ["px-1"],
+        ["py-0.5"]
+      )}
       type="button"
       onClick={() => {
-        toggleTag(fragment.id);
+        toggleSemitag(fragment.id);
       }}
     >
-      <CommonTag
-        className={clsx(["text-xs"], ["px-1"], ["py-0.5"])}
-        fragment={fragment}
-      />
+      {fragment.name}
     </button>
   );
 }

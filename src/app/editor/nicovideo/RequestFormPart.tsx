@@ -5,6 +5,7 @@ import React from "react";
 
 import { FragmentType, graphql, useFragment } from "~/gql";
 
+import ToggleSemitagButton from "./ToggleSemitagButton";
 import ToggleTagButton from "./ToggleTagButton";
 
 export const Fragment = graphql(`
@@ -21,15 +22,14 @@ export const Fragment = graphql(`
     }
     semitaggings {
       id
-      name
+      ...RegisterNicovideoPage_RequestFormPart_ToggleSemitagButton
     }
   }
 `);
 export const RequestFormPart: React.FC<{
   className?: string;
   fragment: FragmentType<typeof Fragment>;
-  toggleSemitag: (name: string) => void;
-}> = ({ className, toggleSemitag, ...props }) => {
+}> = ({ className, ...props }) => {
   const fragment = useFragment(Fragment, props.fragment);
 
   return (
@@ -71,23 +71,10 @@ export const RequestFormPart: React.FC<{
             className={clsx(["flex", ["gap-x-1"], ["gap-y-0.5"], "flex-wrap"])}
           >
             {fragment.semitaggings.map((semitagging) => (
-              <div key={semitagging.id}>
-                <button
-                  type="button"
-                  onClick={() => {
-                    toggleSemitag(semitagging.name);
-                  }}
-                  className={clsx(
-                    ["text-sm"],
-                    ["bg-white"],
-                    ["border", "border-gray-200"],
-                    ["rounded"],
-                    ["px-2", "py-0.5"]
-                  )}
-                >
-                  {semitagging.name}
-                </button>
-              </div>
+              <ToggleSemitagButton
+                key={semitagging.id}
+                fragment={semitagging}
+              />
             ))}
           </div>
         </div>

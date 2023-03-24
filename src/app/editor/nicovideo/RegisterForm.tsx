@@ -14,9 +14,9 @@ import { BlueButton } from "~/components/common/Button";
 import { FragmentType, graphql, useFragment } from "~/gql";
 import { RegisterVideoInputSourceType } from "~/gql/graphql";
 
+import { RegisterContext } from "./_components/Register/Context";
 import { ConfirmForm } from "./ConfirmForm";
 import { SourceChecker } from "./SourceChecker";
-import { RegisterContext } from "./_components/Register/Context";
 
 export const formSchema = z.object({
   sourceId: z.string(),
@@ -139,14 +139,14 @@ export const RegisterForm: React.FC<{
       value={{
         toggleTag: (tagId: string) => {
           const i = getValues("tags").findIndex((t) => t.tagId === tagId);
-          if (i === -1) appendTag({ tagId: tagId });
+          if (i === -1) appendTag({ tagId });
           else removeTag(i);
         },
         toggleSemitag: (name: string) => {
           const i = getValues("semitags").findIndex(
             (semitag) => semitag.name === name
           );
-          if (i === -1) appendSemitag({ name: name });
+          if (i === -1) appendSemitag({ name });
           else removeSemitag(i);
         },
       }}
