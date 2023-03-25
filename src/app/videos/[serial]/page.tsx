@@ -32,12 +32,17 @@ export async function generateMetadata({
   return {
     title: `${findVideo.title} | Otomadb`,
     openGraph: {
+      type: "website",
+      siteName: "Otomadb",
       url: `https://otomadb.com/videos/${findVideo.serial}`,
       title: `${findVideo.title} | Otomadb`,
       images: `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/og/video?serial=${findVideo.serial}`,
     },
     twitter: {
       card: "summary_large_image",
+      title: `${findVideo.title} | Otomadb`,
+      images: `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/og/video?serial=${findVideo.serial}`,
+      site: "@SnO2WMaN",
     },
   };
 }
