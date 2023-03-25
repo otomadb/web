@@ -24,6 +24,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary",
+    title: `Otomadb`,
+    site: "@SnO2WMaN",
   },
 };
 
