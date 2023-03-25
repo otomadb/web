@@ -11,16 +11,19 @@ import { UrqlProvider } from "./UrqlProvider";
 
 export const metadata: Metadata = {
   title: "Otomadb",
-  description: '"Otomadb"は音MADのデータベースを目指して開発されています。',
+  description:
+    "Otomadbは音MADの体系的なデータベースを目指して開発されています。",
   viewport: "width=device-width, initial-scale=1.0",
   openGraph: {
+    type: "website",
+    url: "https://otomadb.com",
     title: "Otomadb",
     siteName: "Otomadb",
-    description: '"Otomadb"は音MADのデータベースを目指して開発されています。',
-    url: "https://otomadb.com",
+    description:
+      "Otomadbは音MADの体系的なデータベースを目指して開発されています。",
   },
   twitter: {
-    site: "@SnO2WMaN",
+    card: "summary",
   },
 };
 

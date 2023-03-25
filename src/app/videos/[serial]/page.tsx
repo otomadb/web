@@ -30,12 +30,11 @@ export async function generateMetadata({
   if (!findVideo) return notFound(); // TODO: これ本当にこれでいいの？
 
   return {
-    title: findVideo.title,
+    title: `${findVideo.title} | Otomadb`,
     openGraph: {
+      url: `https://otomadb.com/videos/${findVideo.serial}`,
+      title: `${findVideo.title} | Otomadb`,
       images: `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/og/video?serial=${findVideo.serial}`,
-    },
-    twitter: {
-      card: "summary_large_image",
     },
   };
 }

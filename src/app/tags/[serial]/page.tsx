@@ -18,6 +18,7 @@ export async function generateMetadata({
       query TagPage_Title($serial: Int!) {
         findTag(input: { serial: $serial }) {
           name
+          serial
         }
       }
     `),
@@ -27,7 +28,11 @@ export async function generateMetadata({
   if (!findTag) return notFound(); // TODO: これ本当にこれでいいの？
 
   return {
-    title: findTag.name,
+    title: `tag:${findTag.name} | Otomadb`,
+    openGraph: {
+      url: `https://otomadb.com/tags/${findTag.serial}`,
+      title: `tag:${findTag.name} | Otomadb`,
+    },
   };
 }
 
