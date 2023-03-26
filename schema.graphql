@@ -1698,6 +1698,7 @@ type Video implements Node {
   thumbnails: [VideoThumbnail!]!
   title: String!
   titles: [VideoTitle!]!
+  youtubeSources: [YoutubeVideoSource!]!
 }
 
 type VideoConnection {
