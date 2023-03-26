@@ -9,8 +9,6 @@ jobs:
   update:
     name: Update schema
     runs-on: ubuntu-latest
-    env:
-      GRAPHQL_API_ENDPOINT: https://api.otomadb.com/graphql
     steps:
       - uses: actions/checkout@v3
       - uses: pnpm/action-setup@v2
@@ -22,9 +20,13 @@ jobs:
           cache: pnpm
       - run: pnpm install
       - run: pnpm run schema:introspect $GRAPHQL_API_ENDPOINT
+        env:
+          GRAPHQL_API_ENDPOINT: "${{ vars.GRAPHQL_API_ENDPOINT }}"
       - uses: peter-evans/create-pull-request@v4
         with:
           title: "chore(schema): Update `graphql.schema`"
           commit-message: "chore(schema): Update `graphql.schema`"
           branch: chore/update-graphql-schema
           delete-branch: true
+        env:
+          GITHUB_TOKEN: "${{ secrets.UPDATE_SCHEMA_GITHUB_TOKEN }}"
