@@ -274,12 +274,12 @@ export const Primary: StoryObj<typeof meta> = {
           (req, res, ctx) => {
             return res(
               ctx.data({
-                registerVideo: {
-                  __typename: "RegisterVideoSucceededPayload",
+                registerVideoFromNicovideo: {
+                  __typename: "RegisterVideoFromNicovideoSucceededPayload",
                   video: aVideo({
                     id: "v1",
                     title: req.variables.input.primaryTitle,
-                    thumbnailUrl: req.variables.input.primaryThumbnail,
+                    thumbnailUrl: req.variables.input.primaryThumbnailUrl,
                   }),
                 },
               })
