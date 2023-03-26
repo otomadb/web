@@ -22,6 +22,11 @@ export const Fragment = graphql(`
       sourceId
       embedUrl
     }
+    youtubeSources {
+      id
+      sourceId
+      embedUrl
+    }
   }
 `);
 export const Details: React.FC<{
@@ -30,7 +35,7 @@ export const Details: React.FC<{
 }> = ({ className, ...props }) => {
   const fragment = useFragment(Fragment, props.fragment);
   const [thumbnail, setThumbnail] = useState<
-    "ORIGINAL" | ["NICOVIDEO", string]
+    "ORIGINAL" | ["NICOVIDEO", string] | ["YOUTUBE", string]
   >("ORIGINAL");
 
   return (
@@ -74,7 +79,28 @@ export const Details: React.FC<{
                   ニコニコ動画
                 </span>
                 <span
-                  className={clsx(["text-xs", "text-slate-500", "font-mono"])}
+                  className={clsx(["text-xxs", "text-slate-500", "font-mono"])}
+                >
+                  {source.sourceId}
+                </span>
+              </button>
+            ))}
+            {fragment.youtubeSources.map((source) => (
+              <button
+                key={source.id}
+                type="button"
+                onClick={() => setThumbnail(["YOUTUBE", source.id])}
+                className={clsx(
+                  ["hover:bg-blue-200"],
+                  ["px-1", "py-1"],
+                  ["flex", "flex-col", "items-start"]
+                )}
+              >
+                <span className={clsx(["text-xs", "text-slate-700"])}>
+                  Youtube
+                </span>
+                <span
+                  className={clsx(["text-xxs", "text-slate-500", "font-mono"])}
                 >
                   {source.sourceId}
                 </span>
@@ -99,6 +125,17 @@ export const Details: React.FC<{
                   fragment.nicovideoSources.find(
                     ({ id }) => id === thumbnail[1]
                   )!.embedUrl
+                }
+              />
+            )}
+            {Array.isArray(thumbnail) && thumbnail[0] === "YOUTUBE" && (
+              <iframe
+                width="384"
+                height="192"
+                src={
+                  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                  fragment.youtubeSources.find(({ id }) => id === thumbnail[1])!
+                    .embedUrl
                 }
               />
             )}
