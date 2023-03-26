@@ -2,7 +2,7 @@ name: Update GraphQL Schema
 
 on:
   schedule:
-    - cron: "0 * * * *"
+    - cron: "*/15 * * * *"
   workflow_dispatch:
 
 jobs:
@@ -24,9 +24,8 @@ jobs:
           GRAPHQL_API_ENDPOINT: "${{ vars.GRAPHQL_API_ENDPOINT }}"
       - uses: peter-evans/create-pull-request@v4
         with:
+          token: "${{ secrets.UPDATE_SCHEMA_GITHUB_TOKEN }}"
           title: "chore(schema): Update `graphql.schema`"
           commit-message: "chore(schema): Update `graphql.schema`"
           branch: chore/update-graphql-schema
           delete-branch: true
-        env:
-          GITHUB_TOKEN: "${{ secrets.UPDATE_SCHEMA_GITHUB_TOKEN }}"
