@@ -747,15 +747,8 @@ type Query {
   getUser(id: ID!): User!
   getVideo(id: ID!): Video!
   getYoutubeVideoSource(id: ID!): YoutubeVideoSource!
-  mylist(id: ID!): Mylist! @deprecated
-  mylistGroup(id: ID!): MylistGroup! @deprecated
-  nicovideoVideoSource(id: ID!): NicovideoVideoSource! @deprecated
   searchTags(input: SearchTagInput!): SearchTagsPayload!
   searchVideos(input: SearchVideoInput!): SearchVideosPayload!
-  semitag(id: ID!): Semitag! @deprecated
-  tag(id: ID!): Tag! @deprecated
-  user(id: ID!): User! @deprecated
-  video(id: ID!): Video! @deprecated
   whoami: User
 }
 
