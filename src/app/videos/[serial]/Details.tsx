@@ -20,11 +20,13 @@ export const Fragment = graphql(`
     nicovideoSources {
       id
       sourceId
+      url
       embedUrl
     }
     youtubeSources {
       id
       sourceId
+      url
       embedUrl
     }
   }
@@ -65,10 +67,13 @@ export const Details: React.FC<{
               </span>
             </button>
             {fragment.nicovideoSources.map((source) => (
-              <button
+              <a
                 key={source.id}
-                type="button"
-                onClick={() => setThumbnail(["NICOVIDEO", source.id])}
+                href={source.url}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setThumbnail(["NICOVIDEO", source.id]);
+                }}
                 className={clsx(
                   ["hover:bg-blue-200"],
                   ["px-1", "py-1"],
@@ -83,13 +88,16 @@ export const Details: React.FC<{
                 >
                   {source.sourceId}
                 </span>
-              </button>
+              </a>
             ))}
             {fragment.youtubeSources.map((source) => (
-              <button
+              <a
                 key={source.id}
-                type="button"
-                onClick={() => setThumbnail(["YOUTUBE", source.id])}
+                href={source.url}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setThumbnail(["YOUTUBE", source.id]);
+                }}
                 className={clsx(
                   ["hover:bg-blue-200"],
                   ["px-1", "py-1"],
@@ -104,7 +112,7 @@ export const Details: React.FC<{
                 >
                   {source.sourceId}
                 </span>
-              </button>
+              </a>
             ))}
           </div>
           <div className={clsx(["flex"])}>
