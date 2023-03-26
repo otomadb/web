@@ -1,7 +1,6 @@
 name: Update GraphQL Schema
 
 on:
-  push:
   schedule:
     - cron: "*/15 * * * *"
   workflow_dispatch:
