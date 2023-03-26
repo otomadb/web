@@ -3,15 +3,14 @@ import { useCallback } from "react";
 import { useMutation } from "urql";
 
 import { graphql } from "~/gql";
-import { RegisterVideoInputSourceType } from "~/gql/graphql";
 
 const Mutation = graphql(`
   mutation RegisterNicovideoPage_RegisterForm_RegisterVideo(
-    $input: RegisterVideoInput!
+    $input: RegisterVideoFromNicovideoInput!
   ) {
-    registerVideo(input: $input) {
+    registerVideoFromNicovideo(input: $input) {
       __typename
-      ... on RegisterVideoSucceededPayload {
+      ... on RegisterVideoFromNicovideoSucceededPayload {
         video {
           ...RegisterNicovideoPage_RegisterForm_SuccessedToast
         }
@@ -24,8 +23,8 @@ export const useRegisterVideo = ({
 }: {
   onSuccess(
     data: Extract<
-      ResultOf<typeof Mutation>["registerVideo"],
-      { __typename: "RegisterVideoSucceededPayload" }
+      ResultOf<typeof Mutation>["registerVideoFromNicovideo"],
+      { __typename: "RegisterVideoFromNicovideoSucceededPayload" }
     >
   ): void;
 }) => {
@@ -51,11 +50,11 @@ export const useRegisterVideo = ({
         input: {
           primaryTitle: title,
           extraTitles: [],
-          primaryThumbnail: thumbnailUrl,
-          tags: tags.map(({ tagId }) => tagId),
-          semitags: semitags.map(({ name }) => name),
-          sources: [{ sourceId, type: RegisterVideoInputSourceType.Nicovideo }],
-          nicovideoRequestId,
+          primaryThumbnailUrl: thumbnailUrl,
+          tagIds: tags.map(({ tagId }) => tagId),
+          semitagNames: semitags.map(({ name }) => name),
+          sourceIds: [sourceId],
+          requestId: nicovideoRequestId,
         },
       });
       if (error || !data) {
@@ -63,9 +62,9 @@ export const useRegisterVideo = ({
         return;
       }
 
-      switch (data.registerVideo.__typename) {
-        case "RegisterVideoSucceededPayload":
-          onSuccess(data.registerVideo);
+      switch (data.registerVideoFromNicovideo.__typename) {
+        case "RegisterVideoFromNicovideoSucceededPayload":
+          onSuccess(data.registerVideoFromNicovideo);
           return;
         default:
           // TODO: 何かしら出す
