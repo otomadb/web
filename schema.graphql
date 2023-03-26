@@ -178,6 +178,10 @@ type FetchNicovideoPayload {
   source: NicovideoOriginalSource
 }
 
+type FetchYoutubePayload {
+  source: YoutubeOriginalSource
+}
+
 input FindMylistInput {
   id: ID
 }
@@ -301,6 +305,7 @@ type Mutation {
   registerTag(input: RegisterTagInput!): RegisterTagReturnUnion!
   registerTagParentRelation(input: RegisterTagParentRelationInput!): RegisterTagParentRelationResultUnion!
   registerVideo(input: RegisterVideoInput!): RegisterVideoPayload!
+  registerVideoFromNicovideo(input: RegisterVideoFromNicovideoInput!): RegisterVideoFromNicovideoPayload!
   rejectNicovideoRegistrationRequest(input: RejectNicovideoRegistrationRequestInput!): RejectNicovideoRegistrationRequestReturnUnion!
   rejectSemitag(input: RejectSemitagInput!): RejectSemitagPayload!
   removeTagFromVideo(input: RemoveTagFromVideoInput!): RemoveTagFromVideoPayload!
@@ -715,6 +720,12 @@ enum PseudoTagType {
 type Query {
   """ニコニコ動画から動画情報を取得する"""
   fetchNicovideo(input: FetchNicovideoInput!): FetchNicovideoPayload!
+
+  """Youtubeから動画情報を取得する"""
+  fetchYoutube(
+    """Youtubeの動画ID（Q16KpquGsIcなど）"""
+    sourceId: String!
+  ): FetchYoutubePayload!
   findMylist(input: FindMylistInput!): Mylist
   findNicovideoRegistrationRequest(input: FindNicovideoRegistrationRequestInput): NicovideoRegistrationRequest
   findNicovideoRegistrationRequests(after: String, before: String, checked: Boolean, first: Int, last: Int, orderBy: FindNicovideoRegistrationRequestsOrderBy! = {createdAt: DESC}): NicovideoRegistrationRequestConnection!
@@ -885,6 +896,47 @@ enum RegisterVideoFailedMessage {
 
 type RegisterVideoFailedPayload {
   message: RegisterVideoFailedMessage!
+}
+
+enum RegisterVideoFromNicovideoFailedMessage {
+  INTERNAL_SERVER_ERROR
+}
+
+input RegisterVideoFromNicovideoInput {
+  extraTitles: [String!]! = []
+  primaryThumbnailUrl: String!
+  primaryTitle: String!
+  requestId: ID
+  semitagNames: [String!]! = []
+  sourceIds: [String!]!
+  tagIds: [ID!]!
+}
+
+"""ニコニコ動画のソースIDとして不正な場合のエラー"""
+type RegisterVideoFromNicovideoInvalidNicovideoSourceIdError {
+  sourceID: String!
+}
+
+"""その他のエラー"""
+type RegisterVideoFromNicovideoOtherErrorsFallback {
+  message: RegisterVideoFromNicovideoFailedMessage!
+}
+
+union RegisterVideoFromNicovideoPayload = MutationAuthenticationError | MutationInvalidNicovideoRegistrationRequestIdError | MutationInvalidTagIdError | MutationNicovideoRegistrationRequestAlreadyCheckedError | MutationNicovideoRegistrationRequestNotFoundError | MutationTagNotFoundError | RegisterVideoFromNicovideoInvalidNicovideoSourceIdError | RegisterVideoFromNicovideoOtherErrorsFallback | RegisterVideoFromNicovideoSemitagNamesDuplicatedError | RegisterVideoFromNicovideoSucceededPayload | RegisterVideoFromNicovideoTagIdsDuplicatedError
+
+"""仮タグの名前が重複している"""
+type RegisterVideoFromNicovideoSemitagNamesDuplicatedError {
+  name: String!
+}
+
+"""成功した場合"""
+type RegisterVideoFromNicovideoSucceededPayload {
+  video: Video!
+}
+
+"""タグのIDが重複している"""
+type RegisterVideoFromNicovideoTagIdsDuplicatedError {
+  tagId: String!
 }
 
 input RegisterVideoInput {
@@ -1831,9 +1883,48 @@ type VideoTitleUnsetPrimaryEvent implements Event & Node & VideoTitleEvent {
   videoTitle: VideoTitle!
 }
 
+type YoutubeOriginalSource {
+  sourceId: String!
+  thumbnailUrl: String!
+}
+
 type YoutubeVideoSource implements Node & VideoSource {
+  embedUrl: String!
+  events(after: String, before: String, first: Int, last: Int, orderBy: YoutubeVideoSourceEventsOrderBy!): YoutubeVideoSourceEventConnection!
   id: ID!
   sourceId: String!
   url: String!
   video: Video!
+}
+
+type YoutubeVideoSourceCreateEvent implements Event & Node & YoutubeVideoSourceEvent {
+  createdAt: DateTime!
+  id: ID!
+  series: String!
+  source: YoutubeVideoSource!
+  user: User!
+}
+
+interface YoutubeVideoSourceEvent implements Event & Node {
+  createdAt: DateTime!
+  id: ID!
+  series: String!
+  source: YoutubeVideoSource!
+  user: User!
+}
+
+type YoutubeVideoSourceEventConnection {
+  edges: [YoutubeVideoSourceEventEdge!]!
+  nodes: [YoutubeVideoSourceEvent!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type YoutubeVideoSourceEventEdge {
+  cursor: String!
+  node: YoutubeVideoSourceEvent!
+}
+
+input YoutubeVideoSourceEventsOrderBy {
+  createdAt: SortOrder
 }
