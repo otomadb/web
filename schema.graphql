@@ -304,8 +304,9 @@ type Mutation {
   registerCategoryTagTyping(input: RegisterCategoryTagTypingInput!): RegisterCategoryTagTypingResultUnion!
   registerTag(input: RegisterTagInput!): RegisterTagReturnUnion!
   registerTagParentRelation(input: RegisterTagParentRelationInput!): RegisterTagParentRelationResultUnion!
-  registerVideo(input: RegisterVideoInput!): RegisterVideoPayload!
+  registerVideo(input: RegisterVideoInput!): RegisterVideoPayload! @deprecated
   registerVideoFromNicovideo(input: RegisterVideoFromNicovideoInput!): RegisterVideoFromNicovideoPayload!
+  registerVideoFromYoutube(input: RegisterVideoFromYoutubeInput!): RegisterVideoFromYoutubePayload!
   rejectNicovideoRegistrationRequest(input: RejectNicovideoRegistrationRequestInput!): RejectNicovideoRegistrationRequestReturnUnion!
   rejectSemitag(input: RejectSemitagInput!): RejectSemitagPayload!
   removeTagFromVideo(input: RemoveTagFromVideoInput!): RemoveTagFromVideoPayload!
@@ -736,6 +737,7 @@ type Query {
   findUser(input: FindUserInput!): User
   findVideo(input: FindVideoInput!): Video
   findVideos(after: String, before: String, first: Int, last: Int, orderBy: FindVideosOrderBy! = {createdAt: DESC}): VideoConnection!
+  findYoutubeVideoSource(sourceId: String): YoutubeVideoSource
   getMylist(id: ID!): Mylist!
   getMylistGroup(id: ID!): MylistGroup!
   getNicovideoRegistrationRequest(id: ID!): NicovideoRegistrationRequest!
@@ -744,6 +746,7 @@ type Query {
   getTag(id: ID!): Tag!
   getUser(id: ID!): User!
   getVideo(id: ID!): Video!
+  getYoutubeVideoSource(id: ID!): YoutubeVideoSource!
   mylist(id: ID!): Mylist! @deprecated
   mylistGroup(id: ID!): MylistGroup! @deprecated
   nicovideoVideoSource(id: ID!): NicovideoVideoSource! @deprecated
@@ -936,6 +939,46 @@ type RegisterVideoFromNicovideoSucceededPayload {
 
 """タグのIDが重複している"""
 type RegisterVideoFromNicovideoTagIdsDuplicatedError {
+  tagId: String!
+}
+
+enum RegisterVideoFromYoutubeFailedMessage {
+  INTERNAL_SERVER_ERROR
+}
+
+input RegisterVideoFromYoutubeInput {
+  extraTitles: [String!]! = []
+  primaryThumbnailUrl: String!
+  primaryTitle: String!
+  semitagNames: [String!]! = []
+  sourceIds: [String!]!
+  tagIds: [ID!]!
+}
+
+"""Youtubeの動画IDとして不正な場合のエラー"""
+type RegisterVideoFromYoutubeInvalidYoutubeSourceIdError {
+  sourceID: String!
+}
+
+"""その他のエラー"""
+type RegisterVideoFromYoutubeOtherErrorsFallback {
+  message: RegisterVideoFromYoutubeFailedMessage!
+}
+
+union RegisterVideoFromYoutubePayload = MutationAuthenticationError | MutationInvalidTagIdError | MutationTagNotFoundError | RegisterVideoFromYoutubeInvalidYoutubeSourceIdError | RegisterVideoFromYoutubeOtherErrorsFallback | RegisterVideoFromYoutubeSemitagNamesDuplicatedError | RegisterVideoFromYoutubeSucceededPayload | RegisterVideoFromYoutubeTagIdsDuplicatedError
+
+"""仮タグの名前が重複している"""
+type RegisterVideoFromYoutubeSemitagNamesDuplicatedError {
+  name: String!
+}
+
+"""成功した場合"""
+type RegisterVideoFromYoutubeSucceededPayload {
+  video: Video!
+}
+
+"""タグのIDが重複している"""
+type RegisterVideoFromYoutubeTagIdsDuplicatedError {
   tagId: String!
 }
 
