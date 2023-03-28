@@ -304,7 +304,6 @@ type Mutation {
   registerCategoryTagTyping(input: RegisterCategoryTagTypingInput!): RegisterCategoryTagTypingResultUnion!
   registerTag(input: RegisterTagInput!): RegisterTagReturnUnion!
   registerTagParentRelation(input: RegisterTagParentRelationInput!): RegisterTagParentRelationResultUnion!
-  registerVideo(input: RegisterVideoInput!): RegisterVideoPayload! @deprecated
   registerVideoFromNicovideo(input: RegisterVideoFromNicovideoInput!): RegisterVideoFromNicovideoPayload!
   registerVideoFromYoutube(input: RegisterVideoFromYoutubeInput!): RegisterVideoFromYoutubePayload!
   rejectNicovideoRegistrationRequest(input: RejectNicovideoRegistrationRequestInput!): RejectNicovideoRegistrationRequestReturnUnion!
@@ -683,41 +682,6 @@ type PageInfo {
   startCursor: String
 }
 
-enum PseudoTagType {
-  """キャラクター"""
-  CHARACTER
-
-  """動画の内容に依らない情報，分類など"""
-  CLASS
-
-  """作品名"""
-  COPYRIGHT
-
-  """合作などのイベント"""
-  EVENT
-
-  """曲"""
-  MUSIC
-
-  """特徴的なセリフなど"""
-  PHRASE
-
-  """シリーズ"""
-  SERIES
-
-  """動画そのものに対しての性質，作風など"""
-  STYLE
-
-  """2つ以上のタイプが算出された場合"""
-  SUBTLE
-
-  """戦法"""
-  TACTICS
-
-  """タイプを算出できなかった場合"""
-  UNKNOWN
-}
-
 type Query {
   """ニコニコ動画から動画情報を取得する"""
   fetchNicovideo(input: FetchNicovideoInput!): FetchNicovideoPayload!
@@ -883,17 +847,6 @@ type RegisterTagTagIdCollidedBetweenExplicitAndImplicitError {
   tagId: String!
 }
 
-enum RegisterVideoFailedMessage {
-  FORBIDDEN
-  INVALID_NICOVIDEO_SOURCE_ID
-  INVALID_TAG_ID
-  UNKNOWN
-}
-
-type RegisterVideoFailedPayload {
-  message: RegisterVideoFailedMessage!
-}
-
 enum RegisterVideoFromNicovideoFailedMessage {
   INTERNAL_SERVER_ERROR
 }
@@ -973,31 +926,6 @@ type RegisterVideoFromYoutubeSucceededPayload {
 """タグのIDが重複している"""
 type RegisterVideoFromYoutubeTagIdsDuplicatedError {
   tagId: String!
-}
-
-input RegisterVideoInput {
-  extraTitles: [String!]! = []
-  nicovideoRequestId: ID
-  primaryThumbnail: String!
-  primaryTitle: String!
-  semitags: [String!]! = []
-  sources: [RegisterVideoInputSource!]!
-  tags: [ID!]!
-}
-
-input RegisterVideoInputSource {
-  sourceId: String!
-  type: RegisterVideoInputSourceType!
-}
-
-enum RegisterVideoInputSourceType {
-  NICOVIDEO
-}
-
-union RegisterVideoPayload = MutationInvalidNicovideoRegistrationRequestIdError | MutationNicovideoRegistrationRequestAlreadyCheckedError | MutationNicovideoRegistrationRequestNotFoundError | RegisterVideoFailedPayload | RegisterVideoSucceededPayload
-
-type RegisterVideoSucceededPayload {
-  video: Video!
 }
 
 input RejectNicovideoRegistrationRequestInput {
@@ -1427,7 +1355,6 @@ type Tag implements Node {
   name: String!
   names(primary: Boolean): [TagName!]!
   parents(after: String, before: String, categoryTag: Boolean, first: Int, last: Int, orderBy: TagParentsOrderBy! = {createdAt: DESC}): TagParentConnection!
-  pseudoType: PseudoTagType! @deprecated
   serial: Int!
   taggedVideos(after: String, before: String, first: Int, last: Int, orderBy: TagTaggedVideosOrderBy! = {createdAt: DESC}): VideoTagConnection!
   type: TagType!
