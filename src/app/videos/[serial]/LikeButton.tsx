@@ -8,7 +8,7 @@ import clsx from "clsx";
 import React, { useCallback, useMemo } from "react";
 import { useMutation, useQuery } from "urql";
 
-import { useCallToast } from "~/app/ToastProvider";
+import { useToaster } from "~/components/Toaster";
 import { graphql, useFragment } from "~/gql";
 
 const VideoFragment = graphql(`
@@ -73,7 +73,7 @@ export const LikeButton: React.FC<{ className?: string; videoId: string }> = ({
       }
     `)
   );
-  const callToast = useCallToast();
+  const callToast = useToaster();
   const handleClick = useCallback(() => {
     if (currentData?.whoami === null) {
       callToast(<p>動画をいいねするにはログインが必要です。</p>);

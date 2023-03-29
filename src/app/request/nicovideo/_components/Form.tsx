@@ -8,13 +8,13 @@ import * as z from "zod";
 
 import { RegisterContext } from "~/app/editor/nicovideo/_components/Original/Context";
 import { TagButton } from "~/app/editor/nicovideo/_components/TagButton";
-import { useCallToast } from "~/app/ToastProvider";
 import { BlueButton } from "~/components/common/Button";
 import { TagSearcher } from "~/components/common/TagSearcher";
 import {
   useClearSourceId,
   useSourceId,
 } from "~/components/NicovideoSourceIdForm/SourceIdProvider";
+import { useToaster } from "~/components/Toaster";
 
 import { SourceChecker } from "./SourceChecker";
 import { SucceededToast } from "./SucceededToast";
@@ -50,7 +50,7 @@ export const RequestForm: React.FC<{
   } = useFieldArray({ control, name: "semitags" });
 
   const clearSourceId = useClearSourceId();
-  const callToast = useCallToast();
+  const callToast = useToaster();
   const requestVideo = useRequestVideo({
     onSuccess(data) {
       reset({

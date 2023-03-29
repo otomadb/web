@@ -19,7 +19,7 @@ export const ToastProvider: React.FC<{ children: ReactNode }> = ({
   );
 };
 
-export const useCallToast = () => {
+export const useToaster = () => {
   const { call } = useContext(ToastContext);
   return call;
 };

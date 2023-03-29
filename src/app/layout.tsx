@@ -4,10 +4,9 @@ import clsx from "clsx";
 import type { Metadata } from "next";
 import React from "react";
 
-import { Toaster } from "~/components/common/Toaster";
 import { GlobalNavigation } from "~/components/global/Navigation/Navigation";
+import { ToastProvider } from "~/components/Toaster";
 
-import { ToastProvider } from "./ToastProvider";
 import { UrqlProvider } from "./UrqlProvider";
 
 export const metadata: Metadata = {
@@ -52,7 +51,6 @@ export default function RootLayout({
             <div className={clsx(["min-h-[calc(100vh-64px)]"], [["py-8"]])}>
               {children}
             </div>
-            <Toaster />
           </ToastProvider>
         </UrqlProvider>
       </body>

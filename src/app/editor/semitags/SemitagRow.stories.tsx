@@ -6,9 +6,9 @@ import {
   Provider as UrqlProvider,
 } from "urql";
 
-import { ToastContext } from "~/app/ToastProvider";
 import { Fragment as CommonSemitagFragment } from "~/components/CommonSemitag";
 import { Fragment as CommonTagFragment } from "~/components/CommonTag";
+import { ToastContext } from "~/components/Toaster";
 import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
 

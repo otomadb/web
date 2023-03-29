@@ -8,13 +8,13 @@ import React from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import * as z from "zod";
 
-import { useCallToast } from "~/app/ToastProvider";
 import { BlueButton } from "~/components/common/Button";
 import { TagSearcher } from "~/components/common/TagSearcher";
 import {
   useClearSourceId,
   useSourceId,
 } from "~/components/NicovideoSourceIdForm/SourceIdProvider";
+import { useToaster } from "~/components/Toaster";
 
 import { RegisterContext } from "./Original/Context";
 import { RequestContext } from "./Request/Context";
@@ -63,7 +63,7 @@ export const RegisterForm: React.FC<{
   } = useFieldArray({ control, name: "semitags" });
 
   const clearSourceId = useClearSourceId();
-  const callToast = useCallToast();
+  const callToast = useToaster();
   const registerVideo = useRegisterVideo({
     onSuccess(data) {
       resetForm({

@@ -7,8 +7,8 @@ import clsx from "clsx";
 import React from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 
-import { useCallToast } from "~/app/ToastProvider";
 import { BlueButton } from "~/components/common/Button";
+import { useToaster } from "~/components/Toaster";
 
 import { ExplicitParentTag } from "./ExplicitParentTag";
 import { ExtraNames } from "./ExtraNames";
@@ -35,7 +35,7 @@ export const RegisterTagForm: React.FC<{ className?: string }> = ({
     resolver: zodResolver(formSchema),
   });
 
-  const callToast = useCallToast();
+  const callToast = useToaster();
   const onSubmit: SubmitHandler<FormSchema> = useRegister({
     onSuccess: (data) => {
       reset({
