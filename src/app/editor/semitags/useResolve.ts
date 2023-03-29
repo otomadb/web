@@ -9,19 +9,7 @@ export const Mutation = graphql(`
     resovleSemitag(semitagId: $semitagId, tagId: $tagId) {
       __typename
       ... on ResolveSemitagSucceededPayload {
-        resolving {
-          semitag {
-            id
-            name
-            checked
-          }
-          resolveTo {
-            tag {
-              ...CommonTag
-              id
-            }
-          }
-        }
+        ...CheckSemitagsPage_ResolveSucceededToast
       }
     }
   }

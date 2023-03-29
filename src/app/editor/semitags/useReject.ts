@@ -9,11 +9,7 @@ export const Mutation = graphql(`
     rejectSemitag(semitagId: $semitagId) {
       __typename
       ... on RejectSemitagSucceededPayload {
-        rejecting {
-          semitag {
-            name
-          }
-        }
+        ...CheckSemitagsPage_RejectSucceededToast
       }
     }
   }

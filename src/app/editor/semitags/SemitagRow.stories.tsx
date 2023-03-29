@@ -1,15 +1,58 @@
+import { action } from "@storybook/addon-actions";
 import { Meta, StoryObj } from "@storybook/react";
+import { graphql } from "msw";
+import {
+  createClient as createUrqlClient,
+  Provider as UrqlProvider,
+} from "urql";
 
+import { ToastContext } from "~/app/ToastProvider";
 import { Fragment as CommonTagFragment } from "~/components/CommonTag";
 import { makeFragmentData } from "~/gql";
-import { TagType } from "~/gql/graphql";
+import { aSemitagRejecting, aSemitagResolving, TagType } from "~/gql/graphql";
 
 import SemitagRow, { Fragment } from "./SemitagRow";
+import { Mutation as RejectMutation } from "./useReject";
+import { Mutation as ResolveMutation } from "./useResolve";
 
 const meta = {
   component: SemitagRow,
   args: {},
-  parameters: {},
+  render(args) {
+    return (
+      <UrqlProvider value={createUrqlClient({ url: "/graphql" })}>
+        <ToastContext.Provider value={{ call: action("callToast") }}>
+          <SemitagRow {...args} />
+        </ToastContext.Provider>
+      </UrqlProvider>
+    );
+  },
+  parameters: {
+    msw: {
+      handlers: [
+        graphql.mutation(ResolveMutation, (req, res, ctx) => {
+          return res(
+            ctx.data({
+              resovleSemitag: {
+                __typename: "ResolveSemitagSucceededPayload",
+                resolving: aSemitagResolving({}),
+              },
+            })
+          );
+        }),
+        graphql.mutation(RejectMutation, (req, res, ctx) => {
+          return res(
+            ctx.data({
+              rejectSemitag: {
+                __typename: "RejectSemitagSucceededPayload",
+                rejecting: aSemitagRejecting({}),
+              },
+            })
+          );
+        }),
+      ],
+    },
+  },
 } as Meta<typeof SemitagRow>;
 export default meta;
 

@@ -10,7 +10,7 @@ import { graphql } from "~/gql";
 import SemitagRow from "./SemitagRow";
 
 export const SemitagRows: React.FC = () => {
-  const [{ data }] = useQuery({
+  const [{ data, fetching }] = useQuery({
     query: graphql(`
       query CheckSemitagsPage {
         findSemitags(checked: false) {
@@ -25,10 +25,9 @@ export const SemitagRows: React.FC = () => {
 
   return (
     <div className={clsx(["flex", "flex-col", "gap-y-0.5"])}>
+      {fetching && <p>loading...</p>}
       {data?.findSemitags.nodes.map((semitag) => (
-        <div key={semitag.id} className={clsx(["border"], ["bg-slate-50"])}>
-          <SemitagRow fragment={semitag} />
-        </div>
+        <SemitagRow key={semitag.id} fragment={semitag} />
       ))}
     </div>
   );

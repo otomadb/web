@@ -4,10 +4,13 @@ import clsx from "clsx";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
+import { useCallToast } from "~/app/ToastProvider";
 import { BlueButton } from "~/components/common/Button";
 import { CommonTag } from "~/components/CommonTag";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
+import RejectSucceededToast from "./RejectSucceededToast";
+import ResolveSucceededToast from "./ResolveSucceededToast";
 import useReject from "./useReject";
 import useResolve from "./useResolve";
 
@@ -49,16 +52,27 @@ const Component: React.FC<{
   const { handleSubmit, register } = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
+  const callToast = useCallToast();
   const resolve = useResolve(fragment.id, {
-    onSuccess() {},
+    onSuccess(data) {
+      callToast(<ResolveSucceededToast fragment={data} />);
+    },
   });
   const reject = useReject(fragment.id, {
-    onSuccess() {},
+    onSuccess(data) {
+      callToast(<RejectSucceededToast fragment={data} />);
+    },
   });
 
   return (
     <form
-      className={clsx(["flex", "items-center"], ["px-2", "py-1"], ["gap-x-4"])}
+      className={clsx(
+        ["flex", "items-center"],
+        ["px-2", "py-1"],
+        ["gap-x-4"],
+        ["border"],
+        ["bg-slate-50"]
+      )}
       onSubmit={handleSubmit(({ resolvedTo }) => {
         if (resolvedTo === "") reject();
         else resolve({ resolvedTo });
