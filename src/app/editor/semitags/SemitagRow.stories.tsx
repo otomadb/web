@@ -20,7 +20,9 @@ import { Mutation as ResolveMutation } from "./useResolve";
 
 const meta = {
   component: SemitagRow,
-  args: {},
+  args: {
+    updateList: action("updateList"),
+  },
   render(args) {
     return (
       <UrqlProvider value={createUrqlClient({ url: "/graphql" })}>

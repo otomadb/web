@@ -44,9 +44,10 @@ export const Fragment = graphql(`
     }
   }
 `);
-const Component: React.FC<{
+const SemitagRow: React.FC<{
   fragment: FragmentType<typeof Fragment>;
-}> = ({ ...props }) => {
+  updateList(): void;
+}> = ({ updateList, ...props }) => {
   const fragment = useFragment(Fragment, props.fragment);
 
   const { handleSubmit, register } = useForm<z.infer<typeof formSchema>>({
@@ -56,11 +57,13 @@ const Component: React.FC<{
   const resolve = useResolve(fragment.id, {
     onSuccess(data) {
       callToast(<ResolveSucceededToast fragment={data} />);
+      updateList();
     },
   });
   const reject = useReject(fragment.id, {
     onSuccess(data) {
       callToast(<RejectSucceededToast fragment={data} />);
+      updateList();
     },
   });
 
@@ -183,4 +186,4 @@ const Component: React.FC<{
     </form>
   );
 };
-export default Component;
+export default SemitagRow;
