@@ -88,7 +88,7 @@ const Component: React.FC<{
           {fragment.suggestTags.items.map(({ tag, canResolveTo }, i) => (
             <label
               key={i}
-              aria-disabled={!canResolveTo}
+              aria-disabled={fragment.checked || !canResolveTo}
               className={clsx(
                 ["px-2", "py-0.5"],
                 [
@@ -103,14 +103,14 @@ const Component: React.FC<{
               <input
                 type="radio"
                 value={tag.id}
-                disabled={!canResolveTo}
+                disabled={fragment.checked || !canResolveTo}
                 {...register("resolvedTo", { required: true })}
               ></input>
               <div className={clsx(["ml-2"])}>
                 <CommonTag
                   className={clsx(["text-xs"], ["px-1"])}
                   fragment={tag}
-                  disabled={!canResolveTo}
+                  disabled={fragment.checked || !canResolveTo}
                 />
               </div>
             </label>
@@ -118,18 +118,30 @@ const Component: React.FC<{
         </div>
         <div className={clsx(["flex-shrink-0"], ["flex", "items-center"])}>
           <label
+            aria-disabled={fragment.checked}
             className={clsx(
+              ["group/reject"],
               ["cursor-pointer"],
-              ["border", "border-rose-200"],
+              ["bg-rose-50", "aria-disabled:bg-rose-100"],
               ["rounded"],
-              ["bg-rose-50"],
+              ["border", ["border-rose-400", "aria-disabled:border-rose-200"]],
               ["px-2", "py-0.5"],
               ["flex", "items-center"]
             )}
           >
-            <input type="radio" value={""} {...register("resolvedTo")}></input>
+            <input
+              type="radio"
+              value={""}
+              disabled={fragment.checked}
+              {...register("resolvedTo")}
+            ></input>
             <div className={clsx(["ml-2"])}>
-              <span className={clsx(["text-xs", "text-rose-800"])}>
+              <span
+                className={clsx([
+                  "text-xs",
+                  ["text-rose-600", "group-aria-disabled/reject:text-rose-300"],
+                ])}
+              >
                 棄却する
               </span>
             </div>

@@ -26,7 +26,7 @@ export const CommonTag: React.FC<{
       aria-disabled={disabled}
       className={clsx(
         className,
-        ["group"],
+        ["group/tag"],
         ["border", "rounded-sm"],
         type === TagType.Character && [
           ["bg-character-50", "aria-disabled:bg-character-100"],
@@ -41,7 +41,10 @@ export const CommonTag: React.FC<{
           ["bg-event-50", "bg-event-100"],
           ["border-event-400", "border-event-300"],
         ],
-        type === TagType.Music && [["bg-music-50"], ["border-music-400"]],
+        type === TagType.Music && [
+          ["bg-music-50", "aria-disabled:bg-music-100"],
+          ["border-music-400", "aria-disabled:border-music-300"],
+        ],
         type === TagType.Phrase && [["bg-phrase-50"], ["border-phrase-400"]],
         type === TagType.Series && [
           ["bg-series-50", "aria-disabled:bg-series-100"],
@@ -56,16 +59,22 @@ export const CommonTag: React.FC<{
       <span
         className={clsx(
           type === TagType.Character && [
-            ["text-character-800", "group-aria-disabled:text-character-400"],
+            [
+              "text-character-800",
+              "group-aria-disabled/tag:text-character-400",
+            ],
           ],
           type === TagType.Class && [["text-slate-800"]],
           type === TagType.Copyright && [["text-copyright-800"]],
           type === TagType.Event && [["text-event-800"]],
-          type === TagType.Music && [["text-music-800"]],
+          type === TagType.Music && [
+            ["text-music-800"],
+            ["group-aria-disabled/tag:text-music-400"],
+          ],
           type === TagType.Phrase && [["text-phrase-800"]],
           type === TagType.Series && [
             "text-series-800",
-            "group-aria-disabled:text-series-400",
+            "group-aria-disabled/tag:text-series-400",
           ],
           type === TagType.Style && [["text-slate-800"]],
           type === TagType.Subtle && [["text-slate-800"]],
@@ -82,11 +91,14 @@ export const CommonTag: React.FC<{
             type === TagType.Class && [["text-slate-700"]],
             type === TagType.Copyright && [["text-copyright-700"]],
             type === TagType.Event && [["text-event-700"]],
-            type === TagType.Music && [["text-music-700"]],
+            type === TagType.Music && [
+              ["text-music-700"],
+              ["group-aria-disabled/tag:text-music-400"],
+            ],
             type === TagType.Phrase && [["text-phrase-700"]],
             type === TagType.Series && [
               "text-series-700",
-              "group-aria-disabled:text-series-400",
+              "group-group-aria-disabled/tag:text-series-400",
             ],
             type === TagType.Style && [["text-slate-700"]],
             type === TagType.Subtle && [["text-slate-700"]],

@@ -13,7 +13,7 @@ const meta = {
 } as Meta<typeof SemitagRow>;
 export default meta;
 
-export const NotSelected: StoryObj<typeof meta> = {
+export const NotChecked: StoryObj<typeof meta> = {
   args: {
     fragment: makeFragmentData(
       {
@@ -23,10 +23,12 @@ export const NotSelected: StoryObj<typeof meta> = {
           id: "",
           title: "",
         },
+        checked: false,
         suggestTags: {
-          __typename: "SemitagSuggestTagsPayload",
+          __typename: "SemitagSuggestTagsReturn",
           items: [
             {
+              canResolveTo: true,
               name: { id: "t1name", name: "Tag 1", primary: true },
               tag: {
                 id: "t1",
@@ -37,6 +39,7 @@ export const NotSelected: StoryObj<typeof meta> = {
               },
             },
             {
+              canResolveTo: false,
               name: { id: "t2name", name: "Tag 2", primary: true },
               tag: {
                 id: "t2",
@@ -47,11 +50,56 @@ export const NotSelected: StoryObj<typeof meta> = {
               },
             },
             {
+              canResolveTo: true,
               name: { id: "t3name", name: "Tag 3", primary: true },
               tag: {
                 id: "t3",
                 ...makeFragmentData(
                   { name: "Tag 3", type: TagType.Music, explicitParent: null },
+                  CommonTagFragment
+                ),
+              },
+            },
+          ],
+        },
+      },
+      Fragment
+    ),
+  },
+};
+
+export const Checked: StoryObj<typeof meta> = {
+  args: {
+    fragment: makeFragmentData(
+      {
+        id: "s1",
+        name: "Semitag 1",
+        video: {
+          id: "",
+          title: "",
+        },
+        checked: true,
+        suggestTags: {
+          __typename: "SemitagSuggestTagsReturn",
+          items: [
+            {
+              canResolveTo: true,
+              name: { id: "t1name", name: "Tag 1", primary: true },
+              tag: {
+                id: "t1",
+                ...makeFragmentData(
+                  { name: "Tag 1", type: TagType.Music, explicitParent: null },
+                  CommonTagFragment
+                ),
+              },
+            },
+            {
+              canResolveTo: false,
+              name: { id: "t2name", name: "Tag 2", primary: true },
+              tag: {
+                id: "t2",
+                ...makeFragmentData(
+                  { name: "Tag 2", type: TagType.Music, explicitParent: null },
                   CommonTagFragment
                 ),
               },
