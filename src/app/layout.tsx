@@ -7,6 +7,7 @@ import React from "react";
 import { Toaster } from "~/components/common/Toaster";
 import { GlobalNavigation } from "~/components/global/Navigation/Navigation";
 
+import { ToastProvider } from "./ToastProvider";
 import { UrqlProvider } from "./UrqlProvider";
 
 export const metadata: Metadata = {
@@ -38,19 +39,21 @@ export default function RootLayout({
     <html lang="ja">
       <body className={clsx(["relative"], ["bg-slate-50"])}>
         <UrqlProvider>
-          <GlobalNavigation
-            className={clsx(
-              ["sticky"],
-              ["top-0"],
-              ["w-full"],
-              ["h-[64px]"],
-              ["z-1"]
-            )}
-          />
-          <div className={clsx(["min-h-[calc(100vh-64px)]"], [["py-8"]])}>
-            {children}
-          </div>
-          <Toaster />
+          <ToastProvider>
+            <GlobalNavigation
+              className={clsx(
+                ["sticky"],
+                ["top-0"],
+                ["w-full"],
+                ["h-[64px]"],
+                ["z-1"]
+              )}
+            />
+            <div className={clsx(["min-h-[calc(100vh-64px)]"], [["py-8"]])}>
+              {children}
+            </div>
+            <Toaster />
+          </ToastProvider>
         </UrqlProvider>
       </body>
     </html>

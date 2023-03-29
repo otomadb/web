@@ -700,7 +700,7 @@ type Query {
   findNicovideoRegistrationRequest(input: FindNicovideoRegistrationRequestInput): NicovideoRegistrationRequest
   findNicovideoRegistrationRequests(after: String, before: String, checked: Boolean, first: Int, last: Int, orderBy: FindNicovideoRegistrationRequestsOrderBy! = {createdAt: DESC}): NicovideoRegistrationRequestConnection!
   findNicovideoVideoSource(input: FindNicovideoVideoSourceInput!): NicovideoVideoSource
-  findSemitags(after: String, before: String, checked: Boolean, first: Int, last: Int, orderBy: FindSemitagsOrderBy! = {name: ASC}): SemitagConnection!
+  findSemitags(after: String, before: String, checked: Boolean, expect: [ID!]! = [] @deprecated, first: Int, last: Int, orderBy: FindSemitagsOrderBy! = {name: ASC}): SemitagConnection!
   findTag(input: FindTagInput!): Tag
   findTags(input: FindTagsInput!): TagConnection!
   findUser(input: FindUserInput!): User
