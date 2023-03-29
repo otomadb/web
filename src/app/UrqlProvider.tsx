@@ -81,7 +81,7 @@ const urqlClient = createUrqlClient({
         RequestNicovideoRegistrationSucceededPayload() {
           return null;
         },
-        SemitagSuggestTagsPayload() {
+        SemitagSuggestTagsReturn() {
           return null;
         },
       },

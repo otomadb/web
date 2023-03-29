@@ -1116,7 +1116,7 @@ type Semitag implements Node {
   name: String!
   resolved: Boolean! @deprecated
   resolvedTag: Tag @deprecated
-  suggestTags(limit: Int! = 3, skip: Int! = 0): SemitagSuggestTagsPayload!
+  suggestTags(limit: Int! = 3, skip: Int! = 0): SemitagSuggestTagsReturn!
   video: Video!
 }
 
@@ -1185,8 +1185,14 @@ type SemitagResolving {
   semitag: Semitag!
 }
 
-type SemitagSuggestTagsPayload {
-  items: [TagSearchItemByName!]!
+type SemitagSuggestTagsItem {
+  canResolveTo: Boolean!
+  name: TagName!
+  tag: Tag!
+}
+
+type SemitagSuggestTagsReturn {
+  items: [SemitagSuggestTagsItem!]!
 }
 
 type Session {

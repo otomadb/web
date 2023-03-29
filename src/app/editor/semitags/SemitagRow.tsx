@@ -27,6 +27,7 @@ export const Fragment = graphql(`
     }
     suggestTags(limit: 3) {
       items {
+        canResolveTo
         name {
           id
           name
@@ -84,14 +85,17 @@ const Component: React.FC<{
               検索候補はありませんでした
             </p>
           )}
-          {fragment.suggestTags.items.map(({ tag }, i) => (
+          {fragment.suggestTags.items.map(({ tag, canResolveTo }, i) => (
             <label
               key={i}
+              aria-disabled={!canResolveTo}
               className={clsx(
-                ["cursor-pointer"],
                 ["px-2", "py-0.5"],
-                ["border", "border-slate-300"],
-                ["bg-slate-100"],
+                [
+                  "border",
+                  ["border-slate-300", "aria-disabled:border-slate-300"],
+                ],
+                ["bg-slate-100", "aria-disabled:bg-slate-200"],
                 ["rounded"],
                 ["flex", "items-center"]
               )}
@@ -99,12 +103,14 @@ const Component: React.FC<{
               <input
                 type="radio"
                 value={tag.id}
+                disabled={!canResolveTo}
                 {...register("resolvedTo", { required: true })}
               ></input>
               <div className={clsx(["ml-2"])}>
                 <CommonTag
                   className={clsx(["text-xs"], ["px-1"])}
                   fragment={tag}
+                  disabled={!canResolveTo}
                 />
               </div>
             </label>
