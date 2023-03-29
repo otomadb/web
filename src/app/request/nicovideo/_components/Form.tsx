@@ -8,6 +8,7 @@ import * as z from "zod";
 
 import { RegisterContext } from "~/app/editor/nicovideo/_components/Original/Context";
 import { TagButton } from "~/app/editor/nicovideo/_components/TagButton";
+import { useCallToast } from "~/app/ToastProvider";
 import { BlueButton } from "~/components/common/Button";
 import { TagSearcher } from "~/components/common/TagSearcher";
 import {
@@ -16,7 +17,7 @@ import {
 } from "~/components/NicovideoSourceIdForm/SourceIdProvider";
 
 import { SourceChecker } from "./SourceChecker";
-import { useCallSuccessedToast } from "./SuccessToast";
+import { SucceededToast } from "./SucceededToast";
 import { useRequestVideo } from "./useRequestVideo";
 
 export const formSchema = z.object({
@@ -49,7 +50,7 @@ export const RequestForm: React.FC<{
   } = useFieldArray({ control, name: "semitags" });
 
   const clearSourceId = useClearSourceId();
-  const callSuccededToast = useCallSuccessedToast();
+  const callToast = useCallToast();
   const requestVideo = useRequestVideo({
     onSuccess(data) {
       reset({
@@ -60,7 +61,7 @@ export const RequestForm: React.FC<{
         sourceId: undefined,
       });
       clearSourceId();
-      callSuccededToast(data);
+      callToast(<SucceededToast fragment={data} />);
     },
   });
 

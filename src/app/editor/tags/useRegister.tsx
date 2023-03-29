@@ -2,61 +2,38 @@
 
 import "client-only";
 
-import clsx from "clsx";
-import React, { ComponentProps, useCallback } from "react";
+import { ResultOf } from "@graphql-typed-document-node/core";
+import { useCallback } from "react";
 import { SubmitHandler } from "react-hook-form";
-import { toast } from "react-hot-toast";
 import { useMutation } from "urql";
 
-import { CommonTag } from "~/components/CommonTag";
-import { FragmentType, graphql, useFragment } from "~/gql";
+import { graphql } from "~/gql";
 
 import { FormSchema } from "./FormSchema";
 
-const Fragment = graphql(`
-  fragment RegisterTagPage_SuccessToast on Tag {
-    ...CommonTag
+export const Mutation = graphql(`
+  mutation RegisterTagPage_RegisterTag($input: RegisterTagInput!) {
+    registerTag(input: $input) {
+      __typename
+      ... on RegisterTagSucceededPayload {
+        tag {
+          ...RegisterTagPage_SuccessToast
+        }
+      }
+    }
   }
 `);
-export const SuccessToast: React.FC<{
-  fragment: FragmentType<typeof Fragment>;
-}> = ({ ...props }) => {
-  const fragment = useFragment(Fragment, props.fragment);
-  return (
-    <div>
-      <CommonTag
-        className={clsx(["text-xs"], ["px-1"], ["py-0.5"])}
-        fragment={fragment}
-      />
-      <span className={clsx(["text-slate-700"])}>を登録しました．</span>
-    </div>
-  );
-};
-export const useCallSuccessToast =
-  () => (props: Pick<ComponentProps<typeof SuccessToast>, "fragment">) =>
-    toast(() => <SuccessToast {...props} />);
-
 export const useRegister = ({
   onSuccess,
 }: {
-  onSuccess(): void;
+  onSuccess(
+    data: Extract<
+      ResultOf<typeof Mutation>["registerTag"],
+      { __typename: "RegisterTagSucceededPayload" }
+    >
+  ): void;
 }): SubmitHandler<FormSchema> => {
-  const [, mutateRegisterTag] = useMutation(
-    graphql(`
-      mutation RegisterTagPage_RegisterTag($input: RegisterTagInput!) {
-        registerTag(input: $input) {
-          __typename
-
-          ... on RegisterTagSucceededPayload {
-            tag {
-              ...RegisterTagPage_SuccessToast
-            }
-          }
-        }
-      }
-    `)
-  );
-  const callSuccessToast = useCallSuccessToast();
+  const [, mutateRegisterTag] = useMutation(Mutation);
 
   return useCallback(
     async ({
@@ -82,8 +59,7 @@ export const useRegister = ({
 
       switch (data.registerTag.__typename) {
         case "RegisterTagSucceededPayload": {
-          onSuccess();
-          callSuccessToast({ fragment: data.registerTag.tag });
+          onSuccess(data.registerTag);
           return;
         }
         default: {
@@ -91,6 +67,6 @@ export const useRegister = ({
         }
       }
     },
-    [callSuccessToast, mutateRegisterTag, onSuccess]
+    [mutateRegisterTag, onSuccess]
   );
 };

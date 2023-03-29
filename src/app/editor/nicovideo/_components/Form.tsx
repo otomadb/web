@@ -8,6 +8,7 @@ import React from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import * as z from "zod";
 
+import { useCallToast } from "~/app/ToastProvider";
 import { BlueButton } from "~/components/common/Button";
 import { TagSearcher } from "~/components/common/TagSearcher";
 import {
@@ -18,7 +19,7 @@ import {
 import { RegisterContext } from "./Original/Context";
 import { RequestContext } from "./Request/Context";
 import { SourceChecker } from "./SourceChecker";
-import { useCallSuccessededToast } from "./SuccessedToast";
+import { SucceededToast } from "./SuccessedToast";
 import { TagButton } from "./TagButton";
 import { useRegisterVideo } from "./useRegisterVideo";
 
@@ -62,7 +63,7 @@ export const RegisterForm: React.FC<{
   } = useFieldArray({ control, name: "semitags" });
 
   const clearSourceId = useClearSourceId();
-  const callSuccededToast = useCallSuccessededToast();
+  const callToast = useCallToast();
   const registerVideo = useRegisterVideo({
     onSuccess(data) {
       resetForm({
@@ -74,7 +75,7 @@ export const RegisterForm: React.FC<{
         nicovideoRequestId: undefined,
       });
       clearSourceId();
-      callSuccededToast({ fragment: data.video });
+      callToast(<SucceededToast fragment={data.video} />);
     },
   });
 
