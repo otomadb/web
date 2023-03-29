@@ -5,7 +5,7 @@ import React from "react";
 import { CommonTag } from "~/components/CommonTag";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-const Fragment = graphql(`
+export const Fragment = graphql(`
   fragment RegisterTagPage_SucceededToast on RegisterTagSucceededPayload {
     tag {
       ...CommonTag

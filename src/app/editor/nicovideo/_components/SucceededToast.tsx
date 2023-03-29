@@ -5,7 +5,7 @@ import React from "react";
 import { LinkVideo } from "~/app/videos/[serial]/Link";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-const Fragment = graphql(`
+export const Fragment = graphql(`
   fragment RegisterNicovideoPage_RegisterForm_SucceededToast on RegisterVideoFromNicovideoSucceededPayload {
     video {
       ...Link_Video

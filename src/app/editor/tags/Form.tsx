@@ -16,7 +16,7 @@ import { FormSchema, formSchema } from "./FormSchema";
 import { ImplictParentTags } from "./ImplicitParentTags";
 import { PrimaryName } from "./PrimaryName";
 import { Semitags } from "./Semitags";
-import { SucceededToast } from "./SuccededToast";
+import { SucceededToast } from "./SucceededToast";
 import { useRegister } from "./useRegister";
 
 export const RegisterTagForm: React.FC<{ className?: string }> = ({
