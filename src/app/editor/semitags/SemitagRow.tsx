@@ -79,11 +79,20 @@ const Component: React.FC<{
       })}
     >
       <div
-        className={clsx(["flex-shrink-0"], ["w-64"], ["flex", "items-center"])}
+        className={clsx(
+          ["flex-shrink-0"],
+          ["w-64"],
+          ["flex", "flex-col", "gap-y-1"]
+        )}
       >
-        <span className={clsx(["text-sm", "text-slate-900"])}>
-          {fragment.name}
-        </span>
+        <div>
+          <p className={clsx(["text-sm", "text-slate-900"])}>{fragment.name}</p>
+        </div>
+        <div className={clsx()}>
+          <p className={clsx(["line-clamp-2"], ["text-xxs", "text-slate-500"])}>
+            {fragment.video.title}
+          </p>
+        </div>
       </div>
       <div
         className={clsx(["flex-grow"], ["flex", "items-stretch", "gap-x-2"])}

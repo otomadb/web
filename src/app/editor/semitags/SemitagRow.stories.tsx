@@ -7,10 +7,13 @@ import {
 } from "urql";
 
 import { ToastContext } from "~/app/ToastProvider";
+import { Fragment as CommonSemitagFragment } from "~/components/CommonSemitag";
 import { Fragment as CommonTagFragment } from "~/components/CommonTag";
 import { makeFragmentData } from "~/gql";
-import { aSemitagRejecting, aSemitagResolving, TagType } from "~/gql/graphql";
+import { TagType } from "~/gql/graphql";
 
+import { Fragment as RejectSucceededToastFragment } from "./RejectSucceededToast";
+import { Fragment as ResolveSucceededToastFragment } from "./ResolveSucceededToast";
 import SemitagRow, { Fragment } from "./SemitagRow";
 import { Mutation as RejectMutation } from "./useReject";
 import { Mutation as ResolveMutation } from "./useResolve";
@@ -35,7 +38,30 @@ const meta = {
             ctx.data({
               resovleSemitag: {
                 __typename: "ResolveSemitagSucceededPayload",
-                resolving: aSemitagResolving({}),
+                ...makeFragmentData(
+                  {
+                    resolving: {
+                      semitag: {
+                        id: "s1",
+                        checked: true,
+                        ...makeFragmentData(
+                          { name: "Semitag 1" },
+                          CommonSemitagFragment
+                        ),
+                      },
+                      resolveTo: {
+                        tag: {
+                          id: "t1",
+                          ...makeFragmentData(
+                            { name: "Tag 1", type: TagType.Character },
+                            CommonTagFragment
+                          ),
+                        },
+                      },
+                    },
+                  },
+                  ResolveSucceededToastFragment
+                ),
               },
             })
           );
@@ -45,7 +71,21 @@ const meta = {
             ctx.data({
               rejectSemitag: {
                 __typename: "RejectSemitagSucceededPayload",
-                rejecting: aSemitagRejecting({}),
+                ...makeFragmentData(
+                  {
+                    rejecting: {
+                      semitag: {
+                        id: "s1",
+                        checked: true,
+                        ...makeFragmentData(
+                          { name: "Semitag 1" },
+                          CommonSemitagFragment
+                        ),
+                      },
+                    },
+                  },
+                  RejectSucceededToastFragment
+                ),
               },
             })
           );
@@ -63,8 +103,8 @@ export const NotChecked: StoryObj<typeof meta> = {
         id: "s1",
         name: "Semitag 1",
         video: {
-          id: "",
-          title: "",
+          id: "v1",
+          title: "Video 1",
         },
         checked: false,
         suggestTags: {
