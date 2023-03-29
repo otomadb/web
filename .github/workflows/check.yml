@@ -1,29 +1,13 @@
-name: CI
+name: Check
 
 on:
   push:
   merge_group:
 
 jobs:
-  diff-graphql-schema:
-    name: Diff GraphQL Schema
-    runs-on: ubuntu-latest
-    env:
-      GRAPHQL_API_ENDPOINT: https://api.otomadb.com/graphql
-    steps:
-      - uses: actions/checkout@v3
-      - uses: kamilkisiela/graphql-inspector@v3.4.0
-        with:
-          schema: "schema.graphql"
-          endpoint: "${{ env.GRAPHQL_API_ENDPOINT }}"
-
   validate-graphql-queries:
     name: Validate GraphQL Queries
     runs-on: ubuntu-latest
-    needs:
-      - diff-graphql-schema
-    env:
-      GRAPHQL_API_ENDPOINT: https://api.otomadb.com/graphql
     steps:
       - uses: actions/checkout@v3
       - uses: pnpm/action-setup@v2
@@ -37,6 +21,7 @@ jobs:
       - run: pnpm run schema:validate --output ./.inspector-validate-report.json
 
   lint:
+    name: Lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -59,9 +44,8 @@ jobs:
           report-json: ".eslint-report.json"
 
   typecheck:
+    name: Typecheck
     runs-on: ubuntu-latest
-    needs:
-      - diff-graphql-schema
     steps:
       - uses: actions/checkout@v3
       - uses: pnpm/action-setup@v2
