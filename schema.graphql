@@ -307,11 +307,11 @@ type Mutation {
   registerVideoFromNicovideo(input: RegisterVideoFromNicovideoInput!): RegisterVideoFromNicovideoPayload!
   registerVideoFromYoutube(input: RegisterVideoFromYoutubeInput!): RegisterVideoFromYoutubePayload!
   rejectNicovideoRegistrationRequest(input: RejectNicovideoRegistrationRequestInput!): RejectNicovideoRegistrationRequestReturnUnion!
-  rejectSemitag(input: RejectSemitagInput!): RejectSemitagPayload!
+  rejectSemitag(semitagId: ID!): RejectSemitagReturnUnion!
   removeTagFromVideo(input: RemoveTagFromVideoInput!): RemoveTagFromVideoPayload!
   removeVideoFromMylist(input: RemoveVideoFromMylistInput!): RemoveVideoFromMylistPayload!
   requestNicovideoRegistration(input: RequestNicovideoRegistrationInput!): RequestNicovideoRegistrationReturnUnion!
-  resovleSemitag(input: ResolveSemitagInput!): ResolveSemitagPayload!
+  resovleSemitag(semitagId: ID!, tagId: ID!): ResolveSemitagReturnUnion!
   signin(input: SigninInput!): SigninPayload!
   signout: SignoutPayload!
   signup(input: SignupInput!): SignupPayload!
@@ -369,6 +369,11 @@ type MutationNicovideoRegistrationRequestAlreadyCheckedError {
 """NicovideoRegistrationRequestが見つからない場合のエラー"""
 type MutationNicovideoRegistrationRequestNotFoundError {
   requestId: String!
+}
+
+"""チェック済みのSemitagに操作を加えようとした場合のエラー"""
+type MutationSemitagAlreadyCheckedError {
+  semitag: Semitag!
 }
 
 """Semitagが見つからない場合のエラー"""
@@ -695,7 +700,7 @@ type Query {
   findNicovideoRegistrationRequest(input: FindNicovideoRegistrationRequestInput): NicovideoRegistrationRequest
   findNicovideoRegistrationRequests(after: String, before: String, checked: Boolean, first: Int, last: Int, orderBy: FindNicovideoRegistrationRequestsOrderBy! = {createdAt: DESC}): NicovideoRegistrationRequestConnection!
   findNicovideoVideoSource(input: FindNicovideoVideoSourceInput!): NicovideoVideoSource
-  findSemitags(after: String, before: String, checked: Boolean, first: Int, last: Int, orderBy: FindSemitagsOrderBy! = {name: ASC}): SemitagConnection!
+  findSemitags(after: String, before: String, checked: Boolean, expect: [ID!]! = [] @deprecated, first: Int, last: Int, orderBy: FindSemitagsOrderBy! = {name: ASC}): SemitagConnection!
   findTag(input: FindTagInput!): Tag
   findTags(input: FindTagsInput!): TagConnection!
   findUser(input: FindUserInput!): User
@@ -953,26 +958,16 @@ type RejectNicovideoRegistrationRequestSucceededPayload {
   rejecting: NicovideoRegistrationRequestRejecting!
 }
 
-enum RejectSemitagFailedMessage {
-  """権限なし"""
-  FORBIDDEN
-  INVALID_SEMITAG_ID
-  SEMITAG_ALREADY_CHECKED
-  SEMITAG_NOT_FOUND
-
-  """原因不明のエラー"""
-  UNKNOWN
+"""その他のエラー"""
+type RejectSemitagOtherErrorsFallback {
+  message: RejectSemitagOtherErrorsFallbackMessage!
 }
 
-type RejectSemitagFailedPayload {
-  message: RejectSemitagFailedMessage!
+enum RejectSemitagOtherErrorsFallbackMessage {
+  INTERNAL_SERVER_ERROR
 }
 
-input RejectSemitagInput {
-  id: ID!
-}
-
-union RejectSemitagPayload = RejectSemitagFailedPayload | RejectSemitagSucceededPayload
+union RejectSemitagReturnUnion = MutationAuthenticationError | MutationInvalidSemitagIdError | MutationInvalidTagIdError | MutationSemitagAlreadyCheckedError | MutationSemitagNotFoundError | MutationTagNotFoundError | RejectSemitagOtherErrorsFallback | RejectSemitagSucceededPayload
 
 type RejectSemitagSucceededPayload {
   rejecting: SemitagRejecting!
@@ -1073,33 +1068,24 @@ type RequestNicovideoRegistrationVideoAlreadyRegisteredError {
   source: NicovideoVideoSource!
 }
 
-enum ResolveSemitagFailedMessage {
-  """権限なし"""
-  FORBIDDEN
-  INVALID_SEMITAG_ID
-  INVALID_TAG_ID
-  SEMITAG_ALREADY_CHECKED
-  SEMITAG_NOT_FOUND
-  TAG_NOT_FOUND
-
-  """原因不明のエラー"""
-  UNKNOWN
-  VIDEO_ALREADY_TAGGED
+"""その他のエラー"""
+type ResolveSemitagOtherErrorsFallback {
+  message: ResolveSemitagOtherErrorsFallbackMessage!
 }
 
-type ResolveSemitagFailedPayload {
-  message: ResolveSemitagFailedMessage!
+enum ResolveSemitagOtherErrorsFallbackMessage {
+  INTERNAL_SERVER_ERROR
 }
 
-input ResolveSemitagInput {
-  id: ID!
-  tagId: ID!
-}
-
-union ResolveSemitagPayload = ResolveSemitagFailedPayload | ResolveSemitagSucceededPayload
+union ResolveSemitagReturnUnion = MutationAuthenticationError | MutationInvalidSemitagIdError | MutationInvalidTagIdError | MutationSemitagAlreadyCheckedError | MutationSemitagNotFoundError | MutationTagNotFoundError | ResolveSemitagOtherErrorsFallback | ResolveSemitagSucceededPayload | ResolveSemitagVideoAlreadyTaggedPayload
 
 type ResolveSemitagSucceededPayload {
   resolving: SemitagResolving!
+}
+
+"""すでに動画に同じタグ付けが行われている場合のエラー"""
+type ResolveSemitagVideoAlreadyTaggedPayload {
+  tagging: VideoTag!
 }
 
 input SearchTagInput {
