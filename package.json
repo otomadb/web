@@ -64,7 +64,6 @@
     "@storybook/react": "7.0.0-rc.9",
     "@storybook/testing-library": "^0.0.14-next.1",
     "@tailwindcss/container-queries": "^0.1.0",
-    "@tailwindcss/line-clamp": "^0.4.2",
     "@tsconfig/node18": "^1.0.1",
     "@types/node": "18",
     "@types/react": "^18.0.26",
