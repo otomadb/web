@@ -16,7 +16,7 @@ import { FormSchema, formSchema } from "./FormSchema";
 import { ImplictParentTags } from "./ImplicitParentTags";
 import { PrimaryName } from "./PrimaryName";
 import { Semitags } from "./Semitags";
-import { SuccededToast } from "./SuccededToast";
+import { SucceededToast } from "./SuccededToast";
 import { useRegister } from "./useRegister";
 
 export const RegisterTagForm: React.FC<{ className?: string }> = ({
@@ -45,7 +45,7 @@ export const RegisterTagForm: React.FC<{ className?: string }> = ({
         implicitParents: [],
         resolveSemitags: [],
       });
-      callToast(<SuccededToast fragment={data.tag} />);
+      callToast(<SucceededToast fragment={data} />);
     },
   });
   const {

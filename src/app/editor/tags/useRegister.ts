@@ -16,9 +16,7 @@ export const Mutation = graphql(`
     registerTag(input: $input) {
       __typename
       ... on RegisterTagSucceededPayload {
-        tag {
-          ...RegisterTagPage_SuccessToast
-        }
+        ...RegisterTagPage_SucceededToast
       }
     }
   }
