@@ -97,6 +97,7 @@ const meta = {
 export default meta;
 
 export const NotChecked: StoryObj<typeof meta> = {
+  name: "未チェックの仮タグ",
   args: {
     fragment: makeFragmentData(
       {
@@ -152,14 +153,15 @@ export const NotChecked: StoryObj<typeof meta> = {
 };
 
 export const Checked: StoryObj<typeof meta> = {
+  name: "チェック済みの仮タグ",
   args: {
     fragment: makeFragmentData(
       {
         id: "s1",
         name: "Semitag 1",
         video: {
-          id: "",
-          title: "",
+          id: "v1",
+          title: "Video 1",
         },
         checked: true,
         suggestTags: {
@@ -183,6 +185,63 @@ export const Checked: StoryObj<typeof meta> = {
                 id: "t2",
                 ...makeFragmentData(
                   { name: "Tag 2", type: TagType.Music, explicitParent: null },
+                  CommonTagFragment
+                ),
+              },
+            },
+          ],
+        },
+      },
+      Fragment
+    ),
+  },
+};
+
+export const LongVideoTitle: StoryObj<typeof meta> = {
+  name: "長い動画タイトル",
+  args: {
+    fragment: makeFragmentData(
+      {
+        id: "s1",
+        name: "Semitag 1",
+        video: {
+          id: "v1",
+          title:
+            "涼宮ハルヒコラボ、開催中よ！SOS団、全員集合！しかも、イベントはフルボイス！ただの野球部には興味ありません！野球型青春体験ゲーム、八月のシンデレラナイン！",
+        },
+        checked: false,
+        suggestTags: {
+          __typename: "SemitagSuggestTagsReturn",
+          items: [
+            {
+              canResolveTo: true,
+              name: { id: "t1name", name: "Tag 1", primary: true },
+              tag: {
+                id: "t1",
+                ...makeFragmentData(
+                  { name: "Tag 1", type: TagType.Music, explicitParent: null },
+                  CommonTagFragment
+                ),
+              },
+            },
+            {
+              canResolveTo: false,
+              name: { id: "t2name", name: "Tag 2", primary: true },
+              tag: {
+                id: "t2",
+                ...makeFragmentData(
+                  { name: "Tag 2", type: TagType.Music, explicitParent: null },
+                  CommonTagFragment
+                ),
+              },
+            },
+            {
+              canResolveTo: true,
+              name: { id: "t3name", name: "Tag 3", primary: true },
+              tag: {
+                id: "t3",
+                ...makeFragmentData(
+                  { name: "Tag 3", type: TagType.Music, explicitParent: null },
                   CommonTagFragment
                 ),
               },
