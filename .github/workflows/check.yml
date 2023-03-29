@@ -1,4 +1,4 @@
-name: CI
+name: Check
 
 on:
   push:
@@ -21,6 +21,7 @@ jobs:
       - run: pnpm run schema:validate --output ./.inspector-validate-report.json
 
   lint:
+    name: Lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -43,6 +44,7 @@ jobs:
           report-json: ".eslint-report.json"
 
   typecheck:
+    name: Typecheck
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3

@@ -1,4 +1,4 @@
-name: Update GraphQL Schema
+name: Check GraphQL Schema
 
 on:
   push:
@@ -20,7 +20,7 @@ jobs:
           endpoint: "${{ vars.GRAPHQL_API_ENDPOINT }}"
 
   update:
-    name: Update schema
+    name: Update GraphQL Schema
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
