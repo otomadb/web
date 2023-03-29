@@ -9,7 +9,7 @@ dependencies:
     version: 2.0.16(react@18.2.0)
   '@hookform/resolvers':
     specifier: 3.0.0
-    version: 3.0.0(react-hook-form@7.43.7)
+    version: 3.0.0(react-hook-form@7.43.8)
   '@marsidev/react-turnstile':
     specifier: ^0.1.0
     version: 0.1.0(react-dom@18.2.0)(react@18.2.0)
@@ -47,8 +47,8 @@ dependencies:
     specifier: 18.2.0
     version: 18.2.0(react@18.2.0)
   react-hook-form:
-    specifier: 7.43.7
-    version: 7.43.7(react@18.2.0)
+    specifier: 7.43.8
+    version: 7.43.8(react@18.2.0)
   react-hot-toast:
     specifier: ^2.4.0
     version: 2.4.0(csstype@3.1.1)(react-dom@18.2.0)(react@18.2.0)
@@ -3201,12 +3201,12 @@ packages:
       react: 18.2.0
     dev: false
 
-  /@hookform/resolvers@3.0.0(react-hook-form@7.43.7):
+  /@hookform/resolvers@3.0.0(react-hook-form@7.43.8):
     resolution: {integrity: sha512-SQPefakODpyq25b/phHXDKCdRrEfPcCXV7B4nAa139wE1DxufYbbNAjeo0T04ZXBokRxZ+wD8iA1kkVMa3QwjQ==}
     peerDependencies:
       react-hook-form: ^7.0.0
     dependencies:
-      react-hook-form: 7.43.7(react@18.2.0)
+      react-hook-form: 7.43.8(react@18.2.0)
     dev: false
 
   /@humanwhocodes/config-array@0.11.8:
@@ -11362,8 +11362,8 @@ packages:
       react-is: 18.1.0
     dev: true
 
-  /react-hook-form@7.43.7(react@18.2.0):
-    resolution: {integrity: sha512-38yehQkQQ5uufaPKFScs7jhLE8n3+LG9H/BZfFAiBL2+7piDmw/BrdNJV4irzMaPnWZGhmGLHVICHXNVGIuXZg==}
+  /react-hook-form@7.43.8(react@18.2.0):
+    resolution: {integrity: sha512-BQm+Ge5KjTk1EchDBRhdP8Pkb7MArO2jFF+UWYr3rtvh6197khi22uloLqlWeuY02ItlCzPunPsFt1/q9wQKnw==}
     engines: {node: '>=12.22.0'}
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18
