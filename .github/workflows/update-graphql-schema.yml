@@ -1,11 +1,24 @@
 name: Update GraphQL Schema
 
 on:
+  push:
+    branches:
+      - "main"
   schedule:
     - cron: "*/15 * * * *"
   workflow_dispatch:
 
 jobs:
+  diff:
+    name: Diff GraphQL Schema
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: kamilkisiela/graphql-inspector@v3.4.0
+        with:
+          schema: "schema.graphql"
+          endpoint: "${{ vars.GRAPHQL_API_ENDPOINT }}"
+
   update:
     name: Update schema
     runs-on: ubuntu-latest
