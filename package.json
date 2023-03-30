@@ -16,8 +16,8 @@
     "schema:validate": "graphql-inspector validate \"./src/**/*.{ts,tsx}\" ./schema.graphql",
     "schema:diff": "graphql-inspector diff ./schema.graphql",
     "schema:introspect": "graphql-inspector introspect --write schema.graphql",
-    "storybook": "storybook dev -p 6006 --no-open",
-    "storybook:build": "storybook build",
+    "storybook": "sb dev -p 6006 --no-open",
+    "storybook:build": "sb build",
     "storybook:preview": "serve storybook-static",
     "vercel:web": "run-s 'codegen' 'build'",
     "vercel:storybook": "run-s 'codegen' 'storybook:build'"
