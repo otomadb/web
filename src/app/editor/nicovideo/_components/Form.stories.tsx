@@ -7,13 +7,13 @@ import {
 } from "urql";
 
 import { SourceIdContext } from "~/components/NicovideoSourceIdForm/SourceIdProvider";
+import { makeFragmentData } from "~/gql";
 import {
   aNicovideoOriginalSource,
   aNicovideoOriginalSourceTagSearchTagsPayload,
   aTag,
   aTagName,
   aTagSearchItemByName,
-  aVideo,
   RegisterNicovideoPage_RegisterForm_Confirm_TagDocument,
   RegisterNicovideoPage_RegisterForm_RegisterVideoDocument,
   RegisterNicovideoPage_SourceCheckerDocument,
@@ -22,6 +22,7 @@ import {
 } from "~/gql/graphql";
 
 import { RegisterForm } from "./Form";
+import { Fragment as SucceededToastFragment } from "./SucceededToast";
 
 const meta = {
   component: RegisterForm,
@@ -276,11 +277,16 @@ export const Primary: StoryObj<typeof meta> = {
               ctx.data({
                 registerVideoFromNicovideo: {
                   __typename: "RegisterVideoFromNicovideoSucceededPayload",
-                  video: aVideo({
-                    id: "v1",
-                    title: req.variables.input.primaryTitle,
-                    thumbnailUrl: req.variables.input.primaryThumbnailUrl,
-                  }),
+                  ...makeFragmentData(
+                    {
+                      video: {
+                        id: "v1",
+                        title: req.variables.input.primaryTitle,
+                        thumbnailUrl: req.variables.input.primaryThumbnailUrl,
+                      },
+                    },
+                    SucceededToastFragment
+                  ),
                 },
               })
             );

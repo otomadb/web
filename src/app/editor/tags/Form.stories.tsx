@@ -6,6 +6,8 @@ import {
   Provider as UrqlProvider,
 } from "urql";
 
+import { Fragment as CommonTagFragment } from "~/components/CommonTag";
+import { makeFragmentData } from "~/gql";
 import {
   aSemitag,
   aTag,
@@ -22,6 +24,7 @@ import {
 } from "~/gql/graphql";
 
 import { RegisterTagForm } from "./Form";
+import { Fragment as SucceededToastFragment } from "./SucceededToast";
 
 const meta = {
   component: RegisterTagForm,
@@ -48,11 +51,21 @@ const meta = {
               ctx.data({
                 registerTag: {
                   __typename: "RegisterTagSucceededPayload",
-                  tag: aTag({
-                    id: "t1",
-                    name: req.variables.input.primaryName,
-                    explicitParent: aTag({ id: "tag_2", name: "仮" }),
-                  }),
+                  ...makeFragmentData(
+                    {
+                      tag: {
+                        ...makeFragmentData(
+                          {
+                            name: "Tag 1",
+                            type: TagType.Character,
+                            explicitParent: null,
+                          },
+                          CommonTagFragment
+                        ),
+                      },
+                    },
+                    SucceededToastFragment
+                  ),
                 },
               })
             );

@@ -11,9 +11,7 @@ const Mutation = graphql(`
     registerVideoFromNicovideo(input: $input) {
       __typename
       ... on RegisterVideoFromNicovideoSucceededPayload {
-        video {
-          ...RegisterNicovideoPage_RegisterForm_SuccessedToast
-        }
+        ...RegisterNicovideoPage_RegisterForm_SucceededToast
       }
     }
   }

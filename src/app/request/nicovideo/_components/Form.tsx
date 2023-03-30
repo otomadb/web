@@ -14,9 +14,10 @@ import {
   useClearSourceId,
   useSourceId,
 } from "~/components/NicovideoSourceIdForm/SourceIdProvider";
+import { useToaster } from "~/components/Toaster";
 
 import { SourceChecker } from "./SourceChecker";
-import { useCallSuccessedToast } from "./SuccessToast";
+import { SucceededToast } from "./SucceededToast";
 import { useRequestVideo } from "./useRequestVideo";
 
 export const formSchema = z.object({
@@ -49,7 +50,7 @@ export const RequestForm: React.FC<{
   } = useFieldArray({ control, name: "semitags" });
 
   const clearSourceId = useClearSourceId();
-  const callSuccededToast = useCallSuccessedToast();
+  const callToast = useToaster();
   const requestVideo = useRequestVideo({
     onSuccess(data) {
       reset({
@@ -60,7 +61,7 @@ export const RequestForm: React.FC<{
         sourceId: undefined,
       });
       clearSourceId();
-      callSuccededToast(data);
+      callToast(<SucceededToast fragment={data} />);
     },
   });
 

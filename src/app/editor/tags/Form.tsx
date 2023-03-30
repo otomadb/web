@@ -8,6 +8,7 @@ import React from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 
 import { BlueButton } from "~/components/common/Button";
+import { useToaster } from "~/components/Toaster";
 
 import { ExplicitParentTag } from "./ExplicitParentTag";
 import { ExtraNames } from "./ExtraNames";
@@ -15,6 +16,7 @@ import { FormSchema, formSchema } from "./FormSchema";
 import { ImplictParentTags } from "./ImplicitParentTags";
 import { PrimaryName } from "./PrimaryName";
 import { Semitags } from "./Semitags";
+import { SucceededToast } from "./SucceededToast";
 import { useRegister } from "./useRegister";
 
 export const RegisterTagForm: React.FC<{ className?: string }> = ({
@@ -33,8 +35,9 @@ export const RegisterTagForm: React.FC<{ className?: string }> = ({
     resolver: zodResolver(formSchema),
   });
 
+  const callToast = useToaster();
   const onSubmit: SubmitHandler<FormSchema> = useRegister({
-    onSuccess: () => {
+    onSuccess: (data) => {
       reset({
         primaryName: "",
         extraNames: [],
@@ -42,6 +45,7 @@ export const RegisterTagForm: React.FC<{ className?: string }> = ({
         implicitParents: [],
         resolveSemitags: [],
       });
+      callToast(<SucceededToast fragment={data} />);
     },
   });
   const {

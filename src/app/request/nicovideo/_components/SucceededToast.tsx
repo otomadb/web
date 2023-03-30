@@ -2,8 +2,7 @@
 import "client-only";
 
 import clsx from "clsx";
-import React, { ComponentProps, useCallback } from "react";
-import { toast } from "react-hot-toast";
+import React from "react";
 
 import { LinkNicovideoRegistrationRequest } from "~/app/requests/nicovideo/[sourceId]/Link";
 import { FragmentType, graphql, useFragment } from "~/gql";
@@ -33,13 +32,5 @@ export const SucceededToast: React.FC<{
         <span className={clsx(["text-slate-700"])}>をリクエストしました</span>
       </p>
     </div>
-  );
-};
-
-export const useCallSuccessedToast = () => {
-  return useCallback(
-    (fragment: ComponentProps<typeof SucceededToast>["fragment"]) =>
-      toast(() => <SucceededToast fragment={fragment} />),
-    []
   );
 };

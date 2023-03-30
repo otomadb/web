@@ -4,10 +4,9 @@ import clsx from "clsx";
 import type { Metadata } from "next";
 import React from "react";
 
-import { Toaster } from "~/components/common/Toaster";
 import { GlobalNavigation } from "~/components/global/Navigation/Navigation";
+import { ToastProvider } from "~/components/Toaster";
 
-import { ToastProvider } from "./ToastProvider";
 import { UrqlProvider } from "./UrqlProvider";
 
 export const metadata: Metadata = {
@@ -36,10 +35,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ja">
-      <body className={clsx(["relative"], ["bg-slate-50"])}>
-        <UrqlProvider>
-          <ToastProvider>
+    <UrqlProvider>
+      <ToastProvider selector="#toast">
+        <html lang="ja">
+          <body className={clsx(["relative"], ["bg-slate-50"])}>
             <GlobalNavigation
               className={clsx(
                 ["sticky"],
@@ -52,10 +51,10 @@ export default function RootLayout({
             <div className={clsx(["min-h-[calc(100vh-64px)]"], [["py-8"]])}>
               {children}
             </div>
-            <Toaster />
-          </ToastProvider>
-        </UrqlProvider>
-      </body>
-    </html>
+            <div id="toast" />
+          </body>
+        </html>
+      </ToastProvider>
+    </UrqlProvider>
   );
 }

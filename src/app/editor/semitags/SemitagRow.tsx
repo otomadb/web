@@ -4,9 +4,9 @@ import clsx from "clsx";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-import { useCallToast } from "~/app/ToastProvider";
 import { BlueButton } from "~/components/common/Button";
 import { CommonTag } from "~/components/CommonTag";
+import { useToaster } from "~/components/Toaster";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 import RejectSucceededToast from "./RejectSucceededToast";
@@ -53,7 +53,7 @@ const SemitagRow: React.FC<{
   const { handleSubmit, register } = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
-  const callToast = useCallToast();
+  const callToast = useToaster();
   const resolve = useResolve(fragment.id, {
     onSuccess(data) {
       callToast(<ResolveSucceededToast fragment={data} />);
