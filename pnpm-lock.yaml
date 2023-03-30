@@ -28,6 +28,9 @@ dependencies:
   clsx:
     specifier: ^1.2.1
     version: 1.2.1
+  copy-to-clipboard:
+    specifier: ^3.3.3
+    version: 3.3.3
   date-fns:
     specifier: ^2.29.3
     version: 2.29.3
