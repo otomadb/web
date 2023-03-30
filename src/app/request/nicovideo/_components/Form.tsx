@@ -9,11 +9,11 @@ import * as z from "zod";
 import { RegisterContext } from "~/app/editor/nicovideo/_components/Original/Context";
 import { TagButton } from "~/app/editor/nicovideo/_components/TagButton";
 import { BlueButton } from "~/components/common/Button";
-import { TagSearcher } from "~/components/common/TagSearcher";
 import {
   useClearSourceId,
   useSourceId,
 } from "~/components/NicovideoSourceIdForm/SourceIdProvider";
+import { TagSearcher } from "~/components/TagSearcher";
 import { useToaster } from "~/components/Toaster";
 
 import { SourceChecker } from "./SourceChecker";

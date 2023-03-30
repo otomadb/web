@@ -9,8 +9,8 @@ import { FieldArrayWithId } from "react-hook-form";
 import { useQuery } from "urql";
 
 import { RedButton } from "~/components/common/Button";
-import { TagSearcher } from "~/components/common/TagSearcher";
 import { CommonTag } from "~/components/CommonTag";
+import { TagSearcher } from "~/components/TagSearcher";
 import { graphql } from "~/gql";
 import { RegisterTagPage_ImplicitParentTagDocument } from "~/gql/graphql";
 

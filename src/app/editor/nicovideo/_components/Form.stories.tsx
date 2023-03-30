@@ -17,7 +17,6 @@ import {
   RegisterNicovideoPage_RegisterForm_Confirm_TagDocument,
   RegisterNicovideoPage_RegisterForm_RegisterVideoDocument,
   RegisterNicovideoPage_SourceCheckerDocument,
-  TagSearcher_SearchDocument,
   TagType,
 } from "~/gql/graphql";
 
@@ -227,6 +226,7 @@ export const Primary: StoryObj<typeof meta> = {
             }
           }
         ),
+        /*
         graphql.query(TagSearcher_SearchDocument, (req, res, ctx) =>
           res(
             ctx.data({
@@ -270,6 +270,7 @@ export const Primary: StoryObj<typeof meta> = {
             })
           )
         ),
+        */
         graphql.mutation(
           RegisterNicovideoPage_RegisterForm_RegisterVideoDocument,
           (req, res, ctx) => {
