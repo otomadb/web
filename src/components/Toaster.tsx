@@ -18,6 +18,8 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 
+import { useLoop } from "./useLoop";
+
 // eslint-disable-next-line react/display-name
 const Toast = forwardRef<
   HTMLDivElement,
@@ -27,17 +29,9 @@ const Toast = forwardRef<
   const [until, setUntil] = useState(fired + duration);
   const [hidden, setHidden] = useState(false);
 
-  const reqIdRef = useRef<number>();
-  const loop = useCallback(() => {
+  useLoop(() => {
     if (!pausedAt && until < Date.now()) setHidden(true);
-    reqIdRef.current = requestAnimationFrame(loop);
-  }, [pausedAt, until]);
-  useEffect(() => {
-    loop();
-    return () => {
-      if (reqIdRef.current) cancelAnimationFrame(reqIdRef.current);
-    };
-  }, [loop]);
+  });
 
   return (
     <div
@@ -95,15 +89,15 @@ export const ToastContext = createContext<{
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   call: () => {},
 });
-export const ToastProvider: React.FC<{ children: ReactNode }> = ({
-  children,
-}) => {
+export const ToastProvider: React.FC<{
+  children: ReactNode;
+  selector: string;
+}> = ({ children, selector }) => {
   const [toasts, setToasts] = useState<
     { id: string; ref: RefObject<HTMLDivElement>; Toast: JSX.Element }[]
   >([]);
 
-  const reqIdRef = useRef<number>();
-  const loop = useCallback(() => {
+  useLoop(() => {
     setToasts((prev) =>
       prev.filter(
         ({ ref }) =>
@@ -111,14 +105,15 @@ export const ToastProvider: React.FC<{ children: ReactNode }> = ({
           window.getComputedStyle(ref.current, null).visibility !== "hidden"
       )
     );
-    reqIdRef.current = requestAnimationFrame(loop);
-  }, []);
+  });
+
+  const mountTo = useRef<Element | null>();
+  const [mounted, setMounted] = useState(false);
   useEffect(() => {
-    loop();
-    return () => {
-      if (reqIdRef.current) cancelAnimationFrame(reqIdRef.current);
-    };
-  }, [loop]);
+    if (!document) return;
+    mountTo.current = document.querySelector(selector);
+    setMounted(true);
+  }, [selector]);
 
   const call = useCallback((inner, { duration } = { duration: 3000 }) => {
     const id = crypto.randomUUID();
@@ -136,24 +131,27 @@ export const ToastProvider: React.FC<{ children: ReactNode }> = ({
       },
     ]);
   }, []) satisfies ContextType<typeof ToastContext>["call"];
+
   return (
     <ToastContext.Provider value={{ call }}>
       {children}
-      {createPortal(
-        <div
-          className={clsx(
-            ["w-96"],
-            ["fixed", "bottom-0", "right-0"],
-            ["flex", "flex-col", "flex-col-reverse", "gap-y-2"],
-            ["mr-4", "mb-4"]
-          )}
-        >
-          {toasts.map(({ id, Toast }) => (
-            <Fragment key={id}>{Toast}</Fragment>
-          ))}
-        </div>,
-        document.body
-      )}
+      {mounted &&
+        mountTo.current &&
+        createPortal(
+          <div
+            className={clsx(
+              ["w-96"],
+              ["fixed", "bottom-0", "right-0"],
+              ["flex", "flex-col", "flex-col-reverse", "gap-y-2"],
+              ["mr-4", "mb-4"]
+            )}
+          >
+            {toasts.map(({ id, Toast }) => (
+              <Fragment key={id}>{Toast}</Fragment>
+            ))}
+          </div>,
+          mountTo.current
+        )}
     </ToastContext.Provider>
   );
 };
