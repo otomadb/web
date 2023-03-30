@@ -12,12 +12,10 @@ import {
   RefObject,
   useCallback,
   useContext,
-  useEffect,
-  useRef,
   useState,
 } from "react";
-import { createPortal } from "react-dom";
 
+import { Portal } from "./Portal";
 import { useLoop } from "./useLoop";
 
 // eslint-disable-next-line react/display-name
@@ -107,14 +105,6 @@ export const ToastProvider: React.FC<{
     );
   });
 
-  const mountTo = useRef<Element | null>();
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    if (!document) return;
-    mountTo.current = document.querySelector(selector);
-    setMounted(true);
-  }, [selector]);
-
   const call = useCallback((inner, { duration } = { duration: 3000 }) => {
     const id = crypto.randomUUID();
     const ref = createRef<HTMLDivElement>();
@@ -135,23 +125,20 @@ export const ToastProvider: React.FC<{
   return (
     <ToastContext.Provider value={{ call }}>
       {children}
-      {mounted &&
-        mountTo.current &&
-        createPortal(
-          <div
-            className={clsx(
-              ["w-96"],
-              ["fixed", "bottom-0", "right-0"],
-              ["flex", "flex-col", "flex-col-reverse", "gap-y-2"],
-              ["mr-4", "mb-4"]
-            )}
-          >
-            {toasts.map(({ id, Toast }) => (
-              <Fragment key={id}>{Toast}</Fragment>
-            ))}
-          </div>,
-          mountTo.current
-        )}
+      <Portal selector={selector}>
+        <div
+          className={clsx(
+            ["w-96"],
+            ["fixed", "bottom-0", "right-0"],
+            ["flex", "flex-col", "flex-col-reverse", "gap-y-2"],
+            ["mr-4", "mb-4"]
+          )}
+        >
+          {toasts.map(({ id, Toast }) => (
+            <Fragment key={id}>{Toast}</Fragment>
+          ))}
+        </div>
+      </Portal>
     </ToastContext.Provider>
   );
 };

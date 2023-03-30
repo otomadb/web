@@ -5,10 +5,14 @@ import { useCallback, useEffect, useRef } from "react";
 export const useLoop = (func: () => void) => {
   const reqIdRef = useRef<number>();
 
-  const loop = useCallback(() => {
-    func();
-    reqIdRef.current = requestAnimationFrame(loop);
-  }, [func]);
+  const loop = useCallback(
+    () => {
+      func();
+      reqIdRef.current = requestAnimationFrame(loop);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
 
   useEffect(() => {
     loop();
