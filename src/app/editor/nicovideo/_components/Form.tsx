@@ -14,11 +14,12 @@ import {
   useClearSourceId,
   useSourceId,
 } from "~/components/NicovideoSourceIdForm/SourceIdProvider";
+import { useToaster } from "~/components/Toaster";
 
 import { RegisterContext } from "./Original/Context";
 import { RequestContext } from "./Request/Context";
 import { SourceChecker } from "./SourceChecker";
-import { useCallSuccessededToast } from "./SuccessedToast";
+import { SucceededToast } from "./SucceededToast";
 import { TagButton } from "./TagButton";
 import { useRegisterVideo } from "./useRegisterVideo";
 
@@ -62,7 +63,7 @@ export const RegisterForm: React.FC<{
   } = useFieldArray({ control, name: "semitags" });
 
   const clearSourceId = useClearSourceId();
-  const callSuccededToast = useCallSuccessededToast();
+  const callToast = useToaster();
   const registerVideo = useRegisterVideo({
     onSuccess(data) {
       resetForm({
@@ -74,7 +75,7 @@ export const RegisterForm: React.FC<{
         nicovideoRequestId: undefined,
       });
       clearSourceId();
-      callSuccededToast({ fragment: data.video });
+      callToast(<SucceededToast fragment={data} />);
     },
   });
 

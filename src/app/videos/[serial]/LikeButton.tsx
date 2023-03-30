@@ -6,9 +6,9 @@ import { HeartIcon as OutlikeHeartIcon } from "@heroicons/react/24/outline";
 import { HeartIcon as SolidHeartIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 import React, { useCallback, useMemo } from "react";
-import { toast } from "react-hot-toast";
 import { useMutation, useQuery } from "urql";
 
+import { useToaster } from "~/components/Toaster";
 import { graphql, useFragment } from "~/gql";
 
 const VideoFragment = graphql(`
@@ -73,15 +73,22 @@ export const LikeButton: React.FC<{ className?: string; videoId: string }> = ({
       }
     `)
   );
+  const callToast = useToaster();
   const handleClick = useCallback(() => {
     if (currentData?.whoami === null) {
-      // TODO: you need to login
-      toast("動画をいいねするにはログインが必要です。");
+      callToast(<p>動画をいいねするにはログインが必要です。</p>);
       return;
     }
     if (liked) triggerRemoveLike({ videoId });
     else triggerAddLike({ videoId });
-  }, [currentData?.whoami, liked, triggerAddLike, triggerRemoveLike, videoId]);
+  }, [
+    callToast,
+    currentData?.whoami,
+    liked,
+    triggerAddLike,
+    triggerRemoveLike,
+    videoId,
+  ]);
 
   return (
     <button
