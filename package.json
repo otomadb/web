@@ -35,6 +35,7 @@
     "boring-avatars": "^1.7.0",
     "client-only": "^0.0.1",
     "clsx": "^1.2.1",
+    "copy-to-clipboard": "^3.3.3",
     "date-fns": "^2.29.3",
     "graphql": "^16.6.0",
     "next": "13.2.4",
