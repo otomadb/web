@@ -906,10 +906,15 @@ type RegisterVideoFromNicovideoOtherErrorsFallback {
   message: RegisterVideoFromNicovideoFailedMessage!
 }
 
-union RegisterVideoFromNicovideoPayload = MutationAuthenticationError | MutationInvalidNicovideoRegistrationRequestIdError | MutationInvalidTagIdError | MutationNicovideoRegistrationRequestAlreadyCheckedError | MutationNicovideoRegistrationRequestNotFoundError | MutationTagNotFoundError | RegisterVideoFromNicovideoInvalidNicovideoSourceIdError | RegisterVideoFromNicovideoOtherErrorsFallback | RegisterVideoFromNicovideoSemitagNamesDuplicatedError | RegisterVideoFromNicovideoSucceededPayload | RegisterVideoFromNicovideoTagIdsDuplicatedError
+union RegisterVideoFromNicovideoPayload = MutationAuthenticationError | MutationInvalidNicovideoRegistrationRequestIdError | MutationInvalidTagIdError | MutationNicovideoRegistrationRequestAlreadyCheckedError | MutationNicovideoRegistrationRequestNotFoundError | MutationTagNotFoundError | RegisterVideoFromNicovideoInvalidNicovideoSourceIdError | RegisterVideoFromNicovideoOtherErrorsFallback | RegisterVideoFromNicovideoSemitagNamesDuplicatedError | RegisterVideoFromNicovideoSemitagTooLongError | RegisterVideoFromNicovideoSucceededPayload | RegisterVideoFromNicovideoTagIdsDuplicatedError
 
 """仮タグの名前が重複している"""
 type RegisterVideoFromNicovideoSemitagNamesDuplicatedError {
+  name: String!
+}
+
+"""仮タグの名前が長過ぎる"""
+type RegisterVideoFromNicovideoSemitagTooLongError {
   name: String!
 }
 
