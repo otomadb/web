@@ -22,7 +22,7 @@ const meta = {
   args: {
     query: "",
     setResult: action("setResult"),
-    setQuery: action("setQuery"),
+    setUpstream: action("setQuery"),
   },
   parameters: {
     msw: {

@@ -2,6 +2,7 @@ import { ResultOf } from "@graphql-typed-document-node/core";
 import { ArrowPathIcon, MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
+import { useDebounce } from "react-use";
 import { useQuery } from "urql";
 
 import { TextInput } from "~/components/common/TextInput";
@@ -22,31 +23,29 @@ export const SearchBox: React.FC<{
     result: [string, ResultOf<typeof Query>["searchTags"] | undefined]
   ): void;
   disabled?: boolean;
-
-  query: string;
-  setQuery(query: string): void;
 }> = ({ className, style, setResult, disabled, limit }) => {
+  const [value, setValue] = useState<string>("");
   const [query, setQuery] = useState<string>("");
   const [{ data, fetching }] = useQuery({
     query: Query,
-    pause: query === "",
+    pause: value === "",
     variables: { query, limit },
   });
 
-  useEffect(
+  useDebounce(
     () => {
-      if (data) setResult([query, data.searchTags]);
+      setQuery(value);
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [data]
+    250,
+    [value]
   );
 
   useEffect(
     () => {
-      if (query === "") setResult([query, undefined]);
+      setResult([value, value === "" ? undefined : data?.searchTags]);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [query]
+    [value, data]
   );
 
   return (
@@ -82,7 +81,7 @@ export const SearchBox: React.FC<{
       <TextInput
         className={clsx(["flex-grow"], ["px-2"])}
         onChange={(e) => {
-          setQuery(e.target.value);
+          setValue(e.target.value);
         }}
         disabled={disabled}
       />

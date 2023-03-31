@@ -225,6 +225,26 @@ export const OptionalChoice: StoryObj<typeof meta> = {
   },
 };
 
+export const FetchingOptionalChoice: StoryObj<typeof meta> = {
+  name: "検索しつつ別の選択肢を提示",
+  args: {
+    Optional,
+  },
+  parameters: {
+    msw: {
+      handlers: [
+        graphql.query(SearchBoxQuery, (req, res, ctx) =>
+          res(ctx.delay("infinite"))
+        ),
+      ],
+    },
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.type(canvas.getByRole("textbox"), "Test");
+  },
+};
+
 export const OptionalChoiceSelect: StoryObj<typeof meta> = {
   name: "別の選択肢を選択",
   args: {

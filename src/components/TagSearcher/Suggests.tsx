@@ -26,13 +26,7 @@ const Suggests: React.FC<{
   return (
     <div className={clsx(className)} style={style}>
       {0 === items.length && (
-        <div
-          className={clsx(
-            ["px-2", "py-2"],
-            ["bg-slate-100"],
-            ["border", ["border-slate-300"]]
-          )}
-        >
+        <div className={clsx(["px-2", "py-2"], ["bg-slate-200"])}>
           <p className={clsx(["text-xs", "text-slate-500"])}>
             該当するタグは見つかりませんでした
           </p>
