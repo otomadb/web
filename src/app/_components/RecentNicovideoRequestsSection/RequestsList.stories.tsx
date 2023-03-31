@@ -1,3 +1,4 @@
+import { ResultOf } from "@graphql-typed-document-node/core";
 import { Meta, StoryObj } from "@storybook/react";
 
 import { Fragment as NicovideoRegistrationRequestPageLinkFragment } from "~/app/requests/nicovideo/[sourceId]/Link";
@@ -41,7 +42,7 @@ export const Primary: StoryObj<typeof meta> = {
                   ),
                   id: "u1",
                   displayName: "User 1",
-                },
+                } as ResultOf<typeof ListItemFragment>["requestedBy"], // TODO: makeFragmentDataのマージは出来ないのか？,
               },
               ListItemFragment
             ),

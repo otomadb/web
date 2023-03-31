@@ -1,3 +1,4 @@
+import { ResultOf } from "@graphql-typed-document-node/core";
 import { Meta, StoryObj } from "@storybook/react";
 
 import { Fragment as NicovideoRegistrationRequestPageLinkFragment } from "~/app/requests/nicovideo/[sourceId]/Link";
@@ -27,21 +28,6 @@ export const Primary: StoryObj<typeof meta> = {
         sourceId: `sm1`,
         thumbnailUrl: "/960x540.jpg",
         requestedBy: {
-          /*
-          requestedBy: {
-          id: "u1",
-          name: "user1",
-          ...makeFragmentData({ name: "User 1" }, UserPageLinkFragment),
-          ...makeFragmentData(
-            {
-              icon: "/512x512.png",
-              name: "user1",
-              displayName: "User 1",
-            },
-            UserIconFragment
-          ),
-        },
-          */
           ...makeFragmentData({ name: "user1" }, UserPageLinkFragment),
           ...makeFragmentData(
             { icon: "/512x512.png", name: "user1", displayName: "User 1" },
@@ -49,7 +35,7 @@ export const Primary: StoryObj<typeof meta> = {
           ),
           id: "u1",
           displayName: "User 1",
-        },
+        } as ResultOf<typeof Fragment>["requestedBy"], // TODO: makeFragmentDataのマージは出来ないのか？
       },
       Fragment
     ),
