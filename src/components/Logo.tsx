@@ -10,6 +10,5 @@ const fontInspiration = Comforter({
 export const Logo: React.FC<{ className?: string }> = ({ className }) => (
   <div className={clsx(className)}>
     <span className={clsx(fontInspiration.className)}>OtoMADB</span>
-    <sup>Beta</sup>
   </div>
 );
