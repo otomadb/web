@@ -3,7 +3,7 @@ import React, { ComponentProps } from "react";
 
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-const Fragment = graphql(`
+export const Fragment = graphql(`
   fragment Link_User on User {
     name
   }
