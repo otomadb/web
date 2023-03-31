@@ -1,28 +1,33 @@
 "use client";
 import "client-only";
 
+import { ResultOf } from "@graphql-typed-document-node/core";
 import { useRouter } from "next/navigation";
-import React, { ReactNode, useEffect } from "react";
-import { useQuery, UseQueryResponse } from "urql";
+import React, { ReactNode, useContext, useEffect } from "react";
+import { useQuery } from "urql";
 
 import { graphql, useFragment } from "~/gql";
 
-const Fragment = graphql(`
+export const Fragment = graphql(`
   fragment AuthPagesGuard on User {
     id
     name
   }
 `);
-
-export const AuthPageGuardContext = React.createContext<UseQueryResponse[1]>(
+export const AuthPageGuardContext = React.createContext<{
+  current: ResultOf<typeof Fragment> | null;
+  update(): void;
+}>({
+  current: null,
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  () => {}
-);
+  update: () => {},
+});
+
 export const AuthPagesGuard: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const router = useRouter();
-  const [{ data, fetching }, update] = useQuery({
+  const [{ data }, update] = useQuery({
     query: graphql(`
       query AuthPagesGuard_Query {
         whoami {
@@ -39,9 +44,23 @@ export const AuthPagesGuard: React.FC<{ children: ReactNode }> = ({
     router.push(`/users/${fragment.name}`);
   }, [fragment, router]);
 
+  if (fragment === undefined) return null; // loading
+
   return (
-    <AuthPageGuardContext.Provider value={update}>
-      {!fetching && !data?.whoami && <>{children}</>}
+    <AuthPageGuardContext.Provider
+      value={{
+        current: fragment,
+        update() {
+          update({ requestPolicy: "cache-and-network" });
+        },
+      }}
+    >
+      {fragment === null && <>{children}</>}
     </AuthPageGuardContext.Provider>
   );
+};
+
+export const useGuard = () => {
+  const { current, update } = useContext(AuthPageGuardContext);
+  return { current, update };
 };

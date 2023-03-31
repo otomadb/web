@@ -14,6 +14,7 @@ import {
   SigninPage_SigninDocument,
 } from "~/gql/graphql";
 
+import { AuthPageGuardContext } from "../Guard";
 import { SigninForm } from "./SigninForm";
 import { Mutation } from "./useSignin";
 
@@ -23,7 +24,11 @@ export default {
     return (
       <UrqlProvider value={createUrqlClient({ url: "/graphql" })}>
         <ToastContext.Provider value={{ call: action("callToast") }}>
-          <SigninForm {...args} style={{ width: "384px" }} />
+          <AuthPageGuardContext.Provider
+            value={{ current: null, update: action("updateGuard") }}
+          >
+            <SigninForm {...args} style={{ width: "384px" }} />
+          </AuthPageGuardContext.Provider>
         </ToastContext.Provider>
       </UrqlProvider>
     );
@@ -103,4 +108,22 @@ export const WrongPassword: StoryObj<typeof SigninForm> = {
 
 export const SuccessfulSignin: StoryObj<typeof SigninForm> = {
   name: "正常にログイン",
+};
+
+export const AlreadyLogined: StoryObj<typeof SigninForm> = {
+  name: "既にログイン済み",
+  render(args) {
+    return (
+      <AuthPageGuardContext.Provider
+        value={{
+          current: { id: "u1", name: "user1" },
+          update: action("updateGuard"),
+        }}
+      >
+        <SigninForm {...args} style={{ width: "384px" }} />
+      </AuthPageGuardContext.Provider>
+    );
+  },
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  play: () => {},
 };

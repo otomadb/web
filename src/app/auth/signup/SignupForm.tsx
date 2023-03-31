@@ -34,7 +34,7 @@ const formSchema = z.object({
 });
 type FormSchema = z.infer<typeof formSchema>;
 export const SignupForm: React.FC<{ className?: string }> = ({ className }) => {
-  const updateGuard = useContext(AuthPageGuardContext);
+  const { update: updateGuard } = useContext(AuthPageGuardContext);
   const { verify: verifyTurnstile } = useTurnstileGuard();
 
   const {

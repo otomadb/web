@@ -4,11 +4,11 @@ import "client-only";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
-import React, { useCallback, useContext } from "react";
+import React, { useCallback } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as z from "zod";
 
-import { AuthPageGuardContext } from "~/app/auth/Guard";
+import { useGuard } from "~/app/auth/Guard";
 import { SignupPageLink } from "~/app/auth/signup/Link";
 import { BlueButton } from "~/components/common/Button";
 import { PasswordInput } from "~/components/common/PasswordInput";
@@ -31,7 +31,7 @@ export const SigninForm: React.FC<{
 }> = ({ className, style }) => {
   const { verify: verifyTurnstile } = useTurnstileGuard();
 
-  const updateGuard = useContext(AuthPageGuardContext);
+  const { current, update: updateGuard } = useGuard();
 
   const {
     register,
@@ -51,7 +51,6 @@ export const SigninForm: React.FC<{
       setError("password", { message: "誤ったパスワード" });
     },
     onSuccess(data) {
-      console.log("?");
       updateGuard();
       callToast(<SucceededToast fragment={data} />);
     },
@@ -88,6 +87,7 @@ export const SigninForm: React.FC<{
           <div className={clsx(["mt-1"], ["w-full"])}>
             <TextInput
               id="login"
+              disabled={current !== null}
               className={clsx(
                 ["w-full"],
                 ["px-4", "py-2"],
@@ -113,6 +113,7 @@ export const SigninForm: React.FC<{
           <div className={clsx(["mt-1"], ["w-full"])}>
             <PasswordInput
               id="password"
+              disabled={current !== null}
               className={clsx(
                 ["w-full"],
                 ["px-4", "py-2"],
@@ -131,7 +132,11 @@ export const SigninForm: React.FC<{
         </div>
       </div>
       <div className={clsx(["mt-4"])}>
-        <BlueButton type="submit" className={clsx(["w-full"], ["py-2"])}>
+        <BlueButton
+          type="submit"
+          disabled={current !== null}
+          className={clsx(["w-full"], ["py-2"])}
+        >
           ログイン
         </BlueButton>
       </div>
