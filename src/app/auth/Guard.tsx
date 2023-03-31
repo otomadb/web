@@ -5,7 +5,14 @@ import { useRouter } from "next/navigation";
 import React, { ReactNode, useEffect } from "react";
 import { useQuery, UseQueryResponse } from "urql";
 
-import { graphql } from "~/gql";
+import { graphql, useFragment } from "~/gql";
+
+const Fragment = graphql(`
+  fragment AuthPagesGuard on User {
+    id
+    name
+  }
+`);
 
 export const AuthPageGuardContext = React.createContext<UseQueryResponse[1]>(
   // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -15,24 +22,26 @@ export const AuthPagesGuard: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const router = useRouter();
-  const [{ data }, update] = useQuery({
+  const [{ data, fetching }, update] = useQuery({
     query: graphql(`
-      query AuthPagesLayout_Guard {
+      query AuthPagesGuard_Query {
         whoami {
-          id
+          ...AuthPagesGuard
         }
       }
     `),
     requestPolicy: "cache-and-network",
   });
+  const fragment = useFragment(Fragment, data?.whoami);
 
   useEffect(() => {
-    if (data?.whoami?.id) router.back();
-  }, [data, router]);
+    if (!fragment) return;
+    router.push(`/users/${fragment.name}`);
+  }, [fragment, router]);
 
   return (
     <AuthPageGuardContext.Provider value={update}>
-      {children}
+      {!fetching && !data?.whoami && <>{children}</>}
     </AuthPageGuardContext.Provider>
   );
 };
