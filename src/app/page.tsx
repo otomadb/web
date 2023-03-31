@@ -11,9 +11,9 @@ export default async function Page() {
   return (
     <main
       className={clsx(
-        ["container"],
+        ["container", "max-w-screen-2xl"],
         ["mx-auto"],
-        ["flex", "flex-col", "gap-y-4"]
+        ["flex", "flex-col", "gap-y-8"]
       )}
     >
       <section

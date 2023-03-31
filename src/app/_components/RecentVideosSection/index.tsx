@@ -7,24 +7,24 @@ import { RecentVideosList } from "./RecentVIdeosList";
 
 const RecentVideosSection: React.FC = () => {
   return (
-    <section
-      className={clsx(
-        [["px-2"], ["py-2"]],
-        ["rounded"],
-        ["border", "border-slate-300"]
-      )}
-    >
-      <h2 className={clsx(["text-sm"])}>最近登録された動画</h2>
+    <section className={clsx()}>
+      <div className={clsx(["flex", "items-center"], ["px-2"])}>
+        <h2 className={clsx(["flex-grow"], ["text-lg"], ["text-slate-900"])}>
+          最近登録された動画
+        </h2>
+        <div className={clsx(["flex-shrink-0"])}>
+          <AllVideosPageLink
+            className={clsx(["text-sm", "font-semibold", "text-slate-700"])}
+          >
+            もっと見る
+          </AllVideosPageLink>
+        </div>
+      </div>
       <div className={clsx(["mt-2"])}>
         <Suspense fallback={<span>LOADING</span>}>
           {/* @ts-expect-error for Server Component*/}
           <RecentVideosList />
         </Suspense>
-      </div>
-      <div className={clsx(["mt-2"])}>
-        <p className={clsx(["text-sm"])}>
-          <AllVideosPageLink>もっと見る</AllVideosPageLink>
-        </p>
       </div>
     </section>
   );

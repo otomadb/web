@@ -22,14 +22,16 @@ export const Fragment = graphql(`
   }
 `);
 export const ListItem: React.FC<{
+  className?: string;
   style?: React.CSSProperties;
   fragment: FragmentType<typeof Fragment>;
-}> = ({ style, ...props }) => {
+}> = ({ className, style, ...props }) => {
   const fragment = useFragment(Fragment, props.fragment);
 
   return (
     <div
       className={clsx(
+        className,
         ["px-2"],
         ["py-2"],
         ["flex", "flex-col"],
@@ -42,7 +44,7 @@ export const ListItem: React.FC<{
       <div>
         <NicovideoRegistrationRequestPageLink fragment={fragment}>
           <CoolImage
-            className={clsx(["w-full"], ["h-[128px]"])}
+            className={clsx(["h-[128px]"])}
             src={fragment.thumbnailUrl}
             alt={fragment.sourceId}
             width={196}
@@ -52,7 +54,12 @@ export const ListItem: React.FC<{
       </div>
       <div className={clsx(["mt-1"], ["flex"])}>
         <NicovideoRegistrationRequestPageLink
-          className={clsx(["text-sm", "font-bold", "text-slate-900"])}
+          className={clsx([
+            "text-sm",
+            "font-bold",
+            "text-slate-900",
+            "line-clamp-2",
+          ])}
           fragment={fragment}
         >
           {fragment.title}

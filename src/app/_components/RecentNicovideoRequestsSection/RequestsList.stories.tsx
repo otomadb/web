@@ -18,7 +18,7 @@ export const Primary: StoryObj<typeof meta> = {
     fragment: makeFragmentData(
       {
         findNicovideoRegistrationRequests: {
-          nodes: [...new Array(6)].map((_, i) => ({
+          nodes: [...new Array(18)].map((_, i) => ({
             id: `r${i}`,
             ...makeFragmentData(
               {
