@@ -16,10 +16,16 @@ export const Query = graphql(`
 `);
 export const SearchBox: React.FC<{
   className?: string;
+  style?: React.CSSProperties;
   limit: number;
-  setResult(data: ResultOf<typeof Query>["searchTags"] | undefined): void;
+  setResult(
+    result: [string, ResultOf<typeof Query>["searchTags"] | undefined]
+  ): void;
   disabled?: boolean;
-}> = ({ className, setResult, disabled, limit }) => {
+
+  query: string;
+  setQuery(query: string): void;
+}> = ({ className, style, setResult, disabled, limit }) => {
   const [query, setQuery] = useState<string>("");
   const [{ data, fetching }] = useQuery({
     query: Query,
@@ -29,7 +35,7 @@ export const SearchBox: React.FC<{
 
   useEffect(
     () => {
-      if (data) setResult(data.searchTags);
+      if (data) setResult([query, data.searchTags]);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [data]
@@ -37,7 +43,7 @@ export const SearchBox: React.FC<{
 
   useEffect(
     () => {
-      if (query === "") setResult(undefined);
+      if (query === "") setResult([query, undefined]);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [query]
@@ -52,9 +58,10 @@ export const SearchBox: React.FC<{
         ["rounded"],
         ["overflow-hidden"]
       )}
+      style={style}
     >
       <div
-        className={clsx(["flex-shrink-0"], ["px-4", "py-2"], ["bg-slate-400"])}
+        className={clsx(["flex-shrink-0"], ["px-3", "py-2"], ["bg-slate-400"])}
       >
         <MagnifyingGlassIcon
           className={clsx(

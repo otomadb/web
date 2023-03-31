@@ -16,11 +16,13 @@ const meta = {
   component: SearchBox,
   render: (args) => (
     <UrqlProvider value={createUrqlClient({ url: "/graphql" })}>
-      <SearchBox {...args} />
+      <SearchBox {...args} style={{ width: "320px" }} />
     </UrqlProvider>
   ),
   args: {
-    setResult: action("set"),
+    query: "",
+    setResult: action("setResult"),
+    setQuery: action("setQuery"),
   },
   parameters: {
     msw: {

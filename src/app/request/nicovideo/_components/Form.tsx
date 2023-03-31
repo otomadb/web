@@ -192,7 +192,7 @@ export const RequestForm: React.FC<{
                         )
                           appendTag({ tagId });
                       }}
-                      Optional={({ query, clearQuery }) => {
+                      Optional={({ query }) => {
                         if (semitags.find(({ name }) => name === query))
                           return (
                             <div>
@@ -221,9 +221,9 @@ export const RequestForm: React.FC<{
                                 ["px-2", "py-1"],
                                 ["bg-white", "hover:bg-blue-200"]
                               )}
-                              onClick={() => {
+                              onClick={(e) => {
+                                e.currentTarget.blur();
                                 appendSemitag({ name: query });
-                                clearQuery();
                               }}
                             >
                               <span

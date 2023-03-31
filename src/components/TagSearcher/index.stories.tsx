@@ -1,7 +1,9 @@
 import { action } from "@storybook/addon-actions";
 import { Meta, StoryObj } from "@storybook/react";
 import { userEvent, within } from "@storybook/testing-library";
+import clsx from "clsx";
 import { graphql } from "msw";
+import { ComponentProps } from "react";
 import {
   createClient as createUrqlClient,
   Provider as UrqlProvider,
@@ -184,5 +186,55 @@ export const Select: StoryObj<typeof TagSearcher> = {
 
     const items = await canvas.findAllByLabelText("検索候補");
     await userEvent.click(items[0]);
+  },
+};
+
+const Optional: ComponentProps<typeof TagSearcher>["Optional"] = ({
+  query,
+}) => (
+  <div>
+    <button
+      type="button"
+      aria-label="仮タグとして追加"
+      className={clsx(
+        ["bg-white"],
+        ["border"],
+        ["px-2", "py-0.5"],
+        ["text-xs"],
+        ["text-left"]
+      )}
+      onClick={(e) => {
+        action("selectOptional")(query);
+        e.currentTarget.blur();
+      }}
+    >
+      <span>{query}</span>
+      を仮タグとして追加
+    </button>
+  </div>
+);
+
+export const OptionalChoice: StoryObj<typeof meta> = {
+  name: "別の選択肢を提示",
+  args: {
+    Optional,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.type(canvas.getByRole("textbox"), "Test");
+  },
+};
+
+export const OptionalChoiceSelect: StoryObj<typeof meta> = {
+  name: "別の選択肢を選択",
+  args: {
+    Optional,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.type(canvas.getByRole("textbox"), "Test");
+
+    const optional = await canvas.findByLabelText("仮タグとして追加");
+    await userEvent.click(optional);
   },
 };

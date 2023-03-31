@@ -42,7 +42,6 @@ const Suggests: React.FC<{
         <div
           className={clsx(
             ["flex", "flex-col", "items-stretch"],
-            ["border", ["border-slate-300"]],
             ["divide-y", ["divide-slate-200"]]
           )}
         >

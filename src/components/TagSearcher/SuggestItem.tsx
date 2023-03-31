@@ -33,7 +33,7 @@ const SuggestItem: React.FC<{
       className={clsx(
         className,
         ["group"],
-        ["px-2", "py-1"],
+        ["px-2", "py-2"],
         ["flex", "flex-col", "items-start"],
         ["bg-white", "hover:bg-teal-100"]
       )}
