@@ -11,15 +11,12 @@ import { makeFragmentData } from "~/gql";
 import {
   aSemitag,
   aTag,
-  aTagName,
-  aTagSearchItemByName,
   RegisterTagPage_ExplicitParentTagDocument,
   RegisterTagPage_ImplicitParentTagDocument,
   RegisterTagPage_RegisterTagDocument,
   RegisterTagPage_Semitags_FindSemitagsDocument,
   RegisterTagPage_Semitags_SelectedDocument,
   Semitag,
-  TagSearcher_SearchDocument,
   TagType,
 } from "~/gql/graphql";
 
@@ -71,6 +68,7 @@ const meta = {
             );
           }
         ),
+        /*
         graphql.query(TagSearcher_SearchDocument, (req, res, ctx) =>
           res(
             ctx.data({
@@ -106,6 +104,7 @@ const meta = {
             })
           )
         ),
+        */
         graphql.query(
           RegisterTagPage_ExplicitParentTagDocument,
           (req, res, ctx) => {
