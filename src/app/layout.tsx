@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import React from "react";
 
 import { GlobalNavigation } from "~/components/global/Navigation/Navigation";
+import { GlobalFooter } from "~/components/GlobalFooter";
 import { ToastProvider } from "~/components/Toaster";
 
 import { UrqlProvider } from "./UrqlProvider";
@@ -51,6 +52,7 @@ export default function RootLayout({
             <div className={clsx(["min-h-[calc(100vh-64px)]"], [["py-8"]])}>
               {children}
             </div>
+            <GlobalFooter />
             <div id="toast" />
           </body>
         </html>
