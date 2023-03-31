@@ -11,8 +11,6 @@ import { makeFragmentData } from "~/gql";
 import {
   aSemitag,
   aTag,
-  aTagName,
-  aTagSearchItemByName,
   RegisterTagPage_ExplicitParentTagDocument,
   RegisterTagPage_ImplicitParentTagDocument,
   RegisterTagPage_RegisterTagDocument,
