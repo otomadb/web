@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import React from "react";
 
+import { AboutPageLink } from "~/app/about/Link";
 import { TopLink } from "~/app/Link";
 import { Logo } from "~/components/Logo";
 
@@ -59,9 +60,11 @@ export const GlobalFooter: React.FC = () => {
             </p>
             <ul className={clsx(["mt-1"], ["flex", "flex-col", "gap-y-2"])}>
               <li className={clsx(["flex"])}>
-                <a className={clsx(["text-slate-700"], ["text-sm"])}>
+                <AboutPageLink
+                  className={clsx(["text-slate-300"], ["text-sm"])}
+                >
                   OtoMADBについて
-                </a>
+                </AboutPageLink>
               </li>
               <li className={clsx(["flex"])}>
                 <a
