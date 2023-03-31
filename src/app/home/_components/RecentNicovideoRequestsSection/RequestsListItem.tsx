@@ -8,7 +8,7 @@ import { UserIcon } from "~/components/common/UserIcon";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const Fragment = graphql(`
-  fragment TopPage_RecentNicovideoRequestsSection_RequestsListItem on NicovideoRegistrationRequest {
+  fragment HomePage_RecentNicovideoRequestsSection_RequestsListItem on NicovideoRegistrationRequest {
     ...Link_NicovideoRegistrationRequest
     title
     sourceId

@@ -1,22 +1,14 @@
 import "server-only";
 
-import clsx from "clsx";
+import AboutPage from "~/app/about/page";
 
-import RecentNicovideoRequestsSection from "./_components/RecentNicovideoRequestsSection";
-import RecentVideosSection from "./_components/RecentVideosSection";
+import { HomeRedirector } from "./HomeRedirector";
 
 export default async function Page() {
   return (
-    <main
-      className={clsx(
-        ["container", "max-w-screen-2xl"],
-        ["mx-auto"],
-        ["flex", "flex-col", "gap-y-8"],
-        ["py-12"]
-      )}
-    >
-      <RecentVideosSection />
-      <RecentNicovideoRequestsSection />
-    </main>
+    <HomeRedirector>
+      {/* @ts-expect-error for Server Component*/}
+      <AboutPage />
+    </HomeRedirector>
   );
 }
