@@ -30,6 +30,7 @@
     "@heroicons/react": "^2.0.13",
     "@hookform/resolvers": "3.0.0",
     "@marsidev/react-turnstile": "^0.1.0",
+    "@next/font": "^13.2.4",
     "@urql/exchange-graphcache": "^5.0.8",
     "@vercel/og": "^0.5.0",
     "boring-avatars": "^1.7.0",
