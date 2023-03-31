@@ -1,5 +1,7 @@
 "use client";
 
+import "client-only";
+
 import { ResultOf } from "@graphql-typed-document-node/core";
 import clsx from "clsx";
 import React, { useState } from "react";
@@ -14,6 +16,7 @@ export const TagSearcher: React.FC<{
   handleSelect(id: string): void;
   limit?: number;
   disabled?: boolean;
+
   Optional?: React.FC<{ query: string; clearQuery(): void }>;
 }> = ({ className, style, handleSelect, limit = 5 }) => {
   const [result, setResult] = useState<
@@ -21,10 +24,28 @@ export const TagSearcher: React.FC<{
   >();
 
   return (
-    <div className={clsx(className, ["relative"])} style={style}>
-      <SearchBox limit={limit} setResult={(r) => setResult(r)} />
-      <div className={clsx(["absolute"], ["w-full"])}>
-        {result && <Suggests fragment={result} handleSelect={handleSelect} />}
+    <div className={clsx(className, ["relative", "group"])} style={style}>
+      <SearchBox
+        limit={limit}
+        setResult={(r) => {
+          setResult(r);
+        }}
+      />
+      <div
+        className={clsx(
+          ["invisible", "group-focus-within:visible"],
+          ["absolute", "z-1"],
+          ["w-full"]
+        )}
+      >
+        {result && (
+          <Suggests
+            fragment={result}
+            handleSelect={(s) => {
+              handleSelect(s);
+            }}
+          />
+        )}
       </div>
     </div>
   );

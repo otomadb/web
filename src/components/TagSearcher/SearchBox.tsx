@@ -15,10 +15,11 @@ export const Query = graphql(`
   }
 `);
 export const SearchBox: React.FC<{
+  className?: string;
   limit: number;
-  setResult(data: ResultOf<typeof Query>["searchTags"]): void;
+  setResult(data: ResultOf<typeof Query>["searchTags"] | undefined): void;
   disabled?: boolean;
-}> = ({ setResult, disabled, limit }) => {
+}> = ({ className, setResult, disabled, limit }) => {
   const [query, setQuery] = useState<string>("");
   const [{ data, fetching }] = useQuery({
     query: Query,
@@ -26,13 +27,26 @@ export const SearchBox: React.FC<{
     variables: { query, limit },
   });
 
-  useEffect(() => {
-    if (data) setResult(data.searchTags);
-  }, [data, setResult]);
+  useEffect(
+    () => {
+      if (data) setResult(data.searchTags);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [data]
+  );
+
+  useEffect(
+    () => {
+      if (query === "") setResult(undefined);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [query]
+  );
 
   return (
     <label
       className={clsx(
+        className,
         ["flex", "items-stretch"],
         ["border", "border-slate-300"],
         ["rounded"],

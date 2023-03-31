@@ -2,6 +2,7 @@
 
 import clsx from "clsx";
 import React from "react";
+
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 import SuggestItem from "./SuggestItem";
@@ -13,7 +14,7 @@ export const Fragment = graphql(`
     }
   }
 `);
-const Suggest: React.FC<{
+const Suggests: React.FC<{
   className?: string;
   style?: React.CSSProperties;
   handleSelect(id: string): void;
@@ -58,4 +59,4 @@ const Suggest: React.FC<{
     </div>
   );
 };
-export default Suggest;
+export default Suggests;

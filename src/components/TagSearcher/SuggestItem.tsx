@@ -46,7 +46,7 @@ const SuggestItem: React.FC<{
         fragment={fragment.tag}
         className={clsx(["text-xs"], ["px-1"], ["py-0.5"])}
       />
-      {fragment.name.primary && (
+      {!fragment.name.primary && (
         <div className={clsx(["text-xs"], ["text-slate-700"])}>
           {fragment.name.name}
         </div>
