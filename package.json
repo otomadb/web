@@ -46,7 +46,7 @@
     "react-hook-form": "7.43.9",
     "react-use": "^17.4.0",
     "server-only": "^0.0.1",
-    "urql": "^3.0.3",
+    "urql": "^4.0.0",
     "zod": "^3.20.2"
   },
   "devDependencies": {
