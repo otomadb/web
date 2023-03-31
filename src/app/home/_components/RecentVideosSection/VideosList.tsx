@@ -7,7 +7,7 @@ import { FragmentType, graphql, useFragment } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
 
 export const Fragment = graphql(`
-  fragment TopPage_RecentVideosSection_VideosList_Presentation on Query {
+  fragment HomePage_RecentVideosSection_VideosList_Presentation on Query {
     findVideos(first: 18) {
       nodes {
         id
@@ -64,8 +64,8 @@ export const Presentation: React.FC<{
 export async function RecentVideosList() {
   const data = await fetchGql(
     graphql(`
-      query TopPage_RecentVideosSection_VideosList {
-        ...TopPage_RecentVideosSection_VideosList_Presentation
+      query HomePage_RecentVideosSection_VideosList {
+        ...HomePage_RecentVideosSection_VideosList_Presentation
       }
     `),
     {},
