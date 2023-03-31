@@ -32,23 +32,32 @@ const SuggestItem: React.FC<{
       tabIndex={0}
       className={clsx(
         className,
-        ["group/item"],
-        ["px-2", "py-2"],
-        ["flex", "flex-col", "items-start", "gap-y-1"],
-        ["bg-white", "hover:bg-blue-200"]
+        ["group"],
+        ["px-2", "py-1"],
+        ["flex", "flex-col", "items-start"],
+        ["bg-white", "hover:bg-teal-100"]
       )}
       onClick={(e) => {
         handleSelect(fragment.tag.id);
         e.currentTarget.blur();
       }}
     >
-      <CommonTag
-        fragment={fragment.tag}
-        className={clsx(["text-xs"], ["px-1"], ["py-0.5"])}
-      />
+      <div>
+        <CommonTag
+          fragment={fragment.tag}
+          className={clsx(["text-xs"], ["px-1"], ["py-0.5"])}
+        />
+      </div>
       {!fragment.name.primary && (
-        <div className={clsx(["text-xs"], ["text-slate-700"])}>
-          {fragment.name.name}
+        <div className={clsx(["px-1"], ["mt-1"])}>
+          <p
+            className={clsx(
+              ["text-xs", "italic"],
+              ["text-slate-600", "group-hover:text-teal-800"]
+            )}
+          >
+            {fragment.name.name}
+          </p>
         </div>
       )}
     </button>

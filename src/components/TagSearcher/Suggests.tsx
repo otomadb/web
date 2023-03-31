@@ -29,11 +29,11 @@ const Suggests: React.FC<{
         <div
           className={clsx(
             ["px-2", "py-2"],
-            ["bg-white"],
+            ["bg-slate-100"],
             ["border", ["border-slate-300"]]
           )}
         >
-          <p className={clsx(["text-xs"])}>
+          <p className={clsx(["text-xs", "text-slate-500"])}>
             該当するタグは見つかりませんでした
           </p>
         </div>
