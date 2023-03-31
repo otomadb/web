@@ -49,9 +49,7 @@ export default function RootLayout({
                 ["z-1"]
               )}
             />
-            <div className={clsx(["min-h-[calc(100vh-64px)]"], [["py-8"]])}>
-              {children}
-            </div>
+            <div className={clsx(["min-h-[calc(100vh-64px)]"])}>{children}</div>
             <GlobalFooter />
             <div id="toast" />
           </body>

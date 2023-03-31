@@ -5,7 +5,7 @@ import React from "react";
 
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-const Fragment = graphql(`
+export const Fragment = graphql(`
   fragment UserIcon on User {
     name
     displayName
