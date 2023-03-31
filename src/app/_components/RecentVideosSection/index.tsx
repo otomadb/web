@@ -3,7 +3,7 @@ import { Suspense } from "react";
 
 import { AllVideosPageLink } from "~/app/videos/Link";
 
-import { RecentVideosList } from "./RecentVIdeosList";
+import { RecentVideosList } from "./VideosList";
 
 const RecentVideosSection: React.FC = () => {
   return (

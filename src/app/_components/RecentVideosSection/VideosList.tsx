@@ -3,24 +3,23 @@ import "server-only";
 import clsx from "clsx";
 
 import { CommonVideoContainer } from "~/components/CommonVideoContainer";
-import { graphql } from "~/gql";
+import { FragmentType, graphql, useFragment } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
 
-export async function RecentVideosList() {
-  const { findVideos } = await fetchGql(
-    graphql(`
-      query TopPage_RecentRegisteredVideos {
-        findVideos(first: 18) {
-          nodes {
-            id
-            ...CommonVideoContainer
-          }
-        }
+export const Fragment = graphql(`
+  fragment TopPage_RecentVideosSection_VideosList_Presentation on Query {
+    findVideos(first: 18) {
+      nodes {
+        id
+        ...CommonVideoContainer
       }
-    `),
-    {},
-    { next: { revalidate: 0 } }
-  );
+    }
+  }
+`);
+export const Presentation: React.FC<{
+  fragment: FragmentType<typeof Fragment>;
+}> = ({ ...props }) => {
+  const fragment = useFragment(Fragment, props.fragment);
 
   return (
     <div
@@ -39,7 +38,7 @@ export async function RecentVideosList() {
         ]
       )}
     >
-      {findVideos.nodes.map((node) => (
+      {fragment.findVideos.nodes.map((node) => (
         <div
           key={node.id}
           className={clsx(
@@ -60,4 +59,18 @@ export async function RecentVideosList() {
       ))}
     </div>
   );
+};
+
+export async function RecentVideosList() {
+  const data = await fetchGql(
+    graphql(`
+      query TopPage_RecentVideosSection_VideosList {
+        ...TopPage_RecentVideosSection_VideosList_Presentation
+      }
+    `),
+    {},
+    { next: { revalidate: 0 } }
+  );
+
+  return <Presentation fragment={data} />;
 }

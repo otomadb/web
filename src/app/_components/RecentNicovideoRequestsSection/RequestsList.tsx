@@ -7,7 +7,7 @@ import { fetchGql } from "~/gql/fetch";
 import { ListItem } from "./RequestsListItem";
 
 export const Fragment = graphql(`
-  fragment TopPage_RecentNicovideoRegistrationRequests on Query {
+  fragment TopPage_RecentNicovideoRequestsSection_RequestsList_Presentation on Query {
     findNicovideoRegistrationRequests(first: 18, checked: false) {
       nodes {
         id
@@ -68,8 +68,8 @@ export const Presentation: React.FC<{
 export default async function RequestsList() {
   const data = await fetchGql(
     graphql(`
-      query TopPage_RecentNicovideoRequestsSection_RequestListQuery {
-        ...TopPage_RecentNicovideoRegistrationRequests
+      query TopPage_RecentNicovideoRequestsSection_RequestsList {
+        ...TopPage_RecentNicovideoRequestsSection_RequestsList_Presentation
       }
     `),
     {},
