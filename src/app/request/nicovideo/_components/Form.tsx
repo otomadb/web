@@ -9,11 +9,11 @@ import * as z from "zod";
 import { RegisterContext } from "~/app/editor/nicovideo/_components/Original/Context";
 import { TagButton } from "~/app/editor/nicovideo/_components/TagButton";
 import { BlueButton } from "~/components/common/Button";
-import { TagSearcher } from "~/components/common/TagSearcher";
 import {
   useClearSourceId,
   useSourceId,
 } from "~/components/NicovideoSourceIdForm/SourceIdProvider";
+import { TagSearcher } from "~/components/TagSearcher";
 import { useToaster } from "~/components/Toaster";
 
 import { SourceChecker } from "./SourceChecker";
@@ -192,7 +192,7 @@ export const RequestForm: React.FC<{
                         )
                           appendTag({ tagId });
                       }}
-                      Optional={({ query, clearQuery }) => {
+                      Optional={({ query }) => {
                         if (semitags.find(({ name }) => name === query))
                           return (
                             <div>
@@ -221,9 +221,9 @@ export const RequestForm: React.FC<{
                                 ["px-2", "py-1"],
                                 ["bg-white", "hover:bg-blue-200"]
                               )}
-                              onClick={() => {
+                              onClick={(e) => {
+                                e.currentTarget.blur();
                                 appendSemitag({ name: query });
-                                clearQuery();
                               }}
                             >
                               <span

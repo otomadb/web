@@ -9,11 +9,11 @@ import { useFieldArray, useForm } from "react-hook-form";
 import * as z from "zod";
 
 import { BlueButton } from "~/components/common/Button";
-import { TagSearcher } from "~/components/common/TagSearcher";
 import {
   useClearSourceId,
   useSourceId,
 } from "~/components/NicovideoSourceIdForm/SourceIdProvider";
+import { TagSearcher } from "~/components/TagSearcher";
 import { useToaster } from "~/components/Toaster";
 
 import { RegisterContext } from "./Original/Context";
@@ -222,7 +222,7 @@ export const RegisterForm: React.FC<{
                           )
                             appendTag({ tagId });
                         }}
-                        Optional={({ query, clearQuery }) => {
+                        Optional={({ query }) => {
                           if (semitags.find(({ name }) => name === query))
                             return (
                               <div>
@@ -253,9 +253,9 @@ export const RegisterForm: React.FC<{
                                   ["px-2", "py-1"],
                                   ["bg-white", "hover:bg-blue-200"]
                                 )}
-                                onClick={() => {
+                                onClick={(e) => {
                                   appendSemitag({ name: query });
-                                  clearQuery();
+                                  e.currentTarget.blur();
                                 }}
                               >
                                 <span
