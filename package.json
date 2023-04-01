@@ -46,6 +46,8 @@
     "react-hook-form": "7.43.9",
     "react-use": "^17.4.0",
     "server-only": "^0.0.1",
+    "supertokens-auth-react": "^0.31.5",
+    "supertokens-node": "^13.3.0",
     "urql": "^3.0.3",
     "zod": "^3.20.2"
   },
