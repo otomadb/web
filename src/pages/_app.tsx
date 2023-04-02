@@ -1,36 +1,14 @@
-import "../styles/globals.css";
-
 import { AppProps } from "next/app";
-import Router from "next/router";
 import { useEffect } from "react";
 import SuperTokensReact, { SuperTokensWrapper } from "supertokens-auth-react";
-import EmailPasswordReact from "supertokens-auth-react/recipe/emailpassword";
-import {
-  default as Session,
-  default as SessionReact,
-} from "supertokens-auth-react/recipe/session";
+import Session from "supertokens-auth-react/recipe/session";
 
-import { appInfo } from "~/supertokens/appInfo";
+import frontendConfig from "~/supertokens/frontend";
 
-if (typeof window !== "undefined") {
-  SuperTokensReact.init({
-    appInfo,
-    recipeList: [EmailPasswordReact.init(), SessionReact.init()],
-    windowHandler: (oI) => {
-      return {
-        ...oI,
-        location: {
-          ...oI.location,
-          setHref: (href) => {
-            Router.push(href);
-          },
-        },
-      };
-    },
-  });
-}
+if (typeof window !== "undefined") SuperTokensReact.init(frontendConfig());
 
-function MyApp({ Component, pageProps }: AppProps) {
+function App({ Component, pageProps }: AppProps) {
+  // TODO: ↓いるのか？
   useEffect(() => {
     async function doRefresh() {
       if (pageProps.fromSupertokens === "needs-refresh") {
@@ -55,4 +33,4 @@ function MyApp({ Component, pageProps }: AppProps) {
   );
 }
 
-export default MyApp;
+export default App;

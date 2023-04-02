@@ -1,4 +1,4 @@
-const apiBasePath = "/api/auth/";
+import { AppInfo } from "supertokens-node/lib/build/types";
 
 const port = process.env.APP_PORT || 3000;
 export const websiteDomain =
@@ -6,9 +6,9 @@ export const websiteDomain =
   process.env.NEXT_PUBLIC_APP_URL ||
   `http://localhost:${port}`;
 
-export const appInfo = {
-  appName: "SuperTokens Demo App",
+export const appInfo: AppInfo = {
+  appName: "OtoMADB",
   websiteDomain,
   apiDomain: websiteDomain,
-  apiBasePath,
+  apiBasePath: "/api/auth/",
 };

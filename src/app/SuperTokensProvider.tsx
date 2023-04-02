@@ -2,17 +2,10 @@
 
 import { ReactNode } from "react";
 import SuperTokensReact, { SuperTokensWrapper } from "supertokens-auth-react";
-import EmailPasswordReact from "supertokens-auth-react/recipe/emailpassword";
-import SessionReact from "supertokens-auth-react/recipe/session";
 
-import { appInfo } from "~/supertokens/appInfo";
+import frontendConfig from "~/supertokens/frontend";
 
-if (typeof window !== "undefined") {
-  SuperTokensReact.init({
-    appInfo,
-    recipeList: [EmailPasswordReact.init(), SessionReact.init()],
-  });
-}
+if (typeof window !== "undefined") SuperTokensReact.init(frontendConfig());
 
 function SuperTokensProvider({
   children,
