@@ -2,8 +2,6 @@ import "server-only";
 
 import clsx from "clsx";
 
-import { SigninLinkPage } from "~/app/auth/signin/Link";
-import { SignupPageLink } from "~/app/auth/signup/Link";
 import RecentVideosSection from "~/app/home/_components/RecentVideosSection";
 import { SearchContents } from "~/components/common/SearchContents/SearchContents";
 import { Logo } from "~/components/Logo";
@@ -28,53 +26,6 @@ export default async function Page() {
         >
           <div>
             <Logo className={clsx(["text-5xl"], ["text-slate-700"])} />
-          </div>
-          <div
-            className={clsx(
-              ["mt-4"],
-              ["flex", "flex-col", "items-start", "gap-y-4"]
-            )}
-          >
-            <SignupPageLink
-              className={clsx(
-                ["group"],
-                ["bg-teal-100", "hover:bg-teal-200"],
-                ["border", "border-teal-600"],
-                ["rounded-md"],
-                ["px-4"],
-                ["py-2"],
-                ["flex", "items-center"]
-              )}
-            >
-              <span
-                className={clsx(
-                  ["text-sm"],
-                  ["text-teal-600", "group-hover:text-teal-700"]
-                )}
-              >
-                ユーザー登録
-              </span>
-            </SignupPageLink>
-            <SigninLinkPage
-              className={clsx(
-                ["group"],
-                ["bg-teal-100", "hover:bg-teal-200"],
-                ["border", "border-teal-600"],
-                ["rounded-md"],
-                ["px-4"],
-                ["py-2"],
-                ["flex", "items-center"]
-              )}
-            >
-              <span
-                className={clsx(
-                  ["text-sm"],
-                  ["text-teal-600", "group-hover:text-teal-700"]
-                )}
-              >
-                ログイン
-              </span>
-            </SigninLinkPage>
           </div>
         </div>
         <div className={clsx(["flex-grow"], ["flex", "flex-col"])}>

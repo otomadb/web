@@ -1,10 +1,10 @@
 "use client";
 
 import clsx from "clsx";
+import Link from "next/link";
 import React from "react";
 import { useQuery } from "urql";
 
-import { SigninLinkPage } from "~/app/auth/signin/Link";
 import { UserIcon } from "~/components/common/UserIcon";
 import { graphql } from "~/gql";
 
@@ -43,7 +43,8 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
         ></div>
       )}
       {data?.whoami === null && (
-        <SigninLinkPage
+        <Link
+          href={"/auth"}
           className={clsx(
             ["flex"],
             ["flex-row"],
@@ -58,7 +59,7 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
           )}
         >
           <span>ログイン</span>
-        </SigninLinkPage>
+        </Link>
       )}
       {data?.whoami && (
         <div className={clsx(["relative"], ["group"], ["flex"])}>
