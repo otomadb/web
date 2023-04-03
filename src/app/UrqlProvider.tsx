@@ -12,11 +12,8 @@ import {
 import { GraphCacheConfig } from "~/gql/graphql";
 
 const urqlClient = createUrqlClient({
-  url: new URL("/graphql", process.env.NEXT_PUBLIC_API_ENDPOINT).toString(),
-  fetchOptions: {
-    credentials: "include",
-    mode: "cors",
-  },
+  url: "/api/graphql",
+  fetchOptions: { credentials: "include", mode: "cors" },
   exchanges: [
     dedupExchange,
     cacheExchange<GraphCacheConfig>({
