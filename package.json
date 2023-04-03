@@ -26,6 +26,8 @@
     "node": "^18"
   },
   "dependencies": {
+    "@auth0/auth0-react": "^2.0.1",
+    "@auth0/nextjs-auth0": "^2.4.0",
     "@emotion/css": "^11.10.5",
     "@heroicons/react": "^2.0.13",
     "@hookform/resolvers": "3.0.0",
@@ -48,8 +50,6 @@
     "react-hook-form": "7.43.9",
     "react-use": "^17.4.0",
     "server-only": "^0.0.1",
-    "supertokens-auth-react": "^0.31.5",
-    "supertokens-node": "^13.3.0",
     "urql": "^3.0.3",
     "zod": "^3.20.2"
   },

@@ -10,7 +10,6 @@ import { NicovideoRequestPageLink } from "~/app/request/nicovideo/Link";
 import { LinkUser } from "~/app/users/[name]/Link";
 import { YouLikesPageLink } from "~/app/you/likes/Link";
 import { YouMylistsPageLink } from "~/app/you/mylists/Link";
-import { LogoutButton } from "~/components/common/LogoutButton";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 const MenuItem: React.FC<{
@@ -170,12 +169,15 @@ export const Accordion: React.FC<{
           )}
         >
           <div className={clsx(["flex"])}>
-            <LogoutButton
+            <a
+              href="/api/auth/logout"
               className={clsx(
                 ["text-xs"],
                 ["text-slate-700", "hover:text-slate-500"]
               )}
-            />
+            >
+              ログアウト
+            </a>
           </div>
         </div>
       </div>

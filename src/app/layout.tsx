@@ -8,7 +8,6 @@ import { GlobalNavigation } from "~/components/global/Navigation/Navigation";
 import { GlobalFooter } from "~/components/GlobalFooter";
 import { ToastProvider } from "~/components/Toaster";
 
-import SuperTokensProvider from "./SuperTokensProvider";
 import { UrqlProvider } from "./UrqlProvider";
 
 export const metadata: Metadata = {
@@ -37,29 +36,25 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <SuperTokensProvider>
-      <UrqlProvider>
-        <ToastProvider selector="#toast">
-          <html lang="ja">
-            <body className={clsx(["relative"], ["bg-slate-50"])}>
-              <GlobalNavigation
-                className={clsx(
-                  ["sticky"],
-                  ["top-0"],
-                  ["w-full"],
-                  ["h-[64px]"],
-                  ["z-1"]
-                )}
-              />
-              <div className={clsx(["min-h-[calc(100vh-64px)]"])}>
-                {children}
-              </div>
-              <GlobalFooter />
-              <div id="toast" />
-            </body>
-          </html>
-        </ToastProvider>
-      </UrqlProvider>
-    </SuperTokensProvider>
+    <UrqlProvider>
+      <ToastProvider selector="#toast">
+        <html lang="ja">
+          <body className={clsx(["relative"], ["bg-slate-50"])}>
+            <GlobalNavigation
+              className={clsx(
+                ["sticky"],
+                ["top-0"],
+                ["w-full"],
+                ["h-[64px]"],
+                ["z-1"]
+              )}
+            />
+            <div className={clsx(["min-h-[calc(100vh-64px)]"])}>{children}</div>
+            <GlobalFooter />
+            <div id="toast" />
+          </body>
+        </html>
+      </ToastProvider>
+    </UrqlProvider>
   );
 }

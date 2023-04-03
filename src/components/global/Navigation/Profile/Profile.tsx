@@ -1,7 +1,6 @@
 "use client";
 
 import clsx from "clsx";
-import Link from "next/link";
 import React from "react";
 import { useQuery } from "urql";
 
@@ -42,9 +41,26 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
           )}
         ></div>
       )}
+      <a
+        href="/api/auth/login"
+        className={clsx(
+          ["flex"],
+          ["flex-row"],
+          ["items-center"],
+          ["rounded"],
+          ["px-4"],
+          ["h-8"],
+          ["transition-colors", "duration-75"],
+          ["border", ["border-sky-400", "hover:border-sky-300"]],
+          ["bg-sky-400", ["bg-opacity-25", "hover:bg-opacity-40"]],
+          ["text-sky-400", "hover:text-sky-300"]
+        )}
+      >
+        <span>ログイン</span>
+      </a>
       {data?.whoami === null && (
-        <Link
-          href={"/auth"}
+        <a
+          href="/api/auth/login"
           className={clsx(
             ["flex"],
             ["flex-row"],
@@ -59,7 +75,7 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
           )}
         >
           <span>ログイン</span>
-        </Link>
+        </a>
       )}
       {data?.whoami && (
         <div className={clsx(["relative"], ["group"], ["flex"])}>
