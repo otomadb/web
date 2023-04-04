@@ -107,9 +107,16 @@ export default function UrqlProvider({ children }: { children: ReactNode }) {
                 return true;
               },
               async refreshAuth() {
-                accessToken = await getAccessTokenSilently().catch(
-                  () => undefined
-                );
+                accessToken = await getAccessTokenSilently({
+                  authorizationParams: {
+                    scope: [
+                      "create:mylist",
+                      "create:registration_request",
+                      "edit:mylist",
+                      "update:mylist_registration",
+                    ].join(" "),
+                  },
+                }).catch(() => undefined);
               },
             };
           }),
