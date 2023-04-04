@@ -2,8 +2,8 @@
 
 import "client-only";
 
-import { EditorPageGuard } from "./Guard";
+import { Guard } from "./Guard";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  return <EditorPageGuard>{children}</EditorPageGuard>;
+  return <Guard>{children}</Guard>;
 }

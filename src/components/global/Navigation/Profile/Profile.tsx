@@ -49,10 +49,6 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
             <button
               onClick={async () => {
                 await loginWithRedirect();
-                /*
-            const token = await getAccessTokenSilently();
-            if (token) setToken(token);
-            */
               }}
               className={clsx(
                 ["flex"],

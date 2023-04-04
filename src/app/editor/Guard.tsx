@@ -1,43 +1,16 @@
 "use client";
 import "client-only";
 
+import { withAuthenticationRequired } from "@auth0/auth0-react";
 import { ReactNode } from "react";
 
-import { graphql } from "~/gql";
-
-graphql(`
-  query EditorPages_Guard {
-    whoami {
-      id
-      isEditor
-    }
+export const Guard = withAuthenticationRequired(
+  ({ children }: { children: ReactNode }) => <>{children}</>,
+  {
+    loginOptions: {
+      authorizationParams: {
+        scope: ["create:video", "create:tag", "check:semitag"].join(" "),
+      },
+    },
   }
-`);
-export const EditorPageGuard: React.FC<{ children: ReactNode }> = ({
-  children,
-}) => {
-  return <>{children}</>;
-
-  /*
-  const [{ data, fetching }] = useQuery({
-    query: EditorPages_GuardDocument,
-    requestPolicy: "network-only",
-  });
-
-  if (fetching)
-    return (
-      <div>
-        <p>LOADING</p>
-      </div>
-    );
-
-  if (!data?.whoami?.isEditor)
-    return (
-      <div>
-        <p>編集者権限がありません。</p>
-      </div>
-    );
-
-  return <>{children}</>;
-  */
-};
+);

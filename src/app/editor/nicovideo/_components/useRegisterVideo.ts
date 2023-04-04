@@ -1,8 +1,8 @@
+import { useAuth0 } from "@auth0/auth0-react";
 import { ResultOf } from "@graphql-typed-document-node/core";
 import { useCallback } from "react";
 import { useMutation } from "urql";
 
-import { useGetAccessToken } from "~/auth0/useGetAccessToken";
 import { graphql } from "~/gql";
 
 const Mutation = graphql(`
@@ -28,7 +28,7 @@ export const useRegisterVideo = ({
   ): void;
 }) => {
   const [, register] = useMutation(Mutation);
-  const getAccessToken = useGetAccessToken();
+  const { getAccessTokenSilently } = useAuth0();
 
   return useCallback(
     async ({
@@ -46,7 +46,7 @@ export const useRegisterVideo = ({
       semitags: { name: string }[];
       nicovideoRequestId: string | null;
     }) => {
-      const accessToken = await getAccessToken({
+      const accessToken = await getAccessTokenSilently({
         authorizationParams: { scope: "create:video" },
       });
       const { data, error } = await register(
@@ -79,6 +79,6 @@ export const useRegisterVideo = ({
           return;
       }
     },
-    [onSuccess, register]
+    [getAccessTokenSilently, onSuccess, register]
   );
 };

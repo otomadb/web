@@ -1,8 +1,9 @@
 "use client";
+import { useAuth0 } from "@auth0/auth0-react";
 import { ResultOf } from "@graphql-typed-document-node/core";
+import { useCallback } from "react";
 import { useMutation } from "urql";
 
-import { useGetAccessToken } from "~/auth0/useGetAccessToken";
 import { graphql } from "~/gql";
 
 export const Mutation = graphql(`
@@ -29,26 +30,31 @@ const useResolve = (
   }
 ) => {
   const [, resolve] = useMutation(Mutation);
-  const getAccessToken = useGetAccessToken();
+  const { getAccessTokenSilently } = useAuth0();
 
-  return async ({ resolvedTo }: { resolvedTo: string }) => {
-    const accessToken = await getAccessToken({
-      authorizationParams: { scope: "check:semitag" },
-    });
+  return useCallback(
+    async ({ resolvedTo }: { resolvedTo: string }) => {
+      const accessToken = await getAccessTokenSilently({
+        authorizationParams: { scope: "check:semitag" },
+      });
 
-    const { error, data } = await resolve(
-      { tagId: resolvedTo, semitagId },
-      { fetchOptions: { headers: { authorization: `Bearer ${accessToken}` } } }
-    );
-    if (error || !data) return; // TODO
-    switch (data.resovleSemitag.__typename) {
-      case "ResolveSemitagSucceededPayload":
-        onSuccess(data.resovleSemitag);
-        return;
-      default:
-        return;
-    }
-  };
+      const { error, data } = await resolve(
+        { tagId: resolvedTo, semitagId },
+        {
+          fetchOptions: { headers: { authorization: `Bearer ${accessToken}` } },
+        }
+      );
+      if (error || !data) return; // TODO
+      switch (data.resovleSemitag.__typename) {
+        case "ResolveSemitagSucceededPayload":
+          onSuccess(data.resovleSemitag);
+          return;
+        default:
+          return;
+      }
+    },
+    [getAccessTokenSilently, onSuccess, resolve, semitagId]
+  );
 };
 
 export default useResolve;
