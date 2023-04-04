@@ -1,8 +1,8 @@
 import clsx from "clsx";
-import gqlRequest from "graphql-request";
 import React from "react";
 
 import { FragmentType, graphql, useFragment } from "~/gql";
+import { fetchGql } from "~/gql/fetch";
 
 import { ListItem } from "./RequestsListItem";
 
@@ -66,8 +66,7 @@ export const Presentation: React.FC<{
 };
 
 export default async function RequestsList() {
-  const data = await gqlRequest(
-    process.env.GRAPHQL_API_ENDPOINT,
+  const data = await fetchGql(
     graphql(`
       query HomePage_RecentNicovideoRequestsSection_RequestsList {
         ...HomePage_RecentNicovideoRequestsSection_RequestsList_Presentation
