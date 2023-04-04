@@ -56,7 +56,7 @@
   "devDependencies": {
     "@babel/core": "^7.20.7",
     "@graphql-codegen/cli": "^3.0.0",
-    "@graphql-codegen/client-preset": "^2.0.0",
+    "@graphql-codegen/client-preset": "^3.0.0",
     "@graphql-codegen/schema-ast": "^3.0.0",
     "@graphql-codegen/typescript-urql-graphcache": "^2.4.3",
     "@graphql-codegen/urql-introspection": "^2.2.1",
