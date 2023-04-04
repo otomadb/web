@@ -1,5 +1,6 @@
 "use client";
 
+import { useAuth0 } from "@auth0/auth0-react";
 import clsx from "clsx";
 import React from "react";
 import { useQuery } from "urql";
@@ -17,6 +18,7 @@ graphql(`
   }
 `);
 export const Profile: React.FC<{ className?: string }> = ({ className }) => {
+  const { loginWithRedirect } = useAuth0();
   const [{ data, fetching }] = useQuery({
     query: graphql(`
       query GlobalNav_Profile {
@@ -41,67 +43,60 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
           )}
         ></div>
       )}
-      <a
-        href="/api/auth/login"
-        className={clsx(
-          ["flex"],
-          ["flex-row"],
-          ["items-center"],
-          ["rounded"],
-          ["px-4"],
-          ["h-8"],
-          ["transition-colors", "duration-75"],
-          ["border", ["border-sky-400", "hover:border-sky-300"]],
-          ["bg-sky-400", ["bg-opacity-25", "hover:bg-opacity-40"]],
-          ["text-sky-400", "hover:text-sky-300"]
-        )}
-      >
-        <span>ログイン</span>
-      </a>
-      {data?.whoami === null && (
-        <a
-          href="/api/auth/login"
-          className={clsx(
-            ["flex"],
-            ["flex-row"],
-            ["items-center"],
-            ["rounded"],
-            ["px-4"],
-            ["h-8"],
-            ["transition-colors", "duration-75"],
-            ["border", ["border-sky-400", "hover:border-sky-300"]],
-            ["bg-sky-400", ["bg-opacity-25", "hover:bg-opacity-40"]],
-            ["text-sky-400", "hover:text-sky-300"]
+      {!fetching && (
+        <>
+          {data?.whoami === null && (
+            <button
+              onClick={async () => {
+                await loginWithRedirect();
+                /*
+            const token = await getAccessTokenSilently();
+            if (token) setToken(token);
+            */
+              }}
+              className={clsx(
+                ["flex"],
+                ["flex-row"],
+                ["items-center"],
+                ["rounded"],
+                ["px-4"],
+                ["h-8"],
+                ["transition-colors", "duration-75"],
+                ["border", ["border-sky-400", "hover:border-sky-300"]],
+                ["bg-sky-400", ["bg-opacity-25", "hover:bg-opacity-40"]],
+                ["text-sky-400", "hover:text-sky-300"]
+              )}
+            >
+              <span>ログイン</span>
+            </button>
           )}
-        >
-          <span>ログイン</span>
-        </a>
-      )}
-      {data?.whoami && (
-        <div className={clsx(["relative"], ["group"], ["flex"])}>
-          <div tabIndex={0}>
-            <UserIcon
-              className={clsx(["w-[32px]"], ["h-[32px]"])}
-              fragment={data.whoami}
-              size={32}
-            />
-          </div>
-          <Accordion
-            className={clsx(
-              ["w-[16rem]"],
-              [
-                "invisible",
-                "group-focus-within:visible",
-                "group-hover:visible",
-              ],
-              ["absolute"],
-              ["top-full"],
-              [["right-0", "xl:right-auto"], ["xl:-left-[7rem]"]],
-              ["mx-auto"]
-            )}
-            fragment={data.whoami}
-          />
-        </div>
+          {data?.whoami && (
+            <div className={clsx(["relative"], ["group"], ["flex"])}>
+              <div tabIndex={0}>
+                <UserIcon
+                  className={clsx(["w-[32px]"], ["h-[32px]"])}
+                  fragment={data.whoami}
+                  size={32}
+                />
+              </div>
+              <Accordion
+                className={clsx(
+                  ["w-[16rem]"],
+                  [
+                    "invisible",
+                    "group-focus-within:visible",
+                    "group-hover:visible",
+                  ],
+                  ["absolute"],
+                  ["top-full"],
+                  [["right-0", "xl:right-auto"], ["xl:-left-[7rem]"]],
+                  ["mx-auto"]
+                )}
+                fragment={data.whoami}
+              />
+            </div>
+          )}
+        </>
       )}
     </div>
   );

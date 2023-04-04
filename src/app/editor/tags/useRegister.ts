@@ -7,6 +7,7 @@ import { useCallback } from "react";
 import { SubmitHandler } from "react-hook-form";
 import { useMutation } from "urql";
 
+import { useGetAccessToken } from "~/auth0/useGetAccessToken";
 import { graphql } from "~/gql";
 
 import { FormSchema } from "./FormSchema";
@@ -32,6 +33,7 @@ export const useRegister = ({
   ): void;
 }): SubmitHandler<FormSchema> => {
   const [, mutateRegisterTag] = useMutation(Mutation);
+  const getAccessToken = useGetAccessToken();
 
   return useCallback(
     async ({
@@ -41,15 +43,24 @@ export const useRegister = ({
       implicitParents,
       resolveSemitags,
     }) => {
-      const { data, error } = await mutateRegisterTag({
-        input: {
-          primaryName,
-          extraNames: extraNames?.map(({ name }) => name),
-          explicitParent: explicitParentTagId,
-          implicitParents: implicitParents.map(({ tagId }) => tagId),
-          resolveSemitags: resolveSemitags.map(({ semitagId }) => semitagId),
-        },
+      const accessToken = await getAccessToken({
+        authorizationParams: { scope: "create:tag" },
       });
+
+      const { data, error } = await mutateRegisterTag(
+        {
+          input: {
+            primaryName,
+            extraNames: extraNames?.map(({ name }) => name),
+            explicitParent: explicitParentTagId,
+            implicitParents: implicitParents.map(({ tagId }) => tagId),
+            resolveSemitags: resolveSemitags.map(({ semitagId }) => semitagId),
+          },
+        },
+        {
+          fetchOptions: { headers: { authorization: `Bearer ${accessToken}` } },
+        }
+      );
       if (error || !data) {
         // TODO 重大な例外処理
         return;
@@ -65,6 +76,6 @@ export const useRegister = ({
         }
       }
     },
-    [mutateRegisterTag, onSuccess]
+    [getAccessToken, mutateRegisterTag, onSuccess]
   );
 };

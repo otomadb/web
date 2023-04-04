@@ -4,11 +4,11 @@ import clsx from "clsx";
 import type { Metadata } from "next";
 import React from "react";
 
+import Auth0Provider from "~/auth0/Provider";
 import { GlobalNavigation } from "~/components/global/Navigation/Navigation";
 import { GlobalFooter } from "~/components/GlobalFooter";
 import { ToastProvider } from "~/components/Toaster";
-
-import { UrqlProvider } from "./UrqlProvider";
+import UrqlProvider from "~/urql/Provider";
 
 export const metadata: Metadata = {
   title: "Otomadb",
@@ -36,25 +36,29 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <UrqlProvider>
-      <ToastProvider selector="#toast">
-        <html lang="ja">
-          <body className={clsx(["relative"], ["bg-slate-50"])}>
-            <GlobalNavigation
-              className={clsx(
-                ["sticky"],
-                ["top-0"],
-                ["w-full"],
-                ["h-[64px]"],
-                ["z-1"]
-              )}
-            />
-            <div className={clsx(["min-h-[calc(100vh-64px)]"])}>{children}</div>
-            <GlobalFooter />
-            <div id="toast" />
-          </body>
-        </html>
-      </ToastProvider>
-    </UrqlProvider>
+    <html lang="ja">
+      <Auth0Provider>
+        <UrqlProvider>
+          <ToastProvider selector="#toast">
+            <body className={clsx(["relative"], ["bg-slate-50"])}>
+              <GlobalNavigation
+                className={clsx(
+                  ["sticky"],
+                  ["top-0"],
+                  ["w-full"],
+                  ["h-[64px]"],
+                  ["z-1"]
+                )}
+              />
+              <div className={clsx(["min-h-[calc(100vh-64px)]"])}>
+                {children}
+              </div>
+              <GlobalFooter />
+              <div id="toast" />
+            </body>
+          </ToastProvider>
+        </UrqlProvider>
+      </Auth0Provider>
+    </html>
   );
 }

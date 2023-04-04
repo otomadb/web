@@ -2,7 +2,6 @@ import "server-only";
 
 import clsx from "clsx";
 
-import RecentNicovideoRequestsSection from "./_components/RecentNicovideoRequestsSection";
 import RecentVideosSection from "./_components/RecentVideosSection";
 
 export default async function Page() {
@@ -16,7 +15,7 @@ export default async function Page() {
       )}
     >
       <RecentVideosSection />
-      <RecentNicovideoRequestsSection />
+      {/* <RecentNicovideoRequestsSection /> */}
     </main>
   );
 }

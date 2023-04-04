@@ -2,6 +2,7 @@
 import { ResultOf } from "@graphql-typed-document-node/core";
 import { useMutation } from "urql";
 
+import { useGetAccessToken } from "~/auth0/useGetAccessToken";
 import { graphql } from "~/gql";
 
 export const Mutation = graphql(`
@@ -28,8 +29,17 @@ const useResolve = (
   }
 ) => {
   const [, resolve] = useMutation(Mutation);
+  const getAccessToken = useGetAccessToken();
+
   return async ({ resolvedTo }: { resolvedTo: string }) => {
-    const { error, data } = await resolve({ tagId: resolvedTo, semitagId });
+    const accessToken = await getAccessToken({
+      authorizationParams: { scope: "check:semitag" },
+    });
+
+    const { error, data } = await resolve(
+      { tagId: resolvedTo, semitagId },
+      { fetchOptions: { headers: { authorization: `Bearer ${accessToken}` } } }
+    );
     if (error || !data) return; // TODO
     switch (data.resovleSemitag.__typename) {
       case "ResolveSemitagSucceededPayload":

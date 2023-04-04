@@ -1,5 +1,6 @@
 "use client";
 
+import { useAuth0 } from "@auth0/auth0-react";
 import clsx from "clsx";
 import React, { ReactNode } from "react";
 
@@ -78,6 +79,7 @@ export const Accordion: React.FC<{
   className?: string;
   fragment: FragmentType<typeof Fragment>;
 }> = ({ className, ...props }) => {
+  const { logout } = useAuth0();
   const fragment = useFragment(Fragment, props.fragment);
 
   return (
@@ -169,15 +171,17 @@ export const Accordion: React.FC<{
           )}
         >
           <div className={clsx(["flex"])}>
-            <a
-              href="/api/auth/logout"
+            <button
+              onClick={() => {
+                logout();
+              }}
               className={clsx(
                 ["text-xs"],
                 ["text-slate-700", "hover:text-slate-500"]
               )}
             >
               ログアウト
-            </a>
+            </button>
           </div>
         </div>
       </div>
