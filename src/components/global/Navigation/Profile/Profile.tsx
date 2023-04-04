@@ -45,7 +45,7 @@ export const Profile: React.FC<{ className?: string }> = ({ className }) => {
       )}
       {!fetching && (
         <>
-          {data?.whoami === null && (
+          {!data?.whoami && (
             <button
               onClick={async () => {
                 await loginWithRedirect();
