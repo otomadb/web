@@ -2,6 +2,7 @@ import { ResultOf } from "@graphql-typed-document-node/core";
 import { useCallback } from "react";
 import { useMutation } from "urql";
 
+import { useGetAccessToken } from "~/auth0/useGetAccessToken";
 import { graphql } from "~/gql";
 
 const Mutation = graphql(`
@@ -27,6 +28,7 @@ export const useRegisterVideo = ({
   ): void;
 }) => {
   const [, register] = useMutation(Mutation);
+  const getAccessToken = useGetAccessToken();
 
   return useCallback(
     async ({
@@ -44,17 +46,25 @@ export const useRegisterVideo = ({
       semitags: { name: string }[];
       nicovideoRequestId: string | null;
     }) => {
-      const { data, error } = await register({
-        input: {
-          primaryTitle: title,
-          extraTitles: [],
-          primaryThumbnailUrl: thumbnailUrl,
-          tagIds: tags.map(({ tagId }) => tagId),
-          semitagNames: semitags.map(({ name }) => name),
-          sourceIds: [sourceId],
-          requestId: nicovideoRequestId,
-        },
+      const accessToken = await getAccessToken({
+        authorizationParams: { scope: "create:video" },
       });
+      const { data, error } = await register(
+        {
+          input: {
+            primaryTitle: title,
+            extraTitles: [],
+            primaryThumbnailUrl: thumbnailUrl,
+            tagIds: tags.map(({ tagId }) => tagId),
+            semitagNames: semitags.map(({ name }) => name),
+            sourceIds: [sourceId],
+            requestId: nicovideoRequestId,
+          },
+        },
+        {
+          fetchOptions: { headers: { authorization: `Bearer ${accessToken}` } },
+        }
+      );
       if (error || !data) {
         // TODO 重大な例外処理
         return;

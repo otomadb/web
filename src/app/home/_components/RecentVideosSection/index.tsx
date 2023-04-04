@@ -3,7 +3,7 @@ import { Suspense } from "react";
 
 import { AllVideosPageLink } from "~/app/videos/Link";
 
-import { RecentVideosList } from "./VideosList";
+import RecentVideoListSC from "./VideoList.server";
 
 const RecentVideosSection: React.FC = () => {
   return (
@@ -23,7 +23,7 @@ const RecentVideosSection: React.FC = () => {
       <div className={clsx(["mt-2"])}>
         <Suspense fallback={<span>LOADING</span>}>
           {/* @ts-expect-error for Server Component*/}
-          <RecentVideosList />
+          <RecentVideoListSC />
         </Suspense>
       </div>
     </section>

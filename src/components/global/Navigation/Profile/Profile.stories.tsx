@@ -10,7 +10,7 @@ export default {
   component: Profile,
   args: {},
   render: (args) => (
-    <Provider value={createClient({ url: "/graphql" })}>
+    <Provider value={createClient({ url: "/graphql", exchanges: [] })}>
       <Profile {...args} />
     </Provider>
   ),

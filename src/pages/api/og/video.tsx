@@ -2,10 +2,10 @@
 /* eslint-disable jsx-a11y/alt-text */
 
 import { ImageResponse } from "@vercel/og";
+import gqlRequest from "graphql-request";
 import { NextApiHandler } from "next";
 
 import { graphql } from "~/gql";
-import { fetchGql } from "~/gql/fetch";
 export const config = { runtime: "experimental-edge" };
 
 const img: NextApiHandler = async (req) => {
@@ -16,7 +16,8 @@ const img: NextApiHandler = async (req) => {
   if (!serial)
     return new Response("Video serial not provided", { status: 400 });
 
-  const { findVideo } = await fetchGql(
+  const { findVideo } = await gqlRequest(
+    process.env.GRAPHQL_API_ENDPOINT,
     graphql(`
       query OGImage_Video($serial: Int!) {
         findVideo(input: { serial: $serial }) {

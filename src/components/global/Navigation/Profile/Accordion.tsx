@@ -1,5 +1,6 @@
 "use client";
 
+import { useAuth0 } from "@auth0/auth0-react";
 import clsx from "clsx";
 import React, { ReactNode } from "react";
 
@@ -10,7 +11,6 @@ import { NicovideoRequestPageLink } from "~/app/request/nicovideo/Link";
 import { LinkUser } from "~/app/users/[name]/Link";
 import { YouLikesPageLink } from "~/app/you/likes/Link";
 import { YouMylistsPageLink } from "~/app/you/mylists/Link";
-import { LogoutButton } from "~/components/common/LogoutButton";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 const MenuItem: React.FC<{
@@ -79,6 +79,7 @@ export const Accordion: React.FC<{
   className?: string;
   fragment: FragmentType<typeof Fragment>;
 }> = ({ className, ...props }) => {
+  const { logout } = useAuth0();
   const fragment = useFragment(Fragment, props.fragment);
 
   return (
@@ -170,12 +171,17 @@ export const Accordion: React.FC<{
           )}
         >
           <div className={clsx(["flex"])}>
-            <LogoutButton
+            <button
+              onClick={() => {
+                logout();
+              }}
               className={clsx(
                 ["text-xs"],
                 ["text-slate-700", "hover:text-slate-500"]
               )}
-            />
+            >
+              ログアウト
+            </button>
           </div>
         </div>
       </div>

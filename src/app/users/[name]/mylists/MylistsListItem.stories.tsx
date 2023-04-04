@@ -23,7 +23,9 @@ const meta = {
   args: { Link: (props) => <a {...props} /> },
   render(args) {
     return (
-      <UrqlProvider value={createUrqlClient({ url: "/graphql" })}>
+      <UrqlProvider
+        value={createUrqlClient({ url: "/graphql", exchanges: [] })}
+      >
         <MylistListItem {...args} />
       </UrqlProvider>
     );

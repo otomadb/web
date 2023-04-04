@@ -21,7 +21,7 @@ import { Fragment as SuggestsFragment } from "./Suggests";
 const meta = {
   component: TagSearcher,
   render: (args) => (
-    <UrqlProvider value={createUrqlClient({ url: "/graphql" })}>
+    <UrqlProvider value={createUrqlClient({ url: "/graphql", exchanges: [] })}>
       <TagSearcher {...args} style={{ width: "320px" }} />
     </UrqlProvider>
   ),

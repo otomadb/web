@@ -2,10 +2,8 @@
 import "client-only";
 
 import { ReactNode } from "react";
-import { useQuery } from "urql";
 
 import { graphql } from "~/gql";
-import { EditorPages_GuardDocument } from "~/gql/graphql";
 
 graphql(`
   query EditorPages_Guard {
@@ -18,6 +16,9 @@ graphql(`
 export const EditorPageGuard: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
+  return <>{children}</>;
+
+  /*
   const [{ data, fetching }] = useQuery({
     query: EditorPages_GuardDocument,
     requestPolicy: "network-only",
@@ -38,4 +39,5 @@ export const EditorPageGuard: React.FC<{ children: ReactNode }> = ({
     );
 
   return <>{children}</>;
+  */
 };

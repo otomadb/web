@@ -15,7 +15,7 @@ import { Fragment as SuggestsFragment } from "./Suggests";
 const meta = {
   component: SearchBox,
   render: (args) => (
-    <UrqlProvider value={createUrqlClient({ url: "/graphql" })}>
+    <UrqlProvider value={createUrqlClient({ url: "/graphql", exchanges: [] })}>
       <SearchBox {...args} style={{ width: "320px" }} />
     </UrqlProvider>
   ),

@@ -1,10 +1,7 @@
-import "server-only";
-
 import clsx from "clsx";
 
 import { CommonVideoContainer } from "~/components/CommonVideoContainer";
 import { FragmentType, graphql, useFragment } from "~/gql";
-import { fetchGql } from "~/gql/fetch";
 
 export const Fragment = graphql(`
   fragment HomePage_RecentVideosSection_VideosList_Presentation on Query {
@@ -16,9 +13,12 @@ export const Fragment = graphql(`
     }
   }
 `);
-export const Presentation: React.FC<{
+
+export default function Component({
+  ...props
+}: {
   fragment: FragmentType<typeof Fragment>;
-}> = ({ ...props }) => {
+}) {
   const fragment = useFragment(Fragment, props.fragment);
 
   return (
@@ -59,18 +59,4 @@ export const Presentation: React.FC<{
       ))}
     </div>
   );
-};
-
-export async function RecentVideosList() {
-  const data = await fetchGql(
-    graphql(`
-      query HomePage_RecentVideosSection_VideosList {
-        ...HomePage_RecentVideosSection_VideosList_Presentation
-      }
-    `),
-    {},
-    { next: { revalidate: 0 } }
-  );
-
-  return <Presentation fragment={data} />;
 }

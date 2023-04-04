@@ -37,7 +37,7 @@ export const ExplicitParentTag: React.FC<{
   const [{ data }] = useQuery({
     query: RegisterTagPage_ExplicitParentTagDocument,
     pause: !explicitParentTagId,
-    variables: explicitParentTagId ? { id: explicitParentTagId } : undefined,
+    variables: { id: explicitParentTagId || "" }, // TODO: 要チェック
   });
 
   return (

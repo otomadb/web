@@ -10,9 +10,6 @@ const Mutation = graphql(`
   ) {
     requestNicovideoRegistration(input: $input) {
       __typename
-      ... on MutationAuthenticationError {
-        requiredRole
-      }
       ... on MutationTagNotFoundError {
         tagId
       }

@@ -6,12 +6,12 @@ import { Fragment as UserPageLinkFragment } from "~/app/users/[name]/Link";
 import { Fragment as UserIconFragment } from "~/components/common/UserIcon";
 import { makeFragmentData } from "~/gql";
 
-import { Fragment, Presentation } from "./RequestsList";
+import Component, { Fragment } from "./RequestsList";
 import { Fragment as ListItemFragment } from "./RequestsListItem";
 
 const meta = {
-  component: Presentation,
-} as Meta<typeof Presentation>;
+  component: Component,
+} as Meta<typeof Component>;
 export default meta;
 
 export const Primary: StoryObj<typeof meta> = {
