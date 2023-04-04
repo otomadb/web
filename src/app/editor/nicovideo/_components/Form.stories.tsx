@@ -33,7 +33,9 @@ const meta = {
   },
   render(args) {
     return (
-      <UrqlProvider value={createUrqlClient({ url: "/graphql" })}>
+      <UrqlProvider
+        value={createUrqlClient({ url: "/graphql", exchanges: [] })}
+      >
         <SourceIdContext.Provider
           value={{
             sourceId: "sm2057168",

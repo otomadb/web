@@ -25,7 +25,9 @@ const meta = {
   component: SourceChecker,
   render(args) {
     return (
-      <UrqlProvider value={createUrqlClient({ url: "/graphql" })}>
+      <UrqlProvider
+        value={createUrqlClient({ url: "/graphql", exchanges: [] })}
+      >
         <RegisterContext.Provider
           value={{
             setTitle: action("setTitle"),

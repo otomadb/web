@@ -25,7 +25,9 @@ const meta = {
   },
   render(args) {
     return (
-      <UrqlProvider value={createUrqlClient({ url: "/graphql" })}>
+      <UrqlProvider
+        value={createUrqlClient({ url: "/graphql", exchanges: [] })}
+      >
         <ToastContext.Provider value={{ call: action("callToast") }}>
           <SemitagRow {...args} />
         </ToastContext.Provider>

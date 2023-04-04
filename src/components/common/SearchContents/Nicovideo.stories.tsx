@@ -25,7 +25,9 @@ const meta = {
   },
   render(args) {
     return (
-      <UrqlProvider value={createUrqlClient({ url: "/graphql" })}>
+      <UrqlProvider
+        value={createUrqlClient({ url: "/graphql", exchanges: [] })}
+      >
         <SearchNicovideo {...args} />
       </UrqlProvider>
     );

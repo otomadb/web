@@ -8,7 +8,7 @@ import { cacheExchange } from "@urql/exchange-graphcache";
 import { ReactNode } from "react";
 import { createClient, fetchExchange, Provider } from "urql";
 
-import { GraphCacheConfig } from "~/gql/graphql";
+import schema from "~/gql/urql-introspection";
 
 export default function UrqlProvider({ children }: { children: ReactNode }) {
   const { getAccessTokenSilently } = useAuth0();
@@ -22,7 +22,8 @@ export default function UrqlProvider({ children }: { children: ReactNode }) {
           mode: "cors",
         },
         exchanges: [
-          cacheExchange<GraphCacheConfig>({
+          cacheExchange({
+            schema,
             keys: {
               SearchTagsPayload() {
                 return null;

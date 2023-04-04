@@ -8,8 +8,6 @@ export const fetchGql = async <T, V>(
   variables: V,
   fetchOptions: Partial<Pick<RequestInit, "next" | "headers">> = {}
 ): Promise<T> => {
-  console.log(process.env.GRAPHQL_API_ENDPOINT);
-
   const res = await fetch(process.env.GRAPHQL_API_ENDPOINT, {
     method: "POST",
     headers: {

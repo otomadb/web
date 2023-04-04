@@ -59,6 +59,7 @@
     "@graphql-codegen/client-preset": "^2.0.0",
     "@graphql-codegen/schema-ast": "^3.0.0",
     "@graphql-codegen/typescript-urql-graphcache": "^2.4.3",
+    "@graphql-codegen/urql-introspection": "^2.2.1",
     "@graphql-inspector/cli": "^3.4.6",
     "@graphql-typed-document-node/core": "^3.1.1",
     "@storybook/addon-actions": "7.0.0",

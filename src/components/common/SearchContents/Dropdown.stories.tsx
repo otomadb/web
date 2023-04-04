@@ -29,7 +29,9 @@ const meta = {
   args: {},
   render(args) {
     return (
-      <UrqlProvider value={createUrqlClient({ url: "/graphql" })}>
+      <UrqlProvider
+        value={createUrqlClient({ url: "/graphql", exchanges: [] })}
+      >
         <Dropdown {...args} />
       </UrqlProvider>
     );
