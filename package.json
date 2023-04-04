@@ -69,7 +69,7 @@
     "@storybook/cli": "7.0.0",
     "@storybook/nextjs": "7.0.0",
     "@storybook/react": "7.0.0",
-    "@storybook/testing-library": "^0.0.14-next.1",
+    "@storybook/testing-library": "^0.1.0",
     "@tailwindcss/container-queries": "^0.1.0",
     "@tsconfig/node18": "^1.0.1",
     "@types/node": "18",
