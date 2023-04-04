@@ -5,8 +5,8 @@ import type { Metadata } from "next";
 import React from "react";
 
 import Auth0Provider from "~/auth0/Provider";
-import { GlobalNavigation } from "~/components/global/Navigation/Navigation";
 import { GlobalFooter } from "~/components/GlobalFooter";
+import GlobalNav from "~/components/GlovalNav";
 import { ToastProvider } from "~/components/Toaster";
 import UrqlProvider from "~/urql/Provider";
 
@@ -41,7 +41,7 @@ export default function RootLayout({
         <UrqlProvider>
           <ToastProvider selector="#toast">
             <body className={clsx(["relative"], ["bg-slate-50"])}>
-              <GlobalNavigation
+              <GlobalNav
                 className={clsx(
                   ["sticky"],
                   ["top-0"],

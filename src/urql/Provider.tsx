@@ -101,6 +101,7 @@ export default function UrqlProvider({ children }: { children: ReactNode }) {
                     ? operation.context.fetchOptions()
                     : operation.context.fetchOptions || {};
                 const headers = new Headers(fetchOptions.headers);
+
                 if (headers.get("Authorization")) return operation;
 
                 return appendHeaders(operation, {
