@@ -2,12 +2,12 @@
 
 import "client-only";
 
+import { useAuth0 } from "@auth0/auth0-react";
 import { ResultOf } from "@graphql-typed-document-node/core";
 import { useCallback } from "react";
 import { SubmitHandler } from "react-hook-form";
 import { useMutation } from "urql";
 
-import { useGetAccessToken } from "~/auth0/useGetAccessToken";
 import { graphql } from "~/gql";
 
 import { FormSchema } from "./FormSchema";
@@ -33,7 +33,7 @@ export const useRegister = ({
   ): void;
 }): SubmitHandler<FormSchema> => {
   const [, mutateRegisterTag] = useMutation(Mutation);
-  const getAccessToken = useGetAccessToken();
+  const { getAccessTokenSilently } = useAuth0();
 
   return useCallback(
     async ({
@@ -43,7 +43,7 @@ export const useRegister = ({
       implicitParents,
       resolveSemitags,
     }) => {
-      const accessToken = await getAccessToken({
+      const accessToken = await getAccessTokenSilently({
         authorizationParams: { scope: "create:tag" },
       });
 
@@ -76,6 +76,6 @@ export const useRegister = ({
         }
       }
     },
-    [getAccessToken, mutateRegisterTag, onSuccess]
+    [getAccessTokenSilently, mutateRegisterTag, onSuccess]
   );
 };

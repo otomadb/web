@@ -14,6 +14,12 @@ export default function Provider({ children }: { children: ReactNode }) {
         audience: process.env.NEXT_PUBLIC_AUTH0_AUDIENCE,
         redirect_uri:
           typeof window === "object" ? window.location.origin : undefined,
+        scope: [
+          "create:mylist",
+          "create:registration_request",
+          "edit:mylist",
+          "update:mylist_registration",
+        ].join(" "),
       }}
     >
       {children}

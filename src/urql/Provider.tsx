@@ -90,33 +90,31 @@ export default function UrqlProvider({ children }: { children: ReactNode }) {
               },
             },
           }),
-          authExchange(async (utils) => {
-            let accessToken: string | undefined;
+          authExchange(async ({ appendHeaders }) => {
+            let token: string | undefined;
             return {
               addAuthToOperation(operation) {
-                if (!accessToken) return operation;
-                return utils.appendHeaders(operation, {
-                  Authorization: `Bearer ${accessToken}`,
+                if (!token) return operation;
+
+                const fetchOptions =
+                  typeof operation.context.fetchOptions === "function"
+                    ? operation.context.fetchOptions()
+                    : operation.context.fetchOptions || {};
+                const headers = new Headers(fetchOptions.headers);
+                if (headers.get("Authorization")) return operation;
+
+                return appendHeaders(operation, {
+                  Authorization: `Bearer ${token}`,
                 });
               },
-              willAuthError() {
-                return !accessToken;
-              },
-              didAuthError() {
-                // TODO: 原因が本当に認証エラーだったかどうかをチェックする
-                return true;
+              didAuthError(error) {
+                const f = error.graphQLErrors.find(
+                  ({ extensions }) => extensions.code === "NOT_AUTHENTICATED"
+                );
+                return !!f;
               },
               async refreshAuth() {
-                accessToken = await getAccessTokenSilently({
-                  authorizationParams: {
-                    scope: [
-                      "create:mylist",
-                      "create:registration_request",
-                      "edit:mylist",
-                      "update:mylist_registration",
-                    ].join(" "),
-                  },
-                }).catch(() => undefined);
+                token = await getAccessTokenSilently();
               },
             };
           }),
