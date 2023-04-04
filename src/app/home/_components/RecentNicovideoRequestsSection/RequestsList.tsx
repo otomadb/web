@@ -2,7 +2,6 @@ import clsx from "clsx";
 import React from "react";
 
 import { FragmentType, graphql, useFragment } from "~/gql";
-import { fetchGql } from "~/gql/fetch";
 
 import { ListItem } from "./RequestsListItem";
 
@@ -16,9 +15,11 @@ export const Fragment = graphql(`
     }
   }
 `);
-export const Presentation: React.FC<{
+export default function Component({
+  ...props
+}: {
   fragment: FragmentType<typeof Fragment>;
-}> = ({ ...props }) => {
+}) {
   const fragment = useFragment(Fragment, props.fragment);
 
   return (
@@ -63,18 +64,4 @@ export const Presentation: React.FC<{
       ))}
     </div>
   );
-};
-
-export default async function RequestsList() {
-  const data = await fetchGql(
-    graphql(`
-      query HomePage_RecentNicovideoRequestsSection_RequestsList {
-        ...HomePage_RecentNicovideoRequestsSection_RequestsList_Presentation
-      }
-    `),
-    {}
-  );
-
-  if (!data) return null;
-  return <Presentation fragment={data} />;
 }

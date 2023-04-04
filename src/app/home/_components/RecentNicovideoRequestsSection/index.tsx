@@ -3,7 +3,7 @@ import { Suspense } from "react";
 
 import { AllNicovideoRequestsPageLink } from "~/app/requests/nicovideo/Link";
 
-import RequestsList from "./RequestsList";
+import RequestsListSC from "./RequestsList.server";
 
 const RecentNicovideoRequestsSection: React.FC = () => {
   return (
@@ -23,7 +23,7 @@ const RecentNicovideoRequestsSection: React.FC = () => {
       <div className={clsx(["mt-2"])}>
         <Suspense fallback={<span>LOADING</span>}>
           {/* @ts-expect-error for Server Component*/}
-          <RequestsList />
+          <RequestsListSC />
         </Suspense>
       </div>
     </section>
