@@ -2,7 +2,6 @@ import "server-only";
 
 import clsx from "clsx";
 
-import RecentVideosSection from "~/app/home/_components/RecentVideosSection";
 import { SearchContents } from "~/components/common/SearchContents/SearchContents";
 import { Logo } from "~/components/Logo";
 
@@ -70,7 +69,7 @@ export default async function Page() {
         </div>
       </header>
       <div className={clsx(["w-full", "max-w-screen-xl"])}>
-        <RecentVideosSection />
+        {/* <RecentVideosSection /> */}
       </div>
     </main>
   );

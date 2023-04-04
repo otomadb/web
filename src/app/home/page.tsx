@@ -2,9 +2,6 @@ import "server-only";
 
 import clsx from "clsx";
 
-import RecentNicovideoRequestsSection from "./_components/RecentNicovideoRequestsSection";
-import RecentVideosSection from "./_components/RecentVideosSection";
-
 export const dynamic = "force-dynamic";
 
 export default async function Page() {
@@ -17,8 +14,8 @@ export default async function Page() {
         ["py-12"]
       )}
     >
-      <RecentVideosSection />
-      <RecentNicovideoRequestsSection />
+      {/* <RecentVideosSection /> */}
+      {/* <RecentNicovideoRequestsSection /> */}
     </main>
   );
 }
