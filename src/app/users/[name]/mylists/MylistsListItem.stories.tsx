@@ -34,6 +34,7 @@ const meta = {
     msw: {
       handlers: [
         graphql.query(UseViewerDocument, (req, res, ctx) =>
+          // @ts-ignore 一旦無視
           res(ctx.data({ whoami: null }))
         ),
       ],
