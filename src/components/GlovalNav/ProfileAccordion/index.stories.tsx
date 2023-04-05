@@ -4,7 +4,7 @@ import { Meta, StoryObj } from "@storybook/react";
 import { makeFragmentData } from "~/gql";
 import { aUser } from "~/gql/graphql";
 
-import { Accordion, Fragment } from "./Accordion";
+import { Accordion, Fragment } from ".";
 
 export default {
   component: Accordion,

@@ -13,6 +13,8 @@ import { YouLikesPageLink } from "~/app/you/likes/Link";
 import { YouMylistsPageLink } from "~/app/you/mylists/Link";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
+import AboutMe from "./AboutMe";
+
 const MenuItem: React.FC<{
   className?: string;
   Wrapper: React.FC<{
@@ -42,35 +44,12 @@ const MenuItem: React.FC<{
   );
 };
 
-export const ProfileFragment = graphql(`
-  fragment GlobalNav_Profile_Accordion_Profile on User {
-    name
-    displayName
-  }
-`);
-const Profile: React.FC<{
-  fragment: FragmentType<typeof ProfileFragment>;
-}> = ({ ...props }) => {
-  const fragment = useFragment(ProfileFragment, props.fragment);
-
-  return (
-    <div className={clsx(["py-3"], ["px-4"], ["bg-white/75"])}>
-      <div className={clsx(["text-slate-900"], ["text-sm"], ["font-bold"])}>
-        {fragment.displayName}
-      </div>
-      <div className={clsx(["text-slate-700"], ["text-xs"])}>
-        @{fragment.name}
-      </div>
-    </div>
-  );
-};
-
 export const Fragment = graphql(`
   fragment GlobalNav_Profile_Accordion on User {
     name
     isEditor
     isAdministrator
-    ...GlobalNav_Profile_Accordion_Profile
+    ...GlobalNav_Profile_Accordion_AboutMe
     ...Link_User
   }
 `);
@@ -93,7 +72,7 @@ export const Accordion: React.FC<{
           ["divide-y-2", "divide-y-slate-400"]
         )}
       >
-        <Profile fragment={fragment} />
+        <AboutMe fragment={fragment} />
         <div>
           <div
             className={clsx(

@@ -4,8 +4,9 @@ import { graphql } from "msw";
 import { Fragment as UserIconFragment } from "~/components/common/UserIcon";
 import { makeFragmentData } from "~/gql";
 
-import { Fragment as AccordionFragment } from "./Accordion";
-import { Fragment, Query } from "./Profile";
+import { Query } from ".";
+import { Fragment as AccordionFragment } from "./ProfileAccordion";
+import { Fragment } from "./ProfileIndicator";
 
 export const mockSuccessfulQuery = graphql.query(Query, (req, res, ctx) => {
   return res(

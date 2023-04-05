@@ -2,7 +2,11 @@ import { Meta, StoryObj } from "@storybook/react";
 import { createClient, fetchExchange, Provider as UrqlProvider } from "urql";
 
 import GlobalNav from ".";
-import { mockSuccessfulQuery as mockProfileSuccessfulQuery } from "./Profile.mocks";
+import {
+  mockLoadingQuery,
+  mockSuccessfulQuery,
+  mockUnauthorizedQuery,
+} from "./index.mocks";
 
 const meta = {
   component: GlobalNav,
@@ -22,15 +26,21 @@ const meta = {
       <GlobalNav {...args} />
     </UrqlProvider>
   ),
-  parameters: {
-    msw: {
-      handlers: {
-        profile: [mockProfileSuccessfulQuery],
-      },
-    },
-  },
 } as Meta<typeof GlobalNav>;
 
 export default meta;
 
-export const Primary: StoryObj<typeof GlobalNav> = {};
+export const LoggedIn: StoryObj<typeof meta> = {
+  name: "ログイン済み",
+  parameters: { msw: { handlers: [mockSuccessfulQuery] } },
+};
+
+export const NotLogin: StoryObj<typeof meta> = {
+  name: "未ログイン",
+  parameters: { msw: { handlers: [mockUnauthorizedQuery] } },
+};
+
+export const Loading: StoryObj<typeof meta> = {
+  name: "ユーザーをロード中",
+  parameters: { msw: { handlers: [mockLoadingQuery] } },
+};

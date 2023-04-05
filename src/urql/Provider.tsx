@@ -11,7 +11,7 @@ import { createClient, fetchExchange, Provider } from "urql";
 import schema from "~/gql/urql-introspection";
 
 export default function UrqlProvider({ children }: { children: ReactNode }) {
-  const { getAccessTokenSilently } = useAuth0();
+  const { getAccessTokenSilently, isAuthenticated } = useAuth0();
 
   return (
     <Provider
@@ -93,6 +93,19 @@ export default function UrqlProvider({ children }: { children: ReactNode }) {
           authExchange(async ({ appendHeaders }) => {
             let token: string | undefined;
             return {
+              willAuthError() {
+                return !isAuthenticated;
+              },
+              didAuthError(error) {
+                const f = error.graphQLErrors.find(
+                  ({ extensions }) => extensions.code === "NOT_AUTHENTICATED"
+                );
+                return !!f;
+              },
+              async refreshAuth() {
+                if (!isAuthenticated) return;
+                token = await getAccessTokenSilently();
+              },
               addAuthToOperation(operation) {
                 if (!token) return operation;
 
@@ -107,15 +120,6 @@ export default function UrqlProvider({ children }: { children: ReactNode }) {
                 return appendHeaders(operation, {
                   Authorization: `Bearer ${token}`,
                 });
-              },
-              didAuthError(error) {
-                const f = error.graphQLErrors.find(
-                  ({ extensions }) => extensions.code === "NOT_AUTHENTICATED"
-                );
-                return !!f;
-              },
-              async refreshAuth() {
-                token = await getAccessTokenSilently();
               },
             };
           }),
