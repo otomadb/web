@@ -19,7 +19,7 @@ graphql(`
       ... on SignoutSucceededPayload {
         session {
           user {
-            ...GlobalNav_Profile
+            ...GlobalNav_ProfileIndicator
           }
         }
       }
@@ -32,7 +32,7 @@ graphql(`
   query LogoutButton_FetchViewer {
     whoami {
       id
-      ...GlobalNav_Profile
+      ...GlobalNav_ProfileIndicator
     }
   }
 `);

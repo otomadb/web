@@ -11,7 +11,7 @@ import { createClient, fetchExchange, Provider } from "urql";
 import schema from "~/gql/urql-introspection";
 
 export default function UrqlProvider({ children }: { children: ReactNode }) {
-  const { getAccessTokenSilently } = useAuth0();
+  const { getAccessTokenSilently, isAuthenticated } = useAuth0();
 
   return (
     <Provider
@@ -93,19 +93,8 @@ export default function UrqlProvider({ children }: { children: ReactNode }) {
           authExchange(async ({ appendHeaders }) => {
             let token: string | undefined;
             return {
-              addAuthToOperation(operation) {
-                if (!token) return operation;
-
-                const fetchOptions =
-                  typeof operation.context.fetchOptions === "function"
-                    ? operation.context.fetchOptions()
-                    : operation.context.fetchOptions || {};
-                const headers = new Headers(fetchOptions.headers);
-                if (headers.get("Authorization")) return operation;
-
-                return appendHeaders(operation, {
-                  Authorization: `Bearer ${token}`,
-                });
+              willAuthError() {
+                return !isAuthenticated;
               },
               didAuthError(error) {
                 const f = error.graphQLErrors.find(
@@ -114,7 +103,23 @@ export default function UrqlProvider({ children }: { children: ReactNode }) {
                 return !!f;
               },
               async refreshAuth() {
+                if (!isAuthenticated) return;
                 token = await getAccessTokenSilently();
+              },
+              addAuthToOperation(operation) {
+                if (!token) return operation;
+
+                const fetchOptions =
+                  typeof operation.context.fetchOptions === "function"
+                    ? operation.context.fetchOptions()
+                    : operation.context.fetchOptions || {};
+                const headers = new Headers(fetchOptions.headers);
+
+                if (headers.get("Authorization")) return operation;
+
+                return appendHeaders(operation, {
+                  Authorization: `Bearer ${token}`,
+                });
               },
             };
           }),

@@ -88,10 +88,14 @@ self.addEventListener('fetch', function (event) {
   const { request } = event
   const accept = request.headers.get('accept') || ''
 
-  // Bypass server-sent events.
-  if (accept.includes('text/event-stream')) {
-    return
-  }
+  /**
+   * Urql v4のfetchExchagneが`text/event-stream`をfetch時に付けてmock不能になるのでこの処理はスキップする．
+   * @see https://github.com/urql-graphql/urql/issues/3114#a-rewrite-of-our-default-fetchhttp-transport-
+   */
+  // // Bypass server-sent events.
+  // if (accept.includes('text/event-stream')) {
+  //   return
+  // }
 
   // Bypass navigation requests.
   if (request.mode === 'navigate') {

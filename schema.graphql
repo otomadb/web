@@ -754,7 +754,7 @@ type Query {
   getYoutubeVideoSource(id: ID!): YoutubeVideoSource!
   searchTags(input: SearchTagInput!): SearchTagsPayload!
   searchVideos(input: SearchVideoInput!): SearchVideosPayload!
-  whoami: User @auth
+  whoami: User!  @auth
 }
 
 input RegisterCategoryTagInput {
