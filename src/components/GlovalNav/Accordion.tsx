@@ -42,9 +42,8 @@ const MenuItem: React.FC<{
   );
 };
 
-const ProfileFragment = graphql(`
+export const ProfileFragment = graphql(`
   fragment GlobalNav_Profile_Accordion_Profile on User {
-    id
     name
     displayName
   }

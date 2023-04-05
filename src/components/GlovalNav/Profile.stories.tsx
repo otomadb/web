@@ -1,73 +1,44 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { graphql } from "msw";
-import { createClient, Provider } from "urql";
+import { createClient, fetchExchange, Provider as UrqlProvider } from "urql";
 
-import { aUser, UseViewerDocument } from "~/gql/graphql";
+import Profile from "./Profile";
+import {
+  mockLoadingQuery,
+  mockSuccessfulQuery,
+  mockUnauthorizedQuery,
+} from "./Profile.mocks";
 
-import { Profile } from "./Profile";
-
-export default {
+const meta = {
   component: Profile,
-  args: {},
+  args: {
+    style: {
+      width: "144px",
+    },
+  },
   render: (args) => (
-    <Provider value={createClient({ url: "/graphql", exchanges: [] })}>
+    <UrqlProvider
+      value={createClient({
+        url: "/graphql",
+        exchanges: [fetchExchange],
+      })}
+    >
       <Profile {...args} />
-    </Provider>
+    </UrqlProvider>
   ),
-  parameters: {
-    layout: "centered",
-    msw: {
-      handlers: [
-        graphql.query(UseViewerDocument, (req, res, ctx) => {
-          return res(
-            ctx.data({
-              whoami: aUser({
-                id: "1",
-                name: "SnO2WMaN",
-                displayName: "SnO2WMaN",
-                icon: "/storybook/512x512.png",
-              }),
-            })
-          );
-        }),
-      ],
-    },
-  },
 } as Meta<typeof Profile>;
+export default meta;
 
-export const Primary: StoryObj<typeof Profile> = {
-  args: {},
-};
-
-export const LoggedIn: StoryObj<typeof Profile> = {
+export const LoggedIn: StoryObj<typeof meta> = {
   name: "ログイン済み",
-  args: {},
+  parameters: { msw: { handlers: [mockSuccessfulQuery] } },
 };
 
-export const NotLogin: StoryObj<typeof Profile> = {
+export const NotLogin: StoryObj<typeof meta> = {
   name: "未ログイン",
-  args: {},
-  parameters: {
-    msw: {
-      handlers: [
-        graphql.query(UseViewerDocument, (req, res, ctx) => {
-          return res(ctx.delay(500), ctx.data({ whoami: null }));
-        }),
-      ],
-    },
-  },
+  parameters: { msw: { handlers: [mockUnauthorizedQuery] } },
 };
 
-export const Loading: StoryObj<typeof Profile> = {
+export const Loading: StoryObj<typeof meta> = {
   name: "ユーザーをロード中",
-  args: {},
-  parameters: {
-    msw: {
-      handlers: [
-        graphql.query(UseViewerDocument, async (req, res, ctx) => {
-          return res(ctx.delay("infinite"));
-        }),
-      ],
-    },
-  },
+  parameters: { msw: { handlers: [mockLoadingQuery] } },
 };

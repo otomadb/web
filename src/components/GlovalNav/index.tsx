@@ -1,14 +1,21 @@
 "use client";
 
 import clsx from "clsx";
+import { CSSProperties } from "react";
 
 import { TopLink } from "~/app/Link";
 import { SearchContents } from "~/components/common/SearchContents/SearchContents";
 
 import { Logo } from "../Logo";
-import { Profile } from "./Profile";
+import Profile from "./Profile";
 
-export default function GlobalNav({ className }: { className?: string }) {
+export default function GlobalNav({
+  className,
+  style,
+}: {
+  className?: string;
+  style?: CSSProperties;
+}) {
   return (
     <nav
       className={clsx(
@@ -17,6 +24,7 @@ export default function GlobalNav({ className }: { className?: string }) {
         ["bg-slate-900"],
         ["shadow-lg"]
       )}
+      style={style}
     >
       <div
         className={clsx(
@@ -42,15 +50,7 @@ export default function GlobalNav({ className }: { className?: string }) {
         <div className={clsx(["flex-grow"])}>
           <SearchContents className={clsx(["mx-auto"])} />
         </div>
-        <div
-          className={clsx(
-            ["w-36"],
-            ["flex-shrink-0"],
-            ["flex", ["justify-center"]]
-          )}
-        >
-          <Profile />
-        </div>
+        <Profile className={clsx(["w-36"], ["flex-shrink-0"])} />
       </div>
     </nav>
   );
