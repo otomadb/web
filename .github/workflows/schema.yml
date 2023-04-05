@@ -35,7 +35,7 @@ jobs:
       - run: pnpm run schema:introspect $GRAPHQL_API_ENDPOINT
         env:
           GRAPHQL_API_ENDPOINT: "${{ vars.GRAPHQL_API_ENDPOINT }}"
-      - uses: peter-evans/create-pull-request@v4
+      - uses: peter-evans/create-pull-request@v5
         with:
           token: "${{ secrets.UPDATE_SCHEMA_GITHUB_TOKEN }}"
           title: "chore(schema): Update `graphql.schema`"
