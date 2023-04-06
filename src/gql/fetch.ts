@@ -3,6 +3,8 @@ import "server-only";
 import { TypedDocumentNode } from "@graphql-typed-document-node/core";
 import { DocumentNode, Kind, print } from "graphql";
 
+import { err, ok, Result } from "~/utils/Result";
+
 /** Returns the name of the `DocumentNode`'s operation, if any.
  * @param query - A {@link DocumentNode}
  * @returns the operation's name contained within the document, or `undefined`
@@ -20,7 +22,13 @@ export const fetchGql3 = async <T, V extends Record<string, unknown>>(
   document: TypedDocumentNode<T, V>,
   variables: V,
   init?: Omit<RequestInit, "body" | "method">
-) =>
+): Promise<
+  Result<
+    | { type: "FETCH_ERROR"; status: number }
+    | { type: "GRAPHQL_ERROR"; errors: unknown },
+    T
+  >
+> =>
   fetch(process.env.GRAPHQL_API_ENDPOINT, {
     ...init,
     method: "POST",
@@ -34,11 +42,11 @@ export const fetchGql3 = async <T, V extends Record<string, unknown>>(
       operationName: getOperationName(document),
     }),
   }).then(async (res) => {
-    if (res.ok) {
-      const { errors, data } = await res.json();
-      if (errors) throw errors;
-      return data as T;
-    }
+    if (!res.ok) return err({ type: "FETCH_ERROR", status: res.status });
+
+    const { errors, data } = await res.json();
+    if (errors) return err({ type: "GRAPHQL_ERROR", errors });
+    return ok(data as T);
   });
 
 export const fetchGql = async <T, V>(

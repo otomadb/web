@@ -1,9 +1,14 @@
 import clsx from "clsx";
+import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
-import DetailsSectionSC from "./_components/DetailsSection/index.server";
-import SemitagsSectionSC from "./_components/SemitagsSection/index.server";
-import TagsSectionSC from "./_components/TagsSection/index.server";
+import { graphql } from "~/gql";
+import { fetchGql3 } from "~/gql/fetch";
+import { isErr } from "~/utils/Result";
+
+import DetailsSection from "./DetailsSection.server";
+import SemitagsSectionContents from "./SemitagsSectionContents.server";
+import TaggingsSectionContents from "./TaggingsSectionContents.server";
 
 export default async function Layout({
   children,
@@ -12,7 +17,27 @@ export default async function Layout({
   children: React.ReactNode;
   params: { serial: string };
 }) {
-  const serial = parseInt(params.serial, 10);
+  const data = await fetchGql3(
+    graphql(`
+      query VideoPageLayout($serial: Int!) {
+        findVideo(input: { serial: $serial }) {
+          ...VideoPageLayout_DetailsSection
+          ...VideoPageLayout_TaggingsSectionContents
+          ...VideoPageLayout_SemitagsSectionContents
+        }
+      }
+    `),
+    { serial: parseInt(params.serial, 10) }
+  );
+  if (isErr(data)) {
+    switch (data.error.type) {
+      case "FETCH_ERROR":
+        throw new Error("Fetching error");
+      case "GRAPHQL_ERROR":
+        throw new Error("GraphQL Error");
+    }
+  }
+  if (!data.data.findVideo) notFound();
 
   return (
     <main
@@ -25,28 +50,37 @@ export default async function Layout({
     >
       <Suspense fallback={<p>動画情報を取得中です</p>}>
         {/* @ts-expect-error rsc */}
-        <DetailsSectionSC serial={serial} />
+        <DetailsSection
+          // fragment typecheck
+          fragment={data.data.findVideo}
+        />
       </Suspense>
       <div className={clsx(["flex", "gap-x-4"])}>
         <div
           className={clsx(
             ["flex-shrink-0"],
-            ["min-w-[256px]"],
+            ["w-[256px]"],
             ["flex", "flex-col", "gap-y-6"]
           )}
         >
           <section className={clsx(["flex", "flex-col", "gap-y-1"])}>
             <h2 className={clsx(["text-md"], ["text-slate-900"])}>タグ</h2>
             <Suspense fallback={<p>タグを取得中です</p>}>
-              {/* @ts-expect-error rsc */}
-              <TagsSectionSC serial={serial} />
+              {/* @ts-expect-error RSC */}
+              <TaggingsSectionContents
+                // fragment typecheck
+                fragment={data.data.findVideo}
+              />
             </Suspense>
           </section>
           <section className={clsx(["flex", "flex-col", "gap-y-1"])}>
             <h2 className={clsx(["text-md"], ["text-slate-900"])}>仮タグ</h2>
             <Suspense fallback={<p>仮タグを取得中です</p>}>
-              {/* @ts-expect-error rsc */}
-              <SemitagsSectionSC serial={serial} />
+              {/* @ts-expect-error RSC */}
+              <SemitagsSectionContents
+                // fragment typecheck
+                fragment={data.data.findVideo}
+              />
             </Suspense>
           </section>
         </div>

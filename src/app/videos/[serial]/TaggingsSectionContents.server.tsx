@@ -1,37 +1,51 @@
 import clsx from "clsx";
-import React from "react";
 
 import { LinkTag } from "~/app/tags/[serial]/Link";
 import { TagType } from "~/components/common/TagType";
 import { CommonTag } from "~/components/CommonTag";
 import { FragmentType, graphql, useFragment } from "~/gql";
+import { fetchGql3 } from "~/gql/fetch";
+import { isErr } from "~/utils/Result";
 
 export const Fragment = graphql(`
-  fragment VideoPageLayout_TagsSection on Video {
-    taggings {
-      nodes {
-        id
-        tag {
-          ...Link_Tag
-          ...CommonTag
-          ...TagType
-          id
-          type
-        }
-      }
-    }
+  fragment VideoPageLayout_TaggingsSectionContents on Video {
+    id
   }
 `);
-export const TagsSection = ({
+export default async function TagsSectionSC({
   ...props
 }: {
   fragment: FragmentType<typeof Fragment>;
-}) => {
+}) {
   const fragment = useFragment(Fragment, props.fragment);
+  const result = await fetchGql3(
+    graphql(`
+      query VideoPageLayout_TaggingsSectionContentsQuery($id: ID!) {
+        getVideo(id: $id) {
+          taggings {
+            nodes {
+              id
+              tag {
+                ...Link_Tag
+                ...CommonTag
+                ...TagType
+                id
+                type
+              }
+            }
+          }
+        }
+      }
+    `),
+    { id: fragment.id }
+  );
+  if (isErr(result)) throw new Error("Failed to fetch video taggings");
+
+  const { taggings } = result.data.getVideo;
   return (
     <div className={clsx(["flex", "flex-col"], ["gap-y-1"])}>
       <div className={clsx("flex", "gap-x-2", "gap-y-1")}>
-        {fragment.taggings.nodes
+        {taggings.nodes
           .filter(
             ({ tag: { type: t1 } }, i, arr) =>
               i === arr.findIndex(({ tag: { type: t2 } }) => t1 === t2)
@@ -45,7 +59,7 @@ export const TagsSection = ({
           ))}
       </div>
       <div className={clsx(["flex", "flex-col", "items-start", "gap-y-0.5"])}>
-        {fragment.taggings.nodes.map((tagging) => (
+        {taggings.nodes.map((tagging) => (
           <div key={tagging.id} className={clsx(["flex"])}>
             <LinkTag fragment={tagging.tag}>
               <CommonTag
@@ -58,4 +72,4 @@ export const TagsSection = ({
       </div>
     </div>
   );
-};
+}
