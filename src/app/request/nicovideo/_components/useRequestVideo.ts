@@ -18,9 +18,6 @@ const Mutation = graphql(`
           id
         }
       }
-      ... on RequestNicovideoRegistrationOtherErrorsFallback {
-        message
-      }
       ... on RequestNicovideoRegistrationSucceededPayload {
         ...RequestNicovideoRegistrationPage_SuccessToast
       }
