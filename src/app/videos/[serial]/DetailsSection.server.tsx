@@ -58,7 +58,7 @@ export default async function DetailsSectionSC({
           >
             <LinkVideo fragment={getVideo}>{getVideo.title}</LinkVideo>
           </h1>
-          <LikeButton className={clsx(["mt-2"])} videoId={fragment.id} />
+          <LikeButton className={clsx(["mt-2"])} fragment={getVideo} />
           <LinkVideoEvents fragment={getVideo}>編集履歴を見る</LinkVideoEvents>
         </div>
       </div>

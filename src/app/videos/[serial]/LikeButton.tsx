@@ -2,9 +2,7 @@
 import "client-only";
 
 import { useAuth0 } from "@auth0/auth0-react";
-import { css, keyframes } from "@emotion/css";
 import { ResultOf } from "@graphql-typed-document-node/core";
-import { HeartIcon as OutlikeHeartIcon } from "@heroicons/react/24/outline";
 import { HeartIcon as SolidHeartIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 import React, { useCallback, useMemo } from "react";
@@ -17,14 +15,21 @@ export const LikeVideoMutation = graphql(`
   mutation VideoPage_LikeButton_AddLike($videoId: ID!) {
     likeVideo(input: { videoId: $videoId }) {
       __typename
+      ... on LikeVideoAlreadyLikedError {
+        registration {
+          id
+          video {
+            id
+            isLiked
+          }
+        }
+      }
       ... on LikeVideoSucceededPayload {
         registration {
           id
           video {
             id
-            like {
-              id
-            }
+            isLiked
           }
         }
       }
@@ -78,14 +83,18 @@ export const UndoLikeVideoMutation = graphql(`
   mutation VideoPage_LikeButton_RemoveLike($videoId: ID!) {
     undoLikeVideo(input: { videoId: $videoId }) {
       __typename
+      ... on UndoLikeVideoNotLikedError {
+        video {
+          id
+          isLiked
+        }
+      }
       ... on UndoLikeVideoSucceededPayload {
         registration {
           id
           video {
             id
-            like {
-              id
-            }
+            isLiked
           }
         }
       }
@@ -144,24 +153,22 @@ export const LikeButton: React.FC<{
   className?: string;
   fragment: FragmentType<typeof VideoFragment>;
 }> = ({ className, ...props }) => {
+  const { isAuthenticated } = useAuth0();
   const fragment = useFragment(VideoFragment, props.fragment);
   const [{ data: currentData, fetching }] = useQuery({
     query: graphql(`
       query VideoPage_LikeButtonCurrentLike($videoId: ID!) {
-        whoami {
-          id
-        }
         getVideo(id: $videoId) {
           id
-          like {
-            id
-          }
+          isLiked
         }
       }
     `),
     variables: { videoId: fragment.id },
+    pause: !isAuthenticated,
   });
 
+  const callToast = useToaster();
   const likeVideo = useLikeVideo({
     videoId: fragment.id,
     // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -175,25 +182,26 @@ export const LikeButton: React.FC<{
 
   const liked = useMemo(
     () =>
-      currentData?.getVideo.like === undefined
+      typeof currentData?.getVideo.isLiked !== "boolean"
         ? undefined
-        : currentData.getVideo.like !== null,
-    [currentData?.getVideo.like]
+        : currentData?.getVideo.isLiked,
+    [currentData?.getVideo.isLiked]
   );
 
-  const callToast = useToaster();
   const handleClick = useCallback(() => {
-    if (currentData?.whoami === null) {
+    if (liked === undefined) {
       callToast(<p>動画をいいねするにはログインが必要です。</p>);
       return;
     }
     if (liked) undoLikeVideo();
     else likeVideo();
-  }, [currentData?.whoami, liked, undoLikeVideo, likeVideo, callToast]);
+  }, [callToast, likeVideo, liked, undoLikeVideo]);
 
   return (
     <button
-      disabled={fetching}
+      role="checkbox"
+      aria-checked={liked === undefined ? "mixed" : liked ? "true" : "false"}
+      disabled={liked === undefined}
       className={clsx(
         className,
         "group",
@@ -201,27 +209,32 @@ export const LikeButton: React.FC<{
         ["transition-colors", "duration-100"],
         [
           "border",
-
-          liked && ["border-pink-400"],
-          !liked && ["border-slate-400"],
+          "border-slate-400",
+          "disabled:border-slate-300",
+          "aria-checked:border-pink-400",
         ],
         [
-          liked && [["bg-opacity-25", "hover:bg-opacity-40"], "bg-pink-300"],
-          !liked && [["bg-opacity-25", "hover:bg-opacity-50"], "bg-slate-300"],
+          "bg-slate-300",
+          "disabled:bg-slate-200",
+          ["aria-checked:bg-pink-200", "aria-checked:hover:bg-pink-300"],
         ],
         ["rounded-md"],
-        ["flex", ["items-center"]]
+        ["flex", "items-center"]
       )}
       onClick={() => handleClick()}
     >
       <div>
-        {liked && (
-          <SolidHeartIcon
-            className={clsx(
-              ["w-4"],
-              ["h-4"],
-              ["transition-colors", "duration-75"],
-              ["text-pink-600", "group-hover:text-pink-500"],
+        <SolidHeartIcon
+          className={clsx(
+            ["w-4", "h-4"],
+            ["transition-colors", "duration-75"],
+            ["group-disabled:text-slate-300"],
+            ["text-slate-400", "group-hover:text-slate-500"],
+            [
+              "group-aria-checked:text-pink-600",
+              "group-aria-checked:group-hover:text-pink-500",
+            ]
+            /*
               css`
                 animation-name: ${keyframes`
                   from {
@@ -242,28 +255,20 @@ export const LikeButton: React.FC<{
                   1.395
                 );
               `
-            )}
-          />
-        )}
-        {!liked && (
-          <OutlikeHeartIcon
-            className={clsx(
-              ["w-4"],
-              ["h-4"],
-              ["transition-colors", "duration-75"],
-              [["text-slate-500", "group-hover:text-slate-600"]]
-            )}
-          />
-        )}
+              */
+          )}
+        />
       </div>
       <div
         className={clsx(
           ["ml-1"],
           ["text-sm"],
           ["transition-colors", "duration-75"],
+          ["group-disabled:text-slate-300"],
+          ["text-slate-400", "group-hover:text-slate-500"],
           [
-            liked && ["text-pink-600", "group-hover:text-pink-500"],
-            !liked && ["text-slate-500", "group-hover:text-slate-600"],
+            "group-aria-checked:text-pink-600",
+            "group-aria-checked:group-hover:text-pink-500",
           ]
         )}
       >

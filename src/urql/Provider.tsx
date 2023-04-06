@@ -16,9 +16,8 @@ export default function UrqlProvider({ children }: { children: ReactNode }) {
   return (
     <Provider
       value={createClient({
-        url: "/api/graphql", // process.env.NEXT_PUBLIC_GRAPHQL_API_ENDPOINT,
+        url: process.env.NEXT_PUBLIC_GRAPHQL_API_ENDPOINT,
         fetchOptions: {
-          // credentials: "include",
           mode: "cors",
         },
         exchanges: [
@@ -91,35 +90,49 @@ export default function UrqlProvider({ children }: { children: ReactNode }) {
             },
           }),
           authExchange(async ({ appendHeaders }) => {
-            let token: string | undefined;
+            let accessToken: string | undefined = isAuthenticated
+              ? await getAccessTokenSilently()
+              : undefined;
             return {
-              willAuthError() {
-                return !isAuthenticated;
+              willAuthError(operation) {
+                return (
+                  // `Query.whoami`を取得しようとしたときは前もって認証を行うように伝える
+                  operation.kind === "query" &&
+                  operation.query.definitions.some(
+                    (definition) =>
+                      definition.kind === "OperationDefinition" &&
+                      definition.selectionSet.selections.some(
+                        (node) =>
+                          node.kind === "Field" && node.name.value === "whoami"
+                      )
+                  )
+                );
               },
               didAuthError(error) {
-                const f = error.graphQLErrors.find(
+                return error.graphQLErrors.some(
                   ({ extensions }) => extensions.code === "NOT_AUTHENTICATED"
                 );
-                return !!f;
               },
               async refreshAuth() {
                 if (!isAuthenticated) return;
-                token = await getAccessTokenSilently();
+                accessToken = await getAccessTokenSilently();
               },
               addAuthToOperation(operation) {
-                if (!token) return operation;
-
+                // Authorization header is already set
                 const fetchOptions =
                   typeof operation.context.fetchOptions === "function"
                     ? operation.context.fetchOptions()
                     : operation.context.fetchOptions || {};
                 const headers = new Headers(fetchOptions.headers);
-
                 if (headers.get("Authorization")) return operation;
 
-                return appendHeaders(operation, {
-                  Authorization: `Bearer ${token}`,
-                });
+                // token is set
+                if (accessToken)
+                  return appendHeaders(operation, {
+                    Authorization: `Bearer ${accessToken}`,
+                  });
+
+                return operation;
               },
             };
           }),

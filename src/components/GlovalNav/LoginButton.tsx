@@ -1,13 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import clsx from "clsx";
 
-export default function LoginButton({
-  className,
-  update,
-}: {
-  className?: string;
-  update(): void;
-}) {
+export default function LoginButton({ className }: { className?: string }) {
   const { loginWithRedirect } = useAuth0();
 
   return (
