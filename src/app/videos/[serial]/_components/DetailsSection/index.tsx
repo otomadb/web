@@ -9,11 +9,13 @@ import { LinkVideoEvents } from "~/app/videos/[serial]/events/Link";
 import { VideoThumbnail } from "~/components/common/VideoThumbnail";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
+import { LinkVideo } from "../../Link";
 import { LikeButton } from "./LikeButton";
 
 export const Fragment = graphql(`
-  fragment VideoPage_DetailsSection on Video {
+  fragment VideoPageLayout_DetailsSection on Video {
     ...VideoThumbnail
+    ...Link_Video
     ...Link_VideoEvents
     id
     title
@@ -31,17 +33,21 @@ export const Fragment = graphql(`
     }
   }
 `);
-export const Details: React.FC<{
+
+export default function DetailsSection({
+  className,
+  ...props
+}: {
   className?: string;
   fragment: FragmentType<typeof Fragment>;
-}> = ({ className, ...props }) => {
+}) {
   const fragment = useFragment(Fragment, props.fragment);
   const [thumbnail, setThumbnail] = useState<
     "ORIGINAL" | ["NICOVIDEO", string] | ["YOUTUBE", string]
   >("ORIGINAL");
 
   return (
-    <div className={clsx(className, ["@container/details"])}>
+    <section className={clsx(className, ["@container/details"])}>
       <div
         className={clsx(
           ["flex", ["flex-col", "@[1024px]/details:flex-row"]],
@@ -157,12 +163,12 @@ export const Details: React.FC<{
               ["text-slate-900"]
             )}
           >
-            {fragment.title}
+            <LinkVideo fragment={fragment}>{fragment.title}</LinkVideo>
           </h1>
           <LikeButton className={clsx(["mt-2"])} videoId={fragment.id} />
           <LinkVideoEvents fragment={fragment}>編集履歴を見る</LinkVideoEvents>
         </div>
       </div>
-    </div>
+    </section>
   );
-};
+}

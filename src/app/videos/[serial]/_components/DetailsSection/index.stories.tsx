@@ -3,12 +3,12 @@ import { Meta, StoryObj } from "@storybook/react";
 import { makeFragmentData } from "~/gql";
 import { aNicovideoVideoSource, aVideo } from "~/gql/graphql";
 
-import { Details, Fragment } from "./Details";
+import DetailsSection, { Fragment } from ".";
 
 const meta = {
-  component: Details,
+  component: DetailsSection,
   args: {},
-} as Meta<typeof Details>;
+} as Meta<typeof DetailsSection>;
 export default meta;
 
 export const Primary: StoryObj<typeof meta> = {
