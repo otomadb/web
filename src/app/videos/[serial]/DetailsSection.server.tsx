@@ -27,6 +27,7 @@ export default async function DetailsSectionSC({
           ...Link_Video
           ...Link_VideoEvents
           ...VideoPageLayout_DetailsSection_VideoPreview
+          ...VideoPage_LikeButton
           id
           title
         }
