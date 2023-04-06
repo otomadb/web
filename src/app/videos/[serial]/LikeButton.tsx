@@ -2,160 +2,29 @@
 import "client-only";
 
 import { useAuth0 } from "@auth0/auth0-react";
-import { ResultOf } from "@graphql-typed-document-node/core";
 import { HeartIcon as SolidHeartIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 import React, { useCallback, useMemo } from "react";
-import { useMutation, useQuery } from "urql";
+import { useQuery } from "urql";
 
 import { useToaster } from "~/components/Toaster";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-export const LikeVideoMutation = graphql(`
-  mutation VideoPage_LikeButton_AddLike($videoId: ID!) {
-    likeVideo(input: { videoId: $videoId }) {
-      __typename
-      ... on LikeVideoAlreadyLikedError {
-        registration {
-          id
-          video {
-            id
-            isLiked
-          }
-        }
-      }
-      ... on LikeVideoSucceededPayload {
-        registration {
-          id
-          video {
-            id
-            isLiked
-          }
-        }
-      }
-    }
-  }
-`);
-export const useLikeVideo = ({
-  videoId,
-  onSuccess,
-}: {
-  videoId: string;
-  onSuccess(
-    data: Extract<
-      ResultOf<typeof LikeVideoMutation>["likeVideo"],
-      { __typename: "LikeVideoSucceededPayload" }
-    >
-  ): void;
-}) => {
-  const [, mutateRegisterTag] = useMutation(LikeVideoMutation);
-  const { getAccessTokenSilently } = useAuth0();
+import { useLikeVideo } from "./useLikeVideo";
+import { useUndoLikeVideo } from "./useUndoLikeVideo";
 
-  return useCallback(async () => {
-    const accessToken = await getAccessTokenSilently({
-      authorizationParams: { scope: "update:mylist_registration" },
-    });
-
-    const { data, error } = await mutateRegisterTag(
-      { videoId },
-      {
-        fetchOptions: { headers: { authorization: `Bearer ${accessToken}` } },
-      }
-    );
-    if (error || !data) {
-      // TODO 重大な例外処理
-      return;
-    }
-
-    switch (data.likeVideo.__typename) {
-      case "LikeVideoSucceededPayload": {
-        onSuccess(data.likeVideo);
-        return;
-      }
-      default: {
-        return;
-      }
-    }
-  }, [getAccessTokenSilently, mutateRegisterTag, onSuccess, videoId]);
-};
-
-export const UndoLikeVideoMutation = graphql(`
-  mutation VideoPage_LikeButton_RemoveLike($videoId: ID!) {
-    undoLikeVideo(input: { videoId: $videoId }) {
-      __typename
-      ... on UndoLikeVideoNotLikedError {
-        video {
-          id
-          isLiked
-        }
-      }
-      ... on UndoLikeVideoSucceededPayload {
-        registration {
-          id
-          video {
-            id
-            isLiked
-          }
-        }
-      }
-    }
-  }
-`);
-export const useUndoLikeVideo = ({
-  videoId,
-  onSuccess,
-}: {
-  videoId: string;
-  onSuccess(
-    data: Extract<
-      ResultOf<typeof UndoLikeVideoMutation>["undoLikeVideo"],
-      { __typename: "UndoLikeVideoSucceededPayload" }
-    >
-  ): void;
-}) => {
-  const [, mutateRegisterTag] = useMutation(UndoLikeVideoMutation);
-  const { getAccessTokenSilently } = useAuth0();
-
-  return useCallback(async () => {
-    const accessToken = await getAccessTokenSilently({
-      authorizationParams: { scope: "update:mylist_registration" },
-    });
-
-    const { data, error } = await mutateRegisterTag(
-      { videoId },
-      {
-        fetchOptions: { headers: { authorization: `Bearer ${accessToken}` } },
-      }
-    );
-    if (error || !data) {
-      // TODO 重大な例外処理
-      return;
-    }
-
-    switch (data.undoLikeVideo.__typename) {
-      case "UndoLikeVideoSucceededPayload": {
-        onSuccess(data.undoLikeVideo);
-        return;
-      }
-      default: {
-        return;
-      }
-    }
-  }, [getAccessTokenSilently, mutateRegisterTag, onSuccess, videoId]);
-};
-
-const VideoFragment = graphql(`
+export const Fragment = graphql(`
   fragment VideoPage_LikeButton on Video {
     id
   }
 `);
 export const LikeButton: React.FC<{
   className?: string;
-  fragment: FragmentType<typeof VideoFragment>;
+  fragment: FragmentType<typeof Fragment>;
 }> = ({ className, ...props }) => {
   const { isAuthenticated } = useAuth0();
-  const fragment = useFragment(VideoFragment, props.fragment);
-  const [{ data: currentData, fetching }] = useQuery({
+  const fragment = useFragment(Fragment, props.fragment);
+  const [{ data: currentData }] = useQuery({
     query: graphql(`
       query VideoPage_LikeButtonCurrentLike($videoId: ID!) {
         getVideo(id: $videoId) {
@@ -173,11 +42,17 @@ export const LikeButton: React.FC<{
     videoId: fragment.id,
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     onSuccess() {},
+    onFailure() {
+      callToast(<p>いいねに失敗しました。</p>);
+    },
   });
   const undoLikeVideo = useUndoLikeVideo({
     videoId: fragment.id,
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     onSuccess() {},
+    onFailure() {
+      callToast(<p>いいねの取り消しに失敗しました。</p>);
+    },
   });
 
   const liked = useMemo(
