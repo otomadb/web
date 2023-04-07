@@ -33,7 +33,9 @@ export default function GlobalNav({
   const [{ data, fetching }, update] = useQuery({
     query: Query,
     pause: !isAuthenticated,
+    requestPolicy: "cache-first",
   });
+
   return (
     <nav
       className={clsx(

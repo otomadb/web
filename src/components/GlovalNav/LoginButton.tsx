@@ -1,3 +1,7 @@
+"use client";
+
+import "client-only";
+
 import { useAuth0 } from "@auth0/auth0-react";
 import clsx from "clsx";
 import { UseQueryExecute } from "urql";
@@ -15,7 +19,7 @@ export default function LoginButton({
       type="button"
       onClick={async (e) => {
         e.preventDefault();
-        await loginWithRedirect();
+        await loginWithRedirect({});
       }}
       className={clsx(
         className,

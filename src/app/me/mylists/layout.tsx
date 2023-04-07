@@ -13,7 +13,7 @@ export default async function Layout({
       <SideMylistList
         className={clsx(
           ["flex-shrink-0"],
-          ["w-72"],
+          ["w-96"],
           ["h-[calc(100vh-64px)]"],
           ["sticky", "top-[64px]"]
         )}
