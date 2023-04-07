@@ -20,7 +20,7 @@ export const SideMylistList: React.FC<{
   // fragment: FragmentType<typeof Fragment>;
 }> = ({ className }) => {
   // const fragment = useFragment(Fragment, props.fragment);
-  const [{ data }] = useQuery({
+  const [{ data, fetching }] = useQuery({
     query: graphql(`
       query YouMylistsPageLayout_SideMylistsList_Fetch {
         whoami {
@@ -30,6 +30,7 @@ export const SideMylistList: React.FC<{
               ...MylistTitle
               ...YouMylistLinkSwitch
               id
+              isLikeList
             }
           }
         }
@@ -37,19 +38,16 @@ export const SideMylistList: React.FC<{
     `),
   });
 
-  // if (!data?.getUser) return null;
-  if (!data?.whoami?.mylists) return null;
-
   return (
     <div
       className={clsx(
         className,
         ["flex", "flex-col", "items-stretch"],
-        ["h-full"],
         ["overflow-y-scroll"]
       )}
     >
-      {data.whoami.mylists.nodes.map((mylist) => (
+      {!data?.whoami && fetching && <p>マイリストを取得中です</p>}
+      {data?.whoami.mylists.nodes.map((mylist) => (
         <YouMylistLinkSwitch key={mylist.id} fragment={mylist}>
           <MylistTitle fragment={mylist} />
         </YouMylistLinkSwitch>

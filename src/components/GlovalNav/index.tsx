@@ -30,7 +30,7 @@ export default function GlobalNav({
   style?: CSSProperties;
 }) {
   const { isAuthenticated } = useAuth0();
-  const [{ data, fetching }] = useQuery({
+  const [{ data, fetching }, update] = useQuery({
     query: Query,
     pause: !isAuthenticated,
   });
@@ -89,7 +89,7 @@ export default function GlobalNav({
               )}
             />
           )}
-          {!data?.whoami && !fetching && <LoginButton />}
+          {!data?.whoami && !fetching && <LoginButton update={update} />}
           {data?.whoami && <ProfileIndicator fragment={data?.whoami} />}
         </div>
       </div>

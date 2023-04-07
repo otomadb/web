@@ -1,7 +1,13 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import clsx from "clsx";
+import { UseQueryExecute } from "urql";
 
-export default function LoginButton({ className }: { className?: string }) {
+export default function LoginButton({
+  className,
+}: {
+  className?: string;
+  update: UseQueryExecute;
+}) {
   const { loginWithRedirect } = useAuth0();
 
   return (
