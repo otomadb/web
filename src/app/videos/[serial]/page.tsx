@@ -4,7 +4,8 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
 import { graphql } from "~/gql";
-import { fetchGql } from "~/gql/fetch";
+import { fetchGql3 } from "~/gql/fetch";
+import { isErr } from "~/utils/Result";
 
 import { SimilarVideos } from "./SimilarVideos.server";
 
@@ -15,7 +16,7 @@ export async function generateMetadata({
 }: {
   params: { serial: string };
 }): Promise<Metadata> {
-  const { findVideo } = await fetchGql(
+  const result = await fetchGql3(
     graphql(`
       query VideoPage_Title($serial: Int!) {
         findVideo(input: { serial: $serial }) {
@@ -27,7 +28,17 @@ export async function generateMetadata({
     { serial: parseInt(params.serial, 10) }
   );
 
-  if (!findVideo) return notFound(); // TODO: これ本当にこれでいいの？
+  if (isErr(result)) {
+    switch (result.error.type) {
+      case "FETCH_ERROR":
+        throw new Error("Fetching error");
+      case "GRAPHQL_ERROR":
+        throw new Error("GraphQL Error");
+    }
+  }
+
+  if (!result.data.findVideo) notFound();
+  const { findVideo } = result.data;
 
   return {
     title: `${findVideo.title} | Otomadb`,
@@ -48,7 +59,7 @@ export async function generateMetadata({
 }
 
 export default async function Page({ params }: { params: { serial: string } }) {
-  const { findVideo: video } = await fetchGql(
+  const result = await fetchGql3(
     graphql(`
       query VideoPage($serial: Int!) {
         findVideo(input: { serial: $serial }) {
@@ -59,7 +70,16 @@ export default async function Page({ params }: { params: { serial: string } }) {
     { serial: parseInt(params.serial, 10) }
   );
 
-  if (!video) return notFound();
+  if (isErr(result)) {
+    switch (result.error.type) {
+      case "FETCH_ERROR":
+        throw new Error("Fetching error");
+      case "GRAPHQL_ERROR":
+        throw new Error("GraphQL Error");
+    }
+  }
+
+  if (!result.data.findVideo) notFound();
 
   return (
     <div className={clsx(["flex", "flex-col", "gap-y-4"])}>
@@ -67,7 +87,7 @@ export default async function Page({ params }: { params: { serial: string } }) {
         <h2 className={clsx(["text-md"], ["text-slate-900"])}>似ている動画</h2>
         <div className={clsx(["mt-2"])}>
           <Suspense>
-            <SimilarVideos videoId={video.id} />
+            <SimilarVideos videoId={result.data.findVideo.id} />
           </Suspense>
         </div>
       </section>

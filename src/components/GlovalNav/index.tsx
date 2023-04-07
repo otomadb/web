@@ -1,5 +1,6 @@
 "use client";
 
+import { useAuth0 } from "@auth0/auth0-react";
 import clsx from "clsx";
 import { CSSProperties } from "react";
 import { useQuery } from "urql";
@@ -27,7 +28,11 @@ export default function GlobalNav({
   className?: string;
   style?: CSSProperties;
 }) {
-  const [{ data, fetching }, update] = useQuery({ query: Query });
+  const { isAuthenticated } = useAuth0();
+  const [{ data, fetching }] = useQuery({
+    query: Query,
+    pause: !isAuthenticated,
+  });
   return (
     <nav
       className={clsx(
@@ -80,7 +85,7 @@ export default function GlobalNav({
               )}
             />
           )}
-          {!data?.whoami && !fetching && <LoginButton update={update} />}
+          {!data?.whoami && !fetching && <LoginButton />}
           {data?.whoami && <ProfileIndicator fragment={data?.whoami} />}
         </div>
       </div>

@@ -4,10 +4,9 @@ import React, { ReactNode } from "react";
 
 import { LinkUser } from "~/app/users/[name]/Link";
 import { UserIcon } from "~/components/common/UserIcon";
+import Semitag from "~/components/CommonSemitag";
 import { CommonTag } from "~/components/CommonTag";
 import { FragmentType, graphql, useFragment } from "~/gql";
-
-import { Semitag } from "../Semitag";
 
 const EventTemplateFragment = graphql(`
   fragment VideoEventPage_EventTemplate on Event {
@@ -388,7 +387,7 @@ const SemitagAttachEventFragment = graphql(`
   fragment VideoEventPage_SemitagAttachEvent on SemitagAttachEvent {
     ...VideoEventPage_EventTemplate
     semitag {
-      ...VideoPage_Semitag
+      ...CommonSemitag
     }
   }
 `);
@@ -419,7 +418,7 @@ const SemitagResolveEventFragment = graphql(`
     resolving {
       semitag {
         id
-        ...VideoPage_Semitag
+        ...CommonSemitag
       }
       resolveTo {
         tag {
@@ -457,7 +456,7 @@ const SemitagRejectEventFragment = graphql(`
     ...VideoEventPage_EventTemplate
     rejecting {
       semitag {
-        ...VideoPage_Semitag
+        ...CommonSemitag
       }
     }
   }

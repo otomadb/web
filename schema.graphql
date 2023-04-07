@@ -313,27 +313,21 @@ type ImplicitizeTagSucceededPayload {
   relation: TagParent!
 }
 
-enum LikeVideoFailedMessage {
-  FORBIDDEN
-  INVALID_VIDEO_ID
-  UNKNOWN
-  VIDEO_ALREADY_LIKED
-  VIDEO_NOT_FOUND
-}
 
-type LikeVideoFailedPayload {
-  message: LikeVideoFailedMessage!
+type LikeVideoAlreadyLikedError {
+  registration: MylistRegistration!
 }
 
 input LikeVideoInput {
   videoId: ID!
 }
 
-union LikeVideoPayload = LikeVideoFailedPayload | LikeVideoSucceededPayload
+union LikeVideoReturnUnion = LikeVideoAlreadyLikedError | LikeVideoSucceededPayload | MutationInvalidVideoIdError | MutationVideoNotFoundError
 
 type LikeVideoSucceededPayload {
   registration: MylistRegistration!
 }
+
 
 type Mutation {
   addMylistToMylistGroup(input: AddMylistToMylistGroupInput!): AddMylistToMylistGroupPayload!
@@ -351,7 +345,7 @@ type Mutation {
 
   """明示的なタグの親子関係を非明示的に降格する"""
   implicitizeTagParent(input: ImplicitizeTagParentInput!): ImplicitizeTagParentReturnUnion!
-  likeVideo(input: LikeVideoInput!): LikeVideoPayload!
+  likeVideo(input: LikeVideoInput!): LikeVideoReturnUnion!
   registerCategoryTag(input: RegisterCategoryTagInput!): RegisterCategoryTagResultUnion!
   registerCategoryTagTyping(input: RegisterCategoryTagTypingInput!): RegisterCategoryTagTypingResultUnion!
   registerTag(input: RegisterTagInput!): RegisterTagReturnUnion!
@@ -367,7 +361,7 @@ type Mutation {
   signin(input: SigninInput!): SigninPayload! @deprecated
   signout: SignoutPayload! @deprecated
   signup(input: SignupInput!): SignupPayload! @deprecated
-  undoLikeVideo(input: UndoLikeVideoInput!): UndoLikeVideoPayload!
+  undoLikeVideo(input: UndoLikeVideoInput!): UndoLikeVideoReturnUnion!
   verifyTemporaryUser: VerifyTemporaryUserReturnUnion!
 }
 
@@ -1602,28 +1596,27 @@ enum TagType {
   UNKNOWN
 }
 
-enum UndoLikeVideoFailedMessage {
-  FORBIDDEN
-  INVALID_VIDEO_ID
-  UNKNOWN
-  VIDEO_NOT_FOUND
-  VIDEO_NOT_LIKED
-}
-
-type UndoLikeVideoFailedPayload {
-  message: UndoLikeVideoFailedMessage!
+type UndoLikeVideoAlreadyUndoLikedError {
+  registration: MylistRegistration!
 }
 
 input UndoLikeVideoInput {
   videoId: ID!
 }
 
-union UndoLikeVideoPayload = UndoLikeVideoFailedPayload | UndoLikeVideoSucceededPayload
+type UndoLikeVideoNotLikedError {
+  likes: Mylist!
+  video: Video!
+}
+
+union UndoLikeVideoReturnUnion =
+    MutationVideoNotFoundError
+  | MutationInvalidVideoIdError
+  | UndoLikeVideoNotLikedError
+  | UndoLikeVideoSucceededPayload
 
 type UndoLikeVideoSucceededPayload {
-  mylist: Mylist! @deprecated
   registration: MylistRegistration!
-  video: Video! @deprecated
 }
 
 type User implements Node {
@@ -1663,7 +1656,7 @@ type Video implements Node {
   events(input: VideoEventsInput!): VideoEventsConnection!
   hasTag(id: ID!): Boolean!
   id: ID!
-  isLiked: Boolean! @deprecated
+  isLiked: Boolean!
   like: MylistRegistration
   nicovideoSources: [NicovideoVideoSource!]!
   registeredAt: DateTime!

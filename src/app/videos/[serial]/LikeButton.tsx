@@ -1,98 +1,82 @@
 "use client";
 import "client-only";
 
-import { css, keyframes } from "@emotion/css";
-import { HeartIcon as OutlikeHeartIcon } from "@heroicons/react/24/outline";
+import { useAuth0 } from "@auth0/auth0-react";
 import { HeartIcon as SolidHeartIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 import React, { useCallback, useMemo } from "react";
-import { useMutation, useQuery } from "urql";
+import { useQuery } from "urql";
 
 import { useToaster } from "~/components/Toaster";
-import { graphql, useFragment } from "~/gql";
+import { FragmentType, graphql, useFragment } from "~/gql";
 
-const VideoFragment = graphql(`
-  fragment VideoPage_LikeButton_Video on Video {
-    like {
-      id
-    }
+import { useLikeVideo } from "./useLikeVideo";
+import { useUndoLikeVideo } from "./useUndoLikeVideo";
+
+export const Fragment = graphql(`
+  fragment VideoPage_LikeButton on Video {
+    id
   }
 `);
-export const LikeButton: React.FC<{ className?: string; videoId: string }> = ({
-  className,
-  videoId,
-}) => {
-  const [{ data: currentData, fetching }] = useQuery({
+export const LikeButton: React.FC<{
+  className?: string;
+  fragment: FragmentType<typeof Fragment>;
+}> = ({ className, ...props }) => {
+  const { isAuthenticated } = useAuth0();
+  const fragment = useFragment(Fragment, props.fragment);
+  const [{ data: currentData }] = useQuery({
     query: graphql(`
       query VideoPage_LikeButtonCurrentLike($videoId: ID!) {
-        whoami {
-          id
-        }
         getVideo(id: $videoId) {
           id
-          ...VideoPage_LikeButton_Video
+          isLiked
         }
       }
     `),
-    variables: { videoId },
+    variables: { videoId: fragment.id },
+    pause: !isAuthenticated,
   });
-  const video = useFragment(VideoFragment, currentData?.getVideo);
-  const liked = useMemo(() => video?.like, [video?.like]);
 
-  const [, triggerAddLike] = useMutation(
-    graphql(`
-      mutation VideoPage_LikeButton_AddLike($videoId: ID!) {
-        likeVideo(input: { videoId: $videoId }) {
-          ... on LikeVideoSucceededPayload {
-            registration {
-              id
-              video {
-                id
-                ...VideoPage_LikeButton_Video
-              }
-            }
-          }
-        }
-      }
-    `)
-  );
-  const [, triggerRemoveLike] = useMutation(
-    graphql(`
-      mutation VideoPage_LikeButton_RemoveLike($videoId: ID!) {
-        undoLikeVideo(input: { videoId: $videoId }) {
-          ... on UndoLikeVideoSucceededPayload {
-            registration {
-              id
-              video {
-                id
-                ...VideoPage_LikeButton_Video
-              }
-            }
-          }
-        }
-      }
-    `)
-  );
   const callToast = useToaster();
+  const likeVideo = useLikeVideo({
+    videoId: fragment.id,
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    onSuccess() {},
+    onFailure() {
+      callToast(<p>いいねに失敗しました。</p>);
+    },
+  });
+  const undoLikeVideo = useUndoLikeVideo({
+    videoId: fragment.id,
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    onSuccess() {},
+    onFailure() {
+      callToast(<p>いいねの取り消しに失敗しました。</p>);
+    },
+  });
+
+  const liked = useMemo(
+    () =>
+      typeof currentData?.getVideo.isLiked !== "boolean"
+        ? undefined
+        : currentData?.getVideo.isLiked,
+    [currentData?.getVideo.isLiked]
+  );
+
   const handleClick = useCallback(() => {
-    if (currentData?.whoami === null) {
+    if (liked === undefined) {
       callToast(<p>動画をいいねするにはログインが必要です。</p>);
       return;
     }
-    if (liked) triggerRemoveLike({ videoId });
-    else triggerAddLike({ videoId });
-  }, [
-    callToast,
-    currentData?.whoami,
-    liked,
-    triggerAddLike,
-    triggerRemoveLike,
-    videoId,
-  ]);
+    if (liked) undoLikeVideo();
+    else likeVideo();
+  }, [callToast, likeVideo, liked, undoLikeVideo]);
 
   return (
     <button
-      disabled={fetching}
+      role="checkbox"
+      aria-checked={liked === undefined ? "mixed" : liked ? "true" : "false"}
+      disabled={liked === undefined}
       className={clsx(
         className,
         "group",
@@ -100,27 +84,32 @@ export const LikeButton: React.FC<{ className?: string; videoId: string }> = ({
         ["transition-colors", "duration-100"],
         [
           "border",
-
-          liked && ["border-pink-400"],
-          !liked && ["border-slate-400"],
+          "border-slate-400",
+          "disabled:border-slate-300",
+          "aria-checked:border-pink-400",
         ],
         [
-          liked && [["bg-opacity-25", "hover:bg-opacity-40"], "bg-pink-300"],
-          !liked && [["bg-opacity-25", "hover:bg-opacity-50"], "bg-slate-300"],
+          "bg-slate-300",
+          "disabled:bg-slate-200",
+          ["aria-checked:bg-pink-200", "aria-checked:hover:bg-pink-300"],
         ],
         ["rounded-md"],
-        ["flex", ["items-center"]]
+        ["flex", "items-center"]
       )}
       onClick={() => handleClick()}
     >
       <div>
-        {liked && (
-          <SolidHeartIcon
-            className={clsx(
-              ["w-4"],
-              ["h-4"],
-              ["transition-colors", "duration-75"],
-              ["text-pink-600", "group-hover:text-pink-500"],
+        <SolidHeartIcon
+          className={clsx(
+            ["w-4", "h-4"],
+            ["transition-colors", "duration-75"],
+            ["group-disabled:text-slate-300"],
+            ["text-slate-400", "group-hover:text-slate-500"],
+            [
+              "group-aria-checked:text-pink-600",
+              "group-aria-checked:group-hover:text-pink-500",
+            ]
+            /*
               css`
                 animation-name: ${keyframes`
                   from {
@@ -141,28 +130,20 @@ export const LikeButton: React.FC<{ className?: string; videoId: string }> = ({
                   1.395
                 );
               `
-            )}
-          />
-        )}
-        {!liked && (
-          <OutlikeHeartIcon
-            className={clsx(
-              ["w-4"],
-              ["h-4"],
-              ["transition-colors", "duration-75"],
-              [["text-slate-500", "group-hover:text-slate-600"]]
-            )}
-          />
-        )}
+              */
+          )}
+        />
       </div>
       <div
         className={clsx(
           ["ml-1"],
           ["text-sm"],
           ["transition-colors", "duration-75"],
+          ["group-disabled:text-slate-300"],
+          ["text-slate-400", "group-hover:text-slate-500"],
           [
-            liked && ["text-pink-600", "group-hover:text-pink-500"],
-            !liked && ["text-slate-500", "group-hover:text-slate-600"],
+            "group-aria-checked:text-pink-600",
+            "group-aria-checked:group-hover:text-pink-500",
           ]
         )}
       >
