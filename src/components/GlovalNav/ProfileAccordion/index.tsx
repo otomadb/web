@@ -8,7 +8,6 @@ import { NicovideoRegisterPageLink } from "~/app/editor/nicovideo/Link";
 import { LinkRegisterSemitag } from "~/app/editor/semitags/Link";
 import { TagRegisterPageLink } from "~/app/editor/tags/Link";
 import { NicovideoRequestPageLink } from "~/app/request/nicovideo/Link";
-import { LinkUser } from "~/app/users/[name]/Link";
 import { YouLikesPageLink } from "~/app/you/likes/Link";
 import { YouMylistsPageLink } from "~/app/you/mylists/Link";
 import { FragmentType, graphql, useFragment } from "~/gql";
@@ -87,11 +86,6 @@ export const Accordion: React.FC<{
             通常ユーザー
           </div>
           <div className={clsx(["grid"], ["grid-cols-1"])}>
-            <MenuItem
-              Wrapper={(props) => <LinkUser fragment={fragment} {...props} />}
-            >
-              プロフィール
-            </MenuItem>
             <MenuItem Wrapper={(props) => <YouLikesPageLink {...props} />}>
               いいねした動画
             </MenuItem>

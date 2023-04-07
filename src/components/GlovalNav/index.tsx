@@ -6,6 +6,7 @@ import { CSSProperties } from "react";
 import { useQuery } from "urql";
 
 import { TopLink } from "~/app/Link";
+import { MyPageLink } from "~/app/me/Link";
 import { SearchContents } from "~/components/common/SearchContents/SearchContents";
 import { graphql } from "~/gql";
 
@@ -60,9 +61,12 @@ export default function GlobalNav({
             ["flex-shrink-0"]
           )}
         >
-          <TopLink>
+          <TopLink className={clsx({ hidden: isAuthenticated })}>
             <Logo className={clsx(["text-2xl"], ["text-slate-50"])} />
           </TopLink>
+          <MyPageLink className={clsx({ hidden: !isAuthenticated })}>
+            <Logo className={clsx(["text-2xl"], ["text-slate-50"])} />
+          </MyPageLink>
         </div>
         <div className={clsx(["flex-grow"])}>
           <SearchContents className={clsx(["mx-auto"])} />
