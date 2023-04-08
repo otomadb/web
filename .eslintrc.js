@@ -40,7 +40,9 @@ module.exports = {
       extends: ["plugin:@typescript-eslint/recommended"],
       plugins: ["@typescript-eslint"],
       parser: "@typescript-eslint/parser",
-      rules: {},
+      rules: {
+        "@typescript-eslint/ban-ts-comment": 1,
+      },
     },
     {
       files: ["**/api/og/*.tsx"],

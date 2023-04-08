@@ -1,7 +1,7 @@
 import React, { ComponentProps } from "react";
 
-import { YouLikesPageLink } from "~/app/you/likes/Link";
-import { YouMylistPageLink } from "~/app/you/mylists/[id]/Link";
+import { YouLikesPageLink } from "~/app/me/likes/Link";
+import { YouMylistPageLink } from "~/app/me/mylists/[id]/Link";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 const Fragment = graphql(`
