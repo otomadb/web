@@ -313,7 +313,6 @@ type ImplicitizeTagSucceededPayload {
   relation: TagParent!
 }
 
-
 type LikeVideoAlreadyLikedError {
   registration: MylistRegistration!
 }
@@ -327,7 +326,6 @@ union LikeVideoReturnUnion = LikeVideoAlreadyLikedError | LikeVideoSucceededPayl
 type LikeVideoSucceededPayload {
   registration: MylistRegistration!
 }
-
 
 type Mutation {
   addMylistToMylistGroup(input: AddMylistToMylistGroupInput!): AddMylistToMylistGroupPayload!
@@ -1596,10 +1594,6 @@ enum TagType {
   UNKNOWN
 }
 
-type UndoLikeVideoAlreadyUndoLikedError {
-  registration: MylistRegistration!
-}
-
 input UndoLikeVideoInput {
   videoId: ID!
 }
@@ -1609,11 +1603,7 @@ type UndoLikeVideoNotLikedError {
   video: Video!
 }
 
-union UndoLikeVideoReturnUnion =
-    MutationVideoNotFoundError
-  | MutationInvalidVideoIdError
-  | UndoLikeVideoNotLikedError
-  | UndoLikeVideoSucceededPayload
+union UndoLikeVideoReturnUnion = MutationInvalidVideoIdError | MutationVideoNotFoundError | UndoLikeVideoNotLikedError | UndoLikeVideoSucceededPayload
 
 type UndoLikeVideoSucceededPayload {
   registration: MylistRegistration!
