@@ -5,7 +5,7 @@ import clsx from "clsx";
 import { SearchContents } from "~/components/common/SearchContents/SearchContents";
 import { Logo } from "~/components/Logo";
 
-export default async function Page() {
+export default function Page() {
   return (
     <main className={clsx(["flex", "flex-col", "items-center"])}>
       <header

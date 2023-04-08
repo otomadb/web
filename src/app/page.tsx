@@ -2,11 +2,12 @@ import "server-only";
 
 import AboutPage from "~/app/about/page";
 
+import LoginCheck from "./LoginCheck";
+
 export default async function Page() {
   return (
-    <>
-      {/* @ts-expect-error for Server Component*/}
+    <LoginCheck>
       <AboutPage />
-    </>
+    </LoginCheck>
   );
 }
