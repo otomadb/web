@@ -2,6 +2,7 @@
 import clsx from "clsx";
 import React from "react";
 
+import { MyPageLink } from "~/app/me/Link";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const Fragment = graphql(`
@@ -18,13 +19,15 @@ export default function AboutMe({
   const fragment = useFragment(Fragment, props.fragment);
 
   return (
-    <div className={clsx(["py-3"], ["px-4"], ["bg-white/75"])}>
+    <MyPageLink
+      className={clsx(["block"], ["py-3"], ["px-4"], ["bg-white/75"])}
+    >
       <div className={clsx(["text-slate-900"], ["text-sm"], ["font-bold"])}>
         {fragment.displayName}
       </div>
       <div className={clsx(["text-slate-700"], ["text-xs"])}>
         @{fragment.name}
       </div>
-    </div>
+    </MyPageLink>
   );
 }

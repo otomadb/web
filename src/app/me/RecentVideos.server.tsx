@@ -1,25 +1,28 @@
 import clsx from "clsx";
 
 import { CommonVideoContainer } from "~/components/CommonVideoContainer";
-import { FragmentType, graphql, useFragment } from "~/gql";
+import { graphql } from "~/gql";
+import { fetchGql3 } from "~/gql/fetch";
+import { isErr } from "~/utils/Result";
 
-export const Fragment = graphql(`
-  fragment HomePage_RecentVideosSection_VideosList_Presentation on Query {
-    findVideos(first: 18) {
-      nodes {
-        id
-        ...CommonVideoContainer
+export default async function RecentVideoListSC() {
+  const result = await fetchGql3(
+    graphql(`
+      query MyTopPage_RecentVideosSection_VideosList {
+        findVideos(first: 18) {
+          nodes {
+            id
+            ...CommonVideoContainer
+          }
+        }
       }
-    }
-  }
-`);
+    `),
+    {}
+  );
 
-export default function Component({
-  ...props
-}: {
-  fragment: FragmentType<typeof Fragment>;
-}) {
-  const fragment = useFragment(Fragment, props.fragment);
+  if (isErr(result)) throw new Error("Failed to fetch recent videos");
+
+  const { findVideos } = result.data;
 
   return (
     <div
@@ -38,7 +41,7 @@ export default function Component({
         ]
       )}
     >
-      {fragment.findVideos.nodes.map((node) => (
+      {findVideos.nodes.map((node) => (
         <div
           key={node.id}
           className={clsx(

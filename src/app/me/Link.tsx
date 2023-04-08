@@ -1,10 +1,10 @@
 import Link from "next/link";
 import React, { ComponentProps } from "react";
 
-export const YouLikesPageLink: React.FC<
+export const MyPageLink: React.FC<
   Omit<ComponentProps<typeof Link>, "href">
 > = ({ children, ...props }) => (
-  <Link href={"/you/likes"} {...props}>
+  <Link href={"/me"} {...props}>
     {children}
   </Link>
 );

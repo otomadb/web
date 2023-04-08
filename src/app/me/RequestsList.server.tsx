@@ -1,26 +1,29 @@
 import clsx from "clsx";
-import React from "react";
 
-import { FragmentType, graphql, useFragment } from "~/gql";
+import { graphql } from "~/gql";
+import { fetchGql3 } from "~/gql/fetch";
+import { isErr } from "~/utils/Result";
 
 import { ListItem } from "./RequestsListItem";
 
-export const Fragment = graphql(`
-  fragment HomePage_RecentNicovideoRequestsSection_RequestsList_Presentation on Query {
-    findNicovideoRegistrationRequests(first: 18, checked: false) {
-      nodes {
-        id
-        ...HomePage_RecentNicovideoRequestsSection_RequestsListItem
+export default async function RequestsListSC() {
+  const result = await fetchGql3(
+    graphql(`
+      query MyTopPage_RecentNicovideoRequestsSection_RequestsList {
+        findNicovideoRegistrationRequests(first: 18, checked: false) {
+          nodes {
+            id
+            ...HomePage_RecentNicovideoRequestsSection_RequestsListItem
+          }
+        }
       }
-    }
-  }
-`);
-export default function Component({
-  ...props
-}: {
-  fragment: FragmentType<typeof Fragment>;
-}) {
-  const fragment = useFragment(Fragment, props.fragment);
+    `),
+    {}
+  );
+
+  if (isErr(result)) throw new Error("Failed to fetch recent requests");
+
+  const { findNicovideoRegistrationRequests } = result.data;
 
   return (
     <div
@@ -39,7 +42,7 @@ export default function Component({
         ]
       )}
     >
-      {fragment.findNicovideoRegistrationRequests.nodes.map((node) => (
+      {findNicovideoRegistrationRequests.nodes.map((node) => (
         <div
           key={node.id}
           className={clsx(

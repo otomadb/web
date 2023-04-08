@@ -39,8 +39,8 @@ export default function RootLayout({
     <html lang="ja">
       <Auth0Provider>
         <UrqlProvider>
-          <ToastProvider selector="#toast">
-            <body className={clsx(["relative"], ["bg-slate-50"])}>
+          <body className={clsx(["relative"], ["bg-slate-50"])}>
+            <ToastProvider selector="#toast">
               <GlobalNav
                 className={clsx(
                   ["sticky"],
@@ -55,8 +55,8 @@ export default function RootLayout({
               </div>
               <GlobalFooter />
               <div id="toast" />
-            </body>
-          </ToastProvider>
+            </ToastProvider>
+          </body>
         </UrqlProvider>
       </Auth0Provider>
     </html>

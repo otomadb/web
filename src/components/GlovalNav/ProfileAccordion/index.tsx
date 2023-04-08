@@ -7,10 +7,9 @@ import React, { ReactNode } from "react";
 import { NicovideoRegisterPageLink } from "~/app/editor/nicovideo/Link";
 import { LinkRegisterSemitag } from "~/app/editor/semitags/Link";
 import { TagRegisterPageLink } from "~/app/editor/tags/Link";
+import { YouLikesPageLink } from "~/app/me/likes/Link";
+import MyMylistsPageLink from "~/app/me/mylists/Link";
 import { NicovideoRequestPageLink } from "~/app/request/nicovideo/Link";
-import { LinkUser } from "~/app/users/[name]/Link";
-import { YouLikesPageLink } from "~/app/you/likes/Link";
-import { YouMylistsPageLink } from "~/app/you/mylists/Link";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 import AboutMe from "./AboutMe";
@@ -87,15 +86,10 @@ export const Accordion: React.FC<{
             通常ユーザー
           </div>
           <div className={clsx(["grid"], ["grid-cols-1"])}>
-            <MenuItem
-              Wrapper={(props) => <LinkUser fragment={fragment} {...props} />}
-            >
-              プロフィール
-            </MenuItem>
             <MenuItem Wrapper={(props) => <YouLikesPageLink {...props} />}>
               いいねした動画
             </MenuItem>
-            <MenuItem Wrapper={(props) => <YouMylistsPageLink {...props} />}>
+            <MenuItem Wrapper={(props) => <MyMylistsPageLink {...props} />}>
               マイリスト
             </MenuItem>
             <MenuItem
