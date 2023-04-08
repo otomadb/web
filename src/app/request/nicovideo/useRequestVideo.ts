@@ -10,22 +10,25 @@ const Mutation = graphql(`
   ) {
     requestNicovideoRegistration(input: $input) {
       __typename
-      ... on MutationTagNotFoundError {
-        tagId
-      }
       ... on RequestNicovideoRegistrationVideoAlreadyRegisteredError {
         source {
           id
+          sourceId
+          video {
+            ...Link_Video
+          }
         }
       }
       ... on RequestNicovideoRegistrationSucceededPayload {
-        ...NicovideoRequestPage_SuccessToast
+        ...NicovideoRequestPage_SucceededToast
       }
     }
   }
 `);
 export const useRequestVideo = ({
   onSuccess,
+  onFailure,
+  onAlready,
 }: {
   onSuccess(
     data: Extract<
@@ -33,6 +36,13 @@ export const useRequestVideo = ({
       { __typename: "RequestNicovideoRegistrationSucceededPayload" }
     >
   ): void;
+  onAlready(
+    data: Extract<
+      ResultOf<typeof Mutation>["requestNicovideoRegistration"],
+      { __typename: "RequestNicovideoRegistrationVideoAlreadyRegisteredError" }
+    >
+  ): void;
+  onFailure(): void;
 }) => {
   const [, register] = useMutation(Mutation);
 
@@ -60,18 +70,24 @@ export const useRequestVideo = ({
         },
       });
       if (error || !data) {
-        // TODO 重大な例外処理
+        onFailure();
         return;
       }
 
       switch (data.requestNicovideoRegistration.__typename) {
+        case "RequestNicovideoRegistrationVideoAlreadyRegisteredError":
+          onAlready(data.requestNicovideoRegistration);
+          break;
         case "RequestNicovideoRegistrationSucceededPayload":
           onSuccess(data.requestNicovideoRegistration);
           break;
+        case "MutationInvalidTagIdError":
+        case "MutationTagNotFoundError":
         default:
+          onFailure();
           break;
       }
     },
-    [onSuccess, register]
+    [onAlready, onFailure, onSuccess, register]
   );
 };

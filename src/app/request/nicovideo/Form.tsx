@@ -8,6 +8,7 @@ import * as z from "zod";
 
 import { RegisterContext } from "~/app/editor/nicovideo/_components/Original/Context";
 import { TagButton } from "~/app/editor/nicovideo/_components/TagButton";
+import { LinkVideo } from "~/app/videos/[serial]/Link";
 import { BlueButton } from "~/components/common/Button";
 import {
   useClearSourceId,
@@ -62,6 +63,17 @@ export const RequestForm: React.FC<{
       });
       clearSourceId();
       callToast(<SucceededToast fragment={data} />);
+    },
+    onAlready({ source: { sourceId, video } }) {
+      callToast(
+        <p>
+          <span>{sourceId}</span>は受理されて
+          <LinkVideo fragment={video}>既に登録されています。</LinkVideo>
+        </p>
+      );
+    },
+    onFailure() {
+      callToast(<p>登録に失敗しました。</p>);
     },
   });
 

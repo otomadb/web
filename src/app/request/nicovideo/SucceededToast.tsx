@@ -8,7 +8,7 @@ import { LinkNicovideoRegistrationRequest } from "~/app/requests/nicovideo/[sour
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 const Fragment = graphql(`
-  fragment NicovideoRequestPage_SuccessToast on RequestNicovideoRegistrationSucceededPayload {
+  fragment NicovideoRequestPage_SucceededToast on RequestNicovideoRegistrationSucceededPayload {
     request {
       id
       sourceId
