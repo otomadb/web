@@ -11,7 +11,7 @@ import useGenerateAccessToken from "./useGenerateAccessToken";
 export const formSchema = z.object({});
 export type FormSchema = z.infer<typeof formSchema>;
 
-const Form: React.FC<{}> = ({ show, ...props }) => {
+const Form: React.FC<{ show(token: string): void }> = ({ ...props }) => {
   const { handleSubmit } = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
