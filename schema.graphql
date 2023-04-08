@@ -193,6 +193,10 @@ type FetchNicovideoPayload {
   source: NicovideoOriginalSource
 }
 
+type FetchSoundcloudPayload {
+  source: SoundcloudOriginalSource
+}
+
 type FetchYoutubePayload {
   source: YoutubeOriginalSource
 }
@@ -262,6 +266,18 @@ input FindUncheckedNicovideoRegistrationRequestsOrderBy {
   createdAt: SortOrder
 }
 
+input FindUncheckedYoutubeRegistrationRequestsInput {
+  after: String
+  before: String
+  first: Int
+  last: Int
+  orderBy: FindUncheckedYoutubeRegistrationRequestsOrderBy! = {createdAt: DESC}
+}
+
+input FindUncheckedYoutubeRegistrationRequestsOrderBy {
+  createdAt: SortOrder
+}
+
 input FindUserInput {
   name: String
 }
@@ -273,6 +289,11 @@ input FindVideoInput {
 
 input FindVideosOrderBy {
   createdAt: SortOrder
+}
+
+input FindYoutubeRegistrationRequestInput {
+  id: ID
+  sourceId: String
 }
 
 """指定したTagParentRelationがそもそも非明示的だった場合のエラー"""
@@ -332,6 +353,7 @@ type Mutation {
   likeVideo(input: LikeVideoInput!): LikeVideoReturnUnion!
   registerCategoryTag(input: RegisterCategoryTagInput!): RegisterCategoryTagResultUnion!
   registerCategoryTagTyping(input: RegisterCategoryTagTypingInput!): RegisterCategoryTagTypingResultUnion!
+  registerMadFromSoundcloud(input: RegisterMadFromSoundcloudInput!): RegisterMadFromSoundcloudPayload!
   registerTag(input: RegisterTagInput!): RegisterTagReturnUnion!
   registerTagParentRelation(input: RegisterTagParentRelationInput!): RegisterTagParentRelationResultUnion!
   registerVideoFromNicovideo(input: RegisterVideoFromNicovideoInput!): RegisterVideoFromNicovideoPayload!
@@ -341,6 +363,7 @@ type Mutation {
   removeTagFromVideo(input: RemoveTagFromVideoInput!): RemoveTagFromVideoPayload!
   removeVideoFromMylist(input: RemoveVideoFromMylistInput!): RemoveVideoFromMylistPayload!
   requestNicovideoRegistration(input: RequestNicovideoRegistrationInput!): RequestNicovideoRegistrationReturnUnion!
+  requestYoutubeRegistration(input: RequestYoutubeRegistrationInput!): RequestYoutubeRegistrationReturnUnion!
   resovleSemitag(semitagId: ID!, tagId: ID!): ResolveSemitagReturnUnion!
   undoLikeVideo(input: UndoLikeVideoInput!): UndoLikeVideoReturnUnion!
 
@@ -767,6 +790,12 @@ type Query {
   """ニコニコ動画から動画情報を取得する"""
   fetchNicovideo(input: FetchNicovideoInput!): FetchNicovideoPayload!
 
+  """SoundCloudから音源情報を取得する"""
+  fetchSoundcloud(
+    """SoundCloudのURL (ex.`https://soundcloud.com/pr0tein/ubfhfythunwo`)"""
+    url: String!
+  ): FetchSoundcloudPayload!
+
   """Youtubeから動画情報を取得する"""
   fetchYoutube(
     """Youtubeの動画ID（Q16KpquGsIcなど）"""
@@ -781,9 +810,11 @@ type Query {
   findTags(input: FindTagsInput!): TagConnection!
   findUncheckedNicovideoRegistrationRequests(input: FindUncheckedNicovideoRegistrationRequestsInput!): NicovideoRegistrationRequestConnection!
   findUncheckedNicovideoRegistrationRequestsByOffset(input: findUncheckedNicovideoRegistrationRequestsByOffsetInput!): FindUncheckedNicovideoRegistrationRequestsByOffsetPayload!
+  findUncheckedYoutubeRegistrationRequests(input: FindUncheckedYoutubeRegistrationRequestsInput!): YoutubeRegistrationRequestConnection!
   findUser(input: FindUserInput!): User
   findVideo(input: FindVideoInput!): Video
   findVideos(after: String, before: String, first: Int, last: Int, orderBy: FindVideosOrderBy! = {createdAt: DESC}): VideoConnection!
+  findYoutubeRegistrationRequest(input: FindYoutubeRegistrationRequestInput): YoutubeRegistrationRequest
   findYoutubeVideoSource(sourceId: String): YoutubeVideoSource
   getAllCategoryTag: [Tag!]!
 
@@ -795,9 +826,11 @@ type Query {
   getNicovideoVideoSource(id: ID!): NicovideoVideoSource!
   getNotification(id: ID!): Notification!
   getSemitag(id: ID!): Semitag!
+  getSoundcloudVideoSource(id: ID!): SoundcloudVideoSource!
   getTag(id: ID!): Tag!
   getUser(id: ID!): User!
   getVideo(id: ID!): Video!
+  getYoutubeRegistrationRequest(id: ID!): YoutubeRegistrationRequest!
   getYoutubeVideoSource(id: ID!): YoutubeVideoSource!
   notifications(after: String, before: String, filter: NotificationsFilter! = {}, first: Int, last: Int, orderBy: NotificationsOrderBy! = {createdAt: DESC}): NotificationConnection!
   searchTags(input: SearchTagInput!): SearchTagsPayload!
@@ -827,7 +860,7 @@ type RegisterCategoryTagTypingAlreadyTypedError {
 
 input RegisterCategoryTagTypingInput {
   tagId: ID!
-  type: TagType!
+  type: TypeCategoryTagType!
 }
 
 """指定されたタグはカテゴリータグでは無い場合のエラー"""
@@ -835,14 +868,41 @@ type RegisterCategoryTagTypingNotCategoryTagError {
   tag: Tag!
 }
 
-union RegisterCategoryTagTypingResultUnion = MutationInvalidTagIdError | MutationTagNotFoundError | RegisterCategoryTagTypingAlreadyTypeExistsError | RegisterCategoryTagTypingAlreadyTypedError | RegisterCategoryTagTypingNotCategoryTagError | RegisterCategoryTagTypingSucceededPayload | RegisterCategoryTagTypingUnsupportedTagType
+union RegisterCategoryTagTypingResultUnion = MutationInvalidTagIdError | MutationTagNotFoundError | RegisterCategoryTagTypingAlreadyTypeExistsError | RegisterCategoryTagTypingAlreadyTypedError | RegisterCategoryTagTypingNotCategoryTagError | RegisterCategoryTagTypingSucceededPayload
 
 type RegisterCategoryTagTypingSucceededPayload {
   tag: Tag!
 }
 
-type RegisterCategoryTagTypingUnsupportedTagType {
-  type: TagType!
+input RegisterMadFromSoundcloudInput {
+  extraTitles: [String!]! = []
+  primaryThumbnailUrl: String!
+  primaryTitle: String!
+  semitagNames: [String!]! = []
+  sourceIds: [String!]!
+  tagIds: [ID!]!
+}
+
+"""Soundcloudの動画IDとして不正な場合のエラー"""
+type RegisterMadFromSoundcloudInvalidSoundcloudSourceIdError {
+  sourceID: String!
+}
+
+union RegisterMadFromSoundcloudPayload = MutationInvalidTagIdError | MutationTagNotFoundError | RegisterMadFromSoundcloudInvalidSoundcloudSourceIdError | RegisterMadFromSoundcloudSemitagNamesDuplicatedError | RegisterMadFromSoundcloudSucceededPayload | RegisterMadFromSoundcloudTagIdsDuplicatedError
+
+"""仮タグの名前が重複している"""
+type RegisterMadFromSoundcloudSemitagNamesDuplicatedError {
+  name: String!
+}
+
+"""成功した場合"""
+type RegisterMadFromSoundcloudSucceededPayload {
+  mad: Video!
+}
+
+"""タグのIDが重複している"""
+type RegisterMadFromSoundcloudTagIdsDuplicatedError {
+  tagId: String!
 }
 
 """非明示的な親タグのIDが重複している"""
@@ -1112,6 +1172,35 @@ type RequestNicovideoRegistrationVideoAlreadyRegisteredError {
   source: NicovideoVideoSource!
 }
 
+input RequestYoutubeRegistrationInput {
+  semitaggings: [RequestYoutubeRegistrationInputSemitagging!]!
+  sourceId: String!
+  taggings: [RequestYoutubeRegistrationInputTagging!]!
+  thumbnailUrl: String!
+  title: String!
+}
+
+input RequestYoutubeRegistrationInputSemitagging {
+  name: String!
+  note: String
+}
+
+input RequestYoutubeRegistrationInputTagging {
+  note: String
+  tagId: ID!
+}
+
+union RequestYoutubeRegistrationReturnUnion = MutationInvalidTagIdError | MutationTagNotFoundError | RequestYoutubeRegistrationSucceededPayload | RequestYoutubeRegistrationVideoAlreadyRegisteredError
+
+type RequestYoutubeRegistrationSucceededPayload {
+  request: YoutubeRegistrationRequest!
+}
+
+"""動画が既に登録されている場合のエラー"""
+type RequestYoutubeRegistrationVideoAlreadyRegisteredError {
+  source: YoutubeVideoSource!
+}
+
 """その他のエラー"""
 type ResolveSemitagOtherErrorsFallback {
   message: ResolveSemitagOtherErrorsFallbackMessage!
@@ -1242,6 +1331,54 @@ type SemitagSuggestTagsReturn {
 enum SortOrder {
   ASC
   DESC
+}
+
+type SoundcloudOriginalSource {
+  artworkUrl: String!
+  sourceId: String!
+  title: String!
+  uri: String!
+}
+
+type SoundcloudVideoSource implements Node & VideoSource {
+  embedUrl: String!
+  events(after: String, before: String, first: Int, last: Int, orderBy: SoundcloudVideoSourceEventsOrderBy!): SoundcloudVideoSourceEventConnection!
+  id: ID!
+  sourceId: String!
+  url: String!
+  video: Video!
+}
+
+type SoundcloudVideoSourceCreateEvent implements Event & Node & SoundcloudVideoSourceEvent {
+  createdAt: DateTime!
+  id: ID!
+  series: String!
+  source: SoundcloudVideoSource!
+  user: User!
+}
+
+interface SoundcloudVideoSourceEvent implements Event & Node {
+  createdAt: DateTime!
+  id: ID!
+  series: String!
+  source: SoundcloudVideoSource!
+  user: User!
+}
+
+type SoundcloudVideoSourceEventConnection {
+  edges: [SoundcloudVideoSourceEventEdge!]!
+  nodes: [SoundcloudVideoSourceEvent!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type SoundcloudVideoSourceEventEdge {
+  cursor: String!
+  node: SoundcloudVideoSourceEvent!
+}
+
+input SoundcloudVideoSourceEventsOrderBy {
+  createdAt: SortOrder
 }
 
 type Tag implements Node {
@@ -1546,6 +1683,7 @@ type Video implements Node {
   semitags(checked: Boolean): [Semitag!]!
   serial: Int!
   similarVideos(input: VideoSimilarVideosInput!): VideoSimilarVideosPayload!
+  soundcloudSources: [SoundcloudVideoSource!]!
   taggings(after: String, before: String, first: Int, last: Int, orderBy: VideoTaggingsOrderBy! = {createdAt: DESC}): VideoTagConnection!
   thumbnailUrl: String!
   thumbnails: [VideoThumbnail!]!
@@ -1793,6 +1931,75 @@ type WatchNotificationsSucceededPayload {
 type YoutubeOriginalSource {
   sourceId: String!
   thumbnailUrl: String!
+}
+
+type YoutubeRegistrationRequest {
+  checked: Boolean!
+  checking: YoutubeRegistrationRequestChecking
+  embedUrl: String!
+  id: ID!
+  originalUrl: String!
+  requestedBy: User!
+  semitaggings: [YoutubeRegistrationRequestSemitagging!]!
+  sourceId: String!
+  taggings: [YoutubeRegistrationRequestTagging!]!
+  thumbnailUrl: String!
+  title: String!
+}
+
+type YoutubeRegistrationRequestAccepting {
+  acceptedBy: User!
+  note: String
+  request: YoutubeRegistrationRequest!
+  video: Video!
+}
+
+type YoutubeRegistrationRequestAcceptingNotification implements Node & Notification {
+  accepting: YoutubeRegistrationRequestAccepting!
+  createdAt: DateTime!
+  id: ID!
+  notifyTo: User!
+  watched: Boolean!
+}
+
+union YoutubeRegistrationRequestChecking = YoutubeRegistrationRequestAccepting | YoutubeRegistrationRequestRejecting
+
+type YoutubeRegistrationRequestConnection {
+  edges: [YoutubeRegistrationRequestEdge!]!
+  nodes: [YoutubeRegistrationRequest!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type YoutubeRegistrationRequestEdge {
+  cursor: String!
+  node: YoutubeRegistrationRequest!
+}
+
+type YoutubeRegistrationRequestRejecting {
+  note: String
+  rejectedBy: User!
+  request: YoutubeRegistrationRequest!
+}
+
+type YoutubeRegistrationRequestRejectingNotification implements Node & Notification {
+  createdAt: DateTime!
+  id: ID!
+  notifyTo: User!
+  rejecting: YoutubeRegistrationRequestRejecting!
+  watched: Boolean!
+}
+
+type YoutubeRegistrationRequestSemitagging {
+  id: ID!
+  name: String!
+  note: String
+}
+
+type YoutubeRegistrationRequestTagging {
+  id: ID!
+  note: String
+  tag: Tag!
 }
 
 type YoutubeVideoSource implements Node & VideoSource {
