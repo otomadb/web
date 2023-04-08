@@ -9,7 +9,7 @@ import { UserIcon } from "~/components/common/UserIcon";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 const Fragment = graphql(`
-  fragment RequestNicovideoRegistrationPage_VideoRequestAlreadyExists on NicovideoRegistrationRequest {
+  fragment NicovideoRequestPage_VideoRequestAlreadyExists on NicovideoRegistrationRequest {
     id
     sourceId
     checked

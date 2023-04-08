@@ -3,7 +3,7 @@ import clsx from "clsx";
 import React from "react";
 import { useQuery } from "urql";
 
-import { NicovideoRequestPageLink } from "~/app/request/nicovideo/Link";
+import NicovideoRequestPageLink from "~/app/request/nicovideo/Link";
 import { graphql } from "~/gql";
 
 import { RequestsExists } from "./RequestsExists";

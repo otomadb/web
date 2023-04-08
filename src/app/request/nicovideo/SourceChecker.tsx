@@ -18,7 +18,7 @@ export const SourceChecker: React.FC<{
 }> = ({ className, children, sourceId }) => {
   const [{ data }] = useQuery({
     query: graphql(`
-      query RequestNicovideoRegistrationPage_SourceChecker($sourceId: String!) {
+      query NicovideoRequestPage_SourceChecker($sourceId: String!) {
         fetchNicovideo(input: { sourceId: $sourceId }) {
           source {
             sourceId
@@ -31,7 +31,7 @@ export const SourceChecker: React.FC<{
           ...EditorRegisterNicovideoPage_VideoSource
         }
         findNicovideoRegistrationRequest(input: { sourceId: $sourceId }) {
-          ...RequestNicovideoRegistrationPage_VideoRequestAlreadyExists
+          ...NicovideoRequestPage_VideoRequestAlreadyExists
         }
       }
     `),

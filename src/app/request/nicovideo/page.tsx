@@ -3,7 +3,7 @@ import clsx from "clsx";
 import { SourceIdInputForm } from "~/components/NicovideoSourceIdForm/Form";
 import { SourceIdProvider } from "~/components/NicovideoSourceIdForm/SourceIdProvider";
 
-import { RequestForm } from "./_components/Form";
+import { RequestForm } from "./Form";
 
 export const dynamic = "force-dynamic";
 
