@@ -1,8 +1,12 @@
 name: Check
 
 on:
-  push:
+  pull_request:
+    branches:
+      - main
   merge_group:
+    branches:
+      - main
 
 jobs:
   validate-graphql-queries:
@@ -58,18 +62,3 @@ jobs:
       - run: pnpm install
       - run: pnpm run codegen
       - run: pnpm run typecheck
-#  storybook:
-#    name: Storybook
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v3
-#      - uses: pnpm/action-setup@v2
-#        with:
-#          version: 7
-#      - uses: actions/setup-node@v3
-#        with:
-#          node-version: 18
-#          cache: pnpm
-#      - run: pnpm install
-#      - run: pnpm run codegen
-#      - run: pnpm run storybook:build
