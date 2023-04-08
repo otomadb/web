@@ -6,7 +6,7 @@ import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
 
 import { RegisterContext } from "../Original/Context";
-import { Fragment as ToggleTagButtonFragment } from "../ToggleTagButton";
+import { Fragment as TagButtonFragment } from "../TagButton";
 import { RequestContext } from "./Context";
 import { Exists, Fragment } from "./Exists";
 
@@ -59,7 +59,7 @@ export const Primary: StoryObj<typeof meta> = {
                     CommonTagFragment
                   ),
                 },
-                ToggleTagButtonFragment
+                TagButtonFragment
               ),
             },
           },
@@ -79,7 +79,7 @@ export const Primary: StoryObj<typeof meta> = {
                     CommonTagFragment
                   ),
                 },
-                ToggleTagButtonFragment
+                TagButtonFragment
               ),
             },
           },
@@ -99,7 +99,7 @@ export const Primary: StoryObj<typeof meta> = {
                     CommonTagFragment
                   ),
                 },
-                ToggleTagButtonFragment
+                TagButtonFragment
               ),
             },
           },
@@ -119,7 +119,7 @@ export const Primary: StoryObj<typeof meta> = {
                     CommonTagFragment
                   ),
                 },
-                ToggleTagButtonFragment
+                TagButtonFragment
               ),
             },
           },
@@ -139,7 +139,7 @@ export const Primary: StoryObj<typeof meta> = {
                     CommonTagFragment
                   ),
                 },
-                ToggleTagButtonFragment
+                TagButtonFragment
               ),
             },
           },

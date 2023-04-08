@@ -2,45 +2,52 @@
 import "client-only";
 
 import clsx from "clsx";
-import { ReactNode } from "react";
+import { CSSProperties, ReactNode } from "react";
 import { useQuery } from "urql";
 
 import { Original } from "~/app/editor/nicovideo/_components/Original/Original";
 import { VideoSource } from "~/app/editor/nicovideo/_components/VideoSource/VideoSource";
 import { graphql } from "~/gql";
 
-import { RequestExists } from "./RequestExists";
+import RequestExists from "./RequestExists";
 
-export const SourceChecker: React.FC<{
+export const Query = graphql(`
+  query NicovideoRequestPage_SourceChecker($sourceId: String!) {
+    fetchNicovideo(input: { sourceId: $sourceId }) {
+      source {
+        sourceId
+        title
+        thumbnailUrl
+        ...RegisterNicovideoPage_OriginalSource
+      }
+    }
+    findNicovideoVideoSource(input: { sourceId: $sourceId }) {
+      ...EditorRegisterNicovideoPage_VideoSource
+    }
+    findNicovideoRegistrationRequest(input: { sourceId: $sourceId }) {
+      ...NicovideoRequestPage_VideoRequestAlreadyExists
+    }
+  }
+`);
+export default function SourceChecker({
+  style,
+  children,
+  sourceId,
+  className,
+}: {
   className?: string;
+  style?: CSSProperties;
   sourceId: string;
   children: ReactNode;
-}> = ({ className, children, sourceId }) => {
+}) {
   const [{ data }] = useQuery({
-    query: graphql(`
-      query NicovideoRequestPage_SourceChecker($sourceId: String!) {
-        fetchNicovideo(input: { sourceId: $sourceId }) {
-          source {
-            sourceId
-            title
-            thumbnailUrl
-            ...RegisterNicovideoPage_OriginalSource
-          }
-        }
-        findNicovideoVideoSource(input: { sourceId: $sourceId }) {
-          ...EditorRegisterNicovideoPage_VideoSource
-        }
-        findNicovideoRegistrationRequest(input: { sourceId: $sourceId }) {
-          ...NicovideoRequestPage_VideoRequestAlreadyExists
-        }
-      }
-    `),
+    query: Query,
     variables: { sourceId },
     requestPolicy: "cache-and-network",
   });
 
   return (
-    <div className={clsx(className, ["mt-2"])}>
+    <div className={clsx(className, ["mt-2"])} style={style}>
       {data && (
         <>
           {data.findNicovideoVideoSource && (
@@ -97,4 +104,4 @@ export const SourceChecker: React.FC<{
       )}
     </div>
   );
-};
+}
