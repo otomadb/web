@@ -259,34 +259,6 @@ input FindVideosOrderBy {
   createdAt: SortOrder
 }
 
-enum GenerateAccessTokenInputDuration {
-  """1日"""
-  ONE_DAY
-
-  """1ヶ月"""
-  ONE_MONTH
-
-  """1週間"""
-  ONE_WEEK
-
-  """3日"""
-  THREE_DAYS
-}
-
-"""その他のエラー"""
-type GenerateAccessTokenOtherErrorsFallback {
-  message: GenerateAccessTokenOtherErrorsFallbackMessage!
-}
-
-enum GenerateAccessTokenOtherErrorsFallbackMessage {
-  INTERNAL_SERVER_ERROR
-}
-
-union GenerateAccessTokenReturnUnion = GenerateAccessTokenOtherErrorsFallback | GenerateAccessTokenSucceededPayload | MutationAuthenticationError
-
-type GenerateAccessTokenSucceededPayload {
-  accessToken: String!
-}
 
 """指定したTagParentRelationがそもそも非明示的だった場合のエラー"""
 type ImplicitizeTagAlreadyImplicitError {
@@ -339,7 +311,6 @@ type Mutation {
 
   """非明示的なタグの親子関係を明示的に昇格する"""
   explicitizeTagParent(input: ExplicitizeTagParentInput!): ExplicitizeTagParentReturnUnion!
-  generateAccessToken(duration: GenerateAccessTokenInputDuration!): GenerateAccessTokenReturnUnion! @deprecated
 
   """明示的なタグの親子関係を非明示的に降格する"""
   implicitizeTagParent(input: ImplicitizeTagParentInput!): ImplicitizeTagParentReturnUnion!
