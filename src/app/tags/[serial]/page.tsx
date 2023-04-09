@@ -28,10 +28,10 @@ export async function generateMetadata({
   if (!findTag) return notFound(); // TODO: これ本当にこれでいいの？
 
   return {
-    title: `tag:${findTag.name} | Otomadb`,
+    title: `tag:${findTag.name} | OtoMADB`,
     openGraph: {
       url: `https://otomadb.com/tags/${findTag.serial}`,
-      title: `tag:${findTag.name} | Otomadb`,
+      title: `tag:${findTag.name} | OtoMADB`,
     },
   };
 }
