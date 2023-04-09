@@ -19,7 +19,14 @@ export default function LoginButton({
       type="button"
       onClick={async (e) => {
         e.preventDefault();
-        await loginWithRedirect({});
+        await loginWithRedirect({
+          appState: {
+            returnTo:
+              typeof window === "object"
+                ? new URL("/me", window.location.origin).toString()
+                : undefined,
+          },
+        });
       }}
       className={clsx(
         className,

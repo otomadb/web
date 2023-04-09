@@ -9,6 +9,7 @@ import {
   ReactNode,
   useCallback,
   useContext,
+  useEffect,
   useState,
 } from "react";
 
@@ -130,4 +131,20 @@ export const ToastProvider: React.FC<{
 export const useToaster = () => {
   const { call } = useContext(ToastContext);
   return call;
+};
+
+export const CallToast: React.FC<{
+  children: ReactNode;
+  duration?: number;
+}> = ({ children, duration = 3000 }) => {
+  const call = useToaster();
+
+  useEffect(
+    () => {
+      call(<>{children}</>, { duration });
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+  return null;
 };
