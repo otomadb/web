@@ -196,14 +196,14 @@ export default function RequestForm({
                 <div className={clsx(["flex-shrink-0"])}>
                   <OptionalSemitagTagSearcher
                     handleSelectTag={(tagId) => {
-                      if (
-                        !getValues("tags").find(({ tagId: t }) => t === tagId)
-                      )
+                      if (!tags.find(({ tagId: t }) => t === tagId))
                         appendTag({ tagId });
                     }}
-                    handleSelectSemitag={(name) => appendSemitag({ name })}
-                    isExistsSemitag={(q) =>
-                      semitags.some(({ name }) => name === q)
+                    handleSelectSemitag={(name) => {
+                      appendSemitag({ name });
+                    }}
+                    isExistsSemitag={(query) =>
+                      semitags.some(({ name }) => name === query)
                     }
                   />
                 </div>

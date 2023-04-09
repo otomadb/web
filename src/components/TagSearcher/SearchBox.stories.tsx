@@ -1,43 +1,14 @@
 import { action } from "@storybook/addon-actions";
 import { Meta, StoryObj } from "@storybook/react";
 import { userEvent, within } from "@storybook/testing-library";
-import { graphql } from "msw";
-import {
-  createClient as createUrqlClient,
-  Provider as UrqlProvider,
-} from "urql";
 
-import { makeFragmentData } from "~/gql";
-
-import { Query, SearchBox } from "./SearchBox";
-import { Fragment as SuggestsFragment } from "./Suggests";
+import { SearchBox } from "./SearchBox";
 
 const meta = {
   component: SearchBox,
-  render: (args) => (
-    <UrqlProvider value={createUrqlClient({ url: "/graphql", exchanges: [] })}>
-      <SearchBox {...args} style={{ width: "320px" }} />
-    </UrqlProvider>
-  ),
   args: {
-    query: "",
-    setResult: action("setResult"),
-    setUpstream: action("setQuery"),
-  },
-  parameters: {
-    msw: {
-      handlers: [
-        graphql.query(Query, (req, res, ctx) =>
-          res(
-            ctx.data({
-              searchTags: {
-                ...makeFragmentData({ items: [] }, SuggestsFragment),
-              },
-            })
-          )
-        ),
-      ],
-    },
+    style: { width: "320px" },
+    setQuery: action("setQuery"),
   },
 } as Meta<typeof SearchBox>;
 
@@ -49,16 +20,8 @@ export const Primary: StoryObj<typeof meta> = {
 
 export const Fetching: StoryObj<typeof meta> = {
   name: "取得中",
-  parameters: {
-    msw: {
-      handlers: [
-        graphql.query(Query, (req, res, ctx) => res(ctx.delay("infinite"))),
-      ],
-    },
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    await userEvent.type(canvas.getByRole("textbox"), "Test");
+  args: {
+    fetching: true,
   },
 };
 

@@ -7,7 +7,7 @@ import {
 } from "urql";
 
 import { mockTagButton } from "~/app/editor/nicovideo/_components/TagButton.mocks";
-import { mockSearchBox } from "~/components/TagSearcher/SearchBox.mocks";
+import { mockTagSearcher } from "~/components/TagSearcher/index.mocks";
 import { ToastContext } from "~/components/Toaster";
 
 import RequestForm from "./RequestForm";
@@ -41,7 +41,7 @@ const meta = {
         unconcern: [
           mockNeitherRegisterNorRequest,
           mockTagButton,
-          mockSearchBox,
+          mockTagSearcher,
         ],
       },
     },

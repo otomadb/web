@@ -4,12 +4,12 @@ import { Fragment as CommonTagFragment } from "~/components/CommonTag";
 import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
 
-import { Query } from "./SearchBox";
+import { Query } from ".";
 import { Fragment as SuggestItemFragment } from "./SuggestItem";
 import { Fragment as SuggestsFragment } from "./Suggests";
 
-export const mockSearchBox = graphql.query(Query, (req, res, ctx) => {
-  return res(
+export const mockTagSearcher = graphql.query(Query, (req, res, ctx) =>
+  res(
     ctx.data({
       searchTags: {
         ...makeFragmentData(
@@ -96,5 +96,24 @@ export const mockSearchBox = graphql.query(Query, (req, res, ctx) => {
         ),
       },
     })
-  );
-});
+  )
+);
+
+export const mockTagSearcherNothing = graphql.query(Query, (req, res, ctx) =>
+  res(
+    ctx.data({
+      searchTags: {
+        ...makeFragmentData(
+          {
+            items: [],
+          },
+          SuggestsFragment
+        ),
+      },
+    })
+  )
+);
+
+export const mockTagSearcherLoading = graphql.query(Query, (req, res, ctx) =>
+  res(ctx.delay("infinite"))
+);
