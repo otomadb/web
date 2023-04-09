@@ -11,21 +11,21 @@ import { ToastProvider } from "~/components/Toaster";
 import UrqlProvider from "~/urql/Provider";
 
 export const metadata: Metadata = {
-  title: "Otomadb",
+  title: "OtoMADB",
   description:
-    "Otomadbは音MADの体系的なデータベースを目指して開発されています。",
+    "OtoMADBは音MADの体系的なデータベースを目指して開発されています。",
   viewport: "width=device-width, initial-scale=1.0",
   openGraph: {
     type: "website",
     url: "https://otomadb.com",
-    title: "Otomadb",
-    siteName: "Otomadb",
+    title: "OtoMADB",
+    siteName: "OtoMADB",
     description:
-      "Otomadbは音MADの体系的なデータベースを目指して開発されています。",
+      "OtoMADBは音MADの体系的なデータベースを目指して開発されています。",
   },
   twitter: {
     card: "summary",
-    title: `Otomadb`,
+    title: `OtoMADB`,
     site: "@SnO2WMaN",
   },
 };

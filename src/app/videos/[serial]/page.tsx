@@ -41,17 +41,17 @@ export async function generateMetadata({
   const { findVideo } = result.data;
 
   return {
-    title: `${findVideo.title} | Otomadb`,
+    title: `${findVideo.title} | OtoMADB`,
     openGraph: {
       type: "website",
-      siteName: "Otomadb",
+      siteName: "OtoMADB",
       url: `https://otomadb.com/videos/${findVideo.serial}`,
-      title: `${findVideo.title} | Otomadb`,
+      title: `${findVideo.title} | OtoMADB`,
       images: `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/og/video?serial=${findVideo.serial}`,
     },
     twitter: {
       card: "summary_large_image",
-      title: `${findVideo.title} | Otomadb`,
+      title: `${findVideo.title} | OtoMADB`,
       images: `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/og/video?serial=${findVideo.serial}`,
       site: "@SnO2WMaN",
     },
