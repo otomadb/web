@@ -3,10 +3,11 @@ import "server-only";
 import clsx from "clsx";
 import { Suspense } from "react";
 
-import RecentVideos from "~/app/me/RecentVideos.server";
 import { AllVideosPageLink } from "~/app/videos/Link";
 import { SearchContents } from "~/components/common/SearchContents/SearchContents";
 import { Logo } from "~/components/Logo";
+
+import RecentVideos from "./RecentVideos.server";
 
 export default function Page() {
   return (
@@ -71,8 +72,13 @@ export default function Page() {
           </div>
         </div>
       </header>
-      <section className={clsx()}>
-        <div className={clsx(["flex", "items-center"], ["px-2"])}>
+      <section className={clsx(["w-full"], ["max-w-screen-xl", "mx-auto"])}>
+        <div
+          className={clsx(
+            ["max-w-screen-lg", "mx-auto"],
+            ["flex", "items-center"]
+          )}
+        >
           <h2 className={clsx(["flex-grow"], ["text-lg"], ["text-slate-900"])}>
             最近登録された動画
           </h2>
@@ -84,7 +90,7 @@ export default function Page() {
             </AllVideosPageLink>
           </div>
         </div>
-        <div className={clsx(["mt-2"])}>
+        <div className={clsx(["mt-4"])}>
           <Suspense fallback={<p>動画を取得中です</p>}>
             {/* @ts-expect-error RSC*/}
             <RecentVideos />

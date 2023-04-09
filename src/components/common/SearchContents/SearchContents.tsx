@@ -1,7 +1,6 @@
 "use client";
 import "client-only";
 
-import { css } from "@emotion/css";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import React, { useState } from "react";
@@ -23,12 +22,7 @@ export const SearchContents: React.FC<{ className?: string }> = ({
         ["relative"],
         ["w-full"],
         ["border"],
-        ["bg-white"],
-        css`
-          &:focus-within {
-            box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.125);
-          }
-        `
+        ["bg-white"]
       )}
     >
       <div
