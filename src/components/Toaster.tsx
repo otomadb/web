@@ -5,58 +5,44 @@ import clsx from "clsx";
 import {
   ContextType,
   createContext,
-  createRef,
-  forwardRef,
   Fragment,
   ReactNode,
-  RefObject,
   useCallback,
   useContext,
   useState,
 } from "react";
 
 import { Portal } from "./Portal";
-import { useLoop } from "./useLoop";
 
-// eslint-disable-next-line react/display-name
-const Toast = forwardRef<
-  HTMLDivElement,
-  { children: ReactNode; fired: number; duration: number }
->(({ children, fired, duration }, ref) => {
-  const [pausedAt, setPausedAt] = useState<number | undefined>(undefined);
-  const [until, setUntil] = useState(fired + duration);
-  const [hidden, setHidden] = useState(false);
+const blurout = keyframes`from{visibility:visible; opacity:1;} to{visibility:hidden; opacity:0;}`;
+const barscale = keyframes`from{scale: 1 1;} to{scale: 0 1;}`;
 
-  useLoop(() => {
-    if (!pausedAt && until < Date.now()) setHidden(true);
-  });
-
+const Toast = ({
+  children,
+  duration,
+  onEnd,
+}: {
+  children: ReactNode;
+  fired: number;
+  duration: number;
+  onEnd(): void;
+}) => {
   return (
     <div
-      ref={ref}
-      aria-hidden={hidden}
-      onMouseEnter={() => {
-        setPausedAt(Date.now());
-      }}
-      onMouseLeave={() => {
-        if (pausedAt) setUntil((prev) => prev + Date.now() - pausedAt);
-        setPausedAt(undefined);
-      }}
       className={clsx(
+        ["group"],
         ["relative"],
         ["bg-white", "bg-opacity-75", "backdrop-blur"],
         ["overflow"],
         ["shadow"],
-        css(`
+        css`
           &[aria-hidden="true"] {
             animation-duration: 0.25s;
             animation-timing-function: ease-out;
             animation-fill-mode: both;
-            animation-name: ${keyframes(
-              "from{visibility:visible; opacity:1;} to{visibility:hidden; opacity:0;}"
-            )};
+            animation-name: ${blurout};
           }
-        `)
+        `
       )}
     >
       <div className={clsx(["px-4", "py-2"])}>{children}</div>
@@ -65,21 +51,24 @@ const Toast = forwardRef<
           ["w-full"],
           ["h-[2px]"],
           ["bg-teal-400"],
-          css(`
+          ["group-hover:animation-pause"],
+          css`
             transform-origin: left;
-            animation-name: ${keyframes("from{scale: 1 1;} to{scale: 0 1;}")};
+            animation-name: ${barscale};
             animation-fill-mode: both;
             animation-timing-function: linear;
-          `)
+          `
         )}
         style={{
           animationDuration: `${duration}ms`,
-          animationPlayState: pausedAt ? "paused" : "running",
+        }}
+        onAnimationEnd={() => {
+          onEnd();
         }}
       ></div>
     </div>
   );
-});
+};
 
 export const ToastContext = createContext<{
   call: (inner: JSX.Element, option?: { duration: number }) => void;
@@ -91,36 +80,31 @@ export const ToastProvider: React.FC<{
   children: ReactNode;
   selector: string;
 }> = ({ children, selector }) => {
-  const [toasts, setToasts] = useState<
-    { id: string; ref: RefObject<HTMLDivElement>; Toast: JSX.Element }[]
-  >([]);
+  const [toasts, setToasts] = useState<{ id: string; Toast: JSX.Element }[]>(
+    []
+  );
 
-  useLoop(() => {
-    setToasts((prev) =>
-      prev.filter(
-        ({ ref }) =>
-          !ref.current ||
-          window.getComputedStyle(ref.current, null).visibility !== "hidden"
-      )
-    );
-  });
+  const eat = useCallback((id: string) => {
+    setToasts((prev) => prev.filter((t) => t.id !== id));
+  }, []);
+  const call = useCallback(
+    (inner, { duration } = { duration: 3000 }) => {
+      const id = crypto.randomUUID();
 
-  const call = useCallback((inner, { duration } = { duration: 3000 }) => {
-    const id = crypto.randomUUID();
-    const ref = createRef<HTMLDivElement>();
-    setToasts((prev) => [
-      ...prev,
-      {
-        id,
-        ref,
-        Toast: (
-          <Toast ref={ref} fired={Date.now()} duration={duration}>
-            {inner}
-          </Toast>
-        ),
-      },
-    ]);
-  }, []) satisfies ContextType<typeof ToastContext>["call"];
+      setToasts((prev) => [
+        ...prev,
+        {
+          id,
+          Toast: (
+            <Toast fired={Date.now()} duration={duration} onEnd={() => eat(id)}>
+              {inner}
+            </Toast>
+          ),
+        },
+      ]);
+    },
+    [eat]
+  ) satisfies ContextType<typeof ToastContext>["call"];
 
   return (
     <ToastContext.Provider value={{ call }}>
