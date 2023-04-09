@@ -259,7 +259,6 @@ input FindVideosOrderBy {
   createdAt: SortOrder
 }
 
-
 """指定したTagParentRelationがそもそも非明示的だった場合のエラー"""
 type ImplicitizeTagAlreadyImplicitError {
   relation: TagParent!
@@ -329,10 +328,6 @@ type Mutation {
   resovleSemitag(semitagId: ID!, tagId: ID!): ResolveSemitagReturnUnion!
   undoLikeVideo(input: UndoLikeVideoInput!): UndoLikeVideoReturnUnion!
   verifyTemporaryUser: VerifyTemporaryUserReturnUnion!
-}
-
-type MutationAuthenticationError {
-  requiredRole: UserRole!
 }
 
 """MylistのIDとして無効なIDを入力した場合のエラー"""
@@ -1214,14 +1209,6 @@ type SemitagSuggestTagsReturn {
   items: [SemitagSuggestTagsItem!]!
 }
 
-type Session {
-  createdAt: DateTime!
-  expired: Boolean!
-  expiredAt: DateTime!
-  id: ID!
-  user: User!
-}
-
 enum SortOrder {
   ASC
   DESC
@@ -1472,12 +1459,6 @@ input UserMylistsOrderBy {
 
 input UserNicovideoRegistrationRequestsOrderBy {
   createdAt: SortOrder
-}
-
-enum UserRole {
-  ADMINISTRATOR
-  EDITOR
-  USER
 }
 
 union VerifyTemporaryUserReturnUnion = VerifyTemporaryUserSucceededPayload
