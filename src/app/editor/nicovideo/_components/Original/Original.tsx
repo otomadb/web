@@ -7,7 +7,7 @@ import React, { useEffect } from "react";
 
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-import ToggleTagButton from "../ToggleTagButton";
+import { TagButton } from "../TagButton";
 import {
   useSetSourceId,
   useSetThumbnailUrl,
@@ -26,7 +26,6 @@ export const Fragment = graphql(`
         items {
           tag {
             id
-            ...RegisterNicovideoPage_RequestFormPart_ToggleTagButton
           }
         }
       }
@@ -113,8 +112,8 @@ export const Original: React.FC<{
                   "gap-y-0.5",
                 ])}
               >
-                {tag.searchTags.items.map((item, i) => (
-                  <ToggleTagButton key={i} fragment={item.tag} />
+                {tag.searchTags.items.map((item) => (
+                  <TagButton key={item.tag.id} tagId={item.tag.id} />
                 ))}
               </div>
             </div>

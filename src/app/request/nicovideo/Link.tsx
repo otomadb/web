@@ -1,11 +1,12 @@
 import Link from "next/link";
-import React, { ComponentProps } from "react";
+import { ComponentProps } from "react";
 
 export type SearchParams = { sourceId?: string };
-
-export const NicovideoRequestPageLink: React.FC<
-  Omit<ComponentProps<typeof Link>, "href"> & SearchParams
-> = ({ children, sourceId, ...props }) => {
+export default function NicovideoRequestPageLink({
+  children,
+  sourceId,
+  ...props
+}: Omit<ComponentProps<typeof Link>, "href"> & SearchParams) {
   return (
     <Link
       href={
@@ -18,4 +19,4 @@ export const NicovideoRequestPageLink: React.FC<
       {children}
     </Link>
   );
-};
+}

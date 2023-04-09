@@ -7,8 +7,8 @@ import React from "react";
 import { LinkNicovideoRegistrationRequest } from "~/app/requests/nicovideo/[sourceId]/Link";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-const Fragment = graphql(`
-  fragment RequestNicovideoRegistrationPage_SuccessToast on RequestNicovideoRegistrationSucceededPayload {
+export const Fragment = graphql(`
+  fragment NicovideoRequestPage_SucceededToast on RequestNicovideoRegistrationSucceededPayload {
     request {
       id
       sourceId

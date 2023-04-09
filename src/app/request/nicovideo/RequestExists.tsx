@@ -8,13 +8,12 @@ import { LinkUser } from "~/app/users/[name]/Link";
 import { UserIcon } from "~/components/common/UserIcon";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-const Fragment = graphql(`
-  fragment RequestNicovideoRegistrationPage_VideoRequestAlreadyExists on NicovideoRegistrationRequest {
-    id
+export const Fragment = graphql(`
+  fragment NicovideoRequestPage_VideoRequestAlreadyExists on NicovideoRegistrationRequest {
+    ...Link_NicovideoRegistrationRequest
     sourceId
     checked
     thumbnailUrl
-    ...Link_NicovideoRegistrationRequest
     requestedBy {
       id
       name
@@ -23,13 +22,14 @@ const Fragment = graphql(`
     }
   }
 `);
-export const RequestExists: React.FC<{
+const RequestExists: React.FC<{
   className?: string;
+  style?: React.CSSProperties;
   fragment: FragmentType<typeof Fragment>;
-}> = ({ className, ...props }) => {
+}> = ({ className, style, ...props }) => {
   const fragment = useFragment(Fragment, props.fragment);
   return (
-    <div className={clsx(className, ["flex", "gap-x-4"])}>
+    <div className={clsx(className, ["flex", "gap-x-4"])} style={style}>
       <div className={clsx(["flex-shrink-0"])}>
         <Image
           width={260}
@@ -65,3 +65,4 @@ export const RequestExists: React.FC<{
     </div>
   );
 };
+export default RequestExists;

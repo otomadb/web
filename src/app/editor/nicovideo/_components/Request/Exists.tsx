@@ -5,7 +5,7 @@ import React, { useEffect } from "react";
 
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-import ToggleTagButton from "../ToggleTagButton";
+import { TagButton } from "../TagButton";
 import { useSetRequestId } from "./Context";
 import ToggleSemitagButton from "./ToggleSemitagButton";
 
@@ -18,7 +18,6 @@ export const Fragment = graphql(`
       id
       tag {
         id
-        ...RegisterNicovideoPage_RequestFormPart_ToggleTagButton
       }
     }
     semitaggings {
@@ -63,7 +62,7 @@ export const Exists: React.FC<{
             className={clsx(["flex", ["gap-x-1"], ["gap-y-0.5"], "flex-wrap"])}
           >
             {fragment.taggings.map((tagging) => (
-              <ToggleTagButton key={tagging.id} fragment={tagging.tag} />
+              <TagButton key={tagging.id} tagId={tagging.tag.id} />
             ))}
           </div>
         </div>

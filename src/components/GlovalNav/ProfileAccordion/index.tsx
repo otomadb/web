@@ -9,7 +9,7 @@ import { LinkRegisterSemitag } from "~/app/editor/semitags/Link";
 import { TagRegisterPageLink } from "~/app/editor/tags/Link";
 import { YouLikesPageLink } from "~/app/me/likes/Link";
 import MyMylistsPageLink from "~/app/me/mylists/Link";
-import { NicovideoRequestPageLink } from "~/app/request/nicovideo/Link";
+import NicovideoRequestPageLink from "~/app/request/nicovideo/Link";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 import AboutMe from "./AboutMe";
