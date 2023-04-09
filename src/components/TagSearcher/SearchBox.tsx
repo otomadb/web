@@ -1,53 +1,19 @@
-import { ResultOf } from "@graphql-typed-document-node/core";
+"use client";
+import "client-only";
+
 import { ArrowPathIcon, MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
-import { useEffect, useState } from "react";
-import { useDebounce } from "react-use";
-import { useQuery } from "urql";
 
 import { TextInput } from "~/components/common/TextInput";
-import { graphql } from "~/gql";
 
-export const Query = graphql(`
-  query TagSearcher_SearchBox($query: String!, $limit: Int) {
-    searchTags(input: { query: $query, limit: $limit }) {
-      ...TagSearcher_Suggests
-    }
-  }
-`);
 export const SearchBox: React.FC<{
   className?: string;
   style?: React.CSSProperties;
   limit: number;
-  setResult(
-    result: [string, ResultOf<typeof Query>["searchTags"] | undefined]
-  ): void;
+  fetching: boolean;
   disabled?: boolean;
-}> = ({ className, style, setResult, disabled, limit }) => {
-  const [value, setValue] = useState<string>("");
-  const [query, setQuery] = useState<string>("");
-  const [{ data, fetching }] = useQuery({
-    query: Query,
-    pause: value === "",
-    variables: { query, limit },
-  });
-
-  useDebounce(
-    () => {
-      setQuery(value);
-    },
-    250,
-    [value]
-  );
-
-  useEffect(
-    () => {
-      setResult([value, value === "" ? undefined : data?.searchTags]);
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [value, data]
-  );
-
+  setQuery(query: string): void;
+}> = ({ className, style, fetching, setQuery }) => {
   return (
     <label
       className={clsx(
@@ -81,9 +47,8 @@ export const SearchBox: React.FC<{
       <TextInput
         className={clsx(["flex-grow"], ["px-2"])}
         onChange={(e) => {
-          setValue(e.target.value);
+          setQuery(e.target.value);
         }}
-        disabled={disabled}
       />
     </label>
   );

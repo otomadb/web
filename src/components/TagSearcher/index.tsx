@@ -2,13 +2,22 @@
 
 import "client-only";
 
-import { ResultOf } from "@graphql-typed-document-node/core";
 import clsx from "clsx";
 import React, { useState } from "react";
+import { useQuery } from "urql";
 
-import { Query, SearchBox } from "./SearchBox";
+import { graphql } from "~/gql";
+
+import { SearchBox } from "./SearchBox";
 import Suggests from "./Suggests";
 
+export const Query = graphql(`
+  query TagSearcher($query: String!, $limit: Int) {
+    searchTags(input: { query: $query, limit: $limit }) {
+      ...TagSearcher_Suggests
+    }
+  }
+`);
 export const TagSearcher: React.FC<{
   className?: string;
   style?: React.CSSProperties;
@@ -18,54 +27,51 @@ export const TagSearcher: React.FC<{
   disabled?: boolean;
 
   Optional?: React.FC<{ query: string }>;
-}> = ({ className, style, handleSelect, limit = 5, Optional }) => {
+}> = ({
+  className,
+  style,
+  handleSelect,
+  limit = 5,
+  Optional = ({ query }) => <span>{query}</span>,
+}) => {
   const [query, setQuery] = useState<string>("");
-  const [suggestsData, setSuggestsData] = useState<
-    ResultOf<typeof Query>["searchTags"] | undefined
-  >();
+  const [{ data, fetching }] = useQuery({
+    query: Query,
+    pause: query === "",
+    variables: { query, limit },
+  });
 
   return (
     <div className={clsx(className, ["relative", "group"])} style={style}>
       <SearchBox
         limit={limit}
-        setResult={([q, d]) => {
+        fetching={fetching}
+        setQuery={(q) => {
           setQuery(q);
-          setSuggestsData(d);
         }}
       />
       <div
         className={clsx(
+          { hidden: query === "" },
           ["invisible", "group-focus-within:visible"],
-          (suggestsData || !!Optional) && ["border", ["border-slate-300"]],
+          ["border", ["border-slate-300"]],
           ["absolute", "z-1"],
           ["w-full"]
         )}
       >
-        {suggestsData && (
+        {data && (
           <Suggests
-            fragment={suggestsData}
+            fragment={data.searchTags}
             handleSelect={(s) => {
               handleSelect(s);
             }}
           />
         )}
-        {query !== "" && Optional && (
-          <div
-            className={clsx(
-              ["px-2", "py-1"],
-              ["bg-slate-50"],
-              [
-                {
-                  "border-t": !!suggestsData,
-                  "border-t-4": suggestsData,
-                },
-                ["border-slate-300"],
-              ]
-            )}
-          >
+        {
+          <div className={clsx(["border-t", "border-slate-300"])}>
             <Optional query={query} />
           </div>
-        )}
+        }
       </div>
     </div>
   );

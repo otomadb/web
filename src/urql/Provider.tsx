@@ -111,15 +111,6 @@ export default function UrqlProvider({ children }: { children: ReactNode }) {
               SemitagConnection() {
                 return null;
               },
-              SigninSucceededPayload() {
-                return null;
-              },
-              SigninFailedPayload() {
-                return null;
-              },
-              SignupSucceededPayload() {
-                return null;
-              },
               FetchNicovideoPayload() {
                 return null;
               },

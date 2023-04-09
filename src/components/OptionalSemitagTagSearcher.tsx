@@ -1,65 +1,96 @@
+"use client";
+import "client-only";
+
 import clsx from "clsx";
 
 import { TagSearcher } from "~/components/TagSearcher";
 
+const Optional: React.FC<{
+  className?: string;
+  style?: React.CSSProperties;
+  handleSelect(): void;
+  query: string;
+  registered: boolean;
+}> = ({ className, style, query, handleSelect, registered }) => {
+  return (
+    <button
+      type="button"
+      aria-label="仮タグの追加"
+      tabIndex={0}
+      disabled={registered}
+      style={style}
+      className={clsx(
+        className,
+        ["w-full"],
+        ["px-2", "py-2"],
+        ["bg-white", "disabled:bg-slate-200", "hover:bg-blue-200"],
+        ["text-sm", "text-left"]
+      )}
+      onClick={(e) => {
+        handleSelect();
+      }}
+    >
+      {!registered && (
+        <>
+          <span
+            className={clsx(
+              ["bg-white"],
+              ["border", "border-gray-200"],
+              ["rounded"],
+              ["px-2", "py-0.5"]
+            )}
+          >
+            {query}
+          </span>
+          <span>を仮タグとして追加</span>
+        </>
+      )}
+      {registered && (
+        <>
+          <span
+            className={clsx(
+              ["bg-white"],
+              ["border", "border-gray-200"],
+              ["rounded"],
+              ["px-2", "py-0.5"]
+            )}
+          >
+            {query}
+          </span>
+          <span>は既に仮タグとして追加されています</span>
+        </>
+      )}
+    </button>
+  );
+};
+
 export default function OptionalSemitagTagSearcher({
+  className,
+  style,
   handleSelectTag,
   handleSelectSemitag,
   isExistsSemitag,
 }: {
+  className?: string;
+  style?: React.CSSProperties;
   handleSelectTag(tagId: string): void;
   handleSelectSemitag(semitagName: string): void;
   isExistsSemitag(query: string): boolean;
 }) {
   return (
     <TagSearcher
-      handleSelect={(tagId) => handleSelectTag(tagId)}
+      className={className}
+      style={style}
+      handleSelect={(tagId) => {
+        handleSelectTag(tagId);
+      }}
       Optional={({ query }) => {
         return (
-          <div className={clsx(["py-1"])}>
-            {isExistsSemitag(query) && (
-              <div className={clsx(["text-sm"])}>
-                <span
-                  className={clsx(
-                    ["bg-white"],
-                    ["border", "border-gray-200"],
-                    ["rounded"],
-                    ["px-2", "py-0.5"]
-                  )}
-                >
-                  {query}
-                </span>
-                <span>は既に仮タグとして追加されています</span>
-              </div>
-            )}
-            {!isExistsSemitag(query) && (
-              <button
-                className={clsx(
-                  ["text-sm"],
-                  ["border"],
-                  ["rounded"],
-                  ["px-2", "py-1"],
-                  ["bg-white", "hover:bg-blue-200"]
-                )}
-                onClick={(e) => {
-                  e.currentTarget.blur();
-                  handleSelectSemitag(query);
-                }}
-              >
-                <span
-                  className={clsx(
-                    ["bg-white"],
-                    ["border", "border-gray-200"],
-                    ["rounded"],
-                    ["px-2", "py-0.5"]
-                  )}
-                >
-                  {query}
-                </span>
-                <span>を仮タグとして追加</span>
-              </button>
-            )}
-          </div>
+          <Optional
+            query={query}
+            registered={isExistsSemitag(query)}
+            handleSelect={() => handleSelectSemitag(query)}
+          />
         );
       }}
     />
