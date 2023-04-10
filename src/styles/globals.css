@@ -10,6 +10,7 @@
 
 :root {
   overflow-y: scroll;
+  scroll-padding-top: 72px;
 }
 
 [data-nextjs-scroll-focus-boundary] {

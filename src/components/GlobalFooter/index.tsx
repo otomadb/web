@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import Link from "next/link";
 import React from "react";
 
 import { AboutPageLink } from "~/app/about/Link";
@@ -93,9 +94,20 @@ export const GlobalFooter: React.FC = () => {
                 <a className={clsx(["text-slate-700"], ["text-sm"])}>使い方</a>
               </li>
               <li className={clsx(["flex"])}>
-                <a className={clsx(["text-slate-700"], ["text-sm"])}>
-                  バグ報告や要望
-                </a>
+                <Link
+                  href={"docs/faq"}
+                  className={clsx(["text-slate-300"], ["text-sm"])}
+                >
+                  よくある質問
+                </Link>
+              </li>
+              <li className={clsx(["flex"])}>
+                <Link
+                  href={"docs/faq#要望やバグ報告について"}
+                  className={clsx(["text-slate-300"], ["text-sm"])}
+                >
+                  要望やバグ報告
+                </Link>
               </li>
             </ul>
           </nav>

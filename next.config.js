@@ -15,6 +15,7 @@ const nextConfig = {
   experimental: {
     appDir: true,
     typedRoutes: true,
+    mdxRs: true,
   },
   redirects() {
     return [
@@ -31,4 +32,7 @@ const nextConfig = {
     ];
   },
 };
-module.exports = nextConfig;
+
+const withMDX = require("@next/mdx")();
+
+module.exports = withMDX(nextConfig);
