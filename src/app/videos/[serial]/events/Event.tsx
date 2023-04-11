@@ -3,9 +3,9 @@ import Image from "next/image";
 import React, { ReactNode } from "react";
 
 import { LinkUser } from "~/app/users/[name]/Link";
-import { UserIcon } from "~/components/common/UserIcon";
 import Semitag from "~/components/CommonSemitag";
 import { CommonTag } from "~/components/CommonTag";
+import { UserIcon } from "~/components/UserIcon";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 const EventTemplateFragment = graphql(`

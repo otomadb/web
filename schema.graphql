@@ -1442,7 +1442,7 @@ type UndoLikeVideoSucceededPayload {
 
 type User implements Node {
   displayName: String!
-  icon: String
+  icon: String!
   id: ID!
   isAdministrator: Boolean!
   isEditor: Boolean!

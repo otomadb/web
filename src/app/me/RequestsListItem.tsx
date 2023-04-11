@@ -4,7 +4,7 @@ import React from "react";
 import { LinkNicovideoRegistrationRequest as NicovideoRegistrationRequestPageLink } from "~/app/requests/nicovideo/[sourceId]/Link";
 import { LinkUser as UserPageLink } from "~/app/users/[name]/Link";
 import { CoolImage } from "~/components/common/CoolImage";
-import { UserIcon } from "~/components/common/UserIcon";
+import { UserIcon } from "~/components/UserIcon";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const Fragment = graphql(`

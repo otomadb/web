@@ -5,7 +5,7 @@ import Image from "next/image";
 
 import { LinkNicovideoRegistrationRequest } from "~/app/requests/nicovideo/[sourceId]/Link";
 import { LinkUser } from "~/app/users/[name]/Link";
-import { UserIcon } from "~/components/common/UserIcon";
+import { UserIcon } from "~/components/UserIcon";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const Fragment = graphql(`

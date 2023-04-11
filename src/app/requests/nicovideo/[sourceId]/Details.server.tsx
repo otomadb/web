@@ -3,7 +3,7 @@ import "server-only";
 import clsx from "clsx";
 
 import { LinkUser } from "~/app/users/[name]/Link";
-import { UserIcon } from "~/components/common/UserIcon";
+import { UserIcon } from "~/components/UserIcon";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 import { Editor } from "./Editor";

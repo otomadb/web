@@ -11,7 +11,7 @@ import {
   FetcherContainer,
   InfiniteVideosGrid,
 } from "~/components/common/InfiniteVideoGrid";
-import { UserIcon } from "~/components/common/UserIcon";
+import { UserIcon } from "~/components/UserIcon";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 import { LinkNicovideoRegistrationRequest } from "./[sourceId]/Link";

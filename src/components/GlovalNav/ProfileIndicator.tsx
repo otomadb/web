@@ -3,7 +3,7 @@
 import clsx from "clsx";
 import React from "react";
 
-import { UserIcon } from "~/components/common/UserIcon";
+import { UserIcon } from "~/components/UserIcon";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 import { Accordion } from "./ProfileAccordion";
