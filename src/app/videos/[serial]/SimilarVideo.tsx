@@ -5,12 +5,14 @@ import { FragmentType, graphql, useFragment } from "~/gql";
 
 import { LinkVideo } from "./Link";
 
-const Fragment = graphql(`
-  fragment VideoPage_SimilarVideos_Video on Video {
-    ...Link_Video
-    ...VideoThumbnail
-    id
-    title
+export const Fragment = graphql(`
+  fragment VideoPage_SimilarVideos_Video on VideoSimilarity {
+    to {
+      ...Link_Video
+      ...VideoThumbnail
+      id
+      title
+    }
   }
 `);
 export const SimilarVideo = ({
@@ -18,7 +20,7 @@ export const SimilarVideo = ({
 }: {
   fragment: FragmentType<typeof Fragment>;
 }) => {
-  const to = useFragment(Fragment, props.fragment);
+  const { to } = useFragment(Fragment, props.fragment);
   return (
     <div>
       <LinkVideo fragment={to} className={clsx(["block"])}>

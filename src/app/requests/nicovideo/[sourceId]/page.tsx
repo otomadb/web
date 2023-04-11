@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 
 import { graphql } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
+import { isErr } from "~/utils/Result";
 
 import { Details } from "./Details.server";
 import { SemitagsList } from "./SemitagsList.server";
@@ -15,7 +16,7 @@ export default async function Page({
 }: {
   params: { sourceId: string };
 }) {
-  const { findNicovideoRegistrationRequest } = await fetchGql(
+  const result = await fetchGql(
     graphql(`
       query NicovideoRegistrationRequestPage($sourceId: String!) {
         findNicovideoRegistrationRequest(input: { sourceId: $sourceId }) {
@@ -28,7 +29,10 @@ export default async function Page({
     { sourceId: params.sourceId }
   );
 
-  if (!findNicovideoRegistrationRequest) return notFound();
+  if (isErr(result)) throw new Error("GraphQL fetching Error");
+  if (!result.data.findNicovideoRegistrationRequest) return notFound();
+
+  const { findNicovideoRegistrationRequest } = result.data;
 
   return (
     <main className={clsx(["max-w-screen-lg"], ["mx-auto"])}>

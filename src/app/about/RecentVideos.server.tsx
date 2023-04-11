@@ -2,11 +2,11 @@ import clsx from "clsx";
 
 import { CommonVideoContainer } from "~/components/CommonVideoContainer";
 import { graphql } from "~/gql";
-import { fetchGql3 } from "~/gql/fetch";
+import { fetchGql } from "~/gql/fetch";
 import { isErr } from "~/utils/Result";
 
 export default async function RecentVideoListSC() {
-  const result = await fetchGql3(
+  const result = await fetchGql(
     graphql(`
       query AboutPage_RecentVideosSection_VideosList {
         findVideos(first: 6) {

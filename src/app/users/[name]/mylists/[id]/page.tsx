@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 
 import { graphql } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
+import { isErr } from "~/utils/Result";
 
 import { Details } from "./Details";
 import { RegistrationsList } from "./RegistrationsList";
@@ -11,7 +12,7 @@ export default async function Page({
 }: {
   params: { name: string; id: string };
 }) {
-  const data = await fetchGql(
+  const result = await fetchGql(
     graphql(`
       query UserMylistPage($userName: String!, $mylistId: ID!) {
         findUser(input: { name: $userName }) {
@@ -29,18 +30,18 @@ export default async function Page({
     }
   );
 
-  if (!data.findUser) notFound();
+  if (isErr(result)) throw new Error("GraphQL fetching Error");
+  if (!result.data.findUser || !result.data.findUser.mylist) notFound();
 
-  const { findUser } = data;
-  if (!findUser.mylist) notFound();
+  const mylist = result.data.findUser.mylist;
 
   return (
     <main>
       <header>
-        <Details fragment={findUser.mylist} />
+        <Details fragment={mylist} />
       </header>
       <section>
-        <RegistrationsList fragment={findUser.mylist} />
+        <RegistrationsList fragment={mylist} />
       </section>
     </main>
   );

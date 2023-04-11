@@ -4,6 +4,7 @@ import React from "react";
 
 import { graphql } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
+import { isErr } from "~/utils/Result";
 
 import { SideMylistList } from "./SideMylistList";
 
@@ -14,7 +15,7 @@ export default async function Layout({
   params: { name: string };
   children: React.ReactNode;
 }) {
-  const { findUser } = await fetchGql(
+  const result = await fetchGql(
     graphql(`
       query UserMylistsPageLayout($name: String!) {
         findUser(input: { name: $name }) {
@@ -27,8 +28,9 @@ export default async function Layout({
     `),
     { name: params.name }
   );
-
-  if (!findUser) notFound();
+  if (isErr(result)) throw new Error("GraphQL fetching Error");
+  if (!result.data.findUser) notFound();
+  const { findUser } = result.data;
 
   return (
     <div className={clsx(["flex"])}>

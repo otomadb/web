@@ -2,7 +2,7 @@ import clsx from "clsx";
 
 import { LinkVideoEvents } from "~/app/videos/[serial]/events/Link";
 import { FragmentType, graphql, useFragment } from "~/gql";
-import { fetchGql3 } from "~/gql/fetch";
+import { fetchGql } from "~/gql/fetch";
 import { isErr } from "~/utils/Result";
 
 import { LikeButton } from "./LikeButton";
@@ -20,7 +20,7 @@ export default async function DetailsSectionSC({
   fragment: FragmentType<typeof Fragment>;
 }) {
   const fragment = useFragment(Fragment, props.fragment);
-  const result = await fetchGql3(
+  const result = await fetchGql(
     graphql(`
       query VideoPageLayout_DetailsSectionQuery($id: ID!) {
         getVideo(id: $id) {

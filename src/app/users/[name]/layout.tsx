@@ -7,6 +7,7 @@ import React from "react";
 import { graphql, useFragment } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
 import { UserPageLayout_HeaderFragmentDoc } from "~/gql/graphql";
+import { isErr } from "~/utils/Result";
 
 import { Header } from "./Header";
 import { HeaderNav } from "./HeaderNav";
@@ -18,7 +19,7 @@ export default async function Layout({
   children: React.ReactNode;
   params: { name: string };
 }) {
-  const { findUser } = await fetchGql(
+  const result = await fetchGql(
     graphql(`
       query UserPageLayout($name: String!) {
         findUser(input: { name: $name }) {
@@ -29,8 +30,9 @@ export default async function Layout({
     `),
     { name: params.name }
   );
-
-  if (!findUser) notFound();
+  if (isErr(result)) throw new Error("GraphQL fetching Error");
+  if (!result.data.findUser) notFound();
+  const { findUser } = result.data;
 
   return (
     <div className={clsx(["h-full"])}>

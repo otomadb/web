@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 
 import { graphql } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
+import { isErr } from "~/utils/Result";
 
 import { AliasesDetail } from "./AliasesDetail";
 import { Parents } from "./Parents";
@@ -15,20 +16,7 @@ export default async function Layout({
   children: React.ReactNode;
   params: { serial: string };
 }) {
-  const precheck = await fetchGql(
-    graphql(`
-      query TagPageLayout_Precheck($serial: Int!) {
-        findTag(input: { serial: $serial }) {
-          serial
-          isCategoryTag
-        }
-      }
-    `),
-    { serial: parseInt(params.serial, 10) }
-  );
-  if (precheck.findTag?.isCategoryTag) return notFound(); // TODO: `/category/`とかに飛ばすとかでも良いと思う
-
-  const { findTag } = await fetchGql(
+  const result = await fetchGql(
     graphql(`
       query TagPageLayout($serial: Int!) {
         findTag(input: { serial: $serial }) {
@@ -38,6 +26,8 @@ export default async function Layout({
           id
           name
           type
+          serial
+          isCategoryTag
           explicitParent {
             id
             name
@@ -45,25 +35,24 @@ export default async function Layout({
         }
       }
     `),
-    { serial: parseInt(params.serial, 10) },
-    { next: { revalidate: 0 } }
+    { serial: parseInt(params.serial, 10) }
   );
+  if (isErr(result)) throw new Error("GraphQL fetching Error");
+  if (!result.data.findTag) notFound();
+  if (result.data?.findTag.isCategoryTag) return notFound(); // TODO: `/category/`とかに飛ばすとかでも良いと思う
 
-  if (!findTag) return notFound();
-
-  const { name, explicitParent } = findTag;
-
+  const { findTag } = result.data;
   return (
     <main className={clsx(["container"], ["mx-auto"])}>
       <header className={clsx(["flex"])}>
         <div className={clsx(["flex-grow"], ["flex", "flex-col", "gap-y-1"])}>
           <h1 className={clsx(["text-xl"])}>
             <span className={clsx(["text-slate-900", "font-bold"])}>
-              {name}
+              {findTag.name}
             </span>
-            {explicitParent && (
+            {findTag.explicitParent && (
               <span className={clsx(["ml-1"], ["text-slate-500"])}>
-                ({explicitParent.name})
+                ({findTag.explicitParent.name})
               </span>
             )}
           </h1>

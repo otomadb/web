@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 
 import { graphql } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
+import { isErr } from "~/utils/Result";
 
 import { VideoGrid } from "./VideoGrid";
 
@@ -13,7 +14,7 @@ export async function generateMetadata({
 }: {
   params: { serial: string };
 }): Promise<Metadata> {
-  const { findTag } = await fetchGql(
+  const result = await fetchGql(
     graphql(`
       query TagPage_Title($serial: Int!) {
         findTag(input: { serial: $serial }) {
@@ -25,8 +26,10 @@ export async function generateMetadata({
     { serial: parseInt(params.serial, 10) }
   );
 
-  if (!findTag) return notFound(); // TODO: これ本当にこれでいいの？
+  if (isErr(result)) throw new Error("GraphQL fetching Error");
+  if (!result.data.findTag) notFound();
 
+  const { findTag } = result.data;
   return {
     title: `tag:${findTag.name} | OtoMADB`,
     openGraph: {
@@ -37,7 +40,7 @@ export async function generateMetadata({
 }
 
 export default async function Page({ params }: { params: { serial: string } }) {
-  const { findTag } = await fetchGql(
+  const result = await fetchGql(
     graphql(`
       query TagPage($serial: Int!) {
         findTag(input: { serial: $serial }) {
@@ -49,9 +52,10 @@ export default async function Page({ params }: { params: { serial: string } }) {
     { serial: parseInt(params.serial, 10) },
     { next: { revalidate: 0 } }
   );
+  if (isErr(result)) throw new Error("GraphQL fetching Error");
+  if (!result.data.findTag) notFound();
 
-  if (!findTag) return notFound();
-
+  const { findTag } = result.data;
   return (
     <div>
       <VideoGrid tagId={findTag.id} />

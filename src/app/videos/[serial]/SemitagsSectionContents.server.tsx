@@ -2,7 +2,7 @@ import clsx from "clsx";
 
 import Semitag from "~/components/CommonSemitag";
 import { FragmentType, graphql, useFragment } from "~/gql";
-import { fetchGql3 } from "~/gql/fetch";
+import { fetchGql } from "~/gql/fetch";
 import { isErr } from "~/utils/Result";
 
 export const Fragment = graphql(`
@@ -16,7 +16,7 @@ export default async function SemitagsSectionSC({
   fragment: FragmentType<typeof Fragment>;
 }) {
   const fragment = useFragment(Fragment, props.fragment);
-  const result = await fetchGql3(
+  const result = await fetchGql(
     graphql(`
       query VideoPageLayout_SemitagsSectionContentsQuery($id: ID!) {
         getVideo(id: $id) {

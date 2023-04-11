@@ -1,13 +1,13 @@
 import clsx from "clsx";
 
 import { graphql } from "~/gql";
-import { fetchGql3 } from "~/gql/fetch";
+import { fetchGql } from "~/gql/fetch";
 import { isErr } from "~/utils/Result";
 
 import { ListItem } from "./RequestsListItem";
 
 export default async function RequestsListSC() {
-  const result = await fetchGql3(
+  const result = await fetchGql(
     graphql(`
       query MyTopPage_RecentNicovideoRequestsSection_RequestsList {
         findNicovideoRegistrationRequests(first: 18, checked: false) {

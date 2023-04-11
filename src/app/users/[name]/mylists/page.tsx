@@ -3,11 +3,12 @@ import { notFound } from "next/navigation";
 
 import { graphql } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
+import { isErr } from "~/utils/Result";
 
 import { MylistsList } from "./MylistsList";
 
 export default async function Page({ params }: { params: { name: string } }) {
-  const { findUser } = await fetchGql(
+  const result = await fetchGql(
     graphql(`
       query UserMylistsPage($name: String!) {
         findUser(input: { name: $name }) {
@@ -20,8 +21,9 @@ export default async function Page({ params }: { params: { name: string } }) {
     `),
     { name: params.name }
   );
-
-  if (!findUser) notFound();
+  if (isErr(result)) throw new Error("GraphQL fetching Error");
+  if (!result.data.findUser) notFound();
+  const { findUser } = result.data;
 
   return (
     <div className={clsx()}>
