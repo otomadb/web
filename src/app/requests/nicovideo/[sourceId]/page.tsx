@@ -1,11 +1,12 @@
 import clsx from "clsx";
 import { notFound } from "next/navigation";
 
-import { Details } from "~/components/pages/Requests/Nicovideo/Details.server";
-import { SemitagsList } from "~/components/pages/Requests/Nicovideo/SemitagsList.server";
-import { TagsList } from "~/components/pages/Requests/Nicovideo/TagsList.server";
 import { graphql } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
+
+import { Details } from "./Details.server";
+import { SemitagsList } from "./SemitagsList.server";
+import { TagsList } from "./TagsList.server";
 
 export const dynamic = "force-dynamic";
 
