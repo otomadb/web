@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
 import { graphql } from "~/gql";
-import { fetchGql3 } from "~/gql/fetch";
+import { fetchGql } from "~/gql/fetch";
 import { isErr } from "~/utils/Result";
 
 import { SimilarVideos } from "./SimilarVideos.server";
@@ -16,7 +16,7 @@ export async function generateMetadata({
 }: {
   params: { serial: string };
 }): Promise<Metadata> {
-  const result = await fetchGql3(
+  const result = await fetchGql(
     graphql(`
       query VideoPage_Title($serial: Int!) {
         findVideo(input: { serial: $serial }) {
@@ -59,7 +59,7 @@ export async function generateMetadata({
 }
 
 export default async function Page({ params }: { params: { serial: string } }) {
-  const result = await fetchGql3(
+  const result = await fetchGql(
     graphql(`
       query VideoPage($serial: Int!) {
         findVideo(input: { serial: $serial }) {
@@ -87,7 +87,11 @@ export default async function Page({ params }: { params: { serial: string } }) {
         <h2 className={clsx(["text-md"], ["text-slate-900"])}>似ている動画</h2>
         <div className={clsx(["mt-2"])}>
           <Suspense>
-            <SimilarVideos videoId={result.data.findVideo.id} />
+            {/* @ts-expect-error RSC*/}
+            <SimilarVideos
+              // props
+              videoId={result.data.findVideo.id}
+            />
           </Suspense>
         </div>
       </section>

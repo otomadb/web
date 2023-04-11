@@ -6,6 +6,7 @@ import { SemitagsList } from "~/components/pages/Requests/Nicovideo/SemitagsList
 import { TagsList } from "~/components/pages/Requests/Nicovideo/TagsList.server";
 import { graphql } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
+import { isErr } from "~/utils/Result";
 
 export const dynamic = "force-dynamic";
 
@@ -14,7 +15,7 @@ export default async function Page({
 }: {
   params: { sourceId: string };
 }) {
-  const { findNicovideoRegistrationRequest } = await fetchGql(
+  const result = await fetchGql(
     graphql(`
       query NicovideoRegistrationRequestPage($sourceId: String!) {
         findNicovideoRegistrationRequest(input: { sourceId: $sourceId }) {
@@ -27,7 +28,10 @@ export default async function Page({
     { sourceId: params.sourceId }
   );
 
-  if (!findNicovideoRegistrationRequest) return notFound();
+  if (isErr(result)) throw new Error("GraphQL fetching Error");
+  if (!result.data.findNicovideoRegistrationRequest) return notFound();
+
+  const { findNicovideoRegistrationRequest } = result.data;
 
   return (
     <main className={clsx(["max-w-screen-lg"], ["mx-auto"])}>

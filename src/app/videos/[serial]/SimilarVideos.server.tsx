@@ -1,23 +1,22 @@
 import "server-only";
 
+import clsx from "clsx";
+
 import { graphql } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
+import { isErr } from "~/utils/Result";
 
 import { SimilarVideo } from "./SimilarVideo";
-import { VideoList } from "./VideoList.server";
 
-export function SimilarVideos({ videoId }: { videoId: string }) {
-  const fetchItems = fetchGql(
+export async function SimilarVideos({ videoId }: { videoId: string }) {
+  const result = await fetchGql(
     graphql(`
       query VideoPage_SimilarVideosSection($id: ID!) {
         getVideo(id: $id) {
           id
           similarVideos(input: { limit: 12 }) {
             items {
-              to {
-                id
-                ...VideoPage_SimilarVideos_Video
-              }
+              ...VideoPage_SimilarVideos_Video
             }
           }
         }
@@ -25,19 +24,41 @@ export function SimilarVideos({ videoId }: { videoId: string }) {
     `),
     { id: videoId },
     { next: { revalidate: 0 } }
-  ).then(({ getVideo }) => ({
-    items: getVideo.similarVideos.items.map(({ to }) => to),
-  }));
+  );
+
+  if (isErr(result)) {
+    throw new Error("Failed to fetch similar videos");
+  }
+
+  const { getVideo } = result.data;
 
   return (
-    <>
-      {/* @ts-expect-error Server Component*/}
-      <VideoList
-        fetchItems={fetchItems}
-        Video={function VideoItem(props) {
-          return <SimilarVideo {...props} />;
-        }}
-      />
-    </>
+    <div className={clsx(["@container"])}>
+      {getVideo.similarVideos.items.length === 0 && (
+        <span>動画が存在しません。</span>
+      )}
+      <div
+        className={clsx(
+          ["w-full"],
+          [
+            "grid",
+            [
+              "grid-cols-1",
+              "@[384px]:grid-cols-2",
+              "@[512px]:grid-cols-3",
+              "@[768px]:grid-cols-4",
+              "@[1024px]:grid-cols-6",
+              "@[1536px]:grid-cols-8",
+            ],
+          ],
+          ["gap-x-2", "@[768px]:gap-x-4"],
+          ["gap-y-2", "@[768px]:gap-x-4"]
+        )}
+      >
+        {getVideo.similarVideos.items.map((item, i) => (
+          <SimilarVideo key={i} fragment={item} />
+        ))}
+      </div>
+    </div>
   );
 }

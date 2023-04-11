@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
 import { graphql } from "~/gql";
-import { fetchGql3 } from "~/gql/fetch";
+import { fetchGql } from "~/gql/fetch";
 import { isErr } from "~/utils/Result";
 
 import DetailsSection from "./DetailsSection.server";
@@ -17,7 +17,7 @@ export default async function Layout({
   children: React.ReactNode;
   params: { serial: string };
 }) {
-  const data = await fetchGql3(
+  const data = await fetchGql(
     graphql(`
       query VideoPageLayout($serial: Int!) {
         findVideo(input: { serial: $serial }) {

@@ -3,13 +3,14 @@ import { notFound } from "next/navigation";
 
 import { graphql } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
+import { isErr } from "~/utils/Result";
 
 export async function generateMetadata({
   params,
 }: {
   params: { name: string };
 }): Promise<Metadata> {
-  const { findUser } = await fetchGql(
+  const result = await fetchGql(
     graphql(`
       query UserPage_Title($name: String!) {
         findUser(input: { name: $name }) {
@@ -21,15 +22,17 @@ export async function generateMetadata({
     { name: params.name }
   );
 
-  if (!findUser) return notFound(); // TODO: これ本当にこれでいいの？
+  if (isErr(result)) throw new Error("GraphQL fetching Error");
+  if (!result.data.findUser) notFound();
 
+  const { findUser } = result.data;
   return {
     title: `${findUser.displayName}(@${findUser.name})`,
   };
 }
 
 export default async function Page({ params }: { params: { name: string } }) {
-  const { findUser } = await fetchGql(
+  const result = await fetchGql(
     graphql(`
       query UserPage($name: String!) {
         findUser(input: { name: $name }) {
@@ -40,7 +43,8 @@ export default async function Page({ params }: { params: { name: string } }) {
     { name: params.name }
   );
 
-  if (!findUser) notFound();
+  if (isErr(result)) throw new Error("GraphQL fetching Error");
+  if (!result.data.findUser) notFound();
 
   return (
     <>

@@ -4,7 +4,7 @@ import { LinkTag } from "~/app/tags/[serial]/Link";
 import { TagType } from "~/components/common/TagType";
 import { CommonTag } from "~/components/CommonTag";
 import { FragmentType, graphql, useFragment } from "~/gql";
-import { fetchGql3 } from "~/gql/fetch";
+import { fetchGql } from "~/gql/fetch";
 import { isErr } from "~/utils/Result";
 
 export const Fragment = graphql(`
@@ -18,7 +18,7 @@ export default async function TagsSectionSC({
   fragment: FragmentType<typeof Fragment>;
 }) {
   const fragment = useFragment(Fragment, props.fragment);
-  const result = await fetchGql3(
+  const result = await fetchGql(
     graphql(`
       query VideoPageLayout_TaggingsSectionContentsQuery($id: ID!) {
         getVideo(id: $id) {
