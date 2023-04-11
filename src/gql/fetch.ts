@@ -1,4 +1,4 @@
-import "server-only";
+// import "server-only";
 
 import { TypedDocumentNode } from "@graphql-typed-document-node/core";
 import { DocumentNode, Kind, print } from "graphql";
