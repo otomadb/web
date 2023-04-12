@@ -3,7 +3,7 @@ import { Meta, StoryObj } from "@storybook/react";
 
 import { Fragment as NicovideoRegistrationRequestPageLinkFragment } from "~/app/requests/nicovideo/[sourceId]/Link";
 import { Fragment as UserPageLinkFragment } from "~/app/users/[name]/Link";
-import { Fragment as UserIconFragment } from "~/components/common/UserIcon";
+import { Fragment as UserIconFragment } from "~/components/UserIcon";
 import { makeFragmentData } from "~/gql";
 
 import { Fragment, ListItem } from "./RequestsListItem";

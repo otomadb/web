@@ -1,7 +1,7 @@
 import { ResultOf } from "@graphql-typed-document-node/core";
 import { Meta, StoryObj } from "@storybook/react";
 
-import { Fragment as UserIconFragment } from "~/components/common/UserIcon";
+import { Fragment as UserIconFragment } from "~/components/UserIcon";
 import { makeFragmentData } from "~/gql";
 
 import { Fragment as AccordionFragment } from "./ProfileAccordion";

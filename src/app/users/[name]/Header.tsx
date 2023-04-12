@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import React from "react";
 
-import { UserIcon } from "~/components/common/UserIcon";
+import { UserIcon } from "~/components/UserIcon";
 import { graphql } from "~/gql";
 import { UserPageLayout_HeaderFragment } from "~/gql/graphql";
 

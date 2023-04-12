@@ -1,7 +1,7 @@
 import { ResultOf } from "@graphql-typed-document-node/core";
 import { graphql } from "msw";
 
-import { Fragment as UserIconFragment } from "~/components/common/UserIcon";
+import { Fragment as UserIconFragment } from "~/components/UserIcon";
 import { makeFragmentData } from "~/gql";
 
 import { Query } from ".";

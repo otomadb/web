@@ -1,7 +1,7 @@
 import { ResultOf } from "@graphql-typed-document-node/core";
 
 import { Fragment as LinkUserFragment } from "~/app/users/[name]/Link";
-import { Fragment as UserIconFragment } from "~/components/common/UserIcon";
+import { Fragment as UserIconFragment } from "~/components/UserIcon";
 import { makeFragmentData } from "~/gql";
 
 import { Fragment } from "./RequestExists";

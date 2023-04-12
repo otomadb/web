@@ -5,8 +5,8 @@ import React from "react";
 import { LinkNicovideoRegistrationRequest } from "~/app/requests/nicovideo/[sourceId]/Link";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
+import { UserIcon } from "../../UserIcon";
 import { CoolImage } from "../CoolImage";
-import { UserIcon } from "../UserIcon";
 
 const Fragment = graphql(`
   fragment SearchContents_NicovideoRequestExists on NicovideoRegistrationRequest {
