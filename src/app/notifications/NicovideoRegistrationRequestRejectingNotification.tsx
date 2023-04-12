@@ -1,23 +1,21 @@
 "use client";
 
-import { CheckCircleIcon } from "@heroicons/react/24/solid";
+import { NoSymbolIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 
 import { DateTime } from "~/components/common/DateTime";
-import { VideoThumbnail } from "~/components/common/VideoThumbnail";
 import { UserIcon } from "~/components/UserIcon";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 import { LinkNicovideoRegistrationRequest } from "../requests/nicovideo/[sourceId]/Link";
 import { LinkUser } from "../users/[name]/Link";
-import { LinkVideo } from "../videos/[serial]/Link";
 
 export const Fragment = graphql(`
-  fragment NotificationsPage_NicovideoRegistrationRequestAcceptingNotification on NicovideoRegistrationRequestAcceptingNotification {
+  fragment NotificationsPage_NicovideoRegistrationRequestRejectingNotification on NicovideoRegistrationRequestRejectingNotification {
     watched
     createdAt
-    accepting {
-      acceptedBy {
+    rejecting {
+      rejectedBy {
         ...Link_User
         ...UserIcon
         id
@@ -28,15 +26,10 @@ export const Fragment = graphql(`
         sourceId
         title
       }
-      video {
-        ...Link_Video
-        ...VideoThumbnail
-        id
-      }
     }
   }
 `);
-export default function NicovideoRegistrationRequestAcceptingNotification({
+export default function NicovideoRegistrationRequestRejectingNotification({
   className,
   style,
   ...props
@@ -47,7 +40,7 @@ export default function NicovideoRegistrationRequestAcceptingNotification({
 }) {
   const {
     createdAt,
-    accepting: { acceptedBy, request, video },
+    rejecting: { rejectedBy, request },
   } = useFragment(Fragment, props.fragment);
 
   return (
@@ -63,35 +56,19 @@ export default function NicovideoRegistrationRequestAcceptingNotification({
         <div
           className={clsx(["flex-grow"], ["flex", "items-center", "gap-x-1"])}
         >
-          <CheckCircleIcon
-            className={clsx(["w-4", "h-4"], ["text-teal-500"])}
-          />
+          <NoSymbolIcon className={clsx(["w-4", "h-4"], ["text-red-500"])} />
           <p className={clsx(["text-sm", "text-slate-900"])}>
             あなたの動画登録リクエスト
             <LinkNicovideoRegistrationRequest fragment={request}>
               <span className={clsx(["font-bold"])}>{request.title}</span>
               <span className={clsx()}>({request.sourceId})</span>
             </LinkNicovideoRegistrationRequest>
-            は
-            <LinkVideo
-              fragment={video}
-              className={clsx(["font-bold", "text-blue-500", "font-mono"])}
-            >
-              受理されました。
-            </LinkVideo>
+            は棄却されました。
           </p>
         </div>
         <div className={clsx(["flex-shrink-0"], ["flex", "items-center"])}>
-          <LinkVideo fragment={video}>
-            <VideoThumbnail
-              fragment={video}
-              className={clsx(["w-[72px]", "h-[48px]"])}
-            />
-          </LinkVideo>
-        </div>
-        <div className={clsx(["flex-shrink-0"], ["flex", "items-center"])}>
-          <LinkUser fragment={acceptedBy}>
-            <UserIcon fragment={acceptedBy} size={32} />
+          <LinkUser fragment={rejectedBy}>
+            <UserIcon fragment={rejectedBy} size={32} />
           </LinkUser>
         </div>
         <div className={clsx(["flex-shrink-0"], ["flex", "items-center"])}>

@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 
-import Component from "./NicovideoRegistrationRequestAcceptingNotification";
-import { mock } from "./NicovideoRegistrationRequestAcceptingNotification.mocks";
+import Component from "./NicovideoRegistrationRequestRejectingNotification";
+import { mock } from "./NicovideoRegistrationRequestRejectingNotification.mocks";
 
 const meta = {
   component: Component,
