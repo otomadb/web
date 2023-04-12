@@ -4,7 +4,7 @@ import { FragmentType, graphql, useFragment } from "~/gql";
 
 import { CoolImage } from "./CoolImage";
 
-const Fragment = graphql(`
+export const Fragment = graphql(`
   fragment VideoThumbnail on Video {
     title
     thumbnailUrl
