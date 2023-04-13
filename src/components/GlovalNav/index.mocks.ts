@@ -13,29 +13,16 @@ export const mockSuccessfulQuery = graphql.query(Query, (req, res, ctx) => {
     ctx.data({
       whoami: {
         id: "1",
-        ...makeFragmentData(
-          {
-            ...makeFragmentData(
-              {
-                name: "user1",
-                displayName: "User 1",
-                icon: "/512x512.png",
-              },
-              UserIconFragment
-            ),
-            ...makeFragmentData(
-              {
-                name: "user1",
-                isEditor: false,
-                isAdministrator: false,
-              },
-              AccordionFragment
-            ),
-          } as ResultOf<typeof Fragment>,
-          Fragment
-        ),
+        name: "user1",
+        displayName: "User 1",
+        icon: "/512x512.png",
+        isEditor: false,
+        isAdministrator: false,
       },
-    })
+      notifications: {
+        totalCount: 9,
+      },
+    } as ResultOf<typeof Query>)
   );
 });
 
