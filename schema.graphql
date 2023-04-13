@@ -1450,7 +1450,13 @@ type User implements Node {
   mylist(id: ID!): Mylist
   mylists(after: String, before: String, first: Int, last: Int, orderBy: UserMylistsOrderBy! = {createdAt: DESC}, range: [MylistShareRange!]! = [PUBLIC]): MylistConnection!
   name: String!
+  hasRole(role: UserRole!): Boolean
   nicovideoRegistrationRequests(after: String, before: String, first: Int, last: Int, orderBy: UserNicovideoRegistrationRequestsOrderBy! = {createdAt: DESC}): NicovideoRegistrationRequestConnection!
+}
+
+enum UserRole {
+  ADMIN
+  EDITOR
 }
 
 input UserMylistsOrderBy {
