@@ -107,6 +107,16 @@ type ChangeMylistShareRangeSucceededPayload {
 
 union ChangeMylistShareReturnUnion = ChangeMylistShareRangeOtherErrorsFallback | ChangeMylistShareRangeSucceededPayload | MutationInvalidMylistIdError | MutationMylistNotFoundError | MutationWrongMylistHolderError
 
+type ChangeUserDisplayNameInvalidNameError {
+  name: String!
+}
+
+union ChangeUserDisplayNameReturnUnion = ChangeUserDisplayNameInvalidNameError | ChangeUserDisplayNameSucceededPayload
+
+type ChangeUserDisplayNameSucceededPayload {
+  user: User!
+}
+
 input CreateMylistGroupInput {
   title: String!
 }
@@ -136,17 +146,6 @@ union CreateMylistReturnUnion = CreateMylistOtherErrorsFallback | CreateMylistSu
 
 type CreateMylistSucceededPayload {
   mylist: Mylist!
-}
-
-input CreateTemporaryUserInput {
-  alias: String!
-  displayName: String!
-}
-
-union CreateTemporaryUserReturnUnion = CreateTemporaryUserSucceededPayload
-
-type CreateTemporaryUserSucceededPayload {
-  id: ID!
 }
 
 scalar DateTime
@@ -304,9 +303,9 @@ type Mutation {
   addTagToVideo(input: AddTagToVideoInput!): AddTagToVideoPayload!
   addVideoToMylist(input: AddVideoToMylistInput!): AddVideoToMylistReturnUnion!
   changeMylistShareRange(input: ChangeMylistShareRangeInput!): ChangeMylistShareReturnUnion!
+  changeUserDisplayName(renameTo: String!): ChangeUserDisplayNameReturnUnion!
   createMylist(input: CreateMylistInput!): CreateMylistReturnUnion!
   createMylistGroup(input: CreateMylistGroupInput!): CreateMylistGroupPayload!
-  createTemporaryUser(input: CreateTemporaryUserInput!): CreateTemporaryUserReturnUnion!
 
   """非明示的なタグの親子関係を明示的に昇格する"""
   explicitizeTagParent(input: ExplicitizeTagParentInput!): ExplicitizeTagParentReturnUnion!
@@ -327,7 +326,6 @@ type Mutation {
   requestNicovideoRegistration(input: RequestNicovideoRegistrationInput!): RequestNicovideoRegistrationReturnUnion!
   resovleSemitag(semitagId: ID!, tagId: ID!): ResolveSemitagReturnUnion!
   undoLikeVideo(input: UndoLikeVideoInput!): UndoLikeVideoReturnUnion!
-  verifyTemporaryUser: VerifyTemporaryUserReturnUnion!
 }
 
 """MylistのIDとして無効なIDを入力した場合のエラー"""
@@ -1487,21 +1485,16 @@ type UndoLikeVideoSucceededPayload {
 
 type User implements Node {
   displayName: String!
+  hasRole(role: UserRole!): Boolean
   icon: String!
   id: ID!
-  isAdministrator: Boolean!
-  isEditor: Boolean!
+  isAdministrator: Boolean! @deprecated(reason: "Use hasRole instead.")
+  isEditor: Boolean! @deprecated(reason: "Use hasRole instead.")
   likes: Mylist
   mylist(id: ID!): Mylist
   mylists(after: String, before: String, first: Int, last: Int, orderBy: UserMylistsOrderBy! = {createdAt: DESC}, range: [MylistShareRange!]! = [PUBLIC]): MylistConnection!
   name: String!
-  hasRole(role: UserRole!): Boolean
   nicovideoRegistrationRequests(after: String, before: String, first: Int, last: Int, orderBy: UserNicovideoRegistrationRequestsOrderBy! = {createdAt: DESC}): NicovideoRegistrationRequestConnection!
-}
-
-enum UserRole {
-  ADMIN
-  EDITOR
 }
 
 input UserMylistsOrderBy {
@@ -1512,10 +1505,9 @@ input UserNicovideoRegistrationRequestsOrderBy {
   createdAt: SortOrder
 }
 
-union VerifyTemporaryUserReturnUnion = VerifyTemporaryUserSucceededPayload
-
-type VerifyTemporaryUserSucceededPayload {
-  id: ID!
+enum UserRole {
+  ADMIN
+  EDITOR
 }
 
 type Video implements Node {
