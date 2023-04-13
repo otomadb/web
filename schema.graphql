@@ -619,6 +619,14 @@ type NicovideoRegistrationRequestAccepting {
   video: Video!
 }
 
+type NicovideoRegistrationRequestAcceptingNotification implements Node & Notification {
+  accepting: NicovideoRegistrationRequestAccepting!
+  createdAt: DateTime!
+  id: ID!
+  notifyTo: User!
+  watched: Boolean!
+}
+
 union NicovideoRegistrationRequestChecking = NicovideoRegistrationRequestAccepting | NicovideoRegistrationRequestRejecting
 
 type NicovideoRegistrationRequestConnection {
@@ -637,6 +645,14 @@ type NicovideoRegistrationRequestRejecting {
   note: String
   rejectedBy: User!
   request: NicovideoRegistrationRequest!
+}
+
+type NicovideoRegistrationRequestRejectingNotification implements Node & Notification {
+  createdAt: DateTime!
+  id: ID!
+  notifyTo: User!
+  rejecting: NicovideoRegistrationRequestRejecting!
+  watched: Boolean!
 }
 
 type NicovideoRegistrationRequestSemitagging {
@@ -689,6 +705,33 @@ interface Node {
   id: ID!
 }
 
+interface Notification implements Node {
+  createdAt: DateTime!
+  id: ID!
+  notifyTo: User!
+  watched: Boolean!
+}
+
+type NotificationConnection {
+  edges: [NotificationEdge!]!
+  nodes: [Notification!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type NotificationEdge {
+  cursor: String!
+  node: Notification!
+}
+
+input NotificationsFilter {
+  watched: Boolean
+}
+
+input NotificationsOrderBy {
+  createdAt: SortOrder
+}
+
 type PageInfo {
   endCursor: String
   hasNextPage: Boolean!
@@ -720,11 +763,13 @@ type Query {
   getMylistGroup(id: ID!): MylistGroup!
   getNicovideoRegistrationRequest(id: ID!): NicovideoRegistrationRequest!
   getNicovideoVideoSource(id: ID!): NicovideoVideoSource!
+  getNotification(id: ID!): Notification!
   getSemitag(id: ID!): Semitag!
   getTag(id: ID!): Tag!
   getUser(id: ID!): User!
   getVideo(id: ID!): Video!
   getYoutubeVideoSource(id: ID!): YoutubeVideoSource!
+  notifications(after: String, before: String, filter: NotificationsFilter! = {}, first: Int, last: Int, orderBy: NotificationsOrderBy! = {createdAt: DESC}): NotificationConnection!
   searchTags(input: SearchTagInput!): SearchTagsPayload!
   searchVideos(input: SearchVideoInput!): SearchVideosPayload!
   whoami: User!
