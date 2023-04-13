@@ -13,6 +13,7 @@ import NicovideoRequestPageLink from "~/app/request/nicovideo/Link";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 import AboutMe from "./AboutMe";
+import Notifications from "./Notifications";
 
 const MenuItem: React.FC<{
   className?: string;
@@ -44,119 +45,90 @@ const MenuItem: React.FC<{
 };
 
 export const Fragment = graphql(`
-  fragment GlobalNav_Profile_Accordion on User {
-    name
-    isEditor
-    isAdministrator
-    ...GlobalNav_Profile_Accordion_AboutMe
-    ...Link_User
+  fragment GlobalNav_ProfileAccordion on Query {
+    ...GlobalNav_ProfileAccordion_AboutMe
+    ...GlobalNav_ProfileAccordion_Notifications
+    whoami {
+      name
+      isEditor: hasRole(role: EDITOR)
+      isAdmin: hasRole(role: ADMIN)
+    }
   }
 `);
-export const Accordion: React.FC<{
+export default function ProfileAccordion({
+  className,
+  style,
+  ...props
+}: {
   className?: string;
+  style?: React.CSSProperties;
   fragment: FragmentType<typeof Fragment>;
-}> = ({ className, ...props }) => {
+}) {
   const { logout } = useAuth0();
   const fragment = useFragment(Fragment, props.fragment);
+  const { whoami } = fragment;
 
   return (
-    <div className={clsx(className, ["pt-1"])}>
-      <div
-        className={clsx(
-          ["w-full"],
-          ["shadow"],
-          ["overflow-hidden"],
-          ["rounded-md"],
-          ["backdrop-blur-md"],
-          ["divide-y-2", "divide-y-slate-400"]
-        )}
-      >
-        <AboutMe fragment={fragment} />
-        <div>
-          <div
-            className={clsx(
-              ["py-2"],
-              ["px-4"],
-              ["bg-slate-200/75"],
-              ["border-b", "border-y-slate-300"],
-              ["text-xs"],
-              ["text-slate-500"]
-            )}
+    <div
+      style={style}
+      className={clsx(
+        className,
+        ["divide-y", "divide-y-slate-400/75"],
+        ["shadow"],
+        ["flex", "flex-col"],
+        ["rounded-md"],
+        ["backdrop-blur-[6px]"],
+        ["overflow-hidden"]
+      )}
+    >
+      <AboutMe fragment={fragment} className={clsx(["py-3", "px-4"])} />
+      <Notifications fragment={fragment} className={clsx(["py-3", "px-4"])} />
+      <div className={clsx(["grid"], ["grid-cols-1"])}>
+        <MenuItem Wrapper={(props) => <YouLikesPageLink {...props} />}>
+          いいねした動画
+        </MenuItem>
+        <MenuItem Wrapper={(props) => <MyMylistsPageLink {...props} />}>
+          マイリスト
+        </MenuItem>
+        <MenuItem Wrapper={(props) => <NicovideoRequestPageLink {...props} />}>
+          動画のリクエスト
+        </MenuItem>
+      </div>
+      {whoami.isEditor && (
+        <div className={clsx(["grid"], ["grid-cols-2"])}>
+          <MenuItem
+            className={clsx(["col-span-2"])}
+            Wrapper={(props) => <NicovideoRegisterPageLink {...props} />}
           >
-            通常ユーザー
-          </div>
-          <div className={clsx(["grid"], ["grid-cols-1"])}>
-            <MenuItem Wrapper={(props) => <YouLikesPageLink {...props} />}>
-              いいねした動画
-            </MenuItem>
-            <MenuItem Wrapper={(props) => <MyMylistsPageLink {...props} />}>
-              マイリスト
-            </MenuItem>
-            <MenuItem
-              Wrapper={(props) => <NicovideoRequestPageLink {...props} />}
-            >
-              動画のリクエスト
-            </MenuItem>
-          </div>
+            ニコニコ動画から登録
+          </MenuItem>
+          <MenuItem
+            className={clsx(["col-span-1"])}
+            Wrapper={(props) => <TagRegisterPageLink {...props} />}
+          >
+            タグの登録
+          </MenuItem>
+          <MenuItem
+            className={clsx(["col-span-1"])}
+            Wrapper={(props) => <LinkRegisterSemitag {...props} />}
+          >
+            仮タグの解決
+          </MenuItem>
         </div>
-        {fragment.isEditor && (
-          <div>
-            <div
-              className={clsx(
-                ["py-2"],
-                ["px-4"],
-                ["bg-slate-200/75"],
-                ["border-b", "border-y-slate-300"],
-                ["text-xs"],
-                ["text-slate-500"]
-              )}
-            >
-              編集者
-            </div>
-            <div className={clsx(["grid"], ["grid-cols-2"])}>
-              <MenuItem
-                className={clsx(["col-span-2"])}
-                Wrapper={(props) => <NicovideoRegisterPageLink {...props} />}
-              >
-                ニコニコ動画から登録
-              </MenuItem>
-              <MenuItem
-                className={clsx(["col-span-1"])}
-                Wrapper={(props) => <TagRegisterPageLink {...props} />}
-              >
-                タグの登録
-              </MenuItem>
-              <MenuItem
-                className={clsx(["col-span-1"])}
-                Wrapper={(props) => <LinkRegisterSemitag {...props} />}
-              >
-                仮タグの解決
-              </MenuItem>
-            </div>
-          </div>
-        )}
-        <div
+      )}
+      <div className={clsx(["flex"], ["py-2", "px-4"], ["bg-slate-300/75"])}>
+        <button
+          onClick={() => {
+            logout();
+          }}
           className={clsx(
-            [["py-2"], ["px-4"]],
-            [["bg-slate-200/75"]],
-            ["grid", ["grid-cols-2"]]
+            ["text-xs"],
+            ["text-slate-700", "hover:text-slate-500"]
           )}
         >
-          <div className={clsx(["flex"])}>
-            <button
-              onClick={() => {
-                logout();
-              }}
-              className={clsx(
-                ["text-xs"],
-                ["text-slate-700", "hover:text-slate-500"]
-              )}
-            >
-              ログアウト
-            </button>
-          </div>
-        </div>
+          ログアウト
+        </button>
       </div>
     </div>
   );
-};
+}

@@ -1,10 +1,8 @@
-import { ResultOf } from "@graphql-typed-document-node/core";
 import { Meta, StoryObj } from "@storybook/react";
 
 import { Fragment as UserIconFragment } from "~/components/UserIcon";
 import { makeFragmentData } from "~/gql";
 
-import { Fragment as AccordionFragment } from "./ProfileAccordion";
 import ProfileIndicator, { Fragment } from "./ProfileIndicator";
 
 const meta = {
@@ -12,27 +10,41 @@ const meta = {
 } as Meta<typeof ProfileIndicator>;
 export default meta;
 
-export const Primary: StoryObj<typeof meta> = {
+export const SomeNotifications: StoryObj<typeof meta> = {
+  name: "何件かの通知がある",
   args: {
     fragment: makeFragmentData(
       {
-        ...makeFragmentData(
-          {
-            name: "user1",
-            displayName: "User 1",
-            icon: "/512x512.png",
-          },
-          UserIconFragment
-        ),
-        ...makeFragmentData(
-          {
-            name: "user1",
-            isEditor: false,
-            isAdministrator: false,
-          },
-          AccordionFragment
-        ),
-      } as ResultOf<typeof Fragment>,
+        whoami: {
+          ...makeFragmentData(
+            { icon: "/512x512.png", displayName: "SnO2WmaN" },
+            UserIconFragment
+          ),
+        },
+        notifications: {
+          totalCount: 9,
+        },
+      },
+      Fragment
+    ),
+  },
+};
+
+export const NoNotifications: StoryObj<typeof meta> = {
+  name: "通知はない",
+  args: {
+    fragment: makeFragmentData(
+      {
+        whoami: {
+          ...makeFragmentData(
+            { icon: "/512x512.png", displayName: "SnO2WmaN" },
+            UserIconFragment
+          ),
+        },
+        notifications: {
+          totalCount: 0,
+        },
+      },
       Fragment
     ),
   },
