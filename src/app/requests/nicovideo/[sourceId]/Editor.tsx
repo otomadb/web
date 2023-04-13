@@ -23,7 +23,7 @@ export const Editor: React.FC<{
       query NicovideoRequestPage_EditorButton_Check {
         whoami {
           id
-          isEditor
+          isEditor: hasRole(role: EDITOR)
         }
       }
     `),
