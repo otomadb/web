@@ -18,10 +18,7 @@ const meta = {
   },
   render: (args) => (
     <UrqlProvider
-      value={createClient({
-        url: "/graphql",
-        exchanges: [fetchExchange],
-      })}
+      value={createClient({ url: "/graphql", exchanges: [fetchExchange] })}
     >
       <GlobalNav {...args} />
     </UrqlProvider>

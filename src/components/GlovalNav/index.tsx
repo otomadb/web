@@ -12,13 +12,15 @@ import { graphql } from "~/gql";
 
 import { Logo } from "../Logo";
 import LoginButton from "./LoginButton";
+import ProfileAccordion from "./ProfileAccordion";
 import ProfileIndicator from "./ProfileIndicator";
 
 export const Query = graphql(`
   query GlobalNav {
+    ...GlobalNav_ProfileIndicator
+    ...GlobalNav_ProfileAccordion
     whoami {
       id
-      ...GlobalNav_ProfileIndicator
     }
   }
 `);
@@ -33,7 +35,6 @@ export default function GlobalNav({
   const [{ data, fetching }, update] = useQuery({
     query: Query,
     pause: !isAuthenticated,
-    requestPolicy: "cache-first",
   });
 
   return (
@@ -80,7 +81,7 @@ export default function GlobalNav({
             ["flex", "justify-center"]
           )}
         >
-          {!data?.whoami && fetching && (
+          {fetching && (
             <div
               className={clsx(
                 ["rounded-sm"],
@@ -91,8 +92,31 @@ export default function GlobalNav({
               )}
             />
           )}
-          {!data?.whoami && !fetching && <LoginButton update={update} />}
-          {data?.whoami && <ProfileIndicator fragment={data?.whoami} />}
+          {!fetching && !data && <LoginButton update={update} />}
+          {data && (
+            <div className={clsx(["group"], ["relative"])}>
+              <ProfileIndicator fragment={data} className={clsx(["z-1"])} />
+              <div
+                className={clsx(
+                  ["z-0"],
+                  ["pt-1"],
+                  [
+                    "invisible",
+                    // "group-focus-within:visible",
+                    "group-hover:visible",
+                  ],
+                  [
+                    "absolute",
+                    "top-full",
+                    ["right-0", "xl:right-auto"],
+                    ["xl:-left-[7rem]"],
+                  ]
+                )}
+              >
+                <ProfileAccordion fragment={data} className={clsx(["w-64"])} />
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </nav>
