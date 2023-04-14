@@ -1,8 +1,6 @@
-import { css } from "@emotion/css";
 import { Meta, StoryObj } from "@storybook/react";
 
 import { makeFragmentData } from "~/gql";
-import { aUser } from "~/gql/graphql";
 
 import Component, { Fragment } from "./Notifications";
 

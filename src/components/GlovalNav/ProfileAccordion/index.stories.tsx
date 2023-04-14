@@ -1,14 +1,8 @@
-import { css } from "@emotion/css";
 import { Meta, StoryObj } from "@storybook/react";
 
 import { makeFragmentData } from "~/gql";
-import { aUser } from "~/gql/graphql";
+
 import ProfileAccordion, { Fragment } from ".";
-import { Fragment as AboutMeFragment } from "./AboutMe";
-import Notifications, {
-  Fragment as NotificationsFragment,
-} from "./Notifications";
-import { ResultOf } from "@graphql-typed-document-node/core";
 
 const meta = {
   component: ProfileAccordion,

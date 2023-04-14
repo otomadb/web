@@ -12,8 +12,8 @@ import { graphql } from "~/gql";
 
 import { Logo } from "../Logo";
 import LoginButton from "./LoginButton";
-import ProfileIndicator from "./ProfileIndicator";
 import ProfileAccordion from "./ProfileAccordion";
+import ProfileIndicator from "./ProfileIndicator";
 
 export const Query = graphql(`
   query GlobalNav {
@@ -113,10 +113,7 @@ export default function GlobalNav({
                   ]
                 )}
               >
-                <ProfileAccordion
-                  fragment={data}
-                  className={clsx(["w-64"])}
-                ></ProfileAccordion>
+                <ProfileAccordion fragment={data} className={clsx(["w-64"])} />
               </div>
             </div>
           )}

@@ -1,12 +1,7 @@
 import { ResultOf } from "@graphql-typed-document-node/core";
 import { graphql } from "msw";
 
-import { Fragment as UserIconFragment } from "~/components/UserIcon";
-import { makeFragmentData } from "~/gql";
-
 import { Query } from ".";
-import { Fragment as AccordionFragment } from "./ProfileAccordion";
-import { Fragment } from "./ProfileIndicator";
 
 export const mockSuccessfulQuery = graphql.query(Query, (req, res, ctx) => {
   return res(

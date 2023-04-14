@@ -7,7 +7,6 @@ import {
   mockSuccessfulQuery,
   mockUnauthorizedQuery,
 } from "./index.mocks";
-import { Auth0Provider } from "@auth0/auth0-react";
 
 const meta = {
   component: GlobalNav,
