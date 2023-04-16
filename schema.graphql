@@ -327,7 +327,7 @@ type Mutation {
   resovleSemitag(semitagId: ID!, tagId: ID!): ResolveSemitagReturnUnion!
   undoLikeVideo(input: UndoLikeVideoInput!): UndoLikeVideoReturnUnion!
 
-  "通知を見たことにする"
+  """通知を見たことにする"""
   watchNotifications(input: WatchNotificationsInput!): WatchNotificationsReturnUnion!
 }
 
@@ -907,10 +907,6 @@ type RegisterTagTagIdCollidedBetweenExplicitAndImplicitError {
   tagId: String!
 }
 
-enum RegisterVideoFromNicovideoFailedMessage {
-  INTERNAL_SERVER_ERROR
-}
-
 input RegisterVideoFromNicovideoInput {
   extraTitles: [String!]! = []
   primaryThumbnailUrl: String!
@@ -926,12 +922,7 @@ type RegisterVideoFromNicovideoInvalidNicovideoSourceIdError {
   sourceID: String!
 }
 
-"""その他のエラー"""
-type RegisterVideoFromNicovideoOtherErrorsFallback {
-  message: RegisterVideoFromNicovideoFailedMessage!
-}
-
-union RegisterVideoFromNicovideoPayload = MutationInvalidNicovideoRegistrationRequestIdError | MutationInvalidTagIdError | MutationNicovideoRegistrationRequestAlreadyCheckedError | MutationNicovideoRegistrationRequestNotFoundError | MutationTagNotFoundError | RegisterVideoFromNicovideoInvalidNicovideoSourceIdError | RegisterVideoFromNicovideoOtherErrorsFallback | RegisterVideoFromNicovideoSemitagNamesDuplicatedError | RegisterVideoFromNicovideoSemitagTooLongError | RegisterVideoFromNicovideoSucceededPayload | RegisterVideoFromNicovideoTagIdsDuplicatedError
+union RegisterVideoFromNicovideoPayload = MutationInvalidNicovideoRegistrationRequestIdError | MutationInvalidTagIdError | MutationNicovideoRegistrationRequestAlreadyCheckedError | MutationNicovideoRegistrationRequestNotFoundError | MutationTagNotFoundError | RegisterVideoFromNicovideoInvalidNicovideoSourceIdError | RegisterVideoFromNicovideoSemitagNamesDuplicatedError | RegisterVideoFromNicovideoSemitagTooLongError | RegisterVideoFromNicovideoSucceededPayload | RegisterVideoFromNicovideoTagIdsDuplicatedError
 
 """仮タグの名前が重複している"""
 type RegisterVideoFromNicovideoSemitagNamesDuplicatedError {
@@ -998,21 +989,12 @@ input RejectNicovideoRegistrationRequestInput {
   requestId: ID!
 }
 
-enum RejectNicovideoRegistrationRequestOtherErrorMessage {
-  INTERNAL_SERVER_ERROR
-}
-
-"""その他のエラー"""
-type RejectNicovideoRegistrationRequestOtherErrorsFallback {
-  message: RejectNicovideoRegistrationRequestOtherErrorMessage!
-}
-
 """リクエストが既に処理されている場合のエラー"""
 type RejectNicovideoRegistrationRequestRequestAlreadyCheckedError {
   request: NicovideoRegistrationRequest!
 }
 
-union RejectNicovideoRegistrationRequestReturnUnion = MutationInvalidNicovideoRegistrationRequestIdError | MutationNicovideoRegistrationRequestNotFoundError | RejectNicovideoRegistrationRequestOtherErrorsFallback | RejectNicovideoRegistrationRequestRequestAlreadyCheckedError | RejectNicovideoRegistrationRequestSucceededPayload
+union RejectNicovideoRegistrationRequestReturnUnion = MutationInvalidNicovideoRegistrationRequestIdError | MutationNicovideoRegistrationRequestNotFoundError | RejectNicovideoRegistrationRequestRequestAlreadyCheckedError | RejectNicovideoRegistrationRequestSucceededPayload
 
 type RejectNicovideoRegistrationRequestSucceededPayload {
   rejecting: NicovideoRegistrationRequestRejecting!
@@ -1108,16 +1090,7 @@ input RequestNicovideoRegistrationInputTagging {
   tagId: ID!
 }
 
-enum RequestNicovideoRegistrationOtherErrorMessage {
-  INTERNAL_SERVER_ERROR
-}
-
-"""その他のエラー"""
-type RequestNicovideoRegistrationOtherErrorsFallback {
-  message: RequestNicovideoRegistrationOtherErrorMessage!
-}
-
-union RequestNicovideoRegistrationReturnUnion = MutationInvalidTagIdError | MutationTagNotFoundError | RequestNicovideoRegistrationOtherErrorsFallback | RequestNicovideoRegistrationSucceededPayload | RequestNicovideoRegistrationVideoAlreadyRegisteredError
+union RequestNicovideoRegistrationReturnUnion = MutationInvalidTagIdError | MutationTagNotFoundError | RequestNicovideoRegistrationSucceededPayload | RequestNicovideoRegistrationVideoAlreadyRegisteredError
 
 type RequestNicovideoRegistrationSucceededPayload {
   request: NicovideoRegistrationRequest!
@@ -1758,6 +1731,16 @@ type VideoTitleUnsetPrimaryEvent implements Event & Node & VideoTitleEvent {
   videoTitle: VideoTitle!
 }
 
+input WatchNotificationsInput {
+  notificationIds: [ID!]!
+}
+
+union WatchNotificationsReturnUnion = WatchNotificationsSucceededPayload
+
+type WatchNotificationsSucceededPayload {
+  notifications: [Notification!]!
+}
+
 type YoutubeOriginalSource {
   sourceId: String!
   thumbnailUrl: String!
@@ -1802,16 +1785,4 @@ type YoutubeVideoSourceEventEdge {
 
 input YoutubeVideoSourceEventsOrderBy {
   createdAt: SortOrder
-}
-
-
-
-input WatchNotificationsInput {
-  notificationIds: [ID!]!
-}
-
-union WatchNotificationsReturnUnion = WatchNotificationsSucceededPayload
-
-type WatchNotificationsSucceededPayload {
-  notifications: [Notification!]!
 }
