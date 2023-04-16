@@ -2,7 +2,7 @@
 
 import clsx from "clsx";
 import React, { useEffect } from "react";
-import { useQuery } from "urql";
+import { useMutation, useQuery } from "urql";
 
 import { graphql } from "~/gql";
 
@@ -17,6 +17,7 @@ export const Query = graphql(`
         node {
           __typename
           id
+          watched
           ... on NicovideoRegistrationRequestAcceptingNotification {
             ...NotificationsPage_NicovideoRegistrationRequestAcceptingNotification
           }
@@ -32,6 +33,23 @@ export const Query = graphql(`
     }
   }
 `);
+
+export const Mutation = graphql(`
+  mutation NotificationsPage_NotificationsListBlock_Watch(
+    $notificationIds: [ID!]!
+  ) {
+    watchNotifications(input: { notificationIds: $notificationIds }) {
+      __typename
+      ... on WatchNotificationsSucceededPayload {
+        notifications {
+          id
+          watched
+        }
+      }
+    }
+  }
+`);
+
 export default function NotificationsListBlock({
   className,
   style,
@@ -47,10 +65,17 @@ export default function NotificationsListBlock({
     query: Query,
     variables: { after },
   });
+  const [, watch] = useMutation(Mutation);
 
   useEffect(
     () => {
       if (!data) return;
+
+      const watched = data.notifications.edges
+        .filter(({ node: { watched } }) => !watched)
+        .map(({ node: { id } }) => id);
+      if (0 < watched.length) watch({ notificationIds: watched });
+
       if (
         data.notifications.pageInfo.hasNextPage &&
         data.notifications.pageInfo.endCursor

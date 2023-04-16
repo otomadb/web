@@ -326,6 +326,9 @@ type Mutation {
   requestNicovideoRegistration(input: RequestNicovideoRegistrationInput!): RequestNicovideoRegistrationReturnUnion!
   resovleSemitag(semitagId: ID!, tagId: ID!): ResolveSemitagReturnUnion!
   undoLikeVideo(input: UndoLikeVideoInput!): UndoLikeVideoReturnUnion!
+
+  "通知を見たことにする"
+  watchNotifications(input: WatchNotificationsInput!): WatchNotificationsReturnUnion!
 }
 
 """MylistのIDとして無効なIDを入力した場合のエラー"""
@@ -1799,4 +1802,16 @@ type YoutubeVideoSourceEventEdge {
 
 input YoutubeVideoSourceEventsOrderBy {
   createdAt: SortOrder
+}
+
+
+
+input WatchNotificationsInput {
+  notificationIds: [ID!]!
+}
+
+union WatchNotificationsReturnUnion = WatchNotificationsSucceededPayload
+
+type WatchNotificationsSucceededPayload {
+  notifications: [Notification!]!
 }
