@@ -9,7 +9,7 @@ import {
 
 import { mock as mockNicovideoRegistrationRequestAcceptingNotification } from "./NicovideoRegistrationRequestAcceptingNotification.mocks";
 import { mock as mockNicovideoRegistrationRequestRejectingNotification } from "./NicovideoRegistrationRequestRejectingNotification.mocks";
-import Component, { Query } from "./NotificationsListBlock";
+import Component, { Mutation, Query } from "./NotificationsListBlock";
 
 const meta = {
   component: Component,
@@ -47,6 +47,7 @@ const meta = {
                       cursor: "cursor1",
                       node: {
                         id: "n1",
+                        watched: false,
                         __typename:
                           "NicovideoRegistrationRequestRejectingNotification",
                         ...mockNicovideoRegistrationRequestRejectingNotification,
@@ -56,10 +57,30 @@ const meta = {
                       cursor: "cursor2",
                       node: {
                         id: "n2",
+                        watched: false,
                         __typename:
                           "NicovideoRegistrationRequestAcceptingNotification",
                         ...mockNicovideoRegistrationRequestAcceptingNotification,
                       },
+                    },
+                  ],
+                },
+              })
+            )
+          ),
+          graphql.mutation(Mutation, (req, res, ctx) =>
+            res(
+              ctx.data({
+                watchNotifications: {
+                  __typename: "WatchNotificationsSucceededPayload",
+                  notifications: [
+                    {
+                      id: "n1",
+                      watched: true,
+                    },
+                    {
+                      id: "n2",
+                      watched: true,
                     },
                   ],
                 },
@@ -97,6 +118,7 @@ export const NoNext: StoryObj<typeof meta> = {
                       cursor: "cursor1",
                       node: {
                         id: "n1",
+                        watched: false,
                         __typename:
                           "NicovideoRegistrationRequestRejectingNotification",
                         ...mockNicovideoRegistrationRequestRejectingNotification,
@@ -106,6 +128,7 @@ export const NoNext: StoryObj<typeof meta> = {
                       cursor: "cursor2",
                       node: {
                         id: "n2",
+                        watched: false,
                         __typename:
                           "NicovideoRegistrationRequestAcceptingNotification",
                         ...mockNicovideoRegistrationRequestAcceptingNotification,
