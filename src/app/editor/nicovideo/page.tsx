@@ -1,11 +1,7 @@
 import clsx from "clsx";
 import type { Metadata } from "next";
 
-import { SourceIdInputForm } from "~/components/NicovideoSourceIdForm/Form";
-import { SourceIdProvider } from "~/components/NicovideoSourceIdForm/SourceIdProvider";
-
-import { Guard } from "../Guard";
-import { RegisterForm } from "./_components/Form";
+import Controller from "./Controller";
 
 export const metadata: Metadata = {
   title: "ニコニコ動画からの登録",
@@ -13,24 +9,25 @@ export const metadata: Metadata = {
 
 export default async function Page() {
   return (
-    <Guard>
-      <main className={clsx(["max-w-screen-lg"], ["mx-auto"])}>
+    <main className={clsx(["w-full"], ["flex", "flex-col"])}>
+      <header
+        className={clsx(
+          ["container", "max-w-screen-lg", "mx-auto"],
+          ["px-4"],
+          ["py-4"]
+        )}
+      >
         <h1>ニコニコ動画からの追加</h1>
-        <SourceIdProvider>
-          <div
-            className={clsx(
-              [["px-4"], ["py-4"]],
-              ["rounded"],
-              ["border", "border-slate-300"],
-              ["bg-slate-50"],
-              ["flex", "flex-col", "gap-y-4"]
-            )}
-          >
-            <SourceIdInputForm className={clsx()} />
-            <RegisterForm />
-          </div>
-        </SourceIdProvider>
-      </main>
-    </Guard>
+      </header>
+      <section
+        className={clsx(
+          ["pb-8"],
+          ["flex-grow"],
+          ["container", "mx-auto", "max-w-screen-lg"]
+        )}
+      >
+        <Controller className={clsx(["h-full"])} />
+      </section>
+    </main>
   );
 }

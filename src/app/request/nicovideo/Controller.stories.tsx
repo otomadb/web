@@ -6,7 +6,7 @@ import {
   Provider as UrqlProvider,
 } from "urql";
 
-import { mockTagButton } from "~/app/editor/nicovideo/_components/TagButton.mocks";
+import { mockTagButton } from "~/app/editor/nicovideo/TagButton.mocks";
 import { mockTagSearcher } from "~/components/TagSearcher/index.mocks";
 import { ToastContext } from "~/components/Toaster";
 

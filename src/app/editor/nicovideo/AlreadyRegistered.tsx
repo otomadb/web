@@ -13,13 +13,12 @@ export const Fragment = graphql(`
     sourceId
     video {
       ...VideoThumbnail
-      id
-      title
       ...Link_Video
+      title
     }
   }
 `);
-export const VideoSource: React.FC<{
+export const AlreadyRegistered: React.FC<{
   className?: string;
   fragment: FragmentType<typeof Fragment>;
 }> = ({ className, ...props }) => {

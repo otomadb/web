@@ -1,35 +1,56 @@
 import { action } from "@storybook/addon-actions";
 import { Meta, StoryObj } from "@storybook/react";
+import {
+  createClient as createUrqlClient,
+  fetchExchange,
+  Provider as UrqlProvider,
+} from "urql";
 
 import { makeFragmentData } from "~/gql";
 
-import { RegisterContext } from "../Original/Context";
-import { RequestContext } from "./Context";
-import { Exists, Fragment } from "./Exists";
+import { RegisterContext } from "./RegisterContext";
+import { RequestContext } from "./RequestContext";
+import { Fragment, RequestExists } from "./RequestExists";
+import { mockTagButton } from "./TagButton.mocks";
 
 const meta = {
-  component: Exists,
+  component: RequestExists,
   args: {},
   render(args) {
     return (
-      <RegisterContext.Provider
-        value={{
-          setTitle: action("setTitle"),
-          setSourceId: action("setSourceId"),
-          setThumbnailUrl: action("setThumbnailUrl"),
-          toggleSemitag: action("toggleSemitag"),
-          toggleTag: action("toggleTag"),
-        }}
+      <UrqlProvider
+        value={createUrqlClient({
+          url: "/graphql",
+          exchanges: [fetchExchange],
+        })}
       >
-        <RequestContext.Provider
-          value={{ setRequestId: action("setRequestId") }}
+        <RegisterContext.Provider
+          value={{
+            setTitle: action("setTitle"),
+            setSourceId: action("setSourceId"),
+            setThumbnailUrl: action("setThumbnailUrl"),
+            toggleSemitag: action("toggleSemitag"),
+            toggleTag: action("toggleTag"),
+          }}
         >
-          <Exists {...args} />
-        </RequestContext.Provider>
-      </RegisterContext.Provider>
+          <RequestContext.Provider
+            value={{ setRequestId: action("setRequestId") }}
+          >
+            <RequestExists {...args} />
+          </RequestContext.Provider>
+        </RegisterContext.Provider>
+      </UrqlProvider>
     );
   },
-} as Meta<typeof Exists>;
+  parameters: {
+    msw: {
+      handlers: {
+        unconcern: [mockTagButton],
+        concern: [],
+      },
+    },
+  },
+} as Meta<typeof RequestExists>;
 export default meta;
 
 export const Primary: StoryObj<typeof meta> = {

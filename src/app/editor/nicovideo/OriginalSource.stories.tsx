@@ -1,5 +1,10 @@
 import { action } from "@storybook/addon-actions";
 import { Meta, StoryObj } from "@storybook/react";
+import {
+  createClient as createUrqlClient,
+  fetchExchange,
+  Provider as UrqlProvider,
+} from "urql";
 
 import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
@@ -10,31 +15,41 @@ import {
   aTagSearchItemByName,
 } from "~/gql/mock";
 
-import { RegisterContext } from "./Context";
-import { Fragment, Original } from "./Original";
+import { Fragment, Original } from "./OriginalSource";
+import { RegisterContext } from "./RegisterContext";
+import { mockTagButton } from "./TagButton.mocks";
 
 const meta = {
   component: Original,
-  args: {
-    toggleTag: action("toggleTag"),
-  },
   render(args) {
     return (
-      <RegisterContext.Provider
-        value={{
-          setTitle: action("setTitle"),
-          setSourceId: action("setSourceId"),
-          setThumbnailUrl: action("setThumbnailUrl"),
-          toggleSemitag: action("toggleSemitag"),
-          toggleTag: action("toggleTag"),
-        }}
+      <UrqlProvider
+        value={createUrqlClient({
+          url: "/graphql",
+          exchanges: [fetchExchange],
+        })}
       >
-        <Original {...args} />
-      </RegisterContext.Provider>
+        <RegisterContext.Provider
+          value={{
+            setTitle: action("setTitle"),
+            setSourceId: action("setSourceId"),
+            setThumbnailUrl: action("setThumbnailUrl"),
+            toggleSemitag: action("toggleSemitag"),
+            toggleTag: action("toggleTag"),
+          }}
+        >
+          <Original {...args} />
+        </RegisterContext.Provider>
+      </UrqlProvider>
     );
   },
   parameters: {
-    msw: { handlers: [] },
+    msw: {
+      handlers: {
+        unconcern: [mockTagButton],
+        concern: [],
+      },
+    },
   },
 } as Meta<typeof Original>;
 export default meta;

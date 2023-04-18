@@ -1,27 +1,25 @@
 import { action } from "@storybook/addon-actions";
 import { Meta, StoryObj } from "@storybook/react";
+import { graphql } from "msw";
 import {
   createClient as createUrqlClient,
   fetchExchange,
   Provider as UrqlProvider,
 } from "urql";
 
-import { RegisterContext } from "~/app/editor/nicovideo/RegisterContext";
-import { mockTagButton } from "~/app/editor/nicovideo/TagButton.mocks";
+import { RegisterNicovideoPage_SourceCheckerDocument } from "~/gql/graphql";
 
-import SourceChecker from "./SourceChecker";
+import { RegisterContext } from "./RegisterContext";
+import { RequestContext } from "./RequestContext";
+import { SourceChecker } from "./SourceChecker";
 import {
-  mockAlreadyRegistered,
-  mockAlreadyRequested,
-  mockLoading,
-  mockNeitherRegisterNorRequest,
+  mockSourceAlreadyExists,
+  mockSourceNotExistsYet,
 } from "./SourceChecker.mocks";
+import { mockTagButton } from "./TagButton.mocks";
 
 const meta = {
   component: SourceChecker,
-  args: {
-    style: { width: "1024px" },
-  },
   render(args) {
     return (
       <UrqlProvider
@@ -39,9 +37,11 @@ const meta = {
             toggleTag: action("toggleTag"),
           }}
         >
-          <SourceChecker {...args}>
-            <p>ここに申請フォームが置かれる</p>
-          </SourceChecker>
+          <RequestContext.Provider
+            value={{ setRequestId: action("setRequestId") }}
+          >
+            <SourceChecker {...args} />
+          </RequestContext.Provider>
         </RegisterContext.Provider>
       </UrqlProvider>
     );
@@ -49,7 +49,7 @@ const meta = {
   parameters: {
     msw: {
       handlers: {
-        unconcert: [mockTagButton],
+        unconcern: [mockTagButton],
       },
     },
   },
@@ -57,44 +57,35 @@ const meta = {
 export default meta;
 
 export const Loading: StoryObj<typeof meta> = {
-  name: "ロード中",
   parameters: {
     msw: {
-      handlers: {
-        concern: [mockLoading],
-      },
+      handlers: [
+        graphql.query(
+          RegisterNicovideoPage_SourceCheckerDocument,
+          (req, res, ctx) => res(ctx.delay("infinite"))
+        ),
+      ],
     },
   },
 };
 
-export const AlreadyRegistered: StoryObj<typeof meta> = {
+export const SourceAlreadyRegistered: StoryObj<typeof meta> = {
   name: "動画が既に登録済み",
   parameters: {
     msw: {
       handlers: {
-        concern: [mockAlreadyRegistered],
+        concern: [mockSourceAlreadyExists],
       },
     },
   },
 };
 
-export const AlreadyRequested: StoryObj<typeof meta> = {
-  name: "既にリクエスト済み",
+export const SourceNotYetRegistered: StoryObj<typeof meta> = {
+  name: "動画はまだ登録されていない",
   parameters: {
     msw: {
       handlers: {
-        concern: [mockAlreadyRequested],
-      },
-    },
-  },
-};
-
-export const NeitherRegisterNorRequest: StoryObj<typeof meta> = {
-  name: "登録もリクエストもされていない",
-  parameters: {
-    msw: {
-      handlers: {
-        concern: [mockNeitherRegisterNorRequest],
+        concern: [mockSourceNotExistsYet],
       },
     },
   },

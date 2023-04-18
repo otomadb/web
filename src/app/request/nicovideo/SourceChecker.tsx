@@ -5,8 +5,8 @@ import clsx from "clsx";
 import { CSSProperties, ReactNode } from "react";
 import { useQuery } from "urql";
 
-import { Original } from "~/app/editor/nicovideo/_components/Original/Original";
-import { VideoSource } from "~/app/editor/nicovideo/_components/VideoSource/VideoSource";
+import { Original } from "~/app/editor/nicovideo/OriginalSource";
+import { AlreadyRegistered } from "~/app/editor/nicovideo/AlreadyRegistered";
 import { graphql } from "~/gql";
 
 import RequestExists from "./RequestExists";
@@ -51,7 +51,7 @@ export default function SourceChecker({
       {data && (
         <>
           {data.findNicovideoVideoSource && (
-            <VideoSource fragment={data.findNicovideoVideoSource} />
+            <AlreadyRegistered fragment={data.findNicovideoVideoSource} />
           )}
           {!data.findNicovideoVideoSource && (
             <>
