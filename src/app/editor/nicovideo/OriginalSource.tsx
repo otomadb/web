@@ -54,13 +54,13 @@ export const Original: React.FC<{
   );
 
   return (
-    <div className={clsx(className, ["flex", "gap-x-8"])}>
+    <div className={clsx(className, ["flex", "gap-x-4"])}>
       <div className={clsx(["flex-shrink-0"], ["flex", "flex-col", "gap-y-4"])}>
         <CoolImage
-          className={clsx(["w-56"], ["h-40"])}
+          className={clsx(["w-48"], ["h-36"])}
           src={fragment.thumbnailUrl}
-          width={208}
-          height={160}
+          width={192}
+          height={144}
           alt={`${fragment.sourceId}のサムネイル`}
         />
       </div>
@@ -70,41 +70,55 @@ export const Original: React.FC<{
           className={clsx(["grid", "grid-cols-1", ["gap-x-1"], ["gap-y-1"]])}
         >
           {fragment.tags.map((tag) => (
-            <div key={tag.name} className={clsx(["flex"])}>
-              <button
-                type="button"
-                className={clsx([
-                  "text-xs",
-                  "text-left",
-                  "text-slate-700",
-                  "font-bold",
-                ])}
-                onClick={(e) => {
-                  e.preventDefault();
-                  toggleSemitag(tag.name);
-                }}
-              >
-                {tag.name}
-              </button>
-              {tag.searchTags.items.length === 0 && (
-                <div
-                  className={clsx(
-                    ["ml-2"],
-                    ["text-xs", "select-none", "text-slate-500"]
-                  )}
-                >
-                  候補なし
-                </div>
+            <div
+              key={tag.name}
+              className={clsx(
+                ["flex", "flex-wrap", "items-center"],
+                ["gap-x-2", "gap-y-1"]
               )}
-              <div
-                className={clsx(
-                  ["ml-2"],
-                  ["flex", "flex-wrap", "items-start", "gap-x-1", "gap-y-0.5"]
+            >
+              <div className={clsx(["flex-shrink-0"], ["flex"])}>
+                <button
+                  type="button"
+                  className={clsx([
+                    "text-xs",
+                    "text-left",
+                    "text-slate-700",
+                    "font-bold",
+                  ])}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    toggleSemitag(tag.name);
+                  }}
+                >
+                  {tag.name}
+                </button>
+              </div>
+              <div className={clsx(["flex-grow"])}>
+                {tag.searchTags.items.length === 0 && (
+                  <div
+                    className={clsx([
+                      "text-xs",
+                      "select-none",
+                      "text-slate-500",
+                    ])}
+                  >
+                    候補なし
+                  </div>
                 )}
-              >
-                {tag.searchTags.items.map((item) => (
-                  <TagButton key={item.tag.id} tagId={item.tag.id} />
-                ))}
+                <div
+                  className={clsx([
+                    "flex",
+                    "flex-wrap",
+                    "items-start",
+                    "gap-x-1",
+                    "gap-y-0.5",
+                  ])}
+                >
+                  {tag.searchTags.items.map((item) => (
+                    <TagButton key={item.tag.id} tagId={item.tag.id} />
+                  ))}
+                </div>
               </div>
             </div>
           ))}
