@@ -7,15 +7,17 @@ import {
 } from "urql";
 
 import {
+  RegisterNicovideoPage_SourceCheckerDocument,
+  TagType,
+} from "~/gql/graphql";
+import {
   aNicovideoOriginalSource,
   aNicovideoOriginalSourceTagSearchTagsPayload,
   aNicovideoVideoSource,
   aTag,
   aTagSearchItemByName,
   aVideo,
-  RegisterNicovideoPage_SourceCheckerDocument,
-  TagType,
-} from "~/gql/graphql";
+} from "~/gql/mock";
 
 import { RegisterContext } from "./Original/Context";
 import { RequestContext } from "./Request/Context";

@@ -2,13 +2,13 @@ import { action } from "@storybook/addon-actions";
 import { Meta, StoryObj } from "@storybook/react";
 
 import { makeFragmentData } from "~/gql";
+import { TagType } from "~/gql/graphql";
 import {
   aNicovideoOriginalSource,
   aNicovideoOriginalSourceTagSearchTagsPayload,
   aTag,
   aTagSearchItemByName,
-  TagType,
-} from "~/gql/graphql";
+} from "~/gql/mock";
 
 import { RegisterContext } from "./Context";
 import { Fragment, Original } from "./Original";

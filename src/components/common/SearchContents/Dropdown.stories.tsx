@@ -6,6 +6,10 @@ import {
 } from "urql";
 
 import {
+  SearchContents_SearchNicovideoDocument,
+  SearchContentsDocument,
+} from "~/gql/graphql";
+import {
   aNicovideoRegistrationRequest,
   aNicovideoVideoSource,
   aSearchTagsPayload,
@@ -18,9 +22,7 @@ import {
   aVideoTag,
   aVideoTagConnection,
   aVideoTitle,
-  SearchContents_SearchNicovideoDocument,
-  SearchContentsDocument,
-} from "~/gql/graphql";
+} from "~/gql/mock";
 
 import { Dropdown } from "./Dropdown";
 

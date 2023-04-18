@@ -6,15 +6,14 @@ import {
 } from "urql";
 
 import { makeFragmentData } from "~/gql";
+import { MylistShareRange, UseViewerDocument } from "~/gql/graphql";
 import {
   aMylist,
   aMylistRegistration,
   aMylistRegistrationConnection,
   aUser,
   aVideo,
-  MylistShareRange,
-  UseViewerDocument,
-} from "~/gql/graphql";
+} from "~/gql/mock";
 
 import { Fragment, MylistListItem } from "./MylistsListItem";
 

@@ -1,5 +1,6 @@
 import { graphql } from "msw";
 
+import { TagType } from "~/gql/graphql";
 import {
   aNicovideoOriginalSource,
   aNicovideoOriginalSourceTagSearchTagsPayload,
@@ -7,8 +8,7 @@ import {
   aTag,
   aTagSearchItemByName,
   aVideo,
-  TagType,
-} from "~/gql/graphql";
+} from "~/gql/mock";
 
 import { mockRequestExists } from "./RequestExists.mocks";
 import { Query } from "./SourceChecker";

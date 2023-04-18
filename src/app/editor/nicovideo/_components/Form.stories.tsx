@@ -11,15 +11,17 @@ import { mockTagSearcher } from "~/components/TagSearcher/index.mocks";
 import {} from "~/components/TagSearcher/SearchBox";
 import { makeFragmentData } from "~/gql";
 import {
-  aNicovideoOriginalSource,
-  aNicovideoOriginalSourceTagSearchTagsPayload,
-  aTag,
-  aTagSearchItemByName,
   RegisterNicovideoPage_RegisterForm_Confirm_TagDocument,
   RegisterNicovideoPage_RegisterForm_RegisterVideoDocument,
   RegisterNicovideoPage_SourceCheckerDocument,
   TagType,
 } from "~/gql/graphql";
+import {
+  aNicovideoOriginalSource,
+  aNicovideoOriginalSourceTagSearchTagsPayload,
+  aTag,
+  aTagSearchItemByName,
+} from "~/gql/mock";
 
 import { RegisterForm } from "./Form";
 import { Fragment as SucceededToastFragment } from "./SucceededToast";

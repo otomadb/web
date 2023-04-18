@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 
 import { makeFragmentData } from "~/gql";
-import { aNicovideoVideoSource, aVideo } from "~/gql/graphql";
+import { aNicovideoVideoSource, aVideo } from "~/gql/mock";
 
 import { Fragment, VideoSource } from "./VideoSource";
 

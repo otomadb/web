@@ -7,7 +7,7 @@ import {
   aVideo,
   aVideoTag,
   aVideoTagConnection,
-} from "~/gql/graphql";
+} from "~/gql/mock";
 
 import { Fragment, RegistrationsListItem } from "./RegistrationsListItem";
 
