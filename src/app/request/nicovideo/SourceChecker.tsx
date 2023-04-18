@@ -5,8 +5,8 @@ import clsx from "clsx";
 import { CSSProperties, ReactNode } from "react";
 import { useQuery } from "urql";
 
-import { Original } from "~/app/editor/nicovideo/OriginalSource";
 import { AlreadyRegistered } from "~/app/editor/nicovideo/AlreadyRegistered";
+import { Original } from "~/app/editor/nicovideo/OriginalSource";
 import { graphql } from "~/gql";
 
 import RequestExists from "./RequestExists";
