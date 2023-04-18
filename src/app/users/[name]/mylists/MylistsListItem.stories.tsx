@@ -1,5 +1,4 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { graphql } from "msw";
 import {
   createClient as createUrqlClient,
   Provider as UrqlProvider,
@@ -32,10 +31,12 @@ const meta = {
   parameters: {
     msw: {
       handlers: [
+        /*
         graphql.query(UseViewerDocument, (req, res, ctx) =>
           // @ts-ignore 一旦無視
           res(ctx.data({ whoami: null }))
         ),
+        */
       ],
     },
   },
