@@ -50,7 +50,12 @@ export default function RootLayout({
                   ["z-1"]
                 )}
               />
-              <div className={clsx(["min-h-[calc(100vh-64px)]"])}>
+              <div
+                className={clsx(
+                  ["flex", "content-stretch", "flex-wrap"],
+                  ["min-h-[calc(100vh-64px)]"]
+                )}
+              >
                 {children}
               </div>
               <GlobalFooter />

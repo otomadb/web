@@ -1,14 +1,16 @@
 import Link from "next/link";
-import qs from "query-string";
 import React, { ComponentProps } from "react";
 
 export type SearchParams = { after?: string };
 
 export const AllNicovideoRequestsPageLink: React.FC<
-  Omit<ComponentProps<typeof Link>, "href"> & SearchParams
-> = ({ children, after, ...props }) => {
+  Omit<ComponentProps<typeof Link>, "href"> & { params?: SearchParams }
+> = ({ children, params, ...props }) => {
   return (
-    <Link href={`/requests/nicovideo?${qs.stringify({ after })}`} {...props}>
+    <Link
+      href={`/requests/nicovideo?${new URLSearchParams(params).toString()}`}
+      {...props}
+    >
       {children}
     </Link>
   );

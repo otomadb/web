@@ -27,7 +27,7 @@ export const Editor: React.FC<{
         }
       }
     `),
-    requestPolicy: "cache-and-network",
+    requestPolicy: "cache-first",
   });
 
   return (
