@@ -1,12 +1,11 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { graphql } from "msw";
 import {
   createClient as createUrqlClient,
   Provider as UrqlProvider,
 } from "urql";
 
 import { makeFragmentData } from "~/gql";
-import { MylistShareRange, UseViewerDocument } from "~/gql/graphql";
+import { MylistShareRange } from "~/gql/graphql";
 import {
   aMylist,
   aMylistRegistration,
@@ -32,10 +31,12 @@ const meta = {
   parameters: {
     msw: {
       handlers: [
+        /*
         graphql.query(UseViewerDocument, (req, res, ctx) =>
           // @ts-ignore 一旦無視
           res(ctx.data({ whoami: null }))
         ),
+        */
       ],
     },
   },
@@ -247,11 +248,7 @@ export const MyLikeList: StoryObj<typeof MylistListItem> = {
   },
   parameters: {
     msw: {
-      handlers: [
-        graphql.query(UseViewerDocument, (req, res, ctx) =>
-          res(ctx.data({ whoami: aUser({ id: "user:1" }) }))
-        ),
-      ],
+      handlers: [],
     },
   },
 };

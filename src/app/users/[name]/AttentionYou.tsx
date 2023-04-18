@@ -2,16 +2,10 @@
 import clsx from "clsx";
 import React from "react";
 
-import { useViewer } from "~/hooks/useViewer";
-
 export const AttentionYou: React.FC<{
   className?: string;
   pageUserId: string;
 }> = ({ className, pageUserId }) => {
-  const [{ data: viewerData }] = useViewer();
-
-  if (viewerData?.whoami?.id !== pageUserId) return null;
-
   return (
     <div
       className={clsx(
