@@ -18,10 +18,8 @@ export default async function Page({
   const result = await fetchGql(
     graphql(`
       query AllNicovideoRequestsPage_After($first: Int!, $after: String) {
-        findNicovideoRegistrationRequests(
-          first: $first
-          after: $after
-          checked: false
+        findUncheckedNicovideoRegistrationRequests(
+          input: { first: $first, after: $after }
         ) {
           totalCount
           ...AllNicovideoRequestsPage_RequestsGrid
@@ -53,20 +51,23 @@ export default async function Page({
               </h1>
             </div>
             <p className={clsx(["text-sm", "text-slate-500"])}>
-              {result.data.findNicovideoRegistrationRequests.totalCount}
+              {
+                result.data.findUncheckedNicovideoRegistrationRequests
+                  .totalCount
+              }
               件申請されています
             </p>
           </header>
           <nav className={clsx(["flex-shrink-0"], ["flex", "items-center"])}>
             <Pagination
-              fragment={result.data.findNicovideoRegistrationRequests}
+              fragment={result.data.findUncheckedNicovideoRegistrationRequests}
             />
           </nav>
         </div>
       </div>
       <section className={clsx(["container", "mx-auto"])}>
         <RequestsGrid
-          fragment={result.data.findNicovideoRegistrationRequests}
+          fragment={result.data.findUncheckedNicovideoRegistrationRequests}
         />
       </section>
     </main>

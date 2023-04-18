@@ -774,6 +774,9 @@ type Query {
   searchTags(input: SearchTagInput!): SearchTagsPayload!
   searchVideos(input: SearchVideoInput!): SearchVideosPayload!
   whoami: User!
+  findUncheckedNicovideoRegistrationRequests(
+    input: FindUncheckedNicovideoRegistrationRequestsInput!
+  ): NicovideoRegistrationRequestConnection!
 }
 
 input RegisterCategoryTagInput {
@@ -1784,5 +1787,19 @@ type YoutubeVideoSourceEventEdge {
 }
 
 input YoutubeVideoSourceEventsOrderBy {
+  createdAt: SortOrder
+}
+
+input FindUncheckedNicovideoRegistrationRequestsInput {
+  first: Int
+  after: String
+
+  last: Int
+  before: String
+
+  orderBy: FindUncheckedNicovideoRegistrationRequestsOrderBy! = { createdAt: DESC }
+}
+
+input FindUncheckedNicovideoRegistrationRequestsOrderBy {
   createdAt: SortOrder
 }
