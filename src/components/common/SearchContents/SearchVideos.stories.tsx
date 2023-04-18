@@ -6,7 +6,7 @@ import {
   aVideo,
   aVideoSearchItemByTitle,
   aVideoTitle,
-} from "~/gql/graphql";
+} from "~/gql/mock";
 
 import { Fragment, SearchVideos } from "./SearchVideos";
 

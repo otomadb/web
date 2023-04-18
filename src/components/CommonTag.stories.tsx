@@ -2,7 +2,8 @@ import { action } from "@storybook/addon-actions";
 import { Meta, StoryObj } from "@storybook/react";
 
 import { makeFragmentData } from "~/gql";
-import { aTag, TagType } from "~/gql/graphql";
+import { TagType } from "~/gql/graphql";
+import { aTag } from "~/gql/mock";
 
 import { CommonTag, Fragment } from "./CommonTag";
 

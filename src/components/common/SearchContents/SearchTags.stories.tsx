@@ -6,7 +6,7 @@ import {
   aTag,
   aTagName,
   aTagSearchItemByName,
-} from "~/gql/graphql";
+} from "~/gql/mock";
 
 import { Fragment, SearchTags } from "./SearchTags";
 

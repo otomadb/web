@@ -8,11 +8,11 @@ import {
 } from "urql";
 
 import {
-  aSemitag,
   RegisterTagPage_Semitags_FindSemitagsDocument,
   RegisterTagPage_Semitags_SelectedDocument,
   Semitag,
 } from "~/gql/graphql";
+import { aSemitag } from "~/gql/mock";
 
 import { Semitags } from "./Semitags";
 

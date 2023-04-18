@@ -9,8 +9,6 @@ import {
 import { Fragment as CommonTagFragment } from "~/components/CommonTag";
 import { makeFragmentData } from "~/gql";
 import {
-  aSemitag,
-  aTag,
   RegisterTagPage_ExplicitParentTagDocument,
   RegisterTagPage_ImplicitParentTagDocument,
   RegisterTagPage_RegisterTagDocument,
@@ -19,6 +17,7 @@ import {
   Semitag,
   TagType,
 } from "~/gql/graphql";
+import { aSemitag, aTag } from "~/gql/mock";
 
 import { RegisterTagForm } from "./Form";
 import { Fragment as SucceededToastFragment } from "./SucceededToast";

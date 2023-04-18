@@ -5,6 +5,7 @@ import {
   Provider as UrqlProvider,
 } from "urql";
 
+import { SearchContents_SearchNicovideoDocument } from "~/gql/graphql";
 import {
   aNicovideoRegistrationRequest,
   aNicovideoVideoSource,
@@ -13,8 +14,7 @@ import {
   aVideo,
   aVideoTag,
   aVideoTagConnection,
-  SearchContents_SearchNicovideoDocument,
-} from "~/gql/graphql";
+} from "~/gql/mock";
 
 import { SearchNicovideo } from "./Nicovideo";
 
