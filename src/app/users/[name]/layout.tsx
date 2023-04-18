@@ -1,5 +1,3 @@
-import "~/styles/globals.css";
-
 import clsx from "clsx";
 import { notFound } from "next/navigation";
 import React from "react";
