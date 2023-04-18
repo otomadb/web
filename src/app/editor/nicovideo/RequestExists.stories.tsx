@@ -1,3 +1,4 @@
+import { ResultOf } from "@graphql-typed-document-node/core";
 import { action } from "@storybook/addon-actions";
 import { Meta, StoryObj } from "@storybook/react";
 import {
@@ -6,12 +7,15 @@ import {
   Provider as UrqlProvider,
 } from "urql";
 
+import { Fragment as UserIconFragment } from "~/components/UserIcon";
 import { makeFragmentData } from "~/gql";
+import { Link_UserFragmentDoc } from "~/gql/graphql";
 
 import { RegisterContext } from "./RegisterContext";
 import { RequestContext } from "./RequestContext";
 import { Fragment, RequestExists } from "./RequestExists";
 import { mockTagButton } from "./TagButton.mocks";
+import { Fragment as ToggleSemitagButtonFragment } from "./ToggleSemitagButton";
 
 const meta = {
   component: RequestExists,
@@ -93,9 +97,42 @@ export const Primary: StoryObj<typeof meta> = {
           },
         ],
         semitaggings: [
-          { id: "semitagging1", name: "Semitag 1", note: "Semitag 1 note" },
-          { id: "semitagging2", name: "Semitag 2", note: null },
+          {
+            id: "semitagging1",
+            ...makeFragmentData(
+              {
+                name: "Semitag 1",
+              },
+              ToggleSemitagButtonFragment
+            ),
+          },
+          {
+            id: "semitagging2",
+            ...makeFragmentData(
+              {
+                name: "Semitag 2",
+              },
+              ToggleSemitagButtonFragment
+            ),
+          },
         ],
+        requestedBy: {
+          id: "user1",
+          displayName: "User 1",
+          ...makeFragmentData(
+            {
+              icon: "/512x512.png",
+              displayName: "User 1",
+            },
+            UserIconFragment
+          ),
+          ...makeFragmentData(
+            {
+              name: "user1",
+            },
+            Link_UserFragmentDoc
+          ),
+        } as ResultOf<typeof Fragment>["requestedBy"],
       },
       Fragment
     ),

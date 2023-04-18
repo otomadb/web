@@ -1,10 +1,10 @@
 import { graphql } from "msw";
 
-import { Fragment } from "~/components/CommonTag";
+import { Fragment as CommonTagFragment } from "~/components/CommonTag";
 import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
 
-import { Query as TagButtonQuery } from "./TagButton";
+import { Fragment, Query as TagButtonQuery } from "./TagButton";
 
 export const mockTagButton = graphql.query(TagButtonQuery, (req, res, ctx) => {
   return res(
@@ -13,12 +13,18 @@ export const mockTagButton = graphql.query(TagButtonQuery, (req, res, ctx) => {
         id: req.variables.id,
         ...makeFragmentData(
           {
-            name: req.variables.id,
-            type: TagType.Character,
-            explicitParent: {
-              id: `${req.variables.id}-p`,
-              name: `${req.variables.id}-p`,
-            },
+            id: req.variables.id,
+            ...makeFragmentData(
+              {
+                name: req.variables.id,
+                type: TagType.Character,
+                explicitParent: {
+                  id: `${req.variables.id}-p`,
+                  name: `${req.variables.id}-p`,
+                },
+              },
+              CommonTagFragment
+            ),
           },
           Fragment
         ),
