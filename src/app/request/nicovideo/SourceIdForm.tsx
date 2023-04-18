@@ -39,13 +39,12 @@ export const SourceIdForm: React.FC<{
 
   return (
     <form
-      className={clsx(
-        className,
-        ["border"],
-        ["rounded-md"],
-        ["px-4", "py-4"],
-        ["flex", "flex-col", "items-start", "gap-y-2"]
-      )}
+      className={clsx(className, [
+        "flex",
+        "flex-col",
+        "items-start",
+        "gap-y-2",
+      ])}
       style={style}
       onSubmit={handleSubmit(onSubmit)}
     >

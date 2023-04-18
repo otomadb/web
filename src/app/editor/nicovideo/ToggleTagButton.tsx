@@ -5,7 +5,7 @@ import clsx from "clsx";
 import { CommonTag } from "~/components/CommonTag";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-import { useToggleTag } from "./Original/Context";
+import { useToggleTag } from "./RegisterContext";
 
 export const Fragment = graphql(`
   fragment RegisterNicovideoPage_RequestFormPart_ToggleTagButton on Tag {

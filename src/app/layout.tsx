@@ -40,7 +40,7 @@ export default function RootLayout({
     <html lang="ja">
       <Auth0Provider>
         <UrqlProvider>
-          <body className={clsx(["relative"], ["bg-slate-50"])}>
+          <body className={clsx(["relative"], ["bg-gray-50"])}>
             <ToastProvider selector="#toast">
               <GlobalNav
                 className={clsx(

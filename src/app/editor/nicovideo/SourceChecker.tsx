@@ -7,10 +7,10 @@ import { useQuery } from "urql";
 
 import { graphql } from "~/gql";
 
-import { Original } from "./Original/Original";
-import { Exists as RequestExists } from "./Request/Exists";
-import { NotExists as RequestNotExists } from "./Request/NotExists";
-import { VideoSource } from "./VideoSource/VideoSource";
+import { AlreadyRegistered } from "./AlreadyRegistered";
+import { Original } from "./OriginalSource";
+import { RequestExists } from "./RequestExists";
+import { NotExists as RequestNotExists } from "./RequestNotExists";
 
 export const SourceChecker: React.FC<{
   sourceId: string;
@@ -43,7 +43,7 @@ export const SourceChecker: React.FC<{
       {data && (
         <>
           {data.findNicovideoVideoSource && (
-            <VideoSource fragment={data.findNicovideoVideoSource} />
+            <AlreadyRegistered fragment={data.findNicovideoVideoSource} />
           )}
           {!data.findNicovideoVideoSource && (
             <>
@@ -56,37 +56,37 @@ export const SourceChecker: React.FC<{
                 </>
               )}
               {data.fetchNicovideo.source && (
-                <div className={clsx(["flex", "flex-col", "gap-y-4"])}>
-                  <div
-                    className={clsx(
-                      ["flex", "flex-col", "gap-y-2"],
-                      ["border"],
-                      ["rounded-md"],
-                      ["px-4", "py-2"]
-                    )}
-                  >
-                    <div className={clsx(["text-sm"])}>
-                      ニコニコ動画からの情報
-                    </div>
-                    <Original fragment={data.fetchNicovideo.source} />
-                  </div>
-                  <div
-                    className={clsx(
-                      ["flex", "flex-col", "gap-y-2"],
-                      ["border"],
-                      ["rounded-md"],
-                      ["px-4", "py-2"]
-                    )}
-                  >
-                    <div className={clsx(["text-sm"])}>リクエスト</div>
-                    {data.findNicovideoRegistrationRequest && (
-                      <RequestExists
-                        fragment={data.findNicovideoRegistrationRequest}
+                <div className={clsx(["flex", "flex-col", "gap-y-2"])}>
+                  <div className={clsx(["flex", "gap-x-2"])}>
+                    <div
+                      className={clsx(
+                        ["flex-grow"],
+                        ["border", "rounded-md"],
+                        ["px-4", "py-4"]
+                      )}
+                    >
+                      <Original
+                        fragment={data.fetchNicovideo.source}
+                        className={clsx()}
                       />
-                    )}
-                    {!data.findNicovideoRegistrationRequest && (
-                      <RequestNotExists />
-                    )}
+                    </div>
+                    <div
+                      className={clsx(
+                        ["flex-shrink-0"],
+                        ["w-96"],
+                        ["border", "rounded-md"],
+                        ["px-4", "py-4"]
+                      )}
+                    >
+                      {data.findNicovideoRegistrationRequest && (
+                        <RequestExists
+                          fragment={data.findNicovideoRegistrationRequest}
+                        />
+                      )}
+                      {!data.findNicovideoRegistrationRequest && (
+                        <RequestNotExists />
+                      )}
+                    </div>
                   </div>
                   <div
                     className={clsx(
