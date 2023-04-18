@@ -1,6 +1,8 @@
 "use client";
 import clsx from "clsx";
+import { useQuery } from "urql";
 
+import { NicovideoRegisterPageLink } from "~/app/editor/nicovideo/Link";
 import { LinkUser as UserLink } from "~/app/users/[name]/Link";
 import { CoolImage } from "~/components/common/CoolImage";
 import { UserIcon } from "~/components/UserIcon";
@@ -13,6 +15,7 @@ const Fragment = graphql(`
     ...Link_NicovideoRegistrationRequest
     title
     thumbnailUrl
+    sourceId
     requestedBy {
       ...Link_User
       ...UserIcon
@@ -29,6 +32,18 @@ export default function RequestsGridItem({
   fragment: FragmentType<typeof Fragment>;
 }) {
   const fragment = useFragment(Fragment, props.fragment);
+  const [{ data }] = useQuery({
+    query: graphql(`
+      query AllNicovideoRequestsPage_RequestsGridItemQuery {
+        whoami {
+          id
+          isEditor: hasRole(role: EDITOR)
+        }
+      }
+    `),
+    requestPolicy: "cache-first",
+  });
+
   return (
     <div
       className={clsx(
@@ -63,8 +78,10 @@ export default function RequestsGridItem({
         >
           {fragment.title}
         </NicovideoRegistrationRequestLink>
-        <div className={clsx(["flex"])}>
-          <div className={clsx(["flex", "gap-x-1", "items-center"])}>
+        <div className={clsx(["flex", "items-center"])}>
+          <div
+            className={clsx(["flex-grow"], ["flex", "gap-x-1", "items-center"])}
+          >
             <UserLink fragment={fragment.requestedBy}>
               <UserIcon size={24} fragment={fragment.requestedBy} />
             </UserLink>
@@ -75,6 +92,19 @@ export default function RequestsGridItem({
               {fragment.requestedBy.displayName}
             </UserLink>
           </div>
+          {data?.whoami?.isEditor && (
+            <NicovideoRegisterPageLink
+              sourceId={fragment.sourceId}
+              className={clsx(
+                ["text-xs"],
+                ["px-1", "py-0.5"],
+                ["border", "border-sky-500", "rounded"],
+                ["bg-sky-100", "hover:bg-sky-200", "text-sky-700"]
+              )}
+            >
+              登録する
+            </NicovideoRegisterPageLink>
+          )}
         </div>
       </div>
     </div>
