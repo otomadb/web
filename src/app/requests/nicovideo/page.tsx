@@ -37,39 +37,34 @@ export default async function Page({
   if (isErr(result)) throw new Error("Fetched failed");
 
   return (
-    <main
-      className={clsx(
-        ["@container"],
-        ["container"],
-        ["mx-auto"],
-        ["flex", "flex-col"]
-      )}
-    >
-      <div className={clsx(["flex"], ["w-full", "max-w-screen-lg", "mx-auto"])}>
-        <header className={clsx(["flex-grow"], ["py-4"])}>
-          <div>
-            <h1 className={clsx(["text-xl", "text-slate-900"])}>
-              最近リクエストされたニコニコ動画の動画
-            </h1>
-          </div>
-          <p className={clsx(["text-sm", "text-slate-500"])}>
-            {result.data.findNicovideoRegistrationRequests.totalCount}
-            件申請されています
-          </p>
-        </header>
-        <nav
-          className={clsx(
-            ["flex-shrink-0"],
-            ["sticky", "top-[64px]", "z-1"],
-            ["px-4", "py-4"]
-          )}
-        >
-          <Pagination
-            fragment={result.data.findNicovideoRegistrationRequests}
-          />
-        </nav>
+    <main className={clsx(["@container"], ["w-full"], ["flex", "flex-col"])}>
+      <div
+        className={clsx(
+          ["sticky", "top-[64px]", "z-1"],
+          ["w-full"],
+          ["backdrop-blur-lg"]
+        )}
+      >
+        <div className={clsx(["flex"], ["max-w-screen-lg", "mx-auto"])}>
+          <header className={clsx(["flex-grow"], ["py-4"])}>
+            <div>
+              <h1 className={clsx(["text-2xl", "text-slate-900"])}>
+                最近リクエストされたニコニコ動画の動画
+              </h1>
+            </div>
+            <p className={clsx(["text-sm", "text-slate-500"])}>
+              {result.data.findNicovideoRegistrationRequests.totalCount}
+              件申請されています
+            </p>
+          </header>
+          <nav className={clsx(["flex-shrink-0"], ["flex", "items-center"])}>
+            <Pagination
+              fragment={result.data.findNicovideoRegistrationRequests}
+            />
+          </nav>
+        </div>
       </div>
-      <section className={clsx(["flex-grow"])}>
+      <section className={clsx(["container", "mx-auto"])}>
         <RequestsGrid
           fragment={result.data.findNicovideoRegistrationRequests}
         />
