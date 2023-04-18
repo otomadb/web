@@ -245,6 +245,18 @@ input FindTagsInputOrder {
   updatedAt: SortOrder
 }
 
+input FindUncheckedNicovideoRegistrationRequestsInput {
+  after: String
+  before: String
+  first: Int
+  last: Int
+  orderBy: FindUncheckedNicovideoRegistrationRequestsOrderBy! = {createdAt: DESC}
+}
+
+input FindUncheckedNicovideoRegistrationRequestsOrderBy {
+  createdAt: SortOrder
+}
+
 input FindUserInput {
   name: String
 }
@@ -756,6 +768,7 @@ type Query {
   findSemitags(after: String, before: String, checked: Boolean, first: Int, last: Int, orderBy: FindSemitagsOrderBy! = {name: ASC}): SemitagConnection!
   findTag(input: FindTagInput!): Tag
   findTags(input: FindTagsInput!): TagConnection!
+  findUncheckedNicovideoRegistrationRequests(input: FindUncheckedNicovideoRegistrationRequestsInput!): NicovideoRegistrationRequestConnection!
   findUser(input: FindUserInput!): User
   findVideo(input: FindVideoInput!): Video
   findVideos(after: String, before: String, first: Int, last: Int, orderBy: FindVideosOrderBy! = {createdAt: DESC}): VideoConnection!
@@ -774,9 +787,6 @@ type Query {
   searchTags(input: SearchTagInput!): SearchTagsPayload!
   searchVideos(input: SearchVideoInput!): SearchVideosPayload!
   whoami: User!
-  findUncheckedNicovideoRegistrationRequests(
-    input: FindUncheckedNicovideoRegistrationRequestsInput!
-  ): NicovideoRegistrationRequestConnection!
 }
 
 input RegisterCategoryTagInput {
@@ -1787,19 +1797,5 @@ type YoutubeVideoSourceEventEdge {
 }
 
 input YoutubeVideoSourceEventsOrderBy {
-  createdAt: SortOrder
-}
-
-input FindUncheckedNicovideoRegistrationRequestsInput {
-  first: Int
-  after: String
-
-  last: Int
-  before: String
-
-  orderBy: FindUncheckedNicovideoRegistrationRequestsOrderBy! = { createdAt: DESC }
-}
-
-input FindUncheckedNicovideoRegistrationRequestsOrderBy {
   createdAt: SortOrder
 }
