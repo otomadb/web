@@ -16,7 +16,7 @@ export const Fragment = graphql(`
     }
   }
 `);
-export default function ProfileIndicator({
+export default function UserIndicator({
   className,
   style,
   ...props
