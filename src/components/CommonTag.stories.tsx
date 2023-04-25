@@ -3,7 +3,6 @@ import { Meta, StoryObj } from "@storybook/react";
 
 import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
-import { aTag } from "~/gql/mock";
 
 import { CommonTag, Fragment } from "./CommonTag";
 
@@ -18,12 +17,12 @@ export default meta;
 export const Character: StoryObj<typeof meta> = {
   args: {
     fragment: makeFragmentData(
-      aTag({
+      {
         id: "t1",
         name: "Tag 1",
         type: TagType.Character,
-        explicitParent: aTag({ id: "t2", name: "Tag 2" }),
-      }),
+        explicitParent: { id: "t2", name: "Tag 2" },
+      },
       Fragment
     ),
   },
@@ -32,12 +31,12 @@ export const Character: StoryObj<typeof meta> = {
 export const Class: StoryObj<typeof meta> = {
   args: {
     fragment: makeFragmentData(
-      aTag({
+      {
         id: "t1",
         name: "Tag 1",
         type: TagType.Class,
-        explicitParent: aTag({ id: "t2", name: "Tag 2" }),
-      }),
+        explicitParent: { id: "t2", name: "Tag 2" },
+      },
       Fragment
     ),
   },
@@ -46,12 +45,12 @@ export const Class: StoryObj<typeof meta> = {
 export const Copyright: StoryObj<typeof meta> = {
   args: {
     fragment: makeFragmentData(
-      aTag({
+      {
         id: "t1",
         name: "Tag 1",
         type: TagType.Copyright,
-        explicitParent: aTag({ id: "t2", name: "Tag 2" }),
-      }),
+        explicitParent: { id: "t2", name: "Tag 2" },
+      },
       Fragment
     ),
   },
@@ -60,12 +59,12 @@ export const Copyright: StoryObj<typeof meta> = {
 export const Event: StoryObj<typeof meta> = {
   args: {
     fragment: makeFragmentData(
-      aTag({
+      {
         id: "t1",
         name: "Tag 1",
         type: TagType.Event,
-        explicitParent: aTag({ id: "t2", name: "Tag 2" }),
-      }),
+        explicitParent: { id: "t2", name: "Tag 2" },
+      },
       Fragment
     ),
   },
@@ -74,12 +73,12 @@ export const Event: StoryObj<typeof meta> = {
 export const Music: StoryObj<typeof meta> = {
   args: {
     fragment: makeFragmentData(
-      aTag({
+      {
         id: "t1",
         name: "Tag 1",
         type: TagType.Music,
-        explicitParent: aTag({ id: "t2", name: "Tag 2" }),
-      }),
+        explicitParent: { id: "t2", name: "Tag 2" },
+      },
       Fragment
     ),
   },
@@ -88,12 +87,12 @@ export const Music: StoryObj<typeof meta> = {
 export const Phrase: StoryObj<typeof meta> = {
   args: {
     fragment: makeFragmentData(
-      aTag({
+      {
         id: "t1",
         name: "Tag 1",
         type: TagType.Phrase,
-        explicitParent: aTag({ id: "t2", name: "Tag 2" }),
-      }),
+        explicitParent: { id: "t2", name: "Tag 2" },
+      },
       Fragment
     ),
   },
@@ -102,12 +101,12 @@ export const Phrase: StoryObj<typeof meta> = {
 export const Series: StoryObj<typeof meta> = {
   args: {
     fragment: makeFragmentData(
-      aTag({
+      {
         id: "t1",
         name: "Tag 1",
         type: TagType.Series,
-        explicitParent: aTag({ id: "t2", name: "Tag 2" }),
-      }),
+        explicitParent: { id: "t2", name: "Tag 2" },
+      },
       Fragment
     ),
   },
@@ -116,12 +115,12 @@ export const Series: StoryObj<typeof meta> = {
 export const Style: StoryObj<typeof meta> = {
   args: {
     fragment: makeFragmentData(
-      aTag({
+      {
         id: "t1",
         name: "Tag 1",
         type: TagType.Style,
-        explicitParent: aTag({ id: "t2", name: "Tag 2" }),
-      }),
+        explicitParent: { id: "t2", name: "Tag 2" },
+      },
       Fragment
     ),
   },
@@ -130,12 +129,12 @@ export const Style: StoryObj<typeof meta> = {
 export const Subtle: StoryObj<typeof meta> = {
   args: {
     fragment: makeFragmentData(
-      aTag({
+      {
         id: "t1",
         name: "Tag 1",
         type: TagType.Subtle,
-        explicitParent: aTag({ id: "t2", name: "Tag 2" }),
-      }),
+        explicitParent: { id: "t2", name: "Tag 2" },
+      },
       Fragment
     ),
   },
@@ -144,12 +143,12 @@ export const Subtle: StoryObj<typeof meta> = {
 export const Tactics: StoryObj<typeof meta> = {
   args: {
     fragment: makeFragmentData(
-      aTag({
+      {
         id: "t1",
         name: "Tag 1",
         type: TagType.Tactics,
-        explicitParent: aTag({ id: "t2", name: "Tag 2" }),
-      }),
+        explicitParent: { id: "t2", name: "Tag 2" },
+      },
       Fragment
     ),
   },
@@ -158,12 +157,12 @@ export const Tactics: StoryObj<typeof meta> = {
 export const Unknown: StoryObj<typeof meta> = {
   args: {
     fragment: makeFragmentData(
-      aTag({
+      {
         id: "t1",
         name: "Tag 1",
         type: TagType.Unknown,
-        explicitParent: aTag({ id: "t2", name: "Tag 2" }),
-      }),
+        explicitParent: { id: "t2", name: "Tag 2" },
+      },
       Fragment
     ),
   },

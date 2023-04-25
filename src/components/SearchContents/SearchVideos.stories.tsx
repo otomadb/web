@@ -1,12 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 
 import { makeFragmentData } from "~/gql";
-import {
-  aSearchVideosPayload,
-  aVideo,
-  aVideoSearchItemByTitle,
-  aVideoTitle,
-} from "~/gql/mock";
 
 import { Fragment, SearchVideos } from "./SearchVideos";
 
@@ -19,30 +13,30 @@ export default meta;
 export const Primary: StoryObj<typeof meta> = {
   args: {
     fragment: makeFragmentData(
-      aSearchVideosPayload({
+      {
         items: [
-          aVideoSearchItemByTitle({
-            title: aVideoTitle({
+          {
+            title: {
               title: "title1",
-            }),
-            video: aVideo({
+            },
+            video: {
               id: "v1",
               title: "Title 1",
               thumbnailUrl: "/960x540.jpg",
-            }),
-          }),
-          aVideoSearchItemByTitle({
-            title: aVideoTitle({
+            },
+          },
+          {
+            title: {
               title: "title2",
-            }),
-            video: aVideo({
+            },
+            video: {
               id: "v2",
               title: "Title 2",
               thumbnailUrl: "/960x540.jpg",
-            }),
-          }),
+            },
+          },
         ],
-      }),
+      },
       Fragment
     ),
   },
@@ -51,9 +45,9 @@ export const Primary: StoryObj<typeof meta> = {
 export const NoMatch: StoryObj<typeof meta> = {
   args: {
     fragment: makeFragmentData(
-      aSearchVideosPayload({
+      {
         items: [],
-      }),
+      },
       Fragment
     ),
   },

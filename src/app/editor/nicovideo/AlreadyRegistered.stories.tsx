@@ -1,7 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 
 import { makeFragmentData } from "~/gql";
-import { aVideo } from "~/gql/mock";
 
 import { AlreadyRegistered, Fragment } from "./AlreadyRegistered";
 
@@ -16,10 +15,10 @@ export const Primary: StoryObj<typeof meta> = {
     fragment: makeFragmentData(
       {
         sourceId: "sm2057168",
-        video: aVideo({
+        video: {
           title: "M.C.ドナルドはダンスに夢中なのか？最終鬼畜道化師ドナルド・Ｍ",
           thumbnailUrl: "/960x540.jpg",
-        }),
+        },
       },
       Fragment
     ),
