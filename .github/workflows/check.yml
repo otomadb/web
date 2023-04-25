@@ -46,7 +46,7 @@ jobs:
           report-json: ".eslint-report.json"
 
   prettier:
-    name: Lint
+    name: Prettier
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
