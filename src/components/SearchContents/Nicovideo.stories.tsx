@@ -6,15 +6,6 @@ import {
 } from "urql";
 
 import { SearchContents_SearchNicovideoDocument } from "~/gql/graphql";
-import {
-  aNicovideoRegistrationRequest,
-  aNicovideoVideoSource,
-  aTag,
-  aUser,
-  aVideo,
-  aVideoTag,
-  aVideoTagConnection,
-} from "~/gql/mock";
 
 import { SearchNicovideo } from "./Nicovideo";
 
@@ -47,46 +38,46 @@ export const Loading: StoryObj<typeof meta> = {
   },
 };
 
-const mockFindNicovideoVideoSource = aNicovideoVideoSource({
+const mockFindNicovideoVideoSource = {
   sourceId: "sm2057168",
-  video: aVideo({
+  video: {
     id: "v1",
     title: "Title 1",
     thumbnailUrl: "/960x540.jpg",
-    taggings: aVideoTagConnection({
+    taggings: {
       nodes: [
-        aVideoTag({
+        {
           id: "tagging1",
-          tag: aTag({
+          tag: {
             id: "t1",
             name: "Tag 1",
             explicitParent: null,
-          }),
-        }),
-        aVideoTag({
+          },
+        },
+        {
           id: "tagging2",
-          tag: aTag({
+          tag: {
             id: "t2",
             name: "Tag 2",
             explicitParent: null,
-          }),
-        }),
+          },
+        },
       ],
-    }),
-  }),
-});
+    },
+  },
+};
 
-const mockFindNicovideoRegistrationRequest = aNicovideoRegistrationRequest({
+const mockFindNicovideoRegistrationRequest = {
   sourceId: "sm2057168",
   title: "Title 1",
   thumbnailUrl: "/960x540.jpg",
-  requestedBy: aUser({
+  requestedBy: {
     id: "u1",
     name: "user1",
     displayName: "User 1",
     icon: "/512x512.png",
-  }),
-});
+  },
+};
 
 export const SourceExists_And_RequestsExists: StoryObj<typeof meta> = {
   name: "動画ソースとリクエストの両方がある",

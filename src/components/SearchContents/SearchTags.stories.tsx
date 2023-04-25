@@ -1,12 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 
 import { makeFragmentData } from "~/gql";
-import {
-  aSearchTagsPayload,
-  aTag,
-  aTagName,
-  aTagSearchItemByName,
-} from "~/gql/mock";
 
 import { Fragment, SearchTags } from "./SearchTags";
 
@@ -19,28 +13,28 @@ export default meta;
 export const Primary: StoryObj<typeof meta> = {
   args: {
     fragment: makeFragmentData(
-      aSearchTagsPayload({
+      {
         items: [
-          aTagSearchItemByName({
-            name: aTagName({
+          {
+            name: {
               name: "name1",
-            }),
-            tag: aTag({
+            },
+            tag: {
               id: "t1",
               name: "name1",
-            }),
-          }),
-          aTagSearchItemByName({
-            name: aTagName({
+            },
+          },
+          {
+            name: {
               name: "name2",
-            }),
-            tag: aTag({
+            },
+            tag: {
               id: "t2",
               name: "Name 2",
-            }),
-          }),
+            },
+          },
         ],
-      }),
+      },
       Fragment
     ),
   },
@@ -49,9 +43,9 @@ export const Primary: StoryObj<typeof meta> = {
 export const NoMatch: StoryObj<typeof meta> = {
   args: {
     fragment: makeFragmentData(
-      aSearchTagsPayload({
+      {
         items: [],
-      }),
+      },
       Fragment
     ),
   },

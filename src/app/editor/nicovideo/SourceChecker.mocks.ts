@@ -4,117 +4,109 @@ import {
   RegisterNicovideoPage_SourceCheckerDocument,
   TagType,
 } from "~/gql/graphql";
-import {
-  aNicovideoOriginalSource,
-  aNicovideoOriginalSourceTagSearchTagsPayload,
-  aNicovideoVideoSource,
-  aTag,
-  aTagSearchItemByName,
-  aVideo,
-} from "~/gql/mock";
 
-const source = aNicovideoOriginalSource({
+const source = {
   sourceId: "sm2057168",
   title: "M.C.ドナルドはダンスに夢中なのか？最終鬼畜道化師ドナルド・Ｍ",
   thumbnailUrl: "/960x540.jpg",
   tags: [
     {
       name: "ドナルド",
-      searchTags: aNicovideoOriginalSourceTagSearchTagsPayload({
+      searchTags: {
         items: [
-          aTagSearchItemByName({
-            tag: aTag({
+          {
+            tag: {
               id: "t1",
               name: "ドナルド・マクドナルド",
               explicitParent: null,
               type: TagType.Character,
-            }),
-          }),
+            },
+          },
         ],
-      }),
+      },
     },
     {
       name: "U.N.オーエンは彼女なのか？",
-      searchTags: aNicovideoOriginalSourceTagSearchTagsPayload({
+      searchTags: {
         items: [
-          aTagSearchItemByName({
-            tag: aTag({
+          {
+            tag: {
               id: "t2",
               name: "U.N.オーエンは彼女なのか？",
               explicitParent: null,
               type: TagType.Music,
-            }),
-          }),
+            },
+          },
         ],
-      }),
+      },
     },
     {
       name: "最終鬼畜妹フランドール・Ｓ",
-      searchTags: aNicovideoOriginalSourceTagSearchTagsPayload({
+      searchTags: {
         items: [
-          aTagSearchItemByName({
-            tag: aTag({
+          {
+            tag: {
               id: "t3",
               name: "最終鬼畜妹フランドール・Ｓ",
               explicitParent: null,
               type: TagType.Music,
-            }),
-          }),
+            },
+          },
         ],
-      }),
+      },
     },
     {
       name: "エンターテイメント",
-      searchTags: aNicovideoOriginalSourceTagSearchTagsPayload({
+      searchTags: {
         items: [],
-      }),
+      },
     },
     {
       name: "東方乱々流",
-      searchTags: aNicovideoOriginalSourceTagSearchTagsPayload({
+      searchTags: {
         items: [
-          aTagSearchItemByName({
-            tag: aTag({
+          {
+            tag: {
               id: "t1",
               name: "ドナルド・マクドナルド",
               explicitParent: null,
               type: TagType.Character,
-            }),
-          }),
-          aTagSearchItemByName({
-            tag: aTag({
+            },
+          },
+          {
+            tag: {
               id: "t4",
               name: "東方Project",
               explicitParent: null,
               type: TagType.Unknown,
-            }),
-          }),
+            },
+          },
         ],
-      }),
+      },
     },
     {
       name: "音mad",
-      searchTags: aNicovideoOriginalSourceTagSearchTagsPayload({
+      searchTags: {
         items: [],
-      }),
+      },
     },
     {
       name: "ドナルド教",
-      searchTags: aNicovideoOriginalSourceTagSearchTagsPayload({
+      searchTags: {
         items: [
-          aTagSearchItemByName({
-            tag: aTag({
+          {
+            tag: {
               id: "t1",
               name: "ドナルド・マクドナルド",
               explicitParent: null,
               type: TagType.Character,
-            }),
-          }),
+            },
+          },
         ],
-      }),
+      },
     },
   ],
-});
+};
 
 export const mockSourceAlreadyExists = graphql.query(
   RegisterNicovideoPage_SourceCheckerDocument,
@@ -122,14 +114,14 @@ export const mockSourceAlreadyExists = graphql.query(
     res(
       ctx.data({
         fetchNicovideo: { source },
-        findNicovideoVideoSource: aNicovideoVideoSource({
+        findNicovideoVideoSource: {
           sourceId: "sm2057168",
-          video: aVideo({
+          video: {
             title:
               "M.C.ドナルドはダンスに夢中なのか？最終鬼畜道化師ドナルド・Ｍ",
             thumbnailUrl: "/960x540.jpg",
-          }),
-        }),
+          },
+        },
       })
     )
 );

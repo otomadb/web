@@ -6,13 +6,6 @@ import {
 
 import { makeFragmentData } from "~/gql";
 import { MylistShareRange } from "~/gql/graphql";
-import {
-  aMylist,
-  aMylistRegistration,
-  aMylistRegistrationConnection,
-  aUser,
-  aVideo,
-} from "~/gql/mock";
 
 import { Fragment, MylistListItem } from "./MylistsListItem";
 
@@ -48,21 +41,21 @@ export const NoRegistration: StoryObj<typeof MylistListItem> = {
   name: "マイリストへの登録がない",
   args: {
     fragment: makeFragmentData(
-      aMylist({
+      {
         id: "mylist_1",
         title: "マイリスト1",
         isLikeList: false,
         range: MylistShareRange.Public,
-        holder: aUser({
+        holder: {
           id: "user:1",
           name: "sno2wman",
           displayName: "SnO2WMaN",
           icon: "/512x512.png",
-        }),
-        registrations: aMylistRegistrationConnection({
+        },
+        registrations: {
           nodes: [],
-        }),
-      }),
+        },
+      },
       Fragment
     ),
   },
@@ -72,57 +65,57 @@ export const NotLikeList: StoryObj<typeof meta> = {
   name: "いいねリストでない",
   args: {
     fragment: makeFragmentData(
-      aMylist({
+      {
         id: "mylist_1",
         title: "マイリスト1",
         isLikeList: false,
         range: MylistShareRange.Public,
-        holder: aUser({
+        holder: {
           id: "user:1",
           name: "sno2wman",
           displayName: "SnO2WMaN",
           icon: "/512x512.png",
-        }),
-        registrations: aMylistRegistrationConnection({
+        },
+        registrations: {
           nodes: [
-            aMylistRegistration({
+            {
               id: "mylistRegistration:1",
-              video: aVideo({
+              video: {
                 id: "video_1",
                 thumbnailUrl: "/960x540.jpg",
-              }),
-            }),
-            aMylistRegistration({
+              },
+            },
+            {
               id: "mylistRegistration:2",
-              video: aVideo({
+              video: {
                 id: "video_2",
                 thumbnailUrl: "/960x540.jpg",
-              }),
-            }),
-            aMylistRegistration({
+              },
+            },
+            {
               id: "mylistRegistration:3",
-              video: aVideo({
+              video: {
                 id: "video_3",
                 thumbnailUrl: "/960x540.jpg",
-              }),
-            }),
-            aMylistRegistration({
+              },
+            },
+            {
               id: "mylistRegistration:4",
-              video: aVideo({
+              video: {
                 id: "video_4",
                 thumbnailUrl: "/960x540.jpg",
-              }),
-            }),
-            aMylistRegistration({
+              },
+            },
+            {
               id: "mylistRegistration:5",
-              video: aVideo({
+              video: {
                 id: "video_5",
                 thumbnailUrl: "/960x540.jpg",
-              }),
-            }),
+              },
+            },
           ],
-        }),
-      }),
+        },
+      },
       Fragment
     ),
   },
@@ -132,57 +125,57 @@ export const OthersLikeList: StoryObj<typeof meta> = {
   name: "自分以外のいいねリスト",
   args: {
     fragment: makeFragmentData(
-      aMylist({
+      {
         id: "mylist_1",
         title: "likes list for user:1",
         isLikeList: true,
         range: MylistShareRange.Public,
-        holder: aUser({
+        holder: {
           id: "user:1",
           name: "sno2wman",
           displayName: "SnO2WMaN",
           icon: "/512x512.png",
-        }),
-        registrations: aMylistRegistrationConnection({
+        },
+        registrations: {
           nodes: [
-            aMylistRegistration({
+            {
               id: "mylistRegistration:1",
-              video: aVideo({
+              video: {
                 id: "video_1",
                 thumbnailUrl: "/960x540.jpg",
-              }),
-            }),
-            aMylistRegistration({
+              },
+            },
+            {
               id: "mylistRegistration:2",
-              video: aVideo({
+              video: {
                 id: "video_2",
                 thumbnailUrl: "/960x540.jpg",
-              }),
-            }),
-            aMylistRegistration({
+              },
+            },
+            {
               id: "mylistRegistration:3",
-              video: aVideo({
+              video: {
                 id: "video_3",
                 thumbnailUrl: "/960x540.jpg",
-              }),
-            }),
-            aMylistRegistration({
+              },
+            },
+            {
               id: "mylistRegistration:4",
-              video: aVideo({
+              video: {
                 id: "video_4",
                 thumbnailUrl: "/960x540.jpg",
-              }),
-            }),
-            aMylistRegistration({
+              },
+            },
+            {
               id: "mylistRegistration:5",
-              video: aVideo({
+              video: {
                 id: "video_5",
                 thumbnailUrl: "/960x540.jpg",
-              }),
-            }),
+              },
+            },
           ],
-        }),
-      }),
+        },
+      },
       Fragment
     ),
   },
@@ -192,57 +185,57 @@ export const MyLikeList: StoryObj<typeof MylistListItem> = {
   name: "自分のいいねリスト",
   args: {
     fragment: makeFragmentData(
-      aMylist({
+      {
         id: "mylist_1",
         title: "likes list for user:1",
         isLikeList: true,
         range: MylistShareRange.Private,
-        holder: aUser({
+        holder: {
           id: "user:1",
           name: "sno2wman",
           displayName: "SnO2WMaN",
           icon: "/512x512.png",
-        }),
-        registrations: aMylistRegistrationConnection({
+        },
+        registrations: {
           nodes: [
-            aMylistRegistration({
+            {
               id: "mylistRegistration:1",
-              video: aVideo({
+              video: {
                 id: "video_1",
                 thumbnailUrl: "/960x540.jpg",
-              }),
-            }),
-            aMylistRegistration({
+              },
+            },
+            {
               id: "mylistRegistration:2",
-              video: aVideo({
+              video: {
                 id: "video_2",
                 thumbnailUrl: "/960x540.jpg",
-              }),
-            }),
-            aMylistRegistration({
+              },
+            },
+            {
               id: "mylistRegistration:3",
-              video: aVideo({
+              video: {
                 id: "video_3",
                 thumbnailUrl: "/960x540.jpg",
-              }),
-            }),
-            aMylistRegistration({
+              },
+            },
+            {
               id: "mylistRegistration:4",
-              video: aVideo({
+              video: {
                 id: "video_4",
                 thumbnailUrl: "/960x540.jpg",
-              }),
-            }),
-            aMylistRegistration({
+              },
+            },
+            {
               id: "mylistRegistration:5",
-              video: aVideo({
+              video: {
                 id: "video_5",
                 thumbnailUrl: "/960x540.jpg",
-              }),
-            }),
+              },
+            },
           ],
-        }),
-      }),
+        },
+      },
       Fragment
     ),
   },

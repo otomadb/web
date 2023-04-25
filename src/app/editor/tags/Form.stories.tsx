@@ -17,7 +17,6 @@ import {
   Semitag,
   TagType,
 } from "~/gql/graphql";
-import { aSemitag, aTag } from "~/gql/mock";
 
 import { RegisterTagForm } from "./Form";
 import { Fragment as SucceededToastFragment } from "./SucceededToast";
@@ -75,25 +74,25 @@ const meta = {
             ctx.data({
               searchTags: {
                 items: [
-                  aTagSearchItemByName({
-                    name: aTagName({
+                  ({
+                    name: ({
                       name: "後藤ひとり",
                     }),
-                    tag: aTag({
+                    tag: ({
                       id: "t2",
                       name: "後藤ひとり",
                       type: TagType.Character,
-                      explicitParent: aTag({
+                      explicitParent: ({
                         id: "t3",
                         name: "ぼっち・ざ・ろっく！",
                       }),
                     }),
                   }),
-                  aTagSearchItemByName({
-                    name: aTagName({
+                  ({
+                    name: ({
                       name: "ぼっち・ざ・ろっく！",
                     }),
-                    tag: aTag({
+                    tag: ({
                       id: "t3",
                       name: "ぼっち・ざ・ろっく！",
                       type: TagType.Copyright,
@@ -113,26 +112,26 @@ const meta = {
               case "t2":
                 return res(
                   ctx.data({
-                    getTag: aTag({
+                    getTag: {
                       id: "t2",
                       name: "後藤ひとり",
                       type: TagType.Character,
-                      explicitParent: aTag({
+                      explicitParent: {
                         id: "t3",
                         name: "ぼっち・ざ・ろっく！",
-                      }),
-                    }),
+                      },
+                    },
                   })
                 );
               case "t3":
                 return res(
                   ctx.data({
-                    getTag: aTag({
+                    getTag: {
                       id: "t3",
                       name: "ぼっち・ざ・ろっく！",
                       type: TagType.Copyright,
                       explicitParent: null,
-                    }),
+                    },
                   })
                 );
             }
@@ -145,26 +144,26 @@ const meta = {
               case "t2":
                 return res(
                   ctx.data({
-                    getTag: aTag({
+                    getTag: {
                       id: "t2",
                       name: "後藤ひとり",
                       type: TagType.Character,
-                      explicitParent: aTag({
+                      explicitParent: {
                         id: "t3",
                         name: "ぼっち・ざ・ろっく！",
-                      }),
-                    }),
+                      },
+                    },
                   })
                 );
               case "t3":
                 return res(
                   ctx.data({
-                    getTag: aTag({
+                    getTag: {
                       id: "t3",
                       name: "ぼっち・ざ・ろっく！",
                       type: TagType.Copyright,
                       explicitParent: null,
-                    }),
+                    },
                   })
                 );
             }
@@ -179,15 +178,15 @@ const meta = {
                   nodes: (() => {
                     const rtn: Semitag[] = [];
                     // if (!req.variables.except.includes("st1"))
-                    rtn.push(aSemitag({ id: "st1", name: "Semitag 1" }));
+                    rtn.push({ id: "st1", name: "Semitag 1" });
                     // if (!req.variables.except.includes("st2"))
-                    rtn.push(aSemitag({ id: "st2", name: "Semitag 2" }));
+                    rtn.push({ id: "st2", name: "Semitag 2" });
                     // if (!req.variables.except.includes("st3"))
-                    rtn.push(aSemitag({ id: "st3", name: "Semitag 3" }));
+                    rtn.push({ id: "st3", name: "Semitag 3" });
                     // if (!req.variables.except.includes("st4"))
-                    rtn.push(aSemitag({ id: "st4", name: "Semitag 4" }));
+                    rtn.push({ id: "st4", name: "Semitag 4" });
                     // if (!req.variables.except.includes("st5"))
-                    rtn.push(aSemitag({ id: "st5", name: "Semitag 5" }));
+                    rtn.push({ id: "st5", name: "Semitag 5" });
                     return rtn;
                   })(),
                 },
@@ -201,31 +200,31 @@ const meta = {
               case "st1":
                 return res(
                   ctx.data({
-                    getSemitag: aSemitag({ id: "st1", name: "Semitag 1" }),
+                    getSemitag: { id: "st1", name: "Semitag 1" },
                   })
                 );
               case "st2":
                 return res(
                   ctx.data({
-                    getSemitag: aSemitag({ id: "st2", name: "Semitag 2" }),
+                    getSemitag: { id: "st2", name: "Semitag 2" },
                   })
                 );
               case "st3":
                 return res(
                   ctx.data({
-                    getSemitag: aSemitag({ id: "st3", name: "Semitag 3" }),
+                    getSemitag: { id: "st3", name: "Semitag 3" },
                   })
                 );
               case "st4":
                 return res(
                   ctx.data({
-                    getSemitag: aSemitag({ id: "st4", name: "Semitag 4" }),
+                    getSemitag: { id: "st4", name: "Semitag 4" },
                   })
                 );
               case "st5":
                 return res(
                   ctx.data({
-                    getSemitag: aSemitag({ id: "st5", name: "Semitag" }),
+                    getSemitag: { id: "st5", name: "Semitag" },
                   })
                 );
               default:

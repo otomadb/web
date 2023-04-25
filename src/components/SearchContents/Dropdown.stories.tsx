@@ -9,20 +9,6 @@ import {
   SearchContents_SearchNicovideoDocument,
   SearchContentsDocument,
 } from "~/gql/graphql";
-import {
-  aNicovideoRegistrationRequest,
-  aNicovideoVideoSource,
-  aSearchTagsPayload,
-  aSearchVideosPayload,
-  aTag,
-  aTagName,
-  aTagSearchItemByName,
-  aVideo,
-  aVideoSearchItemByTitle,
-  aVideoTag,
-  aVideoTagConnection,
-  aVideoTitle,
-} from "~/gql/mock";
 
 import { Dropdown } from "./Dropdown";
 
@@ -44,50 +30,50 @@ const meta = {
         graphql.query(SearchContentsDocument, (req, res, ctx) =>
           res(
             ctx.data({
-              searchTags: aSearchTagsPayload({
+              searchTags: {
                 items: [
-                  aTagSearchItemByName({
-                    name: aTagName({
+                  {
+                    name: {
                       name: "name1",
-                    }),
-                    tag: aTag({
+                    },
+                    tag: {
                       id: "t1",
-                    }),
-                  }),
-                  aTagSearchItemByName({
-                    name: aTagName({
+                    },
+                  },
+                  {
+                    name: {
                       name: "name2",
-                    }),
-                    tag: aTag({
+                    },
+                    tag: {
                       id: "t2",
-                    }),
-                  }),
+                    },
+                  },
                 ],
-              }),
-              searchVideos: aSearchVideosPayload({
+              },
+              searchVideos: {
                 items: [
-                  aVideoSearchItemByTitle({
-                    title: aVideoTitle({
+                  {
+                    title: {
                       title: "title1",
-                    }),
-                    video: aVideo({
+                    },
+                    video: {
                       id: "v1",
                       title: "Title 1",
                       thumbnailUrl: "/960x540.jpg",
-                    }),
-                  }),
-                  aVideoSearchItemByTitle({
-                    title: aVideoTitle({
+                    },
+                  },
+                  {
+                    title: {
                       title: "title2",
-                    }),
-                    video: aVideo({
+                    },
+                    video: {
                       id: "v2",
                       title: "Title 2",
                       thumbnailUrl: "/960x540.jpg",
-                    }),
-                  }),
+                    },
+                  },
                 ],
-              }),
+              },
             })
           )
         ),
@@ -95,29 +81,29 @@ const meta = {
           res(
             ctx.data({
               findNicovideoVideoSource: aNicovideoVideoSource({
-                video: aVideo({
+                video: {
                   id: "v1",
                   title: "Title 1",
                   thumbnailUrl: "/960x540.jpg",
-                  taggings: aVideoTagConnection({
+                  taggings: TagConnection({
                     nodes: [
-                      aVideoTag({
-                        tag: aTag({
+                      Tag({
+                        tag: {
                           id: "t1",
                           name: "Tag 1",
                           explicitParent: null,
-                        }),
+                        },
                       }),
-                      aVideoTag({
-                        tag: aTag({
+                      Tag({
+                        tag: {
                           id: "t2",
                           name: "Tag 2",
                           explicitParent: null,
-                        }),
+                        },
                       }),
                     ],
                   }),
-                }),
+                },
               }),
               findNicovideoRegistrationRequest: aNicovideoRegistrationRequest(
                 {}
