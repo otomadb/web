@@ -1,15 +1,11 @@
-// eslint-disable-next-line eslint-comments/disable-enable-pair
-/* eslint-disable jsx-a11y/alt-text */
-
 import { ImageResponse } from "@vercel/og";
-import { NextApiHandler } from "next";
+import { NextApiRequest } from "next";
 
 import { graphql } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
 import { isErr } from "~/utils/Result";
-export const config = { runtime: "experimental-edge" };
 
-const img: NextApiHandler = async (req) => {
+export default async function og(req: NextApiRequest) {
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const { searchParams } = new URL(req.url!);
   const serial = searchParams.get("serial");
@@ -95,5 +91,4 @@ const img: NextApiHandler = async (req) => {
       height: 540,
     }
   );
-};
-export default img;
+}
