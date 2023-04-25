@@ -11,7 +11,7 @@ import RecentVideos from "./RecentVideos.server";
 
 export default function Page() {
   return (
-    <main className={clsx(["flex", "flex-col", "items-center"])}>
+    <main className={clsx(["@container"], ["w-full"], ["flex", "flex-col"])}>
       <header
         className={clsx(
           ["max-w-screen-lg", "mx-auto"],
