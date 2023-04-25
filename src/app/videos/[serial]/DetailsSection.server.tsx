@@ -5,7 +5,7 @@ import { FragmentType, graphql, useFragment } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
 import { isErr } from "~/utils/Result";
 
-import { LikeButton } from "./LikeButton";
+import LikeButton from "./LikeButton";
 import { LinkVideo } from "./Link";
 import { Image as VideoImage } from "./VideoPreview";
 
