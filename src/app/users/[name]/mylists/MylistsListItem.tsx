@@ -2,8 +2,8 @@ import clsx from "clsx";
 import React, { ReactNode } from "react";
 
 import { MylistTitle } from "~/components/MylistTitle";
-import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { UserIcon } from "~/components/UserIcon";
+import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const Fragment = graphql(`

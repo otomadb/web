@@ -7,10 +7,10 @@ import { useQuery } from "urql";
 
 import { LinkTag } from "~/app/tags/[serial]/Link";
 import { LinkVideo } from "~/app/videos/[serial]/Link";
+import { CommonTag } from "~/components/CommonTag";
 import { InfiniteVideosGrid } from "~/components/InfiniteVideoGrid";
 import { FetcherContainer } from "~/components/InfiniteVideoGrid";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
-import { CommonTag } from "~/components/CommonTag";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const VideoGrid: React.FC<{ initAfter?: string }> = ({ initAfter }) => (
