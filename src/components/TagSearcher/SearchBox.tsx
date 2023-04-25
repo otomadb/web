@@ -4,7 +4,7 @@ import "client-only";
 import { ArrowPathIcon, MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 
-import { TextInput } from "~/components/common/TextInput";
+import { TextInput } from "~/components/TextInput";
 
 export const SearchBox: React.FC<{
   className?: string;

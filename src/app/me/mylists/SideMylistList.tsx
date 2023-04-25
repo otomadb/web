@@ -4,8 +4,8 @@ import clsx from "clsx";
 import React from "react";
 import { useQuery } from "urql";
 
-import { MylistTitle } from "~/components/common/MylistTitle";
-import { YouMylistLinkSwitch } from "~/components/common/YouMylistLinkSwitch";
+import { MylistTitle } from "~/components/MylistTitle";
+import { YouMylistLinkSwitch } from "~/components/YouMylistLinkSwitch";
 import { graphql } from "~/gql";
 
 /*

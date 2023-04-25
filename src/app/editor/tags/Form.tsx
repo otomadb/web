@@ -7,7 +7,7 @@ import clsx from "clsx";
 import React from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 
-import { BlueButton } from "~/components/common/Button";
+import { BlueButton } from "~/components/Button";
 import { useToaster } from "~/components/Toaster";
 
 import { ExplicitParentTag } from "./ExplicitParentTag";

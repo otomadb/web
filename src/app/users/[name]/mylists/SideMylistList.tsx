@@ -1,8 +1,8 @@
 import clsx from "clsx";
 import React from "react";
 
-import { MylistLinkSwitch } from "~/components/common/MylistLinkSwitch";
-import { MylistTitle } from "~/components/common/MylistTitle";
+import { MylistLinkSwitch } from "~/components/MylistLinkSwitch";
+import { MylistTitle } from "~/components/MylistTitle";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const Fragment = graphql(`

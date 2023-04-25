@@ -8,7 +8,7 @@ import React, { useId } from "react";
 import { FieldArrayWithId } from "react-hook-form";
 import { useQuery } from "urql";
 
-import { RedButton } from "~/components/common/Button";
+import { RedButton } from "~/components/Button";
 import { CommonTag } from "~/components/CommonTag";
 import { TagSearcher } from "~/components/TagSearcher";
 import { graphql } from "~/gql";

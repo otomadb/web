@@ -1,9 +1,8 @@
 import React, { ComponentProps } from "react";
 
 import { UserLikesPageLink } from "~/app/users/[name]/likes/Link";
+import { UserMylistPageLink } from "~/app/users/[name]/mylists/[id]/Link";
 import { FragmentType, graphql, useFragment } from "~/gql";
-
-import { UserMylistPageLink } from "../../app/users/[name]/mylists/[id]/Link";
 
 const Fragment = graphql(`
   fragment MylistLinkSwitch on Mylist {

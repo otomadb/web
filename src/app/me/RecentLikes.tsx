@@ -4,7 +4,7 @@ import clsx from "clsx";
 import React from "react";
 import { useQuery } from "urql";
 
-import { VideoThumbnail } from "~/components/common/VideoThumbnail";
+import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { graphql } from "~/gql";
 
 import { LinkVideo } from "../videos/[serial]/Link";

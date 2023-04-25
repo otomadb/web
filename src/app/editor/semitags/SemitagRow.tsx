@@ -4,7 +4,7 @@ import clsx from "clsx";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-import { BlueButton } from "~/components/common/Button";
+import { BlueButton } from "~/components/Button";
 import { CommonTag } from "~/components/CommonTag";
 import { useToaster } from "~/components/Toaster";
 import { FragmentType, graphql, useFragment } from "~/gql";

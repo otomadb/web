@@ -3,7 +3,7 @@ import React from "react";
 
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-export const TitleFragment = graphql(`
+export const Fragment = graphql(`
   fragment MylistTitle on Mylist {
     title
     isLikeList
@@ -14,12 +14,9 @@ export const TitleFragment = graphql(`
 `);
 export const MylistTitle: React.FC<{
   className?: string;
-  fragment: FragmentType<typeof TitleFragment>;
+  fragment: FragmentType<typeof Fragment>;
 }> = ({ className, ...props }) => {
-  const { isLikeList, title, holder } = useFragment(
-    TitleFragment,
-    props.fragment
-  );
+  const { isLikeList, title, holder } = useFragment(Fragment, props.fragment);
   return (
     <span className={clsx(className)}>
       {!isLikeList && title}

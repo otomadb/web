@@ -5,9 +5,8 @@ import clsx from "clsx";
 import React from "react";
 
 import { LinkVideo } from "~/app/videos/[serial]/Link";
+import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { FragmentType, graphql, useFragment } from "~/gql";
-
-import { VideoThumbnail } from "../VideoThumbnail";
 
 const ItemFragment = graphql(`
   fragment SearchContents_SearchVideosItem on VideoSearchItemByTitle {

@@ -9,7 +9,7 @@ import * as z from "zod";
 import { RegisterContext } from "~/app/editor/nicovideo/RegisterContext";
 import { TagButton } from "~/app/editor/nicovideo/TagButton";
 import { LinkVideo } from "~/app/videos/[serial]/Link";
-import { BlueButton } from "~/components/common/Button";
+import { BlueButton } from "~/components/Button";
 import OptionalSemitagTagSearcher from "~/components/OptionalSemitagTagSearcher";
 import { useToaster } from "~/components/Toaster";
 
