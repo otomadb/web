@@ -3,11 +3,11 @@ import { Meta, StoryObj } from "@storybook/react";
 import { Fragment as UserIconFragment } from "~/components/UserIcon";
 import { makeFragmentData } from "~/gql";
 
-import ProfileIndicator, { Fragment } from "./ProfileIndicator";
+import UserIndicator, { Fragment } from "./UserIndicator";
 
 const meta = {
-  component: ProfileIndicator,
-} as Meta<typeof ProfileIndicator>;
+  component: UserIndicator,
+} as Meta<typeof UserIndicator>;
 export default meta;
 
 export const SomeNotifications: StoryObj<typeof meta> = {

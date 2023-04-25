@@ -13,7 +13,7 @@ import { graphql } from "~/gql";
 import { Logo } from "../Logo";
 import LoginButton from "./LoginButton";
 import ProfileAccordion from "./ProfileAccordion";
-import ProfileIndicator from "./ProfileIndicator";
+import UserIndicator from "./UserIndicator";
 
 export const Query = graphql(`
   query GlobalNav {
@@ -35,6 +35,7 @@ export default function GlobalNav({
   const [{ data, fetching }, update] = useQuery({
     query: Query,
     pause: !isAuthenticated,
+    requestPolicy: "cache-first",
   });
 
   return (
@@ -81,7 +82,10 @@ export default function GlobalNav({
             ["flex", "justify-center"]
           )}
         >
-          {fetching && (
+          {(!isAuthenticated || (!fetching && !data)) && (
+            <LoginButton update={update} />
+          )}
+          {!data && fetching && (
             <div
               className={clsx(
                 ["rounded-sm"],
@@ -92,10 +96,9 @@ export default function GlobalNav({
               )}
             />
           )}
-          {!fetching && !data && <LoginButton update={update} />}
           {data && (
             <div className={clsx(["group"], ["relative"])}>
-              <ProfileIndicator fragment={data} className={clsx(["z-1"])} />
+              <UserIndicator fragment={data} className={clsx(["z-1"])} />
               <div
                 className={clsx(
                   ["z-0"],

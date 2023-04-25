@@ -1,4 +1,4 @@
-import "../app/globals.css";
+import "../src/app/globals.css";
 
 import { initialize as initializeMSW, mswDecorator } from "msw-storybook-addon";
 
