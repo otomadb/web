@@ -1,3 +1,4 @@
+const plugin = require("tailwindcss/plugin");
 const colors = require("tailwindcss/colors");
 
 /** @type {import('tailwindcss').Config} */
@@ -30,5 +31,17 @@ module.exports = {
       },
     },
   },
-  plugins: [require("@tailwindcss/container-queries")],
+  plugins: [
+    require("@tailwindcss/container-queries"),
+    plugin(({ addUtilities }) => {
+      addUtilities({
+        ".animation-paused": {
+          "animation-play-state": "paused",
+        },
+        ".animation-running": {
+          "animation-play-state": "running",
+        },
+      });
+    }),
+  ],
 };
