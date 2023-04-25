@@ -588,6 +588,9 @@ type NicovideoOriginalSource {
   """動画の長さ"""
   duration: Int!
 
+  """ニコニコ動画の埋め込み用URL"""
+  embedUrl: String!
+
   """タグのうち、「音MAD」など範囲が広すぎるので除外するもの"""
   excludeTags: [String!]!
   registeredAt: DateTime!
@@ -595,6 +598,9 @@ type NicovideoOriginalSource {
   tags: [NicovideoOriginalSourceTag!]!
   thumbnailUrl: String!
   title: String!
+
+  """ニコニコ動画の動画URL"""
+  url: String!
 }
 
 type NicovideoOriginalSourceTag {
