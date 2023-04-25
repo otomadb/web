@@ -6,7 +6,7 @@ import React, { useCallback } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as z from "zod";
 
-import { BlueButton } from "~/components/common/Button";
+import { BlueButton } from "~/components/Button";
 
 import { useSetSourceId } from "./SourceIdProvider";
 

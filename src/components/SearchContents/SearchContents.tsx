@@ -5,7 +5,7 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import React, { useState } from "react";
 
-import { DelayedInput } from "~/components/common/DelayedInput";
+import { DelayedInput } from "~/components/DelayedInput";
 
 import { Dropdown } from "./Dropdown";
 

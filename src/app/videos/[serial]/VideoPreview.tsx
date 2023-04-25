@@ -5,7 +5,7 @@ import "client-only";
 import clsx from "clsx";
 import React, { useState } from "react";
 
-import { VideoThumbnail } from "~/components/common/VideoThumbnail";
+import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const Fragment = graphql(`

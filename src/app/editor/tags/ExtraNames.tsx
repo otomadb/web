@@ -12,7 +12,7 @@ import {
   UseFormRegisterReturn,
 } from "react-hook-form";
 
-import { BlueButton, RedButton } from "~/components/common/Button";
+import { BlueButton, RedButton } from "~/components/Button";
 
 import { FormSchema } from "./FormSchema";
 

@@ -3,9 +3,9 @@
 import { CheckCircleIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 
-import { DateTime } from "~/components/common/DateTime";
-import { VideoThumbnail } from "~/components/common/VideoThumbnail";
+import { DateTime } from "~/components/DateTime";
 import { UserIcon } from "~/components/UserIcon";
+import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 import { LinkNicovideoRegistrationRequest } from "../requests/nicovideo/[sourceId]/Link";

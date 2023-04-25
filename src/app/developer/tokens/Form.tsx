@@ -4,7 +4,7 @@ import clsx from "clsx";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-import { BlueButton } from "~/components/common/Button";
+import { BlueButton } from "~/components/Button";
 
 import useGenerateAccessToken from "./useGenerateAccessToken";
 

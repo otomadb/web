@@ -3,10 +3,9 @@ import clsx from "clsx";
 import React from "react";
 
 import { LinkVideo } from "~/app/videos/[serial]/Link";
+import { CommonTag } from "~/components/CommonTag";
+import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { FragmentType, graphql, useFragment } from "~/gql";
-
-import { CommonTag } from "../../CommonTag";
-import { VideoThumbnail } from "../VideoThumbnail";
 
 const Fragment = graphql(`
   fragment SearchContents_NicovideoVideoSourceExists on NicovideoVideoSource {

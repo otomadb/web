@@ -1,8 +1,7 @@
 import clsx from "clsx";
 
+import { TagType } from "~/components/TagType";
 import { FragmentType, graphql, useFragment } from "~/gql";
-
-import { TagType } from "../../../components/common/TagType";
 
 export const Fragment = graphql(`
   fragment TagPageLayout_TypeDetail on Tag {

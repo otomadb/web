@@ -7,7 +7,7 @@ import { useQuery } from "urql";
 
 import { TopLink } from "~/app/Link";
 import { MyPageLink } from "~/app/me/Link";
-import { SearchContents } from "~/components/common/SearchContents/SearchContents";
+import { SearchContents } from "~/components/SearchContents/SearchContents";
 import { graphql } from "~/gql";
 
 import { Logo } from "../Logo";

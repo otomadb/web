@@ -6,9 +6,9 @@ import React from "react";
 import { useQuery } from "urql";
 
 import { LinkVideo } from "~/app/videos/[serial]/Link";
-import { InfiniteVideosGrid } from "~/components/common/InfiniteVideoGrid";
-import { FetcherContainer } from "~/components/common/InfiniteVideoGrid";
-import { VideoThumbnail } from "~/components/common/VideoThumbnail";
+import { InfiniteVideosGrid } from "~/components/InfiniteVideoGrid";
+import { FetcherContainer } from "~/components/InfiniteVideoGrid";
+import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const VideoGrid: React.FC<{ tagId: string; initAfter?: string }> = ({

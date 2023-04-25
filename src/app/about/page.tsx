@@ -4,8 +4,8 @@ import clsx from "clsx";
 import { Suspense } from "react";
 
 import { AllVideosPageLink } from "~/app/videos/Link";
-import { SearchContents } from "~/components/common/SearchContents/SearchContents";
 import { Logo } from "~/components/Logo";
+import { SearchContents } from "~/components/SearchContents/SearchContents";
 
 import RecentVideos from "./RecentVideos.server";
 

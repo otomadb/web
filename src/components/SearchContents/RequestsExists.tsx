@@ -3,10 +3,9 @@ import clsx from "clsx";
 import React from "react";
 
 import { LinkNicovideoRegistrationRequest } from "~/app/requests/nicovideo/[sourceId]/Link";
+import { CoolImage } from "~/components/CoolImage";
+import { UserIcon } from "~/components/UserIcon";
 import { FragmentType, graphql, useFragment } from "~/gql";
-
-import { UserIcon } from "../../UserIcon";
-import { CoolImage } from "../CoolImage";
 
 const Fragment = graphql(`
   fragment SearchContents_NicovideoRequestExists on NicovideoRegistrationRequest {

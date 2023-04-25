@@ -1,6 +1,6 @@
 import clsx from "clsx";
 
-import { MylistLinkSwitch } from "~/components/common/MylistLinkSwitch";
+import { MylistLinkSwitch } from "~/components/MylistLinkSwitch";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 import { MylistListItem } from "./MylistsListItem";

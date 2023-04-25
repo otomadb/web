@@ -3,8 +3,8 @@ import React from "react";
 
 import { LinkTag } from "~/app/tags/[serial]/Link";
 import { LinkVideo } from "~/app/videos/[serial]/Link";
-import { VideoThumbnail } from "~/components/common/VideoThumbnail";
 import { CommonTag } from "~/components/CommonTag";
+import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const Fragment = graphql(`
