@@ -245,6 +245,11 @@ input FindTagsInputOrder {
   updatedAt: SortOrder
 }
 
+type FindUncheckedNicovideoRegistrationRequestsByOffsetPayload {
+  nodes: [NicovideoRegistrationRequest!]!
+  totalCount: Int!
+}
+
 input FindUncheckedNicovideoRegistrationRequestsInput {
   after: String
   before: String
@@ -775,10 +780,12 @@ type Query {
   findTag(input: FindTagInput!): Tag
   findTags(input: FindTagsInput!): TagConnection!
   findUncheckedNicovideoRegistrationRequests(input: FindUncheckedNicovideoRegistrationRequestsInput!): NicovideoRegistrationRequestConnection!
+  findUncheckedNicovideoRegistrationRequestsByOffset(input: findUncheckedNicovideoRegistrationRequestsByOffsetInput!): FindUncheckedNicovideoRegistrationRequestsByOffsetPayload!
   findUser(input: FindUserInput!): User
   findVideo(input: FindVideoInput!): Video
   findVideos(after: String, before: String, first: Int, last: Int, orderBy: FindVideosOrderBy! = {createdAt: DESC}): VideoConnection!
   findYoutubeVideoSource(sourceId: String): YoutubeVideoSource
+  getAllCategoryTag: [Tag!]!
   getMylist(id: ID!): Mylist!
   getMylistGroup(id: ID!): MylistGroup!
   getNicovideoRegistrationRequest(id: ID!): NicovideoRegistrationRequest!
@@ -1262,7 +1269,7 @@ type Tag implements Node {
   events(input: TagEventsInput!): TagEventsConnection!
   explicitParent: Tag
   id: ID!
-  isCategoryTag: Boolean!
+  isCategoryTag: Boolean! @deprecated
   meaningless: Boolean! @deprecated
   name: String!
   names(primary: Boolean): [TagName!]!
@@ -1429,6 +1436,9 @@ input TagTaggedVideosOrderBy {
 }
 
 enum TagType {
+  """カテゴリー"""
+  CATEGORY
+
   """キャラクター"""
   CHARACTER
 
@@ -1803,5 +1813,15 @@ type YoutubeVideoSourceEventEdge {
 }
 
 input YoutubeVideoSourceEventsOrderBy {
+  createdAt: SortOrder
+}
+
+input findUncheckedNicovideoRegistrationRequestsByOffsetInput {
+  orderBy: findUncheckedNicovideoRegistrationRequestsByOffsetOrderBy! = {createdAt: DESC}
+  skip: Int! = 0
+  take: Int! = 20
+}
+
+input findUncheckedNicovideoRegistrationRequestsByOffsetOrderBy {
   createdAt: SortOrder
 }
