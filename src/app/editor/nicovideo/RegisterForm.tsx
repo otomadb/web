@@ -8,7 +8,7 @@ import React from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import * as z from "zod";
 
-import { BlueButton } from "~/components/common/Button";
+import { BlueButton } from "~/components/Button";
 import { TagSearcher } from "~/components/TagSearcher";
 import { useToaster } from "~/components/Toaster";
 

@@ -3,7 +3,7 @@ import React from "react";
 
 import { LinkTag } from "~/app/tags/[serial]/Link";
 import { LinkVideo } from "~/app/videos/[serial]/Link";
-import { VideoThumbnail } from "~/components/common/VideoThumbnail";
+import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { CommonTag } from "~/components/CommonTag";
 import { FragmentType, graphql, useFragment } from "~/gql";
 

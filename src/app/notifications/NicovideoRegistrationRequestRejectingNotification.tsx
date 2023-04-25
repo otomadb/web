@@ -3,7 +3,7 @@
 import { NoSymbolIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 
-import { DateTime } from "~/components/common/DateTime";
+import { DateTime } from "~/components/DateTime";
 import { UserIcon } from "~/components/UserIcon";
 import { FragmentType, graphql, useFragment } from "~/gql";
 

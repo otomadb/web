@@ -1,6 +1,6 @@
 import { ResultOf } from "@graphql-typed-document-node/core";
 
-import { Fragment as VideoThumbnailFragment } from "~/components/common/VideoThumbnail";
+import { Fragment as VideoThumbnailFragment } from "~/components/VideoThumbnail";
 import { Fragment as UserIconFragment } from "~/components/UserIcon";
 import { makeFragmentData } from "~/gql";
 

@@ -3,7 +3,7 @@ import React from "react";
 
 import { LinkNicovideoRegistrationRequest as NicovideoRegistrationRequestPageLink } from "~/app/requests/nicovideo/[sourceId]/Link";
 import { LinkUser as UserPageLink } from "~/app/users/[name]/Link";
-import { CoolImage } from "~/components/common/CoolImage";
+import { CoolImage } from "~/components/CoolImage";
 import { UserIcon } from "~/components/UserIcon";
 import { FragmentType, graphql, useFragment } from "~/gql";
 

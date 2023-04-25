@@ -1,7 +1,7 @@
 import clsx from "clsx";
 
 import { LinkTag } from "~/app/tags/[serial]/Link";
-import { TagType } from "~/components/common/TagType";
+import { TagType } from "~/components/TagType";
 import { CommonTag } from "~/components/CommonTag";
 import { FragmentType, graphql, useFragment } from "~/gql";
 import { fetchGql } from "~/gql/fetch";

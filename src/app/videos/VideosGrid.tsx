@@ -7,9 +7,9 @@ import { useQuery } from "urql";
 
 import { LinkTag } from "~/app/tags/[serial]/Link";
 import { LinkVideo } from "~/app/videos/[serial]/Link";
-import { InfiniteVideosGrid } from "~/components/common/InfiniteVideoGrid";
-import { FetcherContainer } from "~/components/common/InfiniteVideoGrid";
-import { VideoThumbnail } from "~/components/common/VideoThumbnail";
+import { InfiniteVideosGrid } from "~/components/InfiniteVideoGrid";
+import { FetcherContainer } from "~/components/InfiniteVideoGrid";
+import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { CommonTag } from "~/components/CommonTag";
 import { FragmentType, graphql, useFragment } from "~/gql";
 

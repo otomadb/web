@@ -5,9 +5,8 @@ import clsx from "clsx";
 import React from "react";
 
 import { LinkTag } from "~/app/tags/[serial]/Link";
+import { TagType } from "~/components/TagType";
 import { FragmentType, graphql, useFragment } from "~/gql";
-
-import { TagType } from "../TagType";
 
 export const Fragment = graphql(`
   fragment SearchContents_SearchTags on SearchTagsPayload {

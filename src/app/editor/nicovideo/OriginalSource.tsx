@@ -4,7 +4,7 @@ import "client-only";
 import clsx from "clsx";
 import React, { useEffect } from "react";
 
-import { CoolImage } from "~/components/common/CoolImage";
+import { CoolImage } from "~/components/CoolImage";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 import {

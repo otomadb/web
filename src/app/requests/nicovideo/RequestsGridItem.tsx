@@ -4,7 +4,7 @@ import { useQuery } from "urql";
 
 import { NicovideoRegisterPageLink } from "~/app/editor/nicovideo/Link";
 import { LinkUser as UserLink } from "~/app/users/[name]/Link";
-import { CoolImage } from "~/components/common/CoolImage";
+import { CoolImage } from "~/components/CoolImage";
 import { UserIcon } from "~/components/UserIcon";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
