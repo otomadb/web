@@ -786,6 +786,9 @@ type Query {
   findVideos(after: String, before: String, first: Int, last: Int, orderBy: FindVideosOrderBy! = {createdAt: DESC}): VideoConnection!
   findYoutubeVideoSource(sourceId: String): YoutubeVideoSource
   getAllCategoryTag: [Tag!]!
+
+  """全てのTypeCategoryTagを取得する"""
+  getAllTypeCategoryTag: [TypeCategoryTag!]!
   getMylist(id: ID!): Mylist!
   getMylistGroup(id: ID!): MylistGroup!
   getNicovideoRegistrationRequest(id: ID!): NicovideoRegistrationRequest!
@@ -1471,6 +1474,41 @@ enum TagType {
 
   """タイプを算出できなかった場合"""
   UNKNOWN
+}
+
+"""タグにタイプを与えることが出来るカテゴリータグ"""
+type TypeCategoryTag {
+  tag: Tag!
+  type: TypeCategoryTagType!
+}
+
+enum TypeCategoryTagType {
+  """キャラクター"""
+  CHARACTER
+
+  """動画の内容に依らない情報，分類など"""
+  CLASS
+
+  """作品名"""
+  COPYRIGHT
+
+  """合作などのイベント"""
+  EVENT
+
+  """曲"""
+  MUSIC
+
+  """特徴的なセリフなど"""
+  PHRASE
+
+  """シリーズ"""
+  SERIES
+
+  """動画そのものに対しての性質，作風など"""
+  STYLE
+
+  """戦法"""
+  TACTICS
 }
 
 input UndoLikeVideoInput {
