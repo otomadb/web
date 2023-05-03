@@ -21,7 +21,8 @@ export const TextInput = forwardRef<
         className,
         ["bg-slate-50"],
         ["outline-teal-300"],
-        [["text-slate-900"], ["placeholder:text-slate-300"]]
+        [["text-slate-900"], ["placeholder:text-slate-300"]],
+        ["border", "border-gray-300", "rounded"]
       )}
     />
   );

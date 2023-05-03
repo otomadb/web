@@ -29,6 +29,7 @@
     "@auth0/auth0-react": "^2.0.1",
     "@emotion/css": "^11.10.5",
     "@heroicons/react": "^2.0.13",
+    "@hookform/error-message": "^2.0.1",
     "@hookform/resolvers": "3.1.0",
     "@next/mdx": "^13.3.0",
     "@urql/exchange-auth": "^2.1.0",
