@@ -10,6 +10,7 @@ import { TagRegisterPageLink } from "~/app/editor/tags/Link";
 import { YouLikesPageLink } from "~/app/me/likes/Link";
 import MyMylistsPageLink from "~/app/me/mylists/Link";
 import NicovideoRequestPageLink from "~/app/request/nicovideo/Link";
+import { SettingPageLink } from "~/app/settings/Link";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 import AboutMe from "./AboutMe";
@@ -92,6 +93,9 @@ export default function ProfileAccordion({
         </MenuItem>
         <MenuItem Wrapper={(props) => <NicovideoRequestPageLink {...props} />}>
           動画のリクエスト
+        </MenuItem>
+        <MenuItem Wrapper={(props) => <SettingPageLink {...props} />}>
+          設定
         </MenuItem>
       </div>
       {whoami.isEditor && (
