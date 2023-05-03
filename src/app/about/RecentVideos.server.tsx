@@ -1,12 +1,15 @@
 import clsx from "clsx";
+import { GraphQLClient } from "graphql-request";
 
 import { CommonVideoContainer } from "~/components/CommonVideoContainer";
 import { graphql } from "~/gql";
-import { fetchGql } from "~/gql/fetch";
-import { isErr } from "~/utils/Result";
 
 export default async function RecentVideoListSC() {
-  const result = await fetchGql(
+  const result = await new GraphQLClient(process.env.GRAPHQL_API_ENDPOINT, {
+    next: {
+      revalidate: 60,
+    },
+  }).request(
     graphql(`
       query AboutPage_RecentVideosSection_VideosList {
         findVideos(first: 6) {
@@ -16,13 +19,10 @@ export default async function RecentVideoListSC() {
           }
         }
       }
-    `),
-    {}
+    `)
   );
 
-  if (isErr(result)) throw new Error("Failed to fetch recent videos");
-
-  const { findVideos } = result.data;
+  const { findVideos } = result;
 
   return (
     <div className={clsx(["@container"])}>
