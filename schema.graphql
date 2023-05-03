@@ -809,16 +809,7 @@ input RegisterCategoryTagInput {
   primaryName: String!
 }
 
-enum RegisterCategoryTagOtherErrorMessage {
-  INTERNAL_SERVER_ERROR
-}
-
-"""その他のエラー"""
-type RegisterCategoryTagOtherErrorsFallback {
-  message: RegisterCategoryTagOtherErrorMessage!
-}
-
-union RegisterCategoryTagResultUnion = RegisterCategoryTagOtherErrorsFallback | RegisterCategoryTagSucceededPayload
+union RegisterCategoryTagResultUnion = RegisterCategoryTagSucceededPayload
 
 type RegisterCategoryTagSucceededPayload {
   tag: Tag!
@@ -844,16 +835,7 @@ type RegisterCategoryTagTypingNotCategoryTagError {
   tag: Tag!
 }
 
-enum RegisterCategoryTagTypingOtherErrorMessage {
-  INTERNAL_SERVER_ERROR
-}
-
-"""その他のエラー"""
-type RegisterCategoryTagTypingOtherErrorsFallback {
-  message: RegisterCategoryTagTypingOtherErrorMessage!
-}
-
-union RegisterCategoryTagTypingResultUnion = MutationInvalidTagIdError | MutationTagNotFoundError | RegisterCategoryTagTypingAlreadyTypeExistsError | RegisterCategoryTagTypingAlreadyTypedError | RegisterCategoryTagTypingNotCategoryTagError | RegisterCategoryTagTypingOtherErrorsFallback | RegisterCategoryTagTypingSucceededPayload | RegisterCategoryTagTypingUnsupportedTagType
+union RegisterCategoryTagTypingResultUnion = MutationInvalidTagIdError | MutationTagNotFoundError | RegisterCategoryTagTypingAlreadyTypeExistsError | RegisterCategoryTagTypingAlreadyTypedError | RegisterCategoryTagTypingNotCategoryTagError | RegisterCategoryTagTypingSucceededPayload | RegisterCategoryTagTypingUnsupportedTagType
 
 type RegisterCategoryTagTypingSucceededPayload {
   tag: Tag!
