@@ -16,20 +16,18 @@ export default function Page() {
         className={clsx(
           ["max-w-screen-lg", "mx-auto"],
           ["w-full"],
-          ["flex", "gap-x-4"],
+          ["flex", "gap-x-8", "items-start"],
           ["py-24"]
         )}
       >
         <div
           className={clsx(
             ["flex-shrink-0"],
-            ["w-[384px]"],
+            ["w-[256px]"],
             ["flex", "flex-col"]
           )}
         >
-          <div>
-            <Logo className={clsx(["text-5xl"], ["text-slate-700"])} />
-          </div>
+          <Logo className={clsx(["fill-slate-900"])} />
         </div>
         <div className={clsx(["flex-grow"], ["flex", "flex-col"])}>
           <h1 className={clsx(["text-3xl", "font-semibold"])}>

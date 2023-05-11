@@ -65,12 +65,16 @@ export default function GlobalNav({
             ["flex-shrink-0"]
           )}
         >
-          <TopLink className={clsx({ hidden: isAuthenticated })}>
-            <Logo className={clsx(["text-2xl"], ["text-slate-50"])} />
-          </TopLink>
-          <MyPageLink className={clsx({ hidden: !isAuthenticated })}>
-            <Logo className={clsx(["text-2xl"], ["text-slate-50"])} />
-          </MyPageLink>
+          <div className={clsx(["w-[96px]"])}>
+            <TopLink className={clsx("w-full", { hidden: isAuthenticated })}>
+              <Logo className={clsx(["fill-white"])} />
+            </TopLink>
+            <MyPageLink
+              className={clsx("w-full", { hidden: !isAuthenticated })}
+            >
+              <Logo className={clsx(["fill-white"])} />
+            </MyPageLink>
+          </div>
         </div>
         <div className={clsx(["flex-grow"])}>
           <SearchContents className={clsx(["mx-auto"])} />

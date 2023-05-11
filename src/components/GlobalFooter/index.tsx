@@ -33,7 +33,9 @@ export const GlobalFooter: React.FC = () => {
           )}
         >
           <TopLink>
-            <Logo className={clsx(["text-3xl"], ["text-slate-100"])} />
+            <div className={clsx(["w-[160px]"])}>
+              <Logo className={clsx(["fill-slate-100"])} />
+            </div>
           </TopLink>
           <p className={clsx(["mt-1"], ["text-slate-300"], ["text-xs"])}>
             音MADの体系的なデータベースを作る
