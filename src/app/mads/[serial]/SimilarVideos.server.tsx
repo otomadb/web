@@ -1,15 +1,14 @@
 import "server-only";
 
+import { useSuspenseQuery_experimental } from "@apollo/client";
 import clsx from "clsx";
 
 import { graphql } from "~/gql";
-import { fetchGql } from "~/gql/fetch";
-import { isErr } from "~/utils/Result";
 
 import { SimilarVideo } from "./SimilarVideo";
 
-export async function SimilarVideos({ videoId }: { videoId: string }) {
-  const result = await fetchGql(
+export function SimilarVideos({ videoId }: { videoId: string }) {
+  const result = useSuspenseQuery_experimental(
     graphql(`
       query VideoPage_SimilarVideosSection($id: ID!) {
         getVideo(id: $id) {
@@ -22,13 +21,8 @@ export async function SimilarVideos({ videoId }: { videoId: string }) {
         }
       }
     `),
-    { id: videoId },
-    { next: { revalidate: 0 } }
+    { variables: { id: videoId } }
   );
-
-  if (isErr(result)) {
-    throw new Error("Failed to fetch similar videos");
-  }
 
   const { getVideo } = result.data;
 

@@ -1,5 +1,3 @@
-import "server-only";
-
 import clsx from "clsx";
 import { Suspense } from "react";
 

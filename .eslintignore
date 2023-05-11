@@ -8,6 +8,7 @@ package-lock.json
 schema.graphql
 src/gql/*
 !src/gql/fetch.ts
+!src/gql/client.ts
 
 # public
 **/public/mockServiceWorker.js

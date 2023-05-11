@@ -1,17 +1,33 @@
+"use client";
+
+import { useSuspenseQuery } from "@apollo/experimental-nextjs-app-support/ssr";
 import clsx from "clsx";
 import { Suspense } from "react";
 
 import { AllVideosPageLink } from "~/app/mads/Link";
+import { graphql } from "~/gql";
 
 import { AllNicovideoRequestsPageLink } from "../requests/nicovideo/Link";
 import { YouLikesPageLink } from "./likes/Link";
 import RecentLikes from "./RecentLikes";
-import RecentVideos from "./RecentVideos.server";
 import RequestsListSC from "./RequestsList.server";
 
 export const dynamic = "force-dynamic";
 
 export default async function Page() {
+  const result = useSuspenseQuery(
+    graphql(`
+      query MyTopPage {
+        findVideos(first: 18) {
+          nodes {
+            id
+            ...CommonVideoContainer
+          }
+        }
+      }
+    `)
+  );
+
   return (
     <main
       className={clsx(
@@ -60,8 +76,7 @@ export default async function Page() {
           </div>
           <div className={clsx(["mt-2"])}>
             <Suspense fallback={<p>動画を取得中です</p>}>
-              {/* @ts-expect-error RSC*/}
-              <RecentVideos />
+              {/* <RecentVideos /> */}
             </Suspense>
           </div>
         </section>
