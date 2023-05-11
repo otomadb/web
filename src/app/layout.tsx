@@ -8,6 +8,7 @@ import { GlobalFooter } from "~/components/GlobalFooter";
 import GlobalNav from "~/components/GlovalNav";
 import { ToastProvider } from "~/components/Toaster";
 
+import { ApolloWrapper } from "./ApolloProvider";
 import Auth0Provider from "./Auth0Provider";
 import UrqlProvider from "./UrqlProvider";
 
@@ -41,27 +42,29 @@ export default function RootLayout({
       <Auth0Provider>
         <UrqlProvider>
           <body className={clsx(["relative"], ["bg-gray-50"])}>
-            <ToastProvider selector="#toast">
-              <GlobalNav
-                className={clsx(
-                  ["sticky"],
-                  ["top-0"],
-                  ["w-full"],
-                  ["h-[64px]"],
-                  ["z-1"]
-                )}
-              />
-              <div
-                className={clsx(
-                  ["flex", "content-stretch", "flex-wrap"],
-                  ["min-h-[calc(100vh-64px)]"]
-                )}
-              >
-                {children}
-              </div>
-              <GlobalFooter />
-              <div id="toast" />
-            </ToastProvider>
+            <ApolloWrapper>
+              <ToastProvider selector="#toast">
+                <GlobalNav
+                  className={clsx(
+                    ["sticky"],
+                    ["top-0"],
+                    ["w-full"],
+                    ["h-[64px]"],
+                    ["z-1"]
+                  )}
+                />
+                <div
+                  className={clsx(
+                    ["flex", "content-stretch", "flex-wrap"],
+                    ["min-h-[calc(100vh-64px)]"]
+                  )}
+                >
+                  {children}
+                </div>
+                <GlobalFooter />
+                <div id="toast" />
+              </ToastProvider>
+            </ApolloWrapper>
           </body>
         </UrqlProvider>
       </Auth0Provider>

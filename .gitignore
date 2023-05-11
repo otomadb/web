@@ -29,6 +29,11 @@ node_modules/
 # Next.js
 .next
 
+# codegen
+src/gql/*
+!src/gql/fetch.ts
+!src/gql/client.ts
+
 # Storybook
 storybook-static
 

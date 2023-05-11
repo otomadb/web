@@ -2,12 +2,11 @@ import clsx from "clsx";
 
 import { CommonVideoContainer } from "~/components/CommonVideoContainer";
 import { graphql } from "~/gql";
-import { fetchGql } from "~/gql/fetch";
-import { isErr } from "~/utils/Result";
+import { getClient } from "~/gql/client";
 
 export default async function RecentVideoListSC() {
-  const result = await fetchGql(
-    graphql(`
+  const result = await getClient().query({
+    query: graphql(`
       query MyTopPage_RecentVideosSection_VideosList {
         findVideos(first: 18) {
           nodes {
@@ -17,10 +16,10 @@ export default async function RecentVideoListSC() {
         }
       }
     `),
-    {}
-  );
-
-  if (isErr(result)) throw new Error("Failed to fetch recent videos");
+    context: {
+      fetchOptions: { next: { revalidate: 0 } },
+    },
+  });
 
   const { findVideos } = result.data;
 

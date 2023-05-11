@@ -1,17 +1,12 @@
 import clsx from "clsx";
-import { GraphQLClient } from "graphql-request";
-import { cache } from "react";
 
 import { CommonVideoContainer } from "~/components/CommonVideoContainer";
 import { graphql } from "~/gql";
+import { getClient } from "~/gql/client";
 
-export const getVideos = cache(async () => {
-  const result = await new GraphQLClient(process.env.GRAPHQL_API_ENDPOINT, {
-    next: {
-      revalidate: 120,
-    },
-  }).request(
-    graphql(`
+export default async function RecentVideoListSC() {
+  const { data } = await getClient().query({
+    query: graphql(`
       query AboutPage_RecentVideosSection_VideosList {
         findVideos(first: 6) {
           nodes {
@@ -20,13 +15,11 @@ export const getVideos = cache(async () => {
           }
         }
       }
-    `)
-  );
-  return result.findVideos.nodes;
-});
-
-export default async function RecentVideoListSC() {
-  const nodes = await getVideos();
+    `),
+    context: {
+      fetchOptions: { next: { revalidate: 0 } },
+    },
+  });
 
   return (
     <div className={clsx(["@container"])}>
@@ -45,7 +38,7 @@ export default async function RecentVideoListSC() {
           ]
         )}
       >
-        {nodes.map((node) => (
+        {data.findVideos.nodes.map((node) => (
           <div key={node.id} className={clsx()}>
             <CommonVideoContainer
               fragment={node}
