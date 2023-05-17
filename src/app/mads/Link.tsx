@@ -8,7 +8,7 @@ export const AllVideosPageLink: React.FC<
   Omit<ComponentProps<typeof Link>, "href"> & SearchParams
 > = ({ children, after, ...props }) => {
   return (
-    <Link href={`/videos?${qs.stringify({ after })}`} {...props}>
+    <Link href={`/mads?${qs.stringify({ after })}`} {...props}>
       {children}
     </Link>
   );

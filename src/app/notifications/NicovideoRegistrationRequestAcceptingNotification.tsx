@@ -3,6 +3,7 @@
 import { CheckCircleIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 
+import { LinkVideo } from "~/app/mads/[serial]/Link";
 import { DateTime } from "~/components/DateTime";
 import { UserIcon } from "~/components/UserIcon";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
@@ -10,7 +11,6 @@ import { FragmentType, graphql, useFragment } from "~/gql";
 
 import { LinkNicovideoRegistrationRequest } from "../requests/nicovideo/[sourceId]/Link";
 import { LinkUser } from "../users/[name]/Link";
-import { LinkVideo } from "../videos/[serial]/Link";
 
 export const Fragment = graphql(`
   fragment NotificationsPage_NicovideoRegistrationRequestAcceptingNotification on NicovideoRegistrationRequestAcceptingNotification {

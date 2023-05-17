@@ -1,11 +1,11 @@
 import { ResultOf } from "@graphql-typed-document-node/core";
 
+import { Fragment as VideoPageLinkFragment } from "~/app/mads/[serial]/Link";
 import { Fragment as UserIconFragment } from "~/components/UserIcon";
 import { Fragment as VideoThumbnailFragment } from "~/components/VideoThumbnail";
 import { makeFragmentData } from "~/gql";
 
 import { Fragment as UserPageLinkFragment } from "../users/[name]/Link";
-import { Fragment as VideoPageLinkFragment } from "../videos/[serial]/Link";
 import { Fragment } from "./NicovideoRegistrationRequestAcceptingNotification";
 
 export const mock = makeFragmentData(

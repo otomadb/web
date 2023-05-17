@@ -4,7 +4,7 @@ import "client-only";
 import clsx from "clsx";
 import React from "react";
 
-import { LinkVideo } from "~/app/videos/[serial]/Link";
+import { LinkVideo } from "~/app/mads/[serial]/Link";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
