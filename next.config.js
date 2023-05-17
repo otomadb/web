@@ -33,6 +33,16 @@ const nextConfig = {
         destination: "/auth/signup",
         permanent: true,
       },
+      {
+        source: "/videos",
+        destination: "/mads",
+        permanent: true,
+      },
+      {
+        source: "/videos/:serial*",
+        destination: "/mads/:serial*",
+        permanent: true,
+      },
     ];
   },
   webpack: (config) => {

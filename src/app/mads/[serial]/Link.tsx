@@ -15,7 +15,7 @@ export const LinkVideo: React.FC<
 > = ({ children, fragment, ...props }) => {
   const { serial } = useFragment(Fragment, fragment);
   return (
-    <Link href={`/videos/${serial}`} {...props}>
+    <Link href={`/mads/${serial}`} {...props}>
       {children}
     </Link>
   );
