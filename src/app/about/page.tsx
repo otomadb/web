@@ -3,7 +3,7 @@ import "server-only";
 import clsx from "clsx";
 import { Suspense } from "react";
 
-import { AllVideosPageLink } from "~/app/videos/Link";
+import { AllVideosPageLink } from "~/app/mads/Link";
 import { Logo } from "~/components/Logo";
 import { SearchContents } from "~/components/SearchContents/SearchContents";
 
