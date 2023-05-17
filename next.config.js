@@ -11,7 +11,7 @@ const nextConfig = {
       "secure.gravatar.com",
       "i1.sndcdn.com",
     ],
-    unoptimized: process.env.NODE_ENV === "production",
+    // unoptimized: process.env.NODE_ENV === "production",
     disableStaticImages: true,
   },
   eslint: {
