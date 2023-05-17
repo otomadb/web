@@ -9,6 +9,7 @@ const nextConfig = {
       "i.ytimg.com",
       "s.gravatar.com",
       "secure.gravatar.com",
+      "i1.sndcdn.com",
     ],
     unoptimized: process.env.NODE_ENV === "production",
     disableStaticImages: true,
