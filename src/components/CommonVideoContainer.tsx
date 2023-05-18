@@ -49,7 +49,7 @@ export const CommonVideoContainer: React.FC<{
           height={192}
         />
       </LinkVideo>
-      <div className={clsx(["mt-1"])}>
+      <div className={clsx(["mt-1"], ["line-clamp-2"])}>
         <LinkVideo
           fragment={fragment}
           className={clsx(["text-sm"], ["font-bold"], ["text-slate-900"])}
