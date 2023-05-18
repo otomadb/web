@@ -118,9 +118,11 @@ export const Image = ({
               ["flex", "flex-col", "items-start"]
             )}
           >
-            <span className={clsx(["text-xs", "text-slate-700"])}>Youtube</span>
+            <span className={clsx(["text-xs", "text-slate-700"])}>
+              Soundcloud
+            </span>
             <span className={clsx(["text-xxs", "text-slate-500", "font-mono"])}>
-              {source.sourceId}
+              {source.url}
             </span>
           </a>
         ))}
