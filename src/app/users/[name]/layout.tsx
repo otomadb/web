@@ -1,14 +1,31 @@
 import clsx from "clsx";
+import { GraphQLClient } from "graphql-request";
 import { notFound } from "next/navigation";
-import React from "react";
+import React, { cache } from "react";
 
 import { graphql, useFragment } from "~/gql";
-import { fetchGql } from "~/gql/fetch";
 import { UserPageLayout_HeaderFragmentDoc } from "~/gql/graphql";
-import { isErr } from "~/utils/Result";
 
 import { Header } from "./Header";
 import { HeaderNav } from "./HeaderNav";
+
+const getUser = cache(async (name: string) => {
+  const result = await new GraphQLClient(process.env.GRAPHQL_API_ENDPOINT, {
+    next: { revalidate: 300 },
+  }).request(
+    graphql(`
+      query UserPageLayout($name: String!) {
+        findUser(input: { name: $name }) {
+          id
+          ...UserPageLayout_Header
+          ...UserPageLayout_HeaderNav
+        }
+      }
+    `),
+    { name }
+  );
+  return result.findUser;
+});
 
 export default async function Layout({
   children,
@@ -17,31 +34,25 @@ export default async function Layout({
   children: React.ReactNode;
   params: { name: string };
 }) {
-  const result = await fetchGql(
-    graphql(`
-      query UserPageLayout($name: String!) {
-        findUser(input: { name: $name }) {
-          ...UserPageLayout_Header
-          ...UserPageLayout_HeaderNav
-        }
-      }
-    `),
-    { name: params.name }
-  );
-  if (isErr(result)) throw new Error("GraphQL fetching Error");
-  if (!result.data.findUser) notFound();
-  const { findUser } = result.data;
+  const result = await getUser(params.name);
+  if (!result?.id) notFound();
 
   return (
-    <div className={clsx(["h-full"])}>
+    <main
+      className={clsx(
+        ["mx-auto"],
+        ["flex-grow"],
+        ["flex", "flex-col", "gap-y-4"]
+      )}
+    >
       <div className={clsx(["container", "max-w-screen-xl", "mx-auto"])}>
         <Header
           className={clsx(["container", "max-w-screen-xl", "mx-auto"])}
-          fragment={useFragment(UserPageLayout_HeaderFragmentDoc, findUser)}
+          fragment={useFragment(UserPageLayout_HeaderFragmentDoc, result)}
         />
-        <HeaderNav fragment={findUser} />
+        <HeaderNav fragment={result} />
         {children}
       </div>
-    </div>
+    </main>
   );
 }

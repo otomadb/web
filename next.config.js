@@ -9,8 +9,10 @@ const nextConfig = {
       "i.ytimg.com",
       "s.gravatar.com",
       "secure.gravatar.com",
+      "i1.sndcdn.com",
     ],
     unoptimized: process.env.NODE_ENV === "production",
+    disableStaticImages: true,
   },
   eslint: {
     ignoreDuringBuilds: true,
@@ -32,7 +34,24 @@ const nextConfig = {
         destination: "/auth/signup",
         permanent: true,
       },
+      {
+        source: "/videos",
+        destination: "/mads",
+        permanent: true,
+      },
+      {
+        source: "/videos/:serial*",
+        destination: "/mads/:serial*",
+        permanent: true,
+      },
     ];
+  },
+  webpack: (config) => {
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: [{ loader: "@svgr/webpack" }],
+    });
+    return config;
   },
 };
 

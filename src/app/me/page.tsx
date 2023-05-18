@@ -1,8 +1,9 @@
 import clsx from "clsx";
 import { Suspense } from "react";
 
+import { AllVideosPageLink } from "~/app/mads/Link";
+
 import { AllNicovideoRequestsPageLink } from "../requests/nicovideo/Link";
-import { AllVideosPageLink } from "../videos/Link";
 import { YouLikesPageLink } from "./likes/Link";
 import RecentLikes from "./RecentLikes";
 import RecentVideos from "./RecentVideos.server";

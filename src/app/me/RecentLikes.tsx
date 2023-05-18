@@ -4,10 +4,9 @@ import clsx from "clsx";
 import React from "react";
 import { useQuery } from "urql";
 
+import { LinkVideo } from "~/app/mads/[serial]/Link";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { graphql } from "~/gql";
-
-import { LinkVideo } from "../videos/[serial]/Link";
 
 export default function RecentLikes({ className }: { className?: string }) {
   const [{ data, fetching }] = useQuery({

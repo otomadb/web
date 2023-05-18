@@ -5,7 +5,7 @@ import clsx from "clsx";
 import React from "react";
 import { useQuery } from "urql";
 
-import { LinkVideo } from "~/app/videos/[serial]/Link";
+import { LinkVideo } from "~/app/mads/[serial]/Link";
 import { InfiniteVideosGrid } from "~/components/InfiniteVideoGrid";
 import { FetcherContainer } from "~/components/InfiniteVideoGrid";
 import { VideoThumbnail } from "~/components/VideoThumbnail";

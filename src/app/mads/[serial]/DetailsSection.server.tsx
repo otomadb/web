@@ -1,6 +1,6 @@
 import clsx from "clsx";
 
-import { LinkVideoEvents } from "~/app/videos/[serial]/events/Link";
+import { LinkVideoEvents } from "~/app/mads/[serial]/events/Link";
 import { FragmentType, graphql, useFragment } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
 import { isErr } from "~/utils/Result";

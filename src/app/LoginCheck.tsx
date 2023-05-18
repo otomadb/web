@@ -15,7 +15,7 @@ export default function LoginCheck({ children }: { children: ReactNode }) {
   const [quote, setQuote] = useState<number | undefined>();
 
   useEffect(() => {
-    if (isAuthenticated) router.push("/me");
+    if (isAuthenticated) router.replace("/me");
   }, [isAuthenticated, router]);
 
   useEffect(
