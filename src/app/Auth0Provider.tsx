@@ -17,7 +17,9 @@ export default function Provider({ children }: { children: ReactNode }) {
         scope: [
           "create:mylist",
           "create:registration_request",
+          "create:tagging",
           "edit:mylist",
+          "remove:tagging",
           "update:mylist_registration",
         ].join(" "),
       }}
