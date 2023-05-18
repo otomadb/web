@@ -47,8 +47,8 @@ dependencies:
     specifier: ^16.6.0
     version: 16.6.0
   graphql-request:
-    specifier: 6.1.0-next.3
-    version: 6.1.0-next.3(encoding@0.1.13)(graphql@16.6.0)
+    specifier: 6.1.0-next.4
+    version: 6.1.0-next.4(encoding@0.1.13)(graphql@16.6.0)
   next:
     specifier: 13.4.2
     version: 13.4.2(@babel/core@7.20.7)(react-dom@18.2.0)(react@18.2.0)(sass@1.61.0)
@@ -9646,8 +9646,8 @@ packages:
       - encoding
     dev: true
 
-  /graphql-request@6.1.0-next.3(encoding@0.1.13)(graphql@16.6.0):
-    resolution: {integrity: sha512-1OL3D1bYmLUFzPIj526/HYTBL4GUn3+JZOaBHr2Pxv4T+CF7fkQcXmxRk6nvuNJ6gIzJHp+SrDkemAM2TTfOWQ==}
+  /graphql-request@6.1.0-next.4(encoding@0.1.13)(graphql@16.6.0):
+    resolution: {integrity: sha512-Asf8I80TO3id9gqvfUwxXlOEz0D5eBTQbM5xLQkN+IVsdjBAPJto6PCsPcAh1H1QOR0Rjbl/nPtsOZ10IIfe8g==}
     peerDependencies:
       graphql: 14 - 16
     dependencies:
