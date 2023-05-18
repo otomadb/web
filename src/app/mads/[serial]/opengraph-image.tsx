@@ -1,19 +1,12 @@
 import { ImageResponse } from "@vercel/og";
-import { NextApiRequest } from "next";
+import { GraphQLClient } from "graphql-request";
 
 import { graphql } from "~/gql";
-import { fetchGql } from "~/gql/fetch";
-import { isErr } from "~/utils/Result";
 
-export default async function og(req: NextApiRequest) {
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const { searchParams } = new URL(req.url!);
-  const serial = searchParams.get("serial");
-
-  if (!serial)
-    return new Response("Video serial not provided", { status: 400 });
-
-  const result = await fetchGql(
+export default async function og({ params }: { params: { serial: string } }) {
+  const result = await new GraphQLClient(
+    process.env.GRAPHQL_API_ENDPOINT
+  ).request(
     graphql(`
       query OGImage_Video($serial: Int!) {
         findVideo(input: { serial: $serial }) {
@@ -23,13 +16,12 @@ export default async function og(req: NextApiRequest) {
         }
       }
     `),
-    { serial: parseInt(serial, 10) }
+    { serial: parseInt(params.serial, 10) }
   );
-  if (isErr(result)) throw new Error("GraphQL fetching Error");
-  if (!result.data.findVideo)
-    return new Response("Video not found", { status: 404 });
 
-  const { findVideo } = result.data;
+  const { findVideo } = result;
+
+  if (!findVideo) return new Response("Video not found", { status: 404 });
 
   return new ImageResponse(
     (
