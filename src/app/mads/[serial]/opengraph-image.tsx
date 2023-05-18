@@ -3,10 +3,12 @@ import { GraphQLClient } from "graphql-request";
 
 import { graphql } from "~/gql";
 
+export const runtime = "experimental-edge";
+
 export default async function og({ params }: { params: { serial: string } }) {
-  const result = await new GraphQLClient(
-    process.env.GRAPHQL_API_ENDPOINT
-  ).request(
+  const result = await new GraphQLClient(process.env.GRAPHQL_API_ENDPOINT, {
+    fetch,
+  }).request(
     graphql(`
       query OGImage_Video($serial: Int!) {
         findVideo(input: { serial: $serial }) {
