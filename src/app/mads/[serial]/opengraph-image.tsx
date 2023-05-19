@@ -1,10 +1,14 @@
-import { ImageResponse } from "@vercel/og";
 import { GraphQLClient } from "graphql-request";
+import { ImageResponse } from "next/server";
 
 import { graphql } from "~/gql";
 import { loadGoogleFont } from "~/utils/loadGoogleFonts";
 
-export const runtime = "edge";
+export const size = {
+  width: 960,
+  height: 540,
+};
+export const contentType = "image/png";
 export const revalidate = 86400;
 
 export default async function og({ params }: { params: { serial: string } }) {
@@ -97,8 +101,7 @@ export default async function og({ params }: { params: { serial: string } }) {
       </div>
     ),
     {
-      width: 960,
-      height: 540,
+      ...size,
       fonts: [
         {
           name: "Noto Serif JP",

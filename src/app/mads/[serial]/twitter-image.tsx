@@ -1,6 +1,4 @@
 import og from "./opengraph-image";
-
-export const runtime = "edge";
-export const revalidate = 86400;
+export { contentType, revalidate, size } from "./opengraph-image";
 
 export default og;
