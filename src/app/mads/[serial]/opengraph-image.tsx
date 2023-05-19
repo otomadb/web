@@ -2,8 +2,10 @@ import { ImageResponse } from "@vercel/og";
 import { GraphQLClient } from "graphql-request";
 
 import { graphql } from "~/gql";
+import { loadGoogleFont } from "~/utils/loadGoogleFonts";
 
-export const runtime = "experimental-edge";
+export const runtime = "edge";
+export const revalidate = 86400;
 
 export default async function og({ params }: { params: { serial: string } }) {
   const result = await new GraphQLClient(process.env.GRAPHQL_API_ENDPOINT, {
@@ -22,8 +24,21 @@ export default async function og({ params }: { params: { serial: string } }) {
   );
 
   const { findVideo } = result;
-
   if (!findVideo) return new Response("Video not found", { status: 404 });
+
+  const { title, serial, thumbnailUrl } = findVideo;
+  const urltext = `otomadb.com/videos/${serial}`;
+
+  const notoserif = await loadGoogleFont({
+    family: "Noto Serif JP",
+    weight: 700,
+    text: title,
+  });
+  const spacemono = await loadGoogleFont({
+    family: "Space Mono",
+    weight: 400,
+    text: urltext,
+  });
 
   return new ImageResponse(
     (
@@ -42,7 +57,7 @@ export default async function og({ params }: { params: { serial: string } }) {
             height: "100%",
             objectFit: "cover",
           }}
-          src={findVideo.thumbnailUrl}
+          src={thumbnailUrl}
         />
         <div
           style={{
@@ -53,29 +68,30 @@ export default async function og({ params }: { params: { serial: string } }) {
             display: "flex",
             flexDirection: "column",
             justifyContent: "flex-start",
-            background: "linear-gradient(to top, #000000ff, #00000000)",
+            background: "linear-gradient(to top, #000000cc, #00000000)",
           }}
         >
           <div
             style={{
               display: "flex",
               fontSize: 24,
-              color: "#FFFFFFbb",
-              fontFamily: "Inconsolata",
+              color: "#F0F0F0",
+              fontFamily: "Space Mono",
             }}
           >
-            <span>otomadb.com/videos/{findVideo.serial}</span>
+            <span>otomadb.com/videos/{serial}</span>
           </div>
           <div
             style={{
               display: "flex",
               width: "100%",
+              fontFamily: "Noto Serif JP",
               fontSize: 36,
               fontWeight: 700,
-              color: "#FFFFFFdd",
+              color: "#FFFFFF",
             }}
           >
-            <span lang="ja-JP">{findVideo.title}</span>
+            <span lang="ja-JP">{title}</span>
           </div>
         </div>
       </div>
@@ -83,6 +99,20 @@ export default async function og({ params }: { params: { serial: string } }) {
     {
       width: 960,
       height: 540,
+      fonts: [
+        {
+          name: "Noto Serif JP",
+          data: notoserif,
+          style: "normal",
+          weight: 700,
+        },
+        {
+          name: "Space Mono",
+          data: spacemono,
+          style: "normal",
+          weight: 400,
+        },
+      ],
     }
   );
 }
