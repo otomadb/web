@@ -23,6 +23,12 @@ export const Fragment = graphql(`
       url
       embedUrl
     }
+    soundcloudSources {
+      id
+      sourceId
+      url
+      embedUrl
+    }
   }
 `);
 export const Image = ({
@@ -34,7 +40,10 @@ export const Image = ({
 }) => {
   const fragment = useFragment(Fragment, props.fragment);
   const [thumbnail, setThumbnail] = useState<
-    "ORIGINAL" | ["NICOVIDEO", string] | ["YOUTUBE", string]
+    | "ORIGINAL"
+    | ["NICOVIDEO", string]
+    | ["YOUTUBE", string]
+    | ["SOUNDCLOUD", string]
   >("ORIGINAL");
 
   return (
@@ -95,6 +104,28 @@ export const Image = ({
             </span>
           </a>
         ))}
+        {fragment.soundcloudSources.map((source) => (
+          <a
+            key={source.id}
+            href={source.url}
+            onClick={(e) => {
+              e.preventDefault();
+              setThumbnail(["SOUNDCLOUD", source.id]);
+            }}
+            className={clsx(
+              ["hover:bg-blue-200"],
+              ["px-1", "py-1"],
+              ["flex", "flex-col", "items-start"]
+            )}
+          >
+            <span className={clsx(["text-xs", "text-slate-700"])}>
+              Soundcloud
+            </span>
+            <span className={clsx(["text-xxs", "text-slate-500", "font-mono"])}>
+              {source.url}
+            </span>
+          </a>
+        ))}
       </div>
       <div className={clsx(["flex"])}>
         <VideoThumbnail
@@ -134,6 +165,24 @@ export const Image = ({
                 hidden: !(
                   Array.isArray(thumbnail) &&
                   thumbnail[0] === "YOUTUBE" &&
+                  thumbnail[1] === source.id
+                ),
+              },
+              ["w-96", "h-48"]
+            )}
+            src={source.embedUrl}
+          />
+        ))}
+        {fragment.soundcloudSources.map((source) => (
+          <iframe
+            key={source.id}
+            width="384"
+            height="192"
+            className={clsx(
+              {
+                hidden: !(
+                  Array.isArray(thumbnail) &&
+                  thumbnail[0] === "SOUNDCLOUD" &&
                   thumbnail[1] === source.id
                 ),
               },

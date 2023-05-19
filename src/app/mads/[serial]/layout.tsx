@@ -8,6 +8,7 @@ import { isErr } from "~/utils/Result";
 
 import DetailsSection from "./DetailsSection.server";
 import SemitagsSectionContents from "./SemitagsSectionContents.server";
+import TagEditorTrigger from "./TagEditorTrigger";
 import TaggingsSectionContents from "./TaggingsSectionContents.server";
 
 export default async function Layout({
@@ -21,6 +22,7 @@ export default async function Layout({
     graphql(`
       query VideoPageLayout($serial: Int!) {
         findVideo(input: { serial: $serial }) {
+          id
           ...VideoPageLayout_DetailsSection
           ...VideoPageLayout_TaggingsSectionContents
           ...VideoPageLayout_SemitagsSectionContents
@@ -83,6 +85,9 @@ export default async function Layout({
               />
             </Suspense>
           </section>
+          <div>
+            <TagEditorTrigger madId={data.data.findVideo.id} />
+          </div>
         </div>
         <div className={clsx(["flex-grow"])}>{children}</div>
       </div>
