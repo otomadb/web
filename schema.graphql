@@ -801,18 +801,20 @@ type Query {
     """Youtubeの動画ID（Q16KpquGsIcなど）"""
     sourceId: String!
   ): FetchYoutubePayload!
+  findMadBySerial(serial: Int!): Video
   findMylist(input: FindMylistInput!): Mylist
   findNicovideoRegistrationRequest(input: FindNicovideoRegistrationRequestInput): NicovideoRegistrationRequest
   findNicovideoRegistrationRequests(after: String, before: String, checked: Boolean, first: Int, last: Int, orderBy: FindNicovideoRegistrationRequestsOrderBy! = {createdAt: DESC}): NicovideoRegistrationRequestConnection!
   findNicovideoVideoSource(input: FindNicovideoVideoSourceInput!): NicovideoVideoSource
   findSemitags(after: String, before: String, checked: Boolean, first: Int, last: Int, orderBy: FindSemitagsOrderBy! = {name: ASC}): SemitagConnection!
-  findTag(input: FindTagInput!): Tag
+  findTag(input: FindTagInput!): Tag @deprecated(reason: "Use `Query.findTagBySerial` instead.")
+  findTagBySerial(serial: Int!): Tag
   findTags(input: FindTagsInput!): TagConnection!
   findUncheckedNicovideoRegistrationRequests(input: FindUncheckedNicovideoRegistrationRequestsInput!): NicovideoRegistrationRequestConnection!
   findUncheckedNicovideoRegistrationRequestsByOffset(input: findUncheckedNicovideoRegistrationRequestsByOffsetInput!): FindUncheckedNicovideoRegistrationRequestsByOffsetPayload!
   findUncheckedYoutubeRegistrationRequests(input: FindUncheckedYoutubeRegistrationRequestsInput!): YoutubeRegistrationRequestConnection!
   findUser(input: FindUserInput!): User
-  findVideo(input: FindVideoInput!): Video
+  findVideo(input: FindVideoInput!): Video @deprecated(reason: "Use `Query.findMadBySerial` instead")
   findVideos(after: String, before: String, first: Int, last: Int, orderBy: FindVideosOrderBy! = {createdAt: DESC}): VideoConnection!
   findYoutubeRegistrationRequest(input: FindYoutubeRegistrationRequestInput): YoutubeRegistrationRequest
   findYoutubeVideoSource(sourceId: String): YoutubeVideoSource
