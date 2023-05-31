@@ -49,6 +49,7 @@ export const ListItem: React.FC<{
             alt={fragment.sourceId}
             width={196}
             height={128}
+            unoptimized={true}
           />
         </NicovideoRegistrationRequestPageLink>
       </div>

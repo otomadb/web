@@ -8,7 +8,8 @@ export const CoolImage: React.FC<{
   alt: string;
   width: number;
   height: number;
-}> = ({ className, src, alt, width, height }) => {
+  unoptimized?: boolean;
+}> = ({ className, src, alt, width, height, unoptimized = true }) => {
   return (
     <div
       className={clsx(
@@ -33,6 +34,7 @@ export const CoolImage: React.FC<{
         width={width}
         height={height}
         priority={true}
+        unoptimized={unoptimized}
       />
       <Image
         className={clsx(
@@ -46,6 +48,7 @@ export const CoolImage: React.FC<{
         width={width}
         height={height}
         priority={true}
+        unoptimized={unoptimized}
       />
     </div>
   );

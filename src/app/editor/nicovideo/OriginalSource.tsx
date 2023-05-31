@@ -62,6 +62,7 @@ export const Original: React.FC<{
           width={192}
           height={144}
           alt={`${fragment.sourceId}のサムネイル`}
+          unoptimized={true}
         />
       </div>
       <div className={clsx(["flex-grow"], ["flex", "flex-col"], ["gap-y-4"])}>
