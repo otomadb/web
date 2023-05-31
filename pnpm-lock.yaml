@@ -125,8 +125,8 @@ devDependencies:
     specifier: ^0.1.0
     version: 0.1.0(tailwindcss@3.3.2)
   '@tsconfig/node18':
-    specifier: ^2.0.0
-    version: 2.0.0
+    specifier: ^2.0.1
+    version: 2.0.1
   '@types/mdx':
     specifier: ^2.0.4
     version: 2.0.4
@@ -5678,8 +5678,8 @@ packages:
     engines: {node: '>=10.13.0'}
     dev: false
 
-  /@tsconfig/node18@2.0.0:
-    resolution: {integrity: sha512-uI/B0ShkiEwTk036pncXucVlj4y11EW6mycQvCEzC1PkR2TBvdQZ5Wf96dp+XXWAc70FEDfvwTqanoaDpP6rPw==}
+  /@tsconfig/node18@2.0.1:
+    resolution: {integrity: sha512-UqdfvuJK0SArA2CxhKWwwAWfnVSXiYe63bVpMutc27vpngCntGUZQETO24pEJ46zU6XM+7SpqYoMgcO3bM11Ew==}
     dev: true
 
   /@types/aria-query@5.0.1:
