@@ -6,6 +6,6 @@
   },
   "rangeStrategy": "bump",
   "constraints": {
-    "pnpm": "7"
+    "pnpm": "7.26.2"
   }
 }
