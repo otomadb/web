@@ -35,12 +35,12 @@
       {
         devShells.default = pkgs.devshell.mkShell {
           packages = with pkgs; [
-            (mkCorepack { nodejs = nodejs-18_x; pm = "pnpm"; })
             act
             actionlint
             httpie
             nixpkgs-fmt
             nodejs-18_x
+            nodePackages.pnpm
           ];
           env = [
             {
