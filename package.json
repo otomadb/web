@@ -25,6 +25,7 @@
   "engines": {
     "node": "^18"
   },
+  "packageManager": "pnpm@7.26.2",
   "dependencies": {
     "@auth0/auth0-react": "^2.0.1",
     "@emotion/css": "^11.10.5",
