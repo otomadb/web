@@ -66,6 +66,7 @@ export default function RequestsGridItem({
           className={clsx(["w-[96px]"], ["h-[64px]"])}
           width={96}
           height={64}
+          unoptimized={true}
         />
       </NicovideoRegistrationRequestLink>
       <div className={clsx(["flex-grow"], ["flex", "flex-col", "gap-y-1"])}>

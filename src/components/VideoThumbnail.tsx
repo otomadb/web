@@ -24,6 +24,7 @@ export const VideoThumbnail: React.FC<{
       alt={fragment.title}
       width={width}
       height={height}
+      unoptimized={false}
     />
   );
 };
