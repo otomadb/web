@@ -21,8 +21,8 @@ dependencies:
     specifier: 3.1.0
     version: 3.1.0(react-hook-form@7.44.2)
   '@next/mdx':
-    specifier: ^13.3.0
-    version: 13.3.0
+    specifier: ^13.3.4
+    version: 13.3.4
   '@svgr/webpack':
     specifier: ^8.0.1
     version: 8.0.1
@@ -3133,8 +3133,8 @@ packages:
       glob: 7.1.7
     dev: true
 
-  /@next/mdx@13.3.0:
-    resolution: {integrity: sha512-qrf1K/dTzC9LLPFyacNJBqmnT7BQphrvRDlXb6sfjgMK1iBaKpTmR1PETBT4CSaHzjRY9JjuRftZeYzWGJq3TQ==}
+  /@next/mdx@13.3.4:
+    resolution: {integrity: sha512-17wcHH/fDp+z+Ts8EjWvArI2+IIb7VRSPS+fGoEjVjtH1jQXwiLQSa6a1eJiuD4Grb4350Lw8zwi355xiyi+rw==}
     peerDependencies:
       '@mdx-js/loader': '>=0.15.0'
       '@mdx-js/react': '>=0.15.0'
