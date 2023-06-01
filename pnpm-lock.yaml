@@ -200,8 +200,8 @@ devDependencies:
     specifier: ^14.1.2
     version: 14.1.2
   style-loader:
-    specifier: ^3.3.1
-    version: 3.3.1(webpack@5.84.1)
+    specifier: ^3.3.3
+    version: 3.3.3(webpack@5.84.1)
   tailwindcss:
     specifier: 3.3.2
     version: 3.3.2
@@ -3794,7 +3794,7 @@ packages:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       semver: 7.5.1
-      style-loader: 3.3.1(webpack@5.84.1)
+      style-loader: 3.3.3(webpack@5.84.1)
       terser-webpack-plugin: 5.3.9(esbuild@0.17.19)(webpack@5.84.1)
       ts-dedent: 2.2.0
       typescript: 5.0.4
@@ -4235,7 +4235,7 @@ packages:
       resolve-url-loader: 5.0.0
       sass-loader: 12.6.0(sass@1.61.0)(webpack@5.84.1)
       semver: 7.5.1
-      style-loader: 3.3.1(webpack@5.84.1)
+      style-loader: 3.3.3(webpack@5.84.1)
       styled-jsx: 5.1.1(@babel/core@7.21.8)(react@18.2.0)
       ts-dedent: 2.2.0
       tsconfig-paths: 4.2.0
@@ -12418,8 +12418,8 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /style-loader@3.3.1(webpack@5.84.1):
-    resolution: {integrity: sha512-GPcQ+LDJbrcxHORTRes6Jy2sfvK2kS6hpSfI/fXhPt+spVzxF6LJ1dHLN9zIGmVaaP044YKaIatFaufENRiDoQ==}
+  /style-loader@3.3.3(webpack@5.84.1):
+    resolution: {integrity: sha512-53BiGLXAcll9maCYtZi2RCQZKa8NQQai5C4horqKyRmHj9H7QmcUyucrH+4KW/gBQbXM2AsB0axoEcFZPlfPcw==}
     engines: {node: '>= 12.13.0'}
     peerDependencies:
       webpack: ^5.0.0
