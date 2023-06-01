@@ -9,8 +9,8 @@ dependencies:
     specifier: ^2.0.2
     version: 2.0.2(react-dom@18.2.0)(react@18.2.0)
   '@emotion/css':
-    specifier: ^11.10.5
-    version: 11.10.5(@babel/core@7.21.8)
+    specifier: ^11.10.8
+    version: 11.10.8
   '@heroicons/react':
     specifier: ^2.0.18
     version: 2.0.18(react@18.2.0)
@@ -1573,15 +1573,9 @@ packages:
       stylis: 4.2.0
     dev: false
 
-  /@emotion/css@11.10.5(@babel/core@7.21.8):
-    resolution: {integrity: sha512-maJy0wG82hWsiwfJpc3WrYsyVwUbdu+sdIseKUB+/OLjB8zgc3tqkT6eO0Yt0AhIkJwGGnmMY/xmQwEAgQ4JHA==}
-    peerDependencies:
-      '@babel/core': ^7.0.0
-    peerDependenciesMeta:
-      '@babel/core':
-        optional: true
+  /@emotion/css@11.10.8:
+    resolution: {integrity: sha512-i9k0HKUKz5KuZbzVpMpcg1OZWDG+Ete9wIa6OT4sOaxE64PG8S8H8H6sVYHvkCmAgcO+hbxT1XMr5pz/jTranQ==}
     dependencies:
-      '@babel/core': 7.21.8
       '@emotion/babel-plugin': 11.11.0
       '@emotion/cache': 11.11.0
       '@emotion/serialize': 1.1.2
