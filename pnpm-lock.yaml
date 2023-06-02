@@ -179,11 +179,11 @@ devDependencies:
     specifier: ^3.0.0
     version: 3.0.0(graphql@16.6.0)
   msw:
-    specifier: ^1.0.1
-    version: 1.0.1(encoding@0.1.13)(typescript@5.0.4)
+    specifier: ^1.2.1
+    version: 1.2.1(encoding@0.1.13)(typescript@5.0.4)
   msw-storybook-addon:
     specifier: ^1.8.0
-    version: 1.8.0(msw@1.0.1)
+    version: 1.8.0(msw@1.2.1)
   npm-run-all:
     specifier: ^4.1.5
     version: 4.1.5
@@ -10116,22 +10116,22 @@ packages:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
     dev: true
 
-  /msw-storybook-addon@1.8.0(msw@1.0.1):
+  /msw-storybook-addon@1.8.0(msw@1.2.1):
     resolution: {integrity: sha512-dw3vZwqjixmiur0vouRSOax7wPSu9Og2Hspy9JZFHf49bZRjwDiLF0Pfn2NXEkGviYJOJiGxS1ejoTiUwoSg4A==}
     peerDependencies:
       msw: '>=0.35.0 <2.0.0'
     dependencies:
       is-node-process: 1.2.0
-      msw: 1.0.1(encoding@0.1.13)(typescript@5.0.4)
+      msw: 1.2.1(encoding@0.1.13)(typescript@5.0.4)
     dev: true
 
-  /msw@1.0.1(encoding@0.1.13)(typescript@5.0.4):
-    resolution: {integrity: sha512-fBwQRCmf+jh0zlGlasBfpCaxLqb4QLMsY1Q+nkXkO0nnUYopl50NcNRvP4V+TAiqOwJSd0LrQ5NcJqwbrnTBqw==}
+  /msw@1.2.1(encoding@0.1.13)(typescript@5.0.4):
+    resolution: {integrity: sha512-bF7qWJQSmKn6bwGYVPXOxhexTCGD5oJSZg8yt8IBClxvo3Dx/1W0zqE1nX9BSWmzRsCKWfeGWcB/vpqV6aclpw==}
     engines: {node: '>=14'}
     hasBin: true
     requiresBuild: true
     peerDependencies:
-      typescript: '>= 4.4.x <= 4.9.x'
+      typescript: '>= 4.4.x <= 5.0.x'
     peerDependenciesMeta:
       typescript:
         optional: true
