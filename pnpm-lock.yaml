@@ -52,7 +52,7 @@ dependencies:
     version: 6.1.0-next.4(encoding@0.1.13)(graphql@16.6.0)
   next:
     specifier: 13.4.4
-    version: 13.4.4(@babel/core@7.21.8)(react-dom@18.2.0)(react@18.2.0)(sass@1.61.0)
+    version: 13.4.4(@babel/core@7.21.8)(react-dom@18.2.0)(react@18.2.0)(sass@1.62.1)
   react:
     specifier: 18.2.0
     version: 18.2.0
@@ -66,8 +66,8 @@ dependencies:
     specifier: ^17.4.0
     version: 17.4.0(react-dom@18.2.0)(react@18.2.0)
   sass:
-    specifier: ^1.61.0
-    version: 1.61.0
+    specifier: ^1.62.1
+    version: 1.62.1
   server-only:
     specifier: ^0.0.1
     version: 0.0.1
@@ -114,7 +114,7 @@ devDependencies:
     version: 7.0.18(encoding@0.1.13)
   '@storybook/nextjs':
     specifier: 7.0.18
-    version: 7.0.18(@babel/core@7.21.8)(esbuild@0.17.19)(next@13.4.4)(react-dom@18.2.0)(react@18.2.0)(sass@1.61.0)(typescript@5.0.4)(webpack@5.84.1)
+    version: 7.0.18(@babel/core@7.21.8)(esbuild@0.17.19)(next@13.4.4)(react-dom@18.2.0)(react@18.2.0)(sass@1.62.1)(typescript@5.0.4)(webpack@5.84.1)
   '@storybook/react':
     specifier: 7.0.18
     version: 7.0.18(react-dom@18.2.0)(react@18.2.0)(typescript@5.0.4)
@@ -4148,7 +4148,7 @@ packages:
     resolution: {integrity: sha512-TXJJd5RAKakWx4BtpwvSNdgTDkKM6RkXU8GK34S/LhidQ5Pjz3wcnqb0TxEkfhK/ztbP8nKHqXFwLfa2CYkvQw==}
     dev: true
 
-  /@storybook/nextjs@7.0.18(@babel/core@7.21.8)(esbuild@0.17.19)(next@13.4.4)(react-dom@18.2.0)(react@18.2.0)(sass@1.61.0)(typescript@5.0.4)(webpack@5.84.1):
+  /@storybook/nextjs@7.0.18(@babel/core@7.21.8)(esbuild@0.17.19)(next@13.4.4)(react-dom@18.2.0)(react@18.2.0)(sass@1.62.1)(typescript@5.0.4)(webpack@5.84.1):
     resolution: {integrity: sha512-+iLHPmfoI6sIfm8NhDqWaMYJ9UVycdfYbqN9qqpoYHwvh77GmqzKxNmkqdB3AQlicXBCUvabyV5A7lX9cdEHug==}
     engines: {node: '>=16.0.0'}
     peerDependencies:
@@ -4197,7 +4197,7 @@ packages:
       fs-extra: 11.1.1
       image-size: 1.0.2
       loader-utils: 3.2.1
-      next: 13.4.4(@babel/core@7.21.8)(react-dom@18.2.0)(react@18.2.0)(sass@1.61.0)
+      next: 13.4.4(@babel/core@7.21.8)(react-dom@18.2.0)(react@18.2.0)(sass@1.62.1)
       node-polyfill-webpack-plugin: 2.0.1(webpack@5.84.1)
       pnp-webpack-plugin: 1.7.0(typescript@5.0.4)
       postcss: 8.4.24
@@ -4205,7 +4205,7 @@ packages:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       resolve-url-loader: 5.0.0
-      sass-loader: 12.6.0(sass@1.61.0)(webpack@5.84.1)
+      sass-loader: 12.6.0(sass@1.62.1)(webpack@5.84.1)
       semver: 7.5.1
       style-loader: 3.3.3(webpack@5.84.1)
       styled-jsx: 5.1.1(@babel/core@7.21.8)(react@18.2.0)
@@ -10202,7 +10202,7 @@ packages:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
     dev: true
 
-  /next@13.4.4(@babel/core@7.21.8)(react-dom@18.2.0)(react@18.2.0)(sass@1.61.0):
+  /next@13.4.4(@babel/core@7.21.8)(react-dom@18.2.0)(react@18.2.0)(sass@1.62.1):
     resolution: {integrity: sha512-C5S0ysM0Ily9McL4Jb48nOQHT1BukOWI59uC3X/xCMlYIh9rJZCv7nzG92J6e1cOBqQbKovlpgvHWFmz4eKKEA==}
     engines: {node: '>=16.8.0'}
     hasBin: true
@@ -10227,7 +10227,7 @@ packages:
       postcss: 8.4.14
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-      sass: 1.61.0
+      sass: 1.62.1
       styled-jsx: 5.1.1(@babel/core@7.21.8)(react@18.2.0)
       zod: 3.21.4
     optionalDependencies:
@@ -11781,7 +11781,7 @@ packages:
   /safer-buffer@2.1.2:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
 
-  /sass-loader@12.6.0(sass@1.61.0)(webpack@5.84.1):
+  /sass-loader@12.6.0(sass@1.62.1)(webpack@5.84.1):
     resolution: {integrity: sha512-oLTaH0YCtX4cfnJZxKSLAyglED0naiYfNG1iXfU5w1LNZ+ukoA5DtyDIN5zmKVZwYNJP4KRc5Y3hkWga+7tYfA==}
     engines: {node: '>= 12.13.0'}
     peerDependencies:
@@ -11802,12 +11802,12 @@ packages:
     dependencies:
       klona: 2.0.6
       neo-async: 2.6.2
-      sass: 1.61.0
+      sass: 1.62.1
       webpack: 5.84.1(esbuild@0.17.19)
     dev: true
 
-  /sass@1.61.0:
-    resolution: {integrity: sha512-PDsN7BrVkNZK2+dj/dpKQAWZavbAQ87IXqVvw2+oEYI+GwlTWkvbQtL7F2cCNbMqJEYKPh1EcjSxsnqIb/kyaQ==}
+  /sass@1.62.1:
+    resolution: {integrity: sha512-NHpxIzN29MXvWiuswfc1W3I0N8SXBd8UR26WntmDlRYf0bSADnwnOjsyMZ3lMezSlArD33Vs3YFhp7dWvL770A==}
     engines: {node: '>=14.0.0'}
     hasBin: true
     dependencies:
