@@ -75,7 +75,7 @@ dependencies:
     specifier: ^4.0.0
     version: 4.0.0(graphql@16.6.0)(react@18.2.0)
   zod:
-    specifier: ^3.20.6
+    specifier: ^3.21.4
     version: 3.21.4
 
 devDependencies:
