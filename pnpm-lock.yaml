@@ -27,8 +27,8 @@ dependencies:
     specifier: ^8.0.1
     version: 8.0.1
   '@urql/exchange-auth':
-    specifier: ^2.1.0
-    version: 2.1.0(graphql@16.6.0)
+    specifier: ^2.1.4
+    version: 2.1.4(graphql@16.6.0)
   '@urql/exchange-graphcache':
     specifier: ^6.0.1
     version: 6.0.1(graphql@16.6.0)
@@ -6166,8 +6166,8 @@ packages:
       - graphql
     dev: false
 
-  /@urql/exchange-auth@2.1.0(graphql@16.6.0):
-    resolution: {integrity: sha512-jWnH68RLoIHMN058u5VNC028vj04CRIv972dfnouTsK4iUtmBAKqEbo1GrpGzv+5QimZnyBCBwvwjfiBEtj/vg==}
+  /@urql/exchange-auth@2.1.4(graphql@16.6.0):
+    resolution: {integrity: sha512-ijAKSgswusrProxrusX8TcYntCgMptQiirdNHwgy0EcWucxQ+1zgxiRNFKpkaRMpGk5WCFeCpsXTEYtlvuFmDg==}
     dependencies:
       '@urql/core': 4.0.7(graphql@16.6.0)
       wonka: 6.3.2
