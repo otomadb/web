@@ -57,7 +57,7 @@
     "@graphql-codegen/cli": "^3.3.1",
     "@graphql-codegen/client-preset": "^3.0.1",
     "@graphql-codegen/urql-introspection": "^2.2.1",
-    "@graphql-inspector/cli": "^3.4.9",
+    "@graphql-inspector/cli": "^3.4.19",
     "@graphql-typed-document-node/core": "~3.2.0",
     "@storybook/addon-actions": "7.0.18",
     "@storybook/addon-essentials": "7.0.18",
