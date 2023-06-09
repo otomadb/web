@@ -30,8 +30,8 @@ dependencies:
     specifier: ^2.1.0
     version: 2.1.0(graphql@16.6.0)
   '@urql/exchange-graphcache':
-    specifier: ^6.0.1
-    version: 6.0.1(graphql@16.6.0)
+    specifier: ^6.1.1
+    version: 6.1.1(graphql@16.6.0)
   client-only:
     specifier: ^0.0.1
     version: 0.0.1
@@ -6175,8 +6175,8 @@ packages:
       - graphql
     dev: false
 
-  /@urql/exchange-graphcache@6.0.1(graphql@16.6.0):
-    resolution: {integrity: sha512-nJCQwem45p1nspbRrZz2oFjyHW6tufT6LQ1SvqE3CN1pLq3v72leZ6nfRMv4RCoh9IxFnv9hr0fn8DQSmQaB4w==}
+  /@urql/exchange-graphcache@6.1.1(graphql@16.6.0):
+    resolution: {integrity: sha512-R4BOZLPSfSWVMhfJMRIGY6ktbnIa0EkmMGeXa78SyfLq/g8RgA+8zk9znVVFI0q8LadKCMoPpxIbsx7wJxx7RA==}
     dependencies:
       '@0no-co/graphql.web': 1.0.1(graphql@16.6.0)
       '@urql/core': 4.0.7(graphql@16.6.0)

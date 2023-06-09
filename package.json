@@ -35,7 +35,7 @@
     "@next/mdx": "^13.4.4",
     "@svgr/webpack": "^8.0.1",
     "@urql/exchange-auth": "^2.1.0",
-    "@urql/exchange-graphcache": "^6.0.1",
+    "@urql/exchange-graphcache": "^6.1.1",
     "client-only": "^0.0.1",
     "clsx": "^1.2.1",
     "copy-to-clipboard": "^3.3.3",
