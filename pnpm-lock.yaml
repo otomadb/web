@@ -72,8 +72,8 @@ dependencies:
     specifier: ^0.0.1
     version: 0.0.1
   urql:
-    specifier: ^4.0.0
-    version: 4.0.0(graphql@16.6.0)(react@18.2.0)
+    specifier: ^4.0.3
+    version: 4.0.3(graphql@16.6.0)(react@18.2.0)
   zod:
     specifier: ^3.21.4
     version: 3.21.4
@@ -14025,8 +14025,8 @@ packages:
     resolution: {integrity: sha512-Qp95D4TPJl1kC9SKigDcqgyM2VDVO4RiJc2d4qe5GrYm+zbIQCWWKAFaJNQ4BhdFeDGwBmAxqJBwWSJDb9T3BQ==}
     dev: true
 
-  /urql@4.0.0(graphql@16.6.0)(react@18.2.0):
-    resolution: {integrity: sha512-JY+h1rTLThB9lgoasy9TehL/W2yuzhyRazr6TzLB9ST8+Nm9lKKuyuoLvywhSOHdXtz2FJVFFUeJHE3S+ZfaWA==}
+  /urql@4.0.3(graphql@16.6.0)(react@18.2.0):
+    resolution: {integrity: sha512-ynwez59f5uo31RO9/OD1RveasLGsaRC2mEm5nNGuPiQbpIeuZLQJTya61hr6I9c24YWIHf3Ld29xZy6JW3scvQ==}
     peerDependencies:
       react: '>= 16.8.0'
     dependencies:
