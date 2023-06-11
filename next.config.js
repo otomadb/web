@@ -4,6 +4,7 @@ const nextConfig = {
   swcMinify: true,
   images: {
     domains: [
+      "thumbnails.otomadb.com",
       "nicovideo.cdn.nimg.jp",
       "img.cdn.nimg.jp",
       "i.ytimg.com",
