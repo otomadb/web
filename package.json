@@ -79,7 +79,7 @@
     "babel-loader": "^9.1.2",
     "css-loader": "^6.8.1",
     "encoding": "^0.1.13",
-    "eslint": "8.42.0",
+    "eslint": "8.43.0",
     "eslint-config-next": "13.4.5",
     "eslint-plugin-eslint-comments": "3.2.0",
     "eslint-plugin-simple-import-sort": "10.0.0",
