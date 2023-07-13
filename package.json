@@ -53,7 +53,7 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
-    "@babel/core": "^7.22.8",
+    "@babel/core": "^7.22.9",
     "@graphql-codegen/cli": "^3.3.1",
     "@graphql-codegen/client-preset": "^3.0.1",
     "@graphql-codegen/urql-introspection": "^2.2.1",
