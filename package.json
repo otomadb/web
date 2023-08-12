@@ -23,7 +23,7 @@
     "vercel:storybook": "run-s 'codegen' 'storybook:build'"
   },
   "engines": {
-    "node": "^v18.16.0"
+    "node": "^v18.17.1"
   },
   "packageManager": "pnpm@8.6.11",
   "dependencies": {
@@ -70,7 +70,7 @@
     "@tailwindcss/container-queries": "^0.1.1",
     "@tsconfig/node18": "^2.0.1",
     "@types/mdx": "^2.0.6",
-    "@types/node": "^18.16.18",
+    "@types/node": "^18.17.5",
     "@types/react": "^18.0.38",
     "@types/react-dom": "^18.0.11",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
