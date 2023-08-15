@@ -13,11 +13,11 @@ jobs:
     name: Validate GraphQL Queries
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3
       - uses: pnpm/action-setup@v2
         with:
           version: 8
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@bea5baf987ba7aa777a8a0b4ace377a21c45c381 # v3
         with:
           node-version: 18
           cache: pnpm
@@ -28,11 +28,11 @@ jobs:
     name: ESLint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3
       - uses: pnpm/action-setup@v2
         with:
           version: 8
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@bea5baf987ba7aa777a8a0b4ace377a21c45c381 # v3
         with:
           node-version: 18
           cache: pnpm
@@ -49,11 +49,11 @@ jobs:
     name: Prettier
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3
       - uses: pnpm/action-setup@v2
         with:
           version: 8
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@bea5baf987ba7aa777a8a0b4ace377a21c45c381 # v3
         with:
           node-version: 18
           cache: pnpm
@@ -64,11 +64,11 @@ jobs:
     name: Typecheck
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3
       - uses: pnpm/action-setup@v2
         with:
           version: 8
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@bea5baf987ba7aa777a8a0b4ace377a21c45c381 # v3
         with:
           node-version: 18
           cache: pnpm
