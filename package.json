@@ -49,7 +49,7 @@
     "react-use": "^17.4.0",
     "sass": "^1.63.6",
     "server-only": "^0.0.1",
-    "urql": "^4.0.4",
+    "urql": "^4.0.5",
     "zod": "^3.21.4"
   },
   "devDependencies": {
