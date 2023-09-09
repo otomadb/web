@@ -68,7 +68,7 @@
     "@storybook/react": "7.4.0",
     "@storybook/testing-library": "0.2.0",
     "@tailwindcss/container-queries": "0.1.1",
-    "@tsconfig/node18": "2.0.1",
+    "@tsconfig/node18": "18.2.1",
     "@types/mdx": "2.0.7",
     "@types/node": "18.16.18",
     "@types/react": "18.0.38",
