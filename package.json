@@ -27,7 +27,7 @@
   },
   "packageManager": "pnpm@8.6.11",
   "dependencies": {
-    "@auth0/auth0-react": "^2.2.0",
+    "@auth0/auth0-react": "^2.2.1",
     "@emotion/css": "^11.11.2",
     "@heroicons/react": "^2.0.18",
     "@hookform/error-message": "^2.0.1",
