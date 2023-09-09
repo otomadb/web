@@ -60,7 +60,6 @@ export default async function Page() {
           </div>
           <div className={clsx(["mt-2"])}>
             <Suspense fallback={<p>動画を取得中です</p>}>
-              {/* @ts-expect-error RSC*/}
               <RecentVideos />
             </Suspense>
           </div>
@@ -82,7 +81,6 @@ export default async function Page() {
           </div>
           <div className={clsx(["mt-2"])}>
             <Suspense fallback={<span>リクエストを取得中です</span>}>
-              {/* @ts-expect-error RSC*/}
               <RequestsListSC />
             </Suspense>
           </div>
