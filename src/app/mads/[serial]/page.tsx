@@ -85,7 +85,6 @@ export default async function Page({ params }: { params: { serial: string } }) {
         <h2 className={clsx(["text-md"], ["text-slate-900"])}>似ている動画</h2>
         <div className={clsx(["mt-2"])}>
           <Suspense>
-            {/* @ts-expect-error RSC*/}
             <SimilarVideos
               // props
               videoId={result.data.findVideo.id}
