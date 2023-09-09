@@ -37,7 +37,7 @@
     "@urql/exchange-auth": "^2.1.5",
     "@urql/exchange-graphcache": "^6.1.4",
     "client-only": "^0.0.1",
-    "clsx": "^1.2.1",
+    "clsx": "^2.0.0",
     "copy-to-clipboard": "^3.3.3",
     "date-fns": "^2.30.0",
     "graphql": "^16.7.1",
