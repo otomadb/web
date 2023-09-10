@@ -51,7 +51,6 @@ export default async function Layout({
       )}
     >
       <Suspense fallback={<p>動画情報を取得中です</p>}>
-        {/* @ts-expect-error rsc */}
         <DetailsSection
           // fragment typecheck
           fragment={data.data.findVideo}
@@ -68,7 +67,6 @@ export default async function Layout({
           <section className={clsx(["flex", "flex-col", "gap-y-1"])}>
             <h2 className={clsx(["text-md"], ["text-slate-900"])}>タグ</h2>
             <Suspense fallback={<p>タグを取得中です</p>}>
-              {/* @ts-expect-error RSC */}
               <TaggingsSectionContents
                 // fragment typecheck
                 fragment={data.data.findVideo}
@@ -78,7 +76,6 @@ export default async function Layout({
           <section className={clsx(["flex", "flex-col", "gap-y-1"])}>
             <h2 className={clsx(["text-md"], ["text-slate-900"])}>仮タグ</h2>
             <Suspense fallback={<p>仮タグを取得中です</p>}>
-              {/* @ts-expect-error RSC */}
               <SemitagsSectionContents
                 // fragment typecheck
                 fragment={data.data.findVideo}

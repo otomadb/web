@@ -90,7 +90,6 @@ export default function Page() {
         </div>
         <div className={clsx(["mt-4"])}>
           <Suspense fallback={<p>動画を取得中です</p>}>
-            {/* @ts-expect-error RSC*/}
             <RecentVideos />
           </Suspense>
         </div>
