@@ -74,8 +74,7 @@ const Toast = ({
 export const ToastContext = createContext<{
   call: (inner: JSX.Element, option?: { duration: number }) => void;
 }>({
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  call: () => {},
+  call: () => {}, // eslint-disable-line no-empty-function
 });
 export const ToastProvider: React.FC<{
   children: ReactNode;

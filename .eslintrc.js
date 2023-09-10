@@ -15,6 +15,7 @@ module.exports = {
     "object-shorthand": [2, "always"],
     "quote-props": [2, "consistent"],
     "eqeqeq": 2,
+    "no-empty-function": 2,
     /* unused-imports */
     "unused-imports/no-unused-imports": [2],
     /* simple-import-sort */
@@ -42,6 +43,7 @@ module.exports = {
       parser: "@typescript-eslint/parser",
       rules: {
         "@typescript-eslint/ban-ts-comment": 1,
+        "@typescript-eslint/no-unused-vars": 1,
       },
     },
     {

@@ -10,14 +10,13 @@ export const SourceIdContext = React.createContext<{
   clearSourceId(): void;
 }>({
   sourceId: null,
-  setSourceId: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
-  clearSourceId: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
+  setSourceId: () => {}, // eslint-disable-line no-empty-function
+  clearSourceId: () => {}, // eslint-disable-line no-empty-function
 });
 
 export const SourceIdProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const searchParams = useSearchParams()!;
   const [sourceId, setSourceId] = useState(searchParams.get("sourceId"));
 

@@ -6,9 +6,9 @@ import React, { useContext } from "react";
 export const RequestContext = React.createContext<{
   setRequestId(reqId: string | null): void;
 }>({
-  /* eslint-disable @typescript-eslint/no-empty-function */
+  /* eslint-disable no-empty-function */
   setRequestId: () => {},
-  /* eslint-enable @typescript-eslint/no-empty-function */
+  /* eslint-enable no-empty-function */
 });
 
 export const useSetRequestId = () => {

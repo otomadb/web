@@ -210,16 +210,16 @@ export default function LikeButton({
   const callToast = useToaster();
   const likeVideo = useLikeVideo({
     videoId: fragment.id,
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    onSuccess() {},
+
+    onSuccess() {}, // eslint-disable-line no-empty-function
     onFailure() {
       callToast(<p>いいねに失敗しました。</p>);
     },
   });
   const undoLikeVideo = useUndoLikeVideo({
     videoId: fragment.id,
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    onSuccess() {},
+
+    onSuccess() {}, // eslint-disable-line no-empty-function
     onFailure() {
       callToast(<p>いいねの取り消しに失敗しました。</p>);
     },

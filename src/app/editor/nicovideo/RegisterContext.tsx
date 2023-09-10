@@ -11,13 +11,13 @@ export const RegisterContext = React.createContext<{
   toggleTag(id: string): void;
   toggleSemitag(name: string): void;
 }>({
-  /* eslint-disable @typescript-eslint/no-empty-function */
+  /* eslint-disable no-empty-function */
   setTitle: () => {},
   setSourceId: () => {},
   setThumbnailUrl: () => {},
   toggleTag: () => {},
   toggleSemitag: () => {},
-  /* eslint-enable @typescript-eslint/no-empty-function */
+  /* eslint-enable no-empty-function */
 });
 
 export const useSetTitle = () => {
