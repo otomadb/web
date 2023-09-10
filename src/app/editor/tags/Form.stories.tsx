@@ -1,4 +1,3 @@
-import { css } from "@emotion/css";
 import { Meta, StoryObj } from "@storybook/react";
 import { graphql } from "msw";
 import {
@@ -21,12 +20,38 @@ import {
 import { RegisterTagForm } from "./Form";
 import { Fragment as SucceededToastFragment } from "./SucceededToast";
 
+const mockRegisterTag = graphql.mutation(
+  RegisterTagPage_RegisterTagDocument,
+  (req, res, ctx) => {
+    return res(
+      ctx.data({
+        registerTag: {
+          __typename: "RegisterTagSucceededPayload",
+          ...makeFragmentData(
+            {
+              tag: {
+                ...makeFragmentData(
+                  {
+                    name: "Tag 1",
+                    type: TagType.Character,
+                    explicitParent: null,
+                  },
+                  CommonTagFragment
+                ),
+              },
+            },
+            SucceededToastFragment
+          ),
+        },
+      })
+    );
+  }
+);
+
 const meta = {
   component: RegisterTagForm,
   args: {
-    className: css`
-      width: 1024px;
-    `,
+    style: { width: 1024 },
   },
   render(args) {
     return (
@@ -41,33 +66,7 @@ const meta = {
     layout: "centered",
     msw: {
       handlers: [
-        graphql.mutation(
-          RegisterTagPage_RegisterTagDocument,
-          (req, res, ctx) => {
-            return res(
-              ctx.data({
-                registerTag: {
-                  __typename: "RegisterTagSucceededPayload",
-                  ...makeFragmentData(
-                    {
-                      tag: {
-                        ...makeFragmentData(
-                          {
-                            name: "Tag 1",
-                            type: TagType.Character,
-                            explicitParent: null,
-                          },
-                          CommonTagFragment
-                        ),
-                      },
-                    },
-                    SucceededToastFragment
-                  ),
-                },
-              })
-            );
-          }
-        ),
+        mockRegisterTag,
         /*
         graphql.query(TagSearcher_SearchDocument, (req, res, ctx) =>
           res(

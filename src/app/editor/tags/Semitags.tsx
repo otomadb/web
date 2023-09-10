@@ -136,11 +136,19 @@ const Query = graphql(`
 `);
 export const Semitags: React.FC<{
   className?: string;
+  style?: React.CSSProperties;
   fields: FieldArrayWithId<FormSchema, "resolveSemitags", "id">[];
   append: UseFieldArrayAppend<FormSchema, "resolveSemitags">;
   remove: UseFieldArrayRemove;
   setTemporaryPrimaryTitle(name: string): void;
-}> = ({ className, fields, append, remove, setTemporaryPrimaryTitle }) => {
+}> = ({
+  className,
+  style,
+  fields,
+  append,
+  remove,
+  setTemporaryPrimaryTitle,
+}) => {
   const selectedIds = useMemo(
     () => fields.map(({ semitagId }) => semitagId),
     [fields]
@@ -155,7 +163,10 @@ export const Semitags: React.FC<{
   useEffect(() => refetch(), [fields, refetch]);
 
   return (
-    <div className={clsx(className, ["flex", "flex-col", ["gap-y-4"]])}>
+    <div
+      className={clsx(className, ["flex", "flex-col", ["gap-y-4"]])}
+      style={style}
+    >
       <div>
         <div>
           <div className={clsx(["text-xs"])}>解決される仮タグ</div>

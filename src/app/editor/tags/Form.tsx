@@ -19,9 +19,10 @@ import { Semitags } from "./Semitags";
 import { SucceededToast } from "./SucceededToast";
 import { useRegister } from "./useRegister";
 
-export const RegisterTagForm: React.FC<{ className?: string }> = ({
-  className,
-}) => {
+export const RegisterTagForm: React.FC<{
+  className?: string;
+  style?: React.CSSProperties;
+}> = ({ className, style }) => {
   const {
     control,
     formState: { errors },
@@ -74,6 +75,7 @@ export const RegisterTagForm: React.FC<{ className?: string }> = ({
         ["bg-slate-50"],
         ["flex", "gap-x-4", "items-stretch"]
       )}
+      style={style}
       onSubmit={handleSubmit(onSubmit)}
     >
       <div

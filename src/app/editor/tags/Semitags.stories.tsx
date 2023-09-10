@@ -1,4 +1,3 @@
-import { css } from "@emotion/css";
 import { action } from "@storybook/addon-actions";
 import { Meta, StoryObj } from "@storybook/react";
 import { graphql } from "msw";
@@ -18,9 +17,7 @@ import { Semitags } from "./Semitags";
 const meta = {
   component: Semitags,
   args: {
-    className: css`
-      width: 640px;
-    `,
+    style: { width: 640 },
     append: action("append"),
     remove: action("remove"),
     setTemporaryPrimaryTitle: action("setTemporaryPrimaryTitle"),
