@@ -51,7 +51,6 @@ export default async function Layout({
       )}
     >
       <Suspense fallback={<p>動画情報を取得中です</p>}>
-
         <DetailsSection
           // fragment typecheck
           fragment={data.data.findVideo}
