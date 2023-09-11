@@ -4,15 +4,19 @@ import "client-only";
 
 import { useAuth0 } from "@auth0/auth0-react";
 import { ResultOf } from "@graphql-typed-document-node/core";
+import { graphql as mswGraphQL } from "msw";
 import { useCallback } from "react";
 import { SubmitHandler } from "react-hook-form";
 import { useMutation } from "urql";
 
-import { graphql } from "~/gql";
+import { Fragment as CommonTagFragment } from "~/components/CommonTag";
+import { graphql, makeFragmentData } from "~/gql";
+import { TagType } from "~/gql/graphql";
 
 import { FormSchema } from "./FormSchema";
+import { Fragment as SucceededToastFragment } from "./SucceededToast";
 
-export const Mutation = graphql(`
+export const mutation = graphql(`
   mutation RegisterTagPage_RegisterTag($input: RegisterTagInput!) {
     registerTag(input: $input) {
       __typename
@@ -27,12 +31,12 @@ export const useRegister = ({
 }: {
   onSuccess(
     data: Extract<
-      ResultOf<typeof Mutation>["registerTag"],
+      ResultOf<typeof mutation>["registerTag"],
       { __typename: "RegisterTagSucceededPayload" }
     >
   ): void;
 }): SubmitHandler<FormSchema> => {
-  const [, mutateRegisterTag] = useMutation(Mutation);
+  const [, mutateRegisterTag] = useMutation(mutation);
   const { getAccessTokenSilently } = useAuth0();
 
   return useCallback(
@@ -79,3 +83,28 @@ export const useRegister = ({
     [getAccessTokenSilently, mutateRegisterTag, onSuccess]
   );
 };
+
+export const mockSuccessful = mswGraphQL.mutation(mutation, (req, res, ctx) => {
+  return res(
+    ctx.data({
+      registerTag: {
+        __typename: "RegisterTagSucceededPayload",
+        ...makeFragmentData(
+          {
+            tag: {
+              ...makeFragmentData(
+                {
+                  name: "Tag 1",
+                  type: TagType.Character,
+                  explicitParent: null,
+                },
+                CommonTagFragment
+              ),
+            },
+          },
+          SucceededToastFragment
+        ),
+      },
+    })
+  );
+});

@@ -2,7 +2,6 @@
 
 import "client-only";
 
-import { PlusIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import React, { useId, useState } from "react";
 import {
@@ -15,6 +14,7 @@ import {
 import { BlueButton, RedButton } from "~/components/Button";
 
 import { FormSchema } from "./FormSchema";
+import { PlusIcon, XMarkIcon } from "./Icons";
 
 export const ExtraNames: React.FC<{
   className?: string;

@@ -73,38 +73,35 @@ export const RegisterTagForm: React.FC<{
         ["rounded"],
         ["border", "border-slate-300"],
         ["bg-slate-50"],
-        ["flex", "gap-x-4", "items-stretch"]
+        ["flex", "flex-col"]
       )}
       style={style}
       onSubmit={handleSubmit(onSubmit)}
     >
-      <div
-        className={clsx(
-          ["w-96"],
-          ["flex-shrink-0"],
-          ["flex", "flex-col", ["gap-y-4"]],
-          ["border"],
-          ["rounded-md"],
-          ["px-4", "py-4"]
-        )}
-      >
-        <div className={clsx(["flex-grow"], ["flex", "flex-col", ["gap-y-4"]])}>
+      <div className={clsx(["flex", "flex-col", ["gap-y-4"]])}>
+        <div>
           <PrimaryName
             register={register("primaryName")}
             errors={errors.primaryName}
           />
+        </div>
+        <div>
           <ExtraNames
             register={(index) => register(`extraNames.${index}.name`)}
             extraNames={extraNames}
             append={appendExtraName}
             remove={removeExtraName}
           />
+        </div>
+        <div>
           <ExplicitParentTag
             explicitParentTagId={watch("explicitParentTagId")}
             implicitParentTagIds={implicitParents.map(({ tagId }) => tagId)}
             set={(id) => setValue("explicitParentTagId", id)}
-            remove={() => setValue("explicitParentTagId", undefined)}
+            removeSelected={() => setValue("explicitParentTagId", undefined)}
           />
+        </div>
+        <div>
           <ImplictParentTags
             explicitParentTagId={watch("explicitParentTagId")}
             implicitParents={implicitParents}

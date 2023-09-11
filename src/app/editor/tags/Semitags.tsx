@@ -3,6 +3,7 @@
 import "client-only";
 
 import clsx from "clsx";
+import { graphql as mswGraphQL } from "msw";
 import React, { useEffect, useMemo } from "react";
 import {
   FieldArrayWithId,
@@ -12,11 +13,11 @@ import {
 import { useQuery } from "urql";
 
 import { FragmentType, graphql, useFragment } from "~/gql";
-import { RegisterTagPage_Semitags_SelectedDocument } from "~/gql/graphql";
+import { Semitag } from "~/gql/graphql";
 
 import { FormSchema } from "./FormSchema";
 
-graphql(`
+const querySelected = graphql(`
   query RegisterTagPage_Semitags_Selected($id: ID!) {
     getSemitag(id: $id) {
       id
@@ -28,6 +29,45 @@ graphql(`
     }
   }
 `);
+export const mockQuerySelected = mswGraphQL.query(
+  querySelected,
+  (req, res, ctx) => {
+    switch (req.variables.id) {
+      case "st1":
+        return res(
+          ctx.data({
+            getSemitag: { id: "st1", name: "Semitag 1" },
+          })
+        );
+      case "st2":
+        return res(
+          ctx.data({
+            getSemitag: { id: "st2", name: "Semitag 2" },
+          })
+        );
+      case "st3":
+        return res(
+          ctx.data({
+            getSemitag: { id: "st3", name: "Semitag 3" },
+          })
+        );
+      case "st4":
+        return res(
+          ctx.data({
+            getSemitag: { id: "st4", name: "Semitag 4" },
+          })
+        );
+      case "st5":
+        return res(
+          ctx.data({
+            getSemitag: { id: "st5", name: "Semitag" },
+          })
+        );
+      default:
+        return res(ctx.errors([{ message: "not found" }]));
+    }
+  }
+);
 export const Selected: React.FC<{
   className?: string;
   semitagId: string;
@@ -35,7 +75,7 @@ export const Selected: React.FC<{
   disabled: boolean;
 }> = ({ className, semitagId, remove, disabled }) => {
   const [{ data }] = useQuery({
-    query: RegisterTagPage_Semitags_SelectedDocument,
+    query: querySelected,
     variables: { id: semitagId },
   });
 
@@ -119,7 +159,7 @@ export const UnselectedRaw: React.FC<{
   );
 };
 
-const Query = graphql(`
+const query = graphql(`
   query RegisterTagPage_Semitags_FindSemitags {
     findSemitags(checked: false) {
       nodes {
@@ -154,7 +194,7 @@ export const Semitags: React.FC<{
     [fields]
   );
   const [{ data, fetching }, refetch] = useQuery({
-    query: Query,
+    query,
     variables: {
       // except: selectedIds
     },
@@ -237,3 +277,27 @@ export const Semitags: React.FC<{
     </div>
   );
 };
+export const mockSemitags = mswGraphQL.query(query, (req, res, ctx) =>
+  res(
+    ctx.data({
+      findSemitags: {
+        nodes: (() => {
+          const rtn: Semitag[] = [];
+          /*
+          // if (!req.variables.except.includes("st1"))
+          rtn.push({ id: "st1", name: "Semitag 1" });
+          // if (!req.variables.except.includes("st2"))
+          rtn.push({ id: "st2", name: "Semitag 2" });
+          // if (!req.variables.except.includes("st3"))
+          rtn.push({ id: "st3", name: "Semitag 3" });
+          // if (!req.variables.except.includes("st4"))
+          rtn.push({ id: "st4", name: "Semitag 4" });
+          // if (!req.variables.except.includes("st5"))
+          rtn.push({ id: "st5", name: "Semitag 5" });
+          */
+          return rtn;
+        })(),
+      },
+    })
+  )
+);
