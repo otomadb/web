@@ -5,9 +5,8 @@ import { useQuery } from "urql";
 
 import { RedButton } from "~/components/Button";
 import { CommonTag } from "~/components/CommonTag";
+import { XMarkIcon } from "~/components/Icons";
 import { graphql } from "~/gql";
-
-import { XMarkIcon } from "./Icons";
 
 export const query = graphql(`
   query RegisterTagPage_SelectedTag($id: ID!) {

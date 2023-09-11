@@ -12,9 +12,9 @@ import {
 } from "react-hook-form";
 
 import { BlueButton, RedButton } from "~/components/Button";
+import { PlusIcon, XMarkIcon } from "~/components/Icons";
 
 import { FormSchema } from "./FormSchema";
-import { PlusIcon, XMarkIcon } from "./Icons";
 
 export const ExtraNames: React.FC<{
   className?: string;
