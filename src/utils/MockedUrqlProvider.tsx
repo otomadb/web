@@ -5,7 +5,7 @@ import {
   Provider as UrqlProvider,
 } from "urql";
 
-export const MockUrqlProvider: React.FC<{ children: ReactNode }> = ({
+export const MockedUrqlProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   return (

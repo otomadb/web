@@ -7,11 +7,11 @@ import { Fragment as CommonTagFragment } from "~/components/CommonTag";
 import { mockTagSearcher } from "~/components/TagSearcher/index.mocks";
 import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
-import { MockUrqlProvider } from "~/utils/MockUrqlProvider";
+import { MockedUrqlProvider } from "~/utils/MockedUrqlProvider";
 
 import { ExplicitParentTag } from "./ExplicitParentTag";
 import { RegisterTagForm } from "./Form";
-import { query } from "./SelectedTag";
+import { Query } from "./SelectedTag";
 
 const meta = {
   component: RegisterTagForm,
@@ -25,9 +25,9 @@ const meta = {
   },
   render(args) {
     return (
-      <MockUrqlProvider>
+      <MockedUrqlProvider>
         <ExplicitParentTag {...args} />
-      </MockUrqlProvider>
+      </MockedUrqlProvider>
     );
   },
 } as Meta<typeof ExplicitParentTag>;
@@ -57,7 +57,7 @@ export const タグを選択済み: Story = {
   parameters: {
     msw: {
       handlers: [
-        mockGql.query(query, (req, res, ctx) =>
+        mockGql.query(Query, (req, res, ctx) =>
           res(
             ctx.data({
               getTag: {

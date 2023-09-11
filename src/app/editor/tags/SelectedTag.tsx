@@ -8,7 +8,7 @@ import { CommonTag } from "~/components/CommonTag";
 import { XMarkIcon } from "~/components/Icons";
 import { graphql } from "~/gql";
 
-export const query = graphql(`
+export const Query = graphql(`
   query RegisterTagPage_SelectedTag($id: ID!) {
     getTag(id: $id) {
       id
@@ -22,7 +22,7 @@ export const SelectedTag: React.FC<{
   tagId: string;
   remove(): void;
 }> = ({ className, style, tagId, remove }) => {
-  const [{ data }] = useQuery({ query, variables: { id: tagId } });
+  const [{ data }] = useQuery({ query: Query, variables: { id: tagId } });
   return (
     <div className={clsx(className, ["flex", "gap-x-2"])} style={style}>
       <div className={clsx(["flex-grow"])}>

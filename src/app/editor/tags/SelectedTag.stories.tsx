@@ -5,10 +5,10 @@ import { graphql as mockGql } from "msw";
 import { Fragment as CommonTagFragment } from "~/components/CommonTag";
 import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
-import { MockUrqlProvider } from "~/utils/MockUrqlProvider";
+import { MockedUrqlProvider } from "~/utils/MockedUrqlProvider";
 
 import { RegisterTagForm } from "./Form";
-import { query, SelectedTag } from "./SelectedTag";
+import { Query, SelectedTag } from "./SelectedTag";
 
 const meta = {
   component: RegisterTagForm,
@@ -21,15 +21,15 @@ const meta = {
   },
   render(args) {
     return (
-      <MockUrqlProvider>
+      <MockedUrqlProvider>
         <SelectedTag {...args} />
-      </MockUrqlProvider>
+      </MockedUrqlProvider>
     );
   },
   parameters: {
     msw: {
       handlers: [
-        mockGql.query(query, (req, res, ctx) =>
+        mockGql.query(Query, (req, res, ctx) =>
           res(
             ctx.data({
               getTag: {

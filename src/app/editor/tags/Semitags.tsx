@@ -3,167 +3,21 @@
 import "client-only";
 
 import clsx from "clsx";
-import { graphql as mswGraphQL } from "msw";
-import React, { useEffect, useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import {
   FieldArrayWithId,
   UseFieldArrayAppend,
   UseFieldArrayRemove,
 } from "react-hook-form";
-import { useQuery } from "urql";
 
 import { FragmentType, graphql, useFragment } from "~/gql";
-import { Semitag } from "~/gql/graphql";
 
 import { FormSchema } from "./FormSchema";
 
-const querySelected = graphql(`
-  query RegisterTagPage_Semitags_Selected($id: ID!) {
-    getSemitag(id: $id) {
-      id
-      name
-      video {
-        id
-        title
-      }
-    }
-  }
-`);
-export const mockQuerySelected = mswGraphQL.query(
-  querySelected,
-  (req, res, ctx) => {
-    switch (req.variables.id) {
-      case "st1":
-        return res(
-          ctx.data({
-            getSemitag: { id: "st1", name: "Semitag 1" },
-          })
-        );
-      case "st2":
-        return res(
-          ctx.data({
-            getSemitag: { id: "st2", name: "Semitag 2" },
-          })
-        );
-      case "st3":
-        return res(
-          ctx.data({
-            getSemitag: { id: "st3", name: "Semitag 3" },
-          })
-        );
-      case "st4":
-        return res(
-          ctx.data({
-            getSemitag: { id: "st4", name: "Semitag 4" },
-          })
-        );
-      case "st5":
-        return res(
-          ctx.data({
-            getSemitag: { id: "st5", name: "Semitag" },
-          })
-        );
-      default:
-        return res(ctx.errors([{ message: "not found" }]));
-    }
-  }
-);
-export const Selected: React.FC<{
-  className?: string;
-  semitagId: string;
-  remove(): void;
-  disabled: boolean;
-}> = ({ className, semitagId, remove, disabled }) => {
-  const [{ data }] = useQuery({
-    query: querySelected,
-    variables: { id: semitagId },
-  });
-
-  return (
-    <button
-      type="button"
-      className={clsx(
-        className,
-        ["px-4", "py-1"],
-        ["hover:bg-blue-200"],
-        ["grid", "grid-cols-2"]
-      )}
-      onClick={() => remove()}
-      disabled={disabled || !data}
-    >
-      {data && (
-        <>
-          <div className={clsx(["flex"])}>
-            <div className={clsx(["text-xs"])}>{data.getSemitag.name}</div>
-          </div>
-          <div className={clsx(["flex"])}>
-            <div className={clsx(["text-xs"])}>
-              {data.getSemitag.video.title}
-            </div>
-          </div>
-        </>
-      )}
-    </button>
-  );
-};
-
-const Fragment = graphql(`
-  fragment RegisterTagPage_Semitags_Unselected on Semitag {
-    id
-    name
-    video {
-      id
-      title
-    }
-  }
-`);
-export const UnselectedRaw: React.FC<{
-  className?: string;
-  append(): void;
-  fragment: FragmentType<typeof Fragment>;
-  disabled: boolean;
-}> = ({ className, append, disabled, ...props }) => {
-  const fragment = useFragment(Fragment, props.fragment);
-  return (
-    <button
-      type="button"
-      className={clsx(
-        className,
-        ["group"],
-        ["px-4", "py-1"],
-        ["grid", "grid-cols-2"],
-        ["disabled:bg-slate-200", "hover:bg-blue-200"]
-      )}
-      onClick={() => append()}
-      disabled={disabled}
-    >
-      <div
-        className={clsx(
-          ["text-xs"],
-          ["text-slate-900", "group-disabled:text-slate-300"],
-          ["text-left"]
-        )}
-      >
-        {fragment.name}
-      </div>
-      <div
-        className={clsx(
-          ["text-xs"],
-          ["text-slate-900", "group-disabled:text-slate-300"],
-          ["text-left"]
-        )}
-      >
-        {fragment.video.title}
-      </div>
-    </button>
-  );
-};
-
-const query = graphql(`
-  query RegisterTagPage_Semitags_FindSemitags {
+export const Fragment = graphql(`
+  fragment EditorTagsPage_Form_Semitags on Query {
     findSemitags(checked: false) {
       nodes {
-        ...RegisterTagPage_Semitags_Unselected
         id
         name
         video {
@@ -181,6 +35,7 @@ export const Semitags: React.FC<{
   append: UseFieldArrayAppend<FormSchema, "resolveSemitags">;
   remove: UseFieldArrayRemove;
   setTemporaryPrimaryTitle(name: string): void;
+  fragment?: FragmentType<typeof Fragment>;
 }> = ({
   className,
   style,
@@ -188,116 +43,197 @@ export const Semitags: React.FC<{
   append,
   remove,
   setTemporaryPrimaryTitle,
+  ...props
 }) => {
+  const fragment = useFragment(Fragment, props.fragment);
+  const removeById = useCallback(
+    (id: string) => {
+      console.dir(fields);
+      remove(fields.findIndex((field) => field.semitagId === id));
+    },
+    [fields, remove]
+  );
   const selectedIds = useMemo(
     () => fields.map(({ semitagId }) => semitagId),
     [fields]
   );
-  const [{ data, fetching }, refetch] = useQuery({
-    query,
-    variables: {
-      // except: selectedIds
-    },
-    requestPolicy: "network-only",
-  });
-  useEffect(() => refetch(), [fields, refetch]);
+  const selecteds = useMemo(() => {
+    return fragment?.findSemitags.nodes
+      .filter(({ id }) => selectedIds.includes(id))
+      .map((semitag) => ({
+        id: semitag.id,
+        name: semitag.name,
+        video: semitag.video,
+      }));
+  }, [fragment?.findSemitags.nodes, selectedIds]);
+  const semitags = useMemo(() => {
+    return fragment?.findSemitags.nodes.map((semitag) => ({
+      id: semitag.id,
+      name: semitag.name,
+      video: semitag.video,
+      isSelected: selectedIds.includes(semitag.id),
+    }));
+  }, [fragment?.findSemitags.nodes, selectedIds]);
 
   return (
     <div
-      className={clsx(className, ["flex", "flex-col", ["gap-y-4"]])}
+      className={clsx(
+        className,
+        ["flex", "flex-col", "gap-y-4"],
+        [["px-4"], ["py-4"]],
+        ["border", "border-slate-700", "rounded"],
+        ["bg-slate-900"]
+      )}
       style={style}
     >
-      <div>
-        <div>
-          <div className={clsx(["text-xs"])}>解決される仮タグ</div>
+      <div className={clsx(["flex-shrink-0"], ["flex", "flex-col"])}>
+        <div className={clsx(["px-2"])}>
+          <div className={clsx(["text-xs", "text-slate-400"])}>
+            選択中の仮タグ
+          </div>
         </div>
         <div
           className={clsx(
             ["mt-2"],
-            ["flex-grow"],
-            ["bg-slate-100"],
-            ["h-24"],
+            ["h-[196px]"],
             ["overflow-y-scroll"],
-            ["border", "border-slate-300"]
+            ["border", "border-slate-700"],
+            ["bg-slate-800"]
           )}
         >
-          <div
-            className={clsx(
-              ["divide-y", "divide-slate-300"],
-              ["flex", "flex-col"]
-            )}
-          >
-            {fields.map(({ id, semitagId }, index) => (
-              <Selected
-                key={id}
-                semitagId={semitagId}
-                remove={() => {
-                  remove(index);
-                }}
-                disabled={fetching}
-              />
-            ))}
-          </div>
+          {!selecteds && (
+            // TODO: Loading animation
+            <div className={clsx(["px-4", "py-4"])}>
+              <div className={clsx(["text-sm", "text-slate-400"])}>
+                Fetching
+              </div>
+            </div>
+          )}
+          {selecteds && (
+            <div
+              className={clsx(
+                ["divide-y", "divide-slate-700"],
+                ["flex", "flex-col"]
+              )}
+            >
+              {selecteds.map(({ id, name, video }) => (
+                <button
+                  key={id}
+                  type="button"
+                  className={clsx(
+                    ["px-4", "py-2"],
+                    ["grid", "grid-cols-2", "gap-x-2"],
+                    ["bg-slate-950", "hover:bg-sky-900"]
+                  )}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    removeById(id);
+                  }}
+                >
+                  <div
+                    className={clsx(["text-sm", "text-slate-300", "text-left"])}
+                  >
+                    {name}
+                  </div>
+                  <div
+                    className={clsx(["text-sm", "text-slate-300", "text-left"])}
+                  >
+                    {video.title}
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       </div>
-      <div className={clsx(["flex-grow"], ["flex", "flex-col"])}>
-        <div className={clsx(["flex-shrink-0"])}>
-          <div className={clsx(["text-xs"])}>仮タグを選択</div>
+      <div
+        className={clsx(
+          ["flex-grow"],
+          ["flex", "flex-col"],
+          ["overflow-y-hidden"]
+        )}
+      >
+        <div className={clsx(["px-2"])}>
+          <div className={clsx(["text-xs", "text-slate-400"])}>
+            仮タグを選択
+          </div>
         </div>
         <div
           className={clsx(
             ["mt-2"],
-            ["flex-grow"],
-            ["bg-slate-100"],
-            ["h-72"],
+            ["h-full"],
             ["overflow-y-scroll"],
-            ["border", "border-slate-300"]
+            ["border", "border-slate-700"],
+            ["bg-slate-800"]
           )}
         >
-          <div
-            className={clsx(
-              ["divide-y", "divide-slate-300"],
-              ["flex", "flex-col"]
-            )}
-          >
-            {data?.findSemitags.nodes.map((semitag) => (
-              <UnselectedRaw
-                key={semitag.id}
-                fragment={semitag}
-                append={() => {
-                  append({ semitagId: semitag.id });
-                  setTemporaryPrimaryTitle(semitag.name);
-                }}
-                disabled={selectedIds.includes(semitag.id)}
-              />
-            ))}
-          </div>
+          {!semitags && (
+            // TODO: Loading animation
+            <div className={clsx(["px-4", "py-4"])}>
+              <div className={clsx(["text-sm", "text-slate-400"])}>
+                Fetching
+              </div>
+            </div>
+          )}
+          {semitags && (
+            <div
+              className={clsx(
+                ["divide-y", "divide-slate-700"],
+                ["flex", "flex-col"]
+              )}
+            >
+              {semitags.map(({ id, name, video, isSelected: selected }) => (
+                <button
+                  key={id}
+                  type="button"
+                  className={clsx(
+                    ["px-4", "py-2"],
+                    ["grid", "grid-cols-2", "gap-x-2"],
+                    !selected && ["bg-slate-950", "hover:bg-sky-900"],
+                    selected && ["bg-sky-700"]
+                  )}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (selected) {
+                      removeById(id);
+                    } else {
+                      append({ semitagId: id });
+                      setTemporaryPrimaryTitle(name);
+                    }
+                  }}
+                >
+                  <div
+                    className={clsx([
+                      "text-sm",
+                      {
+                        "text-slate-300": !selected,
+                        "text-sky-300": selected,
+                      },
+                      "text-left",
+                      { "font-bold": selected },
+                    ])}
+                  >
+                    {name}
+                  </div>
+                  <div
+                    className={clsx([
+                      "text-sm",
+                      {
+                        "text-slate-300": !selected,
+                        "text-sky-300": selected,
+                      },
+                      "text-left",
+                      { "font-bold": selected },
+                    ])}
+                  >
+                    {video.title}
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>
   );
 };
-export const mockSemitags = mswGraphQL.query(query, (req, res, ctx) =>
-  res(
-    ctx.data({
-      findSemitags: {
-        nodes: (() => {
-          const rtn: Semitag[] = [];
-          /*
-          // if (!req.variables.except.includes("st1"))
-          rtn.push({ id: "st1", name: "Semitag 1" });
-          // if (!req.variables.except.includes("st2"))
-          rtn.push({ id: "st2", name: "Semitag 2" });
-          // if (!req.variables.except.includes("st3"))
-          rtn.push({ id: "st3", name: "Semitag 3" });
-          // if (!req.variables.except.includes("st4"))
-          rtn.push({ id: "st4", name: "Semitag 4" });
-          // if (!req.variables.except.includes("st5"))
-          rtn.push({ id: "st5", name: "Semitag 5" });
-          */
-          return rtn;
-        })(),
-      },
-    })
-  )
-);

@@ -6,9 +6,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
 import React from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
+import { useQuery } from "urql";
 
 import { BlueButton } from "~/components/Button";
 import { useToaster } from "~/components/Toaster";
+import { graphql } from "~/gql";
 
 import { ExplicitParentTag } from "./ExplicitParentTag";
 import { ExtraNames } from "./ExtraNames";
@@ -19,10 +21,16 @@ import { Semitags } from "./Semitags";
 import { SucceededToast } from "./SucceededToast";
 import { useRegister } from "./useRegister";
 
+export const Query = graphql(`
+  query EditorTagsPage_Form {
+    ...EditorTagsPage_Form_Semitags
+  }
+`);
 export const RegisterTagForm: React.FC<{
   className?: string;
   style?: React.CSSProperties;
 }> = ({ className, style }) => {
+  const [{ data }] = useQuery({ query: Query, requestPolicy: "network-only" });
   const {
     control,
     formState: { errors },
@@ -67,75 +75,75 @@ export const RegisterTagForm: React.FC<{
 
   return (
     <form
-      className={clsx(
-        className,
-        [["px-4"], ["py-4"]],
-        ["rounded"],
-        ["border", "border-slate-300"],
-        ["bg-slate-50"],
-        ["flex", "flex-col"]
-      )}
       style={style}
+      className={clsx(className, ["flex"], ["gap-x-4"])}
       onSubmit={handleSubmit(onSubmit)}
     >
-      <div className={clsx(["flex", "flex-col", ["gap-y-4"]])}>
-        <div>
-          <PrimaryName
-            register={register("primaryName")}
-            errors={errors.primaryName}
-          />
-        </div>
-        <div>
-          <ExtraNames
-            register={(index) => register(`extraNames.${index}.name`)}
-            extraNames={extraNames}
-            append={appendExtraName}
-            remove={removeExtraName}
-          />
-        </div>
-        <div>
-          <ExplicitParentTag
-            explicitParentTagId={watch("explicitParentTagId")}
-            implicitParentTagIds={implicitParents.map(({ tagId }) => tagId)}
-            set={(id) => setValue("explicitParentTagId", id)}
-            removeSelected={() => setValue("explicitParentTagId", undefined)}
-          />
-        </div>
-        <div>
-          <ImplictParentTags
-            explicitParentTagId={watch("explicitParentTagId")}
-            implicitParents={implicitParents}
-            append={appendImplicitParent}
-            remove={removeImplicitParent}
-          />
-        </div>
-        <div className={clsx(["flex-shrink-0"])}>
-          <BlueButton
-            type="submit"
-            className={clsx(["text-md"], ["py-1"], ["px-3"])}
-          >
-            追加
-          </BlueButton>
-        </div>
-      </div>
       <div
         className={clsx(
-          ["flex-grow"],
-          ["border"],
-          ["rounded-md"],
-          ["px-4", "py-4"]
+          ["flex-grow", "flex-shrink-0"],
+          ["flex", "flex-col", ["gap-y-4"]]
         )}
       >
-        <Semitags
-          className={clsx(["h-full"])}
-          fields={resolveSemitags}
-          append={appendResolveSemitag}
-          remove={removeResolveSemitag}
-          setTemporaryPrimaryTitle={(temp) => {
-            if (getValues("primaryName") === "") setValue("primaryName", temp);
-          }}
-        />
+        <div
+          className={clsx(
+            ["flex-grow", "flex-shrink-0"],
+            [["px-4"], ["py-4"]],
+            ["border", "border-slate-300", "rounded"],
+            ["bg-slate-50"],
+            ["flex", "flex-col", ["gap-y-4"]]
+          )}
+        >
+          <div>
+            <PrimaryName
+              register={register("primaryName")}
+              errors={errors.primaryName}
+            />
+          </div>
+          <div>
+            <ExtraNames
+              register={(index) => register(`extraNames.${index}.name`)}
+              extraNames={extraNames}
+              append={appendExtraName}
+              remove={removeExtraName}
+            />
+          </div>
+          <div>
+            <ExplicitParentTag
+              explicitParentTagId={watch("explicitParentTagId")}
+              implicitParentTagIds={implicitParents.map(({ tagId }) => tagId)}
+              set={(id) => setValue("explicitParentTagId", id)}
+              removeSelected={() => setValue("explicitParentTagId", undefined)}
+            />
+          </div>
+          <div>
+            <ImplictParentTags
+              explicitParentTagId={watch("explicitParentTagId")}
+              implicitParents={implicitParents}
+              append={appendImplicitParent}
+              remove={removeImplicitParent}
+            />
+          </div>
+          <div className={clsx(["flex-shrink-0"])}>
+            <BlueButton
+              type="submit"
+              className={clsx(["text-md"], ["py-1"], ["px-3"])}
+            >
+              追加
+            </BlueButton>
+          </div>
+        </div>
       </div>
+      <Semitags
+        className={clsx(["w-[1024px]"], ["flex-shrink-0"])}
+        fragment={data}
+        fields={resolveSemitags}
+        append={appendResolveSemitag}
+        remove={removeResolveSemitag}
+        setTemporaryPrimaryTitle={(temp) => {
+          if (getValues("primaryName") === "") setValue("primaryName", temp);
+        }}
+      />
     </form>
   );
 };

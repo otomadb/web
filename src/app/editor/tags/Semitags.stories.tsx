@@ -1,43 +1,88 @@
 import { action } from "@storybook/addon-actions";
 import { Meta, StoryObj } from "@storybook/react";
 
-import { MockUrqlProvider } from "~/utils/MockUrqlProvider";
+import { makeFragmentData } from "~/gql";
+import { MockedUrqlProvider } from "~/utils/MockedUrqlProvider";
 
-import { mockQuerySelected, mockSemitags, Semitags } from "./Semitags";
+import { Fragment, Semitags } from "./Semitags";
 
 const meta = {
   component: Semitags,
   args: {
-    style: { width: 640 },
+    style: { width: 1024, height: 860 },
+    fields: [],
     append: action("append"),
     remove: action("remove"),
     setTemporaryPrimaryTitle: action("setTemporaryPrimaryTitle"),
   },
   render(args) {
     return (
-      <MockUrqlProvider>
+      <MockedUrqlProvider>
         <Semitags {...args} />
-      </MockUrqlProvider>
+      </MockedUrqlProvider>
     );
-  },
-  parameters: {
-    layout: "centered",
-    msw: { handlers: [mockQuerySelected, mockSemitags] },
   },
 } as Meta<typeof Semitags>;
 export default meta;
 
-export const NotSelected: StoryObj<typeof meta> = {
+type Story = StoryObj<typeof meta>;
+
+export const Primary: Story = {
   args: {
-    fields: [],
+    fragment: makeFragmentData(
+      {
+        findSemitags: {
+          nodes: [...new Array(30)].map((_, i) => {
+            const id = `semitag:${i + 1}`;
+            return {
+              id,
+              name: `Semitag ${i + 1}`,
+              video: {
+                id: `video:1`,
+                title: `Video 1`,
+              },
+            };
+          }),
+        },
+      },
+      Fragment
+    ),
+    fields: [
+      { id: "semitag:3", semitagId: "semitag:3" },
+      { id: "semitag:4", semitagId: "semitag:4" },
+    ],
   },
 };
 
-export const Selected: StoryObj<typeof meta> = {
+export const Less: Story = {
   args: {
+    fragment: makeFragmentData(
+      {
+        findSemitags: {
+          nodes: [...new Array(5)].map((_, i) => {
+            const id = `semitag:${i + 1}`;
+            return {
+              id,
+              name: `Semitag ${i + 1}`,
+              video: {
+                id: `video:1`,
+                title: `Video 1`,
+              },
+            };
+          }),
+        },
+      },
+      Fragment
+    ),
     fields: [
-      { id: "id:st1", semitagId: "st1" },
-      { id: "id:st2", semitagId: "st2" },
+      { id: "semitag:3", semitagId: "semitag:3" },
+      { id: "semitag:4", semitagId: "semitag:4" },
     ],
+  },
+};
+
+export const Loading: Story = {
+  args: {
+    fragment: undefined,
   },
 };
