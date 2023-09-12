@@ -8,6 +8,7 @@ import React, { useCallback, useMemo, useReducer, useState } from "react";
 import { BlueButton, RedButton } from "~/components/Button";
 import { PlusIcon, XMarkIcon } from "~/components/Icons";
 import { TagSearcher } from "~/components/TagSearcher";
+import { TextInput2 } from "~/components/TextInput";
 import { useToaster } from "~/components/Toaster";
 
 import { SelectedTag } from "./SelectedTag";
@@ -149,21 +150,10 @@ export const AddTagForm: React.FC<{
             </div>
             <div className={clsx(["mt-1"], ["flex", "flex-col"])}>
               <div className={clsx(["w-full"])}>
-                <input
-                  type={"text"}
+                <TextInput2
+                  className={clsx(["w-full"], ["flex-grow"])}
                   placeholder="タグの主な名前"
-                  autoComplete="off"
-                  data-1p-ignore
-                  className={clsx(
-                    ["w-full"],
-                    ["flex-grow"],
-                    ["py-1", "px-2"],
-                    ["bg-slate-950"],
-                    ["border", "border-slate-700", "rounded"],
-                    ["text-sm", "text-slate-300", "placeholder-slate-600"]
-                  )}
-                  onChange={(e) => setPrimaryName(e.target.value)}
-                  value={primaryName}
+                  onChange={(v) => setPrimaryName(v)}
                 />
               </div>
             </div>
@@ -176,21 +166,10 @@ export const AddTagForm: React.FC<{
             </div>
             <div className={clsx(["mt-1"], ["flex", "flex-col"])}>
               <div className={clsx(["w-full"], ["flex", "gap-x-2"])}>
-                <input
-                  type={"text"}
+                <TextInput2
+                  className={clsx(["w-full"], ["flex-grow"])}
                   placeholder="タグの追加の名前"
-                  autoComplete="off"
-                  data-1p-ignore
-                  className={clsx(
-                    ["w-full"],
-                    ["flex-grow"],
-                    ["py-1", "px-2"],
-                    ["bg-slate-950"],
-                    ["border", "border-slate-700", "rounded"],
-                    ["text-sm", "text-slate-300", "placeholder-slate-600"]
-                  )}
-                  onChange={(e) => setExtraNameInput(e.target.value)}
-                  value={extraNameInput}
+                  onChange={(v) => setExtraNameInput(v)}
                 />
                 <BlueButton
                   type="button"
