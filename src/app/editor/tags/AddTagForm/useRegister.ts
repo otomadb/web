@@ -14,8 +14,8 @@ import { TagType } from "~/gql/graphql";
 
 import { Fragment as SucceededToastFragment } from "./SucceededToast";
 
-export const mutation = graphql(`
-  mutation RegisterTagPage_RegisterTag($input: RegisterTagInput!) {
+export const Mutation = graphql(`
+  mutation RegisterTagForm_RegisterTag($input: RegisterTagInput!) {
     registerTag(input: $input) {
       __typename
       ... on RegisterTagSucceededPayload {
@@ -29,12 +29,12 @@ export const useRegister = ({
 }: {
   onSuccess(
     data: Extract<
-      ResultOf<typeof mutation>["registerTag"],
+      ResultOf<typeof Mutation>["registerTag"],
       { __typename: "RegisterTagSucceededPayload" }
     >
   ): void;
 }) => {
-  const [, mutateRegisterTag] = useMutation(mutation);
+  const [, mutateRegisterTag] = useMutation(Mutation);
   const { getAccessTokenSilently } = useAuth0();
 
   return useCallback(
@@ -88,7 +88,7 @@ export const useRegister = ({
   );
 };
 
-export const mockSuccessful = mswGraphQL.mutation(mutation, (req, res, ctx) => {
+export const mockSuccessful = mswGraphQL.mutation(Mutation, (req, res, ctx) => {
   return res(
     ctx.data({
       registerTag: {

@@ -3,8 +3,10 @@
 import "client-only";
 
 import clsx from "clsx";
+import copy from "copy-to-clipboard";
 import React, { useMemo } from "react";
 
+import { CheckIcon, CopyIcon } from "~/components/Icons";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const Fragment = graphql(`
@@ -90,30 +92,81 @@ export const Semitags: React.FC<{
               )}
             >
               {selecteds.map(({ id, name, video }) => (
-                <button
+                <div
+                  role="button"
                   key={id}
-                  type="button"
                   className={clsx(
-                    ["px-4", "py-2"],
-                    ["grid", "grid-cols-2", "gap-x-2"],
+                    ["px-8", "py-2"],
+                    ["flex", "items-center", "gap-x-8"],
                     ["bg-slate-950", "hover:bg-sky-900"]
                   )}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    remove(id);
-                  }}
                 >
                   <div
-                    className={clsx(["text-sm", "text-slate-300", "text-left"])}
+                    role="button"
+                    className={clsx(
+                      ["flex", "justify-center", "items-center"],
+                      ["px-1", "py-1"],
+                      ["text-sm", ["text-sky-300", "hover:text-sky-200"]],
+                      [
+                        "rounded",
+                        "border",
+                        ["border-sky-800", "hover:border-sky-700"],
+                      ],
+                      ["text-sm", ["text-sky-300", "hover:text-sky-200"]],
+                      ["bg-sky-900", "hover:bg-sky-800"]
+                    )}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      remove(id);
+                    }}
                   >
-                    {name}
+                    <CheckIcon className={clsx(["w-4", "h-4"])} />
+                  </div>
+                  <div className={clsx(["flex-grow"], ["flex"])}>
+                    <div
+                      className={clsx(
+                        ["flex-grow"],
+                        ["text-sm", "text-slate-300", "text-left"]
+                      )}
+                    >
+                      {name}
+                    </div>
+                    <div
+                      className={clsx([
+                        "flex",
+                        "justify-center",
+                        "items-center",
+                      ])}
+                    >
+                      <div
+                        role="button"
+                        onClick={() => {
+                          copy(name);
+                        }}
+                        className={clsx(
+                          ["px-1", "py-0.5"],
+                          [
+                            "rounded",
+                            "border",
+                            ["border-sky-800", "hover:border-sky-700"],
+                          ],
+                          ["text-sm", ["text-sky-300", "hover:text-sky-200"]],
+                          ["bg-sky-900", "hover:bg-sky-800"]
+                        )}
+                      >
+                        <CopyIcon className={clsx(["w-4", "h-4"])} />
+                      </div>
+                    </div>
                   </div>
                   <div
-                    className={clsx(["text-sm", "text-slate-300", "text-left"])}
+                    className={clsx(
+                      ["w-2/5", "flex-shrink-0"],
+                      ["text-sm", "text-slate-300", "text-left"]
+                    )}
                   >
                     {video.title}
                   </div>
-                </button>
+                </div>
               ))}
             </div>
           )}
@@ -156,51 +209,79 @@ export const Semitags: React.FC<{
               )}
             >
               {semitags.map(({ id, name, video, isSelected: selected }) => (
-                <button
+                <div
                   key={id}
-                  type="button"
                   className={clsx(
-                    ["px-4", "py-2"],
-                    ["grid", "grid-cols-2", "gap-x-2"],
-                    !selected && ["bg-slate-950", "hover:bg-sky-900"],
-                    selected && ["bg-sky-700"]
+                    ["px-8", "py-2"],
+                    ["flex", "items-center", "gap-x-8"],
+                    !selected && ["bg-slate-950", "hover:bg-sky-950"],
+                    selected && ["bg-sky-950"]
                   )}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    if (selected) {
-                      remove(id);
-                    } else {
-                      append({ id, name });
-                    }
-                  }}
                 >
                   <div
-                    className={clsx([
-                      "text-sm",
-                      {
-                        "text-slate-300": !selected,
-                        "text-sky-300": selected,
-                      },
-                      "text-left",
-                      { "font-bold": selected },
-                    ])}
+                    role="button"
+                    className={clsx(
+                      ["flex", "justify-center", "items-center"],
+                      ["px-1", "py-1"],
+                      [
+                        "text-sm",
+                        !selected && ["text-sky-300", "hover:text-sky-200"],
+                        selected && ["text-sky-300", "hover:text-sky-200"],
+                      ],
+                      [
+                        "rounded",
+                        "border",
+                        !selected && ["border-sky-900", "hover:border-sky-700"],
+                        selected && ["border-sky-800", "hover:border-sky-700"],
+                      ],
+                      ["text-sm", ["text-sky-300", "hover:text-sky-200"]],
+                      [
+                        !selected && ["bg-transparent", "hover:bg-sky-900"],
+                        selected && ["bg-sky-900", "hover:bg-sky-800"],
+                      ]
+                    )}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (selected) remove(id);
+                      else append({ id, name });
+                    }}
+                  >
+                    {selected && <CheckIcon className={clsx(["w-4", "h-4"])} />}
+                    {!selected && <div className={clsx(["w-4", "h-4"])} />}
+                  </div>
+                  <div
+                    className={clsx(
+                      ["flex-grow"],
+                      [
+                        "text-sm",
+                        {
+                          "text-slate-300": !selected,
+                          "text-sky-300": selected,
+                        },
+                        "text-left",
+                        { "font-bold": selected },
+                      ]
+                    )}
                   >
                     {name}
                   </div>
                   <div
-                    className={clsx([
-                      "text-sm",
-                      {
-                        "text-slate-300": !selected,
-                        "text-sky-300": selected,
-                      },
-                      "text-left",
-                      { "font-bold": selected },
-                    ])}
+                    className={clsx(
+                      ["w-2/5", "flex-shrink-0"],
+                      [
+                        "text-sm",
+                        {
+                          "text-slate-300": !selected,
+                          "text-sky-300": selected,
+                        },
+                        "text-left",
+                        { "font-bold": selected },
+                      ]
+                    )}
                   >
                     {video.title}
                   </div>
-                </button>
+                </div>
               ))}
             </div>
           )}
