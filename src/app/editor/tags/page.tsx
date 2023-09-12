@@ -9,9 +9,10 @@ export const metadata: Metadata = {
 
 export default async function Page() {
   return (
-    <main className={clsx(["max-w-screen-lg"], ["mx-auto"])}>
-      <h1>タグの追加</h1>
-      <RegisterTagForm className={clsx(["mt-4"])} />
+    <main className={clsx(["max-w-screen-2xl", "w-full"], ["mx-auto"])}>
+      <RegisterTagForm
+        className={clsx(["py-8"], ["h-[calc(100vh-64px)]"], ["w-full"])}
+      />
     </main>
   );
 }

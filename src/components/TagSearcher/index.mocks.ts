@@ -24,7 +24,7 @@ export const mockTagSearcher = graphql.query(Query, (req, res, ctx) =>
                       name: "ぼっち・ざ・まっど！",
                     },
                     tag: {
-                      id: "t1",
+                      id: "tag:1",
                       ...makeFragmentData(
                         {
                           name: "ぼっち・ざ・ろっく！",
@@ -47,13 +47,13 @@ export const mockTagSearcher = graphql.query(Query, (req, res, ctx) =>
                       name: "後藤ひとり",
                     },
                     tag: {
-                      id: "t2",
+                      id: "tag:2",
                       ...makeFragmentData(
                         {
                           name: "後藤ひとり",
                           type: TagType.Character,
                           explicitParent: {
-                            id: "t1",
+                            id: "tag:1",
                             name: "ぼっち・ざ・ろっく！",
                           },
                         },
@@ -73,13 +73,13 @@ export const mockTagSearcher = graphql.query(Query, (req, res, ctx) =>
                       name: "伊地知虹夏",
                     },
                     tag: {
-                      id: "t3",
+                      id: "tag:3",
                       ...makeFragmentData(
                         {
                           name: "伊地知虹夏",
                           type: TagType.Character,
                           explicitParent: {
-                            id: "t1",
+                            id: "tag:1",
                             name: "ぼっち・ざ・ろっく！",
                           },
                         },
