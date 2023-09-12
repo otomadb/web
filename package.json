@@ -96,5 +96,8 @@
     "style-loader": "3.3.3",
     "tailwindcss": "3.3.3",
     "typescript": "5.2.2"
+  },
+  "peerDependencies": {
+    "@parcel/watcher": "2.3.0"
   }
 }
