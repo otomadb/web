@@ -134,19 +134,19 @@ export const CommonTag2: React.FC<{
           ["bg-character-900"],
           ["border-character-700"],
         ],
-        type === TagType.Class && [["bg-slate-900"], ["border-slate-400"]],
+        type === TagType.Class && [["bg-slate-900"], ["border-slate-700"]],
         type === TagType.Copyright && [
           ["bg-copyright-900"],
-          ["border-copyright-300"],
+          ["border-copyright-700"],
         ],
-        type === TagType.Event && [["bg-event-900"], ["border-event-400"]],
-        type === TagType.Music && [["bg-music-50"], ["border-music-400"]],
-        type === TagType.Phrase && [["bg-phrase-50"], ["border-phrase-400"]],
-        type === TagType.Series && [["bg-series-50"], ["border-series-400"]],
-        type === TagType.Style && [["bg-slate-50"], ["border-slate-400"]],
-        type === TagType.Subtle && [["bg-slate-50"], ["border-slate-400"]],
-        type === TagType.Tactics && [["bg-slate-50"], ["border-slate-400"]],
-        type === TagType.Unknown && [["bg-slate-50"], ["border-slate-400"]]
+        type === TagType.Event && [["bg-event-900"], ["border-event-700"]],
+        type === TagType.Music && [["bg-music-900"], ["border-music-700"]],
+        type === TagType.Phrase && [["bg-phrase-900"], ["border-phrase-700"]],
+        type === TagType.Series && [["bg-series-900"], ["border-series-700"]],
+        type === TagType.Style && [["bg-slate-900"], ["border-slate-700"]],
+        type === TagType.Subtle && [["bg-slate-900"], ["border-slate-700"]],
+        type === TagType.Tactics && [["bg-slate-900"], ["border-slate-700"]],
+        type === TagType.Unknown && [["bg-slate-900"], ["border-slate-700"]]
       )}
     >
       <span

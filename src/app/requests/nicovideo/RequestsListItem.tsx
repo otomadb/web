@@ -62,7 +62,7 @@ export default function RequestsListItem({
       style={style}
     >
       <NicovideoRegistrationRequestLink
-        className={clsx(["flex-shrink-0"], ["flex"])}
+        className={clsx(["self-center"], ["flex-shrink-0"], ["flex"])}
         fragment={fragment}
       >
         <CoolImage
@@ -87,40 +87,67 @@ export default function RequestsListItem({
           {fragment.title}
         </NicovideoRegistrationRequestLink>
         <div className={clsx(["flex", "gap-x-2", "items-center"])}>
-          <div className={clsx(["text-xs", "text-slate-500"])}>タグ</div>
-          <div className={clsx(["flex", "gap-x-1"])}>
-            {fragment.taggings.map(({ id, tag }) => (
-              <div key={id}>
-                <CommonTag2 size="xs" fragment={tag} />
-              </div>
-            ))}
+          <div
+            className={clsx(["flex-shrink-0"], ["text-xs", "text-slate-500"])}
+          >
+            タグ
           </div>
+          {fragment.taggings.length === 0 && (
+            <div
+              className={clsx(["flex-shrink-0"], ["text-xs", "text-slate-400"])}
+            >
+              なし
+            </div>
+          )}
+          {fragment.taggings.length > 0 && (
+            <div className={clsx(["flex", "flex-wrap", "gap-x-1", "gap-y-1"])}>
+              {fragment.taggings.map(({ id, tag }) => (
+                <div key={id}>
+                  <CommonTag2 size="xs" fragment={tag} />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
         <div className={clsx(["flex", "gap-x-2", "items-center"])}>
-          <div className={clsx(["text-xs", "text-slate-500"])}>仮タグ</div>
-          <div className={clsx(["flex", "gap-x-1"])}>
-            {fragment.semitaggings.map(({ id, name }) => (
-              <div
-                key={id}
-                className={clsx(
-                  ["px-0.5", "py-0.25"],
-                  ["text-xs"],
-                  ["text-slate-400"],
-                  ["border", "border-slate-700", "rounded-sm"],
-                  ["bg-slate-900"]
-                )}
-              >
-                <span>{name}</span>
-              </div>
-            ))}
+          <div
+            className={clsx(["flex-shrink-0"], ["text-xs", "text-slate-500"])}
+          >
+            仮タグ
           </div>
+          {fragment.semitaggings.length === 0 && (
+            <div
+              className={clsx(["flex-shrink-0"], ["text-xs", "text-slate-400"])}
+            >
+              なし
+            </div>
+          )}
+          {fragment.semitaggings.length > 0 && (
+            <div className={clsx(["flex", "flex-wrap", "gap-x-1", "gap-y-1"])}>
+              {fragment.semitaggings.map(({ id, name }) => (
+                <div
+                  key={id}
+                  className={clsx(
+                    ["px-0.5", "py-0.25"],
+                    ["text-xs"],
+                    ["text-slate-400"],
+                    ["border", "border-slate-700", "rounded-sm"],
+                    ["bg-slate-900"]
+                  )}
+                >
+                  <span>{name}</span>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
       <div
         className={clsx(
+          ["self-center"],
           ["flex-shrink-0"],
           ["w-1/5"],
-          ["flex", "flex-col", "justify-center", "gap-y-4"]
+          ["flex", "flex-col", "gap-y-4"]
         )}
       >
         <div className={clsx(["flex", "gap-x-2", "items-center"])}>
