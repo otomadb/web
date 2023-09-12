@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import React, { forwardRef, useCallback, useState } from "react";
+import React, { forwardRef } from "react";
 
 // eslint-disable-next-line react/display-name
 export const TextInput = forwardRef<
@@ -37,55 +37,59 @@ export const TextInput2 = forwardRef<
     /**
      * @default "medium"
      */
-    size?: "medium";
+    size: "small" | "medium" | "large";
     placeholder?: string;
     /**
      * @default false
      */
     autoComplete?: boolean;
     onChange(value: string): void;
+    value: string;
   }
 >(
   (
     {
-      size = "medium",
+      size,
       className,
       style,
       placeholder,
+      value,
       autoComplete = false,
       onChange,
     },
     ref
   ) => {
-    const [input, setInput] = useState("");
-
-    const handleChange = useCallback(
-      (e: React.ChangeEvent<HTMLInputElement>): void => {
-        const value = e.target.value;
-        setInput(value);
-        onChange(value);
-      },
-      [onChange]
-    );
-
     return (
-      <input
-        ref={ref}
+      <div
+        style={style}
         className={clsx(
           className,
           ["bg-slate-950"],
           ["border", "border-slate-700"],
           ["text-slate-300", "placeholder-slate-600"],
-          { medium: ["rounded", "py-1", "px-2", "text-sm"] }[size]
+          ["focus-within:outline", "outline-1", "outline-sky-700"],
+          {
+            small: ["rounded-sm", "py-1", "px-2", "text-sm"],
+            medium: ["rounded", "py-1.5", "px-4", "text-base"],
+            large: ["rounded-lg", "py-2", "px-4", "text-lg"],
+          }[size]
         )}
-        style={style}
-        type={"text"}
-        value={input}
-        placeholder={placeholder}
-        autoComplete={autoComplete ? "on" : "off"}
-        data-1p-ignore={autoComplete}
-        onChange={handleChange}
-      />
+      >
+        <input
+          ref={ref}
+          className={clsx(
+            ["w-full", "h-full"],
+            ["bg-transparent"],
+            ["outline-none"]
+          )}
+          type={"text"}
+          placeholder={placeholder}
+          autoComplete={autoComplete ? "on" : "off"}
+          data-1p-ignore={!autoComplete}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+        />
+      </div>
     );
   }
 );

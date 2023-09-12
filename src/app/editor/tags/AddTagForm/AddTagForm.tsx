@@ -151,8 +151,10 @@ export const AddTagForm: React.FC<{
             <div className={clsx(["mt-1"], ["flex", "flex-col"])}>
               <div className={clsx(["w-full"])}>
                 <TextInput2
+                  size={"small"}
                   className={clsx(["w-full"], ["flex-grow"])}
                   placeholder="タグの主な名前"
+                  value={primaryName}
                   onChange={(v) => setPrimaryName(v)}
                 />
               </div>
@@ -167,8 +169,10 @@ export const AddTagForm: React.FC<{
             <div className={clsx(["mt-1"], ["flex", "flex-col"])}>
               <div className={clsx(["w-full"], ["flex", "gap-x-2"])}>
                 <TextInput2
+                  size="small"
                   className={clsx(["w-full"], ["flex-grow"])}
                   placeholder="タグの追加の名前"
+                  value={extraNameInput}
                   onChange={(v) => setExtraNameInput(v)}
                 />
                 <BlueButton
