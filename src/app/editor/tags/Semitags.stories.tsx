@@ -10,10 +10,9 @@ const meta = {
   component: Semitags,
   args: {
     style: { width: 1024, height: 860 },
-    fields: [],
+    selectings: [],
     append: action("append"),
     remove: action("remove"),
-    setTemporaryPrimaryTitle: action("setTemporaryPrimaryTitle"),
   },
   render(args) {
     return (
@@ -47,10 +46,7 @@ export const Primary: Story = {
       },
       Fragment
     ),
-    fields: [
-      { id: "semitag:3", semitagId: "semitag:3" },
-      { id: "semitag:4", semitagId: "semitag:4" },
-    ],
+    selectings: ["semitag:3", "semitag:4"],
   },
 };
 
@@ -74,10 +70,7 @@ export const Less: Story = {
       },
       Fragment
     ),
-    fields: [
-      { id: "semitag:3", semitagId: "semitag:3" },
-      { id: "semitag:4", semitagId: "semitag:4" },
-    ],
+    selectings: ["semitag:3", "semitag:4"],
   },
 };
 

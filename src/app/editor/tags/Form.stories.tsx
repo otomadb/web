@@ -1,37 +1,22 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { graphql as mswGraphQL } from "msw";
+import { graphql as mswGql } from "msw";
 
-import { Fragment as CommonTagFragment } from "~/components/CommonTag";
 import { mockTagSearcher } from "~/components/TagSearcher/index.mocks";
 import { makeFragmentData } from "~/gql";
-import { TagType } from "~/gql/graphql";
 import { MockedAuth0Provider } from "~/utils/MockedAuth0Provider";
 import { MockedUrqlProvider } from "~/utils/MockedUrqlProvider";
 
+import { commonMock as mockAddTagFormSelectedTag } from "./AddTagForm/SelectedTag";
+import { mockSuccessful } from "./AddTagForm/useRegister";
 import { Query as FormQuery, RegisterTagForm } from "./Form";
-import { Query as SelectedTagQuery } from "./SelectedTag";
 import { Fragment as SemitagsFragment } from "./Semitags";
-import { mockSuccessful } from "./useRegister";
 
-const mockSelectedTagQuery = mswGraphQL.query(
-  SelectedTagQuery,
-  (req, res, ctx) =>
-    res(
-      ctx.data({
-        getTag: {
-          id: req.variables.id,
-          ...makeFragmentData(
-            {
-              name: `Tag ${req.variables.id.split(":")[1]}`,
-              type: TagType.Unknown,
-              explicitParent: null,
-            },
-            CommonTagFragment
-          ),
-        },
-      })
-    )
-);
+const commonMocks = [
+  mockAddTagFormSelectedTag,
+  mockSuccessful,
+  mockTagSearcher,
+];
+
 const meta = {
   component: RegisterTagForm,
   args: {
@@ -52,7 +37,8 @@ const meta = {
   parameters: {
     msw: {
       handlers: [
-        mswGraphQL.query(FormQuery, (req, res, ctx) =>
+        ...commonMocks,
+        mswGql.query(FormQuery, (req, res, ctx) =>
           res(
             ctx.data({
               ...makeFragmentData(
@@ -76,9 +62,6 @@ const meta = {
             })
           )
         ),
-        mockSelectedTagQuery,
-        mockSuccessful,
-        mockTagSearcher,
       ],
     },
   },
@@ -96,12 +79,8 @@ export const Loading: Story = {
   parameters: {
     msw: {
       handlers: [
-        mswGraphQL.query(FormQuery, (req, res, ctx) =>
-          res(ctx.delay("infinite"))
-        ),
-        mockSelectedTagQuery,
-        mockSuccessful,
-        mockTagSearcher,
+        ...commonMocks,
+        mswGql.query(FormQuery, (req, res, ctx) => res(ctx.delay("infinite"))),
       ],
     },
   },

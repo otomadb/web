@@ -6,14 +6,12 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { ResultOf } from "@graphql-typed-document-node/core";
 import { graphql as mswGraphQL } from "msw";
 import { useCallback } from "react";
-import { SubmitHandler } from "react-hook-form";
 import { useMutation } from "urql";
 
 import { Fragment as CommonTagFragment } from "~/components/CommonTag";
 import { graphql, makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
 
-import { FormSchema } from "./FormSchema";
 import { Fragment as SucceededToastFragment } from "./SucceededToast";
 
 export const mutation = graphql(`
@@ -35,7 +33,7 @@ export const useRegister = ({
       { __typename: "RegisterTagSucceededPayload" }
     >
   ): void;
-}): SubmitHandler<FormSchema> => {
+}) => {
   const [, mutateRegisterTag] = useMutation(mutation);
   const { getAccessTokenSilently } = useAuth0();
 
@@ -43,9 +41,15 @@ export const useRegister = ({
     async ({
       primaryName,
       extraNames,
-      explicitParentTagId,
+      explicitParent,
       implicitParents,
       resolveSemitags,
+    }: {
+      primaryName: string;
+      extraNames: string[];
+      explicitParent: string | undefined;
+      implicitParents: string[];
+      resolveSemitags: string[];
     }) => {
       const accessToken = await getAccessTokenSilently({
         authorizationParams: { scope: "create:tag" },
@@ -55,10 +59,10 @@ export const useRegister = ({
         {
           input: {
             primaryName,
-            extraNames: extraNames?.map(({ name }) => name),
-            explicitParent: explicitParentTagId,
-            implicitParents: implicitParents.map(({ tagId }) => tagId),
-            resolveSemitags: resolveSemitags.map(({ semitagId }) => semitagId),
+            extraNames,
+            explicitParent,
+            implicitParents,
+            resolveSemitags,
           },
         },
         {

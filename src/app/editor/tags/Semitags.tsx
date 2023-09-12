@@ -3,16 +3,9 @@
 import "client-only";
 
 import clsx from "clsx";
-import React, { useCallback, useMemo } from "react";
-import {
-  FieldArrayWithId,
-  UseFieldArrayAppend,
-  UseFieldArrayRemove,
-} from "react-hook-form";
+import React, { useMemo } from "react";
 
 import { FragmentType, graphql, useFragment } from "~/gql";
-
-import { FormSchema } from "./FormSchema";
 
 export const Fragment = graphql(`
   fragment EditorTagsPage_Form_Semitags on Query {
@@ -31,49 +24,29 @@ export const Fragment = graphql(`
 export const Semitags: React.FC<{
   className?: string;
   style?: React.CSSProperties;
-  fields: FieldArrayWithId<FormSchema, "resolveSemitags", "id">[];
-  append: UseFieldArrayAppend<FormSchema, "resolveSemitags">;
-  remove: UseFieldArrayRemove;
-  setTemporaryPrimaryTitle(name: string): void;
   fragment?: FragmentType<typeof Fragment>;
-}> = ({
-  className,
-  style,
-  fields,
-  append,
-  remove,
-  setTemporaryPrimaryTitle,
-  ...props
-}) => {
+  selectings: string[];
+  append(p: { id: string; name: string }): void;
+  remove(id: string): void;
+}> = ({ className, style, selectings, append, remove, ...props }) => {
   const fragment = useFragment(Fragment, props.fragment);
-  const removeById = useCallback(
-    (id: string) => {
-      console.dir(fields);
-      remove(fields.findIndex((field) => field.semitagId === id));
-    },
-    [fields, remove]
-  );
-  const selectedIds = useMemo(
-    () => fields.map(({ semitagId }) => semitagId),
-    [fields]
-  );
   const selecteds = useMemo(() => {
     return fragment?.findSemitags.nodes
-      .filter(({ id }) => selectedIds.includes(id))
+      .filter(({ id }) => selectings.includes(id))
       .map((semitag) => ({
         id: semitag.id,
         name: semitag.name,
         video: semitag.video,
       }));
-  }, [fragment?.findSemitags.nodes, selectedIds]);
+  }, [fragment?.findSemitags.nodes, selectings]);
   const semitags = useMemo(() => {
     return fragment?.findSemitags.nodes.map((semitag) => ({
       id: semitag.id,
       name: semitag.name,
       video: semitag.video,
-      isSelected: selectedIds.includes(semitag.id),
+      isSelected: selectings.includes(semitag.id),
     }));
-  }, [fragment?.findSemitags.nodes, selectedIds]);
+  }, [fragment?.findSemitags.nodes, selectings]);
 
   return (
     <div
@@ -98,7 +71,7 @@ export const Semitags: React.FC<{
             ["h-[196px]"],
             ["overflow-y-scroll"],
             ["border", "border-slate-700"],
-            ["bg-slate-800"]
+            ["bg-slate-950"]
           )}
         >
           {!selecteds && (
@@ -112,7 +85,7 @@ export const Semitags: React.FC<{
           {selecteds && (
             <div
               className={clsx(
-                ["divide-y", "divide-slate-700"],
+                ["divide-y", "divide-slate-800"],
                 ["flex", "flex-col"]
               )}
             >
@@ -127,7 +100,7 @@ export const Semitags: React.FC<{
                   )}
                   onClick={(e) => {
                     e.preventDefault();
-                    removeById(id);
+                    remove(id);
                   }}
                 >
                   <div
@@ -164,7 +137,7 @@ export const Semitags: React.FC<{
             ["h-full"],
             ["overflow-y-scroll"],
             ["border", "border-slate-700"],
-            ["bg-slate-800"]
+            ["bg-slate-950"]
           )}
         >
           {!semitags && (
@@ -178,7 +151,7 @@ export const Semitags: React.FC<{
           {semitags && (
             <div
               className={clsx(
-                ["divide-y", "divide-slate-700"],
+                ["divide-y", "divide-slate-800"],
                 ["flex", "flex-col"]
               )}
             >
@@ -195,10 +168,9 @@ export const Semitags: React.FC<{
                   onClick={(e) => {
                     e.preventDefault();
                     if (selected) {
-                      removeById(id);
+                      remove(id);
                     } else {
-                      append({ semitagId: id });
-                      setTemporaryPrimaryTitle(name);
+                      append({ id, name });
                     }
                   }}
                 >

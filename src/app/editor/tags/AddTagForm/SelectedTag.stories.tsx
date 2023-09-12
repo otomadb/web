@@ -1,17 +1,14 @@
 import { action } from "@storybook/addon-actions";
 import { Meta, StoryObj } from "@storybook/react";
-import { userEvent, within } from "@storybook/testing-library";
 import { graphql as mockGql } from "msw";
 
 import { Fragment as CommonTagFragment } from "~/components/CommonTag";
-import { mockTagSearcher } from "~/components/TagSearcher/index.mocks";
 import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
 import { MockedUrqlProvider } from "~/utils/MockedUrqlProvider";
 
-import { RegisterTagForm } from "./Form";
-import { ImplictParentTags } from "./ImplicitParentTags";
-import { Query } from "./SelectedTag";
+import { RegisterTagForm } from "../Form";
+import { Query, SelectedTag } from "./SelectedTag";
 
 const meta = {
   component: RegisterTagForm,
@@ -19,50 +16,22 @@ const meta = {
     style: {
       width: 360,
     },
-    implicitParents: [],
-    append: action("append"),
+    tagId: "id:tag1",
     remove: action("remove"),
   },
   render(args) {
     return (
       <MockedUrqlProvider>
-        <ImplictParentTags {...args} />
+        <SelectedTag {...args} />
       </MockedUrqlProvider>
     );
   },
-} as Meta<typeof ImplictParentTags>;
+} as Meta<typeof SelectedTag>;
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const 検索ボックスに入力: Story = {
-  args: {
-    explicitParentTagId: "id:tag1",
-  },
-  parameters: {
-    msw: {
-      handlers: [mockTagSearcher],
-    },
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    await userEvent.type(canvas.getByRole("textbox"), "Test");
-  },
-};
-
-export const タグを選択済み: Story = {
-  args: {
-    implicitParents: [
-      {
-        id: "1",
-        tagId: "id:tag1",
-      },
-      {
-        id: "2",
-        tagId: "id:tag2",
-      },
-    ],
-  },
+export const Primary: Story = {
   parameters: {
     msw: {
       handlers: [
@@ -70,12 +39,15 @@ export const タグを選択済み: Story = {
           res(
             ctx.data({
               getTag: {
-                id: req.variables.id,
+                id: "id:tag1",
                 ...makeFragmentData(
                   {
                     name: "Tag 1",
                     type: TagType.Character,
-                    explicitParent: null,
+                    explicitParent: {
+                      id: "id:tag2",
+                      name: "Tag 2",
+                    },
                   },
                   CommonTagFragment
                 ),
@@ -83,6 +55,16 @@ export const タグを選択済み: Story = {
             })
           )
         ),
+      ],
+    },
+  },
+};
+
+export const Loading: Story = {
+  parameters: {
+    msw: {
+      handlers: [
+        mockGql.query(Query, (req, res, ctx) => res(ctx.delay("infinite"))),
       ],
     },
   },
