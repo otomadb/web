@@ -19,6 +19,9 @@ module.exports = {
       height: {
         18: "4.5rem",
       },
+      padding: {
+        0.25: "0.0625rem",
+      },
       zIndex: {
         0: 0,
         1: 1,

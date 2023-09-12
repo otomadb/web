@@ -1,16 +1,11 @@
 import Link from "next/link";
 import React, { ComponentProps } from "react";
 
-export type SearchParams = { after?: string };
-
 export const AllNicovideoRequestsPageLink: React.FC<
-  Omit<ComponentProps<typeof Link>, "href"> & { params?: SearchParams }
-> = ({ children, params, ...props }) => {
+  Omit<ComponentProps<typeof Link>, "href">
+> = ({ children, ...props }) => {
   return (
-    <Link
-      href={`/requests/nicovideo?${new URLSearchParams(params).toString()}`}
-      {...props}
-    >
+    <Link href={`/requests/nicovideo`} {...props}>
       {children}
     </Link>
   );
