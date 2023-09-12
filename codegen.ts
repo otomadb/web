@@ -22,6 +22,16 @@ const config: CodegenConfig = {
         },
       ],
     },
+    "src/gql/mock.ts": {
+      plugins: [
+        {
+          "graphql-codegen-typescript-mock-data": {
+            typesFile: "./graphql.ts",
+            terminateCircularRelationships: true,
+          },
+        },
+      ],
+    },
   },
 };
 
