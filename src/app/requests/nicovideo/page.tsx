@@ -4,45 +4,34 @@ import { graphql } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
 import { isErr } from "~/utils/Result";
 
-import { SearchParams } from "./Link";
-import Pagination from "./Pagination";
-import RequestsGrid from "./RequestsGrid";
+import RequestsList from "./RequestsList";
 
-export const dynamic = "force-dynamic";
-
-export default async function Page({
-  searchParams,
-}: {
-  searchParams: SearchParams;
-}) {
+export default async function Page() {
   const result = await fetchGql(
     graphql(`
-      query AllNicovideoRequestsPage_After($first: Int!, $after: String) {
-        findUncheckedNicovideoRegistrationRequests(
-          input: { first: $first, after: $after }
-        ) {
+      query NicovideoRequestsPage {
+        findUncheckedNicovideoRegistrationRequests(input: {}) {
           totalCount
-          ...AllNicovideoRequestsPage_RequestsGrid
-          ...AllNicovideoRequestsPage_Pagination
+          ...NicovideoRequestsPage_RequestsList
         }
       }
     `),
-    {
-      first: 30,
-      after: "after" in searchParams ? searchParams.after : null,
-    }
+    {}
   );
-  if (isErr(result)) throw new Error("Fetched failed");
+  if (isErr(result)) {
+    console.error(result.error);
+    throw new Error("Fetched failed");
+  }
 
   return (
-    <main className={clsx(["@container"], ["w-full"], ["flex", "flex-col"])}>
-      <div
-        className={clsx(
-          ["sticky", "top-[64px]", "z-1"],
-          ["w-full"],
-          ["backdrop-blur-lg"]
-        )}
-      >
+    <main
+      className={clsx(
+        ["@container", "max-w-screen-lg", "mx-auto"],
+        ["w-full"],
+        ["flex", "flex-col"]
+      )}
+    >
+      <div className={clsx(["w-full"], ["backdrop-blur-lg"])}>
         <div className={clsx(["flex"], ["max-w-screen-lg", "mx-auto"])}>
           <header className={clsx(["flex-grow"], ["py-4"])}>
             <div>
@@ -58,15 +47,10 @@ export default async function Page({
               件申請されています
             </p>
           </header>
-          <nav className={clsx(["flex-shrink-0"], ["flex", "items-center"])}>
-            <Pagination
-              fragment={result.data.findUncheckedNicovideoRegistrationRequests}
-            />
-          </nav>
         </div>
       </div>
       <section className={clsx(["container", "mx-auto"])}>
-        <RequestsGrid
+        <RequestsList
           fragment={result.data.findUncheckedNicovideoRegistrationRequests}
         />
       </section>
