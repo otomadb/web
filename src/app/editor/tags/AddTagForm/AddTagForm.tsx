@@ -152,6 +152,8 @@ export const AddTagForm: React.FC<{
                 <input
                   type={"text"}
                   placeholder="タグの主な名前"
+                  autoComplete="off"
+                  data-1p-ignore
                   className={clsx(
                     ["w-full"],
                     ["flex-grow"],
@@ -177,6 +179,8 @@ export const AddTagForm: React.FC<{
                 <input
                   type={"text"}
                   placeholder="タグの追加の名前"
+                  autoComplete="off"
+                  data-1p-ignore
                   className={clsx(
                     ["w-full"],
                     ["flex-grow"],
