@@ -2,7 +2,13 @@
 import "client-only";
 
 import clsx from "clsx";
-import React, { useCallback, useMemo, useReducer, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useReducer,
+  useState,
+} from "react";
 import { useQuery } from "urql";
 import * as z from "zod";
 
@@ -33,6 +39,7 @@ export const Query = graphql(`
   query RegisterFromNicovideoForm_Check($sourceId: String!) {
     fetchNicovideo(input: { sourceId: $sourceId }) {
       source {
+        title
         thumbnailUrl
         ...RegisterFromNicovideoForm_OriginalSource
       }
@@ -109,6 +116,13 @@ export default function RegisterForm({
     },
     []
   );
+
+  /* 自動的にタイトルを挿入 */
+  useEffect(() => {
+    if (title === "" && data?.fetchNicovideo.source?.title) {
+      setTitle(data.fetchNicovideo.source.title);
+    }
+  }, [data?.fetchNicovideo.source?.title, title]);
 
   const [tab, setTab] = useState<"SOURCE" | "REQUEST">("SOURCE");
 

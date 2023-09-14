@@ -76,9 +76,15 @@ export default function OriginalSource({
             <a
               href={fragment.url}
               target="_blank"
-              className={clsx(["text-slate-400", "hover:text-sky-400"])}
+              className={clsx(
+                ["flex", "items-center", "gap-x-1"],
+                ["text-slate-400", "hover:text-sky-400"]
+              )}
             >
               <ExternalLinkIcon className={clsx(["w-4", "h-4"])} />
+              <span className={clsx(["text-sm", "font-mono"])}>
+                {fragment.sourceId}
+              </span>
             </a>
           </div>
         </div>

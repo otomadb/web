@@ -90,6 +90,7 @@ export const Primary: Story = {
             ctx.data({
               fetchNicovideo: {
                 source: {
+                  title: "Title",
                   thumbnailUrl: "/960x540.jpg",
                   ...makeFragmentData(
                     {
@@ -196,6 +197,7 @@ export const リクエストが存在しない: Story = {
             ctx.data({
               fetchNicovideo: {
                 source: {
+                  title: "Title",
                   thumbnailUrl: "/960x540.jpg",
                   ...makeFragmentData(
                     {
