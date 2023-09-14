@@ -9,6 +9,7 @@ import GlobalNav from "~/components/GlovalNav";
 import { ToastProvider } from "~/components/Toaster";
 
 import Auth0Provider from "./Auth0Provider";
+import FormModal, { FormModalProvider } from "./FormModal";
 import UrqlProvider from "./UrqlProvider";
 
 export const metadata: Metadata = {
@@ -42,25 +43,28 @@ export default function RootLayout({
         <UrqlProvider>
           <body className={clsx(["relative"], ["bg-gray-50"])}>
             <ToastProvider selector="#toast">
-              <GlobalNav
-                className={clsx(
-                  ["sticky"],
-                  ["top-0"],
-                  ["w-full"],
-                  ["h-[64px]"],
-                  ["z-1"]
-                )}
-              />
-              <div
-                className={clsx(
-                  ["flex", "content-stretch", "flex-wrap"],
-                  ["min-h-[calc(100vh-64px)]"]
-                )}
-              >
-                {children}
-              </div>
-              <GlobalFooter />
-              <div id="toast" />
+              <FormModalProvider>
+                <GlobalNav
+                  className={clsx(
+                    ["sticky"],
+                    ["top-0"],
+                    ["w-full"],
+                    ["h-[64px]"],
+                    ["z-1"]
+                  )}
+                />
+                <div
+                  className={clsx(
+                    ["flex", "content-stretch", "flex-wrap"],
+                    ["min-h-[calc(100vh-64px)]"]
+                  )}
+                >
+                  {children}
+                </div>
+                <GlobalFooter />
+                <div id="toast" />
+                <FormModal className={clsx(["fixed", "bottom-1", "right-4"])} />
+              </FormModalProvider>
             </ToastProvider>
           </body>
         </UrqlProvider>
