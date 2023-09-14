@@ -1,4 +1,3 @@
-import { action } from "@storybook/addon-actions";
 import { Meta, StoryObj } from "@storybook/react";
 
 import { Fragment as CommonTagFragment } from "~/components/CommonTag";
@@ -10,9 +9,9 @@ import Suggests, { Fragment } from "./Suggests";
 
 const meta = {
   component: Suggests,
-  render: (args) => <Suggests {...args} style={{ width: "320px" }} />,
   args: {
-    handleSelect: action("handleSelect"),
+    style: { width: 360 },
+    size: "medium",
     fragment: makeFragmentData(
       {
         items: [...new Array(3)].map((_, i) => ({
@@ -49,9 +48,29 @@ const meta = {
 
 export default meta;
 
-export const Primary: StoryObj<typeof meta> = {};
+type Story = StoryObj<typeof meta>;
 
-export const Nothing: StoryObj<typeof meta> = {
+export const Small: Story = {
+  args: {
+    style: { width: 240 },
+    size: "small",
+  },
+};
+
+export const Medium: Story = {
+  args: {
+    size: "medium",
+  },
+};
+
+export const Large: Story = {
+  args: {
+    style: { width: 480 },
+    size: "large",
+  },
+};
+
+export const Nothing: Story = {
   name: "検索候補がない",
   args: {
     fragment: makeFragmentData({ items: [] }, Fragment),
