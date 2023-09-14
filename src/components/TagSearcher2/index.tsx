@@ -3,7 +3,7 @@
 import "client-only";
 
 import clsx from "clsx";
-import React, { ComponentProps, useState } from "react";
+import React, { ComponentProps, useMemo, useState } from "react";
 import { useQuery } from "urql";
 
 import { graphql } from "~/gql";
@@ -25,6 +25,8 @@ export default function TagSearcher({
   handleSelect,
   limit,
   Additional,
+  handleAdditionalClicked,
+  showAdditional,
 }: {
   className?: string;
   style?: React.CSSProperties;
@@ -35,6 +37,8 @@ export default function TagSearcher({
   disabled?: boolean;
 
   Additional?: React.FC<{ query: string }>;
+  showAdditional?: (query: string) => boolean;
+  handleAdditionalClicked?(query: string): void;
 }) {
   const [q, setQuery] = useState<string>("");
   const [{ data, fetching }] = useQuery({
@@ -42,6 +46,10 @@ export default function TagSearcher({
     pause: q === "",
     variables: { query: q, limit },
   });
+  const isShowAdditional = useMemo(() => {
+    if (!data) return false;
+    return showAdditional ? showAdditional(q) : true;
+  }, [data, q, showAdditional]);
 
   return (
     <div className={clsx(className, ["relative", "group"])} style={style}>
@@ -68,7 +76,7 @@ export default function TagSearcher({
             handleSelect={handleSelect}
           />
         )}
-        {data && Additional && (
+        {Additional && isShowAdditional && (
           <div
             className={clsx(
               ["border-t", "border-slate-800"],
@@ -77,8 +85,13 @@ export default function TagSearcher({
                 small: ["py-1", "px-2"],
                 medium: ["py-2", "px-2"],
                 large: ["py-2", "px-2"],
-              }[size]
+              }[size],
+              { "cursor-pointer": !!handleAdditionalClicked }
             )}
+            onClick={(e) => {
+              e.preventDefault();
+              if (handleAdditionalClicked) handleAdditionalClicked(q);
+            }}
           >
             <Additional query={q} />
           </div>
