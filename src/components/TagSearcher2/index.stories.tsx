@@ -9,9 +9,9 @@ import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
 import { MockedUrqlProvider } from "~/utils/MockedUrqlProvider";
 
+import TagSearcher, { Query } from ".";
 import { Fragment as SuggestItemFragment } from "./SuggestItem";
 import { Fragment as SuggestsFragment } from "./Suggests";
-import TagSearcher, { Query } from "./TagSearcher";
 
 const meta = {
   component: TagSearcher,
