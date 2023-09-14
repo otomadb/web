@@ -3,11 +3,12 @@
 import clsx from "clsx";
 import React, { ReactNode, useContext, useReducer } from "react";
 
+import { XMarkIcon } from "~/components/Icons";
 import RegisterForm from "~/components/RegisterFromNicovideoForm";
 
 type Current = undefined | { type: "FROM_NICOVIDEO"; source: string };
 
-const FormModalContext = React.createContext<{
+export const FormModalContext = React.createContext<{
   current: Current;
   open(t: Exclude<Current, undefined>): void;
   close(): void;
@@ -21,9 +22,10 @@ const FormModalContext = React.createContext<{
   },
 });
 
-export const FormModalProvider: React.FC<{ children: ReactNode }> = ({
-  children,
-}) => {
+export const FormModalProvider: React.FC<{
+  children: ReactNode;
+  init?: Current;
+}> = ({ children, init }) => {
   const [r, reducer] = useReducer(
     (
       _: Current,
@@ -38,7 +40,7 @@ export const FormModalProvider: React.FC<{ children: ReactNode }> = ({
           return action.t;
       }
     },
-    undefined
+    init
   );
 
   return (
@@ -59,6 +61,11 @@ export const useOpenFromNicovideo = () => {
   return (s: string) => open({ type: "FROM_NICOVIDEO", source: s });
 };
 
+export const useClose = () => {
+  const { close } = useContext(FormModalContext);
+  return close;
+};
+
 export default function FormModal({
   className,
   style,
@@ -67,15 +74,53 @@ export default function FormModal({
   style?: React.CSSProperties;
 }) {
   const { current } = useContext(FormModalContext);
+  const close = useClose();
 
   return (
-    <div className={clsx(className)} style={style}>
-      {current?.type === "FROM_NICOVIDEO" && (
-        <RegisterForm
-          sourceId={current.source}
-          className={clsx(["ml-2"])}
-          style={{ width: 640, height: 720 }}
-        />
+    <div className={clsx(className, ["flex"])} style={style}>
+      {current && (
+        <div
+          className={clsx(
+            ["flex", "flex-col"],
+            ["border", "border-slate-700", "rounded"]
+          )}
+        >
+          <div
+            className={clsx(
+              ["flex", "items-center"],
+              [["px-4"], ["py-2"]],
+              ["bg-slate-800"],
+              ["border-b", "border-slate-700"]
+            )}
+          >
+            <span className={clsx(["text-slate-500", "text-xs", "font-bold"])}>
+              {current.type === "FROM_NICOVIDEO" && "ニコニコ動画から登録"}
+            </span>
+            <button
+              type="button"
+              className={clsx(
+                ["ml-auto"],
+                ["w-4", "h-4"],
+                ["text-slate-500", "hover:text-slate-400"]
+              )}
+              onClick={(e) => {
+                e.preventDefault();
+                close();
+              }}
+            >
+              <XMarkIcon />
+            </button>
+          </div>
+          <div className={clsx(["bg-slate-900"])}>
+            {current.type === "FROM_NICOVIDEO" && (
+              <RegisterForm
+                sourceId={current.source}
+                className={clsx()}
+                style={{ width: 640, height: 720 }}
+              />
+            )}
+          </div>
+        </div>
       )}
     </div>
   );
