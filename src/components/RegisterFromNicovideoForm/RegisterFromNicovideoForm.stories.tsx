@@ -12,7 +12,6 @@ import { MockedUrqlProvider } from "~/utils/MockedUrqlProvider";
 import RegisterForm, { q } from "./RegisterFromNicovideoForm";
 import { Fragment as RegReqFragment } from "./Request";
 import { Fragment as SourceFragment } from "./Source";
-import { Query as TagButtonQuery } from "./TagButton";
 const commonMocks = [mockTagSearcher];
 const meta = {
   component: RegisterForm,
@@ -43,23 +42,6 @@ export const Primary: Story = {
     msw: {
       handlers: [
         ...commonMocks,
-        mswGql.query(TagButtonQuery, (req, res, ctx) =>
-          res(
-            ctx.data({
-              getTag: {
-                id: `tag:${req.variables.id.split(":")[1]}`,
-                ...makeFragmentData(
-                  {
-                    name: `Tag ${req.variables.id.split(":")[1]}`,
-                    type: TagType.Character,
-                    explicitParent: { id: `tag:0`, name: "Tag 0" },
-                  },
-                  CommonTagFragment
-                ),
-              },
-            })
-          )
-        ),
         mswGql.query(q, (req, res, ctx) =>
           res(
             ctx.data({
@@ -164,23 +146,6 @@ export const リクエストが存在しない: Story = {
     msw: {
       handlers: [
         ...commonMocks,
-        mswGql.query(TagButtonQuery, (req, res, ctx) =>
-          res(
-            ctx.data({
-              getTag: {
-                id: `tag:${req.variables.id.split(":")[1]}`,
-                ...makeFragmentData(
-                  {
-                    name: `Tag ${req.variables.id.split(":")[1]}`,
-                    type: TagType.Character,
-                    explicitParent: { id: `tag:0`, name: "Tag 0" },
-                  },
-                  CommonTagFragment
-                ),
-              },
-            })
-          )
-        ),
         mswGql.query(q, (req, res, ctx) =>
           res(
             ctx.data({

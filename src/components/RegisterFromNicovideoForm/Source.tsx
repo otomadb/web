@@ -18,7 +18,7 @@ export const Fragment = graphql(`
         items {
           tag {
             id
-            ...RegisterFromNicovideoForm_TagButton
+            ...CommonTag
           }
         }
       }

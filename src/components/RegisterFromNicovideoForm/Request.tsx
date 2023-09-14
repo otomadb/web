@@ -23,7 +23,7 @@ export const Fragment = graphql(`
       id
       tag {
         id
-        ...RegisterFromNicovideoForm_TagButton
+        ...CommonTag
       }
     }
     semitaggings {
