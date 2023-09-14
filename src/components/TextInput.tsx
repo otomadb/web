@@ -45,6 +45,8 @@ export const TextInput2 = forwardRef<
     autoComplete?: boolean;
     onChange(value: string): void;
     value: string;
+    LeftDecoration?: React.FC<{ disabled?: boolean }>;
+    disabled?: boolean;
   }
 >(
   (
@@ -56,6 +58,8 @@ export const TextInput2 = forwardRef<
       value,
       autoComplete = false,
       onChange,
+      LeftDecoration,
+      disabled = false,
     },
     ref
   ) => {
@@ -64,31 +68,62 @@ export const TextInput2 = forwardRef<
         style={style}
         className={clsx(
           className,
-          ["bg-slate-950"],
-          ["border", "border-slate-700"],
-          ["text-slate-300", "placeholder-slate-600"],
+          ["group/textinput"],
+          ["flex", "items-stretch"],
+          ["border", "border-slate-700", "aria-disabled:border-slate-700"],
           ["focus-within:outline", "outline-1", "outline-sky-700"],
           {
-            small: ["rounded-sm", "py-1", "px-2", "text-sm"],
-            medium: ["rounded", "py-1.5", "px-4", "text-base"],
-            large: ["rounded-lg", "py-2", "px-4", "text-lg"],
+            small: ["rounded-sm"],
+            medium: ["rounded"],
+            large: ["rounded-lg"],
           }[size]
         )}
+        aria-disabled={disabled}
       >
-        <input
-          ref={ref}
+        {LeftDecoration && (
+          <div
+            className={clsx(
+              ["flex-shrink-0"],
+              {
+                small: ["px-3"],
+                medium: ["px-4"],
+                large: ["px-6"],
+              }[size],
+              ["bg-slate-800", "group-aria-disabled/textinput:bg-slate-700"],
+              ["flex", "items-center"]
+            )}
+          >
+            <LeftDecoration disabled={disabled} />
+          </div>
+        )}
+        <div
           className={clsx(
-            ["w-full", "h-full"],
-            ["bg-transparent"],
-            ["outline-none"]
+            ["flex-grow"],
+            ["bg-slate-950", "group-aria-disabled/textinput:bg-slate-600"],
+            ["text-slate-300", "placeholder-slate-600"],
+            {
+              small: ["py-1", "px-2", "text-sm"],
+              medium: ["py-1.5", "px-4", "text-base"],
+              large: ["py-2", "px-4", "text-lg"],
+            }[size]
           )}
-          type={"text"}
-          placeholder={placeholder}
-          autoComplete={autoComplete ? "on" : "off"}
-          data-1p-ignore={!autoComplete}
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-        />
+        >
+          <input
+            ref={ref}
+            className={clsx(
+              ["w-full", "h-full"],
+              ["bg-transparent"],
+              ["outline-none"]
+            )}
+            type={"text"}
+            placeholder={placeholder}
+            autoComplete={autoComplete ? "on" : "off"}
+            data-1p-ignore={!autoComplete}
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+            disabled={disabled}
+          />
+        </div>
       </div>
     );
   }
