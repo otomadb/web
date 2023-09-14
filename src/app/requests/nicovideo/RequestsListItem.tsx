@@ -2,7 +2,7 @@
 import clsx from "clsx";
 import React from "react";
 
-import { NicovideoRegisterPageLink } from "~/app/editor/nicovideo/Link";
+import { useOpenFromNicovideo } from "~/app/FormModal";
 import { LinkUser as UserLink } from "~/app/users/[name]/Link";
 import { CommonTag2 } from "~/components/CommonTag";
 import { CoolImage } from "~/components/CoolImage";
@@ -49,6 +49,7 @@ export default function RequestsListItem({
 }) {
   const fragment = useFragment(Fragment, props.fragment);
   const registarable = useHasRole();
+  const openRegisterForm = useOpenFromNicovideo();
 
   return (
     <div
@@ -169,17 +170,18 @@ export default function RequestsListItem({
           >
             <ExternalLinkIcon className={clsx(["w-6", "h-6"])} />
           </a>
-          <NicovideoRegisterPageLink
-            sourceId={fragment.sourceId}
+          <button
+            role="button"
             className={clsx([
               "text-slate-400",
-              "aria-disabled:text-slate-700",
+              "disabled:text-slate-700",
               "hover:text-sky-400",
             ])}
-            aria-disabled={!registarable}
+            disabled={!registarable}
+            onClick={() => openRegisterForm(fragment.sourceId)}
           >
             <PlusIcon className={clsx(["w-6", "h-6"])} />
-          </NicovideoRegisterPageLink>
+          </button>
         </div>
       </div>
     </div>

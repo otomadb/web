@@ -6,6 +6,8 @@ import { isErr } from "~/utils/Result";
 
 import RequestsList from "./RequestsList";
 
+export const dynamic = "force-dynamic";
+
 export default async function Page() {
   const result = await fetchGql(
     graphql(`
@@ -18,10 +20,7 @@ export default async function Page() {
     `),
     {}
   );
-  if (isErr(result)) {
-    console.error(result.error);
-    throw new Error("Fetched failed");
-  }
+  if (isErr(result)) throw new Error("Fetched failed");
 
   return (
     <main

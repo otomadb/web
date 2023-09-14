@@ -18,6 +18,7 @@ export default function Provider({ children }: { children: ReactNode }) {
           "create:mylist",
           "create:registration_request",
           "create:tagging",
+          "create:video",
           "edit:mylist",
           "remove:tagging",
           "update:mylist_registration",
