@@ -6,14 +6,14 @@ import { TextInput2 } from "~/components/TextInput";
 export default function SearchBox({
   className,
   style,
-  size = "medium",
+  size,
   fetching,
   query,
   setQuery,
   disabled,
 }: {
   className?: string;
-  size?: "small" | "medium" | "large";
+  size: "small" | "medium" | "large";
   style?: React.CSSProperties;
   limit?: number;
   fetching: boolean;

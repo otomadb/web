@@ -3,6 +3,7 @@ import clsx from "clsx";
 import React from "react";
 
 import { CommonTag2 } from "~/components/CommonTag";
+import { Fragment as CommonTagFragment } from "~/components/CommonTag";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const Fragment = graphql(`
@@ -21,15 +22,18 @@ export const Fragment = graphql(`
 export default function SuggestItem({
   className,
   style,
-  size = "medium",
+  size,
   handleSelect,
   disabled = false,
   ...props
 }: {
   className?: string;
-  size?: "small" | "medium" | "large";
+  size: "small" | "medium" | "large";
   style?: React.CSSProperties;
-  handleSelect(id: string): void;
+  handleSelect(
+    id: string,
+    fragment: FragmentType<typeof CommonTagFragment>
+  ): void;
   fragment: FragmentType<typeof Fragment>;
   disabled?: boolean;
 }) {
@@ -43,35 +47,34 @@ export default function SuggestItem({
       className={clsx(
         className,
         {
-          small: ["py-0.5", "px-1", "gap-x-1"],
-          medium: ["py-2", "px-2", "gap-x-2"],
-          large: ["py-2", "px-2", "gap-x-2"],
+          small: ["py-1", "px-2", "gap-y-0.5"],
+          medium: ["py-2", "px-2", "gap-y-1"],
+          large: ["py-2", "px-2", "gap-y-2"],
         }[size],
-        ["flex", "items-center"],
+        ["flex", "flex-col", "items-start"],
         ["bg-slate-950", "hover:bg-slate-900"]
       )}
       onClick={(e) => {
         e.preventDefault();
         e.currentTarget.blur();
         if (disabled) return;
-        handleSelect(fragment.tag.id);
+        handleSelect(fragment.tag.id, fragment.tag);
       }}
       style={style}
     >
       <div>
         <CommonTag2
           className={clsx()}
-          size={size === "small" ? "xs" : "small"}
+          size={size === "large" ? "small" : "xs"}
           fragment={fragment.tag}
         />
       </div>
       {!fragment.name.primary && (
         <div
           className={clsx(
-            ["ml-auto"],
             {
-              small: ["text-xs"],
-              medium: ["text-sm"],
+              small: ["text-xxs"],
+              medium: ["text-xs"],
               large: ["text-sm"],
             }[size],
             ["italic"],
