@@ -8,14 +8,14 @@ import * as z from "zod";
 
 import { SucceededToast } from "~/app/editor/nicovideo/SucceededToast";
 import { BlueButton } from "~/components/Button";
-import { TagSearcher } from "~/components/TagSearcher";
+import TagSearcher from "~/components/TagSearcher2";
 import { useToaster } from "~/components/Toaster";
 import { FragmentType, graphql } from "~/gql";
 
 import { TextInput2 } from "../TextInput";
+import OriginalSource from "./OriginalSource";
 import { RequestExists } from "./Request";
 import { SemitagButton } from "./SemitagButton";
-import Source from "./Source";
 import { Fragment as TagButtonFragment, TagButton } from "./TagButton";
 import { useRegisterVideo } from "./useRegisterVideo";
 
@@ -29,10 +29,11 @@ export const formSchema = z.object({
 });
 export type FormSchema = z.infer<typeof formSchema>;
 
-export const q = graphql(`
+export const Query = graphql(`
   query RegisterFromNicovideoForm_Check($sourceId: String!) {
     fetchNicovideo(input: { sourceId: $sourceId }) {
       source {
+        thumbnailUrl
         ...RegisterFromNicovideoForm_OriginalSource
       }
     }
@@ -45,21 +46,21 @@ export const q = graphql(`
 export default function RegisterForm({
   className,
   style,
-
   sourceId,
+  handleSuccess,
 }: {
   className?: string;
   style?: React.CSSProperties;
   sourceId: string;
+  handleSuccess?(): void;
 }) {
-  const [{ data, fetching }] = useQuery({
-    query: q,
+  const [{ data }] = useQuery({
+    query: Query,
     variables: { sourceId },
     requestPolicy: "cache-and-network",
   });
 
   const [title, setTitle] = useState<string>("");
-  const [nicovideoRequestId] = useState<string | undefined>(undefined);
   const [tags, dispatchTags] = useReducer(
     (
       prev: { id: string; fragment: FragmentType<typeof TagButtonFragment> }[],
@@ -108,32 +109,29 @@ export default function RegisterForm({
     },
     []
   );
-  const requestId = useMemo(
-    () => data?.findNicovideoRegistrationRequest?.id,
-    [data?.findNicovideoRegistrationRequest?.id]
-  );
 
   const [tab, setTab] = useState<"SOURCE" | "REQUEST">("SOURCE");
 
   const callToast = useToaster();
   const registerVideo = useRegisterVideo({
     onSuccess(data) {
-      dispatchTags({ type: "clear" });
-      dispatchSemitags({ type: "clear" });
       callToast(<SucceededToast fragment={data} />);
+      if (handleSuccess) handleSuccess();
     },
   });
 
   const handleSubmit = useCallback(() => {
+    if (!data || !data.fetchNicovideo.source) return null;
+
     registerVideo({
       title,
-      thumbnailUrl: "",
-      nicovideoRequestId,
+      thumbnailUrl: data.fetchNicovideo.source.thumbnailUrl,
+      nicovideoRequestId: data.findNicovideoRegistrationRequest?.id,
       sourceId,
-      tagIds: tags.map(({ id }) => id),
+      tagIds,
       semitagNames,
     });
-  }, [registerVideo, nicovideoRequestId, semitagNames, sourceId, tags, title]);
+  }, [data, registerVideo, title, sourceId, tagIds, semitagNames]);
 
   return (
     <div
@@ -163,7 +161,10 @@ export default function RegisterForm({
         )}
       >
         {!data && <div className={clsx(["text-slate-400"])}>Loading</div>}
-        {data && (
+        {data && !data.fetchNicovideo.source && (
+          <div className={clsx(["text-slate-400"])}>動画は存在しません</div>
+        )}
+        {data && data.fetchNicovideo.source && (
           <form
             className={clsx(["h-full"], ["flex", "flex-col", "gap-y-6"])}
             onSubmit={(e) => {
@@ -281,58 +282,39 @@ export default function RegisterForm({
                 </div>
                 <div className={clsx(["mt-auto"], ["flex-shrink-0"])}>
                   <TagSearcher
-                    handleSelect={(tagId) => {
-                      // dispatchTags({ type: "append", tagId });
+                    limit={5}
+                    size="small"
+                    className={clsx(["w-full"], ["z-10"])}
+                    handleSelect={(tagId, fragment) => {
+                      dispatchTags({ type: "append", tagId, fragment });
                     }}
-                    Optional={({ query }) => {
-                      if (semitagNames.includes(query))
-                        return (
-                          <div>
-                            <div className={clsx(["text-xs"])}>
-                              <span
-                                className={clsx(
-                                  ["bg-white"],
-                                  ["border", "border-gray-200"],
-                                  ["rounded"],
-                                  ["px-2", "py-0.5"]
-                                )}
-                              >
-                                {query}
-                              </span>
-                              <span>は既に仮タグとして追加されています</span>
-                            </div>
-                          </div>
-                        );
-                      return (
-                        <div>
-                          <button
-                            className={clsx(
-                              ["text-sm"],
-                              ["border"],
-                              ["rounded"],
-                              ["px-2", "py-1"],
-                              ["bg-white", "hover:bg-blue-200"]
-                            )}
-                            onClick={(e) => {
-                              dispatchSemitags({ type: "append", name: query });
-                              e.currentTarget.blur();
-                            }}
-                          >
-                            <span
-                              className={clsx(
-                                ["bg-white"],
-                                ["border", "border-gray-200"],
-                                ["rounded"],
-                                ["px-2", "py-0.5"]
-                              )}
-                            >
-                              {query}
-                            </span>
-                            <span>を仮タグとして追加</span>
-                          </button>
+                    Additional={({ query }) => (
+                      <div className={clsx(["flex", "items-center"])}>
+                        <div
+                          className={clsx(
+                            ["px-0.5", "py-0.25"],
+                            ["bg-slate-900"],
+                            ["border", "border-slate-700", "rounded-sm"],
+                            ["text-xs", "text-slate-300"]
+                          )}
+                        >
+                          {query}
                         </div>
-                      );
-                    }}
+                        <div
+                          className={clsx(
+                            ["flex-shrink-0"],
+                            ["text-sm"],
+                            ["text-slate-500"]
+                          )}
+                        >
+                          を仮タグとして追加
+                        </div>
+                      </div>
+                    )}
+                    showAdditional={(query) => !semitagNames.includes(query)}
+                    handleAdditionalClicked={(query) =>
+                      dispatchSemitags({ type: "append", name: query })
+                    }
                   />
                 </div>
               </div>
@@ -341,6 +323,7 @@ export default function RegisterForm({
               <div className={clsx(["flex", "gap-x-2"])}>
                 <div
                   className={clsx(
+                    ["select-none"],
                     ["px-2", "py-1"],
                     [
                       "bg-slate-950",
@@ -371,12 +354,12 @@ export default function RegisterForm({
                   )}
                   onClick={() => setTab("SOURCE")}
                   aria-checked={tab === "SOURCE"}
-                  aria-disabled={!data.fetchNicovideo.source}
                 >
                   ソース情報
                 </div>
                 <div
                   className={clsx(
+                    ["select-none"],
                     ["px-2", "py-1"],
                     [
                       "bg-slate-950",
@@ -416,7 +399,7 @@ export default function RegisterForm({
               </div>
               <div className={clsx({ hidden: tab !== "SOURCE" })}>
                 {data.fetchNicovideo.source && (
-                  <Source
+                  <OriginalSource
                     fragment={data.fetchNicovideo.source}
                     selectingTagId={tagIds}
                     appendTag={({ tagId, fragment }) => {

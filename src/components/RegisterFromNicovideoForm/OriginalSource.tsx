@@ -2,15 +2,17 @@
 
 import clsx from "clsx";
 
+import { CoolImage } from "~/components/CoolImage";
+import { ExternalLinkIcon } from "~/components/Icons";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-import { CoolImage } from "../CoolImage";
 import { Fragment as TagButtonFragment, TagButton } from "./TagButton";
 
 export const Fragment = graphql(`
   fragment RegisterFromNicovideoForm_OriginalSource on NicovideoOriginalSource {
     sourceId
     title
+    url
     thumbnailUrl
     tags {
       name
@@ -25,7 +27,7 @@ export const Fragment = graphql(`
     }
   }
 `);
-export default function Source({
+export default function OriginalSource({
   className,
   selectingTagId,
   removeTag,
@@ -53,7 +55,7 @@ export default function Source({
 
   return (
     <div className={clsx(className, ["flex", "flex-col", "gap-y-2"])}>
-      <div className={clsx(["flex"])}>
+      <div className={clsx(["flex"], ["gap-x-4"])}>
         <div
           className={clsx(["flex-shrink-0"], ["flex", "flex-col", "gap-y-4"])}
         >
@@ -66,18 +68,26 @@ export default function Source({
             unoptimized={true}
           />
         </div>
-        <div className={clsx(["flex-grow"], ["flex", "flex-col"], ["gap-y-4"])}>
-          <div className={clsx(["text-sm", "font-bold"])}>{fragment.title}</div>
+        <div className={clsx(["py-2"], ["flex-grow"], ["flex", "flex-col"])}>
+          <div className={clsx(["text-slate-300"], ["text-sm", "font-bold"])}>
+            {fragment.title}
+          </div>
+          <div className={clsx(["mt-auto"], ["flex", "gap-x-2"])}>
+            <a
+              href={fragment.url}
+              target="_blank"
+              className={clsx(["text-slate-400", "hover:text-sky-400"])}
+            >
+              <ExternalLinkIcon className={clsx(["w-4", "h-4"])} />
+            </a>
+          </div>
         </div>
       </div>
-      <div className={clsx(["grid", "grid-cols-2", "gap-y-1"])}>
+      <div className={clsx(["grid", "grid-cols-2", "gap-x-2", "gap-y-2"])}>
         {fragment.tags.map((originalTag) => (
           <div
             key={originalTag.name}
-            className={clsx(
-              ["flex", "flex-wrap", "items-center"],
-              ["gap-x-2", "gap-y-2"]
-            )}
+            className={clsx(["flex", "flex-col", "items-start"], ["gap-y-1"])}
           >
             <div
               role="button"
