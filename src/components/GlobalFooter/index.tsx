@@ -97,7 +97,7 @@ export const GlobalFooter: React.FC = () => {
               </li>
               <li className={clsx(["flex"])}>
                 <Link
-                  href={"docs/faq"}
+                  href={"/docs/faq"}
                   className={clsx(["text-slate-300"], ["text-sm"])}
                 >
                   よくある質問
@@ -105,7 +105,7 @@ export const GlobalFooter: React.FC = () => {
               </li>
               <li className={clsx(["flex"])}>
                 <Link
-                  href={"docs/faq#要望やバグ報告について"}
+                  href={"/docs/faq#要望やバグ報告について"}
                   className={clsx(["text-slate-300"], ["text-sm"])}
                 >
                   要望やバグ報告
