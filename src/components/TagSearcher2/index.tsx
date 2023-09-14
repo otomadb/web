@@ -78,6 +78,8 @@ export default function TagSearcher({
         )}
         {Additional && isShowAdditional && (
           <div
+            role="button"
+            tabIndex={0}
             className={clsx(
               ["border-t", "border-slate-800"],
               ["bg-slate-950", "hover:bg-slate-900"],
@@ -90,6 +92,7 @@ export default function TagSearcher({
             )}
             onClick={(e) => {
               e.preventDefault();
+              e.currentTarget.blur();
               if (handleAdditionalClicked) handleAdditionalClicked(q);
             }}
           >
