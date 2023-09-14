@@ -1,5 +1,7 @@
 "use client";
 
+import "client-only";
+
 import clsx from "clsx";
 import React, { ReactNode, useContext, useReducer } from "react";
 
@@ -117,6 +119,9 @@ export default function FormModal({
                 sourceId={current.source}
                 className={clsx()}
                 style={{ width: 640, height: 720 }}
+                handleSuccess={() => {
+                  close();
+                }}
               />
             )}
           </div>

@@ -117,7 +117,7 @@ export default function RegisterForm({
     []
   );
 
-  /* 自動的にタイトルを挿入 */
+  // 自動的にタイトルを挿入
   useEffect(() => {
     if (title === "" && data?.fetchNicovideo.source?.title) {
       setTitle(data.fetchNicovideo.source.title);
@@ -133,19 +133,23 @@ export default function RegisterForm({
       if (handleSuccess) handleSuccess();
     },
   });
-
-  const handleSubmit = useCallback(() => {
+  const payload = useMemo(() => {
     if (!data || !data.fetchNicovideo.source) return null;
 
-    registerVideo({
+    return {
+      sourceId,
       title,
       thumbnailUrl: data.fetchNicovideo.source.thumbnailUrl,
       nicovideoRequestId: data.findNicovideoRegistrationRequest?.id,
-      sourceId,
       tagIds,
       semitagNames,
-    });
-  }, [data, registerVideo, title, sourceId, tagIds, semitagNames]);
+    };
+  }, [data, semitagNames, sourceId, tagIds, title]);
+
+  const handleSubmit = useCallback(() => {
+    if (!payload) return;
+    registerVideo(payload);
+  }, [payload, registerVideo]);
 
   return (
     <div
@@ -445,7 +449,11 @@ export default function RegisterForm({
             </div>
           </div>
           <div className={clsx(["mt-auto"], ["flex-shrink-0"], ["w-full"])}>
-            <BlueButton type="submit" className={clsx(["px-4"], ["py-1"])}>
+            <BlueButton
+              type="submit"
+              className={clsx(["px-4"], ["py-1"])}
+              disabled={!payload}
+            >
               登録
             </BlueButton>
           </div>
