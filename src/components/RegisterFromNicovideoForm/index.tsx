@@ -54,7 +54,7 @@ export default function RegisterForm({
   sourceId: string;
   handleSuccess?(): void;
 }) {
-  const [{ data }] = useQuery({
+  const [{ data, fetching }] = useQuery({
     query: Query,
     variables: { sourceId },
     requestPolicy: "cache-and-network",
@@ -160,11 +160,13 @@ export default function RegisterForm({
           ["bg-slate-900"]
         )}
       >
-        {!data && <div className={clsx(["text-slate-400"])}>Loading</div>}
-        {data && !data.fetchNicovideo.source && (
+        {(fetching || !data) && (
+          <div className={clsx(["text-slate-400"])}>Loading</div>
+        )}
+        {!fetching && data && !data.fetchNicovideo.source && (
           <div className={clsx(["text-slate-400"])}>動画は存在しません</div>
         )}
-        {data && data.fetchNicovideo.source && (
+        {!fetching && data && data.fetchNicovideo.source && (
           <form
             className={clsx(["h-full"], ["flex", "flex-col", "gap-y-6"])}
             onSubmit={(e) => {
