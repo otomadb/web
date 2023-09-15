@@ -61,7 +61,7 @@ export const CoolImage2: React.FC<{
   width: number;
   height: number;
   unoptimized?: boolean;
-  style?: Omit<React.CSSProperties, "width" | "height">;
+  style?: React.CSSProperties;
 }> = ({ className, src, alt, width, height, style, unoptimized = true }) => {
   return (
     <div
@@ -72,7 +72,7 @@ export const CoolImage2: React.FC<{
         ["overflow-hidden"],
         ["relative"]
       )}
-      style={{ width, height, ...style }}
+      style={style}
     >
       <Image
         className={clsx(

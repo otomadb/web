@@ -4,6 +4,7 @@ import { FragmentType, graphql, useFragment } from "~/gql";
 
 import { CoolImage2 } from "./CoolImage";
 
+const imageSizes = { small: 128, medium: 192, large: 256 };
 export const Fragment = graphql(`
   fragment VideoThumbnail on Video {
     title
@@ -13,17 +14,19 @@ export const Fragment = graphql(`
 export const VideoThumbnail: React.FC<{
   className?: string;
   fragment: FragmentType<typeof Fragment>;
-  width?: number;
-  height?: number;
-}> = ({ className, width = 196, height = 128, ...props }) => {
+  /**
+   * あくまでも画像のサイズであり，`width`及び`height`は別途スタイルを当てるなどする必要があることに注意．
+   */
+  imageSize: keyof typeof imageSizes;
+}> = ({ className, imageSize, ...props }) => {
   const fragment = useFragment(Fragment, props.fragment);
   return (
     <CoolImage2
       className={className}
       src={fragment.thumbnailUrl}
       alt={fragment.title}
-      width={width}
-      height={height}
+      width={imageSizes[imageSize] * 1.5}
+      height={imageSizes[imageSize]}
       unoptimized={false}
     />
   );

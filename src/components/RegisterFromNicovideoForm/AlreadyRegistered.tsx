@@ -30,7 +30,7 @@ export const AlreadyRegistered: React.FC<{
   return (
     <div className={clsx(className, ["flex", "gap-x-4"])} style={style}>
       <LinkVideo className={clsx(["block"])} fragment={fragment.video}>
-        <VideoThumbnail width={128} height={96} fragment={fragment.video} />
+        <VideoThumbnail fragment={fragment.video} imageSize="medium" />
       </LinkVideo>
       <div>
         <p className={clsx(["text-sm"], ["text-slate-400"])}>

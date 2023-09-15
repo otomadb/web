@@ -41,9 +41,8 @@ export default function RecentLikes({ className }: { className?: string }) {
             <LinkVideo fragment={like.video}>
               <VideoThumbnail
                 className={clsx(["flex-shrink-0"], ["w-[96px]", "h-[64px]"])}
-                width={96}
-                height={64}
                 fragment={like.video}
+                imageSize="small"
               />
             </LinkVideo>
             <div className={clsx(["flex-grow"], ["py-1"])}>

@@ -43,7 +43,11 @@ const SearchVideosItem: React.FC<{
       fragment={video}
     >
       <div className={clsx(["flex-shrink-0"])}>
-        <VideoThumbnail className={clsx(["w-32"], ["h-16"])} fragment={video} />
+        <VideoThumbnail
+          className={clsx(["w-32"], ["h-16"])}
+          imageSize="small"
+          fragment={video}
+        />
       </div>
       <div
         className={clsx(

@@ -57,8 +57,7 @@ export const RegistrationsListItem: React.FC<{
           ["h-[108px]", "@[1024px]/registration:h-[84px]"],
           ["border", "border-slate-400"]
         )}
-        width={144}
-        height={108}
+        imageSize="medium"
       />
       <div className={clsx(["flex-grow"], ["px-4"], ["flex", "flex-col"])}>
         <div className={clsx()}>
