@@ -2,7 +2,7 @@ import React from "react";
 
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-import { CoolImage } from "./CoolImage";
+import { CoolImage2 } from "./CoolImage";
 
 export const Fragment = graphql(`
   fragment VideoThumbnail on Video {
@@ -18,7 +18,7 @@ export const VideoThumbnail: React.FC<{
 }> = ({ className, width = 196, height = 128, ...props }) => {
   const fragment = useFragment(Fragment, props.fragment);
   return (
-    <CoolImage
+    <CoolImage2
       className={className}
       src={fragment.thumbnailUrl}
       alt={fragment.title}

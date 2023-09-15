@@ -1,17 +1,20 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { graphql as mswGql } from "msw";
 
+import { Fragment as VideoLinkFragment } from "~/app/mads/[serial]/Link";
 import { Fragment as CommonTagFragment } from "~/components/CommonTag";
 import { Query as TagSearcherQuery } from "~/components/TagSearcher2";
 import { Fragment as TagSearcherSuggestItemFragment } from "~/components/TagSearcher2/SuggestItem";
 import { Fragment as TagSearcherSuggestsFragment } from "~/components/TagSearcher2/Suggests";
 import { Fragment as UserIconFragment } from "~/components/UserIcon";
+import { Fragment as VideoThumbnailFragment } from "~/components/VideoThumbnail";
 import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
 import { MockedAuth0Provider } from "~/utils/MockedAuth0Provider";
 import { MockedUrqlProvider } from "~/utils/MockedUrqlProvider";
 
 import RegisterForm, { Query } from ".";
+import { Fragment as AlreadyRegisteredFragment } from "./AlreadyRegistered";
 import { Fragment as SourceFragment } from "./OriginalSource";
 import { Fragment as RegReqFragment } from "./Request";
 
@@ -88,6 +91,7 @@ export const Primary: Story = {
         mswGql.query(Query, (req, res, ctx) =>
           res(
             ctx.data({
+              findNicovideoVideoSource: null,
               fetchNicovideo: {
                 source: {
                   title: "Title",
@@ -186,6 +190,66 @@ export const Loading: Story = {
   },
 };
 
+export const 既に登録済み: Story = {
+  args: {},
+  parameters: {
+    msw: {
+      handlers: [
+        ...commonMocks,
+        mswGql.query(Query, (req, res, ctx) =>
+          res(
+            ctx.data({
+              findNicovideoVideoSource: {
+                ...makeFragmentData(
+                  {
+                    id: "source:1",
+                    sourceId: "sm2057168",
+                    video: {
+                      id: "video:1",
+                      title: "Title 1",
+                      ...makeFragmentData({ serial: 1 }, VideoLinkFragment),
+                      ...makeFragmentData(
+                        {
+                          title: "Title 1",
+                          thumbnailUrl: "/960x540.jpg",
+                        },
+                        VideoThumbnailFragment
+                      ),
+                    } as never, // TODO: Fix type for merging makeFragmentData
+                  },
+                  AlreadyRegisteredFragment
+                ),
+              },
+              fetchNicovideo: { source: null },
+              findNicovideoRegistrationRequest: null,
+            })
+          )
+        ),
+      ],
+    },
+  },
+};
+
+export const 元動画が存在しない: Story = {
+  args: {},
+  parameters: {
+    msw: {
+      handlers: [
+        ...commonMocks,
+        mswGql.query(Query, (req, res, ctx) =>
+          res(
+            ctx.data({
+              findNicovideoVideoSource: null,
+              fetchNicovideo: { source: null },
+              findNicovideoRegistrationRequest: null,
+            })
+          )
+        ),
+      ],
+    },
+  },
+};
+
 export const リクエストが存在しない: Story = {
   args: {},
   parameters: {
@@ -195,6 +259,7 @@ export const リクエストが存在しない: Story = {
         mswGql.query(Query, (req, res, ctx) =>
           res(
             ctx.data({
+              findNicovideoVideoSource: null,
               fetchNicovideo: {
                 source: {
                   title: "Title",
@@ -231,25 +296,6 @@ export const リクエストが存在しない: Story = {
                   ),
                 },
               },
-              findNicovideoRegistrationRequest: null,
-            })
-          )
-        ),
-      ],
-    },
-  },
-};
-
-export const 元動画が存在しない: Story = {
-  args: {},
-  parameters: {
-    msw: {
-      handlers: [
-        ...commonMocks,
-        mswGql.query(Query, (req, res, ctx) =>
-          res(
-            ctx.data({
-              fetchNicovideo: { source: null },
               findNicovideoRegistrationRequest: null,
             })
           )

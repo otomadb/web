@@ -19,6 +19,7 @@ import { useToaster } from "~/components/Toaster";
 import { FragmentType, graphql } from "~/gql";
 
 import { TextInput2 } from "../TextInput";
+import { AlreadyRegistered } from "./AlreadyRegistered";
 import OriginalSource from "./OriginalSource";
 import { RequestExists } from "./Request";
 import { SemitagButton } from "./SemitagButton";
@@ -35,6 +36,20 @@ export const formSchema = z.object({
 });
 export type FormSchema = z.infer<typeof formSchema>;
 
+export const Loading: React.FC<{ fetching: boolean; data: unknown }> = ({
+  fetching,
+  data,
+}) => {
+  return (
+    <>
+      {(fetching || !data) && (
+        <div className={clsx(["text-slate-400"])}>Loading</div>
+      )}
+      {!fetching && data && <></>}
+    </>
+  );
+};
+
 export const Query = graphql(`
   query RegisterFromNicovideoForm_Check($sourceId: String!) {
     fetchNicovideo(input: { sourceId: $sourceId }) {
@@ -47,6 +62,9 @@ export const Query = graphql(`
     findNicovideoRegistrationRequest(input: { sourceId: $sourceId }) {
       id
       ...RegisterFromNicovideoForm_Request
+    }
+    findNicovideoVideoSource(input: { sourceId: $sourceId }) {
+      ...RegisterFromNicovideoForm_VideoSource
     }
   }
 `);
@@ -161,13 +179,16 @@ export default function RegisterForm({
       )}
       style={style}
     >
-      {(fetching || !data) && (
+      {fetching || !data ? (
         <div className={clsx(["text-slate-400"])}>Loading</div>
-      )}
-      {!fetching && data && !data.fetchNicovideo.source && (
+      ) : data.findNicovideoVideoSource ? (
+        <AlreadyRegistered
+          className={clsx(["text-slate-400"])}
+          fragment={data.findNicovideoVideoSource}
+        />
+      ) : !data.fetchNicovideo.source ? (
         <div className={clsx(["text-slate-400"])}>動画は存在しません</div>
-      )}
-      {!fetching && data && data.fetchNicovideo.source && (
+      ) : (
         <form
           className={clsx(["h-full"], ["flex", "flex-col", "gap-y-6"])}
           onSubmit={(e) => {
