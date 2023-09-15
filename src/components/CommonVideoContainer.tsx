@@ -45,8 +45,7 @@ export const CommonVideoContainer: React.FC<{
         <VideoThumbnail
           fragment={fragment}
           className={clsx(["w-full"], ["h-32"])}
-          width={256}
-          height={192}
+          imageSize="large"
         />
       </LinkVideo>
       <div className={clsx(["mt-1"], ["line-clamp-2"])}>

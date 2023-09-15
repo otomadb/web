@@ -98,8 +98,7 @@ const Video: React.FC<{
         <VideoThumbnail
           fragment={fragment}
           className={clsx(["w-full"], ["h-32"])}
-          width={256}
-          height={192}
+          imageSize="medium"
         />
       </LinkVideo>
       <div className={clsx(["mt-1"])}>

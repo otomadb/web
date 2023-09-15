@@ -27,8 +27,7 @@ export const SimilarVideo = ({
         <VideoThumbnail
           fragment={to}
           className={clsx(["w-full"], ["h-32"], ["border", "border-slate-400"])}
-          width={256}
-          height={192}
+          imageSize="medium"
         />
       </LinkVideo>
       <LinkVideo

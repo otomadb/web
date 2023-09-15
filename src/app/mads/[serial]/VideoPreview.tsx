@@ -130,12 +130,11 @@ export const Image = ({
       <div className={clsx(["flex"])}>
         <VideoThumbnail
           fragment={fragment}
+          imageSize="large"
           className={clsx({ hidden: thumbnail !== "ORIGINAL" }, [
             "w-96",
             "h-48",
           ])}
-          width={384}
-          height={192}
         />
         {fragment.nicovideoSources.map((source) => (
           <iframe

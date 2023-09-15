@@ -30,7 +30,7 @@ export const AlreadyRegistered: React.FC<{
         className={clsx(["block"], ["w-64"])}
         fragment={fragment.video}
       >
-        <VideoThumbnail width={260} height={200} fragment={fragment.video} />
+        <VideoThumbnail imageSize="medium" fragment={fragment.video} />
       </LinkVideo>
       <div>
         <p className={clsx(["text-sm"], ["text-slate-900"])}>

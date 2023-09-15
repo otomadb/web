@@ -90,8 +90,7 @@ export const MylistListItem: React.FC<{
               <VideoThumbnail
                 className={clsx(["w-[96px]"], ["h-full"])}
                 fragment={video}
-                width={96}
-                height={72}
+                imageSize="small"
               />
             </div>
           ))}

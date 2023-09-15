@@ -86,6 +86,7 @@ export default function NicovideoRegistrationRequestAcceptingNotification({
             <VideoThumbnail
               fragment={video}
               className={clsx(["w-[72px]", "h-[48px]"])}
+              imageSize="small"
             />
           </LinkVideo>
         </div>

@@ -52,6 +52,7 @@ export const SourceExists: React.FC<{
       <div className={clsx(["flex-shrink-0"])}>
         <VideoThumbnail
           className={clsx(["w-36"], ["h-18"])}
+          imageSize="small"
           fragment={fragment.video}
         />
       </div>
