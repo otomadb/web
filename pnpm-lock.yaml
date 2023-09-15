@@ -122,8 +122,8 @@ devDependencies:
     specifier: 7.4.1
     version: 7.4.1(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2)
   '@storybook/testing-library':
-    specifier: 0.2.0
-    version: 0.2.0
+    specifier: 0.2.1
+    version: 0.2.1
   '@tailwindcss/container-queries':
     specifier: 0.1.1
     version: 0.1.1(tailwindcss@3.3.3)
@@ -5292,8 +5292,8 @@ packages:
       - supports-color
     dev: true
 
-  /@storybook/testing-library@0.2.0:
-    resolution: {integrity: sha512-Ff6jNnrsosmDshgCf0Eb5Cz7IA34p/1Ps5N3Kp3598kfXpBSccSkQQvVFUXC3kIHw/isIXWPqntZuKqnWUz7Gw==}
+  /@storybook/testing-library@0.2.1:
+    resolution: {integrity: sha512-AdbfLCm1C2nEFrhA3ScdicfW6Fjcorehr6RlGwECMiWwaXisnP971Wd4psqtWxlAqQo4tYBZ0f6rJ3J78JLtsg==}
     dependencies:
       '@testing-library/dom': 9.3.1
       '@testing-library/user-event': 14.4.3(@testing-library/dom@9.3.1)
