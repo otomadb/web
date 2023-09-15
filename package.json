@@ -66,7 +66,7 @@
     "@storybook/cli": "7.4.1",
     "@storybook/nextjs": "7.4.1",
     "@storybook/react": "7.4.1",
-    "@storybook/testing-library": "0.2.0",
+    "@storybook/testing-library": "0.2.1",
     "@tailwindcss/container-queries": "0.1.1",
     "@tsconfig/node18": "18.2.2",
     "@types/mdx": "2.0.7",
