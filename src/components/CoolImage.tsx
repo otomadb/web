@@ -53,3 +53,57 @@ export const CoolImage: React.FC<{
     </div>
   );
 };
+
+export const CoolImage2: React.FC<{
+  className?: string;
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  unoptimized?: boolean;
+  style?: Omit<React.CSSProperties, "width" | "height">;
+}> = ({ className, src, alt, width, height, style, unoptimized = true }) => {
+  return (
+    <div
+      className={clsx(
+        className,
+        ["flex", "justify-center"],
+        ["rounded-lg"],
+        ["overflow-hidden"],
+        ["relative"]
+      )}
+      style={{ width, height, ...style }}
+    >
+      <Image
+        className={clsx(
+          ["z-0"],
+          ["absolute"],
+          ["inset-0"],
+          ["w-full", "h-full"],
+          ["object-cover", "object-center"],
+          ["blur-md", "brightness-75", "scale-125"]
+        )}
+        src={src}
+        alt={alt}
+        width={width}
+        height={height}
+        priority={true}
+        unoptimized={unoptimized}
+      />
+      <Image
+        className={clsx(
+          ["z-1"],
+          ["relative"],
+          ["w-auto", "h-auto"],
+          ["object-scale-down"]
+        )}
+        src={src}
+        alt={alt}
+        width={width}
+        height={height}
+        priority={true}
+        unoptimized={unoptimized}
+      />
+    </div>
+  );
+};
