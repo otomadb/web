@@ -47,7 +47,7 @@ module.exports = {
       },
     },
     {
-      files: ["opengraph-image.tsx"],
+      files: ["opengraph-image.tsx", "route.tsx"],
       rules: {
         "jsx-a11y/alt-text": 0,
         "@next/next/no-img-element": 0,

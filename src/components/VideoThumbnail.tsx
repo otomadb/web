@@ -1,14 +1,17 @@
+import Image from "next/image";
 import React from "react";
 
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-import { CoolImage2 } from "./CoolImage";
-
-const imageSizes = { small: 128, medium: 192, large: 256 };
+const imageSizes = {
+  small: { width: 160, height: 90 },
+  medium: { width: 400, height: 225 },
+  large: { width: 800, height: 450 },
+};
 export const Fragment = graphql(`
   fragment VideoThumbnail on Video {
+    serial
     title
-    thumbnailUrl
   }
 `);
 export const VideoThumbnail: React.FC<{
@@ -21,12 +24,12 @@ export const VideoThumbnail: React.FC<{
 }> = ({ className, imageSize, ...props }) => {
   const fragment = useFragment(Fragment, props.fragment);
   return (
-    <CoolImage2
+    <Image
       className={className}
-      src={fragment.thumbnailUrl}
+      src={`/mads/${fragment.serial}/thumbnail`}
       alt={fragment.title}
-      width={imageSizes[imageSize] * 1.5}
-      height={imageSizes[imageSize]}
+      width={imageSizes[imageSize].width}
+      height={imageSizes[imageSize].height}
       unoptimized={false}
     />
   );
