@@ -23,10 +23,7 @@ export const Primary: StoryObj<typeof meta> = {
           title: "Title 1",
           ...makeFragmentData({ serial: 1 }, VideoLinkFragment),
           ...makeFragmentData(
-            {
-              title: "Title 1",
-              thumbnailUrl: "/960x540.jpg",
-            },
+            { serial: 1, title: "Title 1" },
             VideoThumbnailFragment
           ),
         } as never, // TODO: Fix type for merging makeFragmentData

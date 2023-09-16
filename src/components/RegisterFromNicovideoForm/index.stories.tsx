@@ -209,10 +209,7 @@ export const 既に登録済み: Story = {
                       title: "Title 1",
                       ...makeFragmentData({ serial: 1 }, VideoLinkFragment),
                       ...makeFragmentData(
-                        {
-                          title: "Title 1",
-                          thumbnailUrl: "/960x540.jpg",
-                        },
+                        { serial: 1, title: "Title 1" },
                         VideoThumbnailFragment
                       ),
                     } as never, // TODO: Fix type for merging makeFragmentData

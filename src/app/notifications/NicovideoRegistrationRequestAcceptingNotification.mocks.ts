@@ -28,17 +28,9 @@ export const mock = makeFragmentData(
       },
       video: {
         id: "v1",
+        ...makeFragmentData({ serial: 1 }, VideoPageLinkFragment),
         ...makeFragmentData(
-          {
-            serial: 1,
-          },
-          VideoPageLinkFragment
-        ),
-        ...makeFragmentData(
-          {
-            thumbnailUrl: "/960x540.jpg",
-            title: "Title 1",
-          },
+          { serial: 1, title: "Title 1" },
           VideoThumbnailFragment
         ),
       } as ResultOf<typeof Fragment>["accepting"]["video"],
