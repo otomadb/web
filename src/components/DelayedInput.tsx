@@ -1,6 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDebounce } from "react-use";
 
 export const DelayedInput: React.FC<
@@ -46,7 +45,8 @@ export const DelayedInput: React.FC<
         setIME(true);
       }}
       onCompositionEnd={() => {
-        setIME(false);
+        // Firefox + SKKでonCompositionStart/Endを使ったReactのinputが正常に動かない https://scrapbox.io/tosuke/Firefox_+_SKK%E3%81%A7onCompositionStart%2FEnd%E3%82%92%E4%BD%BF%E3%81%A3%E3%81%9FReact%E3%81%AEinput%E3%81%8C%E6%AD%A3%E5%B8%B8%E3%81%AB%E5%8B%95%E3%81%8B%E3%81%AA%E3%81%84#60aa5d8d362ab6001cff59c4
+        Promise.resolve().then(() => setIME(false))
       }}
       {...props}
     ></input>
