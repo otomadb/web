@@ -5,7 +5,7 @@ import { useMutation } from "urql";
 import { graphql } from "~/gql";
 
 export const Mutation = graphql(`
-  mutation NicovideoRequestPage_Request(
+  mutation RequestMADFromNicovideoForm_Request(
     $input: RequestNicovideoRegistrationInput!
   ) {
     requestNicovideoRegistration(input: $input) {
@@ -21,7 +21,7 @@ export const Mutation = graphql(`
         }
       }
       ... on RequestNicovideoRegistrationSucceededPayload {
-        ...NicovideoRequestPage_SucceededToast
+        ...RequestMADFromNicovideoForm_SucceededToast
       }
     }
   }
