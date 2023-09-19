@@ -5,10 +5,16 @@ import "client-only";
 import clsx from "clsx";
 import React, { ReactNode, useContext, useReducer } from "react";
 
+import RequestForm from "~/components/Form/RequestMAD/FromNicovideo";
+import RequestMADFromNicovideoForm from "~/components/Form/RequestMAD/FromNicovideo/Switcher";
 import { XMarkIcon } from "~/components/Icons";
 import RegisterForm from "~/components/RegisterFromNicovideoForm";
 
-type Current = undefined | { type: "FROM_NICOVIDEO"; source: string };
+export type Current =
+  | undefined
+  | { type: "FROM_NICOVIDEO"; source: string }
+  | { type: "REQUEST_FROM_NICOVIDEO" }
+  | { type: "REQUEST_FROM_NICOVIDEO_WITH_ID"; sourceId: string };
 
 export const FormModalContext = React.createContext<{
   current: Current;
@@ -63,6 +69,17 @@ export const useOpenFromNicovideo = () => {
   return (s: string) => open({ type: "FROM_NICOVIDEO", source: s });
 };
 
+export const useOpenRequestFromNicovideo = () => {
+  const { open } = useContext(FormModalContext);
+  return () => open({ type: "REQUEST_FROM_NICOVIDEO" });
+};
+
+export const useOpenRequestFromNicovideoWithID = () => {
+  const { open } = useContext(FormModalContext);
+  return (sourceId: string) =>
+    open({ type: "REQUEST_FROM_NICOVIDEO_WITH_ID", sourceId });
+};
+
 export const useClose = () => {
   const { close } = useContext(FormModalContext);
   return close;
@@ -97,6 +114,9 @@ export default function FormModal({
           >
             <span className={clsx(["text-slate-500", "text-xs", "font-bold"])}>
               {current.type === "FROM_NICOVIDEO" && "ニコニコ動画から登録"}
+              {(current.type === "REQUEST_FROM_NICOVIDEO" ||
+                current.type === "REQUEST_FROM_NICOVIDEO_WITH_ID") &&
+                "ニコニコ動画からリクエスト"}
             </span>
             <button
               type="button"
@@ -117,6 +137,25 @@ export default function FormModal({
             {current.type === "FROM_NICOVIDEO" && (
               <RegisterForm
                 sourceId={current.source}
+                className={clsx()}
+                style={{ width: 640, height: 720 }}
+                handleSuccess={() => {
+                  close();
+                }}
+              />
+            )}
+            {current.type === "REQUEST_FROM_NICOVIDEO" && (
+              <RequestMADFromNicovideoForm
+                className={clsx()}
+                style={{ width: 640, height: 720 }}
+                handleSuccess={() => {
+                  close();
+                }}
+              />
+            )}
+            {current.type === "REQUEST_FROM_NICOVIDEO_WITH_ID" && (
+              <RequestForm
+                sourceId={current.sourceId}
                 className={clsx()}
                 style={{ width: 640, height: 720 }}
                 handleSuccess={() => {
