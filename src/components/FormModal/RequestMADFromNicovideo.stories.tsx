@@ -1,7 +1,6 @@
 import { action } from "@storybook/addon-actions";
 import { Meta, StoryObj } from "@storybook/react";
 
-import { mockTagButton } from "~/app/editor/nicovideo/TagButton.mocks";
 import { mockTagSearcher } from "~/components/TagSearcher/index.mocks";
 import { ToastContext } from "~/components/Toaster";
 import { MockedUrqlProvider } from "~/utils/MockedUrqlProvider";
@@ -29,7 +28,7 @@ const meta = {
   parameters: {
     msw: {
       handlers: {
-        unconcern: [mockTagButton, mockTagSearcher],
+        unconcern: [mockTagSearcher],
         concern: mocksRequestFromNicovideo,
       },
     },

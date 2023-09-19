@@ -15,7 +15,7 @@ export default function RequestMADFromNicovideoFormModal({
   className?: string;
   style?: React.CSSProperties;
   initialSourceId?: string;
-  handleSuccess: ComponentProps<typeof RequestForm>["handleSuccess"];
+  handleSuccess?: ComponentProps<typeof RequestForm>["handleSuccess"];
 }) {
   const [sourceId, setSourceId] = useState<string | undefined>(initialSourceId);
 
