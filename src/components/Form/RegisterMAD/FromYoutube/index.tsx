@@ -12,10 +12,10 @@ import {
   TagButton,
 } from "~/components/RegisterFromNicovideoForm/TagButton";
 import TagSearcher from "~/components/TagSearcher2";
+import { TextInput2 } from "~/components/TextInput";
 import { useToaster } from "~/components/Toaster";
 import { FragmentType, graphql } from "~/gql";
 
-import { TextInput2 } from "../TextInput";
 import { AlreadyRegistered } from "./AlreadyRegistered";
 import OriginalSource from "./OriginalSource";
 import { RequestExists } from "./Request";
