@@ -3,10 +3,10 @@
 import clsx from "clsx";
 import { ComponentProps, useState } from "react";
 
-import NicovideoIDForm from "../../NicovideoIDForm";
-import RequestForm from ".";
+import NicovideoIDForm from "../Form/NicovideoIDForm";
+import RequestForm from "../Form/RequestMAD/FromNicovideo";
 
-export default function RequestMADFromNicovideoForm({
+export default function RequestMADFromNicovideoFormModal({
   className,
   style,
   initialSourceId,

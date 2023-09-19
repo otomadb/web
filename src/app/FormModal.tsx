@@ -5,8 +5,7 @@ import "client-only";
 import clsx from "clsx";
 import React, { ReactNode, useContext, useReducer } from "react";
 
-import RequestForm from "~/components/Form/RequestMAD/FromNicovideo";
-import RequestMADFromNicovideoForm from "~/components/Form/RequestMAD/FromNicovideo/Switcher";
+import RequestMADFromNicovideoFormModal from "~/components/FormModal/RequestMADFromNicovideo";
 import { XMarkIcon } from "~/components/Icons";
 import RegisterForm from "~/components/RegisterFromNicovideoForm";
 
@@ -145,7 +144,7 @@ export default function FormModal({
               />
             )}
             {current.type === "REQUEST_FROM_NICOVIDEO" && (
-              <RequestMADFromNicovideoForm
+              <RequestMADFromNicovideoFormModal
                 className={clsx()}
                 style={{ width: 640, height: 720 }}
                 handleSuccess={() => {
@@ -154,8 +153,8 @@ export default function FormModal({
               />
             )}
             {current.type === "REQUEST_FROM_NICOVIDEO_WITH_ID" && (
-              <RequestForm
-                sourceId={current.sourceId}
+              <RequestMADFromNicovideoFormModal
+                initialSourceId={current.sourceId}
                 className={clsx()}
                 style={{ width: 640, height: 720 }}
                 handleSuccess={() => {

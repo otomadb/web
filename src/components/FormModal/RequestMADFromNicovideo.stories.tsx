@@ -6,11 +6,11 @@ import { mockTagSearcher } from "~/components/TagSearcher/index.mocks";
 import { ToastContext } from "~/components/Toaster";
 import { MockedUrqlProvider } from "~/utils/MockedUrqlProvider";
 
-import RequestMADFromNicovideoForm from "./Switcher";
-import { mockRegisterSuccessfully } from "./useRequestFromNicovideo.mocks";
+import { mockRegisterSuccessfully } from "../Form/RequestMAD/FromNicovideo/useRequestFromNicovideo.mocks";
+import RequestMADFromNicovideoFormModal from "./RequestMADFromNicovideo";
 
 const meta = {
-  component: RequestMADFromNicovideoForm,
+  component: RequestMADFromNicovideoFormModal,
   args: {
     style: {
       width: 640,
@@ -21,7 +21,7 @@ const meta = {
     return (
       <MockedUrqlProvider>
         <ToastContext.Provider value={{ call: action("callToast") }}>
-          <RequestMADFromNicovideoForm {...args} />
+          <RequestMADFromNicovideoFormModal {...args} />
         </ToastContext.Provider>
       </MockedUrqlProvider>
     );
@@ -33,7 +33,7 @@ const meta = {
       },
     },
   },
-} as Meta<typeof RequestMADFromNicovideoForm>;
+} as Meta<typeof RequestMADFromNicovideoFormModal>;
 export default meta;
 
 type Story = StoryObj<typeof meta>;

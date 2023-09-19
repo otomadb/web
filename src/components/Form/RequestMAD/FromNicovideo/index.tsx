@@ -120,6 +120,7 @@ export default function RequestForm({
   const requestVideo = useRequestFromNicovideo({
     onSuccess(data) {
       callToast(<SucceededToast fragment={data} />);
+      if (handleSuccess) handleSuccess();
     },
     onAlready({ source: { sourceId, video } }) {
       callToast(
