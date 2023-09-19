@@ -12,7 +12,6 @@ import React, {
 import { useQuery } from "urql";
 import * as z from "zod";
 
-import { SucceededToast } from "~/app/editor/nicovideo/SucceededToast";
 import { BlueButton } from "~/components/Button";
 import TagSearcher from "~/components/TagSearcher2";
 import { useToaster } from "~/components/Toaster";
@@ -23,6 +22,7 @@ import { AlreadyRegistered } from "./AlreadyRegistered";
 import OriginalSource from "./OriginalSource";
 import { RequestExists } from "./Request";
 import { SemitagButton } from "./SemitagButton";
+import { SucceededToast } from "./SucceededToast";
 import { Fragment as TagButtonFragment, TagButton } from "./TagButton";
 import { useRegisterVideo } from "./useRegisterVideo";
 

@@ -15,7 +15,7 @@ export default function RegisterMADFromNicovideoFormModal({
   className?: string;
   style?: React.CSSProperties;
   initialSourceId?: string;
-  handleSuccess: ComponentProps<typeof RegisterForm>["handleSuccess"];
+  handleSuccess?: ComponentProps<typeof RegisterForm>["handleSuccess"];
 }) {
   const [sourceId, setSourceId] = useState<string | undefined>(initialSourceId);
 

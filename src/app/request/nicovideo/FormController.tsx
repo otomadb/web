@@ -3,16 +3,16 @@
 import { useSearchParams } from "next/navigation";
 import React from "react";
 
-import RegisterMADFromNicovideoFormModal from "~/components/FormModal/RegisterMADFromNicovideo";
+import RequestMADFromNicovideoFormModal from "~/components/FormModal/RequestMADFromNicovideo";
 
-export default function FormController(props: {
+export default function Controller(props: {
   className?: string;
   style?: React.CSSProperties;
 }) {
   const searchParams = useSearchParams();
 
   return (
-    <RegisterMADFromNicovideoFormModal
+    <RequestMADFromNicovideoFormModal
       {...props}
       initialSourceId={searchParams?.get("sourceId") || undefined}
     />
