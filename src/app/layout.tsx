@@ -4,12 +4,12 @@ import clsx from "clsx";
 import type { Metadata } from "next";
 import React from "react";
 
+import FormModal, { FormModalProvider } from "~/components/FormModal";
 import { GlobalFooter } from "~/components/GlobalFooter";
 import GlobalNav from "~/components/GlovalNav";
 import { ToastProvider } from "~/components/Toaster";
 
 import Auth0Provider from "./Auth0Provider";
-import FormModal, { FormModalProvider } from "../components/FormModal";
 import UrqlProvider from "./UrqlProvider";
 
 export const metadata: Metadata = {
