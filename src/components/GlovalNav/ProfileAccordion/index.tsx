@@ -7,9 +7,9 @@ import React, { ReactNode } from "react";
 import { NicovideoRegisterPageLink } from "~/app/editor/nicovideo/Link";
 import { LinkRegisterSemitag } from "~/app/editor/semitags/Link";
 import { TagRegisterPageLink } from "~/app/editor/tags/Link";
+import { useOpenRequestFromNicovideo } from "~/app/FormModal";
 import { YouLikesPageLink } from "~/app/me/likes/Link";
 import MyMylistsPageLink from "~/app/me/mylists/Link";
-import NicovideoRequestPageLink from "~/app/request/nicovideo/Link";
 import { SettingPageLink } from "~/app/settings/Link";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
@@ -21,7 +21,7 @@ const MenuItem: React.FC<{
   Wrapper: React.FC<{
     className?: string;
     children?: ReactNode;
-    onClick?: React.MouseEventHandler<HTMLAnchorElement>;
+    onClick?: React.MouseEventHandler<HTMLAnchorElement | HTMLButtonElement>;
   }>;
   children: ReactNode;
 }> = ({ className, Wrapper, children }) => {
@@ -68,6 +68,7 @@ export default function ProfileAccordion({
   const { logout } = useAuth0();
   const fragment = useFragment(Fragment, props.fragment);
   const { whoami } = fragment;
+  const openRequestFromNicovideo = useOpenRequestFromNicovideo();
 
   return (
     <div
@@ -91,7 +92,19 @@ export default function ProfileAccordion({
         <MenuItem Wrapper={(props) => <MyMylistsPageLink {...props} />}>
           マイリスト
         </MenuItem>
-        <MenuItem Wrapper={(props) => <NicovideoRequestPageLink {...props} />}>
+        <MenuItem
+          Wrapper={({ className, onClick, ...props }) => (
+            <button
+              {...props}
+              className={clsx(className, ["text-left"])}
+              type="button"
+              onClick={(e) => {
+                if (onClick) onClick(e);
+                openRequestFromNicovideo();
+              }}
+            />
+          )}
+        >
           動画のリクエスト
         </MenuItem>
         <MenuItem Wrapper={(props) => <SettingPageLink {...props} />}>
