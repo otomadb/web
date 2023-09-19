@@ -11,6 +11,7 @@ import MyMylistsPageLink from "~/app/me/mylists/Link";
 import { SettingPageLink } from "~/app/settings/Link";
 import {
   useOpenRegisterFromNicovideo,
+  useOpenRegisterFromYoutube,
   useOpenRequestFromNicovideo,
 } from "~/components/FormModal";
 import { FragmentType, graphql, useFragment } from "~/gql";
@@ -72,6 +73,7 @@ export default function ProfileAccordion({
   const { whoami } = fragment;
   const openRequestFromNicovideo = useOpenRequestFromNicovideo();
   const openRegisterFromNicovideo = useOpenRegisterFromNicovideo();
+  const openRegisterFromYoutube = useOpenRegisterFromYoutube();
 
   return (
     <div
@@ -131,6 +133,22 @@ export default function ProfileAccordion({
             )}
           >
             ニコニコ動画から登録
+          </MenuItem>
+          <MenuItem
+            className={clsx(["col-span-2"])}
+            Wrapper={({ className, onClick, ...props }) => (
+              <button
+                {...props}
+                className={clsx(className, ["text-left"])}
+                type="button"
+                onClick={(e) => {
+                  if (onClick) onClick(e);
+                  openRegisterFromYoutube(null);
+                }}
+              />
+            )}
+          >
+            Youtubeから登録
           </MenuItem>
           <MenuItem
             className={clsx(["col-span-1"])}
