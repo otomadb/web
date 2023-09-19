@@ -1,15 +1,15 @@
 import { action } from "@storybook/addon-actions";
 import { Meta, StoryObj } from "@storybook/react";
 
-import { mockTagButton } from "~/app/editor/nicovideo/TagButton.mocks";
 import { mockTagSearcher } from "~/components/TagSearcher/index.mocks";
 import { ToastContext } from "~/components/Toaster";
 import { MockedUrqlProvider } from "~/utils/MockedUrqlProvider";
 
-import RegisterMADFromNicovideoFormModal from "./RegisterMADFromNicovideo";
+import { mocksRegisterFromYoutube } from "./mocks";
+import RegisterMADFromYoutubeFormModal from "./RegisterMADFromYoutube";
 
 const meta = {
-  component: RegisterMADFromNicovideoFormModal,
+  component: RegisterMADFromYoutubeFormModal,
   args: {
     style: {
       width: 640,
@@ -20,7 +20,7 @@ const meta = {
     return (
       <MockedUrqlProvider>
         <ToastContext.Provider value={{ call: action("callToast") }}>
-          <RegisterMADFromNicovideoFormModal {...args} />
+          <RegisterMADFromYoutubeFormModal {...args} />
         </ToastContext.Provider>
       </MockedUrqlProvider>
     );
@@ -28,12 +28,12 @@ const meta = {
   parameters: {
     msw: {
       handlers: {
-        unconcern: [mockTagButton, mockTagSearcher],
-        concern: [],
+        unconcern: [mockTagSearcher],
+        concern: mocksRegisterFromYoutube,
       },
     },
   },
-} as Meta<typeof RegisterMADFromNicovideoFormModal>;
+} as Meta<typeof RegisterMADFromYoutubeFormModal>;
 export default meta;
 
 type Story = StoryObj<typeof meta>;

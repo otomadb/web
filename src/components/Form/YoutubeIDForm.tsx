@@ -42,12 +42,12 @@ export default function YoutubeIDForm({
     >
       <label className={clsx(["w-full"], ["flex", "flex-col", "gap-y-1"])}>
         <div className={clsx(["text-slate-400", "text-sm"])}>
-          ニコニコ動画の動画IDの入力
+          Youtubeの動画IDの入力
         </div>
         <TextInput2
           size="medium"
-          aria-label="ニコニコ動画の動画ID"
-          placeholder="sm2057168"
+          aria-label="Youtubeの動画ID"
+          placeholder="Q16KpquGsIc"
           value={input}
           onChange={(s) => setInput(s)}
           className={clsx(["w-full"])}
@@ -56,7 +56,7 @@ export default function YoutubeIDForm({
       <div className={clsx(["mt-auto"])}>
         <BlueButton
           type="submit"
-          aria-label="ニコニコ動画からの検索"
+          aria-label="Youtubeからの検索"
           className={clsx(["py-1"], ["px-4"], ["rounded"], ["cursor-pointer"])}
           disabled={!parsed}
         >

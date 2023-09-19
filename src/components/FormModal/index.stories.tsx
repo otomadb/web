@@ -12,7 +12,11 @@ import { TagType } from "~/gql/graphql";
 import { MockedUrqlProvider } from "~/utils/MockedUrqlProvider";
 
 import FormModal, { Current, FormModalContext } from ".";
-import { mocksRegisterFromNicovideo, mocksRequestFromNicovideo } from "./mocks";
+import {
+  mocksRegisterFromNicovideo,
+  mocksRegisterFromYoutube,
+  mocksRequestFromNicovideo,
+} from "./mocks";
 
 const meta = {
   component: FormModal,
@@ -105,6 +109,32 @@ export const ニコニコ動画から直接登録: Story = {
     msw: {
       handlers: {
         concern: mocksRegisterFromNicovideo,
+      },
+    },
+  },
+};
+
+export const YoutubeからIDを入力して登録: Story = {
+  args: {
+    current: { type: "REGISTER_FROM_YOUTUBE", sourceId: null },
+  },
+  parameters: {
+    msw: {
+      handlers: {
+        concern: mocksRegisterFromYoutube,
+      },
+    },
+  },
+};
+
+export const Youtubeから直接登録: Story = {
+  args: {
+    current: { type: "REGISTER_FROM_YOUTUBE", sourceId: "sm2057168" },
+  },
+  parameters: {
+    msw: {
+      handlers: {
+        concern: mocksRegisterFromYoutube,
       },
     },
   },

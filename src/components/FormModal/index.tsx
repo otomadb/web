@@ -8,12 +8,14 @@ import React, { ReactNode, useContext, useReducer } from "react";
 import { XMarkIcon } from "~/components/Icons";
 
 import RegisterMADFromNicovideoFormModal from "./RegisterMADFromNicovideo";
+import RegisterMADFromYoutubeFormModal from "./RegisterMADFromYoutube";
 import RequestMADFromNicovideoFormModal from "./RequestMADFromNicovideo";
 
 export type Current =
   | undefined
   | { type: "REGISTER_FROM_NICOVIDEO" }
   | { type: "REGISTER_FROM_NICOVIDEO_WITH_ID"; sourceId: string }
+  | { type: "REGISTER_FROM_YOUTUBE"; sourceId: string | null }
   | { type: "REQUEST_FROM_NICOVIDEO" }
   | { type: "REQUEST_FROM_NICOVIDEO_WITH_ID"; sourceId: string };
 
@@ -81,6 +83,12 @@ export const useOpenRequestFromNicovideo = () => {
   return () => open({ type: "REQUEST_FROM_NICOVIDEO" });
 };
 
+export const useOpenRegisterFromYoutube = () => {
+  const { open } = useContext(FormModalContext);
+  return (sourceId: string | null) =>
+    open({ type: "REGISTER_FROM_YOUTUBE", sourceId });
+};
+
 export const useOpenRequestFromNicovideoWithID = () => {
   const { open } = useContext(FormModalContext);
   return (sourceId: string) =>
@@ -123,6 +131,7 @@ export default function FormModal({
               {(current.type === "REGISTER_FROM_NICOVIDEO" ||
                 current.type === "REGISTER_FROM_NICOVIDEO_WITH_ID") &&
                 "ニコニコ動画から登録"}
+              {current.type === "REGISTER_FROM_YOUTUBE" && "Youtubeから登録"}
               {(current.type === "REQUEST_FROM_NICOVIDEO" ||
                 current.type === "REQUEST_FROM_NICOVIDEO_WITH_ID") &&
                 "ニコニコ動画からリクエスト"}
@@ -155,6 +164,16 @@ export default function FormModal({
             {current.type === "REGISTER_FROM_NICOVIDEO_WITH_ID" && (
               <RegisterMADFromNicovideoFormModal
                 initialSourceId={current.sourceId}
+                className={clsx()}
+                style={{ width: 640, height: 720 }}
+                handleSuccess={() => {
+                  close();
+                }}
+              />
+            )}
+            {current.type === "REGISTER_FROM_YOUTUBE" && (
+              <RegisterMADFromYoutubeFormModal
+                initialSourceId={current.sourceId || undefined}
                 className={clsx()}
                 style={{ width: 640, height: 720 }}
                 handleSuccess={() => {
