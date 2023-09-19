@@ -4,13 +4,15 @@ import { useAuth0 } from "@auth0/auth0-react";
 import clsx from "clsx";
 import React, { ReactNode } from "react";
 
-import { NicovideoRegisterPageLink } from "~/app/editor/nicovideo/Link";
 import { LinkRegisterSemitag } from "~/app/editor/semitags/Link";
 import { TagRegisterPageLink } from "~/app/editor/tags/Link";
-import { useOpenRequestFromNicovideo } from "~/app/FormModal";
 import { YouLikesPageLink } from "~/app/me/likes/Link";
 import MyMylistsPageLink from "~/app/me/mylists/Link";
 import { SettingPageLink } from "~/app/settings/Link";
+import {
+  useOpenRegisterFromNicovideo,
+  useOpenRequestFromNicovideo,
+} from "~/components/FormModal";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 import AboutMe from "./AboutMe";
@@ -69,6 +71,7 @@ export default function ProfileAccordion({
   const fragment = useFragment(Fragment, props.fragment);
   const { whoami } = fragment;
   const openRequestFromNicovideo = useOpenRequestFromNicovideo();
+  const openRegisterFromNicovideo = useOpenRegisterFromNicovideo();
 
   return (
     <div
@@ -115,7 +118,17 @@ export default function ProfileAccordion({
         <div className={clsx(["grid"], ["grid-cols-2"])}>
           <MenuItem
             className={clsx(["col-span-2"])}
-            Wrapper={(props) => <NicovideoRegisterPageLink {...props} />}
+            Wrapper={({ className, onClick, ...props }) => (
+              <button
+                {...props}
+                className={clsx(className, ["text-left"])}
+                type="button"
+                onClick={(e) => {
+                  if (onClick) onClick(e);
+                  openRegisterFromNicovideo();
+                }}
+              />
+            )}
           >
             ニコニコ動画から登録
           </MenuItem>

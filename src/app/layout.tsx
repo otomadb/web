@@ -9,7 +9,7 @@ import GlobalNav from "~/components/GlovalNav";
 import { ToastProvider } from "~/components/Toaster";
 
 import Auth0Provider from "./Auth0Provider";
-import FormModal, { FormModalProvider } from "./FormModal";
+import FormModal, { FormModalProvider } from "../components/FormModal";
 import UrqlProvider from "./UrqlProvider";
 
 export const metadata: Metadata = {

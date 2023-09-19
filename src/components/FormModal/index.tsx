@@ -5,13 +5,15 @@ import "client-only";
 import clsx from "clsx";
 import React, { ReactNode, useContext, useReducer } from "react";
 
-import RequestMADFromNicovideoFormModal from "~/components/FormModal/RequestMADFromNicovideo";
 import { XMarkIcon } from "~/components/Icons";
-import RegisterForm from "~/components/RegisterFromNicovideoForm";
+
+import RegisterMADFromNicovideoFormModal from "./RegisterMADFromNicovideo";
+import RequestMADFromNicovideoFormModal from "./RequestMADFromNicovideo";
 
 export type Current =
   | undefined
-  | { type: "FROM_NICOVIDEO"; source: string }
+  | { type: "REGISTER_FROM_NICOVIDEO" }
+  | { type: "REGISTER_FROM_NICOVIDEO_WITH_ID"; sourceId: string }
   | { type: "REQUEST_FROM_NICOVIDEO" }
   | { type: "REQUEST_FROM_NICOVIDEO_WITH_ID"; sourceId: string };
 
@@ -63,9 +65,15 @@ export const FormModalProvider: React.FC<{
   );
 };
 
-export const useOpenFromNicovideo = () => {
+export const useOpenRegisterFromNicovideo = () => {
   const { open } = useContext(FormModalContext);
-  return (s: string) => open({ type: "FROM_NICOVIDEO", source: s });
+  return () => open({ type: "REGISTER_FROM_NICOVIDEO" });
+};
+
+export const useOpenRegisterFromNicovideoWithId = () => {
+  const { open } = useContext(FormModalContext);
+  return (s: string) =>
+    open({ type: "REGISTER_FROM_NICOVIDEO_WITH_ID", sourceId: s });
 };
 
 export const useOpenRequestFromNicovideo = () => {
@@ -112,7 +120,9 @@ export default function FormModal({
             )}
           >
             <span className={clsx(["text-slate-500", "text-xs", "font-bold"])}>
-              {current.type === "FROM_NICOVIDEO" && "ニコニコ動画から登録"}
+              {(current.type === "REQUEST_FROM_NICOVIDEO" ||
+                current.type === "REGISTER_FROM_NICOVIDEO_WITH_ID") &&
+                "ニコニコ動画から登録"}
               {(current.type === "REQUEST_FROM_NICOVIDEO" ||
                 current.type === "REQUEST_FROM_NICOVIDEO_WITH_ID") &&
                 "ニコニコ動画からリクエスト"}
@@ -133,9 +143,18 @@ export default function FormModal({
             </button>
           </div>
           <div className={clsx(["bg-slate-900"])}>
-            {current.type === "FROM_NICOVIDEO" && (
-              <RegisterForm
-                sourceId={current.source}
+            {current.type === "REGISTER_FROM_NICOVIDEO" && (
+              <RegisterMADFromNicovideoFormModal
+                className={clsx()}
+                style={{ width: 640, height: 720 }}
+                handleSuccess={() => {
+                  close();
+                }}
+              />
+            )}
+            {current.type === "REGISTER_FROM_NICOVIDEO_WITH_ID" && (
+              <RegisterMADFromNicovideoFormModal
+                initialSourceId={current.sourceId}
                 className={clsx()}
                 style={{ width: 640, height: 720 }}
                 handleSuccess={() => {

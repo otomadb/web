@@ -2,10 +2,10 @@
 import clsx from "clsx";
 import React from "react";
 
-import { useOpenFromNicovideo } from "~/app/FormModal";
 import { LinkUser as UserLink } from "~/app/users/[name]/Link";
 import { CommonTag2 } from "~/components/CommonTag";
 import { CoolImage } from "~/components/CoolImage";
+import { useOpenRegisterFromNicovideoWithId } from "~/components/FormModal";
 import { ExternalLinkIcon, PlusIcon } from "~/components/Icons";
 import useHasRole from "~/components/useHasRole";
 import { UserIcon } from "~/components/UserIcon";
@@ -49,7 +49,7 @@ export default function RequestsListItem({
 }) {
   const fragment = useFragment(Fragment, props.fragment);
   const registarable = useHasRole();
-  const openRegisterForm = useOpenFromNicovideo();
+  const openRegisterForm = useOpenRegisterFromNicovideoWithId();
 
   return (
     <div
