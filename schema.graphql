@@ -197,6 +197,11 @@ type FetchSoundcloudPayload {
   source: SoundcloudOriginalSource
 }
 
+input FetchYoutubeInput {
+  """Youtubeの動画ID（Q16KpquGsIcなど）"""
+  sourceId: String!
+}
+
 type FetchYoutubePayload {
   source: YoutubeOriginalSource
 }
@@ -293,6 +298,10 @@ input FindVideosOrderBy {
 
 input FindYoutubeRegistrationRequestInput {
   id: ID
+  sourceId: String
+}
+
+input FindYoutubeVideoSourceInput {
   sourceId: String
 }
 
@@ -405,6 +414,12 @@ type MutationInvalidVideoIdError {
   videoId: String!
 }
 
+"""YoutubeRegistrationRequestのIDとして無効なIDを入力した場合のエラー"""
+type MutationInvalidYoutubeRegistrationRequestIdError {
+  """無効なID"""
+  requestId: String!
+}
+
 """Mylistが見つからない場合のエラー"""
 type MutationMylistNotFoundError {
   mylistId: String!
@@ -448,6 +463,16 @@ type MutationVideoNotFoundError {
 """Mylistの所有者が違う場合のエラー"""
 type MutationWrongMylistHolderError {
   mylistId: String!
+}
+
+"""既にチェック済みのYoutubeRegistrationRequestをチェックしようとした場合のエラー"""
+type MutationYoutubeRegistrationRequestAlreadyCheckedError {
+  requestId: String!
+}
+
+"""YoutubeRegistrationRequestが見つからない場合のエラー"""
+type MutationYoutubeRegistrationRequestNotFoundError {
+  requestId: String!
 }
 
 type Mylist implements Node {
@@ -797,10 +822,7 @@ type Query {
   ): FetchSoundcloudPayload!
 
   """Youtubeから動画情報を取得する"""
-  fetchYoutube(
-    """Youtubeの動画ID（Q16KpquGsIcなど）"""
-    sourceId: String!
-  ): FetchYoutubePayload!
+  fetchYoutube(input: FetchYoutubeInput!): FetchYoutubePayload!
   findMadBySerial(serial: Int!): Video
   findMylist(input: FindMylistInput!): Mylist
   findNicovideoRegistrationRequest(input: FindNicovideoRegistrationRequestInput): NicovideoRegistrationRequest
@@ -817,7 +839,7 @@ type Query {
   findVideo(input: FindVideoInput!): Video @deprecated(reason: "Use `Query.findMadBySerial` instead")
   findVideos(after: String, before: String, first: Int, last: Int, orderBy: FindVideosOrderBy! = {createdAt: DESC}): VideoConnection!
   findYoutubeRegistrationRequest(input: FindYoutubeRegistrationRequestInput): YoutubeRegistrationRequest
-  findYoutubeVideoSource(sourceId: String): YoutubeVideoSource
+  findYoutubeVideoSource(input: FindYoutubeVideoSourceInput!): YoutubeVideoSource
   getAllCategoryTag: [Tag!]!
 
   """全てのTypeCategoryTagを取得する"""
@@ -1025,6 +1047,9 @@ input RegisterVideoFromYoutubeInput {
   extraTitles: [String!]! = []
   primaryThumbnailUrl: String!
   primaryTitle: String!
+
+  """解決するYoutubeRegistrationRequestのID"""
+  requestId: ID
   semitagNames: [String!]! = []
   sourceIds: [String!]!
   tagIds: [ID!]!
@@ -1040,7 +1065,7 @@ type RegisterVideoFromYoutubeOtherErrorsFallback {
   message: RegisterVideoFromYoutubeFailedMessage!
 }
 
-union RegisterVideoFromYoutubePayload = MutationInvalidTagIdError | MutationTagNotFoundError | RegisterVideoFromYoutubeInvalidYoutubeSourceIdError | RegisterVideoFromYoutubeOtherErrorsFallback | RegisterVideoFromYoutubeSemitagNamesDuplicatedError | RegisterVideoFromYoutubeSucceededPayload | RegisterVideoFromYoutubeTagIdsDuplicatedError
+union RegisterVideoFromYoutubePayload = MutationInvalidTagIdError | MutationInvalidYoutubeRegistrationRequestIdError | MutationTagNotFoundError | MutationYoutubeRegistrationRequestAlreadyCheckedError | MutationYoutubeRegistrationRequestNotFoundError | RegisterVideoFromYoutubeInvalidYoutubeSourceIdError | RegisterVideoFromYoutubeOtherErrorsFallback | RegisterVideoFromYoutubeSemitagNamesDuplicatedError | RegisterVideoFromYoutubeSucceededPayload | RegisterVideoFromYoutubeTagIdsDuplicatedError
 
 """仮タグの名前が重複している"""
 type RegisterVideoFromYoutubeSemitagNamesDuplicatedError {
