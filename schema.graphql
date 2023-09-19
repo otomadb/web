@@ -1958,6 +1958,7 @@ type WatchNotificationsSucceededPayload {
 type YoutubeOriginalSource {
   sourceId: String!
   thumbnailUrl: String!
+  url: String!
 }
 
 type YoutubeRegistrationRequest {
