@@ -120,7 +120,7 @@ export default function FormModal({
             )}
           >
             <span className={clsx(["text-slate-500", "text-xs", "font-bold"])}>
-              {(current.type === "REQUEST_FROM_NICOVIDEO" ||
+              {(current.type === "REGISTER_FROM_NICOVIDEO" ||
                 current.type === "REGISTER_FROM_NICOVIDEO_WITH_ID") &&
                 "ニコニコ動画から登録"}
               {(current.type === "REQUEST_FROM_NICOVIDEO" ||
