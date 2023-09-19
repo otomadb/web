@@ -4,6 +4,7 @@ import clsx from "clsx";
 import {
   CSSProperties,
   useCallback,
+  useEffect,
   useMemo,
   useReducer,
   useState,
@@ -132,6 +133,12 @@ export default function RequestForm({
       callToast(<p>登録に失敗しました。</p>);
     },
   });
+
+  // 自動的にタイトルを挿入
+  useEffect(() => {
+    if (title === "" && data?.fetchNicovideo.source?.title)
+      setTitle(data.fetchNicovideo.source.title);
+  }, [data?.fetchNicovideo.source?.title, title]);
 
   const [tab, setTab] = useState<"SOURCE">("SOURCE");
 
