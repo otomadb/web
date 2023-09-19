@@ -131,7 +131,6 @@ export default function NicovideoIDForm({
         </div>
         <TextInput2
           size="medium"
-          name="source"
           aria-label="ニコニコ動画の動画ID"
           placeholder="sm2057168"
           value={input}
