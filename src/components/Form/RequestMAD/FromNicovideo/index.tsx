@@ -13,13 +13,13 @@ import { useQuery } from "urql";
 
 import { LinkVideo } from "~/app/mads/[serial]/Link";
 import { BlueButton } from "~/components/Button";
-import { AlreadyRegistered } from "~/components/RegisterFromNicovideoForm/AlreadyRegistered";
-import OriginalSource from "~/components/RegisterFromNicovideoForm/OriginalSource";
-import { SemitagButton } from "~/components/RegisterFromNicovideoForm/SemitagButton";
+import { AlreadyRegistered } from "~/components/Form/RegisterMAD/FromNicovideo/AlreadyRegistered";
+import OriginalSource from "~/components/Form/RegisterMAD/FromNicovideo/OriginalSource";
+import { SemitagButton } from "~/components/Form/SemitagButton";
 import {
   Fragment as TagButtonFragment,
   TagButton,
-} from "~/components/RegisterFromNicovideoForm/TagButton";
+} from "~/components/Form/TagButton";
 import TagSearcher from "~/components/TagSearcher2";
 import { TextInput2 } from "~/components/TextInput";
 import { useToaster } from "~/components/Toaster";

@@ -6,7 +6,7 @@ import { CoolImage } from "~/components/CoolImage";
 import { ExternalLinkIcon } from "~/components/Icons";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-import { Fragment as TagButtonFragment, TagButton } from "./TagButton";
+import { Fragment as TagButtonFragment, TagButton } from "../../TagButton";
 
 export const Fragment = graphql(`
   fragment RegisterFromNicovideoForm_OriginalSource on NicovideoOriginalSource {
