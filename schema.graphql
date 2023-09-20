@@ -670,7 +670,7 @@ type NicovideoOriginalSourceTagSearchTagsPayload {
   items: [TagSearchItemByName!]!
 }
 
-type NicovideoRegistrationRequest {
+type NicovideoRegistrationRequest implements Node & RegistrationRequest {
   checked: Boolean!
   checking: NicovideoRegistrationRequestChecking
   embedUrl: String!
@@ -727,13 +727,13 @@ type NicovideoRegistrationRequestRejectingNotification implements Node & Notific
   watched: Boolean!
 }
 
-type NicovideoRegistrationRequestSemitagging {
+type NicovideoRegistrationRequestSemitagging implements Node & RegistrationRequestSemitagging {
   id: ID!
   name: String!
   note: String
 }
 
-type NicovideoRegistrationRequestTagging {
+type NicovideoRegistrationRequestTagging implements Node & RegistrationRequestTagging {
   id: ID!
   note: String
   tag: Tag!
@@ -1080,6 +1080,29 @@ type RegisterVideoFromYoutubeSucceededPayload {
 """タグのIDが重複している"""
 type RegisterVideoFromYoutubeTagIdsDuplicatedError {
   tagId: String!
+}
+
+interface RegistrationRequest implements Node {
+  checked: Boolean!
+  id: ID!
+  originalUrl: String!
+  requestedBy: User!
+  semitaggings: [RegistrationRequestSemitagging!]!
+  taggings: [RegistrationRequestTagging!]!
+  thumbnailUrl: String!
+  title: String!
+}
+
+interface RegistrationRequestSemitagging implements Node {
+  id: ID!
+  name: String!
+  note: String
+}
+
+interface RegistrationRequestTagging implements Node {
+  id: ID!
+  note: String
+  tag: Tag!
 }
 
 input RejectNicovideoRegistrationRequestInput {
@@ -1961,7 +1984,7 @@ type YoutubeOriginalSource {
   url: String!
 }
 
-type YoutubeRegistrationRequest {
+type YoutubeRegistrationRequest implements Node & RegistrationRequest {
   checked: Boolean!
   checking: YoutubeRegistrationRequestChecking
   embedUrl: String!
@@ -2018,13 +2041,13 @@ type YoutubeRegistrationRequestRejectingNotification implements Node & Notificat
   watched: Boolean!
 }
 
-type YoutubeRegistrationRequestSemitagging {
+type YoutubeRegistrationRequestSemitagging implements Node & RegistrationRequestSemitagging {
   id: ID!
   name: String!
   note: String
 }
 
-type YoutubeRegistrationRequestTagging {
+type YoutubeRegistrationRequestTagging implements Node & RegistrationRequestTagging {
   id: ID!
   note: String
   tag: Tag!

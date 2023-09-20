@@ -3,11 +3,11 @@
 import clsx from "clsx";
 
 import { LinkUser as UserLink } from "~/app/users/[name]/Link";
-import { SemitagButton } from "~/components/RegisterFromNicovideoForm/SemitagButton";
+import { SemitagButton } from "~/components/Form/SemitagButton";
 import {
   Fragment as TagButtonFragment,
   TagButton,
-} from "~/components/RegisterFromNicovideoForm/TagButton";
+} from "~/components/Form/TagButton";
 import { UserIcon } from "~/components/UserIcon";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
