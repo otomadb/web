@@ -1,31 +1,32 @@
 import clsx from "clsx";
-import React from "react";
+import React, { ReactNode } from "react";
 
-import { LinkNicovideoRegistrationRequest as NicovideoRegistrationRequestPageLink } from "~/app/requests/nicovideo/[sourceId]/Link";
-import { LinkUser as UserPageLink } from "~/app/users/[name]/Link";
-import { CoolImage } from "~/components/CoolImage";
-import { UserIcon } from "~/components/UserIcon";
+import { CoolImage2 } from "~/components/CoolImage";
+import UserDisplayNameLink from "~/components/UserLink/UserDisplayNameLink";
+import UserIconLink from "~/components/UserLink/UserIconLink";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const Fragment = graphql(`
-  fragment HomePage_RecentNicovideoRequestsSection_RequestsListItem on NicovideoRegistrationRequest {
-    ...Link_NicovideoRegistrationRequest
+  fragment MyTopPage_RequestsListItem on RegistrationRequest {
     title
-    sourceId
     thumbnailUrl
     requestedBy {
-      ...Link_User
-      ...UserIcon
-      id
-      displayName
+      ...UserIconLink
+      ...UserDisplayNameLink
     }
   }
 `);
-export const ListItem: React.FC<{
+export default function ListItem({
+  className,
+  style,
+  PageLink,
+  ...props
+}: {
   className?: string;
   style?: React.CSSProperties;
   fragment: FragmentType<typeof Fragment>;
-}> = ({ className, style, ...props }) => {
+  PageLink: React.FC<{ children: ReactNode; className?: string }>;
+}) {
   const fragment = useFragment(Fragment, props.fragment);
 
   return (
@@ -35,50 +36,41 @@ export const ListItem: React.FC<{
         ["px-2"],
         ["py-2"],
         ["flex", "flex-col"],
-        ["bg-slate-50"],
-        ["border", "border-slate-300"],
+        ["bg-slate-900"],
+        ["border", "border-slate-800"],
         ["rounded"]
       )}
       style={style}
     >
-      <div>
-        <NicovideoRegistrationRequestPageLink fragment={fragment}>
-          <CoolImage
-            className={clsx(["h-[128px]"])}
-            src={fragment.thumbnailUrl}
-            alt={fragment.sourceId}
-            width={196}
-            height={128}
-            unoptimized={true}
-          />
-        </NicovideoRegistrationRequestPageLink>
-      </div>
+      <PageLink>
+        <CoolImage2
+          className={clsx(["h-[128px]"])}
+          alt={fragment.title}
+          src={fragment.thumbnailUrl}
+          width={196}
+          height={128}
+          unoptimized={true}
+        />
+      </PageLink>
       <div className={clsx(["mt-1"], ["flex"])}>
-        <NicovideoRegistrationRequestPageLink
+        <PageLink
           className={clsx([
             "text-sm",
             "font-bold",
-            "text-slate-900",
+            "text-slate-300",
             "line-clamp-2",
           ])}
-          fragment={fragment}
         >
           {fragment.title}
-        </NicovideoRegistrationRequestPageLink>
+        </PageLink>
       </div>
-      <div className={clsx(["mt-1"], ["flex"])}>
-        <UserPageLink fragment={fragment.requestedBy}>
-          <UserIcon size={24} fragment={fragment.requestedBy} />
-        </UserPageLink>
-        <div className={clsx(["ml-1"])}>
-          <UserPageLink
-            className={clsx(["text-xs", "text-slate-900"])}
-            fragment={fragment.requestedBy}
-          >
-            {fragment.requestedBy.displayName}
-          </UserPageLink>
-        </div>
+      <div className={clsx(["mt-1"], ["flex", "items-center"])}>
+        <UserIconLink size="small" fragment={fragment.requestedBy} />
+        <UserDisplayNameLink
+          className={clsx(["ml-1"], ["text-xxs", "text-slate-400"])}
+          fragment={fragment.requestedBy}
+        />
       </div>
     </div>
   );
-};
+}

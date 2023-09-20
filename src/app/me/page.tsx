@@ -8,8 +8,10 @@ import AllYoutubeRequestLink from "~/app/requests/youtube/Link";
 import { YouLikesPageLink } from "./likes/Link";
 import RecentLikes from "./RecentLikes";
 import RecentVideos from "./RecentVideos.server";
-import RequestsListSC from "./RequestsList.server";
-import YoutubeRequestsList from "./YoutubeRequestsList.server";
+import {
+  NicovideoRequestsList,
+  YoutubeRequestsList,
+} from "./RequestsList.server";
 
 export const dynamic = "force-dynamic";
 
@@ -81,11 +83,7 @@ export default async function Page() {
               </AllNicovideoRequestsPageLink>
             </div>
           </div>
-          <div className={clsx(["mt-2"])}>
-            <Suspense fallback={<span>リクエストを取得中です</span>}>
-              <RequestsListSC />
-            </Suspense>
-          </div>
+          <NicovideoRequestsList className={clsx(["mt-2"])} />
         </section>
         <section className={clsx()}>
           <div className={clsx(["flex", "items-center"], ["px-2"])}>
