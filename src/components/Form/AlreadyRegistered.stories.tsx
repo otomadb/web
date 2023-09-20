@@ -1,3 +1,4 @@
+import { action } from "@storybook/addon-actions";
 import { Meta, StoryObj } from "@storybook/react";
 
 import { Fragment as VideoLinkFragment } from "~/app/mads/[serial]/Link";
@@ -15,6 +16,7 @@ export default meta;
 
 export const Primary: StoryObj<typeof meta> = {
   args: {
+    handleCancel: action("handleCancel"),
     style: { width: 640 },
     fragment: makeFragmentData(
       {

@@ -27,6 +27,7 @@ const meta = {
       height: 720,
     },
     initThumbnailUrl: "/960x540.jpg",
+    handleCancel: action("cancel"),
   },
   render(args) {
     return (
@@ -309,10 +310,4 @@ export const リクエストが存在しない: Story = {
 
 export const 登録可能: Story = {
   args: {},
-};
-
-export const キャンセル可能: Story = {
-  args: {
-    handleCancel: action("cancel"),
-  },
 };

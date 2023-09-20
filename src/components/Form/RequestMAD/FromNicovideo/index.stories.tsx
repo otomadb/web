@@ -1,3 +1,4 @@
+import { action } from "@storybook/addon-actions";
 import { Meta, StoryObj } from "@storybook/react";
 import { graphql as mswGql } from "msw";
 
@@ -25,6 +26,7 @@ const meta = {
       height: 720,
     },
     sourceId: "sm",
+    handleCancel: action("cancel"),
   },
   render(args) {
     return (

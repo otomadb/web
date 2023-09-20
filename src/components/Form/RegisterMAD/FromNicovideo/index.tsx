@@ -14,6 +14,7 @@ import * as z from "zod";
 
 import { BlueButton, RedButton } from "~/components/Button";
 import AlreadyRegistered from "~/components/Form/AlreadyRegistered";
+import SourceNotExists from "~/components/Form/SourceNotExists";
 import TagSearcher from "~/components/TagSearcher2";
 import { TextInput2 } from "~/components/TextInput";
 import { useToaster } from "~/components/Toaster";
@@ -79,7 +80,7 @@ export default function RegisterForm({
   style?: React.CSSProperties;
   sourceId: string;
   handleSuccess?(): void;
-  handleCancel?(): void;
+  handleCancel(): void;
 }) {
   const [{ data, fetching }] = useQuery({
     query: Query,
@@ -187,9 +188,10 @@ export default function RegisterForm({
         <AlreadyRegistered
           className={clsx(["text-slate-400"])}
           fragment={data.findNicovideoVideoSource}
+          handleCancel={handleCancel}
         />
       ) : !data.fetchNicovideo.source ? (
-        <div className={clsx(["text-slate-400"])}>動画は存在しません</div>
+        <SourceNotExists handleCancel={handleCancel} />
       ) : (
         <form
           className={clsx(["h-full"], ["flex", "flex-col", "gap-y-6"])}
@@ -486,19 +488,16 @@ export default function RegisterForm({
             >
               登録
             </BlueButton>
-            {handleCancel && (
-              <RedButton
-                type="button"
-                className={clsx(["ml-auto"], ["px-4"], ["py-1"])}
-                disabled={!payload}
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleCancel();
-                }}
-              >
-                キャンセル
-              </RedButton>
-            )}
+            <RedButton
+              type="button"
+              className={clsx(["ml-auto"], ["px-4"], ["py-1"])}
+              onClick={(e) => {
+                e.preventDefault();
+                handleCancel();
+              }}
+            >
+              戻る
+            </RedButton>
           </div>
         </form>
       )}

@@ -17,6 +17,7 @@ import AlreadyRegistered from "~/components/Form/AlreadyRegistered";
 import AlreadyRequested from "~/components/Form/AlreadyRequested";
 import OriginalSource from "~/components/Form/RegisterMAD/FromYoutube/OriginalSource";
 import { SemitagButton } from "~/components/Form/SemitagButton";
+import SourceNotExists from "~/components/Form/SourceNotExists";
 import {
   Fragment as TagButtonFragment,
   TagButton,
@@ -59,7 +60,7 @@ export default function RequestForm({
   style?: CSSProperties;
   sourceId: string;
   handleSuccess?(): void;
-  handleCancel?(): void;
+  handleCancel(): void;
 }) {
   const [{ data, fetching }] = useQuery({
     query: Query,
@@ -168,14 +169,18 @@ export default function RequestForm({
       {fetching || !data ? (
         <div className={clsx(["text-slate-400"])}>Loading</div>
       ) : data.findYoutubeVideoSource ? (
-        <AlreadyRegistered fragment={data.findYoutubeVideoSource} />
+        <AlreadyRegistered
+          fragment={data.findYoutubeVideoSource}
+          handleCancel={handleCancel}
+        />
       ) : data.findYoutubeRegistrationRequest ? (
         <AlreadyRequested
           fragment={data.findYoutubeRegistrationRequest}
           RequestPageLink={(props) => <YoutubeRequestLink {...props} />}
+          handleCancel={handleCancel}
         />
       ) : !data.fetchYoutube.source ? (
-        <div className={clsx(["text-slate-400"])}>動画は存在しません</div>
+        <SourceNotExists handleCancel={handleCancel} />
       ) : (
         <form
           className={clsx(["h-full"], ["flex", "flex-col", "gap-y-6"])}
@@ -391,19 +396,16 @@ export default function RequestForm({
             >
               リクエスト
             </BlueButton>
-            {handleCancel && (
-              <RedButton
-                type="button"
-                className={clsx(["ml-auto"], ["px-4"], ["py-1"])}
-                disabled={!payload}
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleCancel();
-                }}
-              >
-                キャンセル
-              </RedButton>
-            )}
+            <RedButton
+              type="button"
+              className={clsx(["ml-auto"], ["px-4"], ["py-1"])}
+              onClick={(e) => {
+                e.preventDefault();
+                handleCancel();
+              }}
+            >
+              戻る
+            </RedButton>
           </div>
         </form>
       )}

@@ -8,6 +8,7 @@ import { useQuery } from "urql";
 import { BlueButton, RedButton } from "~/components/Button";
 import AlreadyRegistered from "~/components/Form/AlreadyRegistered";
 import { SemitagButton } from "~/components/Form/SemitagButton";
+import SourceNotExists from "~/components/Form/SourceNotExists";
 import {
   Fragment as TagButtonFragment,
   TagButton,
@@ -64,7 +65,7 @@ export default function RegisterForm({
   style?: React.CSSProperties;
   sourceId: string;
   handleSuccess?(): void;
-  handleCancel?(): void;
+  handleCancel(): void;
 }) {
   const [{ data, fetching }] = useQuery({
     query: Query,
@@ -165,9 +166,10 @@ export default function RegisterForm({
         <AlreadyRegistered
           className={clsx(["text-slate-400"])}
           fragment={data.findYoutubeVideoSource}
+          handleCancel={handleCancel}
         />
       ) : !data.fetchYoutube.source ? (
-        <div className={clsx(["text-slate-400"])}>動画は存在しません</div>
+        <SourceNotExists handleCancel={handleCancel} />
       ) : (
         <form
           className={clsx(["h-full"], ["flex", "flex-col", "gap-y-6"])}
@@ -448,19 +450,16 @@ export default function RegisterForm({
             >
               登録
             </BlueButton>
-            {handleCancel && (
-              <RedButton
-                type="button"
-                className={clsx(["ml-auto"], ["px-4"], ["py-1"])}
-                disabled={!payload}
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleCancel();
-                }}
-              >
-                キャンセル
-              </RedButton>
-            )}
+            <RedButton
+              type="button"
+              className={clsx(["ml-auto"], ["px-4"], ["py-1"])}
+              onClick={(e) => {
+                e.preventDefault();
+                handleCancel();
+              }}
+            >
+              戻る
+            </RedButton>
           </div>
         </form>
       )}
