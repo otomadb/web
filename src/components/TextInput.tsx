@@ -100,7 +100,6 @@ export const TextInput2 = forwardRef<
           className={clsx(
             ["flex-grow"],
             ["bg-slate-950", "group-aria-disabled/textinput:bg-slate-600"],
-            ["text-slate-300", "placeholder-slate-600"],
             {
               small: ["py-1", "px-2", "text-sm"],
               medium: ["py-1.5", "px-4", "text-base"],
@@ -113,7 +112,8 @@ export const TextInput2 = forwardRef<
             className={clsx(
               ["w-full", "h-full"],
               ["bg-transparent"],
-              ["outline-none"]
+              ["outline-none"],
+              ["text-slate-300", "placeholder-slate-700"]
             )}
             type={"text"}
             placeholder={placeholder}
