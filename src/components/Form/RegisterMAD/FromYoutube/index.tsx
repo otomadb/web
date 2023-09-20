@@ -5,8 +5,10 @@ import clsx from "clsx";
 import React, { useCallback, useMemo, useReducer, useState } from "react";
 import { useQuery } from "urql";
 
-import { BlueButton } from "~/components/Button";
+import { BlueButton, RedButton } from "~/components/Button";
+import AlreadyRegistered from "~/components/Form/AlreadyRegistered";
 import { SemitagButton } from "~/components/Form/SemitagButton";
+import SourceNotExists from "~/components/Form/SourceNotExists";
 import {
   Fragment as TagButtonFragment,
   TagButton,
@@ -16,7 +18,6 @@ import { TextInput2 } from "~/components/TextInput";
 import { useToaster } from "~/components/Toaster";
 import { FragmentType, graphql } from "~/gql";
 
-import { AlreadyRegistered } from "./AlreadyRegistered";
 import OriginalSource from "./OriginalSource";
 import { RequestExists } from "./Request";
 import { SucceededToast } from "./SucceededToast";
@@ -49,7 +50,7 @@ export const Query = graphql(`
       ...RegisterFromYoutubeForm_Request
     }
     findYoutubeVideoSource(input: { sourceId: $sourceId }) {
-      ...RegisterFromYoutubeForm_VideoSource
+      ...Form_VideoAlreadyRegistered
     }
   }
 `);
@@ -58,11 +59,13 @@ export default function RegisterForm({
   style,
   sourceId,
   handleSuccess,
+  handleCancel,
 }: {
   className?: string;
   style?: React.CSSProperties;
   sourceId: string;
   handleSuccess?(): void;
+  handleCancel(): void;
 }) {
   const [{ data, fetching }] = useQuery({
     query: Query,
@@ -163,9 +166,10 @@ export default function RegisterForm({
         <AlreadyRegistered
           className={clsx(["text-slate-400"])}
           fragment={data.findYoutubeVideoSource}
+          handleCancel={handleCancel}
         />
       ) : !data.fetchYoutube.source ? (
-        <div className={clsx(["text-slate-400"])}>動画は存在しません</div>
+        <SourceNotExists handleCancel={handleCancel} />
       ) : (
         <form
           className={clsx(["h-full"], ["flex", "flex-col", "gap-y-6"])}
@@ -431,7 +435,14 @@ export default function RegisterForm({
               )}
             </div>
           </div>
-          <div className={clsx(["mt-auto"], ["flex-shrink-0"], ["w-full"])}>
+          <div
+            className={clsx(
+              ["flex"],
+              ["mt-auto"],
+              ["flex-shrink-0"],
+              ["w-full"]
+            )}
+          >
             <BlueButton
               type="submit"
               className={clsx(["px-4"], ["py-1"])}
@@ -439,6 +450,16 @@ export default function RegisterForm({
             >
               登録
             </BlueButton>
+            <RedButton
+              type="button"
+              className={clsx(["ml-auto"], ["px-4"], ["py-1"])}
+              onClick={(e) => {
+                e.preventDefault();
+                handleCancel();
+              }}
+            >
+              戻る
+            </RedButton>
           </div>
         </form>
       )}

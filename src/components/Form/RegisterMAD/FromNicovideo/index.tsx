@@ -12,7 +12,9 @@ import React, {
 import { useQuery } from "urql";
 import * as z from "zod";
 
-import { BlueButton } from "~/components/Button";
+import { BlueButton, RedButton } from "~/components/Button";
+import AlreadyRegistered from "~/components/Form/AlreadyRegistered";
+import SourceNotExists from "~/components/Form/SourceNotExists";
 import TagSearcher from "~/components/TagSearcher2";
 import { TextInput2 } from "~/components/TextInput";
 import { useToaster } from "~/components/Toaster";
@@ -20,7 +22,6 @@ import { FragmentType, graphql } from "~/gql";
 
 import { SemitagButton } from "../../SemitagButton";
 import { Fragment as TagButtonFragment, TagButton } from "../../TagButton";
-import { AlreadyRegistered } from "./AlreadyRegistered";
 import OriginalSource from "./OriginalSource";
 import { RequestExists } from "./Request";
 import { SucceededToast } from "./SucceededToast";
@@ -64,7 +65,7 @@ export const Query = graphql(`
       ...RegisterFromNicovideoForm_Request
     }
     findNicovideoVideoSource(input: { sourceId: $sourceId }) {
-      ...RegisterFromNicovideoForm_VideoSource
+      ...Form_VideoAlreadyRegistered
     }
   }
 `);
@@ -73,11 +74,13 @@ export default function RegisterForm({
   style,
   sourceId,
   handleSuccess,
+  handleCancel,
 }: {
   className?: string;
   style?: React.CSSProperties;
   sourceId: string;
   handleSuccess?(): void;
+  handleCancel(): void;
 }) {
   const [{ data, fetching }] = useQuery({
     query: Query,
@@ -185,9 +188,10 @@ export default function RegisterForm({
         <AlreadyRegistered
           className={clsx(["text-slate-400"])}
           fragment={data.findNicovideoVideoSource}
+          handleCancel={handleCancel}
         />
       ) : !data.fetchNicovideo.source ? (
-        <div className={clsx(["text-slate-400"])}>動画は存在しません</div>
+        <SourceNotExists handleCancel={handleCancel} />
       ) : (
         <form
           className={clsx(["h-full"], ["flex", "flex-col", "gap-y-6"])}
@@ -469,7 +473,14 @@ export default function RegisterForm({
               )}
             </div>
           </div>
-          <div className={clsx(["mt-auto"], ["flex-shrink-0"], ["w-full"])}>
+          <div
+            className={clsx(
+              ["flex"],
+              ["mt-auto"],
+              ["flex-shrink-0"],
+              ["w-full"]
+            )}
+          >
             <BlueButton
               type="submit"
               className={clsx(["px-4"], ["py-1"])}
@@ -477,6 +488,16 @@ export default function RegisterForm({
             >
               登録
             </BlueButton>
+            <RedButton
+              type="button"
+              className={clsx(["ml-auto"], ["px-4"], ["py-1"])}
+              onClick={(e) => {
+                e.preventDefault();
+                handleCancel();
+              }}
+            >
+              戻る
+            </RedButton>
           </div>
         </form>
       )}

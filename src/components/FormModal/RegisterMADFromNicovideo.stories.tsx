@@ -5,6 +5,7 @@ import { mockTagSearcher } from "~/components/TagSearcher/index.mocks";
 import { ToastContext } from "~/components/Toaster";
 import { MockedUrqlProvider } from "~/utils/MockedUrqlProvider";
 
+import { FormModalContext } from ".";
 import { mocksRegisterFromNicovideo } from "./mocks";
 import RegisterMADFromNicovideoFormModal from "./RegisterMADFromNicovideo";
 
@@ -20,7 +21,15 @@ const meta = {
     return (
       <MockedUrqlProvider>
         <ToastContext.Provider value={{ call: action("callToast") }}>
-          <RegisterMADFromNicovideoFormModal {...args} />
+          <FormModalContext.Provider
+            value={{
+              current: undefined,
+              open: action("openModal"),
+              close: action("closeModal"),
+            }}
+          >
+            <RegisterMADFromNicovideoFormModal {...args} />
+          </FormModalContext.Provider>
         </ToastContext.Provider>
       </MockedUrqlProvider>
     );

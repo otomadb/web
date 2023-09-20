@@ -103,7 +103,7 @@ export const useOpenRequestFromYoutube = () => {
     open({ type: "REQUEST_FROM_YOUTUBE", sourceId });
 };
 
-export const useClose = () => {
+export const useCloseFormModal = () => {
   const { close } = useContext(FormModalContext);
   return close;
 };
@@ -116,7 +116,7 @@ export default function FormModal({
   style?: React.CSSProperties;
 }) {
   const { current } = useContext(FormModalContext);
-  const close = useClose();
+  const close = useCloseFormModal();
 
   return (
     <div className={clsx(className, ["flex"])} style={style}>

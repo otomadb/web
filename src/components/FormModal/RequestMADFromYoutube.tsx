@@ -6,6 +6,8 @@ import { ComponentProps, useState } from "react";
 import RequestForm from "~/components/Form/RequestMAD/FromYoutube";
 import YoutubeIDForm from "~/components/Form/YoutubeIDForm";
 
+import { useCloseFormModal } from ".";
+
 export default function RequestMADFromYoutubeFormModal({
   className,
   style,
@@ -18,6 +20,7 @@ export default function RequestMADFromYoutubeFormModal({
   handleSuccess?: ComponentProps<typeof RequestForm>["handleSuccess"];
 }) {
   const [sourceId, setSourceId] = useState<string | undefined>(initialSourceId);
+  const closeModal = useCloseFormModal();
 
   return (
     <div className={clsx(className)} style={style}>
@@ -32,6 +35,10 @@ export default function RequestMADFromYoutubeFormModal({
           className={clsx(["h-full"])}
           sourceId={sourceId}
           handleSuccess={handleSuccess}
+          handleCancel={() => {
+            if (initialSourceId) closeModal();
+            else setSourceId(undefined);
+          }}
         />
       )}
     </div>

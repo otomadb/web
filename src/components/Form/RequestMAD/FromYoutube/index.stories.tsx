@@ -1,9 +1,10 @@
+import { action } from "@storybook/addon-actions";
 import { Meta, StoryObj } from "@storybook/react";
 import { graphql as mswGql } from "msw";
 
 import { Fragment as VideoLinkFragment } from "~/app/mads/[serial]/Link";
 import { Fragment as CommonTagFragment } from "~/components/CommonTag";
-import { Fragment as AlreadyRegisteredFragment } from "~/components/Form/RegisterMAD/FromYoutube/AlreadyRegistered";
+import { Fragment as AlreadyRegisteredFragment } from "~/components/Form/AlreadyRegistered";
 import { Fragment as SourceFragment } from "~/components/Form/RegisterMAD/FromYoutube/OriginalSource";
 import { Query as TagSearcherQuery } from "~/components/TagSearcher2";
 import { Fragment as TagSearcherSuggestItemFragment } from "~/components/TagSearcher2/SuggestItem";
@@ -15,7 +16,6 @@ import { MockedAuth0Provider } from "~/utils/MockedAuth0Provider";
 import { MockedUrqlProvider } from "~/utils/MockedUrqlProvider";
 
 import RequestForm, { Query } from ".";
-import { Fragment as AlreadyRequestedFragment } from "./AlreadyRequested";
 
 const meta = {
   component: RequestForm,
@@ -25,6 +25,7 @@ const meta = {
       height: 720,
     },
     sourceId: "sm",
+    handleCancel: action("cancel"),
   },
   render(args) {
     return (
@@ -130,7 +131,7 @@ export const 既に登録済み: Story = {
                     },
                     AlreadyRegisteredFragment
                   ),
-                },
+                } as never,
                 findYoutubeRegistrationRequest: null,
                 fetchYoutube: { source: null },
               })
@@ -153,14 +154,7 @@ export const 既にリクエスト済み: Story = {
               ctx.data({
                 findYoutubeRegistrationRequest: {
                   id: "reqreq:1",
-                  ...makeFragmentData(
-                    {
-                      sourceId: "sm2057168",
-                      thumbnailUrl: "/960x540.jpg",
-                      checked: false,
-                    },
-                    AlreadyRequestedFragment
-                  ),
+                  sourceId: "sm2057168",
                 },
                 findYoutubeVideoSource: null,
                 fetchYoutube: { source: null },

@@ -1088,6 +1088,7 @@ interface RegistrationRequest implements Node {
   originalUrl: String!
   requestedBy: User!
   semitaggings: [RegistrationRequestSemitagging!]!
+  sourceId: String!
   taggings: [RegistrationRequestTagging!]!
   thumbnailUrl: String!
   title: String!

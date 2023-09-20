@@ -12,10 +12,13 @@ import {
 import { useQuery } from "urql";
 
 import { LinkVideo } from "~/app/mads/[serial]/Link";
-import { BlueButton } from "~/components/Button";
-import { AlreadyRegistered } from "~/components/Form/RegisterMAD/FromNicovideo/AlreadyRegistered";
+import NicovideoRequestLink from "~/app/requests/nicovideo/[sourceId]/Link";
+import { BlueButton, RedButton } from "~/components/Button";
+import AlreadyRegistered from "~/components/Form/AlreadyRegistered";
+import AlreadyRequested from "~/components/Form/AlreadyRequested";
 import OriginalSource from "~/components/Form/RegisterMAD/FromNicovideo/OriginalSource";
 import { SemitagButton } from "~/components/Form/SemitagButton";
+import SourceNotExists from "~/components/Form/SourceNotExists";
 import {
   Fragment as TagButtonFragment,
   TagButton,
@@ -25,7 +28,6 @@ import { TextInput2 } from "~/components/TextInput";
 import { useToaster } from "~/components/Toaster";
 import { FragmentType, graphql } from "~/gql";
 
-import AlreadyRequested from "./AlreadyRequested";
 import { SucceededToast } from "./SucceededToast";
 import useRequestFromNicovideo from "./useRequestFromNicovideo";
 
@@ -33,11 +35,12 @@ export const Query = graphql(`
   query RequestMADFromNicovideoForm_Check($sourceId: String!) {
     findNicovideoVideoSource(input: { sourceId: $sourceId }) {
       id
-      ...RegisterFromNicovideoForm_VideoSource
+      ...Form_VideoAlreadyRegistered
     }
     findNicovideoRegistrationRequest(input: { sourceId: $sourceId }) {
       id
-      ...RequestMADFromNicovideoForm_AlreadyRequested
+      ...Form_VideoAlreadyRequested
+      ...Link_NicovideoRegistrationRequest
     }
     fetchNicovideo(input: { sourceId: $sourceId }) {
       source {
@@ -53,11 +56,13 @@ export default function RequestForm({
   style,
   sourceId,
   handleSuccess,
+  handleCancel,
 }: {
   className?: string;
   style?: CSSProperties;
   sourceId: string;
   handleSuccess?(): void;
+  handleCancel(): void;
 }) {
   const [{ data, fetching }] = useQuery({
     query: Query,
@@ -172,11 +177,18 @@ export default function RequestForm({
       {fetching || !data ? (
         <div className={clsx(["text-slate-400"])}>Loading</div>
       ) : data.findNicovideoVideoSource ? (
-        <AlreadyRegistered fragment={data.findNicovideoVideoSource} />
+        <AlreadyRegistered
+          fragment={data.findNicovideoVideoSource}
+          handleCancel={handleCancel}
+        />
       ) : data.findNicovideoRegistrationRequest ? (
-        <AlreadyRequested fragment={data.findNicovideoRegistrationRequest} />
+        <AlreadyRequested
+          fragment={data.findNicovideoRegistrationRequest}
+          RequestPageLink={(props) => <NicovideoRequestLink {...props} />}
+          handleCancel={handleCancel}
+        />
       ) : !data.fetchNicovideo.source ? (
-        <div className={clsx(["text-slate-400"])}>動画は存在しません</div>
+        <SourceNotExists handleCancel={handleCancel} />
       ) : (
         <form
           className={clsx(["h-full"], ["flex", "flex-col", "gap-y-6"])}
@@ -393,7 +405,14 @@ export default function RequestForm({
               )}
             </div>
           </div>
-          <div className={clsx(["mt-auto"], ["flex-shrink-0"], ["w-full"])}>
+          <div
+            className={clsx(
+              ["flex"],
+              ["mt-auto"],
+              ["flex-shrink-0"],
+              ["w-full"]
+            )}
+          >
             <BlueButton
               type="submit"
               className={clsx(["px-4"], ["py-1"])}
@@ -401,6 +420,16 @@ export default function RequestForm({
             >
               登録
             </BlueButton>
+            <RedButton
+              type="button"
+              className={clsx(["ml-auto"], ["px-4"], ["py-1"])}
+              onClick={(e) => {
+                e.preventDefault();
+                handleCancel();
+              }}
+            >
+              戻る
+            </RedButton>
           </div>
         </form>
       )}

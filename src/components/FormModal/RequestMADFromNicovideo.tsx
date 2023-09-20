@@ -5,6 +5,7 @@ import { ComponentProps, useState } from "react";
 
 import NicovideoIDForm from "../Form/NicovideoIDForm";
 import RequestForm from "../Form/RequestMAD/FromNicovideo";
+import { useCloseFormModal } from ".";
 
 export default function RequestMADFromNicovideoFormModal({
   className,
@@ -18,6 +19,7 @@ export default function RequestMADFromNicovideoFormModal({
   handleSuccess?: ComponentProps<typeof RequestForm>["handleSuccess"];
 }) {
   const [sourceId, setSourceId] = useState<string | undefined>(initialSourceId);
+  const closeModal = useCloseFormModal();
 
   return (
     <div className={clsx(className)} style={style}>
@@ -32,6 +34,10 @@ export default function RequestMADFromNicovideoFormModal({
           className={clsx(["h-full"])}
           sourceId={sourceId}
           handleSuccess={handleSuccess}
+          handleCancel={() => {
+            if (initialSourceId) closeModal();
+            else setSourceId(undefined);
+          }}
         />
       )}
     </div>

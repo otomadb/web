@@ -1,10 +1,13 @@
+import { action } from "@storybook/addon-actions";
 import { Meta, StoryObj } from "@storybook/react";
 
 import { Fragment as VideoLinkFragment } from "~/app/mads/[serial]/Link";
+import AlreadyRegistered, {
+  Fragment,
+} from "~/components/Form/AlreadyRegistered";
 import { Fragment as VideoThumbnailFragment } from "~/components/VideoThumbnail";
 import { makeFragmentData } from "~/gql";
 
-import { AlreadyRegistered, Fragment } from "./AlreadyRegistered";
 const meta = {
   component: AlreadyRegistered,
   args: {},
@@ -13,6 +16,7 @@ export default meta;
 
 export const Primary: StoryObj<typeof meta> = {
   args: {
+    handleCancel: action("handleCancel"),
     style: { width: 640 },
     fragment: makeFragmentData(
       {
