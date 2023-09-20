@@ -2,12 +2,14 @@ import clsx from "clsx";
 import { Suspense } from "react";
 
 import { AllVideosPageLink } from "~/app/mads/Link";
+import { AllNicovideoRequestsPageLink } from "~/app/requests/nicovideo/Link";
+import AllYoutubeRequestLink from "~/app/requests/youtube/Link";
 
-import { AllNicovideoRequestsPageLink } from "../requests/nicovideo/Link";
 import { YouLikesPageLink } from "./likes/Link";
 import RecentLikes from "./RecentLikes";
 import RecentVideos from "./RecentVideos.server";
 import RequestsListSC from "./RequestsList.server";
+import YoutubeRequestsList from "./YoutubeRequestsList.server";
 
 export const dynamic = "force-dynamic";
 
@@ -84,6 +86,25 @@ export default async function Page() {
               <RequestsListSC />
             </Suspense>
           </div>
+        </section>
+        <section className={clsx()}>
+          <div className={clsx(["flex", "items-center"], ["px-2"])}>
+            <h2
+              className={clsx(["flex-grow"], ["text-lg"], ["text-slate-900"])}
+            >
+              最近のYoutubeの動画リクエスト
+            </h2>
+            <AllYoutubeRequestLink
+              className={clsx(
+                ["block"],
+                ["ml-auto"],
+                ["text-sm", "font-semibold", "text-slate-700"]
+              )}
+            >
+              もっと見る
+            </AllYoutubeRequestLink>
+          </div>
+          <YoutubeRequestsList className={clsx(["mt-2"])} />
         </section>
       </div>
     </main>
