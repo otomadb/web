@@ -7,6 +7,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import * as z from "zod";
 
 import { BlueButton } from "~/components/Button";
+import { extractNicovideoSourceId } from "~/utils/extractSourceId";
 
 import { TextInput2 } from "../TextInput";
 
@@ -101,8 +102,10 @@ export default function NicovideoIDForm({
   set(sourceId: string): void;
 }) {
   const [input, setInput] = useState("");
-  const parsed = useMemo(() => {
-    if (/^(sm)\d+$/.test(input)) return { sourceId: input };
+  const parsed = useMemo<{ sourceId: string } | null>(() => {
+    const sourceId = extractNicovideoSourceId(input);
+    if (sourceId) return { sourceId };
+
     return null;
   }, [input]);
 
@@ -132,7 +135,7 @@ export default function NicovideoIDForm({
         <TextInput2
           size="medium"
           aria-label="ニコニコ動画の動画ID"
-          placeholder="sm2057168"
+          placeholder="https://www.nicovideo.jp/watch/sm2057168"
           value={input}
           onChange={(s) => setInput(s)}
           className={clsx(["w-full"])}
