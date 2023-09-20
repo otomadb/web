@@ -13,6 +13,7 @@ import {
   useOpenRegisterFromNicovideo,
   useOpenRegisterFromYoutube,
   useOpenRequestFromNicovideo,
+  useOpenRequestFromYoutube,
 } from "~/components/FormModal";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
@@ -74,6 +75,7 @@ export default function ProfileAccordion({
   const openRequestFromNicovideo = useOpenRequestFromNicovideo();
   const openRegisterFromNicovideo = useOpenRegisterFromNicovideo();
   const openRegisterFromYoutube = useOpenRegisterFromYoutube();
+  const openRequestFromYoutube = useOpenRequestFromYoutube();
 
   return (
     <div
@@ -110,7 +112,22 @@ export default function ProfileAccordion({
             />
           )}
         >
-          動画のリクエスト
+          ニコニコ動画からリクエスト
+        </MenuItem>
+        <MenuItem
+          Wrapper={({ className, onClick, ...props }) => (
+            <button
+              {...props}
+              className={clsx(className, ["text-left"])}
+              type="button"
+              onClick={(e) => {
+                if (onClick) onClick(e);
+                openRequestFromYoutube(null);
+              }}
+            />
+          )}
+        >
+          YouTubeからリクエスト
         </MenuItem>
         <MenuItem Wrapper={(props) => <SettingPageLink {...props} />}>
           設定

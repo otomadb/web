@@ -10,6 +10,7 @@ import { XMarkIcon } from "~/components/Icons";
 import RegisterMADFromNicovideoFormModal from "./RegisterMADFromNicovideo";
 import RegisterMADFromYoutubeFormModal from "./RegisterMADFromYoutube";
 import RequestMADFromNicovideoFormModal from "./RequestMADFromNicovideo";
+import RequestMADFromYoutubeFormModal from "./RequestMADFromYoutube";
 
 export type Current =
   | undefined
@@ -17,7 +18,8 @@ export type Current =
   | { type: "REGISTER_FROM_NICOVIDEO_WITH_ID"; sourceId: string }
   | { type: "REGISTER_FROM_YOUTUBE"; sourceId: string | null }
   | { type: "REQUEST_FROM_NICOVIDEO" }
-  | { type: "REQUEST_FROM_NICOVIDEO_WITH_ID"; sourceId: string };
+  | { type: "REQUEST_FROM_NICOVIDEO_WITH_ID"; sourceId: string }
+  | { type: "REQUEST_FROM_YOUTUBE"; sourceId: string | null };
 
 export const FormModalContext = React.createContext<{
   current: Current;
@@ -95,6 +97,12 @@ export const useOpenRequestFromNicovideoWithID = () => {
     open({ type: "REQUEST_FROM_NICOVIDEO_WITH_ID", sourceId });
 };
 
+export const useOpenRequestFromYoutube = () => {
+  const { open } = useContext(FormModalContext);
+  return (sourceId: string | null) =>
+    open({ type: "REQUEST_FROM_YOUTUBE", sourceId });
+};
+
 export const useClose = () => {
   const { close } = useContext(FormModalContext);
   return close;
@@ -135,6 +143,8 @@ export default function FormModal({
               {(current.type === "REQUEST_FROM_NICOVIDEO" ||
                 current.type === "REQUEST_FROM_NICOVIDEO_WITH_ID") &&
                 "ニコニコ動画からリクエスト"}
+              {current.type === "REQUEST_FROM_YOUTUBE" &&
+                "YouTubeからリクエスト"}
             </span>
             <button
               type="button"
@@ -193,6 +203,16 @@ export default function FormModal({
             {current.type === "REQUEST_FROM_NICOVIDEO_WITH_ID" && (
               <RequestMADFromNicovideoFormModal
                 initialSourceId={current.sourceId}
+                className={clsx()}
+                style={{ width: 640, height: 720 }}
+                handleSuccess={() => {
+                  close();
+                }}
+              />
+            )}
+            {current.type === "REQUEST_FROM_YOUTUBE" && (
+              <RequestMADFromYoutubeFormModal
+                initialSourceId={current.sourceId || undefined}
                 className={clsx()}
                 style={{ width: 640, height: 720 }}
                 handleSuccess={() => {
