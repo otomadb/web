@@ -20,7 +20,9 @@
     "storybook:build": "sb build",
     "storybook:preview": "serve storybook-static",
     "vercel:web": "run-s 'codegen' 'build'",
-    "vercel:storybook": "run-s 'codegen' 'storybook:build'"
+    "vercel:storybook": "run-s 'codegen' 'storybook:build'",
+    "test": "vitest",
+    "test:watch": "vitest --watch"
   },
   "engines": {
     "node": "^18.18.0"
