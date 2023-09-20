@@ -14,11 +14,11 @@ import { LinkVideo } from "~/app/mads/[serial]/Link";
 import { BlueButton } from "~/components/Button";
 import { AlreadyRegistered } from "~/components/Form/RegisterMAD/FromYoutube/AlreadyRegistered";
 import OriginalSource from "~/components/Form/RegisterMAD/FromYoutube/OriginalSource";
-import { SemitagButton } from "~/components/RegisterFromNicovideoForm/SemitagButton";
+import { SemitagButton } from "~/components/Form/SemitagButton";
 import {
   Fragment as TagButtonFragment,
   TagButton,
-} from "~/components/RegisterFromNicovideoForm/TagButton";
+} from "~/components/Form/TagButton";
 import TagSearcher from "~/components/TagSearcher2";
 import { TextInput2 } from "~/components/TextInput";
 import { useToaster } from "~/components/Toaster";
