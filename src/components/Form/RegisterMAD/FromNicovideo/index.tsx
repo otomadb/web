@@ -14,16 +14,16 @@ import * as z from "zod";
 
 import { BlueButton } from "~/components/Button";
 import TagSearcher from "~/components/TagSearcher2";
+import { TextInput2 } from "~/components/TextInput";
 import { useToaster } from "~/components/Toaster";
 import { FragmentType, graphql } from "~/gql";
 
-import { TextInput2 } from "../TextInput";
+import { SemitagButton } from "../../SemitagButton";
+import { Fragment as TagButtonFragment, TagButton } from "../../TagButton";
 import { AlreadyRegistered } from "./AlreadyRegistered";
 import OriginalSource from "./OriginalSource";
 import { RequestExists } from "./Request";
-import { SemitagButton } from "./SemitagButton";
 import { SucceededToast } from "./SucceededToast";
-import { Fragment as TagButtonFragment, TagButton } from "./TagButton";
 import { useRegisterVideo } from "./useRegisterVideo";
 
 export const formSchema = z.object({

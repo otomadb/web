@@ -6,8 +6,8 @@ import { LinkUser as UserLink } from "~/app/users/[name]/Link";
 import { UserIcon } from "~/components/UserIcon";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-import { SemitagButton } from "./SemitagButton";
-import { Fragment as TagButtonFragment, TagButton } from "./TagButton";
+import { SemitagButton } from "../../SemitagButton";
+import { Fragment as TagButtonFragment, TagButton } from "../../TagButton";
 
 export const Fragment = graphql(`
   fragment RegisterFromNicovideoForm_Request on NicovideoRegistrationRequest {

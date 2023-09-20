@@ -3,8 +3,8 @@ import { graphql as mswGql } from "msw";
 
 import { Fragment as VideoLinkFragment } from "~/app/mads/[serial]/Link";
 import { Fragment as CommonTagFragment } from "~/components/CommonTag";
-import { Fragment as AlreadyRegisteredFragment } from "~/components/RegisterFromNicovideoForm/AlreadyRegistered";
-import { Fragment as SourceFragment } from "~/components/RegisterFromNicovideoForm/OriginalSource";
+import { Fragment as AlreadyRegisteredFragment } from "~/components/Form/RegisterMAD/FromNicovideo/AlreadyRegistered";
+import { Fragment as SourceFragment } from "~/components/Form/RegisterMAD/FromNicovideo/OriginalSource";
 import { Query as TagSearcherQuery } from "~/components/TagSearcher2";
 import { Fragment as TagSearcherSuggestItemFragment } from "~/components/TagSearcher2/SuggestItem";
 import { Fragment as TagSearcherSuggestsFragment } from "~/components/TagSearcher2/Suggests";

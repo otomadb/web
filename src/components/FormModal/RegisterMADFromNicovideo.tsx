@@ -4,7 +4,7 @@ import clsx from "clsx";
 import { ComponentProps, useState } from "react";
 
 import NicovideoIDForm from "~/components/Form/NicovideoIDForm";
-import RegisterForm from "~/components/RegisterFromNicovideoForm";
+import RegisterForm from "~/components/Form/RegisterMAD/FromNicovideo";
 
 export default function RegisterMADFromNicovideoFormModal({
   className,

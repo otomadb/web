@@ -3,9 +3,8 @@ import clsx from "clsx";
 import React from "react";
 
 import { Fragment as CommonTagFragment } from "~/components/CommonTag";
+import { CommonTag2 } from "~/components/CommonTag";
 import { FragmentType } from "~/gql";
-
-import { CommonTag2 } from "../CommonTag";
 
 export const Fragment = CommonTagFragment;
 export const TagButton: React.FC<{
