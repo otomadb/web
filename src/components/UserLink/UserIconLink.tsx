@@ -28,9 +28,9 @@ export default function UserIconLink({
 
   return (
     <div className={clsx(className)} style={style}>
-    <UserPageLink fragment={fragment} >
-      <UserIcon size={{ small: 24 }[size]} fragment={fragment} />
-    </UserPageLink>
+      <UserPageLink fragment={fragment}>
+        <UserIcon size={{ small: 24 }[size]} fragment={fragment} />
+      </UserPageLink>
     </div>
   );
 }
