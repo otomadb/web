@@ -4,6 +4,7 @@ import { graphql as mswGql } from "msw";
 
 import { Fragment as VideoLinkFragment } from "~/app/mads/[serial]/Link";
 import { Fragment as CommonTagFragment } from "~/components/CommonTag";
+import { Fragment as AlreadyRegisteredFragment } from "~/components/Form/AlreadyRegistered";
 import { Query as TagSearcherQuery } from "~/components/TagSearcher2";
 import { Fragment as TagSearcherSuggestItemFragment } from "~/components/TagSearcher2/SuggestItem";
 import { Fragment as TagSearcherSuggestsFragment } from "~/components/TagSearcher2/Suggests";
@@ -15,7 +16,6 @@ import { MockedAuth0Provider } from "~/utils/MockedAuth0Provider";
 import { MockedUrqlProvider } from "~/utils/MockedUrqlProvider";
 
 import RegisterForm, { Query } from ".";
-import { Fragment as AlreadyRegisteredFragment } from "./AlreadyRegistered";
 import { Fragment as SourceFragment } from "./OriginalSource";
 import { Fragment as RegReqFragment } from "./Request";
 
@@ -195,7 +195,7 @@ export const 既に登録済み: Story = {
                     },
                     AlreadyRegisteredFragment
                   ),
-                },
+                } as never,
                 fetchYoutube: { source: null },
                 findYoutubeRegistrationRequest: null,
               })

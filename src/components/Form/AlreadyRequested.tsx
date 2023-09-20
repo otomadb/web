@@ -3,34 +3,37 @@ import "client-only";
 
 import clsx from "clsx";
 import Image from "next/image";
-import React from "react";
+import React, { ReactNode } from "react";
 
-import { LinkNicovideoRegistrationRequest } from "~/app/requests/nicovideo/[sourceId]/Link";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const Fragment = graphql(`
-  fragment RequestMADFromNicovideoForm_AlreadyRequested on NicovideoRegistrationRequest {
-    ...Link_NicovideoRegistrationRequest
+  fragment Form_VideoAlreadyRequested on RegistrationRequest {
     sourceId
-    checked
     thumbnailUrl
   }
 `);
 export default function AlreadyRequested({
   className,
   style,
+  RequestPageLink,
   ...props
 }: {
   className?: string;
   style?: React.CSSProperties;
   fragment: FragmentType<typeof Fragment>;
+  RequestPageLink: React.FC<{
+    className?: string;
+    children: ReactNode;
+    sourceId: string;
+  }>;
 }) {
   const fragment = useFragment(Fragment, props.fragment);
   return (
     <div className={clsx(className, ["flex", "gap-x-4"])} style={style}>
-      <LinkNicovideoRegistrationRequest
+      <RequestPageLink
         className={clsx(["flex-shrink-0"])}
-        fragment={fragment}
+        sourceId={fragment.sourceId}
       >
         <Image
           width={260}
@@ -39,15 +42,15 @@ export default function AlreadyRequested({
           alt={fragment.sourceId}
           priority
         />
-      </LinkNicovideoRegistrationRequest>
+      </RequestPageLink>
       <div>
         <p className={clsx(["text-sm"], ["text-slate-400"])}>
-          <LinkNicovideoRegistrationRequest
+          <RequestPageLink
             className={clsx(["font-bold"], ["text-slate-300"])}
-            fragment={fragment}
+            sourceId={fragment.sourceId}
           >
             {fragment.sourceId}
-          </LinkNicovideoRegistrationRequest>
+          </RequestPageLink>
           は既にリクエストされています。
         </p>
       </div>

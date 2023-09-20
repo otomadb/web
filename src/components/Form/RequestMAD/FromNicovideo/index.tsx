@@ -12,8 +12,10 @@ import {
 import { useQuery } from "urql";
 
 import { LinkVideo } from "~/app/mads/[serial]/Link";
+import NicovideoRequestLink from "~/app/requests/nicovideo/[sourceId]/Link";
 import { BlueButton, RedButton } from "~/components/Button";
-import { AlreadyRegistered } from "~/components/Form/RegisterMAD/FromNicovideo/AlreadyRegistered";
+import AlreadyRegistered from "~/components/Form/AlreadyRegistered";
+import AlreadyRequested from "~/components/Form/AlreadyRequested";
 import OriginalSource from "~/components/Form/RegisterMAD/FromNicovideo/OriginalSource";
 import { SemitagButton } from "~/components/Form/SemitagButton";
 import {
@@ -25,7 +27,6 @@ import { TextInput2 } from "~/components/TextInput";
 import { useToaster } from "~/components/Toaster";
 import { FragmentType, graphql } from "~/gql";
 
-import AlreadyRequested from "./AlreadyRequested";
 import { SucceededToast } from "./SucceededToast";
 import useRequestFromNicovideo from "./useRequestFromNicovideo";
 
@@ -33,11 +34,12 @@ export const Query = graphql(`
   query RequestMADFromNicovideoForm_Check($sourceId: String!) {
     findNicovideoVideoSource(input: { sourceId: $sourceId }) {
       id
-      ...RegisterFromNicovideoForm_VideoSource
+      ...Form_VideoAlreadyRegistered
     }
     findNicovideoRegistrationRequest(input: { sourceId: $sourceId }) {
       id
-      ...RequestMADFromNicovideoForm_AlreadyRequested
+      ...Form_VideoAlreadyRequested
+      ...Link_NicovideoRegistrationRequest
     }
     fetchNicovideo(input: { sourceId: $sourceId }) {
       source {
@@ -176,7 +178,10 @@ export default function RequestForm({
       ) : data.findNicovideoVideoSource ? (
         <AlreadyRegistered fragment={data.findNicovideoVideoSource} />
       ) : data.findNicovideoRegistrationRequest ? (
-        <AlreadyRequested fragment={data.findNicovideoRegistrationRequest} />
+        <AlreadyRequested
+          fragment={data.findNicovideoRegistrationRequest}
+          RequestPageLink={(props) => <NicovideoRequestLink {...props} />}
+        />
       ) : !data.fetchNicovideo.source ? (
         <div className={clsx(["text-slate-400"])}>動画は存在しません</div>
       ) : (

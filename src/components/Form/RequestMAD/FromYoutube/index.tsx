@@ -11,8 +11,10 @@ import {
 import { useQuery } from "urql";
 
 import { LinkVideo } from "~/app/mads/[serial]/Link";
+import YoutubeRequestLink from "~/app/requests/youtube/[sourceId]/Link";
 import { BlueButton, RedButton } from "~/components/Button";
-import { AlreadyRegistered } from "~/components/Form/RegisterMAD/FromYoutube/AlreadyRegistered";
+import AlreadyRegistered from "~/components/Form/AlreadyRegistered";
+import AlreadyRequested from "~/components/Form/AlreadyRequested";
 import OriginalSource from "~/components/Form/RegisterMAD/FromYoutube/OriginalSource";
 import { SemitagButton } from "~/components/Form/SemitagButton";
 import {
@@ -24,7 +26,6 @@ import { TextInput2 } from "~/components/TextInput";
 import { useToaster } from "~/components/Toaster";
 import { FragmentType, graphql } from "~/gql";
 
-import AlreadyRequested from "./AlreadyRequested";
 import { SucceededToast } from "./SucceededToast";
 import useRequestFromYoutube from "./useRequestFromYoutube";
 
@@ -32,11 +33,12 @@ export const Query = graphql(`
   query RequestMADFromYoutubeForm_Check($sourceId: String!) {
     findYoutubeVideoSource(input: { sourceId: $sourceId }) {
       id
-      ...RegisterFromYoutubeForm_VideoSource
+      ...Form_VideoAlreadyRegistered
     }
     findYoutubeRegistrationRequest(input: { sourceId: $sourceId }) {
       id
-      ...RequestMADFromYoutubeForm_AlreadyRequested
+      sourceId
+      ...Form_VideoAlreadyRequested
     }
     fetchYoutube(input: { sourceId: $sourceId }) {
       source {
@@ -168,7 +170,10 @@ export default function RequestForm({
       ) : data.findYoutubeVideoSource ? (
         <AlreadyRegistered fragment={data.findYoutubeVideoSource} />
       ) : data.findYoutubeRegistrationRequest ? (
-        <AlreadyRequested fragment={data.findYoutubeRegistrationRequest} />
+        <AlreadyRequested
+          fragment={data.findYoutubeRegistrationRequest}
+          RequestPageLink={(props) => <YoutubeRequestLink {...props} />}
+        />
       ) : !data.fetchYoutube.source ? (
         <div className={clsx(["text-slate-400"])}>動画は存在しません</div>
       ) : (

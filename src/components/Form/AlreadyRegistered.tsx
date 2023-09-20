@@ -9,7 +9,7 @@ import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const Fragment = graphql(`
-  fragment RegisterFromNicovideoForm_VideoSource on NicovideoVideoSource {
+  fragment Form_VideoAlreadyRegistered on VideoSource {
     id
     sourceId
     video {
@@ -20,11 +20,15 @@ export const Fragment = graphql(`
     }
   }
 `);
-export const AlreadyRegistered: React.FC<{
+export default function AlreadyRegistered({
+  className,
+  style,
+  ...props
+}: {
   className?: string;
   style?: React.CSSProperties;
   fragment: FragmentType<typeof Fragment>;
-}> = ({ className, style, ...props }) => {
+}) {
   const fragment = useFragment(Fragment, props.fragment);
 
   return (
@@ -49,4 +53,4 @@ export const AlreadyRegistered: React.FC<{
       </div>
     </div>
   );
-};
+}

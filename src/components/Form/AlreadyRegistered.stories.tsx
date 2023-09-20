@@ -1,10 +1,12 @@
 import { Meta, StoryObj } from "@storybook/react";
 
 import { Fragment as VideoLinkFragment } from "~/app/mads/[serial]/Link";
+import AlreadyRegistered, {
+  Fragment,
+} from "~/components/Form/AlreadyRegistered";
 import { Fragment as VideoThumbnailFragment } from "~/components/VideoThumbnail";
 import { makeFragmentData } from "~/gql";
 
-import { AlreadyRegistered, Fragment } from "./AlreadyRegistered";
 const meta = {
   component: AlreadyRegistered,
   args: {},

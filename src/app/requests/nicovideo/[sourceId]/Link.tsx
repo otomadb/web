@@ -20,3 +20,15 @@ export const LinkNicovideoRegistrationRequest: React.FC<
     </Link>
   );
 };
+
+export default function NicovideoRequestLink({
+  sourceId,
+  children,
+  ...props
+}: Omit<ComponentProps<typeof Link>, "href"> & { sourceId: string }) {
+  return (
+    <Link href={`/requests/nicovideo/${sourceId}`} {...props}>
+      {children}
+    </Link>
+  );
+}

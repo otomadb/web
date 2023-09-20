@@ -6,6 +6,7 @@ import React, { useCallback, useMemo, useReducer, useState } from "react";
 import { useQuery } from "urql";
 
 import { BlueButton, RedButton } from "~/components/Button";
+import AlreadyRegistered from "~/components/Form/AlreadyRegistered";
 import { SemitagButton } from "~/components/Form/SemitagButton";
 import {
   Fragment as TagButtonFragment,
@@ -16,7 +17,6 @@ import { TextInput2 } from "~/components/TextInput";
 import { useToaster } from "~/components/Toaster";
 import { FragmentType, graphql } from "~/gql";
 
-import { AlreadyRegistered } from "./AlreadyRegistered";
 import OriginalSource from "./OriginalSource";
 import { RequestExists } from "./Request";
 import { SucceededToast } from "./SucceededToast";
@@ -49,7 +49,7 @@ export const Query = graphql(`
       ...RegisterFromYoutubeForm_Request
     }
     findYoutubeVideoSource(input: { sourceId: $sourceId }) {
-      ...RegisterFromYoutubeForm_VideoSource
+      ...Form_VideoAlreadyRegistered
     }
   }
 `);

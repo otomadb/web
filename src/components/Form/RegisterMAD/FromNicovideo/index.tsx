@@ -13,6 +13,7 @@ import { useQuery } from "urql";
 import * as z from "zod";
 
 import { BlueButton, RedButton } from "~/components/Button";
+import AlreadyRegistered from "~/components/Form/AlreadyRegistered";
 import TagSearcher from "~/components/TagSearcher2";
 import { TextInput2 } from "~/components/TextInput";
 import { useToaster } from "~/components/Toaster";
@@ -20,7 +21,6 @@ import { FragmentType, graphql } from "~/gql";
 
 import { SemitagButton } from "../../SemitagButton";
 import { Fragment as TagButtonFragment, TagButton } from "../../TagButton";
-import { AlreadyRegistered } from "./AlreadyRegistered";
 import OriginalSource from "./OriginalSource";
 import { RequestExists } from "./Request";
 import { SucceededToast } from "./SucceededToast";
@@ -64,7 +64,7 @@ export const Query = graphql(`
       ...RegisterFromNicovideoForm_Request
     }
     findNicovideoVideoSource(input: { sourceId: $sourceId }) {
-      ...RegisterFromNicovideoForm_VideoSource
+      ...Form_VideoAlreadyRegistered
     }
   }
 `);
