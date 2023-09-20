@@ -4,7 +4,7 @@ import { LinkUser as UserPageLink } from "~/app/users/[name]/Link";
 import { UserIcon } from "~/components/UserIcon";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-export const Fragment = graphql(`
+export const UserIconLinkFragment = graphql(`
   fragment UserIconLink on User {
     ...UserIcon
     ...Link_User
@@ -18,13 +18,13 @@ export default function UserIconLink({
 }: {
   className?: string;
   style?: React.CSSProperties;
-  fragment: FragmentType<typeof Fragment>;
+  fragment: FragmentType<typeof UserIconLinkFragment>;
   /**
    * @default "small"
    */
   size?: "small";
 }) {
-  const fragment = useFragment(Fragment, props.fragment);
+  const fragment = useFragment(UserIconLinkFragment, props.fragment);
 
   return (
     <div className={clsx(className)} style={style}>

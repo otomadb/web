@@ -1,9 +1,12 @@
 import clsx from "clsx";
 
-import { LinkUser as UserPageLink } from "~/app/users/[name]/Link";
-import { FragmentType, graphql, useFragment } from "~/gql";
+import {
+  Fragment as UserPageLinkFragment,
+  LinkUser as UserPageLink,
+} from "~/app/users/[name]/Link";
+import { FragmentType, graphql, makeFragmentData, useFragment } from "~/gql";
 
-export const Fragment = graphql(`
+export const UserDisplayNameLinkFragment = graphql(`
   fragment UserDisplayNameLink on User {
     ...Link_User
     displayName
@@ -17,13 +20,13 @@ export default function UserDisplayNameLink({
 }: {
   className?: string;
   style?: React.CSSProperties;
-  fragment: FragmentType<typeof Fragment>;
+  fragment: FragmentType<typeof UserDisplayNameLinkFragment>;
   /**
    * @default "small"
    */
   size?: "small";
 }) {
-  const fragment = useFragment(Fragment, props.fragment);
+  const fragment = useFragment(UserDisplayNameLinkFragment, props.fragment);
 
   return (
     <div className={clsx(className)} style={style}>
@@ -31,3 +34,16 @@ export default function UserDisplayNameLink({
     </div>
   );
 }
+
+export const mockUserDisplayNameLink = makeFragmentData(
+  {
+    displayName: "User1",
+    ...makeFragmentData(
+      {
+        name: "user1",
+      },
+      UserPageLinkFragment
+    ),
+  },
+  UserDisplayNameLinkFragment
+);
