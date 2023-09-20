@@ -5,7 +5,7 @@ import clsx from "clsx";
 import React, { useCallback, useMemo, useReducer, useState } from "react";
 import { useQuery } from "urql";
 
-import { BlueButton } from "~/components/Button";
+import { BlueButton, RedButton } from "~/components/Button";
 import { SemitagButton } from "~/components/Form/SemitagButton";
 import {
   Fragment as TagButtonFragment,
@@ -58,11 +58,13 @@ export default function RegisterForm({
   style,
   sourceId,
   handleSuccess,
+  handleCancel,
 }: {
   className?: string;
   style?: React.CSSProperties;
   sourceId: string;
   handleSuccess?(): void;
+  handleCancel?(): void;
 }) {
   const [{ data, fetching }] = useQuery({
     query: Query,
@@ -431,7 +433,14 @@ export default function RegisterForm({
               )}
             </div>
           </div>
-          <div className={clsx(["mt-auto"], ["flex-shrink-0"], ["w-full"])}>
+          <div
+            className={clsx(
+              ["flex"],
+              ["mt-auto"],
+              ["flex-shrink-0"],
+              ["w-full"]
+            )}
+          >
             <BlueButton
               type="submit"
               className={clsx(["px-4"], ["py-1"])}
@@ -439,6 +448,19 @@ export default function RegisterForm({
             >
               登録
             </BlueButton>
+            {handleCancel && (
+              <RedButton
+                type="button"
+                className={clsx(["ml-auto"], ["px-4"], ["py-1"])}
+                disabled={!payload}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleCancel();
+                }}
+              >
+                キャンセル
+              </RedButton>
+            )}
           </div>
         </form>
       )}

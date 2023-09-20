@@ -5,6 +5,7 @@ import { mockTagSearcher } from "~/components/TagSearcher/index.mocks";
 import { ToastContext } from "~/components/Toaster";
 import { MockedUrqlProvider } from "~/utils/MockedUrqlProvider";
 
+import { FormModalContext } from ".";
 import { mocksRegisterFromYoutube } from "./mocks";
 import RegisterMADFromYoutubeFormModal from "./RegisterMADFromYoutube";
 
@@ -20,7 +21,15 @@ const meta = {
     return (
       <MockedUrqlProvider>
         <ToastContext.Provider value={{ call: action("callToast") }}>
-          <RegisterMADFromYoutubeFormModal {...args} />
+          <FormModalContext.Provider
+            value={{
+              current: undefined,
+              open: action("openModal"),
+              close: action("closeModal"),
+            }}
+          >
+            <RegisterMADFromYoutubeFormModal {...args} />{" "}
+          </FormModalContext.Provider>
         </ToastContext.Provider>
       </MockedUrqlProvider>
     );

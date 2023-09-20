@@ -11,7 +11,7 @@ import {
 import { useQuery } from "urql";
 
 import { LinkVideo } from "~/app/mads/[serial]/Link";
-import { BlueButton } from "~/components/Button";
+import { BlueButton, RedButton } from "~/components/Button";
 import { AlreadyRegistered } from "~/components/Form/RegisterMAD/FromYoutube/AlreadyRegistered";
 import OriginalSource from "~/components/Form/RegisterMAD/FromYoutube/OriginalSource";
 import { SemitagButton } from "~/components/Form/SemitagButton";
@@ -51,11 +51,13 @@ export default function RequestForm({
   style,
   sourceId,
   handleSuccess,
+  handleCancel,
 }: {
   className?: string;
   style?: CSSProperties;
   sourceId: string;
   handleSuccess?(): void;
+  handleCancel?(): void;
 }) {
   const [{ data, fetching }] = useQuery({
     query: Query,
@@ -369,7 +371,14 @@ export default function RequestForm({
               )}
             </div>
           </div>
-          <div className={clsx(["mt-auto"], ["flex-shrink-0"], ["w-full"])}>
+          <div
+            className={clsx(
+              ["flex"],
+              ["mt-auto"],
+              ["flex-shrink-0"],
+              ["w-full"]
+            )}
+          >
             <BlueButton
               type="submit"
               className={clsx(["px-4"], ["py-1"])}
@@ -377,6 +386,19 @@ export default function RequestForm({
             >
               リクエスト
             </BlueButton>
+            {handleCancel && (
+              <RedButton
+                type="button"
+                className={clsx(["ml-auto"], ["px-4"], ["py-1"])}
+                disabled={!payload}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleCancel();
+                }}
+              >
+                キャンセル
+              </RedButton>
+            )}
           </div>
         </form>
       )}
