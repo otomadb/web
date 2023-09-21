@@ -27,7 +27,7 @@ export default function Button({
   ({ onClick(): void } | { submit: true })) {
   return (
     <button
-      type="button"
+      type={"submit" in props ? "submit" : "button"}
       aria-label={ariaLabel}
       disabled={disabled}
       onClick={(e) => {
