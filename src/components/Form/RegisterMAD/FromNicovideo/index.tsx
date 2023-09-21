@@ -10,7 +10,6 @@ import React, {
   useState,
 } from "react";
 import { useQuery } from "urql";
-import * as z from "zod";
 
 import Button from "~/components/Button";
 import AlreadyRegistered from "~/components/Form/AlreadyRegistered";
@@ -26,30 +25,6 @@ import OriginalSource from "./OriginalSource";
 import { RequestExists } from "./Request";
 import { SucceededToast } from "./SucceededToast";
 import { useRegisterVideo } from "./useRegisterVideo";
-
-export const formSchema = z.object({
-  sourceId: z.string(),
-  title: z.string(),
-  thumbnailUrl: z.string(),
-  tags: z.array(z.object({ tagId: z.string() })),
-  semitags: z.array(z.object({ name: z.string() })),
-  nicovideoRequestId: z.nullable(z.string()),
-});
-export type FormSchema = z.infer<typeof formSchema>;
-
-export const Loading: React.FC<{ fetching: boolean; data: unknown }> = ({
-  fetching,
-  data,
-}) => {
-  return (
-    <>
-      {(fetching || !data) && (
-        <div className={clsx(["text-slate-400"])}>Loading</div>
-      )}
-      {!fetching && data && <></>}
-    </>
-  );
-};
 
 export const Query = graphql(`
   query RegisterFromNicovideoForm_Check($sourceId: String!) {
