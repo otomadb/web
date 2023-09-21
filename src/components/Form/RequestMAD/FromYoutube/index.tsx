@@ -12,7 +12,7 @@ import { useQuery } from "urql";
 
 import { LinkVideo } from "~/app/mads/[serial]/Link";
 import YoutubeRequestLink from "~/app/requests/youtube/[sourceId]/Link";
-import { BlueButton, RedButton } from "~/components/Button";
+import Button from "~/components/Button";
 import AlreadyRegistered from "~/components/Form/AlreadyRegistered";
 import AlreadyRequested from "~/components/Form/AlreadyRequested";
 import OriginalSource from "~/components/Form/RegisterMAD/FromYoutube/OriginalSource";
@@ -389,23 +389,16 @@ export default function RequestForm({
               ["w-full"]
             )}
           >
-            <BlueButton
-              type="submit"
-              className={clsx(["px-4"], ["py-1"])}
-              disabled={!payload}
-            >
-              リクエスト
-            </BlueButton>
-            <RedButton
-              type="button"
-              className={clsx(["ml-auto"], ["px-4"], ["py-1"])}
-              onClick={(e) => {
-                e.preventDefault();
+            <Button submit text="リクエストする" size="medium" color="blue" />
+            <Button
+              className={clsx(["ml-auto"])}
+              onClick={() => {
                 handleCancel();
               }}
-            >
-              戻る
-            </RedButton>
+              text="戻る"
+              size="medium"
+              color="green"
+            />
           </div>
         </form>
       )}

@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 
-import { BlueButton } from "~/components/Button";
+import Button from "~/components/Button";
 import { TextInput } from "~/components/TextInput";
 import { useToaster } from "~/components/Toaster";
 
@@ -75,13 +75,15 @@ export default function RenameForm({
           )}
         />
       </div>
-      <BlueButton
-        type="submit"
-        disabled={fetching}
-        className={clsx(["px-2"], ["py-1"])}
-      >
-        変更
-      </BlueButton>
+      <Button
+        submit
+        className={clsx(["flex-shrink-0"])}
+        color="blue"
+        size="small"
+        icon="plus"
+        text="変更"
+        disabled={!fetching}
+      />
     </form>
   );
 }

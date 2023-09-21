@@ -5,7 +5,7 @@ import clsx from "clsx";
 import React, { useCallback, useMemo, useReducer, useState } from "react";
 import { useQuery } from "urql";
 
-import { BlueButton, RedButton } from "~/components/Button";
+import Button from "~/components/Button";
 import AlreadyRegistered from "~/components/Form/AlreadyRegistered";
 import { SemitagButton } from "~/components/Form/SemitagButton";
 import SourceNotExists from "~/components/Form/SourceNotExists";
@@ -443,23 +443,16 @@ export default function RegisterForm({
               ["w-full"]
             )}
           >
-            <BlueButton
-              type="submit"
-              className={clsx(["px-4"], ["py-1"])}
-              disabled={!payload}
-            >
-              登録する
-            </BlueButton>
-            <RedButton
-              type="button"
-              className={clsx(["ml-auto"], ["px-4"], ["py-1"])}
-              onClick={(e) => {
-                e.preventDefault();
+            <Button submit text="登録する" size="medium" color="blue" />
+            <Button
+              className={clsx(["ml-auto"])}
+              onClick={() => {
                 handleCancel();
               }}
-            >
-              戻る
-            </RedButton>
+              text="戻る"
+              size="medium"
+              color="green"
+            />
           </div>
         </form>
       )}

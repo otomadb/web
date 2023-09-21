@@ -5,10 +5,9 @@ import clsx from "clsx";
 import React from "react";
 
 import { LinkVideo } from "~/app/mads/[serial]/Link";
+import Button from "~/components/Button";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { FragmentType, graphql, useFragment } from "~/gql";
-
-import { RedButton } from "../Button";
 
 export const Fragment = graphql(`
   fragment Form_VideoAlreadyRegistered on VideoSource {
@@ -65,16 +64,15 @@ export default function AlreadyRegistered({
         </div>
       </div>
       <div>
-        <RedButton
-          type="button"
-          className={clsx(["ml-auto"], ["px-4"], ["py-1"])}
-          onClick={(e) => {
-            e.preventDefault();
+        <Button
+          className={clsx(["ml-auto"])}
+          onClick={() => {
             handleCancel();
           }}
-        >
-          戻る
-        </RedButton>
+          text="戻る"
+          size="medium"
+          color="green"
+        />
       </div>
     </div>
   );
