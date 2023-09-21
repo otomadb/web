@@ -5,6 +5,7 @@ import React, { useCallback, useMemo, useState } from "react";
 
 import Button from "~/components/Button";
 import { TextInput2 } from "~/components/TextInput";
+import { extractYoutubeSourceId } from "~/utils/extractSourceId";
 
 export default function YoutubeIDForm({
   className,
@@ -17,8 +18,9 @@ export default function YoutubeIDForm({
 }) {
   const [input, setInput] = useState("");
   const parsed = useMemo(() => {
-    // TODO: チェック
-    return { sourceId: input };
+    const sourceId = extractYoutubeSourceId(input);
+    if (sourceId) return { sourceId };
+    return null;
   }, [input]);
 
   const handleSubmit = useCallback(() => {
@@ -47,7 +49,7 @@ export default function YoutubeIDForm({
         <TextInput2
           size="medium"
           aria-label="Youtubeの動画ID"
-          placeholder="Q16KpquGsIc"
+          placeholder="https://www.youtube.com/watch?v=Q16KpquGsIc"
           value={input}
           onChange={(s) => setInput(s)}
           className={clsx(["w-full"])}

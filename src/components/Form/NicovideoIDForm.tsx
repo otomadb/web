@@ -20,7 +20,6 @@ export default function NicovideoIDForm({
   const parsed = useMemo<{ sourceId: string } | null>(() => {
     const sourceId = extractNicovideoSourceId(input);
     if (sourceId) return { sourceId };
-
     return null;
   }, [input]);
 
