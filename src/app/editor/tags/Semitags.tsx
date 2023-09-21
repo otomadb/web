@@ -6,7 +6,7 @@ import clsx from "clsx";
 import copy from "copy-to-clipboard";
 import React, { useMemo } from "react";
 
-import { CheckIcon, CopyIcon } from "~/components/Icons";
+import Pictogram from "~/components/Pictogram";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const Fragment = graphql(`
@@ -120,7 +120,7 @@ export const Semitags: React.FC<{
                       remove(id);
                     }}
                   >
-                    <CheckIcon className={clsx(["w-4", "h-4"])} />
+                    <Pictogram icon="check" className={clsx(["w-4", "h-4"])} />
                   </div>
                   <div className={clsx(["flex-grow"], ["flex"])}>
                     <div
@@ -154,7 +154,10 @@ export const Semitags: React.FC<{
                           ["bg-sky-900", "hover:bg-sky-800"]
                         )}
                       >
-                        <CopyIcon className={clsx(["w-4", "h-4"])} />
+                        <Pictogram
+                          icon="copy"
+                          className={clsx(["w-4", "h-4"])}
+                        />
                       </div>
                     </div>
                   </div>
@@ -246,7 +249,12 @@ export const Semitags: React.FC<{
                       else append({ id, name });
                     }}
                   >
-                    {selected && <CheckIcon className={clsx(["w-4", "h-4"])} />}
+                    {selected && (
+                      <Pictogram
+                        icon="check"
+                        className={clsx(["w-4", "h-4"])}
+                      />
+                    )}
                     {!selected && <div className={clsx(["w-4", "h-4"])} />}
                   </div>
                   <div

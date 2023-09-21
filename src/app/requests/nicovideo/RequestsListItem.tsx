@@ -6,7 +6,7 @@ import { LinkUser as UserLink } from "~/app/users/[name]/Link";
 import { CommonTag2 } from "~/components/CommonTag";
 import { CoolImage } from "~/components/CoolImage";
 import { useOpenRegisterFromNicovideoWithId } from "~/components/FormModal";
-import { ExternalLinkIcon, PlusIcon } from "~/components/Icons";
+import Pictogram from "~/components/Pictogram";
 import useHasRole from "~/components/useHasRole";
 import { UserIcon } from "~/components/UserIcon";
 import { FragmentType, graphql, useFragment } from "~/gql";
@@ -168,7 +168,7 @@ export default function RequestsListItem({
             target="_blank"
             className={clsx(["text-slate-400", "hover:text-sky-400"])}
           >
-            <ExternalLinkIcon className={clsx(["w-6", "h-6"])} />
+            <Pictogram icon="external-link" className={clsx(["w-6", "h-6"])} />
           </a>
           <button
             role="button"
@@ -180,7 +180,7 @@ export default function RequestsListItem({
             disabled={!registarable}
             onClick={() => openRegisterForm(fragment.sourceId)}
           >
-            <PlusIcon className={clsx(["w-6", "h-6"])} />
+            <Pictogram icon="plus" className={clsx(["w-6", "h-6"])} />
           </button>
         </div>
       </div>

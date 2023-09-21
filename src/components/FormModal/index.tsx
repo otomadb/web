@@ -5,8 +5,7 @@ import "client-only";
 import clsx from "clsx";
 import React, { ReactNode, useContext, useReducer } from "react";
 
-import { XMarkIcon } from "~/components/Icons";
-
+import Pictogram from "../Pictogram";
 import RegisterMADFromNicovideoFormModal from "./RegisterMADFromNicovideo";
 import RegisterMADFromYoutubeFormModal from "./RegisterMADFromYoutube";
 import RequestMADFromNicovideoFormModal from "./RequestMADFromNicovideo";
@@ -158,7 +157,7 @@ export default function FormModal({
                 close();
               }}
             >
-              <XMarkIcon />
+              <Pictogram icon="x" />
             </button>
           </div>
           <div className={clsx(["bg-slate-900"])}>

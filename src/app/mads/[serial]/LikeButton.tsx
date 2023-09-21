@@ -3,11 +3,11 @@ import "client-only";
 
 import { useAuth0 } from "@auth0/auth0-react";
 import { ResultOf } from "@graphql-typed-document-node/core";
-import { HeartIcon as SolidHeartIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 import React, { useCallback, useMemo } from "react";
 import { useMutation, useQuery } from "urql";
 
+import Pictogram from "~/components/Pictogram";
 import { useToaster } from "~/components/Toaster";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
@@ -270,7 +270,8 @@ export default function LikeButton({
       )}
     >
       <div>
-        <SolidHeartIcon
+        <Pictogram
+          icon="like"
           className={clsx(
             ["w-4", "h-4"],
             ["transition-colors", "duration-75"],

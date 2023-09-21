@@ -1,11 +1,11 @@
 "use client";
 import "client-only";
 
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import React, { useState } from "react";
 
 import { DelayedInput } from "~/components/DelayedInput";
+import Pictogram from "~/components/Pictogram";
 
 import { Dropdown } from "./Dropdown";
 
@@ -34,7 +34,7 @@ export const SearchContents: React.FC<{ className?: string }> = ({
           ["pointer-events-none"]
         )}
       >
-        <MagnifyingGlassIcon className={clsx(["w-4"], ["h-4"])} />
+        <Pictogram icon="search" className={clsx(["w-4"], ["h-4"])} />
       </div>
       <DelayedInput
         className={clsx(
