@@ -1,9 +1,9 @@
 "use client";
 
-import { NoSymbolIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 
 import { DateTime } from "~/components/DateTime";
+import Pictogram from "~/components/Pictogram";
 import { UserIcon } from "~/components/UserIcon";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
@@ -56,7 +56,10 @@ export default function NicovideoRegistrationRequestRejectingNotification({
         <div
           className={clsx(["flex-grow"], ["flex", "items-center", "gap-x-1"])}
         >
-          <NoSymbolIcon className={clsx(["w-4", "h-4"], ["text-red-500"])} />
+          <Pictogram
+            icon="reject"
+            className={clsx(["w-4", "h-4"], ["text-red-500"])}
+          />
           <p className={clsx(["text-sm", "text-slate-900"])}>
             あなたの動画登録リクエスト
             <LinkNicovideoRegistrationRequest fragment={request}>

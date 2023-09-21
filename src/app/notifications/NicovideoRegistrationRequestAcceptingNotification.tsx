@@ -1,10 +1,10 @@
 "use client";
 
-import { CheckCircleIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 
 import { LinkVideo } from "~/app/mads/[serial]/Link";
 import { DateTime } from "~/components/DateTime";
+import Pictogram from "~/components/Pictogram";
 import { UserIcon } from "~/components/UserIcon";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { FragmentType, graphql, useFragment } from "~/gql";
@@ -63,7 +63,8 @@ export default function NicovideoRegistrationRequestAcceptingNotification({
         <div
           className={clsx(["flex-grow"], ["flex", "items-center", "gap-x-1"])}
         >
-          <CheckCircleIcon
+          <Pictogram
+            icon="accept"
             className={clsx(["w-4", "h-4"], ["text-teal-500"])}
           />
           <p className={clsx(["text-sm", "text-slate-900"])}>

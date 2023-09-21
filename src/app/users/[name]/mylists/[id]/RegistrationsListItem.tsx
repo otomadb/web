@@ -1,9 +1,9 @@
-import { PencilIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 import React from "react";
 
 import { LinkVideo } from "~/app/mads/[serial]/Link";
 import { CommonTag } from "~/components/CommonTag";
+import Pictogram from "~/components/Pictogram";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
@@ -90,7 +90,8 @@ export const RegistrationsListItem: React.FC<{
             )}
           >
             <p>
-              <PencilIcon
+              <Pictogram
+                icon="note"
                 className={clsx(
                   ["float-left"],
                   ["w-4"],
