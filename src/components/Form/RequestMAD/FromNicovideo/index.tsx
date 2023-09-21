@@ -418,7 +418,7 @@ export default function RequestForm({
               className={clsx(["px-4"], ["py-1"])}
               disabled={!payload}
             >
-              登録
+              リクエスト
             </BlueButton>
             <RedButton
               type="button"
