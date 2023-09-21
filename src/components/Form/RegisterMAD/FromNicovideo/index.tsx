@@ -486,7 +486,7 @@ export default function RegisterForm({
               className={clsx(["px-4"], ["py-1"])}
               disabled={!payload}
             >
-              登録
+              登録する
             </BlueButton>
             <RedButton
               type="button"
