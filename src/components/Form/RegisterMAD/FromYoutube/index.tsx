@@ -23,20 +23,6 @@ import { RequestExists } from "./Request";
 import { SucceededToast } from "./SucceededToast";
 import { useRegisterVideo } from "./useRegisterVideo";
 
-export const Loading: React.FC<{ fetching: boolean; data: unknown }> = ({
-  fetching,
-  data,
-}) => {
-  return (
-    <>
-      {(fetching || !data) && (
-        <div className={clsx(["text-slate-400"])}>Loading</div>
-      )}
-      {!fetching && data && <></>}
-    </>
-  );
-};
-
 export const Query = graphql(`
   query RegisterFromYoutubeForm_Check($sourceId: String!) {
     fetchYoutube(input: { sourceId: $sourceId }) {
