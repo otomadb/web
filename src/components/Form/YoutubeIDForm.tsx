@@ -3,7 +3,7 @@
 import clsx from "clsx";
 import React, { useCallback, useMemo, useState } from "react";
 
-import { BlueButton } from "~/components/Button";
+import Button from "~/components/Button";
 import { TextInput2 } from "~/components/TextInput";
 
 export default function YoutubeIDForm({
@@ -54,14 +54,14 @@ export default function YoutubeIDForm({
         />
       </label>
       <div className={clsx(["mt-auto"])}>
-        <BlueButton
-          type="submit"
-          aria-label="Youtubeからの検索"
-          className={clsx(["py-1"], ["px-4"], ["rounded"], ["cursor-pointer"])}
+        <Button
+          submit
+          color="blue"
+          size="medium"
+          text="検索"
+          ariaLabel="ニコニコ動画からの検索"
           disabled={!parsed}
-        >
-          検索
-        </BlueButton>
+        />
       </div>
     </form>
   );

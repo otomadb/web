@@ -5,9 +5,8 @@ import clsx from "clsx";
 import Image from "next/image";
 import React, { ReactNode } from "react";
 
+import Button from "~/components/Button";
 import { FragmentType, graphql, useFragment } from "~/gql";
-
-import { RedButton } from "../Button";
 
 export const Fragment = graphql(`
   fragment Form_VideoAlreadyRequested on RegistrationRequest {
@@ -64,16 +63,15 @@ export default function AlreadyRequested({
         </div>
       </div>
       <div>
-        <RedButton
-          type="button"
-          className={clsx(["ml-auto"], ["px-4"], ["py-1"])}
-          onClick={(e) => {
-            e.preventDefault();
+        <Button
+          className={clsx(["ml-auto"])}
+          onClick={() => {
             handleCancel();
           }}
-        >
-          戻る
-        </RedButton>
+          text="戻る"
+          size="medium"
+          color="green"
+        />
       </div>
     </div>
   );

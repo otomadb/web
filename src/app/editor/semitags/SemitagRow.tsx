@@ -4,7 +4,7 @@ import clsx from "clsx";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-import { BlueButton } from "~/components/Button";
+import Button from "~/components/Button";
 import { CommonTag } from "~/components/CommonTag";
 import { useToaster } from "~/components/Toaster";
 import { FragmentType, graphql, useFragment } from "~/gql";
@@ -175,13 +175,14 @@ const SemitagRow: React.FC<{
         </div>
       </div>
       <div className={clsx(["flex-shrink-0"])}>
-        <BlueButton
-          type="submit"
-          className={clsx([["px-4"], ["py-0.5"]])}
+        <Button
+          submit
+          color="blue"
+          size="medium"
+          text="決定"
+          ariaLabel="ニコニコ動画からの検索"
           disabled={fragment.checked}
-        >
-          <span className={clsx(["text-xs"])}>決定</span>
-        </BlueButton>
+        />
       </div>
     </form>
   );

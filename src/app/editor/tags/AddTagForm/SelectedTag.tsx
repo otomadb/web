@@ -4,10 +4,9 @@ import { graphql as mswGql } from "msw";
 import React from "react";
 import { useQuery } from "urql";
 
-import { RedButton } from "~/components/Button";
+import Button from "~/components/Button";
 import { CommonTag } from "~/components/CommonTag";
 import { Fragment as CommonTagFragment } from "~/components/CommonTag";
-import { XMarkIcon } from "~/components/Icons";
 import { graphql, makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
 
@@ -36,13 +35,13 @@ export const SelectedTag: React.FC<{
           />
         )}
       </div>
-      <RedButton
-        type="button"
-        className={clsx(["flex-shrink-0"], ["px-2"])}
+      <Button
+        className={clsx(["flex-shrink-0"])}
         onClick={() => remove()}
-      >
-        <XMarkIcon className={clsx(["w-4"], ["h-4"])} />
-      </RedButton>
+        icon="x"
+        size="small"
+        color="red"
+      />
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import clsx from "clsx";
 
-import { RedButton } from "../Button";
+import Button from "~/components/Button";
 
 export default function SourceNotExists({
   className,
@@ -13,16 +13,15 @@ export default function SourceNotExists({
     <div className={clsx(className, ["flex", "flex-col", "gap-y-2"])}>
       <div className={clsx(["text-slate-400"])}>動画は存在しません</div>
       <div>
-        <RedButton
-          type="button"
-          className={clsx(["ml-auto"], ["px-4"], ["py-1"])}
-          onClick={(e) => {
-            e.preventDefault();
+        <Button
+          className={clsx(["ml-auto"])}
+          onClick={() => {
             handleCancel();
           }}
-        >
-          戻る
-        </RedButton>
+          text="戻る"
+          size="medium"
+          color="green"
+        />
       </div>
     </div>
   );

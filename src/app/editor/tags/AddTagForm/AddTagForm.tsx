@@ -5,8 +5,7 @@ import "client-only";
 import clsx from "clsx";
 import React, { useCallback, useMemo, useReducer, useState } from "react";
 
-import { BlueButton, RedButton } from "~/components/Button";
-import { PlusIcon, XMarkIcon } from "~/components/Icons";
+import Button from "~/components/Button";
 import { TagSearcher } from "~/components/TagSearcher";
 import { TextInput2 } from "~/components/TextInput";
 import { useToaster } from "~/components/Toaster";
@@ -175,9 +174,11 @@ export const AddTagForm: React.FC<{
                   value={extraNameInput}
                   onChange={(v) => setExtraNameInput(v)}
                 />
-                <BlueButton
-                  type="button"
-                  className={clsx(["flex-shrink-0"], ["px-2"])}
+                <Button
+                  className={clsx(["flex-shrink-0"])}
+                  color="blue"
+                  size="small"
+                  icon="plus"
                   onClick={() => {
                     if (!setExtraNameInput) return;
                     dispatchExtraNames({
@@ -186,9 +187,7 @@ export const AddTagForm: React.FC<{
                     });
                     setExtraNameInput("");
                   }}
-                >
-                  <PlusIcon className={clsx(["w-4"], ["h-4"])} />
-                </BlueButton>
+                />
               </div>
             </div>
           </label>
@@ -212,13 +211,13 @@ export const AddTagForm: React.FC<{
                     disabled={true}
                     value={name}
                   />
-                  <RedButton
-                    type="button"
-                    className={clsx(["flex-shrink-0"], ["px-2"])}
+                  <Button
+                    size="small"
+                    color="red"
+                    className={clsx(["flex-shrink-0"])}
                     onClick={() => dispatchExtraNames({ type: "remove", name })}
-                  >
-                    <XMarkIcon className={clsx(["w-4"], ["h-4"])} />
-                  </RedButton>
+                    icon="x"
+                  />
                 </div>
               ))}
             </div>
@@ -275,13 +274,15 @@ export const AddTagForm: React.FC<{
         </div>
       </div>
       <div className={clsx(["flex-shrink-0"])}>
-        <BlueButton
-          type="submit"
-          className={clsx(["text-md"], ["py-1"], ["px-3"])}
+        <Button
+          submit
+          className={clsx(["flex-shrink-0"])}
+          color="blue"
+          size="small"
+          icon="plus"
+          text="追加"
           disabled={!ready}
-        >
-          追加
-        </BlueButton>
+        />
       </div>
     </form>
   );

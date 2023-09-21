@@ -6,8 +6,7 @@ import React, { useCallback } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as z from "zod";
 
-import { BlueButton } from "~/components/Button";
-
+import Button from "../Button";
 import { useSetSourceId } from "./SourceIdProvider";
 
 const formSchema = z.object({
@@ -67,18 +66,13 @@ export const SourceIdInputForm: React.FC<{
             )}
             placeholder="sm2057168"
           />
-          <BlueButton
-            type="submit"
-            aria-label="ニコニコ動画からの検索"
-            className={clsx(
-              ["py-1"],
-              ["px-4"],
-              ["rounded"],
-              ["cursor-pointer"]
-            )}
-          >
-            検索
-          </BlueButton>
+          <Button
+            submit
+            className={clsx(["flex-shrink-0"])}
+            color="blue"
+            size="small"
+            text="検索"
+          />
         </div>
         {errors.sourceId && (
           <div className={clsx(["text-xs", "text-red-400"])}>

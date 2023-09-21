@@ -6,7 +6,7 @@ import React, { useCallback, useMemo, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as z from "zod";
 
-import { BlueButton } from "~/components/Button";
+import Button from "~/components/Button";
 import { extractNicovideoSourceId } from "~/utils/extractSourceId";
 
 import { TextInput2 } from "../TextInput";
@@ -69,18 +69,13 @@ export const SourceIdForm: React.FC<{
             )}
             placeholder="sm2057168"
           />
-          <BlueButton
-            type="submit"
-            aria-label="ニコニコ動画からの検索"
-            className={clsx(
-              ["py-1"],
-              ["px-4"],
-              ["rounded"],
-              ["cursor-pointer"]
-            )}
-          >
-            検索
-          </BlueButton>
+          <Button
+            submit
+            color="blue"
+            size="medium"
+            text="検索"
+            ariaLabel="ニコニコ動画からの検索"
+          />
         </div>
         {errors.sourceId && (
           <div className={clsx(["text-xs", "text-red-400"])}>
@@ -142,14 +137,14 @@ export default function NicovideoIDForm({
         />
       </label>
       <div className={clsx(["mt-auto"])}>
-        <BlueButton
-          type="submit"
-          aria-label="ニコニコ動画からの検索"
-          className={clsx(["py-1"], ["px-4"], ["rounded"], ["cursor-pointer"])}
+        <Button
+          submit
+          color="blue"
+          size="medium"
+          text="検索"
+          ariaLabel="ニコニコ動画からの検索"
           disabled={!parsed}
-        >
-          検索
-        </BlueButton>
+        />
       </div>
     </form>
   );
