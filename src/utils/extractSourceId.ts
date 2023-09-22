@@ -38,3 +38,15 @@ export const extractYoutubeSourceId = (input: string) => {
 
   return null;
 };
+
+/**
+ * @see https://socialsisteryi.github.io/bilibili-API-collect/docs/misc/bvid_desc.html
+ */
+const isValidBilibiliBvid = (input: string) =>
+  /^BV([A-Za-z0-9]{10})$/.test(input);
+
+export const extractBilibiliSourceId = (input: string) => {
+  if (isValidBilibiliBvid(input)) return input;
+
+  return null;
+};
