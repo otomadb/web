@@ -12,6 +12,7 @@ const nextConfig = {
       "s.gravatar.com",
       "secure.gravatar.com",
       "i1.sndcdn.com",
+      "i2.hdslb.com",
     ],
     // unoptimized: process.env.NODE_ENV === "production",
     disableStaticImages: true,
