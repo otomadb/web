@@ -48,5 +48,14 @@ const isValidBilibiliBvid = (input: string) =>
 export const extractBilibiliSourceId = (input: string) => {
   if (isValidBilibiliBvid(input)) return input;
 
+  const url = mkUrl(input);
+  if (url) {
+    if (url.hostname === "www.bilibili.com") {
+      console.log(url.pathname);
+      const maybe = /^\/video\/(BV[A-Za-z0-9]{10})\/?$/.exec(url.pathname);
+      if (maybe && isValidBilibiliBvid(maybe[1])) return maybe[1];
+    }
+  }
+
   return null;
 };

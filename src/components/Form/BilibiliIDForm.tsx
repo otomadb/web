@@ -49,7 +49,7 @@ export default function NicovideoIDForm({
         <TextInput2
           size="medium"
           aria-label="ビリビリ動画の動画ID"
-          placeholder="BV1xx411c7mu"
+          placeholder="https://www.bilibili.com/video/BV1xx411c7mu"
           value={input}
           onChange={(s) => setInput(s)}
           className={clsx(["w-full"])}

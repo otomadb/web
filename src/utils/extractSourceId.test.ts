@@ -27,7 +27,15 @@ describe("From Youtube", () => {
 });
 
 describe("From Bilibili", () => {
-  it.each([["BV1xx411c7mu", "BV1xx411c7mu"]])("%s => %s", (input, expected) => {
+  it.each([
+    ["BV1xx411c7mu", "BV1xx411c7mu"],
+    ["https://www.bilibili.com/video/BV1xx411c7mu", "BV1xx411c7mu"],
+    ["https://www.bilibili.com/video/BV1xx411c7mu/", "BV1xx411c7mu"],
+    [
+      "https://www.bilibili.com/video/BV1xx411c7mu/?spm_id_from=autoNext",
+      "BV1xx411c7mu",
+    ],
+  ])("%s => %s", (input, expected) => {
     expect(extractBilibiliSourceId(input)).toBe(expected);
   });
 });

@@ -7,7 +7,7 @@ const meta = {
   component: BilibiliIDForm,
   args: {
     style: { width: 512, height: 384 },
-    handleSubmit: action("handleSubmit"),
+    set: action("set"),
   },
 } as Meta<typeof BilibiliIDForm>;
 export default meta;
