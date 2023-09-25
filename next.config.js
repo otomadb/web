@@ -4,6 +4,7 @@ const nextConfig = {
   swcMinify: true,
   images: {
     domains: [
+      ...(process.env.NODE_ENV === "development" ? ["localhost"] : []),
       "images.otomadb.com",
       "imgproxy.otomadb.com",
       "nicovideo.cdn.nimg.jp",
