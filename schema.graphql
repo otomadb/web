@@ -87,6 +87,70 @@ type AddVideoToMylistSucceededPayload {
   registration: MylistRegistration!
 }
 
+type BilibiliMADSource implements Node & VideoSource {
+  embedUrl: String!
+  events(after: String, before: String, first: Int, last: Int, orderBy: BilibiliMADSourceEventsOrderBy!): BilibiliMADSourceEventConnection!
+  id: ID!
+  sourceId: String!
+  url: String!
+  video: Video!
+}
+
+type BilibiliMADSourceCreateEvent implements BilibiliMADSourceEvent & Event & Node {
+  createdAt: DateTime!
+  id: ID!
+  series: String!
+  source: BilibiliMADSource!
+  user: User!
+}
+
+interface BilibiliMADSourceEvent implements Event & Node {
+  createdAt: DateTime!
+  id: ID!
+  series: String!
+  source: BilibiliMADSource!
+  user: User!
+}
+
+type BilibiliMADSourceEventConnection {
+  edges: [BilibiliMADSourceEventEdge!]!
+  nodes: [BilibiliMADSourceEvent!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type BilibiliMADSourceEventEdge {
+  cursor: String!
+  node: BilibiliMADSourceEvent!
+}
+
+input BilibiliMADSourceEventsOrderBy {
+  createdAt: SortOrder
+}
+
+type BilibiliOriginalSource {
+  originalThumbnailUrl: String!
+  sourceId: String!
+  tags: [BilibiliOriginalSourceTag!]!
+  thumbnailUrl(scale: FetchExternalSourceThumbnailScale! = LARGE): String!
+  title: String!
+  url: String!
+}
+
+type BilibiliOriginalSourceTag {
+  name: String!
+  searchTags(input: BilibiliOriginalSourceTagSearchTagsInput!): BilibiliOriginalSourceTagSearchTagsPayload!
+}
+
+input BilibiliOriginalSourceTagSearchTagsInput {
+  limit: Int! = 3
+  skip: Int! = 0
+}
+
+type BilibiliOriginalSourceTagSearchTagsPayload {
+  items: [TagSearchItemByName!]!
+}
+
 input ChangeMylistShareRangeInput {
   mylistId: ID!
   range: MylistShareRange!
@@ -184,6 +248,23 @@ type ExplicitizeTagSucceededPayload {
   relation: TagParent!
 }
 
+input FetchBilibiliInput {
+  """Bilibili動画の動画ID．bvid(ex:`BV1xx411c7mu`)を入力すること．"""
+  bvid: String!
+}
+
+type FetchBilibiliPayload {
+  source: BilibiliOriginalSource
+}
+
+enum FetchExternalSourceThumbnailScale {
+  """960 x 700"""
+  LARGE
+
+  """720 x 400"""
+  OGP
+}
+
 input FetchNicovideoInput {
   """ニコニコ動画の動画ID（sm2057168など）"""
   sourceId: String!
@@ -204,6 +285,10 @@ input FetchYoutubeInput {
 
 type FetchYoutubePayload {
   source: YoutubeOriginalSource
+}
+
+input FindBilibiliMADSourceInput {
+  sourceId: String
 }
 
 input FindMylistInput {
@@ -360,6 +445,7 @@ type Mutation {
   """明示的なタグの親子関係を非明示的に降格する"""
   implicitizeTagParent(input: ImplicitizeTagParentInput!): ImplicitizeTagParentReturnUnion!
   likeVideo(input: LikeVideoInput!): LikeVideoReturnUnion!
+  registerBilibiliMAD(input: RegisterBilibiliMADInput!): RegisterBilibiliMADResult!
   registerCategoryTag(input: RegisterCategoryTagInput!): RegisterCategoryTagResultUnion!
   registerCategoryTagTyping(input: RegisterCategoryTagTypingInput!): RegisterCategoryTagTypingResultUnion!
   registerMadFromSoundcloud(input: RegisterMadFromSoundcloudInput!): RegisterMadFromSoundcloudPayload!
@@ -378,6 +464,10 @@ type Mutation {
 
   """通知を見たことにする"""
   watchNotifications(input: WatchNotificationsInput!): WatchNotificationsReturnUnion!
+}
+
+type MutationInternalServerError {
+  message: String
 }
 
 """MylistのIDとして無効なIDを入力した場合のエラー"""
@@ -812,6 +902,9 @@ type PageInfo {
 }
 
 type Query {
+  """Bilibiliから動画情報を取得する"""
+  fetchBilibili(input: FetchBilibiliInput!): FetchBilibiliPayload!
+
   """ニコニコ動画から動画情報を取得する"""
   fetchNicovideo(input: FetchNicovideoInput!): FetchNicovideoPayload!
 
@@ -823,6 +916,7 @@ type Query {
 
   """Youtubeから動画情報を取得する"""
   fetchYoutube(input: FetchYoutubeInput!): FetchYoutubePayload!
+  findBilibiliMADSource(input: FindBilibiliMADSourceInput!): BilibiliMADSource
   findMadBySerial(serial: Int!): Video
   findMylist(input: FindMylistInput!): Mylist
   findNicovideoRegistrationRequest(input: FindNicovideoRegistrationRequestInput): NicovideoRegistrationRequest
@@ -844,6 +938,7 @@ type Query {
 
   """全てのTypeCategoryTagを取得する"""
   getAllTypeCategoryTag: [TypeCategoryTag!]!
+  getBilibiliMADSource(id: ID!): BilibiliMADSource!
   getMylist(id: ID!): Mylist!
   getMylistGroup(id: ID!): MylistGroup!
   getNicovideoRegistrationRequest(id: ID!): NicovideoRegistrationRequest!
@@ -860,6 +955,20 @@ type Query {
   searchTags(input: SearchTagInput!): SearchTagsPayload!
   searchVideos(input: SearchVideoInput!): SearchVideosPayload!
   whoami: User!
+}
+
+input RegisterBilibiliMADInput {
+  primaryThumbnailUrl: String!
+  primaryTitle: String!
+  semitagNames: [String!]! = []
+  sourceIds: [String!]!
+  tagIds: [ID!]!
+}
+
+union RegisterBilibiliMADResult = MutationInternalServerError | MutationTagNotFoundError | RegisterBilibiliMADSucceededPayload
+
+type RegisterBilibiliMADSucceededPayload {
+  video: Video!
 }
 
 input RegisterCategoryTagInput {
@@ -1736,7 +1845,7 @@ type Video implements Node {
   similarVideos(input: VideoSimilarVideosInput!): VideoSimilarVideosPayload!
   soundcloudSources: [SoundcloudVideoSource!]!
   taggings(after: String, before: String, first: Int, last: Int, orderBy: VideoTaggingsOrderBy! = {createdAt: DESC}): VideoTagConnection!
-  thumbnailUrl: String!
+  thumbnailUrl(size: VideoThumbnailScale! = LARGE): String!
   thumbnails: [VideoThumbnail!]!
   title: String!
   titles: [VideoTitle!]!
@@ -1902,6 +2011,14 @@ type VideoThumbnailEventsConnection {
 input VideoThumbnailEventsInput {
   limit: Int! = 10
   skip: Int! = 0
+}
+
+enum VideoThumbnailScale {
+  """960 x 700"""
+  LARGE
+
+  """720 x 400"""
+  OGP
 }
 
 type VideoThumbnailSetPrimaryEvent implements Event & Node & VideoThumbnailEvent {

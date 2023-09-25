@@ -10,6 +10,7 @@ import { YouLikesPageLink } from "~/app/me/likes/Link";
 import MyMylistsPageLink from "~/app/me/mylists/Link";
 import { SettingPageLink } from "~/app/settings/Link";
 import {
+  useOpenRegisterFromBilibili,
   useOpenRegisterFromNicovideo,
   useOpenRegisterFromYoutube,
   useOpenRequestFromNicovideo,
@@ -75,6 +76,7 @@ export default function ProfileAccordion({
   const openRequestFromNicovideo = useOpenRequestFromNicovideo();
   const openRegisterFromNicovideo = useOpenRegisterFromNicovideo();
   const openRegisterFromYoutube = useOpenRegisterFromYoutube();
+  const openRegisterFromBilibili = useOpenRegisterFromBilibili();
   const openRequestFromYoutube = useOpenRequestFromYoutube();
 
   return (
@@ -166,6 +168,22 @@ export default function ProfileAccordion({
             )}
           >
             Youtubeから登録
+          </MenuItem>
+          <MenuItem
+            className={clsx(["col-span-2"])}
+            Wrapper={({ className, onClick, ...props }) => (
+              <button
+                {...props}
+                className={clsx(className, ["text-left"])}
+                type="button"
+                onClick={(e) => {
+                  if (onClick) onClick(e);
+                  openRegisterFromBilibili(null);
+                }}
+              />
+            )}
+          >
+            ビリビリ動画から登録
           </MenuItem>
           <MenuItem
             className={clsx(["col-span-1"])}

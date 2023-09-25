@@ -1,8 +1,10 @@
 import { graphql as mswGql } from "msw";
 
 import { Fragment as CommonTagFragment } from "~/components/CommonTag";
+import { Query as RegisterFromBilibiliFormCheckQuery } from "~/components/Form/RegisterMAD/FromBilibili";
 import { Query as RegisterFromNicovideoFormCheckQuery } from "~/components/Form/RegisterMAD/FromNicovideo";
 import { Fragment as NicovideoOriginalSourceFragment } from "~/components/Form/RegisterMAD/FromNicovideo/OriginalSource";
+import { Fragment as BilibiliOriginalSourceFragment } from "~/components/Form/RegisterMAD/FromNicovideo/OriginalSource";
 import { Fragment as NicovideoRegReqFragment } from "~/components/Form/RegisterMAD/FromNicovideo/Request";
 import { Query as RegisterFromYoutubeFormCheckQuery } from "~/components/Form/RegisterMAD/FromYoutube";
 import { Fragment as YoutubeOriginalSourceFragment } from "~/components/Form/RegisterMAD/FromYoutube/OriginalSource";
@@ -157,6 +159,51 @@ export const mocksRegisterFromYoutube = [
             },
             YoutubeRegReqFragment
           ),
+        },
+      })
+    )
+  ),
+];
+
+export const mocksRegisterFromBilibili = [
+  mswGql.query(RegisterFromBilibiliFormCheckQuery, (req, res, ctx) =>
+    res(
+      ctx.data({
+        fetchBilibili: {
+          source: {
+            title: "Title",
+            originalThumbnailUrl: "/960x540.jpg",
+            ...makeFragmentData(
+              {
+                title: "Title",
+                sourceId: "BV1xx411c7mu",
+                url: "https://www.bilibili.com/video/BV1xx411c7mu",
+                thumbnailUrl: "/960x540.jpg",
+                tags: [...new Array(10)].map((_, i) => ({
+                  name: `Tag ${i + 1}`,
+                  searchTags: {
+                    items: [...new Array(3)].map((_, j) => ({
+                      tag: {
+                        id: `tag:${j + 1}`,
+                        ...makeFragmentData(
+                          {
+                            name: `Tag ${j + 1}`,
+                            type: TagType.Character,
+                            explicitParent: {
+                              id: `tag:0`,
+                              name: "Tag 0",
+                            },
+                          },
+                          CommonTagFragment
+                        ),
+                      },
+                    })),
+                  },
+                })),
+              },
+              BilibiliOriginalSourceFragment
+            ),
+          } as never,
         },
       })
     )

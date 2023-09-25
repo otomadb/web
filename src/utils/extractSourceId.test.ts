@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  extractBilibiliSourceId,
   extractNicovideoSourceId,
   extractYoutubeSourceId,
 } from "./extractSourceId";
@@ -22,5 +23,19 @@ describe("From Youtube", () => {
     ["http://youtu.be/Q16KpquGsIc", "Q16KpquGsIc"],
   ])("%s => %s", (input, expected) => {
     expect(extractYoutubeSourceId(input)).toBe(expected);
+  });
+});
+
+describe("From Bilibili", () => {
+  it.each([
+    ["BV1xx411c7mu", "BV1xx411c7mu"],
+    ["https://www.bilibili.com/video/BV1xx411c7mu", "BV1xx411c7mu"],
+    ["https://www.bilibili.com/video/BV1xx411c7mu/", "BV1xx411c7mu"],
+    [
+      "https://www.bilibili.com/video/BV1xx411c7mu/?spm_id_from=autoNext",
+      "BV1xx411c7mu",
+    ],
+  ])("%s => %s", (input, expected) => {
+    expect(extractBilibiliSourceId(input)).toBe(expected);
   });
 });
