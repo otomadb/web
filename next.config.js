@@ -4,6 +4,7 @@ const nextConfig = {
   swcMinify: true,
   images: {
     domains: [
+      ...(process.env.NODE_ENV === "development" ? ["localhost"] : []),
       "images.otomadb.com",
       "imgproxy.otomadb.com",
       "nicovideo.cdn.nimg.jp",
@@ -12,7 +13,6 @@ const nextConfig = {
       "s.gravatar.com",
       "secure.gravatar.com",
       "i1.sndcdn.com",
-      "i2.hdslb.com",
     ],
     // unoptimized: process.env.NODE_ENV === "production",
     disableStaticImages: true,
