@@ -172,7 +172,7 @@ export const mocksRegisterFromBilibili = [
         fetchBilibili: {
           source: {
             title: "Title",
-            thumbnailUrl: "/960x540.jpg",
+            originalThumbnailUrl: "/960x540.jpg",
             ...makeFragmentData(
               {
                 title: "Title",
@@ -203,7 +203,7 @@ export const mocksRegisterFromBilibili = [
               },
               BilibiliOriginalSourceFragment
             ),
-          },
+          } as never,
         },
       })
     )

@@ -23,7 +23,7 @@ export const useRegisterVideo = ({
   onSuccess(
     data: Extract<
       ResultOf<typeof Mutation>["registerBilibiliMAD"],
-      { __typename: "RegisterVideoFromYoutubeSucceededPayload" }
+      { __typename: "RegisterBilibiliMADSucceededPayload" }
     >
   ): void;
 }) => {

@@ -84,7 +84,7 @@ const meta = {
                 fetchBilibili: {
                   source: {
                     title: "Title",
-                    thumbnailUrl: "/960x540.jpg",
+                    originalThumbnailUrl: "/960x540.jpg",
                     ...makeFragmentData(
                       {
                         title: "Title",
@@ -220,7 +220,7 @@ export const リクエストが存在しない: Story = {
                 fetchBilibili: {
                   source: {
                     title: "Title",
-                    thumbnailUrl: "/960x540.jpg",
+                    originalThumbnailUrl: "/960x540.jpg",
                     ...makeFragmentData(
                       {
                         title: "Title",
