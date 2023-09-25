@@ -13,7 +13,7 @@ export const Fragment = graphql(`
     sourceId
     title
     url
-    thumbnailUrl
+    thumbnailUrl(scale: LARGE)
     tags {
       name
       searchTags(input: { limit: 3 }) {

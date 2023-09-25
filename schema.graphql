@@ -129,9 +129,10 @@ input BilibiliMADSourceEventsOrderBy {
 }
 
 type BilibiliOriginalSource {
+  originalThumbnailUrl: String!
   sourceId: String!
   tags: [BilibiliOriginalSourceTag!]!
-  thumbnailUrl: String!
+  thumbnailUrl(scale: FetchExternalSourceThumbnailScale! = LARGE): String!
   title: String!
   url: String!
 }
@@ -256,6 +257,14 @@ type FetchBilibiliPayload {
   source: BilibiliOriginalSource
 }
 
+enum FetchExternalSourceThumbnailScale {
+  """960 x 700"""
+  LARGE
+
+  """720 x 400"""
+  OGP
+}
+
 input FetchNicovideoInput {
   """ニコニコ動画の動画ID（sm2057168など）"""
   sourceId: String!
@@ -276,6 +285,10 @@ input FetchYoutubeInput {
 
 type FetchYoutubePayload {
   source: YoutubeOriginalSource
+}
+
+input FindBilibiliMADSourceInput {
+  sourceId: String
 }
 
 input FindMylistInput {
@@ -432,6 +445,7 @@ type Mutation {
   """明示的なタグの親子関係を非明示的に降格する"""
   implicitizeTagParent(input: ImplicitizeTagParentInput!): ImplicitizeTagParentReturnUnion!
   likeVideo(input: LikeVideoInput!): LikeVideoReturnUnion!
+  registerBilibiliMAD(input: RegisterBilibiliMADInput!): RegisterBilibiliMADResult!
   registerCategoryTag(input: RegisterCategoryTagInput!): RegisterCategoryTagResultUnion!
   registerCategoryTagTyping(input: RegisterCategoryTagTypingInput!): RegisterCategoryTagTypingResultUnion!
   registerMadFromSoundcloud(input: RegisterMadFromSoundcloudInput!): RegisterMadFromSoundcloudPayload!
@@ -450,6 +464,10 @@ type Mutation {
 
   """通知を見たことにする"""
   watchNotifications(input: WatchNotificationsInput!): WatchNotificationsReturnUnion!
+}
+
+type MutationInternalServerError {
+  message: String
 }
 
 """MylistのIDとして無効なIDを入力した場合のエラー"""
@@ -898,6 +916,7 @@ type Query {
 
   """Youtubeから動画情報を取得する"""
   fetchYoutube(input: FetchYoutubeInput!): FetchYoutubePayload!
+  findBilibiliMADSource(input: FindBilibiliMADSourceInput!): BilibiliMADSource
   findMadBySerial(serial: Int!): Video
   findMylist(input: FindMylistInput!): Mylist
   findNicovideoRegistrationRequest(input: FindNicovideoRegistrationRequestInput): NicovideoRegistrationRequest
@@ -919,6 +938,7 @@ type Query {
 
   """全てのTypeCategoryTagを取得する"""
   getAllTypeCategoryTag: [TypeCategoryTag!]!
+  getBilibiliMADSource(id: ID!): BilibiliMADSource!
   getMylist(id: ID!): Mylist!
   getMylistGroup(id: ID!): MylistGroup!
   getNicovideoRegistrationRequest(id: ID!): NicovideoRegistrationRequest!
@@ -935,6 +955,20 @@ type Query {
   searchTags(input: SearchTagInput!): SearchTagsPayload!
   searchVideos(input: SearchVideoInput!): SearchVideosPayload!
   whoami: User!
+}
+
+input RegisterBilibiliMADInput {
+  primaryThumbnailUrl: String!
+  primaryTitle: String!
+  semitagNames: [String!]! = []
+  sourceIds: [String!]!
+  tagIds: [ID!]!
+}
+
+union RegisterBilibiliMADResult = MutationInternalServerError | MutationTagNotFoundError | RegisterBilibiliMADSucceededPayload
+
+type RegisterBilibiliMADSucceededPayload {
+  video: Video!
 }
 
 input RegisterCategoryTagInput {
@@ -1811,7 +1845,7 @@ type Video implements Node {
   similarVideos(input: VideoSimilarVideosInput!): VideoSimilarVideosPayload!
   soundcloudSources: [SoundcloudVideoSource!]!
   taggings(after: String, before: String, first: Int, last: Int, orderBy: VideoTaggingsOrderBy! = {createdAt: DESC}): VideoTagConnection!
-  thumbnailUrl: String!
+  thumbnailUrl(size: VideoThumbnailScale! = LARGE): String!
   thumbnails: [VideoThumbnail!]!
   title: String!
   titles: [VideoTitle!]!
@@ -1977,6 +2011,14 @@ type VideoThumbnailEventsConnection {
 input VideoThumbnailEventsInput {
   limit: Int! = 10
   skip: Int! = 0
+}
+
+enum VideoThumbnailScale {
+  """960 x 700"""
+  LARGE
+
+  """720 x 400"""
+  OGP
 }
 
 type VideoThumbnailSetPrimaryEvent implements Event & Node & VideoThumbnailEvent {

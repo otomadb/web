@@ -21,13 +21,15 @@ import { FragmentType, graphql } from "~/gql";
 import { SemitagButton } from "../../SemitagButton";
 import { Fragment as TagButtonFragment, TagButton } from "../../TagButton";
 import OriginalSource from "./OriginalSource";
+import { SucceededToast } from "./SucceededToast";
+import { useRegisterVideo } from "./useRegisterVideo";
 
 export const Query = graphql(`
   query RegisterFromBilibiliForm_Check($sourceId: String!) {
     fetchBilibili(input: { bvid: $sourceId }) {
       source {
         title
-        thumbnailUrl
+        originalThumbnailUrl
         ...RegisterFromBilibiliForm_OriginalSource
       }
     }
@@ -112,34 +114,28 @@ export default function RegisterForm({
   const [tab, setTab] = useState<"SOURCE" | "REQUEST">("SOURCE");
 
   const callToast = useToaster();
-  /*
-  const registerVideo = useRegisterVideo({
+  const registerMAD = useRegisterVideo({
     onSuccess(data) {
       callToast(<SucceededToast fragment={data} />);
       if (handleSuccess) handleSuccess();
     },
   });
-  */
   const payload = useMemo(() => {
     if (!data || !data.fetchBilibili.source) return null;
 
-    return null;
-    /*
     return {
       sourceId,
       title,
-      thumbnailUrl: data.fetchBilibili.source.thumbnailUrl,
-      nicovideoRequestId: data.findBilibiliRegistrationRequest?.id,
+      thumbnailUrl: data.fetchBilibili.source.originalThumbnailUrl,
       tagIds,
       semitagNames,
     };
-    */
   }, [data, semitagNames, sourceId, tagIds, title]);
 
   const handleSubmit = useCallback(() => {
     if (!payload) return;
-    // registerVideo(payload);
-  }, [payload]);
+    registerMAD(payload);
+  }, [payload, registerMAD]);
 
   return (
     <div
