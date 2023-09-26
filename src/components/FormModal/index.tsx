@@ -11,6 +11,7 @@ import RegisterMADFromNicovideoFormModal from "./RegisterMADFromNicovideo";
 import RegisterMADFromYoutubeFormModal from "./RegisterMADFromYoutube";
 import RequestMADFromNicovideoFormModal from "./RequestMADFromNicovideo";
 import RequestMADFromYoutubeFormModal from "./RequestMADFromYoutube";
+import SoundcloudRegisterModal from "./SoundcloudRegisterModal";
 
 export type Current =
   | undefined
@@ -18,6 +19,7 @@ export type Current =
   | { type: "REGISTER_FROM_NICOVIDEO_WITH_ID"; sourceId: string }
   | { type: "REGISTER_FROM_YOUTUBE"; sourceId: string | null }
   | { type: "REGISTER_FROM_BILIBILI"; sourceId: string | null }
+  | { type: "REGISTER_FROM_SOUNDCLOUD"; sourceId: string | null }
   | { type: "REQUEST_FROM_NICOVIDEO" }
   | { type: "REQUEST_FROM_NICOVIDEO_WITH_ID"; sourceId: string }
   | { type: "REQUEST_FROM_YOUTUBE"; sourceId: string | null };
@@ -98,6 +100,12 @@ export const useOpenRegisterFromBilibili = () => {
     open({ type: "REGISTER_FROM_BILIBILI", sourceId });
 };
 
+export const useOpenSoundcloudRegisterModal = () => {
+  const { open } = useContext(FormModalContext);
+  return (sourceId: string | null) =>
+    open({ type: "REGISTER_FROM_SOUNDCLOUD", sourceId });
+};
+
 export const useOpenRequestFromNicovideoWithID = () => {
   const { open } = useContext(FormModalContext);
   return (sourceId: string) =>
@@ -149,6 +157,8 @@ export default function FormModal({
               {current.type === "REGISTER_FROM_YOUTUBE" && "Youtubeから登録"}
               {current.type === "REGISTER_FROM_BILIBILI" &&
                 "ビリビリ動画から登録"}
+              {current.type === "REGISTER_FROM_SOUNDCLOUD" &&
+                "SoundCloudから登録"}
               {(current.type === "REQUEST_FROM_NICOVIDEO" ||
                 current.type === "REQUEST_FROM_NICOVIDEO_WITH_ID") &&
                 "ニコニコ動画からリクエスト"}
@@ -192,6 +202,16 @@ export default function FormModal({
             )}
             {current.type === "REGISTER_FROM_BILIBILI" && (
               <RegisterMADFromBilibiliFormModal
+                initialSourceId={current.sourceId || undefined}
+                className={clsx()}
+                style={{ width: 640, height: 720 }}
+                handleSuccess={() => {
+                  close();
+                }}
+              />
+            )}
+            {current.type === "REGISTER_FROM_SOUNDCLOUD" && (
+              <SoundcloudRegisterModal
                 initialSourceId={current.sourceId || undefined}
                 className={clsx()}
                 style={{ width: 640, height: 720 }}
