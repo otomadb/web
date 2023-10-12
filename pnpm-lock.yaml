@@ -182,8 +182,8 @@ devDependencies:
     specifier: 3.0.0
     version: 3.0.0(@typescript-eslint/eslint-plugin@6.7.4)(eslint@8.51.0)
   graphql-codegen-typescript-mock-data:
-    specifier: 3.0.0
-    version: 3.0.0(graphql@16.8.1)
+    specifier: 3.5.1
+    version: 3.5.1(graphql@16.8.1)
   msw:
     specifier: 1.3.2
     version: 1.3.2(encoding@0.1.13)(typescript@5.2.2)
@@ -1783,14 +1783,14 @@ packages:
     engines: {node: '>=16.0.0'}
     dependencies:
       '@envelop/types': 4.0.1
-      tslib: 2.6.0
+      tslib: 2.6.2
     dev: true
 
   /@envelop/types@4.0.1:
     resolution: {integrity: sha512-ULo27/doEsP7uUhm2iTnElx13qTO6I5FKvmLoX41cpfuw8x6e0NUFknoqhEsLzAbgz8xVS5mjwcxGCXh4lDYzg==}
     engines: {node: '>=16.0.0'}
     dependencies:
-      tslib: 2.6.0
+      tslib: 2.6.2
     dev: true
 
   /@esbuild/android-arm64@0.18.20:
@@ -2665,7 +2665,7 @@ packages:
       '@graphql-tools/utils': 10.0.6(graphql@16.8.1)
       globby: 11.1.0
       graphql: 16.8.1
-      tslib: 2.6.0
+      tslib: 2.6.2
       unixify: 1.0.0
     transitivePeerDependencies:
       - '@babel/core'
@@ -2682,7 +2682,7 @@ packages:
       '@graphql-tools/utils': 10.0.6(graphql@16.8.1)
       globby: 11.1.0
       graphql: 16.8.1
-      tslib: 2.6.0
+      tslib: 2.6.2
       unixify: 1.0.0
     transitivePeerDependencies:
       - '@babel/core'
@@ -2809,7 +2809,7 @@ packages:
       graphql: 16.8.1
       is-glob: 4.0.3
       micromatch: 4.0.5
-      tslib: 2.6.0
+      tslib: 2.6.2
       unixify: 1.0.0
     transitivePeerDependencies:
       - '@babel/core'
@@ -2879,7 +2879,7 @@ packages:
       '@babel/types': 7.23.0
       '@graphql-tools/utils': 10.0.6(graphql@16.8.1)
       graphql: 16.8.1
-      tslib: 2.6.0
+      tslib: 2.6.2
     transitivePeerDependencies:
       - '@babel/core'
       - supports-color
@@ -2897,7 +2897,7 @@ packages:
       '@babel/types': 7.23.0
       '@graphql-tools/utils': 10.0.6(graphql@16.8.1)
       graphql: 16.8.1
-      tslib: 2.6.0
+      tslib: 2.6.2
     transitivePeerDependencies:
       - '@babel/core'
       - supports-color
@@ -3076,7 +3076,7 @@ packages:
     dependencies:
       '@graphql-typed-document-node/core': 3.2.0(graphql@16.8.1)
       graphql: 16.8.1
-      tslib: 2.6.0
+      tslib: 2.6.2
     dev: true
 
   /@graphql-tools/utils@10.0.6(graphql@16.8.1):
@@ -3097,7 +3097,7 @@ packages:
       graphql: ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
     dependencies:
       graphql: 16.8.1
-      tslib: 2.4.1
+      tslib: 2.6.2
     dev: true
 
   /@graphql-tools/wrap@10.0.1(graphql@16.8.1):
@@ -3125,7 +3125,7 @@ packages:
     resolution: {integrity: sha512-JYoxwnPggH2BfO+dWlWZkDeFhyFZqaTRGLvFhy+Pjp2UxitEW6nDrw+pEDw/K9tJwMjIFMmTT9VfTqrnESmBHg==}
     engines: {node: '>=16.0.0'}
     dependencies:
-      tslib: 2.6.0
+      tslib: 2.6.2
     dev: true
 
   /@graphql-yoga/subscription@4.0.0:
@@ -3135,7 +3135,7 @@ packages:
       '@graphql-yoga/typed-event-target': 2.0.0
       '@repeaterjs/repeater': 3.0.4
       '@whatwg-node/events': 0.1.1
-      tslib: 2.6.0
+      tslib: 2.6.2
     dev: true
 
   /@graphql-yoga/typed-event-target@2.0.0:
@@ -3143,7 +3143,7 @@ packages:
     engines: {node: '>=16.0.0'}
     dependencies:
       '@repeaterjs/repeater': 3.0.4
-      tslib: 2.6.0
+      tslib: 2.6.2
     dev: true
 
   /@heroicons/react@2.0.18(react@18.2.0):
@@ -6428,7 +6428,7 @@ packages:
     engines: {node: '>=16.0.0'}
     dependencies:
       '@whatwg-node/fetch': 0.9.13
-      tslib: 2.6.0
+      tslib: 2.6.2
     dev: true
 
   /@xmldom/xmldom@0.8.10:
@@ -9647,8 +9647,8 @@ packages:
     resolution: {integrity: sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==}
     dev: true
 
-  /graphql-codegen-typescript-mock-data@3.0.0(graphql@16.8.1):
-    resolution: {integrity: sha512-bJVpC8uy5kU351Gu0K7noruzmpN45p1402rpU0O0d2k19qveggjBL0+0/qH+aju8iJtVSGMiajeLMAUj5t1zrQ==}
+  /graphql-codegen-typescript-mock-data@3.5.1(graphql@16.8.1):
+    resolution: {integrity: sha512-3COeHlg4roZbCPFqy4NYT1QYwBPutROw8iKsCXZ9JVwjpPGBIZkt2FuzIyaP8/vlkPsjDk8pyw2jtd4RD7NviQ==}
     peerDependencies:
       graphql: ^14.6.0 || ^15.0.0 || ^16.0.0
     dependencies:
@@ -9741,7 +9741,7 @@ packages:
       dset: 3.1.2
       graphql: 16.8.1
       lru-cache: 10.0.1
-      tslib: 2.6.0
+      tslib: 2.6.2
     dev: true
 
   /graphql@16.8.1:
