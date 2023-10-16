@@ -59,3 +59,22 @@ export const extractBilibiliSourceId = (input: string) => {
 
   return null;
 };
+
+const isValidSoundCloudTrackPart = (input: string) =>
+  /^[a-zA-Z\d-_]+\/[a-zA-Z\d-_]+$/.test(input);
+
+export const normalizeSoundcloud = (input: string) => {
+  if (isValidSoundCloudTrackPart(input))
+    return new URL(`/${input}`, "https://soundcloud.com").toString();
+
+  const url = mkUrl(input);
+  if (url) {
+    if (url.hostname === "soundcloud.com") {
+      const trackPart = url.pathname.slice(1);
+      if (isValidSoundCloudTrackPart(trackPart))
+        return new URL(url.pathname, "https://soundcloud.com").toString();
+    }
+  }
+
+  return null;
+};

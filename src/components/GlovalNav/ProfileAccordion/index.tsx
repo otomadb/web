@@ -15,6 +15,7 @@ import {
   useOpenRegisterFromYoutube,
   useOpenRequestFromNicovideo,
   useOpenRequestFromYoutube,
+  useOpenSoundcloudRegisterModal,
 } from "~/components/FormModal";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
@@ -74,9 +75,12 @@ export default function ProfileAccordion({
   const fragment = useFragment(Fragment, props.fragment);
   const { whoami } = fragment;
   const openRequestFromNicovideo = useOpenRequestFromNicovideo();
+
   const openRegisterFromNicovideo = useOpenRegisterFromNicovideo();
   const openRegisterFromYoutube = useOpenRegisterFromYoutube();
   const openRegisterFromBilibili = useOpenRegisterFromBilibili();
+  const openSoundcloudRegisterModal = useOpenSoundcloudRegisterModal();
+
   const openRequestFromYoutube = useOpenRequestFromYoutube();
 
   return (
@@ -184,6 +188,22 @@ export default function ProfileAccordion({
             )}
           >
             ビリビリ動画から登録
+          </MenuItem>
+          <MenuItem
+            className={clsx(["col-span-2"])}
+            Wrapper={({ className, onClick, ...props }) => (
+              <button
+                {...props}
+                className={clsx(className, ["text-left"])}
+                type="button"
+                onClick={(e) => {
+                  if (onClick) onClick(e);
+                  openSoundcloudRegisterModal(null);
+                }}
+              />
+            )}
+          >
+            Soundcloudから登録
           </MenuItem>
           <MenuItem
             className={clsx(["col-span-1"])}

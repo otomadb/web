@@ -4,6 +4,7 @@ import {
   extractBilibiliSourceId,
   extractNicovideoSourceId,
   extractYoutubeSourceId,
+  normalizeSoundcloud,
 } from "./extractSourceId";
 
 describe("From Nicovideo", () => {
@@ -37,5 +38,24 @@ describe("From Bilibili", () => {
     ],
   ])("%s => %s", (input, expected) => {
     expect(extractBilibiliSourceId(input)).toBe(expected);
+  });
+});
+
+describe("normalizeSoundcloud", () => {
+  it.each([
+    [
+      "keigoooo/hyperflip-donaldcore",
+      "https://soundcloud.com/keigoooo/hyperflip-donaldcore",
+    ],
+    [
+      "https://soundcloud.com/keigoooo/hyperflip-donaldcore",
+      "https://soundcloud.com/keigoooo/hyperflip-donaldcore",
+    ],
+    [
+      "https://soundcloud.com/keigoooo/hyperflip-donaldcore?in=sno2wman/sets/mad",
+      "https://soundcloud.com/keigoooo/hyperflip-donaldcore",
+    ],
+  ])("%s => %s", (input, expected) => {
+    expect(normalizeSoundcloud(input)).toBe(expected);
   });
 });
