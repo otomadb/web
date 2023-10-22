@@ -19,4 +19,7 @@ export const parameters = {
   nextjs: {
     appDirectory: true,
   },
+  darkMode: {
+    current: "dark",
+  },
 };

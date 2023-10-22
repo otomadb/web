@@ -57,6 +57,7 @@ export default function RootLayout({
                   className={clsx(
                     ["flex", "content-stretch", "flex-wrap"],
                     ["min-h-[calc(100vh-64px)]"]
+                    // ["bg-background-root"]
                   )}
                 >
                   {children}

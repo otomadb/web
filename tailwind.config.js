@@ -28,6 +28,23 @@ module.exports = {
         infinity: 2147483647,
       },
       colors: {
+        accent: {
+          primary: "hsl(182, 91%, 60%)",
+        },
+        text: {
+          primary: colors.gray[200],
+          muted: colors.gray[400],
+        },
+        background: {
+          root: "hsl(212, 24%, 5%)",
+
+          deeper: "hsl(212, 14%, 7%)",
+          primary: "hsl(212, 21%, 12%)",
+          shallower: "hsl(212, 16%, 16%)",
+          shallowest: colors.gray[600],
+
+          muted: colors.gray[100],
+        },
         copyright: colors.pink,
         character: colors.green,
         music: colors.sky,
