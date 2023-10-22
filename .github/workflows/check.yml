@@ -19,7 +19,7 @@ jobs:
           version: 8
       - uses: actions/setup-node@5e21ff4d9bc1a8cf6de233a3057d20ec6b3fb69d # v3
         with:
-          node-version: 18
+          node-version: 18.18.2
           cache: pnpm
       - run: pnpm install
       - run: pnpm run schema:validate --output ./.inspector-validate-report.json
@@ -34,7 +34,7 @@ jobs:
           version: 8
       - uses: actions/setup-node@5e21ff4d9bc1a8cf6de233a3057d20ec6b3fb69d # v3
         with:
-          node-version: 18
+          node-version: 18.18.2
           cache: pnpm
       - run: pnpm install
       - run: pnpm run lint:eslint --format json --output-file .eslint-report.json
@@ -55,7 +55,7 @@ jobs:
           version: 8
       - uses: actions/setup-node@5e21ff4d9bc1a8cf6de233a3057d20ec6b3fb69d # v3
         with:
-          node-version: 18
+          node-version: 18.18.2
           cache: pnpm
       - run: pnpm install
       - run: pnpm run lint:prettier
@@ -70,7 +70,7 @@ jobs:
           version: 8
       - uses: actions/setup-node@5e21ff4d9bc1a8cf6de233a3057d20ec6b3fb69d # v3
         with:
-          node-version: 18
+          node-version: 18.18.2
           cache: pnpm
       - run: pnpm install
       - run: pnpm run codegen
@@ -86,7 +86,7 @@ jobs:
           version: 8
       - uses: actions/setup-node@5e21ff4d9bc1a8cf6de233a3057d20ec6b3fb69d # v3
         with:
-          node-version: 18
+          node-version: 18.18.2
           cache: pnpm
       - run: pnpm install
       - run: pnpm run codegen
