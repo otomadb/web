@@ -58,7 +58,7 @@
     "@babel/core": "7.23.2",
     "@graphql-codegen/cli": "5.0.0",
     "@graphql-codegen/client-preset": "4.1.0",
-    "@graphql-codegen/urql-introspection": "2.2.1",
+    "@graphql-codegen/urql-introspection": "3.0.0",
     "@graphql-inspector/cli": "4.0.2",
     "@graphql-typed-document-node/core": "3.2.0",
     "@storybook/addon-actions": "7.4.6",
