@@ -39,8 +39,8 @@
             actionlint
             httpie
             nixpkgs-fmt
-            nodejs-18_x
-            nodePackages.pnpm
+            # nodejs-18_x
+            # nodePackages.pnpm
           ];
           env = [
             {

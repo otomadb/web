@@ -10,6 +10,7 @@ target
 
 # env
 .env*.local
+.envrc
 
 # dependency
 node_modules/
