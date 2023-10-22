@@ -41,7 +41,7 @@ export default function TimelineSegment({
         <div
           className={clsx(["px-4", "py-2"], ["text-center", "text-text-muted"])}
         >
-          いいね欄を取得中です
+          タイムラインを取得中です
         </div>
       )}
       <div className={clsx(["flex", "flex-col", "gap-y-2"])}>
