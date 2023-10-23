@@ -93,8 +93,9 @@ const NicovideoRequestFragment = makeFragmentData(
     request: {
       id: "request:1",
       title: "Title 1",
-      sourceId: "sm9",
+      sourceId: "sm2057168",
       thumbnailUrl: "/960x540.jpg",
+      originalUrl: "https://www.nicovideo.jp/watch/sm2057168",
     },
   },
   TimelineEventFragment
@@ -114,8 +115,9 @@ export const YoutubeMadRequested: Story = {
         request: {
           id: "request:1",
           title: "Title 1",
-          sourceId: "sm9",
+          sourceId: "Q16KpquGsIc",
           thumbnailUrl: "/960x540.jpg",
+          originalUrl: "https://www.youtube.com/watch?v=Q16KpquGsIc",
         },
       },
       TimelineEventFragment

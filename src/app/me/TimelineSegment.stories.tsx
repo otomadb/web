@@ -32,39 +32,42 @@ const meta = {
               showTimeline: [
                 makeFragmentData(
                   {
-                    __typename: "YoutubeMadRequestedTimelineEvent",
+                    __typename: "NicovideoMadRequestedTimelineEvent",
                     createdAt: "2021-01-01T00:00:00.000Z",
                     request: {
                       id: "request:1",
                       title: "Title 1",
-                      sourceId: "sm1",
+                      sourceId: "sm2057168",
                       thumbnailUrl: "/960x540.jpg",
+                      originalUrl: "https://www.nicovideo.jp/watch/sm2057168",
                     },
                   },
                   TimelineEventFragment
                 ) as any, // eslint-disable-line @typescript-eslint/no-explicit-any -- なぜか型があってない
                 makeFragmentData(
                   {
-                    __typename: "YoutubeMadRequestedTimelineEvent",
+                    __typename: "NicovideoMadRequestedTimelineEvent",
                     createdAt: "2021-01-01T00:00:00.000Z",
                     request: {
                       id: "request:2",
                       title: "Title 2",
-                      sourceId: "sm2",
+                      sourceId: "sm2057168",
                       thumbnailUrl: "/960x540.jpg",
+                      originalUrl: "https://www.nicovideo.jp/watch/sm2057168",
                     },
                   },
                   TimelineEventFragment
                 ) as any, // eslint-disable-line @typescript-eslint/no-explicit-any -- なぜか型があってない
                 makeFragmentData(
                   {
-                    __typename: "YoutubeMadRequestedTimelineEvent",
+                    __typename: "NicovideoMadRequestedTimelineEvent",
                     createdAt: "2021-01-01T00:00:00.000Z",
                     request: {
                       id: "request:3",
                       title: "Title 3",
-                      sourceId: "sm3",
+                      sourceId: "sm2057168",
                       thumbnailUrl: "/960x540.jpg",
+                      originalUrl: "https://www.nicovideo.jp/watch/sm2057168",
                     },
                   },
                   TimelineEventFragment
@@ -98,26 +101,28 @@ export const LatestNotFulfill: Story = {
               showTimeline: [
                 makeFragmentData(
                   {
-                    __typename: "YoutubeMadRequestedTimelineEvent",
+                    __typename: "NicovideoMadRequestedTimelineEvent",
                     createdAt: "2021-01-01T00:00:00.000Z",
                     request: {
-                      id: "request:1",
-                      title: "Title 1",
-                      sourceId: "sm1",
+                      id: "request:2",
+                      title: "Title 2",
+                      sourceId: "sm2057168",
                       thumbnailUrl: "/960x540.jpg",
+                      originalUrl: "https://www.nicovideo.jp/watch/sm2057168",
                     },
                   },
                   TimelineEventFragment
                 ) as any, // eslint-disable-line @typescript-eslint/no-explicit-any -- なぜか型があってない
                 makeFragmentData(
                   {
-                    __typename: "YoutubeMadRequestedTimelineEvent",
+                    __typename: "NicovideoMadRequestedTimelineEvent",
                     createdAt: "2021-01-01T00:00:00.000Z",
                     request: {
                       id: "request:2",
                       title: "Title 2",
-                      sourceId: "sm2",
+                      sourceId: "sm2057168",
                       thumbnailUrl: "/960x540.jpg",
+                      originalUrl: "https://www.nicovideo.jp/watch/sm2057168",
                     },
                   },
                   TimelineEventFragment
