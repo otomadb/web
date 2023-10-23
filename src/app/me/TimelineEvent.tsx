@@ -8,11 +8,8 @@ import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 import { LinkVideo } from "../mads/[serial]/Link";
-import NicovideoRequestPageLink from "../request/nicovideo/Link";
 import { LinkNicovideoRegistrationRequest } from "../requests/nicovideo/[sourceId]/Link";
-import YoutubeRequestLink, {
-  YoutubeRequestPageLink,
-} from "../requests/youtube/[sourceId]/Link";
+import { YoutubeRequestPageLink } from "../requests/youtube/[sourceId]/Link";
 import { LinkTag } from "../tags/[serial]/Link";
 
 export const TimelineEventFragment = graphql(`
@@ -137,8 +134,8 @@ export default function TimelineEvent({
             </LinkNicovideoRegistrationRequest>
             <div className={clsx(["flex-grow"], ["py-2"])}>
               <p className={clsx(["text-text-primary", "text-sm"])}>
-                <NicovideoRequestPageLink
-                  sourceId={fragment.request.sourceId}
+                <LinkNicovideoRegistrationRequest
+                  fragment={fragment.request}
                   className={clsx([
                     "text-accent-primary",
                     "font-bold",
@@ -146,7 +143,7 @@ export default function TimelineEvent({
                   ])}
                 >
                   {fragment.request.title}
-                </NicovideoRequestPageLink>
+                </LinkNicovideoRegistrationRequest>
                 がリクエストされました。
               </p>
               <div className={clsx(["mt-2"], ["flex", "gap-x-1"])}>
@@ -183,8 +180,8 @@ export default function TimelineEvent({
             </YoutubeRequestPageLink>
             <div className={clsx(["flex-grow"], ["py-2"])}>
               <p className={clsx(["text-text-primary", "text-sm"])}>
-                <YoutubeRequestLink
-                  sourceId={fragment.request.sourceId}
+                <YoutubeRequestPageLink
+                  fragment={fragment.request}
                   className={clsx([
                     "text-accent-primary",
                     "font-bold",
@@ -192,7 +189,7 @@ export default function TimelineEvent({
                   ])}
                 >
                   {fragment.request.title}
-                </YoutubeRequestLink>
+                </YoutubeRequestPageLink>
                 がリクエストされました。
               </p>
               <div className={clsx(["mt-2"], ["flex", "gap-x-1"])}>
