@@ -3,6 +3,7 @@ module.exports = {
   root: true,
   extends: [
     "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
     "next/core-web-vitals",
     "plugin:eslint-comments/recommended",
     "plugin:storybook/recommended",
@@ -33,24 +34,30 @@ module.exports = {
     /* next.js  */
     "@next/next/no-html-link-for-pages": [0], // https://github.com/vercel/next.js/issues/42448
     /* eslint-comments */
-    "eslint-comments/no-unused-disable": 2,
+    "eslint-comments/require-description": 1,
+    /* typescript */
+    "@typescript-eslint/ban-ts-comment": 1,
+    "@typescript-eslint/no-unused-vars": 1,
+    "@typescript-eslint/no-explicit-any": 2,
   },
   overrides: [
-    {
-      files: ["*.ts", "*.tsx"],
-      extends: ["plugin:@typescript-eslint/recommended"],
-      plugins: ["@typescript-eslint"],
-      parser: "@typescript-eslint/parser",
-      rules: {
-        "@typescript-eslint/ban-ts-comment": 1,
-        "@typescript-eslint/no-unused-vars": 1,
-      },
-    },
     {
       files: ["opengraph-image.tsx"],
       rules: {
         "jsx-a11y/alt-text": 0,
         "@next/next/no-img-element": 0,
+      },
+    },
+    {
+      files: ["*.config.js"],
+      rules: {
+        "@typescript-eslint/no-var-requires": 0,
+      },
+    },
+    {
+      files: ["*.stories.ts", "*.stories.tsx"],
+      rules: {
+        "storybook/prefer-pascal-case": 0,
       },
     },
   ],

@@ -14,6 +14,7 @@ export const Fragment = graphql(`
     }
   }
 `);
+export const CommonTagFragment = Fragment;
 export const CommonTag: React.FC<{
   className?: string;
   fragment: FragmentType<typeof Fragment>;

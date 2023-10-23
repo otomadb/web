@@ -439,6 +439,12 @@ type LikeVideoSucceededPayload {
   registration: MylistRegistration!
 }
 
+"""音MADが登録されたことを表すタイムラインイベント"""
+type MadRegisteredTimelineEvent implements TimelineEvent {
+  createdAt: DateTime!
+  video: Video!
+}
+
 type Mutation {
   addMylistToMylistGroup(input: AddMylistToMylistGroupInput!): AddMylistToMylistGroupPayload!
   addSemitagToVideo(input: AddSemitagToVideoInput!): AddSemitagToVideoPayload!
@@ -732,6 +738,12 @@ type MylistVideoRecommendation {
   to: Video!
 }
 
+"""ニコニコ動画の音MADがリクエストされたことを表すタイムラインイベント"""
+type NicovideoMadRequestedTimelineEvent implements TimelineEvent {
+  createdAt: DateTime!
+  request: NicovideoRegistrationRequest!
+}
+
 type NicovideoOriginalSource {
   countComments: Int!
   countLikes: Int!
@@ -962,6 +974,9 @@ type Query {
   notifications(after: String, before: String, filter: NotificationsFilter! = {}, first: Int, last: Int, orderBy: NotificationsOrderBy! = {createdAt: DESC}): NotificationConnection!
   searchTags(input: SearchTagInput!): SearchTagsPayload!
   searchVideos(input: SearchVideoInput!): SearchVideosPayload!
+
+  """ユーザーのタイムラインを取得する"""
+  showTimeline(input: ShowTimelineInput!): [TimelineEvent!]!
   whoami: User!
 }
 
@@ -1479,6 +1494,11 @@ type SemitagSuggestTagsReturn {
   items: [SemitagSuggestTagsItem!]!
 }
 
+input ShowTimelineInput {
+  skip: Int!
+  take: Int!
+}
+
 enum SortOrder {
   ASC
   DESC
@@ -1745,6 +1765,10 @@ enum TagType {
 
   """タイプを算出できなかった場合"""
   UNKNOWN
+}
+
+interface TimelineEvent {
+  createdAt: DateTime!
 }
 
 """タグにタイプを与えることが出来るカテゴリータグ"""
@@ -2086,6 +2110,12 @@ union WatchNotificationsReturnUnion = WatchNotificationsSucceededPayload
 
 type WatchNotificationsSucceededPayload {
   notifications: [Notification!]!
+}
+
+"""Youtubeの音MADがリクエストされたことを表すタイムラインイベント"""
+type YoutubeMadRequestedTimelineEvent implements TimelineEvent {
+  createdAt: DateTime!
+  request: YoutubeRegistrationRequest!
 }
 
 type YoutubeOriginalSource {
