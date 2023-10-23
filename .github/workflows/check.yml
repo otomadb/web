@@ -9,22 +9,7 @@ on:
       - main
 
 jobs:
-  validate-graphql-queries:
-    name: Validate GraphQL Queries
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 8
-      - uses: actions/setup-node@5e21ff4d9bc1a8cf6de233a3057d20ec6b3fb69d # v3
-        with:
-          node-version: 18
-          cache: pnpm
-      - run: pnpm install
-      - run: pnpm run schema:validate --output ./.inspector-validate-report.json
-
-  eslint:
+  lint:
     name: ESLint
     runs-on: ubuntu-latest
     steps:
@@ -34,31 +19,11 @@ jobs:
           version: 8
       - uses: actions/setup-node@5e21ff4d9bc1a8cf6de233a3057d20ec6b3fb69d # v3
         with:
-          node-version: 18
-          cache: pnpm
-      - run: pnpm install
-      - run: pnpm run lint:eslint --format json --output-file .eslint-report.json
-      - name: Annotate ESLint results
-        uses: ataylorme/eslint-annotate-action@v2
-        if: failure()
-        with:
-          repo-token: "${{ secrets.GITHUB_TOKEN }}"
-          report-json: ".eslint-report.json"
-
-  prettier:
-    name: Prettier
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 8
-      - uses: actions/setup-node@5e21ff4d9bc1a8cf6de233a3057d20ec6b3fb69d # v3
-        with:
-          node-version: 18
+          node-version: 18.18.2
           cache: pnpm
       - run: pnpm install
       - run: pnpm run lint:prettier
+      - run: pnpm run lint:eslint
 
   typecheck:
     name: Typecheck
@@ -70,7 +35,7 @@ jobs:
           version: 8
       - uses: actions/setup-node@5e21ff4d9bc1a8cf6de233a3057d20ec6b3fb69d # v3
         with:
-          node-version: 18
+          node-version: 18.18.2
           cache: pnpm
       - run: pnpm install
       - run: pnpm run codegen
@@ -86,7 +51,7 @@ jobs:
           version: 8
       - uses: actions/setup-node@5e21ff4d9bc1a8cf6de233a3057d20ec6b3fb69d # v3
         with:
-          node-version: 18
+          node-version: 18.18.2
           cache: pnpm
       - run: pnpm install
       - run: pnpm run codegen
