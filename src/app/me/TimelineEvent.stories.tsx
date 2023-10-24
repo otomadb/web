@@ -83,6 +83,34 @@ export const MadRegistered: Story = {
               },
             ],
           },
+          nicovideoSources: [
+            {
+              id: "nicovideoSource:1",
+              sourceId: "sm2057168",
+              url: "https://www.nicovideo.jp/watch/sm2057168",
+            },
+          ],
+          youtubeSources: [
+            {
+              id: "youtubeSource:1",
+              sourceId: "Q16KpquGsIc",
+              url: "https://www.youtube.com/watch?v=Q16KpquGsIc",
+            },
+          ],
+          bilibiliSources: [
+            {
+              id: "bilibiliSources:1",
+              sourceId: "BV1xx411c7mu",
+              url: "https://www.bilibili.com/video/BV1xx411c7mu",
+            },
+          ],
+          soundcloudSources: [
+            {
+              id: "soundcloudSource:1",
+              sourceId: "keigoooo/hyperflip-donaldcore",
+              url: "https://soundcloud.com/keigoooo/hyperflip-donaldcore",
+            },
+          ],
           ...makeFragmentData({ serial: 1 }, LinkVideoFragment),
           ...makeFragmentData(
             { title: "Title 1", thumbnailUrl: "/960x540.jpg" },
