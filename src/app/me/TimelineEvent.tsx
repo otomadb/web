@@ -134,48 +134,83 @@ export default function TimelineEvent({
                 </LinkVideo>
                 が追加されました。
               </p>
-              <div className={clsx(["flex", "gap-x-2"])}>
+              <div className={clsx(["flex", "items-start", "gap-x-2"])}>
                 {fragment.video.nicovideoSources.map(({ id, url }) => (
-                  <a key={id} href={url} title={url} target="_blank">
+                  <a
+                    key={id}
+                    href={url}
+                    title={url}
+                    target="_blank"
+                    className={clsx(
+                      ["flex"],
+                      ["bg-nicovideo-primary/50", "hover:bg-nicovideo-primary"],
+                      ["border", "border-nicovideo-primary"],
+                      [["text-black/75", "hover:text-black"], "rounded", "p-1"]
+                    )}
+                  >
                     <Pictogram
                       icon="nicovideo"
-                      className={clsx(
-                        ["text-text-muted", "hover:text-nicovideo-primary"],
-                        ["w-5", "h-5"]
-                      )}
+                      className={clsx(["w-4", "h-4"])}
                     />
                   </a>
                 ))}
                 {fragment.video.youtubeSources.map(({ id, url }) => (
-                  <a key={id} href={url} title={url} target="_blank">
+                  <a
+                    key={id}
+                    href={url}
+                    title={url}
+                    target="_blank"
+                    className={clsx(
+                      ["flex"],
+                      ["bg-youtube-primary/50", "hover:bg-youtube-primary"],
+                      ["border", "border-youtube-primary"],
+                      [["text-white/75", "hover:text-white"], "rounded", "p-1"]
+                    )}
+                  >
                     <Pictogram
                       icon="youtube"
-                      className={clsx(
-                        ["text-text-muted", "hover:text-youtube-primary"],
-                        ["w-5", "h-5"]
-                      )}
+                      className={clsx(["w-4", "h-4"])}
                     />
                   </a>
                 ))}
                 {fragment.video.bilibiliSources.map(({ id, url }) => (
-                  <a key={id} href={url} title={url} target="_blank">
+                  <a
+                    key={id}
+                    href={url}
+                    title={url}
+                    target="_blank"
+                    className={clsx(
+                      ["flex"],
+                      ["bg-bilibili-primary/50", "hover:bg-bilibili-primary"],
+                      ["border", "border-bilibili-primary"],
+                      [["text-white/75", "hover:text-white"], "rounded", "p-1"]
+                    )}
+                  >
                     <Pictogram
                       icon="bilibili"
-                      className={clsx(
-                        ["text-text-muted", "hover:text-bilibili-primary"],
-                        ["w-5", "h-5"]
-                      )}
+                      className={clsx(["w-4", "h-4"])}
                     />
                   </a>
                 ))}
                 {fragment.video.soundcloudSources.map(({ id, url }) => (
-                  <a key={id} href={url} title={url} target="_blank">
+                  <a
+                    key={id}
+                    href={url}
+                    title={url}
+                    target="_blank"
+                    className={clsx(
+                      ["flex"],
+                      [
+                        "bg-soundcloud-primary/50",
+                        "hover:bg-soundcloud-primary",
+                      ],
+                      ["border", "border-soundcloud-primary"],
+                      [["text-white/75", "hover:text-white"], "rounded", "p-1"]
+                    )}
+                  >
                     <Pictogram
                       icon="soundcloud"
-                      className={clsx(
-                        ["text-text-muted", "hover:text-soundcloud-primary"],
-                        ["w-5", "h-5"]
-                      )}
+                      className={clsx(["w-4", "h-4"])}
                     />
                   </a>
                 ))}
