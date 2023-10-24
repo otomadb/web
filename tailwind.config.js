@@ -32,8 +32,9 @@ module.exports = {
           primary: "hsl(182, 91%, 60%)",
         },
         text: {
-          primary: colors.gray[200],
-          muted: colors.gray[400],
+          primary: "hsl(182, 26%, 92%)",
+          muted: "hsl(182, 8%, 53%)",
+          disabled: "hsl(182, 20%, 29%)",
         },
         background: {
           root: "hsl(212, 24%, 5%)",

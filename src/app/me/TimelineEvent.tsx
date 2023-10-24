@@ -3,7 +3,12 @@ import clsx from "clsx";
 import { CommonTag2 } from "~/components/CommonTag";
 import { CoolImage2 } from "~/components/CoolImage";
 import DateTime2 from "~/components/DateTime2";
+import {
+  useOpenRegisterFromNicovideoWithId,
+  useOpenRegisterFromYoutube,
+} from "~/components/FormModal";
 import Pictogram from "~/components/Pictogram";
+import useHasRole from "~/components/useHasRole";
 import UserDisplayNameLink from "~/components/UserLink/UserDisplayNameLink";
 import UserIconLink from "~/components/UserLink/UserIconLink";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
@@ -91,6 +96,10 @@ export default function TimelineEvent({
   fragment: FragmentType<typeof TimelineEventFragment>;
 }) {
   const fragment = useFragment(TimelineEventFragment, props.fragment);
+  const registarable = useHasRole();
+  const openRegisterNicovideoForm = useOpenRegisterFromNicovideoWithId();
+  const openRegisterYoutubeForm = useOpenRegisterFromYoutube();
+
   return (
     <div
       className={clsx(
@@ -333,8 +342,9 @@ export default function TimelineEvent({
         />
         <div
           className={clsx(
+            ["flex-grow"],
             ["flex-shrink-0"],
-            ["flex", "items-center", "gap-x-1"]
+            ["flex", "gap-x-1"]
           )}
         >
           <UserIconLink fragment={fragment.event.user} />
@@ -342,6 +352,36 @@ export default function TimelineEvent({
             fragment={fragment.event.user}
             className={clsx(["text-xs", "text-text-muted"])}
           />
+        </div>
+        <div className={clsx(["flex", "justify-end"])}>
+          {fragment.__typename === "NicovideoMadRequestedTimelineEvent" && (
+            <button
+              role="button"
+              className={clsx(
+                ["disabled:hidden"],
+                ["text-text-primary", "hover:text-accent-primary"]
+              )}
+              disabled={!registarable}
+              onClick={() =>
+                openRegisterNicovideoForm(fragment.request.sourceId)
+              }
+            >
+              <Pictogram icon="plus" className={clsx(["w-6", "h-6"])} />
+            </button>
+          )}
+          {fragment.__typename === "YoutubeMadRequestedTimelineEvent" && (
+            <button
+              role="button"
+              className={clsx(
+                ["disabled:hidden"],
+                ["text-text-primary", "hover:text-accent-primary"]
+              )}
+              disabled={!registarable}
+              onClick={() => openRegisterYoutubeForm(fragment.request.sourceId)}
+            >
+              <Pictogram icon="plus" className={clsx(["w-6", "h-6"])} />
+            </button>
+          )}
         </div>
       </div>
     </div>
