@@ -22,6 +22,15 @@ export const MadRegistered: Story = {
       {
         __typename: "MadRegisteredTimelineEvent",
         createdAt: "2021-01-01T00:00:00.000Z",
+        event: {
+          id: "event:1",
+          user: {
+            id: "user:1",
+            displayName: "User1",
+            name: "user1",
+            icon: "/icon.png",
+          } as any, // eslint-disable-line @typescript-eslint/no-explicit-any -- 面倒なので
+        },
         video: {
           id: "video:1",
           title: "Title 1",
@@ -90,6 +99,15 @@ const NicovideoRequestFragment = makeFragmentData(
   {
     __typename: "NicovideoMadRequestedTimelineEvent",
     createdAt: "2021-01-01T00:00:00.000Z",
+    event: {
+      id: "event:1",
+      user: {
+        id: "user:1",
+        displayName: "User1",
+        name: "user1",
+        icon: "/icon.png",
+      } as any, // eslint-disable-line @typescript-eslint/no-explicit-any -- 面倒なので
+    },
     request: {
       id: "request:1",
       title: "Title 1",
@@ -112,6 +130,15 @@ export const YoutubeMadRequested: Story = {
       {
         __typename: "YoutubeMadRequestedTimelineEvent",
         createdAt: "2021-01-01T00:00:00.000Z",
+        event: {
+          id: "event:1",
+          user: {
+            id: "user:1",
+            displayName: "User1",
+            name: "user1",
+            icon: "/icon.png",
+          } as any, // eslint-disable-line @typescript-eslint/no-explicit-any -- 面倒なので
+        },
         request: {
           id: "request:1",
           title: "Title 1",

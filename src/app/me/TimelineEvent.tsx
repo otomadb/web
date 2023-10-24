@@ -4,6 +4,8 @@ import { CommonTag2 } from "~/components/CommonTag";
 import { CoolImage2 } from "~/components/CoolImage";
 import DateTime2 from "~/components/DateTime2";
 import Pictogram from "~/components/Pictogram";
+import UserDisplayNameLink from "~/components/UserLink/UserDisplayNameLink";
+import UserIconLink from "~/components/UserLink/UserIconLink";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
@@ -16,6 +18,14 @@ export const TimelineEventFragment = graphql(`
   fragment MyTopPage_TimelineSegment_TimelineEvent on TimelineEvent {
     __typename
     createdAt
+    event {
+      id
+      user {
+        id
+        ...UserIconLink
+        ...UserDisplayNameLink
+      }
+    }
     ... on MadRegisteredTimelineEvent {
       video {
         ...Link_Video
@@ -211,11 +221,18 @@ export default function TimelineEvent({
           </div>
         )}
       </div>
-      <div className={clsx(["flex-shrink-0"])}>
+      <div className={clsx(["flex-shrink-0"], ["flex", "flex-col", "gap-y-1"])}>
         <DateTime2
           date={fragment.createdAt}
           className={clsx(["font-mono"], ["text-xs", "text-text-muted"])}
         />
+        <div className={clsx(["flex", "items-center", "gap-x-1"])}>
+          <UserIconLink fragment={fragment.event.user} />
+          <UserDisplayNameLink
+            fragment={fragment.event.user}
+            className={clsx(["text-xs", "text-text-muted"])}
+          />
+        </div>
       </div>
     </div>
   );

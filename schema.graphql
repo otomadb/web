@@ -442,6 +442,7 @@ type LikeVideoSucceededPayload {
 """音MADが登録されたことを表すタイムラインイベント"""
 type MadRegisteredTimelineEvent implements TimelineEvent {
   createdAt: DateTime!
+  event: VideoRegisterEvent!
   video: Video!
 }
 
@@ -741,6 +742,7 @@ type MylistVideoRecommendation {
 """ニコニコ動画の音MADがリクエストされたことを表すタイムラインイベント"""
 type NicovideoMadRequestedTimelineEvent implements TimelineEvent {
   createdAt: DateTime!
+  event: NicovideoRegistrationRequestRequestEvent!
   request: NicovideoRegistrationRequest!
 }
 
@@ -786,6 +788,7 @@ type NicovideoRegistrationRequest implements Node & RegistrationRequest {
   checked: Boolean!
   checking: NicovideoRegistrationRequestChecking
   embedUrl: String!
+  events(input: NicovideoRegistrationRequestEventsInput!): NicovideoRegistrationRequestEventConnection!
   id: ID!
   originalUrl: String!
   requestedBy: User!
@@ -794,6 +797,15 @@ type NicovideoRegistrationRequest implements Node & RegistrationRequest {
   taggings: [NicovideoRegistrationRequestTagging!]!
   thumbnailUrl: String!
   title: String!
+}
+
+"""ニコニコ動画の動画をリクエストを承認した時に発生するイベント"""
+type NicovideoRegistrationRequestAcceptEvent implements Event & NicovideoRegistrationRequestEvent & Node {
+  createdAt: DateTime!
+  id: ID!
+  request: NicovideoRegistrationRequest!
+  series: String!
+  user: User!
 }
 
 type NicovideoRegistrationRequestAccepting {
@@ -825,6 +837,48 @@ type NicovideoRegistrationRequestEdge {
   node: NicovideoRegistrationRequest!
 }
 
+"""ニコニコ動画の動画リクエスト関連のイベント"""
+interface NicovideoRegistrationRequestEvent implements Event & Node {
+  createdAt: DateTime!
+  id: ID!
+  request: NicovideoRegistrationRequest!
+  series: String!
+  user: User!
+}
+
+type NicovideoRegistrationRequestEventConnection {
+  edges: [NicovideoRegistrationRequestEventEdge!]!
+  nodes: [NicovideoRegistrationRequestEvent!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type NicovideoRegistrationRequestEventEdge {
+  cursor: String!
+  node: NicovideoRegistrationRequestEvent!
+}
+
+input NicovideoRegistrationRequestEventsInput {
+  after: String
+  before: String
+  first: Int
+  last: Int
+  orderBy: NicovideoRegistrationRequestEventsInputOrderBy! = {createdAt: DESC}
+}
+
+input NicovideoRegistrationRequestEventsInputOrderBy {
+  createdAt: SortOrder
+}
+
+"""ニコニコ動画の動画をリクエストを拒否した時に発生するイベント"""
+type NicovideoRegistrationRequestRejectEvent implements Event & NicovideoRegistrationRequestEvent & Node {
+  createdAt: DateTime!
+  id: ID!
+  request: NicovideoRegistrationRequest!
+  series: String!
+  user: User!
+}
+
 type NicovideoRegistrationRequestRejecting {
   note: String
   rejectedBy: User!
@@ -837,6 +891,15 @@ type NicovideoRegistrationRequestRejectingNotification implements Node & Notific
   notifyTo: User!
   rejecting: NicovideoRegistrationRequestRejecting!
   watched: Boolean!
+}
+
+"""ニコニコ動画の動画をリクエスト時に発生するイベント"""
+type NicovideoRegistrationRequestRequestEvent implements Event & NicovideoRegistrationRequestEvent & Node {
+  createdAt: DateTime!
+  id: ID!
+  request: NicovideoRegistrationRequest!
+  series: String!
+  user: User!
 }
 
 type NicovideoRegistrationRequestSemitagging implements Node & RegistrationRequestSemitagging {
@@ -1769,6 +1832,7 @@ enum TagType {
 
 interface TimelineEvent {
   createdAt: DateTime!
+  event: Event!
 }
 
 """タグにタイプを与えることが出来るカテゴリータグ"""
@@ -2115,6 +2179,7 @@ type WatchNotificationsSucceededPayload {
 """Youtubeの音MADがリクエストされたことを表すタイムラインイベント"""
 type YoutubeMadRequestedTimelineEvent implements TimelineEvent {
   createdAt: DateTime!
+  event: YoutubeRegistrationRequestRequestEvent!
   request: YoutubeRegistrationRequest!
 }
 
@@ -2128,6 +2193,7 @@ type YoutubeRegistrationRequest implements Node & RegistrationRequest {
   checked: Boolean!
   checking: YoutubeRegistrationRequestChecking
   embedUrl: String!
+  events(input: YoutubeRegistrationRequestEventsInput!): YoutubeRegistrationRequestEventConnection!
   id: ID!
   originalUrl: String!
   requestedBy: User!
@@ -2136,6 +2202,15 @@ type YoutubeRegistrationRequest implements Node & RegistrationRequest {
   taggings: [YoutubeRegistrationRequestTagging!]!
   thumbnailUrl: String!
   title: String!
+}
+
+"""Youtubeの動画をリクエストを承認した時に発生するイベント"""
+type YoutubeRegistrationRequestAcceptEvent implements Event & Node & YoutubeRegistrationRequestEvent {
+  createdAt: DateTime!
+  id: ID!
+  request: YoutubeRegistrationRequest!
+  series: String!
+  user: User!
 }
 
 type YoutubeRegistrationRequestAccepting {
@@ -2167,6 +2242,48 @@ type YoutubeRegistrationRequestEdge {
   node: YoutubeRegistrationRequest!
 }
 
+"""Youtubeの動画リクエスト関連のイベント"""
+interface YoutubeRegistrationRequestEvent implements Event & Node {
+  createdAt: DateTime!
+  id: ID!
+  request: YoutubeRegistrationRequest!
+  series: String!
+  user: User!
+}
+
+type YoutubeRegistrationRequestEventConnection {
+  edges: [YoutubeRegistrationRequestEventEdge!]!
+  nodes: [YoutubeRegistrationRequestEvent!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type YoutubeRegistrationRequestEventEdge {
+  cursor: String!
+  node: YoutubeRegistrationRequestEvent!
+}
+
+input YoutubeRegistrationRequestEventsInput {
+  after: String
+  before: String
+  first: Int
+  last: Int
+  orderBy: YoutubeRegistrationRequestEventsInputOrderBy! = {createdAt: DESC}
+}
+
+input YoutubeRegistrationRequestEventsInputOrderBy {
+  createdAt: SortOrder
+}
+
+"""Youtubeの動画をリクエストを拒否した時に発生するイベント"""
+type YoutubeRegistrationRequestRejectEvent implements Event & Node & YoutubeRegistrationRequestEvent {
+  createdAt: DateTime!
+  id: ID!
+  request: YoutubeRegistrationRequest!
+  series: String!
+  user: User!
+}
+
 type YoutubeRegistrationRequestRejecting {
   note: String
   rejectedBy: User!
@@ -2179,6 +2296,15 @@ type YoutubeRegistrationRequestRejectingNotification implements Node & Notificat
   notifyTo: User!
   rejecting: YoutubeRegistrationRequestRejecting!
   watched: Boolean!
+}
+
+"""Youtubeの動画をリクエスト時に発生するイベント"""
+type YoutubeRegistrationRequestRequestEvent implements Event & Node & YoutubeRegistrationRequestEvent {
+  createdAt: DateTime!
+  id: ID!
+  request: YoutubeRegistrationRequest!
+  series: String!
+  user: User!
 }
 
 type YoutubeRegistrationRequestSemitagging implements Node & RegistrationRequestSemitagging {
