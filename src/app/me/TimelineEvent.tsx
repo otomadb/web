@@ -3,17 +3,17 @@ import clsx from "clsx";
 import { CommonTag2 } from "~/components/CommonTag";
 import { CoolImage2 } from "~/components/CoolImage";
 import DateTime2 from "~/components/DateTime2";
+import {
+  useOpenRegisterFromNicovideoWithId,
+  useOpenRegisterFromYoutube,
+} from "~/components/FormModal";
 import Pictogram from "~/components/Pictogram";
+import useHasRole from "~/components/useHasRole";
 import UserDisplayNameLink from "~/components/UserLink/UserDisplayNameLink";
 import UserIconLink from "~/components/UserLink/UserIconLink";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-import {
-  useOpenRegisterFromNicovideoWithId,
-  useOpenRegisterFromYoutube,
-} from "~/components/FormModal";
-import useHasRole from "~/components/useHasRole";
 import { LinkVideo } from "../mads/[serial]/Link";
 import { LinkNicovideoRegistrationRequest } from "../requests/nicovideo/[sourceId]/Link";
 import { YoutubeRequestPageLink } from "../requests/youtube/[sourceId]/Link";

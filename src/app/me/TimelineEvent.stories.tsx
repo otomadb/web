@@ -1,22 +1,23 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { graphql as mswGql } from "msw";
+
 import { CommonTagFragment } from "~/components/CommonTag";
+import { $UseHarRoleQuery } from "~/components/useHasRole";
 import { Fragment as VideoThumbnailFragment } from "~/components/VideoThumbnail";
 import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
-
-import { UseHarRoleQuery } from "~/components/useHasRole";
 import { MockedUrqlProvider } from "~/utils/MockedUrqlProvider";
+
 import { Fragment as LinkVideoFragment } from "../mads/[serial]/Link";
 import TimelineEvent, { TimelineEventFragment } from "./TimelineEvent";
 
 const mockHasRole = [
-  mswGql.query(UseHarRoleQuery, (req, res, ctx) =>
+  mswGql.query($UseHarRoleQuery, (req, res, ctx) =>
     res(ctx.data({ whoami: { id: "user:1", hasRole: true } }))
   ),
 ];
 const mockHasNoRole = [
-  mswGql.query(UseHarRoleQuery, (req, res, ctx) =>
+  mswGql.query($UseHarRoleQuery, (req, res, ctx) =>
     res(ctx.data({ whoami: { id: "user:1", hasRole: false } }))
   ),
 ];

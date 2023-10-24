@@ -6,7 +6,7 @@ import { useQuery } from "urql";
 
 import { graphql } from "~/gql";
 
-export const UseHarRoleQuery = graphql(`
+export const $UseHarRoleQuery = graphql(`
   query UseHasRole {
     whoami {
       id
@@ -16,7 +16,7 @@ export const UseHarRoleQuery = graphql(`
 `);
 const useHasRole = () => {
   const [{ data }] = useQuery({
-    query: UseHarRoleQuery,
+    query: $UseHarRoleQuery,
     requestPolicy: "cache-first",
   });
   return typeof data?.whoami.hasRole === "boolean"
