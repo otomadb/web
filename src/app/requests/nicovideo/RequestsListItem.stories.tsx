@@ -4,7 +4,7 @@ import { graphql as mswGql } from "msw";
 import { Fragment as NicovideoRequestPageLinkFragment } from "~/app/requests/nicovideo/[sourceId]/Link";
 import { Fragment as UserPageLinkFragment } from "~/app/users/[name]/Link";
 import { Fragment as CommonTagFragment } from "~/components/CommonTag";
-import { query as useHasRoleQuery } from "~/components/useHasRole";
+import { UseHarRoleQuery as useHasRoleQuery } from "~/components/useHasRole";
 import { Fragment as UserIconFragment } from "~/components/UserIcon";
 import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
