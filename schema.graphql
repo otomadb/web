@@ -1913,6 +1913,7 @@ enum UserRole {
 }
 
 type Video implements Node {
+  bilibiliSources: [BilibiliMADSource!]!
   events(input: VideoEventsInput!): VideoEventsConnection!
   hasTag(id: ID!): Boolean!
   id: ID!

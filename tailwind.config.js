@@ -45,6 +45,13 @@ module.exports = {
 
           muted: colors.gray[100],
         },
+        nicovideo: {
+          primary: "#FFF",
+          sub: "#252525",
+        },
+        youtube: { primary: "#FF0000" },
+        bilibili: { primary: "#22A8DE" },
+        soundcloud: { primary: "#FF5500" },
         copyright: colors.pink,
         character: colors.green,
         music: colors.sky,
