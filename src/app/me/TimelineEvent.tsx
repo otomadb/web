@@ -16,6 +16,7 @@ import { FragmentType, graphql, useFragment } from "~/gql";
 
 import { LinkVideo } from "../mads/[serial]/Link";
 import { LinkNicovideoRegistrationRequest } from "../requests/nicovideo/[sourceId]/Link";
+import SoundcloudRequestPageLink from "../requests/soundcloud/[sourceId]/Link";
 import { YoutubeRequestPageLink } from "../requests/youtube/[sourceId]/Link";
 import { LinkTag } from "../tags/[serial]/Link";
 
@@ -82,6 +83,16 @@ export const TimelineEventFragment = graphql(`
         originalUrl
         thumbnailUrl
         ...YoutubeRequestPageLink
+      }
+    }
+    ... on SoundcloudMadRequestedTimelineEvent {
+      request {
+        id
+        title
+        sourceId
+        originalUrl
+        thumbnailUrl
+        ...SoundcloudRequestPageLink
       }
     }
   }
@@ -312,6 +323,52 @@ export default function TimelineEvent({
               >
                 {fragment.request.title}
               </YoutubeRequestPageLink>
+              がリクエストされました。
+            </p>
+            <div className={clsx(["mt-2"], ["flex", "gap-x-1"])}>
+              <a
+                className={clsx(
+                  ["cursor-pointer"],
+                  ["font-mono", "text-sm", "text-text-muted"],
+                  ["inline-flex", "items-center", "gap-x-1"]
+                )}
+                href={fragment.request.originalUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Pictogram icon="external-link" className={clsx(["h-4"])} />
+                <span>{fragment.request.sourceId}</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
+      {fragment.__typename === "SoundcloudMadRequestedTimelineEvent" && (
+        <div className={clsx(className, ["flex"], ["gap-x-4"])}>
+          <SoundcloudRequestPageLink
+            className={clsx(["block"], ["flex-shrink-0"])}
+            fragment={fragment.request}
+          >
+            <CoolImage2
+              className={clsx(["w-36"], ["h-24"])}
+              width={144}
+              height={96}
+              alt={fragment.request.title}
+              src={fragment.request.thumbnailUrl}
+            />
+          </SoundcloudRequestPageLink>
+          <div className={clsx(["flex-grow"], ["py-2"])}>
+            <p className={clsx(["text-text-primary", "text-sm"])}>
+              <SoundcloudRequestPageLink
+                fragment={fragment.request}
+                className={clsx([
+                  "text-accent-primary",
+                  "font-bold",
+                  "hover:underline",
+                ])}
+              >
+                {fragment.request.title}
+              </SoundcloudRequestPageLink>
               がリクエストされました。
             </p>
             <div className={clsx(["mt-2"], ["flex", "gap-x-1"])}>

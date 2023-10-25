@@ -245,3 +245,32 @@ export const YoutubeMadRequestedWithRegistrable: Story = {
     },
   },
 };
+
+export const SoundcloudMadRequested: Story = {
+  name: "Soundcloudの登録リクエスト",
+  args: {
+    fragment: makeFragmentData(
+      {
+        __typename: "SoundcloudMadRequestedTimelineEvent",
+        createdAt: "2021-01-01T00:00:00.000Z",
+        event: {
+          id: "event:1",
+          user: {
+            id: "user:1",
+            displayName: "User1",
+            name: "user1",
+            icon: "/icon.png",
+          } as any, // eslint-disable-line @typescript-eslint/no-explicit-any -- 面倒なので
+        },
+        request: {
+          id: "request:1",
+          title: "Title 1",
+          sourceId: "1408289521",
+          thumbnailUrl: "/960x540.jpg",
+          originalUrl: "https://soundcloud.com/keigoooo/hyperflip-donaldcore",
+        },
+      },
+      TimelineEventFragment
+    ),
+  },
+};
