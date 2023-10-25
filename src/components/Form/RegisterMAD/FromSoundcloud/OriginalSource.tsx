@@ -6,8 +6,6 @@ import { CoolImage } from "~/components/CoolImage";
 import Pictogram from "~/components/Pictogram";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-import { Fragment as TagButtonFragment } from "../../TagButton";
-
 export const Fragment = graphql(`
   fragment RegisterFromSoundcloudForm_OriginalSource on SoundcloudOriginalSource {
     title
@@ -18,27 +16,10 @@ export const Fragment = graphql(`
 `);
 export default function OriginalSource({
   className,
-  selectingTagId,
-  removeTag,
-  appendTag,
-  selectingSemitagNames,
-  appendSemitag,
-  removeSemitag,
   ...props
 }: {
   className?: string;
   fragment: FragmentType<typeof Fragment>;
-
-  selectingTagId: string[];
-  appendTag(a: {
-    tagId: string;
-    fragment: FragmentType<typeof TagButtonFragment>;
-  }): void;
-  removeTag(tagId: string): void;
-
-  selectingSemitagNames: string[];
-  appendSemitag(name: string): void;
-  removeSemitag(name: string): void;
 }) {
   const fragment = useFragment(Fragment, props.fragment);
 

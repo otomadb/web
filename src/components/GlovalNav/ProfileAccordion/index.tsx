@@ -14,6 +14,7 @@ import {
   useOpenRegisterFromNicovideo,
   useOpenRegisterFromYoutube,
   useOpenRequestFromNicovideo,
+  useOpenRequestFromSoundcloud,
   useOpenRequestFromYoutube,
   useOpenSoundcloudRegisterModal,
 } from "~/components/FormModal";
@@ -82,6 +83,7 @@ export default function ProfileAccordion({
   const openSoundcloudRegisterModal = useOpenSoundcloudRegisterModal();
 
   const openRequestFromYoutube = useOpenRequestFromYoutube();
+  const openRequestFromSoundcloud = useOpenRequestFromSoundcloud();
 
   return (
     <div
@@ -134,6 +136,21 @@ export default function ProfileAccordion({
           )}
         >
           YouTubeからリクエスト
+        </MenuItem>
+        <MenuItem
+          Wrapper={({ className, onClick, ...props }) => (
+            <button
+              {...props}
+              className={clsx(className, ["text-left"])}
+              type="button"
+              onClick={(e) => {
+                if (onClick) onClick(e);
+                openRequestFromSoundcloud(null);
+              }}
+            />
+          )}
+        >
+          Soundcloudからリクエスト
         </MenuItem>
         <MenuItem Wrapper={(props) => <SettingPageLink {...props} />}>
           設定
