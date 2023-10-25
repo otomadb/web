@@ -329,6 +329,11 @@ input FindSoundcloudMADSourceInput {
   url: String
 }
 
+input FindSoundcloudRegistrationRequestInput {
+  id: ID
+  sourceId: String
+}
+
 input FindTagInput {
   id: ID
   serial: Int
@@ -363,6 +368,18 @@ input FindUncheckedNicovideoRegistrationRequestsInput {
 }
 
 input FindUncheckedNicovideoRegistrationRequestsOrderBy {
+  createdAt: SortOrder
+}
+
+input FindUncheckedSoundcloudRegistrationRequestsInput {
+  after: String
+  before: String
+  first: Int
+  last: Int
+  orderBy: FindUncheckedSoundcloudRegistrationRequestsOrderBy! = {createdAt: DESC}
+}
+
+input FindUncheckedSoundcloudRegistrationRequestsOrderBy {
   createdAt: SortOrder
 }
 
@@ -475,6 +492,7 @@ type Mutation {
   removeTagFromVideo(input: RemoveTagFromVideoInput!): RemoveTagFromVideoPayload!
   removeVideoFromMylist(input: RemoveVideoFromMylistInput!): RemoveVideoFromMylistPayload!
   requestNicovideoRegistration(input: RequestNicovideoRegistrationInput!): RequestNicovideoRegistrationReturnUnion!
+  requestSoundcloudRegistration(input: RequestSoundcloudRegistrationInput!): RequestSoundcloudRegistrationReturnUnion!
   requestYoutubeRegistration(input: RequestYoutubeRegistrationInput!): RequestYoutubeRegistrationReturnUnion!
   resovleSemitag(semitagId: ID!, tagId: ID!): ResolveSemitagReturnUnion!
   undoLikeVideo(input: UndoLikeVideoInput!): UndoLikeVideoReturnUnion!
@@ -1006,11 +1024,14 @@ type Query {
   findNicovideoVideoSource(input: FindNicovideoVideoSourceInput!): NicovideoVideoSource
   findSemitags(after: String, before: String, checked: Boolean, first: Int, last: Int, orderBy: FindSemitagsOrderBy! = {name: ASC}): SemitagConnection!
   findSoundcloudMADSource(input: FindSoundcloudMADSourceInput!): SoundcloudMADSource
+  findSoundcloudRegistrationRequest(input: FindSoundcloudRegistrationRequestInput): SoundcloudRegistrationRequest
+  findSoundcloudRegistrationRequestByUrl(url: String!): SoundcloudRegistrationRequest
   findTag(input: FindTagInput!): Tag @deprecated(reason: "Use `Query.findTagBySerial` instead.")
   findTagBySerial(serial: Int!): Tag
   findTags(input: FindTagsInput!): TagConnection!
   findUncheckedNicovideoRegistrationRequests(input: FindUncheckedNicovideoRegistrationRequestsInput!): NicovideoRegistrationRequestConnection!
   findUncheckedNicovideoRegistrationRequestsByOffset(input: findUncheckedNicovideoRegistrationRequestsByOffsetInput!): FindUncheckedNicovideoRegistrationRequestsByOffsetPayload!
+  findUncheckedSoundcloudRegistrationRequests(input: FindUncheckedSoundcloudRegistrationRequestsInput!): SoundcloudRegistrationRequestConnection!
   findUncheckedYoutubeRegistrationRequests(input: FindUncheckedYoutubeRegistrationRequestsInput!): YoutubeRegistrationRequestConnection!
   findUser(input: FindUserInput!): User
   findVideo(input: FindVideoInput!): Video @deprecated(reason: "Use `Query.findMadBySerial` instead")
@@ -1029,6 +1050,7 @@ type Query {
   getNotification(id: ID!): Notification!
   getSemitag(id: ID!): Semitag!
   getSoundcloudMADSource(id: ID!): SoundcloudMADSource!
+  getSoundcloudRegistrationRequest(id: ID!): SoundcloudRegistrationRequest!
   getTag(id: ID!): Tag!
   getUser(id: ID!): User!
   getVideo(id: ID!): Video!
@@ -1094,7 +1116,7 @@ type RegisterCategoryTagTypingSucceededPayload {
 }
 
 input RegisterSoundcloudMADInput {
-  primaryThumbnailUrl: String!
+  primaryThumbnailUrl: String
   primaryTitle: String!
   semitagNames: [String!]! = []
   sourceIds: [String!]!
@@ -1401,6 +1423,37 @@ type RequestNicovideoRegistrationVideoAlreadyRegisteredError {
   source: NicovideoVideoSource!
 }
 
+input RequestSoundcloudRegistrationInput {
+  semitaggings: [RequestSoundcloudRegistrationInputSemitagging!]!
+  sourceId: String!
+  taggings: [RequestSoundcloudRegistrationInputTagging!]!
+
+  """プラットフォーム側のサムネイル画像のURL（無い場合もある）"""
+  thumbnailUrl: String
+  title: String!
+}
+
+input RequestSoundcloudRegistrationInputSemitagging {
+  name: String!
+  note: String
+}
+
+input RequestSoundcloudRegistrationInputTagging {
+  note: String
+  tagId: ID!
+}
+
+union RequestSoundcloudRegistrationReturnUnion = MutationInvalidTagIdError | MutationTagNotFoundError | RequestSoundcloudRegistrationSucceededPayload | RequestSoundcloudRegistrationVideoAlreadyRegisteredError
+
+type RequestSoundcloudRegistrationSucceededPayload {
+  request: SoundcloudRegistrationRequest!
+}
+
+"""動画が既に登録されている場合のエラー"""
+type RequestSoundcloudRegistrationVideoAlreadyRegisteredError {
+  source: SoundcloudMADSource!
+}
+
 input RequestYoutubeRegistrationInput {
   semitaggings: [RequestYoutubeRegistrationInputSemitagging!]!
   sourceId: String!
@@ -1608,12 +1661,165 @@ input SoundcloudMADSourceEventsOrderBy {
   createdAt: SortOrder
 }
 
+"""SoundCloudの音MADがリクエストされたことを表すタイムラインイベント"""
+type SoundcloudMadRequestedTimelineEvent implements TimelineEvent {
+  createdAt: DateTime!
+  event: SoundcloudRegistrationRequestRequestEvent!
+  request: SoundcloudRegistrationRequest!
+}
+
 type SoundcloudOriginalSource {
-  originalThumbnailUrl: String!
+  """SoundCloud側のサムネイル画像（場合によってはない可能性がある）"""
+  originalThumbnailUrl: String
   sourceId: String!
-  thumbnailUrl(scale: FetchExternalSourceThumbnailScale! = LARGE): String!
+
+  """プロキシしたサムネイル画像"""
+  thumbnailUrl(scale: FetchExternalSourceThumbnailScale! = LARGE): String
   title: String!
   url: String!
+}
+
+type SoundcloudRegistrationRequest implements Node & RegistrationRequest {
+  checked: Boolean!
+  checking: SoundcloudRegistrationRequestChecking
+  embedUrl: String!
+  events(input: SoundcloudRegistrationRequestEventsInput!): SoundcloudRegistrationRequestEventConnection!
+  id: ID!
+
+  """
+  Soundcloud側のサムネイル画像のURL
+
+  **無い場合もある場合に注意.**
+  """
+  originalThumbnailUrl: String
+  originalUrl: String!
+  requestedBy: User!
+  semitaggings: [SoundcloudRegistrationRequestSemitagging!]!
+  sourceId: String!
+  taggings: [SoundcloudRegistrationRequestTagging!]!
+
+  """
+  OtoMADB側でプロキシしているサムネイル画像のURL
+
+  **無い場合は適当にダミー画像を返す．**
+  """
+  thumbnailUrl: String!
+  title: String!
+}
+
+"""Soundcloudの動画をリクエストを承認した時に発生するイベント"""
+type SoundcloudRegistrationRequestAcceptEvent implements Event & Node & SoundcloudRegistrationRequestEvent {
+  createdAt: DateTime!
+  id: ID!
+  request: SoundcloudRegistrationRequest!
+  series: String!
+  user: User!
+}
+
+type SoundcloudRegistrationRequestAccepting {
+  acceptedBy: User!
+  note: String
+  request: SoundcloudRegistrationRequest!
+  video: Video!
+}
+
+type SoundcloudRegistrationRequestAcceptingNotification implements Node & Notification {
+  accepting: SoundcloudRegistrationRequestAccepting!
+  createdAt: DateTime!
+  id: ID!
+  notifyTo: User!
+  watched: Boolean!
+}
+
+union SoundcloudRegistrationRequestChecking = SoundcloudRegistrationRequestAccepting | SoundcloudRegistrationRequestRejecting
+
+type SoundcloudRegistrationRequestConnection {
+  edges: [SoundcloudRegistrationRequestEdge!]!
+  nodes: [SoundcloudRegistrationRequest!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type SoundcloudRegistrationRequestEdge {
+  cursor: String!
+  node: SoundcloudRegistrationRequest!
+}
+
+"""Soundcloudの動画リクエスト関連のイベント"""
+interface SoundcloudRegistrationRequestEvent implements Event & Node {
+  createdAt: DateTime!
+  id: ID!
+  request: SoundcloudRegistrationRequest!
+  series: String!
+  user: User!
+}
+
+type SoundcloudRegistrationRequestEventConnection {
+  edges: [SoundcloudRegistrationRequestEventEdge!]!
+  nodes: [SoundcloudRegistrationRequestEvent!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type SoundcloudRegistrationRequestEventEdge {
+  cursor: String!
+  node: SoundcloudRegistrationRequestEvent!
+}
+
+input SoundcloudRegistrationRequestEventsInput {
+  after: String
+  before: String
+  first: Int
+  last: Int
+  orderBy: SoundcloudRegistrationRequestEventsInputOrderBy! = {createdAt: DESC}
+}
+
+input SoundcloudRegistrationRequestEventsInputOrderBy {
+  createdAt: SortOrder
+}
+
+"""Soundcloudの動画をリクエストを拒否した時に発生するイベント"""
+type SoundcloudRegistrationRequestRejectEvent implements Event & Node & SoundcloudRegistrationRequestEvent {
+  createdAt: DateTime!
+  id: ID!
+  request: SoundcloudRegistrationRequest!
+  series: String!
+  user: User!
+}
+
+type SoundcloudRegistrationRequestRejecting {
+  note: String
+  rejectedBy: User!
+  request: SoundcloudRegistrationRequest!
+}
+
+type SoundcloudRegistrationRequestRejectingNotification implements Node & Notification {
+  createdAt: DateTime!
+  id: ID!
+  notifyTo: User!
+  rejecting: SoundcloudRegistrationRequestRejecting!
+  watched: Boolean!
+}
+
+"""Soundcloudの動画をリクエスト時に発生するイベント"""
+type SoundcloudRegistrationRequestRequestEvent implements Event & Node & SoundcloudRegistrationRequestEvent {
+  createdAt: DateTime!
+  id: ID!
+  request: SoundcloudRegistrationRequest!
+  series: String!
+  user: User!
+}
+
+type SoundcloudRegistrationRequestSemitagging implements Node & RegistrationRequestSemitagging {
+  id: ID!
+  name: String!
+  note: String
+}
+
+type SoundcloudRegistrationRequestTagging implements Node & RegistrationRequestTagging {
+  id: ID!
+  note: String
+  tag: Tag!
 }
 
 type Tag implements Node {

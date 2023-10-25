@@ -6,8 +6,6 @@ import { CoolImage } from "~/components/CoolImage";
 import Pictogram from "~/components/Pictogram";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-import { Fragment as TagButtonFragment } from "../../TagButton";
-
 export const Fragment = graphql(`
   fragment RegisterFromSoundcloudForm_OriginalSource on SoundcloudOriginalSource {
     title
@@ -18,27 +16,10 @@ export const Fragment = graphql(`
 `);
 export default function OriginalSource({
   className,
-  selectingTagId,
-  removeTag,
-  appendTag,
-  selectingSemitagNames,
-  appendSemitag,
-  removeSemitag,
   ...props
 }: {
   className?: string;
   fragment: FragmentType<typeof Fragment>;
-
-  selectingTagId: string[];
-  appendTag(a: {
-    tagId: string;
-    fragment: FragmentType<typeof TagButtonFragment>;
-  }): void;
-  removeTag(tagId: string): void;
-
-  selectingSemitagNames: string[];
-  appendSemitag(name: string): void;
-  removeSemitag(name: string): void;
 }) {
   const fragment = useFragment(Fragment, props.fragment);
 
@@ -48,14 +29,19 @@ export default function OriginalSource({
         <div
           className={clsx(["flex-shrink-0"], ["flex", "flex-col", "gap-y-4"])}
         >
-          <CoolImage
-            className={clsx(["w-[96px]"], ["h-[64px]"])}
-            src={fragment.thumbnailUrl}
-            width={96}
-            height={64}
-            alt={`${fragment.sourceId}のサムネイル`}
-            unoptimized={true}
-          />
+          {
+            // TODO: 画像がない場合の挙動
+            fragment.thumbnailUrl && (
+              <CoolImage
+                className={clsx(["w-[96px]"], ["h-[64px]"])}
+                src={fragment.thumbnailUrl}
+                width={96}
+                height={64}
+                alt={`${fragment.sourceId}のサムネイル`}
+                unoptimized={true}
+              />
+            )
+          }
         </div>
         <div className={clsx(["py-2"], ["flex-grow"], ["flex", "flex-col"])}>
           <div className={clsx(["text-slate-300"], ["text-sm", "font-bold"])}>

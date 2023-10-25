@@ -40,7 +40,7 @@ export const useRegisterVideo = ({
     }: {
       sourceId: string;
       title: string;
-      thumbnailUrl: string;
+      thumbnailUrl: string | null;
       tagIds: string[];
       semitagNames: string[];
     }) => {

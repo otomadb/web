@@ -1,47 +1,57 @@
 "use client";
-import "client-only";
 
 import clsx from "clsx";
-import React, {
+import {
+  CSSProperties,
   useCallback,
-  useEffect,
   useMemo,
   useReducer,
   useState,
 } from "react";
 import { useQuery } from "urql";
 
+import { LinkVideo } from "~/app/mads/[serial]/Link";
 import Button from "~/components/Button";
+import AlreadyRegistered from "~/components/Form/AlreadyRegistered";
+import AlreadyRequested from "~/components/Form/AlreadyRequested";
+import OriginalSource from "~/components/Form/RegisterMAD/FromSoundcloud/OriginalSource";
+import { SemitagButton } from "~/components/Form/SemitagButton";
 import SourceNotExists from "~/components/Form/SourceNotExists";
+import {
+  Fragment as TagButtonFragment,
+  TagButton,
+} from "~/components/Form/TagButton";
 import TagSearcher from "~/components/TagSearcher2";
 import { TextInput2 } from "~/components/TextInput";
 import { useToaster } from "~/components/Toaster";
 import { FragmentType, graphql } from "~/gql";
 
-import AlreadyRegistered from "../../AlreadyRegistered";
-import { SemitagButton } from "../../SemitagButton";
-import { Fragment as TagButtonFragment, TagButton } from "../../TagButton";
-import OriginalSource from "./OriginalSource";
 import { SucceededToast } from "./SucceededToast";
-import { useRegisterVideo } from "./useRegisterVideo";
+import useRequestFromSoundcloud from "./useRequestFromSoundcloud";
 
 export const Query = graphql(`
-  query RegisterFromSoundcloudForm_Check($url: String!) {
-    fetchSoundcloud(input: { url: $url }) {
-      source {
-        sourceId
-        title
-        originalThumbnailUrl
-        ...RegisterFromSoundcloudForm_OriginalSource
-      }
-    }
+  query RequestMADFromSoundcloudForm_Check($url: String!) {
     findSoundcloudMADSource(input: { url: $url }) {
       id
       ...Form_VideoAlreadyRegistered
     }
+    findSoundcloudRegistrationRequestByUrl(url: $url) {
+      id
+      sourceId
+      ...Form_VideoAlreadyRequested
+      ...SoundcloudRequestPageLink
+    }
+    fetchSoundcloud(input: { url: $url }) {
+      source {
+        ...RegisterFromSoundcloudForm_OriginalSource
+        thumbnailUrl(scale: LARGE)
+        sourceId
+        originalThumbnailUrl
+      }
+    }
   }
 `);
-export default function RegisterForm({
+export default function RequestForm({
   className,
   style,
   url,
@@ -49,7 +59,7 @@ export default function RegisterForm({
   handleCancel,
 }: {
   className?: string;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
   url: string;
   handleSuccess?(): void;
   handleCancel(): void;
@@ -61,7 +71,7 @@ export default function RegisterForm({
   });
 
   const [title, setTitle] = useState<string>("");
-  const [tags, dispatchTags] = useReducer(
+  const [taggings, dispatchTags] = useReducer(
     (
       prev: { id: string; fragment: FragmentType<typeof TagButtonFragment> }[],
       action:
@@ -75,12 +85,8 @@ export default function RegisterForm({
     ) => {
       switch (action.type) {
         case "append":
-          return [
-            ...new Set([
-              ...prev,
-              { id: action.tagId, fragment: action.fragment },
-            ]),
-          ];
+          if (prev.map(({ id }) => id).includes(action.tagId)) return prev;
+          return [...prev, { id: action.tagId, fragment: action.fragment }];
         case "remove":
           return prev.filter(({ id }) => id !== action.tagId);
         case "clear":
@@ -89,10 +95,10 @@ export default function RegisterForm({
     },
     []
   );
-  const tagIds = useMemo(() => tags.map(({ id }) => id), [tags]);
-  const [semitagNames, dispatchSemitags] = useReducer(
+
+  const [semitaggings, dispatchSemitags] = useReducer(
     (
-      prev: string[],
+      prev: { name: string }[],
       action:
         | { type: "append"; name: string }
         | { type: "remove"; name: string }
@@ -100,48 +106,57 @@ export default function RegisterForm({
     ) => {
       switch (action.type) {
         case "append":
-          return [...new Set([...prev, action.name])];
+          return [...new Set([...prev, { name: action.name }])];
         case "remove":
-          return prev.filter((id) => id !== action.name);
+          return prev.filter(({ name }) => name !== action.name);
         case "clear":
           return [];
       }
     },
     []
   );
-
-  // 自動的にタイトルを挿入
-  useEffect(() => {
-    if (title === "" && data?.fetchSoundcloud.source?.title) {
-      setTitle(data.fetchSoundcloud.source.title);
-    }
-  }, [data?.fetchSoundcloud.source?.title, title]);
-
-  const [tab, setTab] = useState<"SOURCE" | "REQUEST">("SOURCE");
+  const semitaggingNames = useMemo(
+    () => semitaggings.map(({ name }) => name),
+    [semitaggings]
+  );
 
   const callToast = useToaster();
-  const registerMAD = useRegisterVideo({
+  const requestVideo = useRequestFromSoundcloud({
     onSuccess(data) {
       callToast(<SucceededToast fragment={data} />);
       if (handleSuccess) handleSuccess();
     },
+    onAlready({ source: { sourceId, video } }) {
+      callToast(
+        <p>
+          <span>{sourceId}</span>は受理されて
+          <LinkVideo fragment={video}>既に登録されています。</LinkVideo>
+        </p>
+      );
+    },
+    onFailure() {
+      callToast(<p>登録に失敗しました。</p>);
+    },
   });
-  const payload = useMemo<null | Parameters<typeof registerMAD>[0]>(() => {
+
+  const [tab, setTab] = useState<"SOURCE">("SOURCE");
+
+  const payload = useMemo(() => {
     if (!data || !data.fetchSoundcloud.source) return null;
 
     return {
       sourceId: data.fetchSoundcloud.source.sourceId,
       title,
-      thumbnailUrl: data.fetchSoundcloud.source.originalThumbnailUrl || null,
-      tagIds,
-      semitagNames,
-    };
-  }, [data, semitagNames, tagIds, title]);
-
+      taggings: taggings.map(({ id }) => ({ tagId: id, note: null })),
+      semitaggings: semitaggings.map(({ name }) => ({ name, note: null })),
+      originalThumbnailUrl:
+        data.fetchSoundcloud.source.originalThumbnailUrl || null,
+    } satisfies Parameters<typeof requestVideo>[0];
+  }, [data, title, taggings, semitaggings]);
   const handleSubmit = useCallback(() => {
     if (!payload) return;
-    registerMAD(payload);
-  }, [payload, registerMAD]);
+    requestVideo(payload);
+  }, [payload, requestVideo]);
 
   return (
     <div
@@ -157,8 +172,15 @@ export default function RegisterForm({
         <div className={clsx(["text-slate-400"])}>Loading</div>
       ) : data.findSoundcloudMADSource ? (
         <AlreadyRegistered
-          className={clsx(["text-slate-400"])}
           fragment={data.findSoundcloudMADSource}
+          handleCancel={handleCancel}
+        />
+      ) : data.findSoundcloudRegistrationRequestByUrl ? (
+        <AlreadyRequested
+          fragment={data.findSoundcloudRegistrationRequestByUrl}
+          RequestPageLink={
+            ({ sourceId, ...props }) => <span /> // TODO: そのうち直す
+          }
           handleCancel={handleCancel}
         />
       ) : !data.fetchSoundcloud.source ? (
@@ -198,7 +220,7 @@ export default function RegisterForm({
                 >
                   追加されるタグ
                 </div>
-                {tags.length === 0 && (
+                {taggings.length === 0 && (
                   <div
                     className={clsx(
                       ["self-center"],
@@ -209,7 +231,7 @@ export default function RegisterForm({
                     なし
                   </div>
                 )}
-                {tags.length > 0 && (
+                {taggings.length > 0 && (
                   <div
                     className={clsx([
                       "flex",
@@ -218,7 +240,7 @@ export default function RegisterForm({
                       "gap-y-1",
                     ])}
                   >
-                    {tags.map(({ id: tagId, fragment }) => (
+                    {taggings.map(({ id: tagId, fragment }) => (
                       <TagButton
                         key={tagId}
                         tagId={tagId}
@@ -227,7 +249,7 @@ export default function RegisterForm({
                           dispatchTags({ type: "append", tagId, fragment: f })
                         }
                         remove={() => dispatchTags({ type: "remove", tagId })}
-                        selected={tags.map(({ id }) => id).includes(tagId)}
+                        selected={taggings.map(({ id }) => id).includes(tagId)}
                       />
                     ))}
                   </div>
@@ -243,7 +265,7 @@ export default function RegisterForm({
                 >
                   追加される仮タグ
                 </div>
-                {semitagNames.length === 0 && (
+                {semitaggings.length === 0 && (
                   <div
                     className={clsx(
                       ["self-center"],
@@ -254,7 +276,7 @@ export default function RegisterForm({
                     なし
                   </div>
                 )}
-                {semitagNames.length > 0 && (
+                {semitaggings.length > 0 && (
                   <div
                     className={clsx([
                       "flex",
@@ -263,7 +285,7 @@ export default function RegisterForm({
                       "gap-y-1",
                     ])}
                   >
-                    {semitagNames.map((name) => (
+                    {semitaggings.map(({ name }) => (
                       <SemitagButton
                         key={name}
                         name={name}
@@ -273,7 +295,7 @@ export default function RegisterForm({
                         remove={() =>
                           dispatchSemitags({ type: "remove", name })
                         }
-                        selected={semitagNames.includes(name)}
+                        selected={semitaggingNames.includes(name)}
                       />
                     ))}
                   </div>
@@ -310,7 +332,7 @@ export default function RegisterForm({
                       </div>
                     </div>
                   )}
-                  showAdditional={(query) => !semitagNames.includes(query)}
+                  showAdditional={(query) => !semitaggingNames.includes(query)}
                   handleAdditionalClicked={(query) =>
                     dispatchSemitags({ type: "append", name: query })
                   }
@@ -371,7 +393,7 @@ export default function RegisterForm({
               ["w-full"]
             )}
           >
-            <Button submit text="登録する" size="medium" color="blue" />
+            <Button submit text="リクエストする" size="medium" color="blue" />
             <Button
               className={clsx(["ml-auto"])}
               onClick={() => {
