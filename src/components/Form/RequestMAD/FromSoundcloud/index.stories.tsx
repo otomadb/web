@@ -110,7 +110,7 @@ export const 既に登録済み: Story = {
           mswGql.query(Query, (req, res, ctx) =>
             res(
               ctx.data({
-                findSoundcloudVideoSource: {
+                findSoundcloudMADSource: {
                   id: "source:1",
                   ...makeFragmentData(
                     {
@@ -132,7 +132,7 @@ export const 既に登録済み: Story = {
                     AlreadyRegisteredFragment
                   ),
                 } as never,
-                findSoundcloudRegistrationRequest: null,
+                findSoundcloudRegistrationRequestByUrl: null,
                 fetchSoundcloud: { source: null },
               })
             )
@@ -152,11 +152,11 @@ export const 既にリクエスト済み: Story = {
           mswGql.query(Query, (req, res, ctx) =>
             res(
               ctx.data({
-                findSoundcloudRegistrationRequest: {
+                findSoundcloudRegistrationRequestByUrl: {
                   id: "reqreq:1",
                   sourceId: "sm2057168",
                 },
-                findSoundcloudVideoSource: null,
+                findSoundcloudMADSource: null,
                 fetchSoundcloud: { source: null },
               })
             )
@@ -177,8 +177,8 @@ export const 動画が存在しない: Story = {
             res(
               ctx.data({
                 fetchSoundcloud: { source: null },
-                findSoundcloudRegistrationRequest: null,
-                findSoundcloudVideoSource: null,
+                findSoundcloudRegistrationRequestByUrl: null,
+                findSoundcloudMADSource: null,
               })
             )
           ),
@@ -197,10 +197,11 @@ export const 登録可能: Story = {
           mswGql.query(Query, (req, res, ctx) =>
             res(
               ctx.data({
-                findSoundcloudRegistrationRequest: null,
-                findSoundcloudVideoSource: null,
+                findSoundcloudRegistrationRequestByUrl: null,
+                findSoundcloudMADSource: null,
                 fetchSoundcloud: {
                   source: {
+                    sourceId: "1408289521",
                     thumbnailUrl: "/960x540.jpg",
                     ...makeFragmentData(
                       {

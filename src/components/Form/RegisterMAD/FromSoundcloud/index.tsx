@@ -126,17 +126,17 @@ export default function RegisterForm({
       if (handleSuccess) handleSuccess();
     },
   });
-  const payload = useMemo(() => {
+  const payload = useMemo<null | Parameters<typeof registerMAD>[0]>(() => {
     if (!data || !data.fetchSoundcloud.source) return null;
 
     return {
       sourceId: data.fetchSoundcloud.source.sourceId,
       title,
-      thumbnailUrl: data.fetchSoundcloud.source.originalThumbnailUrl,
+      thumbnailUrl: data.fetchSoundcloud.source.originalThumbnailUrl || null,
       tagIds,
       semitagNames,
     };
-  }, [data, semitagNames, url, tagIds, title]);
+  }, [data, semitagNames, tagIds, title]);
 
   const handleSubmit = useCallback(() => {
     if (!payload) return;
@@ -359,23 +359,7 @@ export default function RegisterForm({
             </div>
             <div className={clsx({ hidden: tab !== "SOURCE" })}>
               {data.fetchSoundcloud.source && (
-                <OriginalSource
-                  fragment={data.fetchSoundcloud.source}
-                  selectingTagId={tagIds}
-                  appendTag={({ tagId, fragment }) => {
-                    dispatchTags({ type: "append", tagId, fragment });
-                  }}
-                  removeTag={(tagId) => {
-                    dispatchTags({ type: "remove", tagId });
-                  }}
-                  selectingSemitagNames={semitagNames}
-                  appendSemitag={(name) => {
-                    dispatchSemitags({ type: "append", name });
-                  }}
-                  removeSemitag={(name) => {
-                    dispatchSemitags({ type: "remove", name });
-                  }}
-                />
+                <OriginalSource fragment={data.fetchSoundcloud.source} />
               )}
             </div>
           </div>

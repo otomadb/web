@@ -29,14 +29,19 @@ export default function OriginalSource({
         <div
           className={clsx(["flex-shrink-0"], ["flex", "flex-col", "gap-y-4"])}
         >
-          <CoolImage
-            className={clsx(["w-[96px]"], ["h-[64px]"])}
-            src={fragment.thumbnailUrl}
-            width={96}
-            height={64}
-            alt={`${fragment.sourceId}のサムネイル`}
-            unoptimized={true}
-          />
+          {
+            // TODO: 画像がない場合の挙動
+            fragment.thumbnailUrl && (
+              <CoolImage
+                className={clsx(["w-[96px]"], ["h-[64px]"])}
+                src={fragment.thumbnailUrl}
+                width={96}
+                height={64}
+                alt={`${fragment.sourceId}のサムネイル`}
+                unoptimized={true}
+              />
+            )
+          }
         </div>
         <div className={clsx(["py-2"], ["flex-grow"], ["flex", "flex-col"])}>
           <div className={clsx(["text-slate-300"], ["text-sm", "font-bold"])}>
