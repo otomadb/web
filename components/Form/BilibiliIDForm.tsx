@@ -7,7 +7,7 @@ import Button from "~/components/Button";
 import { TextInput2 } from "~/components/TextInput";
 import { extractBilibiliSourceId } from "~/utils/extractSourceId";
 
-export default function NicovideoIDForm({
+export default function BilibiliIDForm({
   className,
   style,
   set,

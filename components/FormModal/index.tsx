@@ -8,6 +8,7 @@ import { XMarkPictogram } from "~/components/Pictogram";
 import RegisterMADFromBilibiliFormModal from "./RegisterMADFromBilibili";
 import RegisterMADFromNicovideoFormModal from "./RegisterMADFromNicovideo";
 import RegisterMADFromYoutubeFormModal from "./RegisterMADFromYoutube";
+import RequestMADFromBilibiliFormModal from "./RequestMADFromBilibili";
 import RequestMADFromNicovideoFormModal from "./RequestMADFromNicovideo";
 import RequestMADFromSoundcloudFormModal from "./RequestMADFromSoundcloud";
 import RequestMADFromYoutubeFormModal from "./RequestMADFromYoutube";
@@ -21,7 +22,8 @@ export type Current =
   | { type: "REGISTER_FROM_SOUNDCLOUD"; url: string | null }
   | { type: "REQUEST_FROM_NICOVIDEO"; sourceId: string | null }
   | { type: "REQUEST_FROM_YOUTUBE"; sourceId: string | null }
-  | { type: "REQUEST_FROM_SOUNDCLOUD"; url: string | null };
+  | { type: "REQUEST_FROM_SOUNDCLOUD"; url: string | null }
+  | { type: "REQUEST_FROM_BILIBILI"; sourceId: string | null };
 
 export const FormModalContext = React.createContext<{
   current: Current;
@@ -112,6 +114,12 @@ export const useOpenRequestFromSoundcloud = () => {
   return (url: string | null) => open({ type: "REQUEST_FROM_SOUNDCLOUD", url });
 };
 
+export const useOpenRequestFromBilibili = () => {
+  const { open } = useContext(FormModalContext);
+  return (sourceId: string | null) =>
+    open({ type: "REQUEST_FROM_BILIBILI", sourceId });
+};
+
 export const useCloseFormModal = () => {
   const { close } = useContext(FormModalContext);
   return close;
@@ -158,6 +166,8 @@ export default function FormModal({
                 "YouTubeからリクエスト"}
               {current.type === "REQUEST_FROM_SOUNDCLOUD" &&
                 "Soundcloudからリクエスト"}
+              {current.type === "REQUEST_FROM_BILIBILI" &&
+                "Bilibiliからリクエスト"}
             </span>
             <button
               type="button"
@@ -238,6 +248,16 @@ export default function FormModal({
             {current.type === "REQUEST_FROM_SOUNDCLOUD" && (
               <RequestMADFromSoundcloudFormModal
                 initialUrl={current.url || undefined}
+                className={clsx()}
+                style={{ width: 640, height: 720 }}
+                handleSuccess={() => {
+                  close();
+                }}
+              />
+            )}
+            {current.type === "REQUEST_FROM_BILIBILI" && (
+              <RequestMADFromBilibiliFormModal
+                initialSourceId={current.sourceId || undefined}
                 className={clsx()}
                 style={{ width: 640, height: 720 }}
                 handleSuccess={() => {
