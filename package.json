@@ -51,7 +51,7 @@
     "react-dom": "18.2.0",
     "react-hook-form": "7.46.2",
     "react-use": "^17.4.0",
-    "sass": "^1.69.4",
+    "sass": "^1.69.5",
     "server-only": "^0.0.1",
     "urql": "^4.0.5",
     "zod": "^3.22.4"
