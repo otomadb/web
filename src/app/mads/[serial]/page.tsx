@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import { request } from "graphql-request";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
@@ -56,7 +57,28 @@ export async function generateMetadata({
   };
 }
 
-export default async function Page({ params }: { params: { serial: string } }) {
+type PageParams = { serial: string };
+
+export async function generateStaticParams() {
+  return request(
+    process.env.GRAPHQL_API_ENDPOINT,
+    graphql(`
+      query VideoPage_GenerateStaticParams {
+        findVideos(first: 100) {
+          nodes {
+            serial
+          }
+        }
+      }
+    `)
+  ).then((v) =>
+    v.findVideos.nodes.map(
+      (v) => ({ serial: v.serial.toString() }) satisfies PageParams
+    )
+  );
+}
+
+export default async function Page({ params }: { params: PageParams }) {
   const result = await fetchGql(
     graphql(`
       query VideoPage($serial: Int!) {
