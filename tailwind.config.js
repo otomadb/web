@@ -9,6 +9,13 @@ module.exports = {
     "./src/components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    containers: {
+      w96: "24rem",
+      w128: "32rem",
+      w192: "48rem",
+      w240: "60rem",
+      w320: "80rem",
+    },
     extend: {
       fontSize: {
         xxs: ["0.6rem", "0.725rem"],
@@ -59,9 +66,6 @@ module.exports = {
         event: colors.teal,
         series: colors.purple,
         phrase: colors.gray,
-      },
-      containers: {
-        "screen-xl": "1280px",
       },
     },
   },

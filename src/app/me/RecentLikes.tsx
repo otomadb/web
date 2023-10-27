@@ -1,12 +1,13 @@
 "use client";
 
 import clsx from "clsx";
-import React from "react";
 import { useQuery } from "urql";
 
 import { LinkVideo } from "~/app/mads/[serial]/Link";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { graphql } from "~/gql";
+
+import { YouLikesPageLink } from "./likes/Link";
 
 export default function RecentLikes({ className }: { className?: string }) {
   const [{ data, fetching }] = useQuery({
@@ -15,7 +16,7 @@ export default function RecentLikes({ className }: { className?: string }) {
         whoami {
           id
           likes {
-            registrations(first: 5) {
+            registrations(first: 6) {
               nodes {
                 id
                 video {
@@ -33,26 +34,101 @@ export default function RecentLikes({ className }: { className?: string }) {
   });
 
   return (
-    <div className={clsx(className, ["flex", "flex-col", "items-stretch"])}>
-      {!data?.whoami && fetching && <p>いいね欄を取得中です</p>}
-      <div className={clsx(["flex", "flex-col", "gap-y-2"])}>
-        {data?.whoami.likes?.registrations.nodes.map((like) => (
-          <div key={like.id} className={clsx(["flex", "gap-x-2"])}>
-            <LinkVideo fragment={like.video}>
-              <VideoThumbnail
-                className={clsx(["flex-shrink-0"], ["w-[96px]", "h-[64px]"])}
-                fragment={like.video}
-                imageSize="small"
-              />
-            </LinkVideo>
-            <div className={clsx(["flex-grow"], ["py-1"])}>
-              <LinkVideo fragment={like.video} className={clsx(["text-sm"])}>
-                {like.video.title}
-              </LinkVideo>
-            </div>
-          </div>
-        ))}
+    <section
+      className={clsx(
+        className,
+        ["bg-background-deeper"],
+        ["py-4", "px-4"],
+        ["@container/likes"]
+      )}
+    >
+      <div className={clsx(["flex", "items-center"], ["px-4"])}>
+        <p
+          className={clsx(
+            ["flex-grow"],
+            ["text-md", "text-text-primary", "font-bold"]
+          )}
+        >
+          いいねした動画
+        </p>
+        <YouLikesPageLink className={clsx(["text-xs"], ["text-text-muted"])}>
+          もっと見る
+        </YouLikesPageLink>
       </div>
-    </div>
+      <div className={clsx(["mt-2"], ["flex", ["flex-col"], "items-stretch"])}>
+        {fetching && (
+          <div
+            className={clsx(
+              ["px-4", "py-2"],
+              ["text-center", "text-text-muted"]
+            )}
+          >
+            いいね欄を取得中です
+          </div>
+        )}
+        <div
+          className={clsx([
+            "grid",
+            "gap-x-2",
+            "gap-y-2",
+            [
+              "grid-cols-1",
+              "@w128/likes:grid-cols-3",
+              "@w240/likes:grid-cols-6",
+            ],
+          ])}
+        >
+          {data?.whoami.likes?.registrations.nodes.map((like) => (
+            <div
+              key={like.id}
+              className={clsx(
+                ["flex", "flex-row", "@w128/likes:flex-col", "gap-x-4"],
+                ["bg-background-primary"],
+                [
+                  ["px-4", "@w128/likes:px-2"],
+                  ["py-2", "@w128/likes:py-1"],
+                ],
+                ["rounded"]
+              )}
+            >
+              <LinkVideo fragment={like.video}>
+                <VideoThumbnail
+                  className={clsx(
+                    ["w-24", "@w128/likes:w-full"],
+                    [
+                      "h-16",
+                      "@w128/likes:h-24",
+                      "@w192/likes:h-28",
+                      "@w240/likes:h-32",
+                    ]
+                  )}
+                  fragment={like.video}
+                  imageSize="medium"
+                />
+              </LinkVideo>
+              <div
+                className={clsx(
+                  [["@w128/likes:mt-1"]],
+                  ["flex-grow"],
+                  ["py-1"]
+                )}
+              >
+                <LinkVideo
+                  fragment={like.video}
+                  className={clsx([
+                    ["text-sm", "@w128/likes:text-xs", "line-clamp-1"],
+                    "text-accent-primary",
+                    "font-bold",
+                    "hover:underline",
+                  ])}
+                >
+                  {like.video.title}
+                </LinkVideo>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
