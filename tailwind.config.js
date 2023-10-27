@@ -67,9 +67,6 @@ module.exports = {
         series: colors.purple,
         phrase: colors.gray,
       },
-      containers: {
-        "screen-xl": "1280px",
-      },
     },
   },
   plugins: [
