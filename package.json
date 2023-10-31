@@ -75,7 +75,7 @@
     "@tailwindcss/container-queries": "0.1.1",
     "@tsconfig/node18": "18.2.2",
     "@types/mdx": "2.0.9",
-    "@types/node": "18.18.7",
+    "@types/node": "18.18.8",
     "@types/react": "18.2.33",
     "@types/react-dom": "18.2.14",
     "@typescript-eslint/eslint-plugin": "6.9.1",
