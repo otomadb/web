@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@auth0/auth0-react':
-    specifier: ^2.2.1
-    version: 2.2.1(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^2.2.2
+    version: 2.2.2(react-dom@18.2.0)(react@18.2.0)
   '@emotion/css':
     specifier: ^11.11.2
     version: 11.11.2
@@ -295,8 +295,8 @@ packages:
       - encoding
     dev: true
 
-  /@auth0/auth0-react@2.2.1(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-4L4FZvSqIwzVk5mwWFbWzfJ4Zq11dgS0v4KIGKro5tL9dgOnBGq+Ino/1mzexPV1LJHBkfwXG4+IaPiQNz5CGg==}
+  /@auth0/auth0-react@2.2.2(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-+E0Cj2J4v14ael56pBdoaGO2m5LLB4qLShhw3E/okmUeA7WmKOrveRn19wl0f6cl0YzwrDKXAkmqFlP6ARMznw==}
     peerDependencies:
       react: ^16.11.0 || ^17 || ^18
       react-dom: ^16.11.0 || ^17 || ^18
