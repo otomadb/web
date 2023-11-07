@@ -140,8 +140,8 @@ devDependencies:
     specifier: 18.2.2
     version: 18.2.2
   '@types/mdx':
-    specifier: 2.0.9
-    version: 2.0.9
+    specifier: 2.0.10
+    version: 2.0.10
   '@types/node':
     specifier: 18.18.8
     version: 18.18.8
@@ -3360,7 +3360,7 @@ packages:
     peerDependencies:
       react: '>=16'
     dependencies:
-      '@types/mdx': 2.0.9
+      '@types/mdx': 2.0.10
       '@types/react': 18.2.36
       react: 18.2.0
     dev: true
@@ -5863,8 +5863,8 @@ packages:
     resolution: {integrity: sha512-YI/M/4HRImtNf3pJgbF+W6FrXovqj+T+/HpENLTooK9PnkacBsDpeP3IpHab40CClUfhNmdM2WTNP2sa2dni5Q==}
     dev: true
 
-  /@types/mdx@2.0.9:
-    resolution: {integrity: sha512-OKMdj17y8Cs+k1r0XFyp59ChSOwf8ODGtMQ4mnpfz5eFDk1aO41yN3pSKGuvVzmWAkFp37seubY1tzOVpwfWwg==}
+  /@types/mdx@2.0.10:
+    resolution: {integrity: sha512-Rllzc5KHk0Al5/WANwgSPl1/CwjqCy+AZrGd78zuK+jO9aDM6ffblZ+zIjgPNAaEBmlO0RYDvLNh7wD0zKVgEg==}
     dev: true
 
   /@types/mime-types@2.1.3:
