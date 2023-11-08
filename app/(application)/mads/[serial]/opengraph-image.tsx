@@ -1,5 +1,5 @@
 import { GraphQLClient } from "graphql-request";
-import { ImageResponse } from "next/server";
+import { ImageResponse } from "next/og";
 
 import { graphql } from "~/gql";
 import { loadGoogleFont } from "~/utils/loadGoogleFonts";
