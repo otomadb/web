@@ -37,71 +37,38 @@ export const RegistrationsListItem: React.FC<{
   return (
     <LinkVideo
       fragment={fragment.video}
-      className={clsx(
-        className,
-        ["@container/registration"],
-        ["group/registration"],
-        ["border", "border-slate-300"],
-        ["bg-slate-100"],
-        ["rounded"],
-        ["py-3"],
-        ["px-4"],
-        ["flex"]
-      )}
+      className={clsx(className, [
+        "group/registration flex rounded border border-slate-300 bg-slate-100 px-4 py-3 @container/registration",
+      ])}
     >
       <VideoThumbnail
         fragment={video}
-        className={clsx(
-          ["flex-shrink-0"],
-          ["w-[144px]", "@[1024px]/registration:w-[112px]"],
-          ["h-[108px]", "@[1024px]/registration:h-[84px]"],
-          ["border", "border-slate-400"]
-        )}
+        className={clsx([
+          "h-[108px] w-[144px] shrink-0 border border-slate-400 @[1024px]/registration:h-[84px] @[1024px]/registration:w-[112px]",
+        ])}
         imageSize="medium"
       />
-      <div className={clsx(["flex-grow"], ["px-4"], ["flex", "flex-col"])}>
+      <div className={clsx("flex grow flex-col px-4")}>
         <div className={clsx()}>
-          <p className={clsx(["text-base"], ["text-slate-900"])}>
-            {video.title}
-          </p>
+          <p className={clsx("text-base text-slate-900")}>{video.title}</p>
         </div>
-        <div
-          className={clsx(
-            ["mt-1"],
-            ["flex", ["flex-wrap"], ["gap-x-1"], ["gap-y-1"]]
-          )}
-        >
+        <div className={clsx(["mt-1 flex flex-wrap gap-1"])}>
           {video.taggings.nodes.map((tagging) => (
             <CommonTag
               key={tagging.id}
-              className={clsx(["text-xs"], ["px-1"], ["py-0.5"])}
+              className={clsx("px-1 py-0.5 text-xs")}
               fragment={tagging.tag}
             />
           ))}
         </div>
         {note && note !== "" && (
-          <div
-            className={clsx(
-              ["mt-2"],
-              ["px-2"],
-              ["py-2"],
-              ["rounded"],
-              ["bg-slate-200"]
-            )}
-          >
+          <div className={clsx(["mt-2 rounded bg-slate-200 p-2"])}>
             <p>
               <Pictogram
                 icon="note"
-                className={clsx(
-                  ["float-left"],
-                  ["w-4"],
-                  ["h-4"],
-                  ["text-slate-400"]
-                )}
+                className={clsx(["float-left h-4 w-4 text-slate-400"])}
               />
-              <div className={clsx(["text-xs"], ["text-slate-700"])}>
-                {note}
-              </div>
+              <div className={clsx("text-xs text-slate-700")}>{note}</div>
             </p>
           </div>
         )}

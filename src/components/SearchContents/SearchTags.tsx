@@ -38,51 +38,37 @@ export const SearchTags: React.FC<{
   return (
     <div className={clsx(className)}>
       {items.length === 0 && (
-        <div className={clsx(["px-4", "py-2"])}>
-          <p className={clsx(["text-xs"], ["text-slate-500"])}>該当なし</p>
+        <div className={clsx("px-4 py-2")}>
+          <p className={clsx("text-xs text-slate-500")}>該当なし</p>
         </div>
       )}
-      <div className={clsx(["divide-y", "divide-slate-400/75"])}>
+      <div className={clsx("divide-y divide-slate-400/75")}>
         {items.map(({ tag, name }) => (
           <LinkTag
             key={tag.id}
             fragment={tag}
             tabIndex={0}
             className={clsx(
-              [["flex"], ["items-center"]],
-              ["divide-x", "border-slate-300/75"],
-              ["hover:bg-sky-300/50", "focus:bg-sky-4 00/50"],
-              ["py-2"]
+              [["flex items-center"]],
+              [
+                "focus:bg-sky-4 00/50 divide-x border-slate-300/75 py-2 hover:bg-sky-300/50",
+              ]
             )}
             onClick={(e) => {
               e.currentTarget.blur();
             }}
           >
-            <div className={clsx(["flex-shrink-0"], ["w-36"], ["px-2"])}>
-              <div
-                className={clsx(
-                  ["text-slate-500"],
-                  ["text-xs"],
-                  ["text-right"]
-                )}
-              >
+            <div className={clsx("w-36 shrink-0 px-2")}>
+              <div className={clsx(["text-right text-xs text-slate-500"])}>
                 {name.name}
               </div>
             </div>
-            <div
-              className={clsx(
-                ["flex-grow"],
-                ["flex", "flex-col", "justify-start"],
-                ["px-2"]
-              )}
-            >
-              <div
-                className={clsx(["text-slate-900"], ["text-sm"], ["font-bold"])}
-              >
+            <div className={clsx(["flex grow flex-col justify-start px-2"])}>
+              <div className={clsx("text-sm font-bold text-slate-900")}>
                 {tag.name}
               </div>
-              <div className={clsx(["flex"])}>
-                <TagType className={clsx(["text-xs"])} fragment={tag} />
+              <div className={clsx("flex")}>
+                <TagType className={clsx("text-xs")} fragment={tag} />
               </div>
             </div>
           </LinkTag>

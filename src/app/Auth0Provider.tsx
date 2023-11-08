@@ -15,13 +15,7 @@ export default function Provider({ children }: { children: ReactNode }) {
         redirect_uri:
           typeof window === "object" ? window.location.origin : undefined,
         scope: [
-          "create:mylist",
-          "create:registration_request",
-          "create:tagging",
-          "create:video",
-          "edit:mylist",
-          "remove:tagging",
-          "update:mylist_registration",
+          "create:mylist create:registration_request create:tagging create:video edit:mylist remove:tagging update:mylist_registration",
         ].join(" "),
       }}
     >

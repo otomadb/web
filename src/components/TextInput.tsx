@@ -19,10 +19,9 @@ export const TextInput = forwardRef<
       ref={ref}
       className={clsx(
         className,
-        ["bg-slate-50"],
-        ["outline-teal-300"],
-        [["text-slate-900"], ["placeholder:text-slate-300"]],
-        ["border", "border-gray-300", "rounded"]
+        ["bg-slate-50 outline-teal-300"],
+        [["text-slate-900 placeholder:text-slate-300"]],
+        ["rounded border border-gray-300"]
       )}
     />
   );
@@ -68,10 +67,9 @@ export const TextInput2 = forwardRef<
         style={style}
         className={clsx(
           className,
-          ["group/textinput"],
-          ["flex", "items-stretch"],
-          ["border", "border-slate-700", "aria-disabled:border-slate-700"],
-          ["focus-within:outline", "outline-1", "outline-sky-700"],
+          [
+            "group/textinput flex items-stretch border border-slate-700 outline-1 outline-sky-700 focus-within:outline aria-disabled:border-slate-700",
+          ],
           {
             small: ["rounded-sm"],
             medium: ["rounded"],
@@ -83,14 +81,15 @@ export const TextInput2 = forwardRef<
         {LeftDecoration && (
           <div
             className={clsx(
-              ["flex-shrink-0"],
+              ["shrink-0"],
               {
                 small: ["px-3"],
                 medium: ["px-4"],
                 large: ["px-6"],
               }[size],
-              ["bg-slate-800", "group-aria-disabled/textinput:bg-slate-700"],
-              ["flex", "items-center"]
+              [
+                "flex items-center bg-slate-800 group-aria-disabled/textinput:bg-slate-700",
+              ]
             )}
           >
             <LeftDecoration disabled={disabled} />
@@ -98,23 +97,19 @@ export const TextInput2 = forwardRef<
         )}
         <div
           className={clsx(
-            ["flex-grow"],
-            ["bg-slate-950", "group-aria-disabled/textinput:bg-slate-600"],
+            ["grow bg-slate-950 group-aria-disabled/textinput:bg-slate-600"],
             {
-              small: ["py-1", "px-2", "text-sm"],
-              medium: ["py-1.5", "px-4", "text-base"],
-              large: ["py-2", "px-4", "text-lg"],
+              small: ["px-2 py-1 text-sm"],
+              medium: ["px-4 py-1.5 text-base"],
+              large: ["px-4 py-2 text-lg"],
             }[size]
           )}
         >
           <input
             ref={ref}
-            className={clsx(
-              ["w-full", "h-full"],
-              ["bg-transparent"],
-              ["outline-none"],
-              ["text-slate-300", "placeholder-slate-700"]
-            )}
+            className={clsx([
+              "h-full w-full bg-transparent text-slate-300 outline-none placeholder:text-slate-700",
+            ])}
             type={"text"}
             placeholder={placeholder}
             autoComplete={autoComplete ? "on" : "off"}

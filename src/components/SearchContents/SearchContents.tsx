@@ -16,32 +16,20 @@ export const SearchContents: React.FC<{ className?: string }> = ({
 
   return (
     <form
-      className={clsx(
-        className,
-        ["group"],
-        ["relative"],
-        ["w-full"],
-        ["border"],
-        ["bg-white"]
-      )}
+      className={clsx(className, ["group relative w-full border bg-white"])}
     >
       <div
-        className={clsx(
-          ["absolute"],
-          ["pl-4"],
-          ["inset-y-0"],
-          ["flex", "items-center"],
-          ["pointer-events-none"]
-        )}
+        className={clsx([
+          "pointer-events-none absolute inset-y-0 flex items-center pl-4",
+        ])}
       >
-        <Pictogram icon="search" className={clsx(["w-4"], ["h-4"])} />
+        <Pictogram icon="search" className={clsx("h-4 w-4")} />
       </div>
       <DelayedInput
         className={clsx(
           ["w-full"],
-          [["pl-10"], ["pr-4"], ["py-3"]],
-          ["text-sm"],
-          ["text-slate-900"]
+          [["py-3 pl-10 pr-4"]],
+          ["text-sm text-slate-900"]
         )}
         type="search"
         aria-label="Search box input"
@@ -52,9 +40,8 @@ export const SearchContents: React.FC<{ className?: string }> = ({
       {query !== "" && (
         <Dropdown
           classname={clsx(
-            ["invisible", "group-focus-within:visible"],
-            ["w-full"],
-            [["absolute"], ["z-infinity"], ["top-full"]]
+            ["invisible w-full group-focus-within:visible"],
+            [["absolute top-full z-infinity"]]
           )}
           query={query}
         />

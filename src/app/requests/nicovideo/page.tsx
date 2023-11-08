@@ -24,21 +24,19 @@ export default async function Page() {
 
   return (
     <main
-      className={clsx(
-        ["@container", "max-w-screen-lg", "mx-auto"],
-        ["w-full"],
-        ["flex", "flex-col"]
-      )}
+      className={clsx([
+        "mx-auto flex w-full max-w-screen-lg flex-col @container",
+      ])}
     >
-      <div className={clsx(["w-full"], ["backdrop-blur-lg"])}>
-        <div className={clsx(["flex"], ["max-w-screen-lg", "mx-auto"])}>
-          <header className={clsx(["flex-grow"], ["py-4"])}>
+      <div className={clsx("w-full backdrop-blur-lg")}>
+        <div className={clsx("mx-auto flex max-w-screen-lg")}>
+          <header className={clsx("grow py-4")}>
             <div>
-              <h1 className={clsx(["text-2xl", "text-slate-900"])}>
+              <h1 className={clsx("text-2xl text-slate-900")}>
                 最近リクエストされたニコニコ動画の動画
               </h1>
             </div>
-            <p className={clsx(["text-sm", "text-slate-500"])}>
+            <p className={clsx("text-sm text-slate-500")}>
               {
                 result.data.findUncheckedNicovideoRegistrationRequests
                   .totalCount
@@ -48,7 +46,7 @@ export default async function Page() {
           </header>
         </div>
       </div>
-      <section className={clsx(["container", "mx-auto"])}>
+      <section className={clsx("container mx-auto")}>
         <RequestsList
           fragment={result.data.findUncheckedNicovideoRegistrationRequests}
         />

@@ -26,26 +26,20 @@ export default function Notifications({
   return (
     <NotificationsPageLink
       style={style}
-      className={clsx(
-        className,
-        ["group"],
-        ["bg-white/75", "hover:bg-sky-300/75"]
-      )}
+      className={clsx(className, ["group bg-white/75 hover:bg-sky-300/75"])}
     >
       <p
-        className={clsx(
-          ["text-xs"],
-          ["text-slate-900", "group-hover/link:text-sky-900"]
-        )}
+        className={clsx([
+          "text-xs text-slate-900 group-hover/link:text-sky-900",
+        ])}
       >
         {0 < notifications.totalCount && (
           <>
             通知が
             <span
-              className={clsx(
-                ["font-bold"],
-                ["text-slate-700", "group-hover/link:text-sky-700"]
-              )}
+              className={clsx([
+                "font-bold text-slate-700 group-hover/link:text-sky-700",
+              ])}
             >
               {notifications.totalCount}
             </span>

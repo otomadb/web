@@ -23,10 +23,10 @@ export const SimilarVideo = ({
   const { to } = useFragment(Fragment, props.fragment);
   return (
     <div>
-      <LinkVideo fragment={to} className={clsx(["block"])}>
+      <LinkVideo fragment={to} className={clsx("block")}>
         <VideoThumbnail
           fragment={to}
-          className={clsx(["w-full"], ["h-32"], ["border", "border-slate-400"])}
+          className={clsx("h-32 w-full border border-slate-400")}
           imageSize="medium"
         />
       </LinkVideo>
@@ -34,8 +34,8 @@ export const SimilarVideo = ({
         fragment={to}
         className={clsx(
           ["block"],
-          [["px-1"], ["py-1"]],
-          ["text-sm", "@[768px]/videolist:text-xs"]
+          [["p-1"]],
+          ["text-sm @[768px]/videolist:text-xs"]
         )}
       >
         {to.title}

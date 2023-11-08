@@ -31,20 +31,14 @@ export default function ListItem({
 
   return (
     <div
-      className={clsx(
-        className,
-        ["px-2"],
-        ["py-2"],
-        ["flex", "flex-col"],
-        ["bg-slate-900"],
-        ["border", "border-slate-800"],
-        ["rounded"]
-      )}
+      className={clsx(className, [
+        "flex flex-col rounded border border-slate-800 bg-slate-900 p-2",
+      ])}
       style={style}
     >
       <PageLink>
         <CoolImage2
-          className={clsx(["h-[128px]"])}
+          className={clsx("h-[128px]")}
           alt={fragment.title}
           src={fragment.thumbnailUrl}
           width={196}
@@ -52,7 +46,7 @@ export default function ListItem({
           unoptimized={true}
         />
       </PageLink>
-      <div className={clsx(["mt-1"], ["flex"])}>
+      <div className={clsx("mt-1 flex")}>
         <PageLink
           className={clsx([
             "text-sm",
@@ -64,10 +58,10 @@ export default function ListItem({
           {fragment.title}
         </PageLink>
       </div>
-      <div className={clsx(["mt-1"], ["flex", "items-center"])}>
+      <div className={clsx("mt-1 flex items-center")}>
         <UserIconLink size="small" fragment={fragment.requestedBy} />
         <UserDisplayNameLink
-          className={clsx(["ml-1"], ["text-xxs", "text-slate-400"])}
+          className={clsx("ml-1 text-xxs text-slate-400")}
           fragment={fragment.requestedBy}
         />
       </div>

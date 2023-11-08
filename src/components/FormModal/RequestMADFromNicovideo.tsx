@@ -25,13 +25,13 @@ export default function RequestMADFromNicovideoFormModal({
     <div className={clsx(className)} style={style}>
       {!sourceId && (
         <NicovideoIDForm
-          className={clsx(["h-full"])}
+          className={clsx("h-full")}
           set={(s) => setSourceId(s)}
         />
       )}
       {sourceId && (
         <RequestForm
-          className={clsx(["h-full"])}
+          className={clsx("h-full")}
           sourceId={sourceId}
           handleSuccess={handleSuccess}
           handleCancel={() => {

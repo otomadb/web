@@ -12,7 +12,7 @@ export const VideoList = async function <T extends { id: string }>({
 }) {
   const { items } = await fetchItems;
   return (
-    <div className={clsx(["@container/videolist"])}>
+    <div className={clsx("@container/videolist")}>
       {items.length === 0 && <span>動画が存在しません。</span>}
       <div
         className={clsx(
@@ -20,16 +20,10 @@ export const VideoList = async function <T extends { id: string }>({
           [
             "grid",
             [
-              "grid-cols-1",
-              "@[384px]/videolist:grid-cols-2",
-              "@[512px]/videolist:grid-cols-3",
-              "@[768px]/videolist:grid-cols-4",
-              "@[1024px]/videolist:grid-cols-6",
-              "@[1536px]/videolist:grid-cols-8",
+              "grid-cols-1 @[384px]/videolist:grid-cols-2 @[512px]/videolist:grid-cols-3 @[768px]/videolist:grid-cols-4 @[1024px]/videolist:grid-cols-6 @[1536px]/videolist:grid-cols-8",
             ],
           ],
-          ["gap-x-2", "@[768px]/videolist:gap-x-4"],
-          ["gap-y-2", "@[768px]/videolist:gap-x-4"]
+          ["gap-2 @[768px]/videolist:gap-x-4"]
         )}
       >
         {items.map((item) => (

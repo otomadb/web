@@ -33,18 +33,15 @@ export default async function Layout({
   const { findUser } = result.data;
 
   return (
-    <div className={clsx(["flex"])}>
+    <div className={clsx("flex")}>
       <div
-        className={clsx(
-          ["flex-shrink-0"],
-          ["w-72"],
-          ["h-[calc(100vh-64px)]"],
-          ["sticky", "top-[64px]"]
-        )}
+        className={clsx([
+          "sticky top-[64px] h-[calc(100vh-[64px])] w-72 shrink-0",
+        ])}
       >
         <SideMylistList fetcher={findUser.mylists} />
       </div>
-      <div className={clsx(["flex-grow"])}>{children}</div>
+      <div className={clsx("grow")}>{children}</div>
     </div>
   );
 }

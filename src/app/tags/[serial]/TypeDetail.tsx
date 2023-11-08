@@ -15,9 +15,9 @@ export const TypeDetail: React.FC<{
 }> = ({ className, ...props }) => {
   const fragment = useFragment(Fragment, props.fragment);
   return (
-    <div className={clsx(className, ["flex", "items-center"], ["gap-x-2"])}>
-      <h2 className={clsx(["text-sm", "text-slate-600"])}>タグのタイプ</h2>
-      <div className={clsx(["flex", "gap-x-2"])}>
+    <div className={clsx(className, "flex items-center gap-x-2")}>
+      <h2 className={clsx("text-sm text-slate-600")}>タグのタイプ</h2>
+      <div className={clsx("flex gap-x-2")}>
         <TagType fragment={fragment} />
       </div>
     </div>

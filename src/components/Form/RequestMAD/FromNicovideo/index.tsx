@@ -168,14 +168,14 @@ export default function RequestForm({
     <div
       className={clsx(
         className,
-        ["flex-grow"],
-        [["px-4"], ["py-4"]],
-        ["flex", "flex-col", "gap-y-4"]
+        ["grow"],
+        [["p-4"]],
+        ["flex flex-col gap-y-4"]
       )}
       style={style}
     >
       {fetching || !data ? (
-        <div className={clsx(["text-slate-400"])}>Loading</div>
+        <div className={clsx("text-slate-400")}>Loading</div>
       ) : data.findNicovideoVideoSource ? (
         <AlreadyRegistered
           fragment={data.findNicovideoVideoSource}
@@ -191,18 +191,16 @@ export default function RequestForm({
         <SourceNotExists handleCancel={handleCancel} />
       ) : (
         <form
-          className={clsx(["h-full"], ["flex", "flex-col", "gap-y-6"])}
+          className={clsx("flex h-full flex-col gap-y-6")}
           onSubmit={(e) => {
             e.preventDefault();
             handleSubmit();
           }}
         >
-          <div className={clsx(["flex", "flex-col", "gap-y-4"])}>
-            <div className={clsx(["flex-shrink-0"], ["w-full"])}>
-              <label className={clsx(["flex", "flex-col", "gap-y-1"])}>
-                <div
-                  className={clsx(["text-xs", "font-bold", "text-slate-400"])}
-                >
+          <div className={clsx("flex flex-col gap-y-4")}>
+            <div className={clsx("w-full shrink-0")}>
+              <label className={clsx("flex flex-col gap-y-1")}>
+                <div className={clsx("text-xs font-bold text-slate-400")}>
                   タイトル
                 </div>
                 <TextInput2
@@ -213,24 +211,20 @@ export default function RequestForm({
                 />
               </label>
             </div>
-            <div className={clsx(["flex", "flex-col", "gap-y-2"])}>
-              <div className={clsx(["flex", "gap-x-2"])}>
+            <div className={clsx("flex flex-col gap-y-2")}>
+              <div className={clsx("flex gap-x-2")}>
                 <div
-                  className={clsx(
-                    ["py-0.5"],
-                    ["flex-shrink-0"],
-                    ["text-xs", "font-bold", "text-slate-400"]
-                  )}
+                  className={clsx([
+                    "shrink-0 py-0.5 text-xs font-bold text-slate-400",
+                  ])}
                 >
                   追加されるタグ
                 </div>
                 {taggings.length === 0 && (
                   <div
-                    className={clsx(
-                      ["self-center"],
-                      ["flex-shrink-0"],
-                      ["text-xs", "text-slate-400"]
-                    )}
+                    className={clsx([
+                      "shrink-0 self-center text-xs text-slate-400",
+                    ])}
                   >
                     なし
                   </div>
@@ -259,23 +253,19 @@ export default function RequestForm({
                   </div>
                 )}
               </div>
-              <div className={clsx(["flex", "gap-x-2"])}>
+              <div className={clsx("flex gap-x-2")}>
                 <div
-                  className={clsx(
-                    ["py-0.5"],
-                    ["flex-shrink-0"],
-                    ["text-xs", "font-bold", "text-slate-400"]
-                  )}
+                  className={clsx([
+                    "shrink-0 py-0.5 text-xs font-bold text-slate-400",
+                  ])}
                 >
                   追加される仮タグ
                 </div>
                 {semitaggings.length === 0 && (
                   <div
-                    className={clsx(
-                      ["self-center"],
-                      ["flex-shrink-0"],
-                      ["text-xs", "text-slate-400"]
-                    )}
+                    className={clsx([
+                      "shrink-0 self-center text-xs text-slate-400",
+                    ])}
                   >
                     なし
                   </div>
@@ -305,32 +295,25 @@ export default function RequestForm({
                   </div>
                 )}
               </div>
-              <div className={clsx(["mt-auto"], ["flex-shrink-0"])}>
+              <div className={clsx("mt-auto shrink-0")}>
                 <TagSearcher
                   limit={5}
                   size="small"
-                  className={clsx(["w-full"], ["z-10"])}
+                  className={clsx("z-10 w-full")}
                   handleSelect={(tagId, fragment) => {
                     dispatchTags({ type: "append", tagId, fragment });
                   }}
                   Additional={({ query }) => (
-                    <div className={clsx(["flex", "items-center"])}>
+                    <div className={clsx("flex items-center")}>
                       <div
-                        className={clsx(
-                          ["px-0.5", "py-0.25"],
-                          ["bg-slate-900"],
-                          ["border", "border-slate-700", "rounded-sm"],
-                          ["text-xs", "text-slate-300"]
-                        )}
+                        className={clsx([
+                          "rounded-sm border border-slate-700 bg-slate-900 px-0.5 py-0.25 text-xs text-slate-300",
+                        ])}
                       >
                         {query}
                       </div>
                       <div
-                        className={clsx(
-                          ["flex-shrink-0"],
-                          ["text-sm"],
-                          ["text-slate-500"]
-                        )}
+                        className={clsx(["shrink-0 text-sm text-slate-500"])}
                       >
                         を仮タグとして追加
                       </div>
@@ -344,39 +327,12 @@ export default function RequestForm({
               </div>
             </div>
           </div>
-          <div className={clsx(["flex", "flex-col", "gap-y-2"])}>
-            <div className={clsx(["flex", "gap-x-2"])}>
+          <div className={clsx("flex flex-col gap-y-2")}>
+            <div className={clsx("flex gap-x-2")}>
               <div
-                className={clsx(
-                  ["select-none"],
-                  ["px-2", "py-1"],
-                  [
-                    "bg-slate-950",
-                    "hover:bg-slate-800",
-                    "aria-checked:bg-slate-700",
-                    "aria-disabled:bg-slate-900",
-                  ],
-                  [
-                    "text-xs",
-                    "font-bold",
-                    "text-slate-400",
-                    "aria-checked:text-slate-400",
-                    "aria-disabled:text-slate-700",
-                  ],
-                  [
-                    "border",
-                    "border-slate-700",
-                    "aria-checked:border-slate-600",
-                    "aria-disabled:border-slate-800",
-                    "rounded",
-                  ],
-                  [
-                    "cursor-pointer",
-                    "aria-checked:cursor-default",
-                    "aria-disabled:cursor-default",
-                  ],
-                  ["cursor-pointer", "aria-checked:cursor-default"]
-                )}
+                className={clsx([
+                  "cursor-pointer select-none rounded border border-slate-700 bg-slate-950 px-2 py-1 text-xs font-bold text-slate-400 hover:bg-slate-800 aria-checked:cursor-default aria-checked:border-slate-600 aria-checked:bg-slate-700 aria-checked:text-slate-400 aria-disabled:cursor-default aria-disabled:border-slate-800 aria-disabled:bg-slate-900 aria-disabled:text-slate-700",
+                ])}
                 onClick={() => setTab("SOURCE")}
                 aria-checked={tab === "SOURCE"}
               >
@@ -405,17 +361,10 @@ export default function RequestForm({
               )}
             </div>
           </div>
-          <div
-            className={clsx(
-              ["flex"],
-              ["mt-auto"],
-              ["flex-shrink-0"],
-              ["w-full"]
-            )}
-          >
+          <div className={clsx("mt-auto flex w-full shrink-0")}>
             <Button submit text="リクエストする" size="medium" color="blue" />
             <Button
-              className={clsx(["ml-auto"])}
+              className={clsx("ml-auto")}
               onClick={() => {
                 handleCancel();
               }}

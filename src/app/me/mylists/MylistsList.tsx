@@ -30,14 +30,7 @@ export const MylistsList: React.FC<{ className?: string }> = ({
   if (!data?.whoami?.mylists) return null;
 
   return (
-    <div
-      className={clsx(className, [
-        "flex",
-        "flex-col",
-        "items-stretch",
-        "gap-y-2",
-      ])}
-    >
+    <div className={clsx(className, ["flex flex-col items-stretch gap-y-2"])}>
       {data.whoami.mylists.nodes.length === 0 && (
         <p>取得可能なマイリストは存在しませんでした</p>
       )}

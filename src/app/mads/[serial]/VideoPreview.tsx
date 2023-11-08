@@ -47,18 +47,16 @@ export const Image = ({
   >("ORIGINAL");
 
   return (
-    <div className={clsx(className, ["flex"])}>
-      <div className={clsx(["w-[256px]"], ["flex", "flex-col"])}>
+    <div className={clsx(className, "flex")}>
+      <div className={clsx("flex w-[256px] flex-col")}>
         <button
           type="button"
           onClick={() => setThumbnail("ORIGINAL")}
-          className={clsx(
-            ["hover:bg-blue-200"],
-            ["px-2", "py-3"],
-            ["flex", "flex-col", "items-start"]
-          )}
+          className={clsx([
+            "flex flex-col items-start px-2 py-3 hover:bg-blue-200",
+          ])}
         >
-          <span className={clsx(["text-sm", "text-slate-700", "font-mono"])}>
+          <span className={clsx("font-mono text-sm text-slate-700")}>
             オリジナル
           </span>
         </button>
@@ -70,16 +68,12 @@ export const Image = ({
               e.preventDefault();
               setThumbnail(["NICOVIDEO", source.id]);
             }}
-            className={clsx(
-              ["hover:bg-blue-200"],
-              ["px-2", "py-2"],
-              ["flex", "flex-col", "items-start"]
-            )}
+            className={clsx([
+              "flex flex-col items-start p-2 hover:bg-blue-200",
+            ])}
           >
-            <span className={clsx(["text-sm", "text-slate-700"])}>
-              ニコニコ動画
-            </span>
-            <span className={clsx(["text-xs", "text-slate-500", "font-mono"])}>
+            <span className={clsx("text-sm text-slate-700")}>ニコニコ動画</span>
+            <span className={clsx("font-mono text-xs text-slate-500")}>
               {source.sourceId}
             </span>
           </a>
@@ -92,14 +86,12 @@ export const Image = ({
               e.preventDefault();
               setThumbnail(["YOUTUBE", source.id]);
             }}
-            className={clsx(
-              ["hover:bg-blue-200"],
-              ["px-1", "py-1"],
-              ["flex", "flex-col", "items-start"]
-            )}
+            className={clsx([
+              "flex flex-col items-start p-1 hover:bg-blue-200",
+            ])}
           >
-            <span className={clsx(["text-xs", "text-slate-700"])}>Youtube</span>
-            <span className={clsx(["text-xxs", "text-slate-500", "font-mono"])}>
+            <span className={clsx("text-xs text-slate-700")}>Youtube</span>
+            <span className={clsx("font-mono text-xxs text-slate-500")}>
               {source.sourceId}
             </span>
           </a>
@@ -112,22 +104,18 @@ export const Image = ({
               e.preventDefault();
               setThumbnail(["SOUNDCLOUD", source.id]);
             }}
-            className={clsx(
-              ["hover:bg-blue-200"],
-              ["px-1", "py-1"],
-              ["flex", "flex-col", "items-start"]
-            )}
+            className={clsx([
+              "flex flex-col items-start p-1 hover:bg-blue-200",
+            ])}
           >
-            <span className={clsx(["text-xs", "text-slate-700"])}>
-              Soundcloud
-            </span>
-            <span className={clsx(["text-xxs", "text-slate-500", "font-mono"])}>
+            <span className={clsx("text-xs text-slate-700")}>Soundcloud</span>
+            <span className={clsx("font-mono text-xxs text-slate-500")}>
               {source.url}
             </span>
           </a>
         ))}
       </div>
-      <div className={clsx(["flex"])}>
+      <div className={clsx("flex")}>
         <VideoThumbnail
           fragment={fragment}
           imageSize="large"
@@ -149,7 +137,7 @@ export const Image = ({
                   thumbnail[1] === source.id
                 ),
               },
-              ["w-96", "h-48"]
+              ["h-48 w-96"]
             )}
             src={source.embedUrl}
           />
@@ -167,7 +155,7 @@ export const Image = ({
                   thumbnail[1] === source.id
                 ),
               },
-              ["w-96", "h-48"]
+              ["h-48 w-96"]
             )}
             src={source.embedUrl}
           />
@@ -185,7 +173,7 @@ export const Image = ({
                   thumbnail[1] === source.id
                 ),
               },
-              ["w-96", "h-48"]
+              ["h-48 w-96"]
             )}
             src={source.embedUrl}
           />

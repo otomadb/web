@@ -89,7 +89,7 @@ export default function NotificationsListBlock({
   return (
     <div style={style} className={clsx(className)}>
       {fetching && <div>Loading...</div>}
-      <ul className={clsx(["w-full"], ["flex", "flex-col", "gap-y-1"])}>
+      <ul className={clsx("flex w-full flex-col gap-y-1")}>
         {data?.notifications.edges.map(({ cursor, node }) => (
           <li key={cursor}>
             {node.__typename ===

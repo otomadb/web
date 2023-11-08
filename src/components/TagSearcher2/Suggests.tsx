@@ -38,12 +38,11 @@ export default function Suggests({
         <div
           className={clsx(
             {
-              small: ["py-1", "px-2"],
-              medium: ["py-2", "px-2"],
-              large: ["py-2", "px-2"],
+              small: ["px-2 py-1"],
+              medium: ["px-2 py-2"],
+              large: ["px-2 py-2"],
             }[size],
-            ["bg-slate-950"],
-            ["text-xs", "text-slate-600"]
+            ["bg-slate-950 text-xs text-slate-600"]
           )}
         >
           該当候補はありません
@@ -51,10 +50,9 @@ export default function Suggests({
       )}
       {0 < items.length && (
         <div
-          className={clsx(
-            ["flex", "flex-col", "items-stretch"],
-            ["divide-y", ["divide-slate-800"]]
-          )}
+          className={clsx([
+            "flex flex-col items-stretch divide-y divide-slate-800",
+          ])}
         >
           {items.map((fragment, i) => (
             <SuggestItem

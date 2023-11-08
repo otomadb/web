@@ -18,10 +18,8 @@ export default async function Page({
       {searchParams.error === "access_denied" && (
         <CallToast duration={10000}>
           <p className={clsx()}>次のことを確認してください。</p>
-          <ul
-            className={clsx(["pl-4"], ["flex", "flex-col"], ["list-decimal"])}
-          >
-            <li className={clsx(["text-sm"])}>メール認証しましたか？</li>
+          <ul className={clsx("flex list-decimal flex-col pl-4")}>
+            <li className={clsx("text-sm")}>メール認証しましたか？</li>
           </ul>
         </CallToast>
       )}

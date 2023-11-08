@@ -46,7 +46,7 @@ export const Primary: Story = {
       },
       Fragment
     ),
-    selectings: ["semitag:3", "semitag:4"],
+    selectings: ["semitag:3 semitag:4"],
   },
 };
 
@@ -70,7 +70,7 @@ export const Less: Story = {
       },
       Fragment
     ),
-    selectings: ["semitag:3", "semitag:4"],
+    selectings: ["semitag:3 semitag:4"],
   },
 };
 

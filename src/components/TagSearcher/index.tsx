@@ -42,7 +42,7 @@ export const TagSearcher: React.FC<{
   });
 
   return (
-    <div className={clsx(className, ["relative", "group"])} style={style}>
+    <div className={clsx(className, "group relative")} style={style}>
       <SearchBox
         limit={limit}
         fetching={fetching}
@@ -51,13 +51,9 @@ export const TagSearcher: React.FC<{
         }}
       />
       <div
-        className={clsx(
-          { hidden: query === "" },
-          ["invisible", "group-focus-within:visible"],
-          ["border", ["border-slate-300"]],
-          ["absolute", "z-1"],
-          ["w-full"]
-        )}
+        className={clsx({ hidden: query === "" }, [
+          "invisible absolute z-1 w-full border border-slate-300 group-focus-within:visible",
+        ])}
       >
         {data && (
           <Suggests
@@ -68,7 +64,7 @@ export const TagSearcher: React.FC<{
           />
         )}
         {
-          <div className={clsx(["border-t", "border-slate-300"])}>
+          <div className={clsx("border-t border-slate-300")}>
             <Optional query={query} />
           </div>
         }

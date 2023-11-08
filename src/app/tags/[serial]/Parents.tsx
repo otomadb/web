@@ -29,12 +29,12 @@ export const Parents: React.FC<{
   if (parents.nodes.length === 0) return null;
 
   return (
-    <div className={clsx(className, ["flex", "items-center"], ["gap-x-2"])}>
-      <h2 className={clsx(["text-sm", "text-slate-600"])}>親タグ</h2>
-      <div className={clsx(["flex", "items-center", "gap-x-2"])}>
+    <div className={clsx(className, "flex items-center gap-x-2")}>
+      <h2 className={clsx("text-sm text-slate-600")}>親タグ</h2>
+      <div className={clsx("flex items-center gap-x-2")}>
         {parents.nodes.map(({ id, parent }) => (
           <LinkTag key={id} fragment={parent}>
-            <CommonTag fragment={parent} className={clsx(["text-sm"])} />
+            <CommonTag fragment={parent} className={clsx("text-sm")} />
           </LinkTag>
         ))}
       </div>

@@ -20,17 +20,9 @@ export const ToggleSwitch: React.FC<{
         width: size * 2.5,
         height: size * 1.25,
       }}
-      className={clsx(
-        className,
-        ["group/toggle"],
-        ["cursor-pointer"],
-        ["flex"],
-        ["rounded-full"],
-        ["overflow-hidden"],
-        ["bg-slate-400", "aria-checked:bg-green-400"],
-        ["transition-color", "duration-75"],
-        ["relative"]
-      )}
+      className={clsx(className, [
+        "group/toggle transition-color relative flex cursor-pointer overflow-hidden rounded-full bg-slate-400 duration-75 aria-checked:bg-green-400",
+      ])}
       tabIndex={0}
       role="checkbox"
       aria-checked={toggle}
@@ -43,14 +35,9 @@ export const ToggleSwitch: React.FC<{
           top: size * 0.125,
           left: size * 0.25,
         }}
-        className={clsx(
-          ["absolute"],
-          ["rounded-full"],
-          ["bg-white"],
-          ["group-aria-checked/toggle:translate-x-full"],
-          ["transition-transform", "duration-75"],
-          ["shadow"]
-        )}
+        className={clsx([
+          "absolute rounded-full bg-white shadow transition-transform duration-75 group-aria-checked/toggle:translate-x-full",
+        ])}
       />
     </div>
   );

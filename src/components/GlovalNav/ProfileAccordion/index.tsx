@@ -34,15 +34,9 @@ const MenuItem: React.FC<{
 }> = ({ className, Wrapper, children }) => {
   return (
     <Wrapper
-      className={clsx(
-        className,
-        ["block"],
-        ["py-2"],
-        ["px-4"],
-        ["bg-white/75", "hover:bg-sky-300/75"],
-        ["text-slate-900", "group-hover/link:text-sky-900"],
-        ["text-xs"]
-      )}
+      className={clsx(className, [
+        "block bg-white/75 px-4 py-2 text-xs text-slate-900 hover:bg-sky-300/75 group-hover/link:text-sky-900",
+      ])}
       onClick={(e) => {
         e.currentTarget.blur();
       }}
@@ -88,19 +82,13 @@ export default function ProfileAccordion({
   return (
     <div
       style={style}
-      className={clsx(
-        className,
-        ["divide-y", "divide-y-slate-400/75"],
-        ["shadow"],
-        ["flex", "flex-col"],
-        ["rounded-md"],
-        ["backdrop-blur-[6px]"],
-        ["overflow-hidden"]
-      )}
+      className={clsx(className, [
+        "divide-y-slate-400/75 flex flex-col divide-y overflow-hidden rounded-md shadow backdrop-blur-[6px]",
+      ])}
     >
-      <AboutMe fragment={fragment} className={clsx(["py-3", "px-4"])} />
-      <Notifications fragment={fragment} className={clsx(["py-3", "px-4"])} />
-      <div className={clsx(["grid"], ["grid-cols-1"])}>
+      <AboutMe fragment={fragment} className={clsx("px-4 py-3")} />
+      <Notifications fragment={fragment} className={clsx("px-4 py-3")} />
+      <div className={clsx("grid grid-cols-1")}>
         <MenuItem Wrapper={(props) => <YouLikesPageLink {...props} />}>
           いいねした動画
         </MenuItem>
@@ -111,7 +99,7 @@ export default function ProfileAccordion({
           Wrapper={({ className, onClick, ...props }) => (
             <button
               {...props}
-              className={clsx(className, ["text-left"])}
+              className={clsx(className, "text-left")}
               type="button"
               onClick={(e) => {
                 if (onClick) onClick(e);
@@ -126,7 +114,7 @@ export default function ProfileAccordion({
           Wrapper={({ className, onClick, ...props }) => (
             <button
               {...props}
-              className={clsx(className, ["text-left"])}
+              className={clsx(className, "text-left")}
               type="button"
               onClick={(e) => {
                 if (onClick) onClick(e);
@@ -141,7 +129,7 @@ export default function ProfileAccordion({
           Wrapper={({ className, onClick, ...props }) => (
             <button
               {...props}
-              className={clsx(className, ["text-left"])}
+              className={clsx(className, "text-left")}
               type="button"
               onClick={(e) => {
                 if (onClick) onClick(e);
@@ -157,13 +145,13 @@ export default function ProfileAccordion({
         </MenuItem>
       </div>
       {whoami.isEditor && (
-        <div className={clsx(["grid"], ["grid-cols-2"])}>
+        <div className={clsx("grid grid-cols-2")}>
           <MenuItem
-            className={clsx(["col-span-2"])}
+            className={clsx("col-span-2")}
             Wrapper={({ className, onClick, ...props }) => (
               <button
                 {...props}
-                className={clsx(className, ["text-left"])}
+                className={clsx(className, "text-left")}
                 type="button"
                 onClick={(e) => {
                   if (onClick) onClick(e);
@@ -175,11 +163,11 @@ export default function ProfileAccordion({
             ニコニコ動画から登録
           </MenuItem>
           <MenuItem
-            className={clsx(["col-span-2"])}
+            className={clsx("col-span-2")}
             Wrapper={({ className, onClick, ...props }) => (
               <button
                 {...props}
-                className={clsx(className, ["text-left"])}
+                className={clsx(className, "text-left")}
                 type="button"
                 onClick={(e) => {
                   if (onClick) onClick(e);
@@ -191,11 +179,11 @@ export default function ProfileAccordion({
             Youtubeから登録
           </MenuItem>
           <MenuItem
-            className={clsx(["col-span-2"])}
+            className={clsx("col-span-2")}
             Wrapper={({ className, onClick, ...props }) => (
               <button
                 {...props}
-                className={clsx(className, ["text-left"])}
+                className={clsx(className, "text-left")}
                 type="button"
                 onClick={(e) => {
                   if (onClick) onClick(e);
@@ -207,11 +195,11 @@ export default function ProfileAccordion({
             ビリビリ動画から登録
           </MenuItem>
           <MenuItem
-            className={clsx(["col-span-2"])}
+            className={clsx("col-span-2")}
             Wrapper={({ className, onClick, ...props }) => (
               <button
                 {...props}
-                className={clsx(className, ["text-left"])}
+                className={clsx(className, "text-left")}
                 type="button"
                 onClick={(e) => {
                   if (onClick) onClick(e);
@@ -223,28 +211,25 @@ export default function ProfileAccordion({
             Soundcloudから登録
           </MenuItem>
           <MenuItem
-            className={clsx(["col-span-1"])}
+            className={clsx("col-span-1")}
             Wrapper={(props) => <TagRegisterPageLink {...props} />}
           >
             タグの登録
           </MenuItem>
           <MenuItem
-            className={clsx(["col-span-1"])}
+            className={clsx("col-span-1")}
             Wrapper={(props) => <LinkRegisterSemitag {...props} />}
           >
             仮タグの解決
           </MenuItem>
         </div>
       )}
-      <div className={clsx(["flex"], ["py-2", "px-4"], ["bg-slate-300/75"])}>
+      <div className={clsx("flex bg-slate-300/75 px-4 py-2")}>
         <button
           onClick={() => {
             logout();
           }}
-          className={clsx(
-            ["text-xs"],
-            ["text-slate-700", "hover:text-slate-500"]
-          )}
+          className={clsx(["text-xs text-slate-700 hover:text-slate-500"])}
         >
           ログアウト
         </button>

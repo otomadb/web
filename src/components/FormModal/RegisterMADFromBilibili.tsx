@@ -26,13 +26,13 @@ export default function RegisterMADFromBilibiliFormModal({
     <div className={clsx(className)} style={style}>
       {!sourceId && (
         <BilibiliIDForm
-          className={clsx(["h-full"])}
+          className={clsx("h-full")}
           set={(s) => setSourceId(s)}
         />
       )}
       {sourceId && (
         <RegisterForm
-          className={clsx(["h-full"])}
+          className={clsx("h-full")}
           sourceId={sourceId}
           handleSuccess={handleSuccess}
           handleCancel={() => {

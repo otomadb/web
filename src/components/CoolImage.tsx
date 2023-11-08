@@ -12,23 +12,14 @@ export const CoolImage: React.FC<{
 }> = ({ className, src, alt, width, height, unoptimized = true }) => {
   return (
     <div
-      className={clsx(
-        className,
-        ["flex", "justify-center"],
-        ["rounded-lg"],
-        ["overflow-hidden"],
-        ["relative"]
-      )}
+      className={clsx(className, [
+        "relative flex justify-center overflow-hidden rounded-lg",
+      ])}
     >
       <Image
-        className={clsx(
-          ["z-0"],
-          ["absolute"],
-          ["inset-0"],
-          ["w-full", "h-full"],
-          ["object-cover", "object-center"],
-          ["blur-md", "brightness-75", "scale-125"]
-        )}
+        className={clsx([
+          "absolute inset-0 z-0 h-full w-full scale-125 object-cover object-center blur-md brightness-75",
+        ])}
         src={src}
         alt={alt}
         width={width}
@@ -37,12 +28,7 @@ export const CoolImage: React.FC<{
         unoptimized={unoptimized}
       />
       <Image
-        className={clsx(
-          ["z-1"],
-          ["relative"],
-          ["w-auto", "h-auto"],
-          ["object-scale-down"]
-        )}
+        className={clsx(["relative z-1 h-auto w-auto object-scale-down"])}
         src={src}
         alt={alt}
         width={width}
@@ -67,22 +53,15 @@ export const CoolImage2: React.FC<{
     <div
       className={clsx(
         className,
-        ["flex", "justify-center"],
-        // ["rounded-lg"],
-        ["overflow-hidden"],
-        ["relative"]
+        ["flex justify-center"]
+        // ["rounded-lg overflow-hidden relative"]
       )}
       style={style}
     >
       <Image
-        className={clsx(
-          ["z-0"],
-          ["absolute"],
-          ["inset-0"],
-          ["w-full", "h-full"],
-          ["object-cover", "object-center"],
-          ["blur-md", "brightness-75", "scale-125"]
-        )}
+        className={clsx([
+          "absolute inset-0 z-0 h-full w-full scale-125 object-cover object-center blur-md brightness-75",
+        ])}
         src={src}
         alt={alt}
         width={width}
@@ -91,12 +70,7 @@ export const CoolImage2: React.FC<{
         unoptimized={unoptimized}
       />
       <Image
-        className={clsx(
-          ["z-1"],
-          ["relative"],
-          ["w-auto", "h-auto"],
-          ["object-scale-down"]
-        )}
+        className={clsx(["relative z-1 h-auto w-auto object-scale-down"])}
         src={src}
         alt={alt}
         width={width}

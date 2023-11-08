@@ -25,14 +25,11 @@ export default function RequestMADFromSoundcloudFormModal({
   return (
     <div className={clsx(className)} style={style}>
       {!url && (
-        <SoundcloudURLForm
-          className={clsx(["h-full"])}
-          set={(s) => setUrl(s)}
-        />
+        <SoundcloudURLForm className={clsx("h-full")} set={(s) => setUrl(s)} />
       )}
       {url && (
         <RequestForm
-          className={clsx(["h-full"])}
+          className={clsx("h-full")}
           url={url}
           handleSuccess={handleSuccess}
           handleCancel={() => {

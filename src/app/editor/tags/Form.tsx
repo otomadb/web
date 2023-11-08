@@ -45,13 +45,8 @@ export const RegisterTagForm: React.FC<{
   );
 
   return (
-    <div style={style} className={clsx(className, ["flex"], ["gap-x-2"])}>
-      <div
-        className={clsx(
-          ["flex-grow", "flex-shrink-0"],
-          ["flex", "flex-col", ["gap-y-4"]]
-        )}
-      >
+    <div style={style} className={clsx(className, "flex gap-x-2")}>
+      <div className={clsx(["flex shrink-0 grow flex-col gap-y-4"])}>
         <AddTagForm
           onRegistered={() => {
             dispatch({ type: "clear" });
@@ -61,7 +56,7 @@ export const RegisterTagForm: React.FC<{
         />
       </div>
       <Semitags
-        className={clsx(["w-[1024px]"], ["flex-shrink-0"])}
+        className={clsx("w-[1024px] shrink-0")}
         fragment={data}
         selectings={selectingSemitags}
         append={({ id }) => {

@@ -44,8 +44,8 @@ export default function RenameForm({
   const [{ fetching }, rename] = useRename({
     onSucceeded({ user: { displayName } }) {
       callToast(
-        <p className={clsx(["text-slate-900"])}>
-          名前を<span className={clsx(["font-bold"])}>{displayName}</span>
+        <p className={clsx("text-slate-900")}>
+          名前を<span className={clsx("font-bold")}>{displayName}</span>
           に変更しました
         </p>
       );
@@ -56,28 +56,26 @@ export default function RenameForm({
     <form
       onSubmit={handleSubmit(({ renameTo }) => rename(renameTo))}
       style={style}
-      className={clsx(className, ["flex", "items-start", "gap-x-2"])}
+      className={clsx(className, "flex items-start gap-x-2")}
     >
-      <div className={clsx(["relative"])}>
+      <div className={clsx("relative")}>
         <TextInput
           {...register("renameTo")}
           disabled={fetching}
-          className={clsx(["w-72"], ["px-2"], ["py-1"])}
+          className={clsx("w-72 px-2 py-1")}
           placeholder="新しい表示名"
         />
         <ErrorMessage
           errors={errors}
           name="renameTo"
           render={({ message }) => (
-            <p className={clsx(["mt-1"], ["text-red-400", "text-xs"])}>
-              {message}
-            </p>
+            <p className={clsx("mt-1 text-xs text-red-400")}>{message}</p>
           )}
         />
       </div>
       <Button
         submit
-        className={clsx(["flex-shrink-0"])}
+        className={clsx("shrink-0")}
         color="blue"
         size="small"
         icon="plus"

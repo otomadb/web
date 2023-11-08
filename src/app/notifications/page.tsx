@@ -6,9 +6,7 @@ export const dynamic = "force-dynamic";
 
 export default async function Page() {
   return (
-    <main
-      className={clsx(["py-4"], ["container", "max-w-screen-lg", "mx-auto"])}
-    >
+    <main className={clsx("container mx-auto max-w-screen-lg py-4")}>
       <NotificationsList />
     </main>
   );

@@ -15,25 +15,19 @@ const NeitherExists: React.FC<{
 }> = ({ className, sourceId }) => {
   return (
     <NicovideoRequestPageLink
-      className={clsx(
-        className,
-        ["px-4"],
-        ["py-2"],
-        ["flex", ["gap-x-4"]],
-        ["hover:bg-sky-300/50", "focus:bg-sky-400/50"]
-      )}
+      className={clsx(className, [
+        "flex gap-x-4 px-4 py-2 hover:bg-sky-300/50 focus:bg-sky-400/50",
+      ])}
       sourceId={sourceId}
       onClick={(e) => {
         e.currentTarget.blur();
       }}
     >
-      <div className={clsx(["flex"])}>
-        <p className={clsx("text-slate-700", "text-sm")}>
-          <span className={clsx(["font-mono"])}>{sourceId}</span>
+      <div className={clsx("flex")}>
+        <p className={clsx("text-sm text-slate-700")}>
+          <span className={clsx("font-mono")}>{sourceId}</span>
           は登録もリクエストもされていません。
-          <span className={clsx(["text-blue-500"])}>
-            リクエストしてみては？
-          </span>
+          <span className={clsx("text-blue-500")}>リクエストしてみては？</span>
         </p>
       </div>
     </NicovideoRequestPageLink>

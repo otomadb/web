@@ -1,6 +1,6 @@
-import { css, keyframes } from "@emotion/css";
 import clsx from "clsx";
 import { cache } from "react";
+
 import { LinkVideo } from "~/app/mads/[serial]/Link";
 import { LinkTag } from "~/app/tags/[serial]/Link";
 import { CommonTag2 } from "~/components/CommonTag";
@@ -46,46 +46,29 @@ export default async function RecentVideoListSC({
     <div
       className={clsx(
         className,
-        ["flex", "items-stretch"],
-        ["overflow-scroll"],
-        "grid",
-        "grid-cols-2",
-        "sm:grid-cols-3",
-        "md:grid-cols-4",
-        "lg:grid-cols-6",
-        "gap-x-1",
-        "gap-y-1",
-        "max-w-screen-2xl",
-        "px-2",
-        "md:px-4",
-        "mx-auto"
+        ["flex items-stretch overflow-scroll"],
+        "mx-auto grid max-w-screen-2xl grid-cols-2 gap-1 px-2 sm:grid-cols-3 md:grid-cols-4 md:px-4 lg:grid-cols-6"
       )}
     >
       {nodes.map((node) => (
         <div
           key={node.id}
-          className={clsx(
-            ["flex-shrink-0"],
-            ["bg-background-primary"],
-            ["border", "border-background-shallower"],
-            ["overflow-hidden", "rounded-sm"]
-          )}
+          className={clsx([
+            "shrink-0 overflow-hidden rounded-sm border border-background-shallower bg-background-primary",
+          ])}
         >
-          <LinkVideo className={clsx(["flex"])} fragment={node}>
+          <LinkVideo className={clsx("flex")} fragment={node}>
             <VideoThumbnail
               fragment={node}
-              className={clsx(["w-full"], ["h-32"])}
+              className={clsx("h-32 w-full")}
               imageSize="large"
             />
           </LinkVideo>
-          <div
-            className={clsx(["px-2", "py-2"], ["flex", "flex-col", "gap-y-2"])}
-          >
+          <div className={clsx("flex flex-col gap-y-2 p-2")}>
             <LinkVideo
               fragment={node}
               className={clsx(
-                ["text-xs"],
-                ["font-bold"],
+                ["text-xs font-bold"],
                 [
                   "text-text-primary",
                   "hover:text-accent-primary",
@@ -96,30 +79,23 @@ export default async function RecentVideoListSC({
             >
               {node.title}
             </LinkVideo>
-            <div className={clsx([])}>
+            <div className={clsx()}>
               {node.taggings.nodes.length === 0 && (
-                <div className={clsx(["text-xxs"], ["text-slate-500"])}>
+                <div className={clsx("text-xxs text-slate-500")}>
                   タグ付けがありません
                 </div>
               )}
-              <div
-                className={clsx(
-                  ["flex"],
-                  ["flex-wrap"],
-                  ["gap-x-0.5"],
-                  ["gap-y-0.5"]
-                )}
-              >
+              <div className={clsx(["flex flex-wrap gap-0.5"])}>
                 {node.taggings.nodes.map((tagging) => (
                   <LinkTag
                     key={tagging.id}
                     fragment={tagging.tag}
-                    className={clsx(["flex"])}
+                    className={clsx("flex")}
                   >
                     <CommonTag2
                       size="xs"
                       fragment={tagging.tag}
-                      className={clsx(["text-xxs"], ["px-1"], ["py-0.5"])}
+                      className={clsx("px-1 py-0.5 text-xxs")}
                     />
                   </LinkTag>
                 ))}

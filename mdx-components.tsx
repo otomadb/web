@@ -10,11 +10,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       <h1
         {...props}
         id={children?.toString()}
-        className={clsx(
-          className,
-          ["text-slate-800", "font-bold", "text-3xl"],
-          ["mb-2"]
-        )}
+        className={clsx(className, ["mb-2 text-3xl font-bold text-slate-800"])}
       >
         {children}
       </h1>
@@ -23,11 +19,9 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       <h2
         {...props}
         id={children?.toString()}
-        className={clsx(
-          className,
-          ["text-slate-800", "text-2xl", "font-bold"],
-          ["mt-8", "mb-1"]
-        )}
+        className={clsx(className, [
+          "mb-1 mt-8 text-2xl font-bold text-slate-800",
+        ])}
       >
         {children}
       </h2>
@@ -36,11 +30,9 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       <h3
         {...props}
         id={children?.toString()}
-        className={clsx(
-          className,
-          ["text-slate-800", "text-lg", "font-semibold"],
-          ["mt-2", "mb-1"]
-        )}
+        className={clsx(className, [
+          "mb-1 mt-2 text-lg font-semibold text-slate-800",
+        ])}
       >
         {children}
       </h3>
@@ -48,13 +40,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     ul: ({ children, className, ...props }) => (
       <ul
         {...props}
-        className={clsx(
-          className,
-          ["flex", "flex-col"],
-          ["list-disc"],
-          ["pl-8"],
-          ["my-2"]
-        )}
+        className={clsx(className, ["my-2 flex list-disc flex-col pl-8"])}
       >
         {children}
       </ul>
@@ -62,64 +48,53 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     ol: ({ children, className, ...props }) => (
       <ul
         {...props}
-        className={clsx(
-          className,
-          ["flex", "flex-col"],
-          ["list-decimal"],
-          ["pl-8"],
-          ["my-2"]
-        )}
+        className={clsx(className, ["my-2 flex list-decimal flex-col pl-8"])}
       >
         {children}
       </ul>
     ),
     li: ({ children, className, ...props }) => (
-      <li {...props} className={clsx(className, ["text-slate-900", "text-sm"])}>
+      <li {...props} className={clsx(className, "text-sm text-slate-900")}>
         {children}
       </li>
     ),
     blockquote: ({ children, className, ...props }) => (
       <blockquote
         {...props}
-        className={clsx(
-          className,
-          ["bg-slate-200"],
-          ["border-l-4", "border-slate-500"],
-          ["py-2", "px-4"],
-          ["my-2"],
-          ["text-slate-900"]
-        )}
+        className={clsx(className, [
+          "my-2 border-l-4 border-slate-500 bg-slate-200 px-4 py-2 text-slate-900",
+        ])}
       >
         {children}
       </blockquote>
     ),
     hr: ({ children, className, ...props }) => (
-      <hr {...props} className={clsx(className, ["my-2"])}>
+      <hr {...props} className={clsx(className, "my-2")}>
         {children}
       </hr>
     ),
     p: ({ children, className, ...props }) => (
-      <p {...props} className={clsx(className, ["text-slate-900", "text-md"])}>
+      <p {...props} className={clsx(className, "text-base  text-slate-900")}>
         {children}
       </p>
     ),
     a: ({ children, className, ...props }) => (
       <a
         {...props}
-        className={clsx(className, ["hover:underline"], ["text-blue-600"])}
+        className={clsx(className, "text-blue-600 hover:underline")}
       >
         {children}
       </a>
     ),
     em: ({ children, className, ...props }) => (
-      <em {...props} className={clsx(className, ["font-italic"])}>
+      <em {...props} className={clsx(className, "font-italic")}>
         {children}
       </em>
     ),
     strong: ({ children, className, ...props }) => (
       <strong
         {...props}
-        className={clsx(className, ["text-slate-700", "font-semibold"])}
+        className={clsx(className, "font-semibold text-slate-700")}
       >
         {children}
       </strong>
@@ -127,7 +102,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     code: ({ children, className, ...props }) => (
       <code
         {...props}
-        className={clsx(className, ["font-mono"], ["px-0.5"], ["bg-blue-100"])}
+        className={clsx(className, "bg-blue-100 px-0.5 font-mono")}
       >
         {children}
       </code>

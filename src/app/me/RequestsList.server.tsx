@@ -23,41 +23,26 @@ export const Inner = async ({
 
   return (
     <div
-      className={clsx(
-        ["@container"],
-        ["bg-slate-950"],
-        ["border", "border-slate-800"],
-        ["py-4"],
-        ["flex", "gap-x-2"],
-        [
-          "overflow-x-scroll",
-          "scroll-smooth",
-          "snap-x",
-          "snap-mandatory",
-          "scroll-pl-4",
-        ]
-      )}
+      className={clsx([
+        "flex gap-x-2 border border-slate-800 bg-slate-950 py-4 @container",
+
+        "snap-x snap-mandatory scroll-pl-4 overflow-x-scroll scroll-smooth",
+      ])}
     >
       {nodes.map(({ id, sourceId, fragment }) => (
         <div
           key={id}
           className={clsx(
-            ["first:ml-4", "last:mr-4"],
-            ["snap-start"],
-            ["flex-shrink-0"],
+            ["shrink-0 snap-start first:ml-4 last:mr-4"],
             [
-              "w-full",
-              "@[512px]:w-1/2",
-              "@[640px]:w-1/3",
-              "@[768px]:w-1/4",
-              "@[1024px]:w-1/6",
+              "w-full @[512px]:w-1/2 @[640px]:w-1/3 @[768px]:w-1/4 @[1024px]:w-1/6",
             ]
           )}
         >
           <ListItem
             key={id}
             fragment={fragment}
-            className={clsx(["h-full"])}
+            className={clsx("h-full")}
             PageLink={({ children, ...props }) => (
               <YoutubeRequestLink sourceId={sourceId} {...props}>
                 {children}

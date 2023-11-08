@@ -35,20 +35,16 @@ export default async function Page({
   const { findNicovideoRegistrationRequest } = result.data;
 
   return (
-    <main className={clsx(["max-w-screen-lg"], ["mx-auto"])}>
+    <main className={clsx("mx-auto max-w-screen-lg")}>
       <section>
         <Details fragment={findNicovideoRegistrationRequest} />
       </section>
-      <div className={clsx(["mt-4"], ["grid", "grid-cols-2"])}>
-        <section
-          className={clsx(["flex", "flex-col", "items-start", "gap-y-2"])}
-        >
+      <div className={clsx("mt-4 grid grid-cols-2")}>
+        <section className={clsx("flex flex-col items-start gap-y-2")}>
           <h2>タグ</h2>
           <TagsList fragment={findNicovideoRegistrationRequest} />
         </section>
-        <section
-          className={clsx(["flex", "flex-col", "items-start", "gap-y-2"])}
-        >
+        <section className={clsx("flex flex-col items-start gap-y-2")}>
           <h2>仮タグ</h2>
           <SemitagsList fragment={findNicovideoRegistrationRequest} />
         </section>

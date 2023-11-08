@@ -43,8 +43,8 @@ export default async function TagsSectionSC({
 
   const { taggings } = result.data.getVideo;
   return (
-    <div className={clsx(["flex", "flex-col"], ["gap-y-1"])}>
-      <div className={clsx("flex", "gap-x-2", "gap-y-1")}>
+    <div className={clsx("flex flex-col gap-y-1")}>
+      <div className={clsx("flex gap-x-2 gap-y-1")}>
         {taggings.nodes
           .filter(
             ({ tag: { type: t1 } }, i, arr) =>
@@ -53,18 +53,18 @@ export default async function TagsSectionSC({
           .map((node) => (
             <TagType
               key={node.tag.type}
-              className={clsx(["text-xs"])}
+              className={clsx("text-xs")}
               fragment={node.tag}
             />
           ))}
       </div>
-      <div className={clsx(["flex", "flex-col", "items-start", "gap-y-0.5"])}>
+      <div className={clsx("flex flex-col items-start gap-y-0.5")}>
         {taggings.nodes.map((tagging) => (
-          <div key={tagging.id} className={clsx(["flex"])}>
+          <div key={tagging.id} className={clsx("flex")}>
             <LinkTag fragment={tagging.tag}>
               <CommonTag
                 fragment={tagging.tag}
-                className={clsx(["text-xs"], ["px-1"], ["py-0.5"])}
+                className={clsx("px-1 py-0.5 text-xs")}
               />
             </LinkTag>
           </div>

@@ -19,10 +19,10 @@ const RejectSucceededToast: React.FC<{
 }> = ({ ...props }) => {
   const fragment = useFragment(Fragment, props.fragment);
   return (
-    <p className={clsx(["text-sm"])}>
+    <p className={clsx("text-sm")}>
       <CommonSemitag
         fragment={fragment.rejecting.semitag}
-        className={clsx(["px-1", "py-0.5"], ["mx-0.5"])}
+        className={clsx("mx-0.5 px-1 py-0.5")}
       />
       は棄却されました。
     </p>

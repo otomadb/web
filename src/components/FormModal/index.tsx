@@ -142,23 +142,19 @@ export default function FormModal({
   const close = useCloseFormModal();
 
   return (
-    <div className={clsx(className, ["flex"])} style={style}>
+    <div className={clsx(className, "flex")} style={style}>
       {current && (
         <div
-          className={clsx(
-            ["flex", "flex-col"],
-            ["border", "border-slate-700", "rounded"]
-          )}
+          className={clsx(["flex flex-col rounded border border-slate-700"])}
         >
           <div
             className={clsx(
-              ["flex", "items-center"],
-              [["px-4"], ["py-2"]],
-              ["bg-slate-800"],
-              ["border-b", "border-slate-700"]
+              ["flex items-center"],
+              [["px-4 py-2"]],
+              ["border-b border-slate-700 bg-slate-800"]
             )}
           >
-            <span className={clsx(["text-slate-500", "text-xs", "font-bold"])}>
+            <span className={clsx("text-xs font-bold text-slate-500")}>
               {(current.type === "REGISTER_FROM_NICOVIDEO" ||
                 current.type === "REGISTER_FROM_NICOVIDEO_WITH_ID") &&
                 "ニコニコ動画から登録"}
@@ -177,11 +173,9 @@ export default function FormModal({
             </span>
             <button
               type="button"
-              className={clsx(
-                ["ml-auto"],
-                ["w-4", "h-4"],
-                ["text-slate-500", "hover:text-slate-400"]
-              )}
+              className={clsx([
+                "ml-auto h-4 w-4 text-slate-500 hover:text-slate-400",
+              ])}
               onClick={(e) => {
                 e.preventDefault();
                 close();
@@ -190,7 +184,7 @@ export default function FormModal({
               <Pictogram icon="x" />
             </button>
           </div>
-          <div className={clsx(["bg-slate-900"])}>
+          <div className={clsx("bg-slate-900")}>
             {current.type === "REGISTER_FROM_NICOVIDEO" && (
               <RegisterMADFromNicovideoFormModal
                 className={clsx()}

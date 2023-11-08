@@ -55,11 +55,11 @@ export default async function Page({ params }: { params: { serial: string } }) {
   const { findVideo } = result.data;
 
   return (
-    <div className={clsx(["flex", "flex-col", "gap-y-4"])}>
-      <section className={clsx(["flex", "flex-col"], ["gap-x-4"])}>
-        <h2 className={clsx(["text-lg"])}>この動画に関する全ての変更</h2>
+    <div className={clsx("flex flex-col gap-y-4")}>
+      <section className={clsx("flex flex-col gap-x-4")}>
+        <h2 className={clsx("text-lg")}>この動画に関する全ての変更</h2>
         <MixedEventLists
-          className={clsx(["mt-2"])}
+          className={clsx("mt-2")}
           eventsVideo={findVideo.events}
           eventsTitles={findVideo.titles.map((t) => t.events)}
           eventsThumbnails={findVideo.thumbnails.map((t) => t.events)}

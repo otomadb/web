@@ -9,7 +9,7 @@ export const Guard = withAuthenticationRequired(
   {
     loginOptions: {
       authorizationParams: {
-        scope: ["create:video", "create:tag", "check:semitag"].join(" "),
+        scope: ["create:video create:tag check:semitag"].join(" "),
       },
     },
   }

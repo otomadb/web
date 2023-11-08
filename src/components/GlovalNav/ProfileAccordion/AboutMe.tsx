@@ -27,26 +27,19 @@ export default function AboutMe({
   return (
     <MyPageLink
       style={style}
-      className={clsx(
-        className,
-        ["group"],
-        ["bg-white/75", "hover:bg-sky-300/75"]
-      )}
+      className={clsx(className, ["group bg-white/75 hover:bg-sky-300/75"])}
     >
       <div
-        className={clsx(
-          ["text-slate-900", "group-hover/link:text-sky-900"],
-          ["text-sm"],
-          ["font-bold"]
-        )}
+        className={clsx([
+          "text-sm font-bold text-slate-900 group-hover/link:text-sky-900",
+        ])}
       >
         {whoami.displayName}
       </div>
       <div
-        className={clsx(
-          ["text-slate-700", "group-hover/link:text-sky-700"],
-          ["text-xs"]
-        )}
+        className={clsx([
+          "text-xs text-slate-700 group-hover/link:text-sky-700",
+        ])}
       >
         @{whoami.name}
       </div>

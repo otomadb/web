@@ -83,55 +83,41 @@ const Video: React.FC<{
   const fragment = useFragment(Fragment, props.fragment);
   return (
     <div
-      className={clsx(
-        className,
-        ["relative"],
-        ["overflow-hidden"],
-        ["rounded"],
-        ["border"],
-        ["px-2"],
-        ["py-2"],
-        ["flex", "flex-col"]
-      )}
+      className={clsx(className, [
+        "relative flex flex-col overflow-hidden rounded border p-2",
+      ])}
     >
-      <LinkVideo className={clsx(["flex"])} fragment={fragment}>
+      <LinkVideo className={clsx("flex")} fragment={fragment}>
         <VideoThumbnail
           fragment={fragment}
-          className={clsx(["w-full"], ["h-32"])}
+          className={clsx("h-32 w-full")}
           imageSize="medium"
         />
       </LinkVideo>
-      <div className={clsx(["mt-1"])}>
+      <div className={clsx("mt-1")}>
         <LinkVideo
           fragment={fragment}
-          className={clsx(["text-sm"], ["font-bold"], ["text-slate-900"])}
+          className={clsx("text-sm font-bold text-slate-900")}
         >
           {fragment.title}
         </LinkVideo>
       </div>
-      <div className={clsx(["mt-1"])}>
+      <div className={clsx("mt-1")}>
         {fragment.taggings.nodes.length === 0 && (
-          <div className={clsx(["text-xxs"], ["text-slate-500"])}>
+          <div className={clsx("text-xxs text-slate-500")}>
             タグ付けがありません
           </div>
         )}
-        <div
-          className={clsx(
-            ["flex"],
-            ["flex-wrap"],
-            ["gap-x-0.5"],
-            ["gap-y-0.5"]
-          )}
-        >
+        <div className={clsx(["flex flex-wrap gap-0.5"])}>
           {fragment.taggings.nodes.map((tagging) => (
             <LinkTag
               key={tagging.id}
               fragment={tagging.tag}
-              className={clsx(["flex"])}
+              className={clsx("flex")}
             >
               <CommonTag
                 fragment={tagging.tag}
-                className={clsx(["text-xxs"], ["px-1"], ["py-0.5"])}
+                className={clsx("px-1 py-0.5 text-xxs")}
               />
             </LinkTag>
           ))}

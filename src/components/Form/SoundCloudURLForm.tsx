@@ -31,19 +31,15 @@ export default function SoundcloudURLForm({
 
   return (
     <form
-      className={clsx(
-        className,
-        ["flex", "flex-col", "items-start", "gap-y-2"],
-        ["px-4", "py-4"]
-      )}
+      className={clsx(className, "flex flex-col items-start gap-y-2 p-4")}
       style={style}
       onSubmit={(e) => {
         e.preventDefault();
         handleSubmit();
       }}
     >
-      <label className={clsx(["w-full"], ["flex", "flex-col", "gap-y-1"])}>
-        <div className={clsx(["text-slate-400", "text-sm"])}>
+      <label className={clsx("flex w-full flex-col gap-y-1")}>
+        <div className={clsx("text-sm text-slate-400")}>
           SoundCloudのURLの入力
         </div>
         <TextInput2
@@ -52,10 +48,10 @@ export default function SoundcloudURLForm({
           placeholder="https://soundcloud.com/keigoooo/hyperflip-donaldcore"
           value={input}
           onChange={(s) => setInput(s)}
-          className={clsx(["w-full"])}
+          className={clsx("w-full")}
         />
       </label>
-      <div className={clsx(["mt-auto"])}>
+      <div className={clsx("mt-auto")}>
         <Button
           submit
           color="blue"

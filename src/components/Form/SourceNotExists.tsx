@@ -10,11 +10,11 @@ export default function SourceNotExists({
   handleCancel(): void;
 }) {
   return (
-    <div className={clsx(className, ["flex", "flex-col", "gap-y-2"])}>
-      <div className={clsx(["text-slate-400"])}>動画は存在しません</div>
+    <div className={clsx(className, "flex flex-col gap-y-2")}>
+      <div className={clsx("text-slate-400")}>動画は存在しません</div>
       <div>
         <Button
-          className={clsx(["ml-auto"])}
+          className={clsx("ml-auto")}
           onClick={() => {
             handleCancel();
           }}

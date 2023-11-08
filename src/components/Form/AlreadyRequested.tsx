@@ -33,13 +33,10 @@ export default function AlreadyRequested({
 }) {
   const fragment = useFragment(Fragment, props.fragment);
   return (
-    <div
-      className={clsx(className, ["flex", "flex-col"], ["gap-y-4"])}
-      style={style}
-    >
-      <div className={clsx(["flex", "gap-x-4"])}>
+    <div className={clsx(className, "flex flex-col gap-y-4")} style={style}>
+      <div className={clsx("flex gap-x-4")}>
         <RequestPageLink
-          className={clsx(["flex-shrink-0"])}
+          className={clsx("shrink-0")}
           sourceId={fragment.sourceId}
         >
           <Image
@@ -51,9 +48,9 @@ export default function AlreadyRequested({
           />
         </RequestPageLink>
         <div>
-          <p className={clsx(["text-sm"], ["text-slate-400"])}>
+          <p className={clsx("text-sm text-slate-400")}>
             <RequestPageLink
-              className={clsx(["font-bold"], ["text-slate-300"])}
+              className={clsx("font-bold text-slate-300")}
               sourceId={fragment.sourceId}
             >
               {fragment.sourceId}
@@ -64,7 +61,7 @@ export default function AlreadyRequested({
       </div>
       <div>
         <Button
-          className={clsx(["ml-auto"])}
+          className={clsx("ml-auto")}
           onClick={() => {
             handleCancel();
           }}

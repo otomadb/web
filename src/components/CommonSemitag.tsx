@@ -15,7 +15,7 @@ const CommonSemitag: React.FC<{
   const fragment = useFragment(Fragment, props.fragment);
 
   return (
-    <span className={clsx(className, ["border", "rounded-sm"])}>
+    <span className={clsx(className, "rounded-sm border")}>
       {fragment.name}
     </span>
   );

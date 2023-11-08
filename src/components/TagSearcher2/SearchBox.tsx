@@ -34,20 +34,20 @@ export default function SearchBox({
           aria-disabled={disabled}
           className={clsx(
             {
-              small: ["w-3", "h-3"],
-              medium: ["w-4", "h-4"],
-              large: ["w-6", "h-6"],
+              small: ["h-3 w-3"],
+              medium: ["h-4 w-4"],
+              large: ["h-6 w-6"],
             }[size],
             ["text-slate-400", disabled && ["text-slate-500"]]
           )}
         >
           {!fetching && (
-            <Pictogram icon="search" className={clsx(["w-full", "h-full"])} />
+            <Pictogram icon="search" className={clsx("h-full w-full")} />
           )}
           {fetching && (
             <Pictogram
               icon="loading"
-              className={clsx(["w-full", "h-full"], ["animate-spin"])}
+              className={clsx("h-full w-full animate-spin")}
             />
           )}
         </div>

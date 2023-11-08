@@ -52,7 +52,7 @@ export default function TagSearcher({
   }, [data, q, showAdditional]);
 
   return (
-    <div className={clsx(className, ["relative", "group"])} style={style}>
+    <div className={clsx(className, "group relative")} style={style}>
       <SearchBox
         size={size}
         fetching={fetching}
@@ -60,14 +60,9 @@ export default function TagSearcher({
         setQuery={(v) => setQuery(v)}
       />
       <div
-        className={clsx(
-          { hidden: q === "" },
-          ["invisible", "group-focus-within:visible"],
-          ["border", ["border-slate-800"]],
-          ["absolute", "z-1"],
-          ["w-full"],
-          ["mt-[1px]"]
-        )}
+        className={clsx({ hidden: q === "" }, [
+          "invisible absolute z-1 mt-[1px] w-full border border-slate-800 group-focus-within:visible",
+        ])}
       >
         {data && (
           <Suggests
@@ -81,12 +76,11 @@ export default function TagSearcher({
             role="button"
             tabIndex={0}
             className={clsx(
-              ["border-t", "border-slate-800"],
-              ["bg-slate-950", "hover:bg-slate-900"],
+              ["border-t border-slate-800 bg-slate-950 hover:bg-slate-900"],
               {
-                small: ["py-1", "px-2"],
-                medium: ["py-2", "px-2"],
-                large: ["py-2", "px-2"],
+                small: ["px-2 py-1"],
+                medium: ["px-2 py-2"],
+                large: ["px-2 py-2"],
               }[size],
               { "cursor-pointer": !!handleAdditionalClicked }
             )}

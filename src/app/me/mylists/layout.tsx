@@ -9,16 +9,13 @@ export default async function Layout({
   children: React.ReactNode;
 }) {
   return (
-    <div className={clsx(["flex"], ["relative"], ["container", "mx-auto"])}>
+    <div className={clsx("container relative mx-auto flex")}>
       <SideMylistList
-        className={clsx(
-          ["flex-shrink-0"],
-          ["w-96"],
-          ["h-[calc(100vh-64px)]"],
-          ["sticky", "top-[64px]"]
-        )}
+        className={clsx([
+          "sticky top-[64px] h-[calc(100vh-[64px])] w-96 shrink-0",
+        ])}
       />
-      <div className={clsx(["flex-grow"])}>{children}</div>
+      <div className={clsx("grow")}>{children}</div>
     </div>
   );
 }

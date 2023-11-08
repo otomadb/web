@@ -102,10 +102,10 @@ export default async function Page({ params }: { params: PageParams }) {
   if (!result.data.findVideo) notFound();
 
   return (
-    <div className={clsx(["flex", "flex-col", "gap-y-4"])}>
+    <div className={clsx("flex flex-col gap-y-4")}>
       <section>
-        <h2 className={clsx(["text-md"], ["text-slate-900"])}>似ている動画</h2>
-        <div className={clsx(["mt-2"])}>
+        <h2 className={clsx("text-base  text-slate-900")}>似ている動画</h2>
+        <div className={clsx("mt-2")}>
           <Suspense>
             <SimilarVideos
               // props

@@ -17,7 +17,7 @@ export const TagButton: React.FC<{
 }> = ({ className, selected, remove, append, ...props }) => {
   return (
     <div
-      className={clsx(className, ["select-none"])}
+      className={clsx(className, "select-none")}
       role="button"
       onClick={() => {
         if (selected) remove();

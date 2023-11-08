@@ -83,21 +83,16 @@ const Video: React.FC<{
 }> = ({ className, ...props }) => {
   const fragment = useFragment(Fragment, props.fragment);
   return (
-    <div
-      className={clsx(className, ["border"], ["rounded"], ["px-2"], ["py-2"])}
-    >
-      <LinkVideo className={clsx(["flex"])} fragment={fragment}>
+    <div className={clsx(className, "rounded border p-2")}>
+      <LinkVideo className={clsx("flex")} fragment={fragment}>
         <VideoThumbnail
           fragment={fragment}
-          className={clsx(["w-full"], ["h-32"])}
+          className={clsx("h-32 w-full")}
           imageSize="medium"
         />
       </LinkVideo>
-      <div className={clsx(["mt-1"])}>
-        <LinkVideo
-          fragment={fragment}
-          className={clsx([["px-1"], ["py-1"]], ["text-xs"])}
-        >
+      <div className={clsx("mt-1")}>
+        <LinkVideo fragment={fragment} className={clsx("p-1 text-xs")}>
           {fragment.title}
         </LinkVideo>
       </div>

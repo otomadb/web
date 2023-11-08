@@ -28,7 +28,7 @@ export function TagsList({
       {taggings.map((tagging) => (
         <div key={tagging.id}>
           <div>
-            <LinkTag className={clsx(["block"])} fragment={tagging.tag}>
+            <LinkTag className={clsx("block")} fragment={tagging.tag}>
               <CommonTag fragment={tagging.tag} />
             </LinkTag>
           </div>

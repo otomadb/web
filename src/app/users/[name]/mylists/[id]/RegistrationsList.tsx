@@ -22,7 +22,7 @@ export const RegistrationsList: React.FC<{
   const fragment = useFragment(Fragment, props.fragment);
 
   return (
-    <div className={clsx(className, ["flex", ["flex-col"], ["gap-y-4"]])}>
+    <div className={clsx(className, "flex flex-col gap-y-4")}>
       {fragment.registrations.nodes.map((registration) => (
         <RegistrationsListItem key={registration.id} fragment={registration} />
       ))}

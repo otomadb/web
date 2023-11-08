@@ -25,14 +25,11 @@ export default function RequestMADFromYoutubeFormModal({
   return (
     <div className={clsx(className)} style={style}>
       {!sourceId && (
-        <YoutubeIDForm
-          className={clsx(["h-full"])}
-          set={(s) => setSourceId(s)}
-        />
+        <YoutubeIDForm className={clsx("h-full")} set={(s) => setSourceId(s)} />
       )}
       {sourceId && (
         <RequestForm
-          className={clsx(["h-full"])}
+          className={clsx("h-full")}
           sourceId={sourceId}
           handleSuccess={handleSuccess}
           handleCancel={() => {

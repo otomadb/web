@@ -25,12 +25,9 @@ export default function RequestsList({
 
   return (
     <div
-      className={clsx(
-        className,
-        ["flex", "flex-col"],
-        ["border", "border-slate-700"],
-        ["divide-y", "divide-slate-800"]
-      )}
+      className={clsx(className, [
+        "flex flex-col divide-y divide-slate-800 border border-slate-700",
+      ])}
       style={style}
     >
       {nodes.map((node) => (

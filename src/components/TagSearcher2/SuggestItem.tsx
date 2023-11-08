@@ -47,12 +47,11 @@ export default function SuggestItem({
       className={clsx(
         className,
         {
-          small: ["py-1", "px-2", "gap-y-0.5"],
-          medium: ["py-2", "px-2", "gap-y-1"],
-          large: ["py-2", "px-2", "gap-y-2"],
+          small: ["gap-y-0.5 px-2 py-1"],
+          medium: ["gap-y-1 px-2 py-2"],
+          large: ["gap-y-2 px-2 py-2"],
         }[size],
-        ["flex", "flex-col", "items-start"],
-        ["bg-slate-950", "hover:bg-slate-900"]
+        ["flex flex-col items-start bg-slate-950 hover:bg-slate-900"]
       )}
       onClick={(e) => {
         e.preventDefault();
@@ -77,8 +76,7 @@ export default function SuggestItem({
               medium: ["text-xs"],
               large: ["text-sm"],
             }[size],
-            ["italic"],
-            ["text-slate-400"]
+            ["italic text-slate-400"]
           )}
         >
           {fragment.name.name}

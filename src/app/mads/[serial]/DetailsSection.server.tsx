@@ -39,26 +39,18 @@ export default async function DetailsSectionSC({
 
   const { getVideo } = result.data;
   return (
-    <section className={clsx(["@container/details"])}>
+    <section className={clsx("@container/details")}>
       <div
-        className={clsx(
-          ["flex", ["flex-col", "@[1024px]/details:flex-row"]],
-          ["gap-x-8"],
-          ["gap-y-4"]
-        )}
+        className={clsx([
+          "flex flex-col gap-x-8 gap-y-4 @[1024px]/details:flex-row",
+        ])}
       >
-        <VideoImage className={clsx(["flex-shrink-0"])} fragment={getVideo} />
-        <div className={clsx(["flex-grow"])}>
-          <h1
-            className={clsx(
-              ["text-lg", "lg:text-xl"],
-              ["font-bold"],
-              ["text-slate-900"]
-            )}
-          >
+        <VideoImage className={clsx("shrink-0")} fragment={getVideo} />
+        <div className={clsx("grow")}>
+          <h1 className={clsx(["text-lg font-bold text-slate-900 lg:text-xl"])}>
             <LinkVideo fragment={getVideo}>{getVideo.title}</LinkVideo>
           </h1>
-          <LikeButton className={clsx(["mt-2"])} fragment={getVideo} />
+          <LikeButton className={clsx("mt-2")} fragment={getVideo} />
           <LinkVideoEvents fragment={getVideo}>編集履歴を見る</LinkVideoEvents>
         </div>
       </div>

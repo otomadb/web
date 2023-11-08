@@ -19,11 +19,11 @@ export const AliasesDetail: React.FC<{
   if (names.length === 0) return null;
 
   return (
-    <div className={clsx(className, ["flex", "items-center"], ["gap-x-2"])}>
-      <h2 className={clsx(["text-sm", "text-slate-600"])}>別の表記</h2>
-      <div className={clsx(["flex", "gap-x-2"])}>
+    <div className={clsx(className, "flex items-center gap-x-2")}>
+      <h2 className={clsx("text-sm text-slate-600")}>別の表記</h2>
+      <div className={clsx("flex gap-x-2")}>
         {names.map(({ id, name }) => (
-          <span key={id} className={clsx(["text-md", "text-slate-700"])}>
+          <span key={id} className={clsx("text-base  text-slate-700")}>
             {name}
           </span>
         ))}

@@ -8,16 +8,11 @@ export const AttentionYou: React.FC<{
 }> = ({ className, pageUserId }) => {
   return (
     <div
-      className={clsx(
-        className,
-        ["px-8"],
-        ["py-4"],
-        ["border", "border-yellow-400"],
-        ["bg-yellow-100"],
-        ["rounded"]
-      )}
+      className={clsx(className, [
+        "rounded border border-yellow-400 bg-yellow-100 px-8 py-4",
+      ])}
     >
-      <p className={clsx(["text-yellow-900"], ["text-sm"])}>
+      <p className={clsx("text-sm text-yellow-900")}>
         このページは他の人から見たあなたのページです。
       </p>
     </div>

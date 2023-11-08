@@ -20,7 +20,7 @@ export default function NotificationsList({
   );
 
   return (
-    <div style={style} className={clsx(className, ["flex", "flex-col"])}>
+    <div style={style} className={clsx(className, "flex flex-col")}>
       <NotificationsListBlock after={null} pushCursor={pushCursor} />
       {cursors.map((cursor) => (
         <NotificationsListBlock

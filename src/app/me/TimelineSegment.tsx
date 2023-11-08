@@ -34,36 +34,29 @@ export default function TimelineSegment({
 
   return (
     <div
-      className={clsx(className, ["flex", "flex-col", "items-stretch"])}
+      className={clsx(className, "flex flex-col items-stretch")}
       style={style}
     >
       {fetching && (
-        <div
-          className={clsx(["px-4", "py-2"], ["text-center", "text-text-muted"])}
-        >
+        <div className={clsx("px-4 py-2 text-center text-text-muted")}>
           タイムラインを取得中です
         </div>
       )}
-      <div className={clsx(["flex", "flex-col", "gap-y-2"])}>
+      <div className={clsx("flex flex-col gap-y-2")}>
         {data?.showTimeline.map((event, i) => (
           <TimelineEvent fragment={event} key={i} />
         ))}
       </div>
       {!fetching && fetchMore && data?.showTimeline.length === take && (
         <button
-          className={clsx(
-            ["mt-2"],
-            ["w-full"],
-            ["px-4", "py-2"],
-            ["bg-background-shallower"],
-            ["text-center"],
-            ["rounded"]
-          )}
+          className={clsx([
+            "mt-2 w-full rounded bg-background-shallower px-4 py-2 text-center",
+          ])}
           onClick={() => {
             fetchMore();
           }}
         >
-          <span className={clsx(["text-accent-primary", "font-bold"])}>
+          <span className={clsx("font-bold text-accent-primary")}>
             もっと見る
           </span>
         </button>

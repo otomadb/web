@@ -27,50 +27,44 @@ export const CommonTag: React.FC<{
       aria-disabled={disabled}
       className={clsx(
         className,
-        ["group/tag"],
-        ["border", "rounded-sm"],
+        ["group/tag rounded-sm border"],
         type === TagType.Character && [
-          ["bg-character-50", "aria-disabled:bg-character-100"],
-          ["border-character-500", "aria-disabled:border-character-300"],
+          [
+            "border-character-500 bg-character-50 aria-disabled:border-character-300 aria-disabled:bg-character-100",
+          ],
         ],
-        type === TagType.Class && [["bg-slate-50"], ["border-slate-400"]],
+        type === TagType.Class && [["border-slate-400 bg-slate-50"]],
         type === TagType.Copyright && [
-          ["bg-copyright-50"],
-          ["border-copyright-300"],
+          ["border-copyright-300 bg-copyright-50"],
         ],
-        type === TagType.Event && [
-          ["bg-event-50", "bg-event-100"],
-          ["border-event-400", "border-event-300"],
-        ],
+        type === TagType.Event && [["border-event-300bg-event-100"]],
         type === TagType.Music && [
-          ["bg-music-50", "aria-disabled:bg-music-100"],
-          ["border-music-400", "aria-disabled:border-music-300"],
+          [
+            "border-music-400 bg-music-50 aria-disabled:border-music-300 aria-disabled:bg-music-100",
+          ],
         ],
-        type === TagType.Phrase && [["bg-phrase-50"], ["border-phrase-400"]],
+        type === TagType.Phrase && [["border-phrase-400 bg-phrase-50"]],
         type === TagType.Series && [
-          ["bg-series-50", "aria-disabled:bg-series-100"],
-          ["border-series-400", "aria-disabled:border-series-300"],
+          [
+            "border-series-400 bg-series-50 aria-disabled:border-series-300 aria-disabled:bg-series-100",
+          ],
         ],
-        type === TagType.Style && [["bg-slate-50"], ["border-slate-400"]],
-        type === TagType.Subtle && [["bg-slate-50"], ["border-slate-400"]],
-        type === TagType.Tactics && [["bg-slate-50"], ["border-slate-400"]],
-        type === TagType.Unknown && [["bg-slate-50"], ["border-slate-400"]]
+        type === TagType.Style && [["border-slate-400 bg-slate-50"]],
+        type === TagType.Subtle && [["border-slate-400 bg-slate-50"]],
+        type === TagType.Tactics && [["border-slate-400 bg-slate-50"]],
+        type === TagType.Unknown && [["border-slate-400 bg-slate-50"]]
       )}
     >
       <span
         className={clsx(
           type === TagType.Character && [
-            [
-              "text-character-800",
-              "group-aria-disabled/tag:text-character-400",
-            ],
+            ["text-character-800 group-aria-disabled/tag:text-character-400"],
           ],
           type === TagType.Class && [["text-slate-800"]],
           type === TagType.Copyright && [["text-copyright-800"]],
           type === TagType.Event && [["text-event-800"]],
           type === TagType.Music && [
-            ["text-music-800"],
-            ["group-aria-disabled/tag:text-music-400"],
+            ["text-music-800 group-aria-disabled/tag:text-music-400"],
           ],
           type === TagType.Phrase && [["text-phrase-800"]],
           type === TagType.Series && [
@@ -93,13 +87,11 @@ export const CommonTag: React.FC<{
             type === TagType.Copyright && [["text-copyright-700"]],
             type === TagType.Event && [["text-event-700"]],
             type === TagType.Music && [
-              ["text-music-700"],
-              ["group-aria-disabled/tag:text-music-400"],
+              ["text-music-700 group-aria-disabled/tag:text-music-400"],
             ],
             type === TagType.Phrase && [["text-phrase-700"]],
             type === TagType.Series && [
-              "text-series-700",
-              "group-group-aria-disabled/tag:text-series-400",
+              "group-group-aria-disabled/tag:text-series-400 text-series-700",
             ],
             type === TagType.Style && [["text-slate-700"]],
             type === TagType.Subtle && [["text-slate-700"]],
@@ -126,56 +118,66 @@ export const CommonTag2: React.FC<{
     <div
       className={clsx(
         className,
-        ["group"],
-        ["flex"],
+        ["group flex"],
         {
-          xs: ["px-0.5", "py-0.25", "text-xs", "rounded-sm", "gap-x-0.5"],
-          small: ["px-1", "py-0.5", "text-sm", "rounded", "gap-x-0.5"],
+          xs: ["gap-x-0.5 rounded-sm px-0.5 py-0.25 text-xs"],
+          small: ["gap-x-0.5 rounded px-1 py-0.5 text-sm"],
         }[size],
         ["border"],
         type === TagType.Character && [
-          ["bg-character-900", "aria-disabled:bg-character-950"],
-          ["border-character-700", "aria-disabled:border-character-900"],
+          [
+            "border-character-700 bg-character-900 aria-disabled:border-character-900 aria-disabled:bg-character-950",
+          ],
         ],
         type === TagType.Class && [
-          ["bg-slate-900", "aria-disabled:bg-slate-950"],
-          ["border-slate-700", "aria-disabled:border-slate-900"],
+          [
+            "border-slate-700 bg-slate-900 aria-disabled:border-slate-900 aria-disabled:bg-slate-950",
+          ],
         ],
         type === TagType.Copyright && [
-          ["bg-copyright-900", "aria-disabled:bg-copyright-950"],
-          ["border-copyright-700", "aria-disabled:border-copyright-900"],
+          [
+            "border-copyright-700 bg-copyright-900 aria-disabled:border-copyright-900 aria-disabled:bg-copyright-950",
+          ],
         ],
         type === TagType.Event && [
-          ["bg-event-900", "aria-disabled:bg-event-950"],
-          ["border-event-700", "aria-disabled:border-event-900"],
+          [
+            "border-event-700 bg-event-900 aria-disabled:border-event-900 aria-disabled:bg-event-950",
+          ],
         ],
         type === TagType.Music && [
-          ["bg-music-900", "aria-disabled:bg-music-950"],
-          ["border-music-700", "aria-disabled:border-music-900"],
+          [
+            "border-music-700 bg-music-900 aria-disabled:border-music-900 aria-disabled:bg-music-950",
+          ],
         ],
         type === TagType.Phrase && [
-          ["bg-phrase-900", "aria-disabled:bg-phrase-950"],
-          ["border-phrase-700", "aria-disabled:border-phrase-900"],
+          [
+            "border-phrase-700 bg-phrase-900 aria-disabled:border-phrase-900 aria-disabled:bg-phrase-950",
+          ],
         ],
         type === TagType.Series && [
-          ["bg-series-900", "aria-disabled:bg-series-950"],
-          ["border-series-700", "aria-disabled:border-series-900"],
+          [
+            "border-series-700 bg-series-900 aria-disabled:border-series-900 aria-disabled:bg-series-950",
+          ],
         ],
         type === TagType.Style && [
-          ["bg-slate-900", "aria-disabled:bg-slate-950"],
-          ["border-slate-700", "aria-disabled:border-slate-900"],
+          [
+            "border-slate-700 bg-slate-900 aria-disabled:border-slate-900 aria-disabled:bg-slate-950",
+          ],
         ],
         type === TagType.Subtle && [
-          ["bg-slate-900", "aria-disabled:bg-slate-950"],
-          ["border-slate-700", "aria-disabled:border-slate-900"],
+          [
+            "border-slate-700 bg-slate-900 aria-disabled:border-slate-900 aria-disabled:bg-slate-950",
+          ],
         ],
         type === TagType.Tactics && [
-          ["bg-slate-900", "aria-disabled:bg-slate-950"],
-          ["border-slate-700", "aria-disabled:border-slate-900"],
+          [
+            "border-slate-700 bg-slate-900 aria-disabled:border-slate-900 aria-disabled:bg-slate-950",
+          ],
         ],
         type === TagType.Unknown && [
-          ["bg-slate-900", "aria-disabled:bg-slate-950"],
-          ["border-slate-700", "aria-disabled:border-slate-900"],
+          [
+            "border-slate-700 bg-slate-900 aria-disabled:border-slate-900 aria-disabled:bg-slate-950",
+          ],
         ]
       )}
       aria-disabled={disabled}
@@ -184,19 +186,19 @@ export const CommonTag2: React.FC<{
         className={clsx(
           ["font-bold"],
           type === TagType.Character && [
-            ["text-character-300", "group-aria-disabled:text-character-600"],
+            ["text-character-300 group-aria-disabled:text-character-600"],
           ],
           type === TagType.Class && [
-            ["text-slate-300", "group-aria-disabled:text-slate-600"],
+            ["text-slate-300 group-aria-disabled:text-slate-600"],
           ],
           type === TagType.Copyright && [
-            ["text-copyright-300", "group-aria-disabled:text-copyright-600"],
+            ["text-copyright-300 group-aria-disabled:text-copyright-600"],
           ],
           type === TagType.Event && [
-            ["text-event-300", "group-aria-disabled:text-event-600"],
+            ["text-event-300 group-aria-disabled:text-event-600"],
           ],
           type === TagType.Music && [
-            ["text-music-300", "group-aria-disabled:text-music-600"],
+            ["text-music-300 group-aria-disabled:text-music-600"],
           ],
           type === TagType.Phrase && [
             ["text-phrase-300"],
@@ -207,16 +209,16 @@ export const CommonTag2: React.FC<{
             "group-aria-disabled:text-series-600",
           ],
           type === TagType.Style && [
-            ["text-slate-300", "group-aria-disabled:text-slate-600"],
+            ["text-slate-300 group-aria-disabled:text-slate-600"],
           ],
           type === TagType.Subtle && [
-            ["text-slate-300", "group-aria-disabled:text-slate-600"],
+            ["text-slate-300 group-aria-disabled:text-slate-600"],
           ],
           type === TagType.Tactics && [
-            ["text-slate-300", "group-aria-disabled:text-slate-600"],
+            ["text-slate-300 group-aria-disabled:text-slate-600"],
           ],
           type === TagType.Unknown && [
-            ["text-slate-300", "group-aria-disabled:text-slate-600"],
+            ["text-slate-300 group-aria-disabled:text-slate-600"],
           ]
         )}
       >
@@ -226,38 +228,37 @@ export const CommonTag2: React.FC<{
         <span
           className={clsx(
             type === TagType.Character && [
-              ["text-character-500", "group-aria-disabled:text-character-700"],
+              ["text-character-500 group-aria-disabled:text-character-700"],
             ],
             type === TagType.Class && [
-              ["text-slate-500", "group-aria-disabled:text-slate-700"],
+              ["text-slate-500 group-aria-disabled:text-slate-700"],
             ],
             type === TagType.Copyright && [
-              ["text-copyright-500", "group-aria-disabled:text-copyright-700"],
+              ["text-copyright-500 group-aria-disabled:text-copyright-700"],
             ],
             type === TagType.Event && [
-              ["text-event-500", "group-aria-disabled:text-event-700"],
+              ["text-event-500 group-aria-disabled:text-event-700"],
             ],
             type === TagType.Music && [
-              ["text-music-500", "group-aria-disabled:text-music-700"],
+              ["text-music-500 group-aria-disabled:text-music-700"],
             ],
             type === TagType.Phrase && [
-              ["text-phrase-500", "group-aria-disabled:text-phrase-700"],
+              ["text-phrase-500 group-aria-disabled:text-phrase-700"],
             ],
             type === TagType.Series && [
-              "text-series-500",
-              "group-aria-disabled:text-series-700",
+              "text-series-500 group-aria-disabled:text-series-700",
             ],
             type === TagType.Style && [
-              ["text-slate-500", "group-aria-disabled:text-slate-700"],
+              ["text-slate-500 group-aria-disabled:text-slate-700"],
             ],
             type === TagType.Subtle && [
-              ["text-slate-500", "group-aria-disabled:text-slate-700"],
+              ["text-slate-500 group-aria-disabled:text-slate-700"],
             ],
             type === TagType.Tactics && [
-              ["text-slate-500", "group-aria-disabled:text-slate-700"],
+              ["text-slate-500 group-aria-disabled:text-slate-700"],
             ],
             type === TagType.Unknown && [
-              ["text-slate-500", "group-aria-disabled:text-slate-700"],
+              ["text-slate-500 group-aria-disabled:text-slate-700"],
             ]
           )}
         >

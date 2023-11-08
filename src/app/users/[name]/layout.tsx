@@ -38,16 +38,10 @@ export default async function Layout({
   if (!result?.id) notFound();
 
   return (
-    <main
-      className={clsx(
-        ["mx-auto"],
-        ["flex-grow"],
-        ["flex", "flex-col", "gap-y-4"]
-      )}
-    >
-      <div className={clsx(["container", "max-w-screen-xl", "mx-auto"])}>
+    <main className={clsx("mx-auto flex grow flex-col gap-y-4")}>
+      <div className={clsx("container mx-auto max-w-screen-xl")}>
         <Header
-          className={clsx(["container", "max-w-screen-xl", "mx-auto"])}
+          className={clsx("container mx-auto max-w-screen-xl")}
           fragment={useFragment(UserPageLayout_HeaderFragmentDoc, result)}
         />
         <HeaderNav fragment={result} />

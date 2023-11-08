@@ -21,12 +21,12 @@ export const Details: React.FC<{
   const { isLikeList, holder, title, range } = fragment;
 
   return (
-    <div className={clsx(className, ["px-4"], ["py-4"])}>
-      <h1 className={clsx(["text-slate-900"], ["text-xl"])}>
+    <div className={clsx(className, "p-4")}>
+      <h1 className={clsx("text-xl text-slate-900")}>
         {isLikeList ? `${holder.displayName}がいいねした動画` : title}
       </h1>
-      <div className={clsx(["mt-1"], ["flex", "items-center", "gap-x-2"])}>
-        <div className={clsx(["text-sm"], ["text-slate-600"])}>{range}</div>
+      <div className={clsx("mt-1 flex items-center gap-x-2")}>
+        <div className={clsx("text-sm text-slate-600")}>{range}</div>
       </div>
     </div>
   );

@@ -29,29 +29,27 @@ export default function TagEditorTrigger({ madId }: { madId: string }) {
     <>
       <button
         type="button"
-        className={clsx(["text-sm"])}
+        className={clsx("text-sm")}
         onClick={() => setOpen(true)}
       >
         タグを編集する
       </button>
       {open && (
         <div
-          className={clsx(
-            ["fixed", "inset-0", "z-infinity"],
-            ["flex", "justify-center", "items-center"]
-          )}
+          className={clsx([
+            "fixed inset-0 z-infinity flex items-center justify-center",
+          ])}
         >
           <div
             onClick={() => setOpen(false)}
-            className={clsx(
-              ["absolute", "inset-0", "z-0", "cursor-pointer"],
-              ["bg-black/25"]
-            )}
+            className={clsx([
+              "absolute inset-0 z-0 cursor-pointer bg-black/25",
+            ])}
           />
           <TagEditor
             madId={madId}
             close={() => setOpen(false)}
-            className={clsx(["z-1"], ["w-[960px]"])}
+            className={clsx("z-1 w-[960px]")}
           />
         </div>
       )}

@@ -10,29 +10,23 @@ export const metadata: Metadata = {
 export default async function Page() {
   return (
     <main
-      className={clsx(
-        ["flex", "flex-col"],
-        ["bg-slate-800"],
-        ["max-w-screen-lg", "w-full"],
-        ["h-[calc(100vh-64px)]"],
-        ["mx-auto"],
-        ["py-8"]
-      )}
+      className={clsx([
+        "mx-auto flex h-[calc(100vh-[64px])] w-full max-w-screen-lg flex-col bg-slate-800 py-8",
+      ])}
     >
       <header
         className={clsx(
-          ["flex", "items-center"],
-          [["px-8"], ["py-2"]],
-          ["bg-slate-800"],
-          ["border-b", "border-slate-700"]
+          ["flex items-center"],
+          [["px-8 py-2"]],
+          ["border-b border-slate-700 bg-slate-800"]
         )}
       >
-        <h1 className={clsx(["text-slate-400", "text-lg", "font-bold"])}>
+        <h1 className={clsx("text-lg font-bold text-slate-400")}>
           ニコニコ動画からのリクエスト
         </h1>
       </header>
-      <div className={clsx([["px-8"], ["py-2"]], ["w-full"], ["h-full"])}>
-        <FormController className={clsx(["w-full"], ["h-full"])} />
+      <div className={clsx("h-full w-full px-8 py-2")}>
+        <FormController className={clsx("h-full w-full")} />
       </div>
     </main>
   );

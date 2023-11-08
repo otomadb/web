@@ -88,7 +88,7 @@ export default function Quote({
     <figure
       className={clsx(
         className,
-        ["flex", "flex-col", "items-center"],
+        ["flex flex-col items-center"],
         css`
           & {
             animation: ${blur} both 1s cubic-bezier(0.23, 1, 0.32, 1);
@@ -98,32 +98,25 @@ export default function Quote({
       style={style}
     >
       <blockquote>
-        <span className={clsx(["text-sm", "text-slate-700"])}>{q.quote}</span>
+        <span className={clsx("text-sm text-slate-700")}>{q.quote}</span>
         {q.saidby && (
           <span
-            className={clsx(
-              ["italic"],
-              ["ml-1"],
-              ["before:content-['―']", "before:mr-0.5"],
-              ["text-xs", "text-slate-500"]
-            )}
+            className={clsx([
+              "ml-1 text-xs italic text-slate-500 before:mr-0.5 before:content-['―']",
+            ])}
           >
             {q.saidby}
           </span>
         )}
       </blockquote>
       <figcaption
-        className={clsx(
-          ["mt-1"],
-          ["before:content-['―']", "before:mr-0.5"],
-          ["text-xs", "text-slate-500"]
-        )}
+        className={clsx([
+          "mt-1 text-xs text-slate-500 before:mr-0.5 before:content-['―']",
+        ])}
       >
         {q.ref.author && <span>{q.ref.author}</span>}
-        {q.ref.series && (
-          <span className={clsx(["italic"])}>{q.ref.series}</span>
-        )}
-        <cite className={clsx(["italic"])}>『{q.ref.title}』</cite>
+        {q.ref.series && <span className={clsx("italic")}>{q.ref.series}</span>}
+        <cite className={clsx("italic")}>『{q.ref.title}』</cite>
         {q.ref.from && <span>{q.ref.from}より</span>}
       </figcaption>
     </figure>

@@ -53,17 +53,13 @@ export default function RequestsListItem({
 
   return (
     <div
-      className={clsx(
-        className,
-        ["relative"],
-        ["flex", "gap-x-4"],
-        ["bg-slate-950"],
-        ["px-4", "py-2"]
-      )}
+      className={clsx(className, [
+        "relative flex gap-x-4 bg-slate-950 px-4 py-2",
+      ])}
       style={style}
     >
       <NicovideoRegistrationRequestLink
-        className={clsx(["self-center"], ["flex-shrink-0"], ["flex"])}
+        className={clsx("flex shrink-0 self-center")}
         fragment={fragment}
       >
         <CoolImage
@@ -72,14 +68,14 @@ export default function RequestsListItem({
           width={128}
           height={96}
           unoptimized={true}
-          className={clsx(["w-[128px]", "h-[96px]"])}
+          className={clsx("h-[96px] w-[128px]")}
         />
       </NicovideoRegistrationRequestLink>
-      <div className={clsx(["flex-grow"], ["flex", "flex-col", "gap-y-2"])}>
+      <div className={clsx("flex grow flex-col gap-y-2")}>
         <NicovideoRegistrationRequestLink
           fragment={fragment}
           className={clsx([
-            "text-md",
+            "text-base ",
             "font-bold",
             "text-slate-300",
             "line-clamp-2",
@@ -87,21 +83,13 @@ export default function RequestsListItem({
         >
           {fragment.title}
         </NicovideoRegistrationRequestLink>
-        <div className={clsx(["flex", "gap-x-2", "items-center"])}>
-          <div
-            className={clsx(["flex-shrink-0"], ["text-xs", "text-slate-500"])}
-          >
-            タグ
-          </div>
+        <div className={clsx("flex items-center gap-x-2")}>
+          <div className={clsx("shrink-0 text-xs text-slate-500")}>タグ</div>
           {fragment.taggings.length === 0 && (
-            <div
-              className={clsx(["flex-shrink-0"], ["text-xs", "text-slate-400"])}
-            >
-              なし
-            </div>
+            <div className={clsx("shrink-0 text-xs text-slate-400")}>なし</div>
           )}
           {fragment.taggings.length > 0 && (
-            <div className={clsx(["flex", "flex-wrap", "gap-x-1", "gap-y-1"])}>
+            <div className={clsx("flex flex-wrap gap-1")}>
               {fragment.taggings.map(({ id, tag }) => (
                 <div key={id}>
                   <CommonTag2 size="xs" fragment={tag} />
@@ -110,31 +98,19 @@ export default function RequestsListItem({
             </div>
           )}
         </div>
-        <div className={clsx(["flex", "gap-x-2", "items-center"])}>
-          <div
-            className={clsx(["flex-shrink-0"], ["text-xs", "text-slate-500"])}
-          >
-            仮タグ
-          </div>
+        <div className={clsx("flex items-center gap-x-2")}>
+          <div className={clsx("shrink-0 text-xs text-slate-500")}>仮タグ</div>
           {fragment.semitaggings.length === 0 && (
-            <div
-              className={clsx(["flex-shrink-0"], ["text-xs", "text-slate-400"])}
-            >
-              なし
-            </div>
+            <div className={clsx("shrink-0 text-xs text-slate-400")}>なし</div>
           )}
           {fragment.semitaggings.length > 0 && (
-            <div className={clsx(["flex", "flex-wrap", "gap-x-1", "gap-y-1"])}>
+            <div className={clsx("flex flex-wrap gap-1")}>
               {fragment.semitaggings.map(({ id, name }) => (
                 <div
                   key={id}
-                  className={clsx(
-                    ["px-0.5", "py-0.25"],
-                    ["text-xs"],
-                    ["text-slate-400"],
-                    ["border", "border-slate-700", "rounded-sm"],
-                    ["bg-slate-900"]
-                  )}
+                  className={clsx([
+                    "rounded-sm border border-slate-700 bg-slate-900 px-0.5 py-0.25 text-xs text-slate-400",
+                  ])}
                 >
                   <span>{name}</span>
                 </div>
@@ -144,43 +120,36 @@ export default function RequestsListItem({
         </div>
       </div>
       <div
-        className={clsx(
-          ["self-center"],
-          ["flex-shrink-0"],
-          ["w-1/5"],
-          ["flex", "flex-col", "gap-y-4"]
-        )}
+        className={clsx(["flex w-1/5 shrink-0 flex-col gap-y-4 self-center"])}
       >
-        <div className={clsx(["flex", "gap-x-2", "items-center"])}>
+        <div className={clsx("flex items-center gap-x-2")}>
           <UserLink fragment={fragment.requestedBy}>
             <UserIcon size={24} fragment={fragment.requestedBy} />
           </UserLink>
           <UserLink
-            className={clsx(["text-sm"], ["text-slate-400"])}
+            className={clsx("text-sm text-slate-400")}
             fragment={fragment.requestedBy}
           >
             {fragment.requestedBy.displayName}
           </UserLink>
         </div>
-        <div className={clsx(["flex", "gap-x-2"])}>
+        <div className={clsx("flex gap-x-2")}>
           <a
             href={fragment.originalUrl}
             target="_blank"
-            className={clsx(["text-slate-400", "hover:text-sky-400"])}
+            className={clsx("text-slate-400 hover:text-sky-400")}
           >
-            <Pictogram icon="external-link" className={clsx(["w-6", "h-6"])} />
+            <Pictogram icon="external-link" className={clsx("h-6 w-6")} />
           </a>
           <button
             role="button"
             className={clsx([
-              "text-slate-400",
-              "disabled:text-slate-700",
-              "hover:text-sky-400",
+              "text-slate-400 hover:text-sky-400 disabled:text-slate-700",
             ])}
             disabled={!registarable}
             onClick={() => openRegisterForm(fragment.sourceId)}
           >
-            <Pictogram icon="plus" className={clsx(["w-6", "h-6"])} />
+            <Pictogram icon="plus" className={clsx("h-6 w-6")} />
           </button>
         </div>
       </div>

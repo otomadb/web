@@ -42,30 +42,17 @@ export default async function Layout({
   if (!data.data.findVideo) notFound();
 
   return (
-    <main
-      className={clsx(
-        ["container"],
-        ["mx-auto"],
-        ["flex-grow"],
-        ["flex", "flex-col", "gap-y-4"]
-      )}
-    >
+    <main className={clsx(["container mx-auto flex grow flex-col gap-y-4"])}>
       <Suspense fallback={<p>動画情報を取得中です</p>}>
         <DetailsSection
           // fragment typecheck
           fragment={data.data.findVideo}
         />
       </Suspense>
-      <div className={clsx(["flex", "gap-x-4"])}>
-        <div
-          className={clsx(
-            ["flex-shrink-0"],
-            ["w-[256px]"],
-            ["flex", "flex-col", "gap-y-6"]
-          )}
-        >
-          <section className={clsx(["flex", "flex-col", "gap-y-1"])}>
-            <h2 className={clsx(["text-md"], ["text-slate-900"])}>タグ</h2>
+      <div className={clsx("flex gap-x-4")}>
+        <div className={clsx(["flex w-[256px] shrink-0 flex-col gap-y-6"])}>
+          <section className={clsx("flex flex-col gap-y-1")}>
+            <h2 className={clsx("text-base text-slate-900")}>タグ</h2>
             <Suspense fallback={<p>タグを取得中です</p>}>
               <TaggingsSectionContents
                 // fragment typecheck
@@ -73,8 +60,8 @@ export default async function Layout({
               />
             </Suspense>
           </section>
-          <section className={clsx(["flex", "flex-col", "gap-y-1"])}>
-            <h2 className={clsx(["text-md"], ["text-slate-900"])}>仮タグ</h2>
+          <section className={clsx("flex flex-col gap-y-1")}>
+            <h2 className={clsx("text-base text-slate-900")}>仮タグ</h2>
             <Suspense fallback={<p>仮タグを取得中です</p>}>
               <SemitagsSectionContents
                 // fragment typecheck
@@ -86,7 +73,7 @@ export default async function Layout({
             <TagEditorTrigger madId={data.data.findVideo.id} />
           </div>
         </div>
-        <div className={clsx(["flex-grow"])}>{children}</div>
+        <div className={clsx("grow")}>{children}</div>
       </div>
     </main>
   );

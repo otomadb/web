@@ -34,12 +34,12 @@ export default async function SemitagsSectionSC({
   const { semitags } = result.data.getVideo;
   return (
     <div>
-      <div className={clsx(["flex", "flex-col", "gap-y-0.5"])}>
+      <div className={clsx("flex flex-col gap-y-0.5")}>
         {semitags.map((semitag) => (
-          <div key={semitag.id} className={clsx(["flex"])}>
+          <div key={semitag.id} className={clsx("flex")}>
             <Semitag
               fragment={semitag}
-              className={clsx(["text-xs"], ["px-1"], ["py-0.5"])}
+              className={clsx("px-1 py-0.5 text-xs")}
             />
           </div>
         ))}

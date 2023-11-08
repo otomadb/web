@@ -33,7 +33,7 @@ export async function SimilarVideos({ videoId }: { videoId: string }) {
   const { getVideo } = result.data;
 
   return (
-    <div className={clsx(["@container"])}>
+    <div className={clsx("@container")}>
       {getVideo.similarVideos.items.length === 0 && (
         <span>動画が存在しません。</span>
       )}
@@ -43,16 +43,10 @@ export async function SimilarVideos({ videoId }: { videoId: string }) {
           [
             "grid",
             [
-              "grid-cols-1",
-              "@[384px]:grid-cols-2",
-              "@[512px]:grid-cols-3",
-              "@[768px]:grid-cols-4",
-              "@[1024px]:grid-cols-6",
-              "@[1536px]:grid-cols-8",
+              "grid-cols-1 @[384px]:grid-cols-2 @[512px]:grid-cols-3 @[768px]:grid-cols-4 @[1024px]:grid-cols-6 @[1536px]:grid-cols-8",
             ],
           ],
-          ["gap-x-2", "@[768px]:gap-x-4"],
-          ["gap-y-2", "@[768px]:gap-x-4"]
+          ["gap-2 @[768px]:gap-x-4"]
         )}
       >
         {getVideo.similarVideos.items.map((item, i) => (

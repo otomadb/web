@@ -22,13 +22,9 @@ export const HeaderNav: React.FC<{
 
   return (
     <nav
-      className={clsx(
-        ["w-full"],
-        ["flex"],
-        ["px-8"],
-        ["bg-slate-100"],
-        ["border-b", "border-b-slate-200"]
-      )}
+      className={clsx([
+        "flex w-full border-b border-b-slate-200 bg-slate-100 px-8",
+      ])}
     >
       <Item
         className={clsx()}
@@ -83,25 +79,21 @@ const Item: React.FC<{
     <Wrapper
       className={clsx(
         className,
-        ["flex", "justify-center"],
-        ["px-8"],
-        ["py-3"],
+        ["flex justify-center px-8 py-3"],
         [
           "aria-[current=page]:text-blue-800",
-          ["text-slate-900", "hover:text-slate-700"],
-        ],
-        [
+          ["text-slate-900 hover:text-slate-700"],
+
           "aria-[current=page]:bg-blue-100",
-          ["bg-transparent", "hover:bg-slate-200"],
-        ],
-        [
+          ["bg-transparent hover:bg-slate-200"],
+
           "border-b-2",
           [
             "aria-[current=page]:border-b-blue-700",
-            ["border-b-slate-200", "hover:border-b-slate-300"],
+            ["border-b-slate-200 hover:border-b-slate-300"],
           ],
-        ],
-        ["text-xs"]
+          "text-xs",
+        ]
       )}
     >
       {children}

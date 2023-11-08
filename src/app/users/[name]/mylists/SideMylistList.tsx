@@ -22,12 +22,9 @@ export const SideMylistList: React.FC<{
 
   return (
     <div
-      className={clsx(
-        className,
-        ["flex", "flex-col", "items-stretch"],
-        ["h-full"],
-        ["overflow-y-scroll"]
-      )}
+      className={clsx(className, [
+        "flex h-full flex-col items-stretch overflow-y-scroll",
+      ])}
     >
       {fragment.nodes.map((mylist) => (
         <MylistLinkSwitch key={mylist.id} fragment={mylist}>

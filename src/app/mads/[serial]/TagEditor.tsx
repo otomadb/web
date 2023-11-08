@@ -31,13 +31,10 @@ const TagList: React.FC<{
   const { taggings } = useFragment(TagsListFragment, props.fragment);
 
   return (
-    <div className={clsx(className, ["flex", ["gap-x-1", "gap-y-1"]])}>
+    <div className={clsx(className, "flex gap-1")}>
       {taggings.nodes.map((tagging) => (
         <div key={tagging.id}>
-          <CommonTag
-            fragment={tagging.tag}
-            className={clsx(["px-1", "py-0.5"])}
-          />
+          <CommonTag fragment={tagging.tag} className={clsx("px-1 py-0.5")} />
         </div>
       ))}
     </div>
@@ -119,16 +116,11 @@ export default function TagEditor({
 
   return (
     <div
-      className={clsx(
-        className,
-        ["px-4", "py-4"],
-        ["bg-white/75", "backdrop-blur-md"],
-        ["border", "rounded-md"]
-      )}
+      className={clsx(className, [
+        "rounded-md border bg-white/75 p-4 backdrop-blur-md",
+      ])}
     >
-      <div className={clsx(["text-lg", "text-slate-900"], ["mb-2"])}>
-        タグの編集
-      </div>
+      <div className={clsx("mb-2 text-lg text-slate-900")}>タグの編集</div>
       {data && (
         <div>
           <TagList fragment={data.getVideo} />
@@ -136,7 +128,7 @@ export default function TagEditor({
       )}
       <TagSearcher
         handleSelect={(tagId) => addTag(tagId)}
-        className={clsx(["mt-4"])}
+        className={clsx("mt-4")}
       />
     </div>
   );

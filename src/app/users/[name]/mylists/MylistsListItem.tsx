@@ -38,57 +38,39 @@ export const MylistListItem: React.FC<{
   const { holder, registrations } = fragment;
   return (
     <div
-      className={clsx(
-        className,
-        ["border", "border-slate-300"],
-        ["bg-slate-100"],
-        ["py-3"],
-        ["px-4"],
-        ["flex", "items-center"],
-        ["rounded"],
-        ["group/mylist"]
-      )}
+      className={clsx(className, [
+        "group/mylist flex items-center rounded border border-slate-300 bg-slate-100 px-4 py-3",
+      ])}
     >
-      <div className={clsx(["flex-grow"], ["flex-col"])}>
+      <div className={clsx("grow flex-col")}>
         <div>
           <Link>
             <MylistTitle fragment={fragment} />
           </Link>
         </div>
-        <div className={clsx(["mt-1"], ["flex", "items-center"])}>
+        <div className={clsx("mt-1 flex items-center")}>
           <UserIcon fragment={holder} size={24} />
-          <div className={clsx(["ml-1"], ["text-xs"])}>
-            <span className={clsx(["text-slate-900"])}>
-              {holder.displayName}
-            </span>
-            <span className={clsx(["ml-1"], ["text-slate-600"], ["font-mono"])}>
+          <div className={clsx("ml-1 text-xs")}>
+            <span className={clsx("text-slate-900")}>{holder.displayName}</span>
+            <span className={clsx("ml-1 font-mono text-slate-600")}>
               @{holder.name}
             </span>
           </div>
         </div>
-        <div className={clsx(["mt-1"], ["flex", "items-center", "gap-x-2"])}>
-          <div className={clsx(["text-xs"], ["text-slate-600"])}>
-            {fragment.range}
-          </div>
+        <div className={clsx("mt-1 flex items-center gap-x-2")}>
+          <div className={clsx("text-xs text-slate-600")}>{fragment.range}</div>
         </div>
       </div>
       <div
-        className={clsx(
-          ["relative"],
-          ["w-[512px]"],
-          ["overflow-hidden"],
-          ["border", "border-slate-300"],
-          ["bg-slate-200"],
-          ["px-4"],
-          ["py-2"],
-          ["rounded"]
-        )}
+        className={clsx([
+          "relative w-[512px] overflow-hidden rounded border border-slate-300 bg-slate-200 px-4 py-2",
+        ])}
       >
-        <div className={clsx(["z-0"], ["flex", "gap-x-2"], ["h-[72px]"])}>
+        <div className={clsx("z-0 flex h-[72px] gap-x-2")}>
           {registrations.nodes.map(({ id, video }) => (
             <div key={id}>
               <VideoThumbnail
-                className={clsx(["w-[96px]"], ["h-full"])}
+                className={clsx("h-full w-[96px]")}
                 fragment={video}
                 imageSize="small"
               />
@@ -96,17 +78,11 @@ export const MylistListItem: React.FC<{
           ))}
         </div>
         <div
-          className={clsx(
-            ["flex", "items-end"],
-            ["z-1"],
-            ["absolute"],
-            ["inset-0"],
-            ["px-4"],
-            ["py-2"],
-            ["bg-gradient-to-r", "from-transparent", "to-slate-200"]
-          )}
+          className={clsx([
+            "absolute inset-0 z-1 flex items-end bg-gradient-to-r from-transparent to-slate-200 px-4 py-2",
+          ])}
         >
-          <p className={clsx(["text-xs"], ["text-slate-700"])}>
+          <p className={clsx("text-xs text-slate-700")}>
             {registrations.nodes.length === 0 && (
               <>登録されている動画はありません。</>
             )}

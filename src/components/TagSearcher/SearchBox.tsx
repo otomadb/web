@@ -16,37 +16,25 @@ export const SearchBox: React.FC<{
 }> = ({ className, style, fetching, setQuery }) => {
   return (
     <label
-      className={clsx(
-        className,
-        ["flex", "items-stretch"],
-        ["border", "border-slate-300"],
-        ["rounded"],
-        ["overflow-hidden"]
-      )}
+      className={clsx(className, [
+        "flex items-stretch overflow-hidden rounded border border-slate-300",
+      ])}
       style={style}
     >
-      <div
-        className={clsx(["flex-shrink-0"], ["px-3", "py-2"], ["bg-slate-400"])}
-      >
+      <div className={clsx("shrink-0 bg-slate-400 px-3 py-2")}>
         <Pictogram
           icon="search"
-          className={clsx(
-            { hidden: fetching },
-            ["w-4", "h-4"],
-            ["text-slate-200"]
-          )}
+          className={clsx({ hidden: fetching }, ["h-4 w-4 text-slate-200"])}
         />
         <Pictogram
           icon="loading"
-          className={clsx(
-            { hidden: !fetching },
-            ["text-slate-200"],
-            ["animate-spin"]
-          )}
+          className={clsx({ hidden: !fetching }, [
+            "animate-spin text-slate-200",
+          ])}
         />
       </div>
       <TextInput
-        className={clsx(["flex-grow"], ["px-2"])}
+        className={clsx("grow px-2")}
         onChange={(e) => {
           setQuery(e.target.value);
         }}

@@ -87,9 +87,7 @@ export const MixedEventLists: React.FC<{
     ...eventsNicovideoSources.flatMap((n) => n.nodes),
   ].sort(({ series: a }, { series: b }) => b.localeCompare(a));
   return (
-    <div
-      className={clsx(className, ["w-full"], ["flex", "flex-col"], ["gap-y-1"])}
-    >
+    <div className={clsx(className, "flex w-full flex-col gap-y-1")}>
       {events.map((event) => (
         <EventSwitch key={event.series} fragment={event} />
       ))}

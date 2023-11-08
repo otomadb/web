@@ -23,11 +23,11 @@ export const SucceededToast: React.FC<{
     <div>
       <LinkVideo
         fragment={fragment.video}
-        className={clsx(["font-bold"], ["text-blue-400"])}
+        className={clsx("font-bold text-blue-400")}
       >
         {fragment.video.title}
       </LinkVideo>
-      <span className={clsx(["text-slate-700"])}>を登録しました．</span>
+      <span className={clsx("text-slate-700")}>を登録しました．</span>
     </div>
   );
 };

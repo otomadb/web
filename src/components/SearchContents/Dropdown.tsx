@@ -31,25 +31,16 @@ export const Dropdown: React.FC<{
 
   return (
     <div
-      className={clsx(
-        classname,
-        ["shadow-md"],
-        ["bg-white/90"],
-        ["backdrop-blur-sm"],
-        ["rounded-b-md", "border-x", "border-b", "border-slate-300/75"],
-        ["px-2"],
-        ["py-3"]
-      )}
+      className={clsx(classname, [
+        "rounded-b-md border-x border-b border-slate-300/75 bg-white/90 px-2 py-3 shadow-md backdrop-blur-sm",
+      ])}
     >
-      <div className={clsx(["flex", "flex-col", "gap-y-2"])}>
+      <div className={clsx("flex flex-col gap-y-2")}>
         <div className={clsx()}>
           <div
-            className={clsx(
-              ["text-xs"],
-              ["px-4", "py-1"],
-              ["text-slate-600"],
-              ["border-b", "border-slate-300/75"]
-            )}
+            className={clsx([
+              "border-b border-slate-300/75 px-4 py-1 text-xs text-slate-600",
+            ])}
           >
             タグ
           </div>
@@ -59,12 +50,9 @@ export const Dropdown: React.FC<{
         </div>
         <div className={clsx()}>
           <div
-            className={clsx(
-              ["text-xs"],
-              ["px-4", "py-1"],
-              ["text-slate-600"],
-              ["border-b", "border-slate-300/75"]
-            )}
+            className={clsx([
+              "border-b border-slate-300/75 px-4 py-1 text-xs text-slate-600",
+            ])}
           >
             動画
           </div>
@@ -75,15 +63,12 @@ export const Dropdown: React.FC<{
         {regexNicovideoSourceID.test(query) && (
           <div className={clsx()}>
             <div
-              className={clsx(
-                ["text-xs"],
-                ["px-4", "py-1"],
-                ["text-slate-600"],
-                ["border-b", "border-slate-300/75"]
-              )}
+              className={clsx([
+                "border-b border-slate-300/75 px-4 py-1 text-xs text-slate-600",
+              ])}
             >
               ニコニコ動画の
-              <span className={clsx(["font-mono"])}>{query}</span>
+              <span className={clsx("font-mono")}>{query}</span>
               の検索
             </div>
             <SearchNicovideo className={clsx()} sourceId={query} />

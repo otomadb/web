@@ -252,32 +252,27 @@ export default function LikeButton({
       className={clsx(
         className,
         "group",
-        [["px-2"], ["py-1"]],
-        ["transition-colors", "duration-100"],
+        [["px-2 py-1"]],
+        ["transition-colors duration-100"],
         [
-          "border",
-          "border-slate-400",
-          "disabled:border-slate-300",
-          "aria-checked:border-pink-400",
-        ],
-        [
+          "border border-slate-400 disabled:border-slate-300 aria-checked:border-pink-400",
+
           "disabled:bg-slate-200",
-          ["bg-slate-200", "hover:bg-slate-300"],
-          ["aria-checked:bg-pink-100", "aria-checked:hover:bg-pink-200"],
-        ],
-        ["rounded-md"],
-        ["flex", "items-center"]
+          [
+            "bg-slate-200 hover:bg-slate-300 aria-checked:bg-pink-100 aria-checked:hover:bg-pink-200",
+          ],
+          "flex items-center rounded-md",
+        ]
       )}
     >
       <div>
         <Pictogram
           icon="like"
           className={clsx(
-            ["w-4", "h-4"],
-            ["transition-colors", "duration-75"],
+            ["h-4 w-4 transition-colors duration-75"],
             [
               "group-disabled:text-slate-300",
-              ["text-slate-400", "group-hover:text-slate-500"],
+              ["text-slate-400 group-hover:text-slate-500"],
               [
                 "group-aria-checked:text-pink-600",
                 "group-aria-checked:group-hover:text-pink-500",
@@ -288,15 +283,13 @@ export default function LikeButton({
       </div>
       <div
         className={clsx(
-          ["ml-1"],
-          ["text-sm"],
-          ["transition-colors", "duration-75"],
+          ["ml-1 text-sm transition-colors duration-75"],
           [
-            ["group-disabled:text-slate-300"],
-            ["text-slate-400", "group-hover:text-slate-500"],
             [
-              "group-aria-checked:text-pink-600",
-              "group-aria-checked:group-hover:text-pink-500",
+              "text-slate-400 group-hover:text-slate-500 group-disabled:text-slate-300",
+            ],
+            [
+              "group-aria-checked:text-pink-600 group-aria-checked:group-hover:text-pink-500",
             ],
           ]
         )}

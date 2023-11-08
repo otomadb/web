@@ -23,12 +23,12 @@ export const SucceededToast: React.FC<{
     <div>
       <p>
         <YoutubeRequestLink
-          className={clsx(["font-bold"], ["text-blue-400"])}
+          className={clsx("font-bold text-blue-400")}
           sourceId={fragment.request.sourceId}
         >
           {fragment.request.sourceId}
         </YoutubeRequestLink>
-        <span className={clsx(["text-slate-700"])}>をリクエストしました</span>
+        <span className={clsx("text-slate-700")}>をリクエストしました</span>
       </p>
     </div>
   );

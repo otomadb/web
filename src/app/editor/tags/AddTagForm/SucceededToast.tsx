@@ -19,10 +19,10 @@ export const SucceededToast: React.FC<{
   return (
     <div>
       <CommonTag
-        className={clsx(["text-xs"], ["px-1"], ["py-0.5"])}
+        className={clsx("px-1 py-0.5 text-xs")}
         fragment={fragment.tag}
       />
-      <span className={clsx(["text-slate-700"])}>を登録しました．</span>
+      <span className={clsx("text-slate-700")}>を登録しました．</span>
     </div>
   );
 };

@@ -19,11 +19,11 @@ export const UserIcon: React.FC<{
 
   return (
     <div
-      className={clsx(className, ["rounded-md", "overflow-hidden"])}
+      className={clsx(className, "overflow-hidden rounded-md")}
       style={{ width: size, height: size }}
     >
       <Image
-        className={clsx(["w-full"], ["h-full"])}
+        className={clsx("h-full w-full")}
         width={size}
         height={size}
         src={icon}

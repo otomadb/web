@@ -30,13 +30,9 @@ const SuggestItem: React.FC<{
       type="button"
       aria-label="検索候補"
       tabIndex={0}
-      className={clsx(
-        className,
-        ["group"],
-        ["px-2", "py-2"],
-        ["flex", "flex-col", "items-start"],
-        ["bg-white", "hover:bg-teal-100"]
-      )}
+      className={clsx(className, [
+        "group flex flex-col items-start bg-white p-2 hover:bg-teal-100",
+      ])}
       onClick={(e) => {
         handleSelect(fragment.tag.id);
         e.currentTarget.blur();
@@ -45,16 +41,15 @@ const SuggestItem: React.FC<{
       <div>
         <CommonTag
           fragment={fragment.tag}
-          className={clsx(["text-xs"], ["px-1"], ["py-0.5"])}
+          className={clsx("px-1 py-0.5 text-xs")}
         />
       </div>
       {!fragment.name.primary && (
-        <div className={clsx(["px-1"], ["mt-1"])}>
+        <div className={clsx("mt-1 px-1")}>
           <p
-            className={clsx(
-              ["text-xs", "italic"],
-              ["text-slate-600", "group-hover:text-teal-800"]
-            )}
+            className={clsx([
+              "text-xs italic text-slate-600 group-hover:text-teal-800",
+            ])}
           >
             {fragment.name.name}
           </p>

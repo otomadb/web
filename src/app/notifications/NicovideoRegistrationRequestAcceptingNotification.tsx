@@ -51,53 +51,45 @@ export default function NicovideoRegistrationRequestAcceptingNotification({
   } = useFragment(Fragment, props.fragment);
 
   return (
-    <div className={clsx(className, ["@container"])} style={style}>
+    <div className={clsx(className, "@container")} style={style}>
       <div
-        className={clsx(
-          ["w-full"],
-          ["flex", ["gap-x-2", "@[768px]:gap-x-4"], "items-center"],
-          ["px-4", "py-2"],
-          ["border"]
-        )}
+        className={clsx([
+          "flex w-full items-center gap-x-2 border px-4 py-2 @[768px]:gap-x-4",
+        ])}
       >
-        <div
-          className={clsx(["flex-grow"], ["flex", "items-center", "gap-x-1"])}
-        >
-          <Pictogram
-            icon="accept"
-            className={clsx(["w-4", "h-4"], ["text-teal-500"])}
-          />
-          <p className={clsx(["text-sm", "text-slate-900"])}>
+        <div className={clsx("flex grow items-center gap-x-1")}>
+          <Pictogram icon="accept" className={clsx("h-4 w-4 text-teal-500")} />
+          <p className={clsx("text-sm text-slate-900")}>
             あなたの動画登録リクエスト
             <LinkNicovideoRegistrationRequest fragment={request}>
-              <span className={clsx(["font-bold"])}>{request.title}</span>
+              <span className={clsx("font-bold")}>{request.title}</span>
               <span className={clsx()}>({request.sourceId})</span>
             </LinkNicovideoRegistrationRequest>
             は
             <LinkVideo
               fragment={video}
-              className={clsx(["font-bold", "text-blue-500", "font-mono"])}
+              className={clsx("font-mono font-bold text-blue-500")}
             >
               受理されました。
             </LinkVideo>
           </p>
         </div>
-        <div className={clsx(["flex-shrink-0"], ["flex", "items-center"])}>
+        <div className={clsx("flex shrink-0 items-center")}>
           <LinkVideo fragment={video}>
             <VideoThumbnail
               fragment={video}
-              className={clsx(["w-[72px]", "h-[48px]"])}
+              className={clsx("h-[48px] w-[72px]")}
               imageSize="small"
             />
           </LinkVideo>
         </div>
-        <div className={clsx(["flex-shrink-0"], ["flex", "items-center"])}>
+        <div className={clsx("flex shrink-0 items-center")}>
           <LinkUser fragment={acceptedBy}>
             <UserIcon fragment={acceptedBy} size={32} />
           </LinkUser>
         </div>
-        <div className={clsx(["flex-shrink-0"], ["flex", "items-center"])}>
-          <p className={clsx(["text-xs", "text-slate-600"])}>
+        <div className={clsx("flex shrink-0 items-center")}>
+          <p className={clsx("text-xs text-slate-600")}>
             <DateTime date={createdAt} />
           </p>
         </div>

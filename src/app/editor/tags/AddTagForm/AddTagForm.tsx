@@ -122,36 +122,27 @@ export const AddTagForm: React.FC<{
     <form
       className={clsx(
         className,
-        ["flex", "flex-col"],
-        [["px-4"], ["py-4"]],
-        ["border", "border-slate-700", "rounded"],
-        ["bg-slate-900"]
+        ["flex flex-col"],
+        [["p-4"]],
+        ["rounded border border-slate-700 bg-slate-900"]
       )}
       style={style}
       onSubmit={handleSubmit}
     >
       <div className={clsx()}>
-        <div className={clsx(["text-sm", "font-bold", "text-slate-400"])}>
+        <div className={clsx("text-sm font-bold text-slate-400")}>
           タグの追加
         </div>
       </div>
-      <div
-        className={clsx(
-          ["mt-4", "mb-6"],
-          ["flex-grow", "flex-shrink-0"],
-          ["flex", "flex-col", ["gap-y-4"]]
-        )}
-      >
-        <div className={clsx(["flex", "flex-col"])}>
+      <div className={clsx(["mb-6 mt-4 flex shrink-0 grow flex-col gap-y-4"])}>
+        <div className={clsx("flex flex-col")}>
           <label>
-            <div className={clsx(["text-xs"], ["text-slate-400"])}>
-              主な名前
-            </div>
-            <div className={clsx(["mt-1"], ["flex", "flex-col"])}>
-              <div className={clsx(["w-full"])}>
+            <div className={clsx("text-xs text-slate-400")}>主な名前</div>
+            <div className={clsx("mt-1 flex flex-col")}>
+              <div className={clsx("w-full")}>
                 <TextInput2
                   size={"small"}
-                  className={clsx(["w-full"], ["flex-grow"])}
+                  className={clsx("w-full grow")}
                   placeholder="タグの主な名前"
                   value={primaryName}
                   onChange={(v) => setPrimaryName(v)}
@@ -160,22 +151,20 @@ export const AddTagForm: React.FC<{
             </div>
           </label>
         </div>
-        <div className={clsx(["flex", "flex-col"])}>
+        <div className={clsx("flex flex-col")}>
           <label>
-            <div className={clsx(["text-xs"], ["text-slate-400"])}>
-              追加の名前
-            </div>
-            <div className={clsx(["mt-1"], ["flex", "flex-col"])}>
-              <div className={clsx(["w-full"], ["flex", "gap-x-2"])}>
+            <div className={clsx("text-xs text-slate-400")}>追加の名前</div>
+            <div className={clsx("mt-1 flex flex-col")}>
+              <div className={clsx("flex w-full gap-x-2")}>
                 <TextInput2
                   size="small"
-                  className={clsx(["w-full"], ["flex-grow"])}
+                  className={clsx("w-full grow")}
                   placeholder="タグの追加の名前"
                   value={extraNameInput}
                   onChange={(v) => setExtraNameInput(v)}
                 />
                 <Button
-                  className={clsx(["flex-shrink-0"])}
+                  className={clsx("shrink-0")}
                   color="blue"
                   size="small"
                   icon="plus"
@@ -192,20 +181,14 @@ export const AddTagForm: React.FC<{
             </div>
           </label>
           {extraNames.length >= 1 && (
-            <div
-              className={clsx(["mt-2"], ["flex", "flex-col"], ["space-y-2"])}
-            >
+            <div className={clsx("mt-2 flex flex-col space-y-2")}>
               {extraNames.map((name) => (
-                <div key={name} className={clsx(["flex", "gap-x-2"])}>
+                <div key={name} className={clsx("flex gap-x-2")}>
                   <input
                     className={clsx(
-                      ["flex-grow"],
-                      ["rounded"],
-                      ["text-sm"],
-                      [["py-0.5"], ["px-2"]],
-                      ["bg-slate-200"],
-                      ["border", "border-slate-300"],
-                      ["text-slate-500"]
+                      ["grow rounded text-sm"],
+                      [["px-2 py-0.5"]],
+                      ["border border-slate-300 bg-slate-200 text-slate-500"]
                     )}
                     type="text"
                     disabled={true}
@@ -214,7 +197,7 @@ export const AddTagForm: React.FC<{
                   <Button
                     size="small"
                     color="red"
-                    className={clsx(["flex-shrink-0"])}
+                    className={clsx("shrink-0")}
                     onClick={() => dispatchExtraNames({ type: "remove", name })}
                     icon="x"
                   />
@@ -223,13 +206,11 @@ export const AddTagForm: React.FC<{
             </div>
           )}
         </div>
-        <div className={clsx(["flex", "flex-col"])}>
-          <label className={clsx(["text-sm"])}>
-            <div className={clsx(["text-xs"], ["text-slate-400"])}>
-              明示的な親タグ
-            </div>
+        <div className={clsx("flex flex-col")}>
+          <label className={clsx("text-sm")}>
+            <div className={clsx("text-xs text-slate-400")}>明示的な親タグ</div>
             <TagSearcher
-              className={clsx(["mt-1"])}
+              className={clsx("mt-1")}
               handleSelect={(tagId) =>
                 dispatchExplicitParentTag({ type: "set", tagId })
               }
@@ -238,28 +219,26 @@ export const AddTagForm: React.FC<{
           </label>
           {selectingExplicitParentTag && (
             <SelectedTag
-              className={clsx(["mt-2"])}
+              className={clsx("mt-2")}
               tagId={selectingExplicitParentTag}
               remove={() => dispatchExplicitParentTag({ type: "clear" })}
             />
           )}
         </div>
         <div>
-          <label className={clsx(["text-sm"])}>
-            <div className={clsx(["text-xs"], ["text-slate-400"])}>
+          <label className={clsx("text-sm")}>
+            <div className={clsx("text-xs text-slate-400")}>
               非明示的な親タグ
             </div>
             <TagSearcher
-              className={clsx(["mt-1"])}
+              className={clsx("mt-1")}
               handleSelect={(tagId) =>
                 dispatchImplicitParentTags({ type: "append", tagId })
               }
             />
           </label>
           {selectingImplicitParentTags.length >= 1 && (
-            <div
-              className={clsx(["mt-2"], ["flex", "flex-col"], ["space-y-2"])}
-            >
+            <div className={clsx("mt-2 flex flex-col space-y-2")}>
               {selectingImplicitParentTags.map((tagId) => (
                 <SelectedTag
                   key={tagId}
@@ -273,10 +252,10 @@ export const AddTagForm: React.FC<{
           )}
         </div>
       </div>
-      <div className={clsx(["flex-shrink-0"])}>
+      <div className={clsx("shrink-0")}>
         <Button
           submit
-          className={clsx(["flex-shrink-0"])}
+          className={clsx("shrink-0")}
           color="blue"
           size="small"
           icon="plus"

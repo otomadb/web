@@ -24,7 +24,7 @@ export const SemitagRows: React.FC = () => {
   });
 
   return (
-    <div className={clsx(["flex", "flex-col", "gap-y-0.5"])}>
+    <div className={clsx("flex flex-col gap-y-0.5")}>
       {data?.findSemitags.nodes.map((semitag) => (
         <SemitagRow
           key={semitag.id}

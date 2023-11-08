@@ -30,21 +30,17 @@ export const RequestsExists: React.FC<{
 
   return (
     <LinkNicovideoRegistrationRequest
-      className={clsx(
-        className,
-        ["px-2"],
-        ["py-2"],
-        ["flex", ["gap-x-4"]],
-        ["hover:bg-sky-300/50", "focus:bg-sky-400/50"]
-      )}
+      className={clsx(className, [
+        "flex gap-x-4 p-2 hover:bg-sky-300/50 focus:bg-sky-400/50",
+      ])}
       fragment={fragment}
       onClick={(e) => {
         e.currentTarget.blur();
       }}
     >
-      <div className={clsx(["flex-shrink-0"])}>
+      <div className={clsx("shrink-0")}>
         <CoolImage
-          className={clsx(["w-36"], ["h-18"])}
+          className={clsx("h-18 w-36")}
           src={fragment.thumbnailUrl}
           alt={fragment.sourceId}
           width={196}
@@ -52,26 +48,22 @@ export const RequestsExists: React.FC<{
           unoptimized={true}
         />
       </div>
-      <div
-        className={clsx(["flex-grow"], ["flex", "flex-col", "justify-center"])}
-      >
-        <div className={clsx(["flex"])}>
-          <p className={clsx(["text-slate-500"], ["text-xs"])}>
-            <span className={clsx(["font-mono"])}>{fragment.sourceId}</span>
+      <div className={clsx("flex grow flex-col justify-center")}>
+        <div className={clsx("flex")}>
+          <p className={clsx("text-xs text-slate-500")}>
+            <span className={clsx("font-mono")}>{fragment.sourceId}</span>
             は既にリクエストされています。
           </p>
         </div>
-        <div className={clsx(["flex"])}>
-          <p className={clsx(["text-slate-900"], ["text-sm"], ["font-bold"])}>
+        <div className={clsx("flex")}>
+          <p className={clsx("text-sm font-bold text-slate-900")}>
             {fragment.title}
           </p>
         </div>
-        <div className={clsx(["mt-2"], ["flex-grow"], ["flex"])}>
+        <div className={clsx("mt-2 flex grow")}>
           <UserIcon size={24} fragment={fragment.requestedBy} />
-          <div className={clsx(["ml-1"])}>
-            <span className={clsx(["text-xs"])}>
-              {fragment.requestedBy.name}
-            </span>
+          <div className={clsx("ml-1")}>
+            <span className={clsx("text-xs")}>{fragment.requestedBy.name}</span>
           </div>
         </div>
       </div>

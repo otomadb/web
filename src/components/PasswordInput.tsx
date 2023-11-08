@@ -19,9 +19,8 @@ export const PasswordInput = forwardRef<
       ref={ref}
       className={clsx(
         className,
-        ["bg-slate-50"],
-        ["outline-teal-300"],
-        [["text-slate-900"], ["placeholder:text-slate-300"]]
+        ["bg-slate-50 outline-teal-300"],
+        [["text-slate-900 placeholder:text-slate-300"]]
       )}
     />
   );

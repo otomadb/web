@@ -17,29 +17,20 @@ export const Header: React.FC<{
   fragment?: UserPageLayout_HeaderFragment;
 }> = ({ className, fragment }) => {
   return (
-    <header
-      className={clsx(
-        className,
-        ["flex", "items-center"],
-        ["h-48"],
-        ["bg-sky-100"]
-      )}
-    >
+    <header className={clsx(className, ["flex h-48 items-center bg-sky-100"])}>
       <div
-        className={clsx(
-          ["px-12"],
-          ["container", "max-w-screen-lg", "mx-auto"],
-          ["flex", "items-center"]
-        )}
+        className={clsx([
+          "container mx-auto flex max-w-screen-lg items-center px-12",
+        ])}
       >
-        <div className={clsx(["w-[96px]", "h-[96px]"])}>
+        <div className={clsx("h-[96px] w-[96px]")}>
           {fragment && <UserIcon size={96} fragment={fragment || undefined} />}
         </div>
-        <div className={clsx(["ml-4"])}>
-          <p className={clsx(["text-xl"], ["text-slate-900"])}>
+        <div className={clsx("ml-4")}>
+          <p className={clsx("text-xl text-slate-900")}>
             {fragment?.displayName}
           </p>
-          <p className={clsx(["text-base"], ["text-slate-600"], ["font-mono"])}>
+          <p className={clsx("font-mono text-base text-slate-600")}>
             {fragment?.name && `@${fragment.name}`}
           </p>
         </div>

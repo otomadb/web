@@ -35,34 +35,19 @@ export default function RecentLikes({ className }: { className?: string }) {
 
   return (
     <section
-      className={clsx(
-        className,
-        ["bg-background-deeper"],
-        ["py-4", "px-4"],
-        ["@container/likes"]
-      )}
+      className={clsx(className, ["bg-background-deeper p-4 @container/likes"])}
     >
-      <div className={clsx(["flex", "items-center"], ["px-4"])}>
-        <p
-          className={clsx(
-            ["flex-grow"],
-            ["text-md", "text-text-primary", "font-bold"]
-          )}
-        >
+      <div className={clsx("flex items-center px-4")}>
+        <p className={clsx(["grow text-base  font-bold text-text-primary"])}>
           いいねした動画
         </p>
-        <YouLikesPageLink className={clsx(["text-xs"], ["text-text-muted"])}>
+        <YouLikesPageLink className={clsx("text-xs text-text-muted")}>
           もっと見る
         </YouLikesPageLink>
       </div>
-      <div className={clsx(["mt-2"], ["flex", ["flex-col"], "items-stretch"])}>
+      <div className={clsx("mt-2 flex flex-col items-stretch")}>
         {fetching && (
-          <div
-            className={clsx(
-              ["px-4", "py-2"],
-              ["text-center", "text-text-muted"]
-            )}
-          >
+          <div className={clsx(["px-4 py-2 text-center text-text-muted"])}>
             いいね欄を取得中です
           </div>
         )}
@@ -71,30 +56,24 @@ export default function RecentLikes({ className }: { className?: string }) {
             "grid",
             "gap-x-2",
             "gap-y-2",
-            [
-              "grid-cols-1",
-              "@w128/likes:grid-cols-3",
-              "@w240/likes:grid-cols-6",
-            ],
+            ["grid-cols-1 @w128/likes:grid-cols-3 @w240/likes:grid-cols-6"],
           ])}
         >
           {data?.whoami.likes?.registrations.nodes.map((like) => (
             <div
               key={like.id}
               className={clsx(
-                ["flex", "flex-row", "@w128/likes:flex-col", "gap-x-4"],
-                ["bg-background-primary"],
                 [
-                  ["px-4", "@w128/likes:px-2"],
-                  ["py-2", "@w128/likes:py-1"],
+                  "flex flex-row gap-x-4 bg-background-primary @w128/likes:flex-col",
                 ],
+                [["px-4 py-2 @w128/likes:px-2 @w128/likes:py-1"]],
                 ["rounded"]
               )}
             >
               <LinkVideo fragment={like.video}>
                 <VideoThumbnail
                   className={clsx(
-                    ["w-24", "@w128/likes:w-full"],
+                    ["w-24 @w128/likes:w-full"],
                     [
                       "h-16",
                       "@w128/likes:h-24",
@@ -106,20 +85,12 @@ export default function RecentLikes({ className }: { className?: string }) {
                   imageSize="medium"
                 />
               </LinkVideo>
-              <div
-                className={clsx(
-                  [["@w128/likes:mt-1"]],
-                  ["flex-grow"],
-                  ["py-1"]
-                )}
-              >
+              <div className={clsx("grow py-1 @w128/likes:mt-1")}>
                 <LinkVideo
                   fragment={like.video}
                   className={clsx([
-                    ["text-sm", "@w128/likes:text-xs", "line-clamp-1"],
-                    "text-accent-primary",
-                    "font-bold",
-                    "hover:underline",
+                    ["line-clamp-1 text-sm @w128/likes:text-xs"],
+                    "font-bold text-accent-primary hover:underline",
                   ])}
                 >
                   {like.video.title}

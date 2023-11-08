@@ -28,15 +28,15 @@ export const MadRegisteredTimelineEvent = ({
   );
 
   return (
-    <div className={clsx(className, ["flex"])}>
-      <LinkVideo fragment={fragment.video} className={clsx(["block"])}>
+    <div className={clsx(className, "flex")}>
+      <LinkVideo fragment={fragment.video} className={clsx("block")}>
         <VideoThumbnail
-          className={clsx(["w-36"], ["h-24"])}
+          className={clsx("h-24 w-36")}
           imageSize="medium"
           fragment={fragment.video}
         />
       </LinkVideo>
-      <div className={clsx(["flex-grow"])}>
+      <div className={clsx("grow")}>
         <p>
           <LinkVideo fragment={fragment.video}>
             {fragment.video.title}

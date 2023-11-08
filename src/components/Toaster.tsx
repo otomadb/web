@@ -31,11 +31,7 @@ const Toast = ({
   return (
     <div
       className={clsx(
-        ["group"],
-        ["relative"],
-        ["bg-white", "bg-opacity-75", "backdrop-blur"],
-        ["overflow"],
-        ["shadow"],
+        ["overflow group relative bg-white bg-opacity-75 shadow backdrop-blur"],
         css`
           &[aria-hidden="true"] {
             animation-duration: 0.25s;
@@ -46,13 +42,10 @@ const Toast = ({
         `
       )}
     >
-      <div className={clsx(["px-4", "py-2"])}>{children}</div>
+      <div className={clsx("px-4 py-2")}>{children}</div>
       <div
         className={clsx(
-          ["w-full"],
-          ["h-[2px]"],
-          ["bg-teal-400"],
-          ["group-hover:animation-pause"],
+          ["group-hover:animation-pause h-[2px] w-full bg-teal-400"],
           css`
             transform-origin: left;
             animation-name: ${barscale};
@@ -111,12 +104,9 @@ export const ToastProvider: React.FC<{
       {children}
       <Portal selector={selector}>
         <div
-          className={clsx(
-            ["w-96"],
-            ["fixed", "bottom-0", "right-0"],
-            ["flex", "flex-col", "flex-col-reverse", "gap-y-2"],
-            ["mr-4", "mb-4"]
-          )}
+          className={clsx([
+            "fixed bottom-0 right-0 mb-4 mr-4 flex   w-96 flex-col gap-y-2",
+          ])}
         >
           {toasts.map(({ id, Toast }) => (
             <Fragment key={id}>{Toast}</Fragment>

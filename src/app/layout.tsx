@@ -41,30 +41,28 @@ export default function RootLayout({
     <html lang="ja">
       <Auth0Provider>
         <UrqlProvider>
-          <body className={clsx(["relative"], ["bg-gray-50"])}>
+          <body className={clsx("relative bg-gray-50")}>
             <ToastProvider selector="#toast">
               <FormModalProvider>
                 <GlobalNav
-                  className={clsx(
-                    ["sticky"],
-                    ["top-0"],
-                    ["w-full"],
-                    ["h-[64px]"],
-                    ["z-1"]
-                  )}
+                  className={clsx(["sticky top-0 z-1 h-[64px] w-full"])}
                 />
                 <div
-                  className={clsx(
-                    ["flex", "content-stretch", "flex-wrap"],
-                    ["min-h-[calc(100vh-64px)]"]
+                  className={
+                    clsx(
+                      "flex",
+                      "content-stretch",
+                      "min-h-[calc(100vh-[64px])] flex-wrap"
+                    )
+
                     // ["bg-background-root"]
-                  )}
+                  }
                 >
                   {children}
                 </div>
                 <GlobalFooter />
                 <div id="toast" />
-                <FormModal className={clsx(["fixed", "bottom-1", "right-4"])} />
+                <FormModal className={clsx("fixed bottom-1 right-4")} />
               </FormModalProvider>
             </ToastProvider>
           </body>

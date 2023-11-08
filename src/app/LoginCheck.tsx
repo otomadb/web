@@ -30,14 +30,12 @@ export default function LoginCheck({ children }: { children: ReactNode }) {
 
   return (
     <div
-      className={clsx(
-        ["w-full"],
-        ["h-[calc(100vh-64px)]"],
-        ["flex", "flex-col", "justify-center", "items-center"]
-      )}
+      className={clsx([
+        "flex h-[calc(100vh-[64px])] w-full flex-col items-center justify-center",
+      ])}
     >
       {quote !== undefined && (
-        <Quote className={clsx("mt-2", "w-96")} index={quote} />
+        <Quote className={clsx("mt-2 w-96")} index={quote} />
       )}
     </div>
   );

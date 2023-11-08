@@ -24,16 +24,14 @@ export default function OriginalSource({
   const fragment = useFragment(Fragment, props.fragment);
 
   return (
-    <div className={clsx(className, ["flex", "flex-col", "gap-y-2"])}>
-      <div className={clsx(["flex"], ["gap-x-4"])}>
-        <div
-          className={clsx(["flex-shrink-0"], ["flex", "flex-col", "gap-y-4"])}
-        >
+    <div className={clsx(className, "flex flex-col gap-y-2")}>
+      <div className={clsx("flex gap-x-4")}>
+        <div className={clsx("flex shrink-0 flex-col gap-y-4")}>
           {
             // TODO: 画像がない場合の挙動
             fragment.thumbnailUrl && (
               <CoolImage
-                className={clsx(["w-[96px]"], ["h-[64px]"])}
+                className={clsx("h-[64px] w-[96px]")}
                 src={fragment.thumbnailUrl}
                 width={96}
                 height={64}
@@ -43,24 +41,20 @@ export default function OriginalSource({
             )
           }
         </div>
-        <div className={clsx(["py-2"], ["flex-grow"], ["flex", "flex-col"])}>
-          <div className={clsx(["text-slate-300"], ["text-sm", "font-bold"])}>
+        <div className={clsx("flex grow flex-col py-2")}>
+          <div className={clsx("text-sm font-bold text-slate-300")}>
             {fragment.title}
           </div>
-          <div className={clsx(["mt-auto"], ["flex", "gap-x-2"])}>
+          <div className={clsx("mt-auto flex gap-x-2")}>
             <a
               href={fragment.url}
               target="_blank"
-              className={clsx(
-                ["flex", "items-center", "gap-x-1"],
-                ["text-slate-400", "hover:text-sky-400"]
-              )}
+              className={clsx([
+                "flex items-center gap-x-1 text-slate-400 hover:text-sky-400",
+              ])}
             >
-              <Pictogram
-                icon="external-link"
-                className={clsx(["w-4", "h-4"])}
-              />
-              <span className={clsx(["text-sm", "font-mono"])}>
+              <Pictogram icon="external-link" className={clsx("h-4 w-4")} />
+              <span className={clsx("font-mono text-sm")}>
                 {fragment.sourceId}
               </span>
             </a>

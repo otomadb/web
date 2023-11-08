@@ -43,15 +43,15 @@ export default async function Layout({
 
   const { findTag } = result.data;
   return (
-    <main className={clsx(["container"], ["mx-auto"])}>
-      <header className={clsx(["flex"])}>
-        <div className={clsx(["flex-grow"], ["flex", "flex-col", "gap-y-1"])}>
-          <h1 className={clsx(["text-xl"])}>
-            <span className={clsx(["text-slate-900", "font-bold"])}>
+    <main className={clsx("container mx-auto")}>
+      <header className={clsx("flex")}>
+        <div className={clsx("flex grow flex-col gap-y-1")}>
+          <h1 className={clsx("text-xl")}>
+            <span className={clsx("font-bold text-slate-900")}>
               {findTag.name}
             </span>
             {findTag.explicitParent && (
-              <span className={clsx(["ml-1"], ["text-slate-500"])}>
+              <span className={clsx("ml-1 text-slate-500")}>
                 ({findTag.explicitParent.name})
               </span>
             )}
@@ -61,7 +61,7 @@ export default async function Layout({
           <Parents fragment={findTag} />
         </div>
       </header>
-      <div className={clsx(["mt-4"])}>{children}</div>
+      <div className={clsx("mt-4")}>{children}</div>
     </main>
   );
 }

@@ -27,34 +27,18 @@ export const EventTemplate: React.FC<{
 }> = ({ children, ...props }) => {
   const fragment = useFragment(EventTemplateFragment, props.fragment);
   return (
-    <div
-      className={clsx(
-        ["flex"],
-        ["px-4"],
-        ["py-1"],
-        ["border", "border-slate-300"],
-        ["rounded"]
-      )}
-    >
-      <div className={clsx(["flex-grow"], ["flex", "items-center"])}>
-        {children}
-      </div>
-      <div
-        className={clsx(
-          ["self-start"],
-          ["flex-shrink-0"],
-          ["flex", "items-center"]
-        )}
-      >
+    <div className={clsx(["flex rounded border border-slate-300 px-4 py-1"])}>
+      <div className={clsx("flex grow items-center")}>{children}</div>
+      <div className={clsx("flex shrink-0 items-center self-start")}>
         <LinkUser
           fragment={fragment.user}
-          className={clsx(["flex", ["items-center"]])}
+          className={clsx("flex items-center")}
         >
           <UserIcon fragment={fragment.user} size={24} />
         </LinkUser>
-        <div className={clsx(["ml-2"], ["flex", ["items-center"]])}>
+        <div className={clsx("ml-2 flex items-center")}>
           <time
-            className={clsx(["text-[10px]", "font-mono", "text-slate-500"])}
+            className={clsx("font-mono text-[10px] text-slate-500")}
             dateTime={fragment.createdAt}
           >
             {fragment.createdAt}
@@ -76,10 +60,8 @@ export const VideoRegisterEvent: React.FC<{
   const fragment = useFragment(VideoRegisterEventFragment, props.fragment);
   return (
     <EventTemplate fragment={fragment}>
-      <div className={clsx(["flex", "flex-col", "justify-center"])}>
-        <div
-          className={clsx(["text-slate-700"], ["font-bold"], ["text-[10px]"])}
-        >
+      <div className={clsx("flex flex-col justify-center")}>
+        <div className={clsx("text-[10px] font-bold text-slate-700")}>
           動画が登録されました。
         </div>
       </div>
@@ -102,7 +84,7 @@ export const VideoTitleCreateEvent: React.FC<{
   const fragment = useFragment(VideoTitleCreateEventFragment, props.fragment);
   return (
     <EventTemplate fragment={fragment}>
-      <div className={clsx(["flex", "items-center"], ["text-[10px]"])}>
+      <div className={clsx("flex items-center text-[10px]")}>
         <div
           className={clsx(
             ["text-[12px]"],
@@ -139,7 +121,7 @@ export const VideoTitleSetPrimaryEvent: React.FC<{
   );
   return (
     <EventTemplate fragment={fragment}>
-      <div className={clsx(["flex", "items-center"], ["text-[10px]"])}>
+      <div className={clsx("flex items-center text-[10px]")}>
         <div
           className={clsx(
             ["text-[12px]"],
@@ -176,7 +158,7 @@ export const VideoTitleUnsetPrimaryEvent: React.FC<{
   );
   return (
     <EventTemplate fragment={fragment}>
-      <div className={clsx(["flex", "flex-col"])}>
+      <div className={clsx("flex flex-col")}>
         <div
           className={clsx(
             ["text-[12px]"],
@@ -212,17 +194,11 @@ export const VideoThumbnailCreateEvent: React.FC<{
   );
   return (
     <EventTemplate fragment={fragment}>
-      <div className={clsx(["flex", "flex-col"], ["items-start"])}>
-        <div
-          className={clsx(
-            ["flex", "items-center"],
-            ["text-slate-800"],
-            ["text-[10px]"]
-          )}
-        >
+      <div className={clsx("flex flex-col items-start")}>
+        <div className={clsx(["flex items-center text-[10px] text-slate-800"])}>
           サムネイルを追加しました。
         </div>
-        <div className={clsx(["mt-2"])}>
+        <div className={clsx("mt-2")}>
           <Image
             width={196}
             height={128}
@@ -252,17 +228,11 @@ export const VideoThumbnailSetPrimaryEvent: React.FC<{
   );
   return (
     <EventTemplate fragment={fragment}>
-      <div className={clsx(["flex", "flex-col"], ["items-start"])}>
-        <div
-          className={clsx(
-            ["flex", "items-center"],
-            ["text-slate-800"],
-            ["text-[10px]"]
-          )}
-        >
+      <div className={clsx("flex flex-col items-start")}>
+        <div className={clsx(["flex items-center text-[10px] text-slate-800"])}>
           メインのサムネイルを変更しました。
         </div>
-        <div className={clsx(["mt-2"])}>
+        <div className={clsx("mt-2")}>
           <Image
             width={196}
             height={128}
@@ -292,17 +262,11 @@ export const VideoThumbnailUnsetPrimaryEvent: React.FC<{
   );
   return (
     <EventTemplate fragment={fragment}>
-      <div className={clsx(["flex", "flex-col"], ["items-start"])}>
-        <div
-          className={clsx(
-            ["flex", "items-center"],
-            ["text-slate-800"],
-            ["text-[10px]"]
-          )}
-        >
+      <div className={clsx("flex flex-col items-start")}>
+        <div className={clsx(["flex items-center text-[10px] text-slate-800"])}>
           メインのサムネイルから解除しました。
         </div>
-        <div className={clsx(["mt-2"])}>
+        <div className={clsx("mt-2")}>
           <Image
             width={196}
             height={128}
@@ -331,7 +295,7 @@ export const VideoTagAttachEvent: React.FC<{
   const fragment = useFragment(VideoTagAttachEventFragment, props.fragment);
   return (
     <EventTemplate fragment={fragment}>
-      <div className={clsx(["flex", "items-center"], ["text-[10px]"])}>
+      <div className={clsx("flex items-center text-[10px]")}>
         タグ
         <CommonTag fragment={fragment.videoTag.tag} />
         が追加されました。
@@ -356,7 +320,7 @@ export const VideoTagDetachEvent: React.FC<{
   const fragment = useFragment(VideoTagDetachEventFragment, props.fragment);
   return (
     <EventTemplate fragment={fragment}>
-      <div className={clsx(["flex", "items-center"], ["text-[10px]"])}>
+      <div className={clsx("flex items-center text-[10px]")}>
         タグ
         <CommonTag fragment={fragment.videoTag.tag} />
         が外されました
@@ -376,9 +340,7 @@ export const VideoTagReattachEvent: React.FC<{
   const fragment = useFragment(VideoTagReattachEventFragment, props.fragment);
   return (
     <EventTemplate fragment={fragment}>
-      <div className={clsx(["text-slate-800"], ["text-[10px]"])}>
-        タグの再追加
-      </div>
+      <div className={clsx("text-[10px] text-slate-800")}>タグの再追加</div>
     </EventTemplate>
   );
 };
@@ -397,13 +359,7 @@ export const SemitagAttachEvent: React.FC<{
   const fragment = useFragment(SemitagAttachEventFragment, props.fragment);
   return (
     <EventTemplate fragment={fragment}>
-      <div
-        className={clsx(
-          ["flex", "items-center"],
-          ["text-slate-800"],
-          ["text-[10px]"]
-        )}
-      >
+      <div className={clsx(["flex items-center text-[10px] text-slate-800"])}>
         仮タグ
         <Semitag fragment={fragment.semitag} />
         を追加しました。
@@ -434,13 +390,7 @@ export const SemitagResolveEvent: React.FC<{
   const fragment = useFragment(SemitagResolveEventFragment, props.fragment);
   return (
     <EventTemplate fragment={fragment}>
-      <div
-        className={clsx(
-          ["flex", "items-center"],
-          ["text-slate-800"],
-          ["text-[10px]"]
-        )}
-      >
+      <div className={clsx(["flex items-center text-[10px] text-slate-800"])}>
         仮タグ
         <Semitag fragment={fragment.resolving.semitag} />
         は
@@ -467,13 +417,7 @@ export const SemitagRejectEvent: React.FC<{
   const fragment = useFragment(SemitagRejectEventFragment, props.fragment);
   return (
     <EventTemplate fragment={fragment}>
-      <div
-        className={clsx(
-          ["flex", "items-center"],
-          ["text-slate-800"],
-          ["text-[10px]"]
-        )}
-      >
+      <div className={clsx(["flex items-center text-[10px] text-slate-800"])}>
         仮タグ
         <Semitag fragment={fragment.rejecting.semitag} />
         を棄却しました。
@@ -500,22 +444,16 @@ export const NicovideoVideoSourceCreateEvent: React.FC<{
   );
   return (
     <EventTemplate fragment={fragment}>
-      <div className={clsx(["flex", "flex-col"], ["items-start"])}>
-        <div
-          className={clsx(
-            ["flex", "items-center"],
-            ["text-slate-800"],
-            ["text-[10px]"]
-          )}
-        >
+      <div className={clsx("flex flex-col items-start")}>
+        <div className={clsx(["flex items-center text-[10px] text-slate-800"])}>
           ニコニコ動画の動画元として
-          <div className={clsx(["text-[12px]"], ["text-slate-800"])}>
+          <div className={clsx("text-[12px] text-slate-800")}>
             {fragment.source.sourceId}
           </div>
           を追加しました。
         </div>
         <iframe
-          className={clsx(["mt-2"])}
+          className={clsx("mt-2")}
           height="160"
           src={fragment.source.embedUrl}
         />

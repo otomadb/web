@@ -21,7 +21,7 @@ export const InfiniteVideosGrid: React.FC<{
     []
   );
   return (
-    <div className={clsx(className, ["flex", "flex-col", ["gap-y-2"]])}>
+    <div className={clsx(className, "flex flex-col gap-y-2")}>
       {!initAfter && <Fetcher pushAfter={pushAfter} />}
       {afters.map((after) => (
         <Fetcher key={after} after={after} pushAfter={pushAfter} />
@@ -76,7 +76,7 @@ const Block: React.FC<{
   children: ReactNode;
 }> = ({ className, children }) => {
   return (
-    <div className={clsx(className, ["@container/block"])}>
+    <div className={clsx(className, "@container/block")}>
       <div
         className={clsx([
           "grid",
@@ -87,8 +87,7 @@ const Block: React.FC<{
             "@[1024px]/block:grid-cols-4",
             "@[1536px]/block:grid-cols-6",
           ],
-          ["gap-x-2"],
-          ["gap-y-2"],
+          ["gap-2"],
         ])}
       >
         {children}

@@ -18,8 +18,8 @@ import {
   NoSymbolIcon,
   PencilIcon,
   PlusIcon,
-  XMarkIcon,
   UserPlusIcon,
+  XMarkIcon,
 } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 
@@ -61,7 +61,7 @@ export default function Pictogram({
     case "loading":
       return (
         <ArrowPathIcon
-          className={clsx(props.className, ["animate-spin"])}
+          className={clsx(props.className, "animate-spin")}
           {...props}
         />
       );

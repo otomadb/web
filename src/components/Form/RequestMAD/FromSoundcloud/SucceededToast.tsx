@@ -24,12 +24,12 @@ export const SucceededToast: React.FC<{
     <div>
       <p>
         <SoundcloudRequestLink
-          className={clsx(["font-bold"], ["text-blue-400"])}
+          className={clsx("font-bold text-blue-400")}
           fragment={fragment.request}
         >
           {fragment.request.title}
         </SoundcloudRequestLink>
-        <span className={clsx(["text-slate-700"])}>をリクエストしました</span>
+        <span className={clsx("text-slate-700")}>をリクエストしました</span>
       </p>
     </div>
   );

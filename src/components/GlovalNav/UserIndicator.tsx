@@ -30,31 +30,22 @@ export default function UserIndicator({
   return (
     <div
       style={style}
-      className={clsx(className, ["relative"], ["w-[32px]", "h-[32px]"])}
+      className={clsx(className, "relative h-[32px] w-[32px]")}
       tabIndex={0}
     >
       <UserIcon
-        className={clsx(["w-[32px]", "h-[32px]"])}
+        className={clsx("h-[32px] w-[32px]")}
         fragment={whoami}
         size={32}
       />
       {0 < notifications.totalCount && (
         <div
-          className={clsx(
-            ["absolute", "top-[75%]", "left-[75%]"],
-            ["bg-sky-500/90"],
-            ["px-2", "py-1"],
-            ["flex"],
-            ["rounded-full"],
-            ["select-none"]
-          )}
+          className={clsx([
+            "absolute left-[75%] top-[75%] flex select-none rounded-full bg-sky-500/90 px-2 py-1",
+          ])}
         >
           <span
-            className={clsx(
-              ["text-xs", "font-bold"],
-              ["leading-none"],
-              ["text-sky-100"]
-            )}
+            className={clsx(["text-xs font-bold leading-none text-sky-100"])}
           >
             {notifications.totalCount}
           </span>

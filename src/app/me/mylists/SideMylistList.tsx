@@ -40,11 +40,9 @@ export const SideMylistList: React.FC<{
 
   return (
     <div
-      className={clsx(
-        className,
-        ["flex", "flex-col", "items-stretch"],
-        ["overflow-y-scroll"]
-      )}
+      className={clsx(className, [
+        "flex flex-col items-stretch overflow-y-scroll",
+      ])}
     >
       {!data?.whoami && fetching && <p>マイリストを取得中です</p>}
       {data?.whoami.mylists.nodes.map((mylist) => (

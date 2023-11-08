@@ -25,11 +25,11 @@ export const SucceededToast: React.FC<{
       <p>
         <LinkNicovideoRegistrationRequest
           fragment={fragment.request}
-          className={clsx(["font-bold"], ["text-blue-400"])}
+          className={clsx("font-bold text-blue-400")}
         >
           {fragment.request.sourceId}
         </LinkNicovideoRegistrationRequest>
-        <span className={clsx(["text-slate-700"])}>をリクエストしました</span>
+        <span className={clsx("text-slate-700")}>をリクエストしました</span>
       </p>
     </div>
   );

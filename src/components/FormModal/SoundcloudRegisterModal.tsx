@@ -26,13 +26,13 @@ export default function RegisterSoundcloudMADFormModal({
     <div className={clsx(className)} style={style}>
       {!sourceId && (
         <SoundcloudURLForm
-          className={clsx(["h-full"])}
+          className={clsx("h-full")}
           set={(s) => setSourceId(s)}
         />
       )}
       {sourceId && (
         <RegisterForm
-          className={clsx(["h-full"])}
+          className={clsx("h-full")}
           url={sourceId}
           handleSuccess={handleSuccess}
           handleCancel={() => {

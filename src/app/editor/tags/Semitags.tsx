@@ -54,80 +54,64 @@ export const Semitags: React.FC<{
     <div
       className={clsx(
         className,
-        ["flex", "flex-col", "gap-y-4"],
-        [["px-4"], ["py-4"]],
-        ["border", "border-slate-700", "rounded"],
-        ["bg-slate-900"]
+        ["flex flex-col gap-y-4"],
+        [["p-4"]],
+        ["rounded border border-slate-700 bg-slate-900"]
       )}
       style={style}
     >
-      <div className={clsx(["flex-shrink-0"], ["flex", "flex-col"])}>
-        <div className={clsx(["px-2"])}>
-          <div className={clsx(["text-xs", "text-slate-400"])}>
-            選択中の仮タグ
-          </div>
+      <div className={clsx("flex shrink-0 flex-col")}>
+        <div className={clsx("px-2")}>
+          <div className={clsx("text-xs text-slate-400")}>選択中の仮タグ</div>
         </div>
         <div
-          className={clsx(
-            ["mt-2"],
-            ["h-[196px]"],
-            ["overflow-y-scroll"],
-            ["border", "border-slate-700"],
-            ["bg-slate-950"]
-          )}
+          className={clsx([
+            "mt-2 h-[196px] overflow-y-scroll border border-slate-700 bg-slate-950",
+          ])}
         >
           {!selecteds && (
             // TODO: Loading animation
-            <div className={clsx(["px-4", "py-4"])}>
-              <div className={clsx(["text-sm", "text-slate-400"])}>
-                Fetching
-              </div>
+            <div className={clsx("p-4")}>
+              <div className={clsx("text-sm text-slate-400")}>Fetching</div>
             </div>
           )}
           {selecteds && (
-            <div
-              className={clsx(
-                ["divide-y", "divide-slate-800"],
-                ["flex", "flex-col"]
-              )}
-            >
+            <div className={clsx(["flex flex-col divide-y divide-slate-800"])}>
               {selecteds.map(({ id, name, video }) => (
                 <div
                   role="button"
                   key={id}
-                  className={clsx(
-                    ["px-8", "py-2"],
-                    ["flex", "items-center", "gap-x-8"],
-                    ["bg-slate-950", "hover:bg-sky-900"]
-                  )}
+                  className={clsx([
+                    "flex items-center gap-x-8 bg-slate-950 px-8 py-2 hover:bg-sky-900",
+                  ])}
                 >
                   <div
                     role="button"
                     className={clsx(
-                      ["flex", "justify-center", "items-center"],
-                      ["px-1", "py-1"],
-                      ["text-sm", ["text-sky-300", "hover:text-sky-200"]],
+                      [
+                        "flex items-center justify-center p-1 text-sm text-sky-300 hover:text-sky-200",
+                      ],
                       [
                         "rounded",
                         "border",
-                        ["border-sky-800", "hover:border-sky-700"],
+                        ["border-sky-800 hover:border-sky-700"],
                       ],
-                      ["text-sm", ["text-sky-300", "hover:text-sky-200"]],
-                      ["bg-sky-900", "hover:bg-sky-800"]
+                      [
+                        "bg-sky-900 text-sm text-sky-300 hover:bg-sky-800 hover:text-sky-200",
+                      ]
                     )}
                     onClick={(e) => {
                       e.preventDefault();
                       remove(id);
                     }}
                   >
-                    <Pictogram icon="check" className={clsx(["w-4", "h-4"])} />
+                    <Pictogram icon="check" className={clsx("h-4 w-4")} />
                   </div>
-                  <div className={clsx(["flex-grow"], ["flex"])}>
+                  <div className={clsx("flex grow")}>
                     <div
-                      className={clsx(
-                        ["flex-grow"],
-                        ["text-sm", "text-slate-300", "text-left"]
-                      )}
+                      className={clsx([
+                        "grow text-left text-sm text-slate-300",
+                      ])}
                     >
                       {name}
                     </div>
@@ -144,28 +128,25 @@ export const Semitags: React.FC<{
                           copy(name);
                         }}
                         className={clsx(
-                          ["px-1", "py-0.5"],
+                          ["px-1 py-0.5"],
                           [
                             "rounded",
                             "border",
-                            ["border-sky-800", "hover:border-sky-700"],
+                            ["border-sky-800 hover:border-sky-700"],
                           ],
-                          ["text-sm", ["text-sky-300", "hover:text-sky-200"]],
-                          ["bg-sky-900", "hover:bg-sky-800"]
+                          [
+                            "bg-sky-900 text-sm text-sky-300 hover:bg-sky-800 hover:text-sky-200",
+                          ]
                         )}
                       >
-                        <Pictogram
-                          icon="copy"
-                          className={clsx(["w-4", "h-4"])}
-                        />
+                        <Pictogram icon="copy" className={clsx("h-4 w-4")} />
                       </div>
                     </div>
                   </div>
                   <div
-                    className={clsx(
-                      ["w-2/5", "flex-shrink-0"],
-                      ["text-sm", "text-slate-300", "text-left"]
-                    )}
+                    className={clsx([
+                      "w-2/5 shrink-0 text-left text-sm text-slate-300",
+                    ])}
                   >
                     {video.title}
                   </div>
@@ -175,72 +156,51 @@ export const Semitags: React.FC<{
           )}
         </div>
       </div>
-      <div
-        className={clsx(
-          ["flex-grow"],
-          ["flex", "flex-col"],
-          ["overflow-y-hidden"]
-        )}
-      >
-        <div className={clsx(["px-2"])}>
-          <div className={clsx(["text-xs", "text-slate-400"])}>
-            仮タグを選択
-          </div>
+      <div className={clsx("flex grow flex-col overflow-y-hidden")}>
+        <div className={clsx("px-2")}>
+          <div className={clsx("text-xs text-slate-400")}>仮タグを選択</div>
         </div>
         <div
-          className={clsx(
-            ["mt-2"],
-            ["h-full"],
-            ["overflow-y-scroll"],
-            ["border", "border-slate-700"],
-            ["bg-slate-950"]
-          )}
+          className={clsx([
+            "mt-2 h-full overflow-y-scroll border border-slate-700 bg-slate-950",
+          ])}
         >
           {!semitags && (
             // TODO: Loading animation
-            <div className={clsx(["px-4", "py-4"])}>
-              <div className={clsx(["text-sm", "text-slate-400"])}>
-                Fetching
-              </div>
+            <div className={clsx("p-4")}>
+              <div className={clsx("text-sm text-slate-400")}>Fetching</div>
             </div>
           )}
           {semitags && (
-            <div
-              className={clsx(
-                ["divide-y", "divide-slate-800"],
-                ["flex", "flex-col"]
-              )}
-            >
+            <div className={clsx(["flex flex-col divide-y divide-slate-800"])}>
               {semitags.map(({ id, name, video, isSelected: selected }) => (
                 <div
                   key={id}
                   className={clsx(
-                    ["px-8", "py-2"],
-                    ["flex", "items-center", "gap-x-8"],
-                    !selected && ["bg-slate-950", "hover:bg-sky-950"],
+                    ["flex items-center gap-x-8 px-8 py-2"],
+                    !selected && ["bg-slate-950 hover:bg-sky-950"],
                     selected && ["bg-sky-950"]
                   )}
                 >
                   <div
                     role="button"
                     className={clsx(
-                      ["flex", "justify-center", "items-center"],
-                      ["px-1", "py-1"],
+                      ["flex items-center justify-center p-1"],
                       [
                         "text-sm",
-                        !selected && ["text-sky-300", "hover:text-sky-200"],
-                        selected && ["text-sky-300", "hover:text-sky-200"],
+                        !selected && ["text-sky-300 hover:text-sky-200"],
+                        selected && ["text-sky-300 hover:text-sky-200"],
                       ],
                       [
                         "rounded",
                         "border",
-                        !selected && ["border-sky-900", "hover:border-sky-700"],
-                        selected && ["border-sky-800", "hover:border-sky-700"],
+                        !selected && ["border-sky-900 hover:border-sky-700"],
+                        selected && ["border-sky-800 hover:border-sky-700"],
                       ],
-                      ["text-sm", ["text-sky-300", "hover:text-sky-200"]],
+                      ["text-sm text-sky-300 hover:text-sky-200"],
                       [
-                        !selected && ["bg-transparent", "hover:bg-sky-900"],
-                        selected && ["bg-sky-900", "hover:bg-sky-800"],
+                        !selected && ["bg-transparent hover:bg-sky-900"],
+                        selected && ["bg-sky-900 hover:bg-sky-800"],
                       ]
                     )}
                     onClick={(e) => {
@@ -250,16 +210,13 @@ export const Semitags: React.FC<{
                     }}
                   >
                     {selected && (
-                      <Pictogram
-                        icon="check"
-                        className={clsx(["w-4", "h-4"])}
-                      />
+                      <Pictogram icon="check" className={clsx("h-4 w-4")} />
                     )}
-                    {!selected && <div className={clsx(["w-4", "h-4"])} />}
+                    {!selected && <div className={clsx("h-4 w-4")} />}
                   </div>
                   <div
                     className={clsx(
-                      ["flex-grow"],
+                      ["grow"],
                       [
                         "text-sm",
                         {
@@ -275,7 +232,7 @@ export const Semitags: React.FC<{
                   </div>
                   <div
                     className={clsx(
-                      ["w-2/5", "flex-shrink-0"],
+                      ["w-2/5 shrink-0"],
                       [
                         "text-sm",
                         {
