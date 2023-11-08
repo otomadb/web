@@ -5,8 +5,8 @@ const colors = require("tailwindcss/colors");
 module.exports = {
   content: [
     "./mdx-components.tsx",
-    "./src/app/**/*.{js,ts,jsx,tsx}",
-    "./src/components/**/*.{js,ts,jsx,tsx}",
+    "./app/**/*.{js,ts,jsx,tsx}",
+    "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     containers: {

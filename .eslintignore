@@ -6,8 +6,8 @@ package-lock.json
 
 # codegen
 schema.graphql
-src/gql/*
-!src/gql/fetch.ts
+gql/*
+!gql/fetch.ts
 
 # public
 **/public/mockServiceWorker.js
