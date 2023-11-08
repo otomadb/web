@@ -1,4 +1,3 @@
-import Auth0Provider from "../Auth0Provider";
 import AboutPage from "./about/page";
 import LoginCheck from "./LoginCheck";
 
