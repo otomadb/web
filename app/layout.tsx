@@ -1,7 +1,7 @@
 import "./globals.css";
 
 import clsx from "clsx";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import React from "react";
 
 import { GlobalFooter } from "~/components/GlobalFooter";
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   title: "OtoMADB",
   description:
     "OtoMADBは音MADの体系的なデータベースを目指して開発されています。",
-  viewport: "width=device-width, initial-scale=1.0",
+  viewport: "width=device-width, initial-scale=1.0", // TODO: 多分ダメ(https://nextjs.org/docs/app/building-your-application/upgrading/codemods#use-viewport-export)
   openGraph: {
     type: "website",
     url: "https://otomadb.com",
