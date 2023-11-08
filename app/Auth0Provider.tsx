@@ -2,12 +2,12 @@
 
 import "client-only";
 
-import { Auth0Provider } from "@auth0/auth0-react";
+import { Auth0Provider as UnconfiguredAuth0Provider } from "@auth0/auth0-react";
 import { ReactNode } from "react";
 
-export default function Provider({ children }: { children: ReactNode }) {
+export default function Auth0Provider({ children }: { children: ReactNode }) {
   return (
-    <Auth0Provider
+    <UnconfiguredAuth0Provider
       domain={process.env.NEXT_PUBLIC_AUTH0_DOMAIN}
       clientId={process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID}
       authorizationParams={{
@@ -26,6 +26,6 @@ export default function Provider({ children }: { children: ReactNode }) {
       }}
     >
       {children}
-    </Auth0Provider>
+    </UnconfiguredAuth0Provider>
   );
 }

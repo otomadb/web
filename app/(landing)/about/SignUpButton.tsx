@@ -5,7 +5,13 @@ import clsx from "clsx";
 
 import Pictogram from "~/components/Pictogram";
 
-export const SignupButton = ({ className }: { className?: string }) => {
+export const SignupButton = ({
+  className,
+  theme,
+}: {
+  className?: string;
+  theme: "vivid" | "coal";
+}) => {
   const { loginWithRedirect } = useAuth0();
   return (
     <button
@@ -23,21 +29,34 @@ export const SignupButton = ({ className }: { className?: string }) => {
       aria-label="ユーザー登録"
       className={clsx(
         className,
-        "group/button flex items-center gap-x-2 rounded-sm border border-coal-darker bg-transparent px-4 py-2 transition-colors duration-50 hover:bg-coal-darker"
+        "group/button duration-50 flex items-center gap-x-2 rounded-sm border bg-transparent px-4 py-2 transition-colors ",
+        {
+          "border-coal-darker hover:bg-coal-darker": theme === "coal",
+          "border-vivid-primary hover:bg-vivid-primary": theme === "vivid",
+        }
       )}
     >
       <Pictogram
         icon="signup"
-        className={clsx(
-          "h-4  text-coal-darker transition-colors duration-50 group-hover/button:text-vivid-primary"
-        )}
+        className={clsx("duration-50 h-4 transition-colors", {
+          "text-coal-darker group-hover/button:text-vivid-primary":
+            theme === "coal",
+          "text-vivid-primary group-hover/button:text-coal-darker":
+            theme === "vivid",
+        })}
       />
       <span
         className={clsx(
-          "whitespace-nowrap text-sm text-coal-darker transition-colors duration-50 group-hover/button:text-vivid-primary"
+          "duration-50 whitespace-nowrap text-sm transition-colors",
+          {
+            "text-coal-darker group-hover/button:text-vivid-primary":
+              theme === "coal",
+            "text-vivid-primary group-hover/button:text-coal-darker":
+              theme === "vivid",
+          }
         )}
       >
-        ユーザー登録
+        ようこそ！
       </span>
     </button>
   );

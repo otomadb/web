@@ -5,6 +5,9 @@ import type { Metadata } from "next";
 import React from "react";
 
 import { GlobalFooter } from "~/components/GlobalFooter";
+import Auth0Provider from "./Auth0Provider";
+import { ToastProvider } from "~/components/Toaster";
+import UrqlProvider from "./UrqlProvider";
 
 export const metadata: Metadata = {
   title: "OtoMADB",
@@ -32,11 +35,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ja">
-      <body className={clsx()}>
-        <main>{children}</main>
-        <GlobalFooter />
-      </body>
-    </html>
+    <Auth0Provider>
+      <UrqlProvider>
+        <ToastProvider selector="#toast">
+          <html lang="ja">
+            <body className={clsx()}>
+              <div id="toast" />
+              <main>{children}</main>
+              <GlobalFooter />
+            </body>
+          </html>
+        </ToastProvider>
+      </UrqlProvider>
+    </Auth0Provider>
   );
 }
