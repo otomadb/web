@@ -6,7 +6,6 @@ import { AllVideosPageLink } from "~/app/mads/Link";
 import { Logo } from "~/components/Logo";
 import { SearchContents } from "~/components/SearchContents/SearchContents";
 import RecentVideos from "./RecentVideos.server";
-import Button from "~/components/Button";
 import { SignupButton } from "./SignUpButton";
 
 export default function Page() {
