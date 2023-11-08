@@ -3,7 +3,7 @@ import Link from "next/link";
 import React from "react";
 
 import { AboutPageLink } from "~/app/(landing)/about/Link";
-import { TopLink } from "~/app/Link";
+import TopPageLink from "~/app/(landing)/Link";
 import { Logo } from "~/components/Logo";
 
 export const GlobalFooter: React.FC = () => {
@@ -32,9 +32,9 @@ export const GlobalFooter: React.FC = () => {
             ["select-none"]
           )}
         >
-          <TopLink>
+          <TopPageLink>
             <Logo className={clsx(["w-[160px]"], ["fill-slate-100"])} />
-          </TopLink>
+          </TopPageLink>
           <p className={clsx(["mt-1"], ["text-slate-300"], ["text-xs"])}>
             音MADの体系的なデータベースを作る
           </p>

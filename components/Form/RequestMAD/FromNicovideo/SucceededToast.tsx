@@ -4,7 +4,7 @@ import "client-only";
 import clsx from "clsx";
 import React from "react";
 
-import { LinkNicovideoRegistrationRequest } from "~/app/requests/nicovideo/[sourceId]/Link";
+import { LinkNicovideoRegistrationRequest } from "~/app/(application)/requests/nicovideo/[sourceId]/Link";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const Fragment = graphql(`

@@ -2,7 +2,7 @@
 
 import clsx from "clsx";
 
-import { LinkUser as UserLink } from "~/app/users/[name]/Link";
+import { UserPageLink } from "~/app/(application)/users/[name]/Link";
 import { SemitagButton } from "~/components/Form/SemitagButton";
 import {
   Fragment as TagButtonFragment,
@@ -70,9 +70,9 @@ export const RequestExists = ({
           としてリクエストされています
         </p>
         <div className={clsx(["shrink-0"])}>
-          <UserLink fragment={fragment.requestedBy}>
+          <UserPageLink fragment={fragment.requestedBy}>
             <UserIcon size={24} fragment={fragment.requestedBy} />
-          </UserLink>
+          </UserPageLink>
         </div>
       </div>
       <div className={clsx(["flex", "flex-col", "gap-y-2"])}>

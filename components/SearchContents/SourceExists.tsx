@@ -2,7 +2,7 @@
 import clsx from "clsx";
 import React from "react";
 
-import { LinkVideo } from "~/app/mads/[serial]/Link";
+import { MadPageLink } from "~/app/(application)/mads/[serial]/Link";
 import { CommonTag } from "~/components/CommonTag";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { FragmentType, graphql, useFragment } from "~/gql";
@@ -36,7 +36,7 @@ export const SourceExists: React.FC<{
   const fragment = useFragment(Fragment, props.fragment);
 
   return (
-    <LinkVideo
+    <MadPageLink
       fragment={fragment.video}
       onClick={(e) => {
         e.currentTarget.blur();
@@ -86,6 +86,6 @@ export const SourceExists: React.FC<{
           </div>
         </div>
       </div>
-    </LinkVideo>
+    </MadPageLink>
   );
 };

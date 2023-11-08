@@ -4,7 +4,7 @@ import "client-only";
 import clsx from "clsx";
 import React from "react";
 
-import { LinkVideo } from "~/app/mads/[serial]/Link";
+import { MadPageLink } from "~/app/(application)/mads/[serial]/Link";
 import Button from "~/components/Button";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { FragmentType, graphql, useFragment } from "~/gql";
@@ -40,25 +40,25 @@ export default function AlreadyRegistered({
       style={style}
     >
       <div className={clsx(["flex", "gap-x-4"])}>
-        <LinkVideo className={clsx(["block"])} fragment={fragment.video}>
+        <MadPageLink className={clsx(["block"])} fragment={fragment.video}>
           <VideoThumbnail
             fragment={fragment.video}
             imageSize="small"
             className={clsx(["w-48"], ["h-32"])}
           />
-        </LinkVideo>
+        </MadPageLink>
         <div>
           <p className={clsx(["text-sm"], ["text-slate-400"])}>
             <span className={clsx(["font-mono"], ["text-slate-300"])}>
               {fragment.sourceId}
             </span>
             は
-            <LinkVideo
+            <MadPageLink
               className={clsx(["font-bold"], ["text-slate-300"])}
               fragment={fragment.video}
             >
               {fragment.video.title}
-            </LinkVideo>
+            </MadPageLink>
             として既に登録されています。
           </p>
         </div>

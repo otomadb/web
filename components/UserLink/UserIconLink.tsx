@@ -1,6 +1,6 @@
 import clsx from "clsx";
 
-import { LinkUser as UserPageLink } from "~/app/users/[name]/Link";
+import { UserPageLink } from "~/app/(application)/users/[name]/Link";
 import { UserIcon } from "~/components/UserIcon";
 import { FragmentType, graphql, useFragment } from "~/gql";
 

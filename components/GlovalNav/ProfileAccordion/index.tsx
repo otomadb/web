@@ -4,11 +4,11 @@ import { useAuth0 } from "@auth0/auth0-react";
 import clsx from "clsx";
 import React, { ReactNode } from "react";
 
-import { LinkRegisterSemitag } from "~/app/editor/semitags/Link";
-import { TagRegisterPageLink } from "~/app/editor/tags/Link";
-import { YouLikesPageLink } from "~/app/me/likes/Link";
-import MyMylistsPageLink from "~/app/me/mylists/Link";
-import { SettingPageLink } from "~/app/settings/Link";
+import { LinkRegisterSemitag } from "~/app/(application)/(editor)/editor/semitags/Link";
+import { TagRegisterPageLink } from "~/app/(application)/(editor)/editor/tags/Link";
+import { YouLikesPageLink } from "~/app/(application)/(normal)/me/likes/Link";
+import MyMylistsPageLink from "~/app/(application)/(normal)/me/mylists/Link";
+import { SettingPageLink } from "~/app/(application)/(normal)/settings/Link";
 import {
   useOpenRegisterFromBilibili,
   useOpenRegisterFromNicovideo,

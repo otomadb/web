@@ -4,7 +4,7 @@ import "client-only";
 import clsx from "clsx";
 import React from "react";
 
-import { LinkTag } from "~/app/tags/[serial]/Link";
+import { LinkTag } from "~/app/(application)/tags/[serial]/Link";
 import { TagType } from "~/components/TagType";
 import { FragmentType, graphql, useFragment } from "~/gql";
 

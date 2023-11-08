@@ -4,7 +4,7 @@ import "client-only";
 import clsx from "clsx";
 import React from "react";
 
-import SoundcloudRequestLink from "~/app/requests/soundcloud/[sourceId]/Link";
+import SoundcloudRequestLink from "~/app/(application)/requests/soundcloud/[sourceId]/Link";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const Fragment = graphql(`

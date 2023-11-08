@@ -4,7 +4,7 @@ import "client-only";
 import clsx from "clsx";
 import React from "react";
 
-import { LinkVideo } from "~/app/mads/[serial]/Link";
+import { MadPageLink } from "~/app/(application)/mads/[serial]/Link";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
@@ -27,7 +27,7 @@ const SearchVideosItem: React.FC<{
 }> = ({ className, ...props }) => {
   const { title, video } = useFragment(ItemFragment, props.fragment);
   return (
-    <LinkVideo
+    <MadPageLink
       key={video.id}
       className={clsx(
         className,
@@ -63,7 +63,7 @@ const SearchVideosItem: React.FC<{
           {video.title}
         </div>
       </div>
-    </LinkVideo>
+    </MadPageLink>
   );
 };
 

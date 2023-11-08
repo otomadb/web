@@ -11,8 +11,8 @@ import {
 } from "react";
 import { useQuery } from "urql";
 
-import { LinkVideo } from "~/app/mads/[serial]/Link";
-import NicovideoRequestLink from "~/app/requests/nicovideo/[sourceId]/Link";
+import { MadPageLink } from "~/app/(application)/mads/[serial]/Link";
+import NicovideoRequestLink from "~/app/(application)/requests/nicovideo/[sourceId]/Link";
 import Button from "~/components/Button";
 import AlreadyRegistered from "~/components/Form/AlreadyRegistered";
 import AlreadyRequested from "~/components/Form/AlreadyRequested";
@@ -131,7 +131,7 @@ export default function RequestForm({
       callToast(
         <p>
           <span>{sourceId}</span>は受理されて
-          <LinkVideo fragment={video}>既に登録されています。</LinkVideo>
+          <MadPageLink fragment={video}>既に登録されています。</MadPageLink>
         </p>
       );
     },

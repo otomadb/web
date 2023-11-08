@@ -5,8 +5,8 @@ import clsx from "clsx";
 import { CSSProperties } from "react";
 import { useQuery } from "urql";
 
-import { TopLink } from "~/app/Link";
-import { MyPageLink } from "~/app/me/Link";
+import { MyPageLink } from "~/app/(application)/(normal)/me/Link";
+import TopPageLink from "~/app/(landing)/Link";
 import { SearchContents } from "~/components/SearchContents/SearchContents";
 import { graphql } from "~/gql";
 
@@ -66,9 +66,11 @@ export default function GlobalNav({
           )}
         >
           <div className={clsx(["w-[96px]"])}>
-            <TopLink className={clsx("w-full", { hidden: isAuthenticated })}>
+            <TopPageLink
+              className={clsx("w-full", { hidden: isAuthenticated })}
+            >
               <Logo className={clsx(["w-full"], ["fill-white"])} />
-            </TopLink>
+            </TopPageLink>
             <MyPageLink
               className={clsx("w-full", { hidden: !isAuthenticated })}
             >

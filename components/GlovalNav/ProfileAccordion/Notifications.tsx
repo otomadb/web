@@ -2,7 +2,7 @@
 import clsx from "clsx";
 import React from "react";
 
-import NotificationsPageLink from "~/app/notifications/Link";
+import NotificationsPageLink from "~/app/(application)/(normal)/notifications/Link";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const Fragment = graphql(`

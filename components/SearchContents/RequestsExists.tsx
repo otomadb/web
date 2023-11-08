@@ -2,7 +2,7 @@
 import clsx from "clsx";
 import React from "react";
 
-import { LinkNicovideoRegistrationRequest } from "~/app/requests/nicovideo/[sourceId]/Link";
+import { LinkNicovideoRegistrationRequest } from "~/app/(application)/requests/nicovideo/[sourceId]/Link";
 import { CoolImage } from "~/components/CoolImage";
 import { UserIcon } from "~/components/UserIcon";
 import { FragmentType, graphql, useFragment } from "~/gql";

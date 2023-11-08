@@ -2,7 +2,7 @@
 import clsx from "clsx";
 import React from "react";
 
-import { MyPageLink } from "~/app/me/Link";
+import { MyPageLink } from "~/app/(application)/(normal)/me/Link";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const Fragment = graphql(`

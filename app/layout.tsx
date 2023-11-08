@@ -4,13 +4,7 @@ import clsx from "clsx";
 import type { Metadata } from "next";
 import React from "react";
 
-import FormModal, { FormModalProvider } from "~/components/FormModal";
 import { GlobalFooter } from "~/components/GlobalFooter";
-import GlobalNav from "~/components/GlovalNav";
-import { ToastProvider } from "~/components/Toaster";
-
-import Auth0Provider from "./Auth0Provider";
-import UrqlProvider from "./UrqlProvider";
 
 export const metadata: Metadata = {
   title: "OtoMADB",
@@ -39,37 +33,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ja">
-      <Auth0Provider>
-        <UrqlProvider>
-          <body className={clsx(["relative"], ["bg-gray-50"])}>
-            <ToastProvider selector="#toast">
-              <FormModalProvider>
-                <GlobalNav
-                  className={clsx(
-                    ["sticky"],
-                    ["top-0"],
-                    ["w-full"],
-                    ["h-[64px]"],
-                    ["z-1"]
-                  )}
-                />
-                <div
-                  className={clsx(
-                    ["flex", "content-stretch", "flex-wrap"],
-                    ["min-h-[calc(100vh-64px)]"]
-                    // ["bg-background-root"]
-                  )}
-                >
-                  {children}
-                </div>
-                <GlobalFooter />
-                <div id="toast" />
-                <FormModal className={clsx(["fixed", "bottom-1", "right-4"])} />
-              </FormModalProvider>
-            </ToastProvider>
-          </body>
-        </UrqlProvider>
-      </Auth0Provider>
+      <body className={clsx()}>
+        <main>{children}</main>
+        <GlobalFooter />
+      </body>
     </html>
   );
 }

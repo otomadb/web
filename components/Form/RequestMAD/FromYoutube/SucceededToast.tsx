@@ -4,7 +4,7 @@ import "client-only";
 import clsx from "clsx";
 import React from "react";
 
-import YoutubeRequestLink from "~/app/requests/youtube/[sourceId]/Link";
+import YoutubeRequestLink from "~/app/(application)/requests/youtube/[sourceId]/Link";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const Fragment = graphql(`

@@ -2,7 +2,7 @@
 import clsx from "clsx";
 import React from "react";
 
-import { LinkVideo } from "~/app/mads/[serial]/Link";
+import { MadPageLink } from "~/app/(application)/mads/[serial]/Link";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const Fragment = graphql(`
@@ -21,12 +21,12 @@ export const SucceededToast: React.FC<{
 
   return (
     <div>
-      <LinkVideo
+      <MadPageLink
         fragment={fragment.mad}
         className={clsx(["font-bold"], ["text-blue-400"])}
       >
         {fragment.mad.title}
-      </LinkVideo>
+      </MadPageLink>
       <span className={clsx(["text-slate-700"])}>を登録しました．</span>
     </div>
   );

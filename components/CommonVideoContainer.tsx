@@ -1,8 +1,8 @@
 import clsx from "clsx";
 import React from "react";
 
-import { LinkVideo } from "~/app/mads/[serial]/Link";
-import { LinkTag } from "~/app/tags/[serial]/Link";
+import { MadPageLink } from "~/app/(application)/mads/[serial]/Link";
+import { LinkTag } from "~/app/(application)/tags/[serial]/Link";
 import { CommonTag } from "~/components/CommonTag";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { FragmentType, graphql, useFragment } from "~/gql";
@@ -41,20 +41,20 @@ export const CommonVideoContainer: React.FC<{
         ["flex", "flex-col"]
       )}
     >
-      <LinkVideo className={clsx(["flex"])} fragment={fragment}>
+      <MadPageLink className={clsx(["flex"])} fragment={fragment}>
         <VideoThumbnail
           fragment={fragment}
           className={clsx(["w-full"], ["h-32"])}
           imageSize="large"
         />
-      </LinkVideo>
+      </MadPageLink>
       <div className={clsx(["mt-1"], ["line-clamp-2"])}>
-        <LinkVideo
+        <MadPageLink
           fragment={fragment}
           className={clsx(["text-sm"], ["font-bold"], ["text-slate-900"])}
         >
           {fragment.title}
-        </LinkVideo>
+        </MadPageLink>
       </div>
       <div className={clsx(["mt-1"])}>
         {fragment.taggings.nodes.length === 0 && (

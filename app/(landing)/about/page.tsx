@@ -3,9 +3,9 @@ import "server-only";
 import clsx from "clsx";
 import { Suspense } from "react";
 
-import { LinkVideo } from "~/app/mads/[serial]/Link";
-import { AllVideosPageLink } from "~/app/mads/Link";
-import { LinkTag } from "~/app/tags/[serial]/Link";
+import { MadPageLink } from "~/app/(application)/mads/[serial]/Link";
+import { AllVideosPageLink } from "~/app/(application)/mads/Link";
+import { LinkTag } from "~/app/(application)/tags/[serial]/Link";
 import { CommonTag2 } from "~/components/CommonTag";
 import { Logo } from "~/components/Logo";
 import { SearchContents } from "~/components/SearchContents/SearchContents";
@@ -67,7 +67,7 @@ const getMADs = () =>
 export default async function Page() {
   return (
     <main className={clsx("flex w-full flex-col")}>
-      <header
+      <section
         className={clsx(
           "flex min-h-[calc(100vh-192px)] w-full items-center gap-x-8 bg-black px-8 py-16"
         )}
@@ -120,7 +120,7 @@ export default async function Page() {
           </div>
           <SearchContents className={clsx(["mt-4 w-full"])} />
         </div>
-      </header>
+      </section>
       <section className={clsx("bg-background-primary py-28")}>
         <div className={clsx("mx-auto max-w-screen-md px-8 md:px-4")}>
           <h2 className={clsx("text-2xl font-light text-text-primary")}>
@@ -228,22 +228,22 @@ export default async function Page() {
                     "shrink-0 overflow-hidden rounded-sm border border-background-shallower bg-background-primary"
                   )}
                 >
-                  <LinkVideo className={clsx(["flex"])} fragment={node}>
+                  <MadPageLink className={clsx(["flex"])} fragment={node}>
                     <VideoThumbnail
                       fragment={node}
                       className={clsx(["h-32 w-full"])}
                       imageSize="large"
                     />
-                  </LinkVideo>
+                  </MadPageLink>
                   <div className={clsx("flex flex-col gap-y-2 p-2")}>
-                    <LinkVideo
+                    <MadPageLink
                       fragment={node}
                       className={clsx(
                         "line-clamp-1 text-xs font-bold text-text-primary hover:text-accent-primary hover:underline"
                       )}
                     >
                       {node.title}
-                    </LinkVideo>
+                    </MadPageLink>
                     <div className={clsx([])}>
                       {node.taggings.nodes.length === 0 && (
                         <div className={clsx("text-xxs text-slate-500")}>
