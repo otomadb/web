@@ -26,7 +26,7 @@ export const GlobalFooter: React.FC = () => {
       >
         <div
           className={clsx(
-            ["flex-shrink-0"],
+            ["shrink-0"],
             ["w-full", "@[512px]/footer:w-[256px]"],
             ["flex", "flex-col", "items-start"],
             ["select-none"]
@@ -41,7 +41,7 @@ export const GlobalFooter: React.FC = () => {
         </div>
         <div
           className={clsx(
-            ["flex-grow"],
+            ["grow"],
             [
               "grid",
               [

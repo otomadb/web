@@ -61,13 +61,13 @@ export const RequestExists = ({
   return (
     <div className={clsx(className, ["flex", "flex-col", "gap-y-2"])}>
       <div className={clsx(["flex", "items-center"])}>
-        <p className={clsx(["flex-grow"], ["text-sm", "text-slate-500"])}>
+        <p className={clsx(["grow"], ["text-sm", "text-slate-500"])}>
           <span className={clsx(["font-bold", "text-slate-400"])}>
             {fragment.title}
           </span>
           としてリクエストされています
         </p>
-        <div className={clsx(["flex-shrink-0"])}>
+        <div className={clsx(["shrink-0"])}>
           <UserLink fragment={fragment.requestedBy}>
             <UserIcon size={24} fragment={fragment.requestedBy} />
           </UserLink>
@@ -77,16 +77,14 @@ export const RequestExists = ({
         <div
           className={clsx(
             ["py-0.5"],
-            ["flex-shrink-0"],
+            ["shrink-0"],
             ["text-xs", "text-slate-500"]
           )}
         >
           タグ
         </div>
         {fragment.taggings.length === 0 && (
-          <div
-            className={clsx(["flex-shrink-0"], ["text-xs", "text-slate-400"])}
-          >
+          <div className={clsx(["shrink-0"], ["text-xs", "text-slate-400"])}>
             なし
           </div>
         )}
@@ -111,16 +109,14 @@ export const RequestExists = ({
         <div
           className={clsx(
             ["py-0.5"],
-            ["flex-shrink-0"],
+            ["shrink-0"],
             ["text-xs", "text-slate-500"]
           )}
         >
           仮タグ
         </div>
         {fragment.semitaggings.length === 0 && (
-          <div
-            className={clsx(["flex-shrink-0"], ["text-xs", "text-slate-400"])}
-          >
+          <div className={clsx(["shrink-0"], ["text-xs", "text-slate-400"])}>
             なし
           </div>
         )}

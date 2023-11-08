@@ -45,8 +45,8 @@ export default function RecentLikes({ className }: { className?: string }) {
       <div className={clsx(["flex", "items-center"], ["px-4"])}>
         <p
           className={clsx(
-            ["flex-grow"],
-            ["text-md", "text-text-primary", "font-bold"]
+            ["grow"],
+            [" text-base", "text-text-primary", "font-bold"]
           )}
         >
           いいねした動画
@@ -106,13 +106,7 @@ export default function RecentLikes({ className }: { className?: string }) {
                   imageSize="medium"
                 />
               </LinkVideo>
-              <div
-                className={clsx(
-                  [["@w128/likes:mt-1"]],
-                  ["flex-grow"],
-                  ["py-1"]
-                )}
-              >
+              <div className={clsx([["@w128/likes:mt-1"]], ["grow"], ["py-1"])}>
                 <LinkVideo
                   fragment={like.video}
                   className={clsx([

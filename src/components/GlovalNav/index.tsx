@@ -62,7 +62,7 @@ export default function GlobalNav({
           className={clsx(
             ["hidden", ["md:flex", ["justify-center"]]],
             ["w-36"],
-            ["flex-shrink-0"]
+            ["shrink-0"]
           )}
         >
           <div className={clsx(["w-[96px]"])}>
@@ -76,15 +76,11 @@ export default function GlobalNav({
             </MyPageLink>
           </div>
         </div>
-        <div className={clsx(["flex-grow"])}>
+        <div className={clsx(["grow"])}>
           <SearchContents className={clsx(["mx-auto"])} />
         </div>
         <div
-          className={clsx(
-            ["w-36"],
-            ["flex-shrink-0"],
-            ["flex", "justify-center"]
-          )}
+          className={clsx(["w-36"], ["shrink-0"], ["flex", "justify-center"])}
         >
           {(!isAuthenticated || (!fetching && !data)) && (
             <LoginButton update={update} />
@@ -111,12 +107,10 @@ export default function GlobalNav({
                     "invisible",
                     // "group-focus-within:visible",
                     "group-hover:visible",
-                  ],
-                  [
                     "absolute",
                     "top-full",
                     ["right-0", "xl:right-auto"],
-                    ["xl:-left-[7rem]"],
+                    ["xl:left-[-7rem]"],
                   ]
                 )}
               >

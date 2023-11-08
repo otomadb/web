@@ -42,7 +42,7 @@ export const RequestsExists: React.FC<{
         e.currentTarget.blur();
       }}
     >
-      <div className={clsx(["flex-shrink-0"])}>
+      <div className={clsx(["shrink-0"])}>
         <CoolImage
           className={clsx(["w-36"], ["h-18"])}
           src={fragment.thumbnailUrl}
@@ -52,9 +52,7 @@ export const RequestsExists: React.FC<{
           unoptimized={true}
         />
       </div>
-      <div
-        className={clsx(["flex-grow"], ["flex", "flex-col", "justify-center"])}
-      >
+      <div className={clsx(["grow"], ["flex", "flex-col", "justify-center"])}>
         <div className={clsx(["flex"])}>
           <p className={clsx(["text-slate-500"], ["text-xs"])}>
             <span className={clsx(["font-mono"])}>{fragment.sourceId}</span>
@@ -66,7 +64,7 @@ export const RequestsExists: React.FC<{
             {fragment.title}
           </p>
         </div>
-        <div className={clsx(["mt-2"], ["flex-grow"], ["flex"])}>
+        <div className={clsx(["mt-2"], ["grow"], ["flex"])}>
           <UserIcon size={24} fragment={fragment.requestedBy} />
           <div className={clsx(["ml-1"])}>
             <span className={clsx(["text-xs"])}>

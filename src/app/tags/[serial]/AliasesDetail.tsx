@@ -23,7 +23,7 @@ export const AliasesDetail: React.FC<{
       <h2 className={clsx(["text-sm", "text-slate-600"])}>別の表記</h2>
       <div className={clsx(["flex", "gap-x-2"])}>
         {names.map(({ id, name }) => (
-          <span key={id} className={clsx(["text-md", "text-slate-700"])}>
+          <span key={id} className={clsx([" text-base", "text-slate-700"])}>
             {name}
           </span>
         ))}

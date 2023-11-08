@@ -32,7 +32,7 @@ export default async function Page() {
     >
       <div className={clsx(["w-full"], ["backdrop-blur-lg"])}>
         <div className={clsx(["flex"], ["max-w-screen-lg", "mx-auto"])}>
-          <header className={clsx(["flex-grow"], ["py-4"])}>
+          <header className={clsx(["grow"], ["py-4"])}>
             <div>
               <h1 className={clsx(["text-2xl", "text-slate-900"])}>
                 最近リクエストされたニコニコ動画の動画

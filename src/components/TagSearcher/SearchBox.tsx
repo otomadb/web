@@ -25,9 +25,7 @@ export const SearchBox: React.FC<{
       )}
       style={style}
     >
-      <div
-        className={clsx(["flex-shrink-0"], ["px-3", "py-2"], ["bg-slate-400"])}
-      >
+      <div className={clsx(["shrink-0"], ["px-3", "py-2"], ["bg-slate-400"])}>
         <Pictogram
           icon="search"
           className={clsx(
@@ -46,7 +44,7 @@ export const SearchBox: React.FC<{
         />
       </div>
       <TextInput
-        className={clsx(["flex-grow"], ["px-2"])}
+        className={clsx(["grow"], ["px-2"])}
         onChange={(e) => {
           setQuery(e.target.value);
         }}

@@ -39,11 +39,7 @@ export default async function Layout({
 
   return (
     <main
-      className={clsx(
-        ["mx-auto"],
-        ["flex-grow"],
-        ["flex", "flex-col", "gap-y-4"]
-      )}
+      className={clsx(["mx-auto"], ["grow"], ["flex", "flex-col", "gap-y-4"])}
     >
       <div className={clsx(["container", "max-w-screen-xl", "mx-auto"])}>
         <Header

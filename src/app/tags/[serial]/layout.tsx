@@ -45,7 +45,7 @@ export default async function Layout({
   return (
     <main className={clsx(["container"], ["mx-auto"])}>
       <header className={clsx(["flex"])}>
-        <div className={clsx(["flex-grow"], ["flex", "flex-col", "gap-y-1"])}>
+        <div className={clsx(["grow"], ["flex", "flex-col", "gap-y-1"])}>
           <h1 className={clsx(["text-xl"])}>
             <span className={clsx(["text-slate-900", "font-bold"])}>
               {findTag.name}

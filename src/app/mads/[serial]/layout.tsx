@@ -46,7 +46,7 @@ export default async function Layout({
       className={clsx(
         ["container"],
         ["mx-auto"],
-        ["flex-grow"],
+        ["grow"],
         ["flex", "flex-col", "gap-y-4"]
       )}
     >
@@ -59,13 +59,13 @@ export default async function Layout({
       <div className={clsx(["flex", "gap-x-4"])}>
         <div
           className={clsx(
-            ["flex-shrink-0"],
+            ["shrink-0"],
             ["w-[256px]"],
             ["flex", "flex-col", "gap-y-6"]
           )}
         >
           <section className={clsx(["flex", "flex-col", "gap-y-1"])}>
-            <h2 className={clsx(["text-md"], ["text-slate-900"])}>タグ</h2>
+            <h2 className={clsx([" text-base"], ["text-slate-900"])}>タグ</h2>
             <Suspense fallback={<p>タグを取得中です</p>}>
               <TaggingsSectionContents
                 // fragment typecheck
@@ -74,7 +74,7 @@ export default async function Layout({
             </Suspense>
           </section>
           <section className={clsx(["flex", "flex-col", "gap-y-1"])}>
-            <h2 className={clsx(["text-md"], ["text-slate-900"])}>仮タグ</h2>
+            <h2 className={clsx([" text-base"], ["text-slate-900"])}>仮タグ</h2>
             <Suspense fallback={<p>仮タグを取得中です</p>}>
               <SemitagsSectionContents
                 // fragment typecheck
@@ -86,7 +86,7 @@ export default async function Layout({
             <TagEditorTrigger madId={data.data.findVideo.id} />
           </div>
         </div>
-        <div className={clsx(["flex-grow"])}>{children}</div>
+        <div className={clsx(["grow"])}>{children}</div>
       </div>
     </main>
   );

@@ -66,50 +66,50 @@ const getMADs = () =>
 
 export default async function Page() {
   return (
-    <main className={clsx("w-full flex flex-col")}>
+    <main className={clsx("flex w-full flex-col")}>
       <header
         className={clsx(
-          "w-full min-h-[calc(100vh-192px)] flex gap-x-8 items-center py-16 px-8 bg-black"
+          "flex min-h-[calc(100vh-192px)] w-full items-center gap-x-8 bg-black px-8 py-16"
         )}
       >
         <div
-          className={clsx("-mt-48 md:-mt-32 w-full max-w-screen-md mx-auto")}
+          className={clsx("mx-auto -mt-48 w-full max-w-screen-md md:-mt-32")}
         >
           <div
-            className={clsx("flex flex-col md:flex-row items-center gap-x-8")}
+            className={clsx("flex flex-col items-center gap-x-8 md:flex-row")}
           >
-            <div className={clsx("flex-shrink-0 w-[196px]")}>
+            <div className={clsx("w-[196px] shrink-0")}>
               <Logo className={clsx("w-full fill-accent-primary")} />
             </div>
-            <div className={clsx("flex-grow")}>
+            <div className={clsx("grow")}>
               <h1
                 className={clsx(
-                  "flex-grow text-xl md:text-2xl font-light text-text-primary"
+                  "grow text-xl font-light text-text-primary md:text-2xl"
                 )}
               >
                 <strong className={clsx("text-accent-primary")}>音MAD</strong>
                 のデータベースを作る
               </h1>
-              <div className={clsx(["mt-4 gap-x-8 grid grid-cols-4"])}>
+              <div className={clsx(["mt-4 grid grid-cols-4 gap-x-8"])}>
                 <div className={clsx(["flex flex-col"])}>
-                  <span className={clsx(["text-text-muted text-xs"])}>
+                  <span className={clsx(["text-xs text-text-muted"])}>
                     音MAD
                   </span>
                   <span
                     className={clsx([
-                      "text-accent-primary font-mono text-xl md:text-2xl font-thin",
+                      "font-mono text-xl font-thin text-accent-primary md:text-2xl",
                     ])}
                   >
                     <Suspense fallback={"0"}>{await getMadsCount()}</Suspense>
                   </span>
                 </div>
                 <div className={clsx(["flex flex-col"])}>
-                  <span className={clsx(["text-text-muted text-xs"])}>
+                  <span className={clsx(["text-xs text-text-muted"])}>
                     タグ
                   </span>
                   <span
                     className={clsx([
-                      "text-accent-primary font-mono text-xl md:text-2xl font-thin",
+                      "font-mono text-xl font-thin text-accent-primary md:text-2xl",
                     ])}
                   >
                     <Suspense fallback={"0"}>{await getTagsCount()}</Suspense>
@@ -121,9 +121,9 @@ export default async function Page() {
           <SearchContents className={clsx(["mt-4 w-full"])} />
         </div>
       </header>
-      <section className={clsx("py-28 bg-background-primary")}>
+      <section className={clsx("bg-background-primary py-28")}>
         <div className={clsx("mx-auto max-w-screen-md px-8 md:px-4")}>
-          <h2 className={clsx("text-2xl text-text-primary font-light")}>
+          <h2 className={clsx("text-2xl font-light text-text-primary")}>
             <strong className={clsx(["text-accent-primary"])}>OtoMADB</strong>
             とは何か、そして何であるべきか
           </h2>
@@ -133,17 +133,17 @@ export default async function Page() {
         </div>
         <div
           className={clsx(
-            "px-8 md:px-4 mx-auto max-w-screen-lg divide-y divide-background-shallower"
+            "mx-auto max-w-screen-lg divide-y divide-background-shallower px-8 md:px-4"
           )}
         >
           <section className={clsx("py-16")}>
             <div>
-              <h3 className={clsx("text-xl text-text-primary font-light")}>
+              <h3 className={clsx("text-xl font-light text-text-primary")}>
                 プラットフォームを跨いで音MADを記録する
               </h3>
             </div>
             <p
-              className={clsx("mt-4 text-sm text-text-primary leading-relaxed")}
+              className={clsx("mt-4 text-sm leading-relaxed text-text-primary")}
             >
               ニコニコ動画、YouTube、Bilibili、SoundCloudなど、音MADは様々な動画/音声投稿プラットフォームに投稿されています。
               それらを統一的に管理し、タグ情報などの適切なメタデータを与えることで、より様々な音MADを探しやすくします。
@@ -152,12 +152,12 @@ export default async function Page() {
           </section>
           <section className={clsx("py-16")}>
             <div>
-              <h3 className={clsx("text-xl text-text-primary font-light")}>
+              <h3 className={clsx("text-xl font-light text-text-primary")}>
                 より頑強なタグシステムの構築
               </h3>
             </div>
             <p
-              className={clsx("mt-4 text-sm text-text-primary leading-relaxed")}
+              className={clsx("mt-4 text-sm leading-relaxed text-text-primary")}
             >
               現状のニコニコ動画などのタグシステムにおいて、タグは単なる文字情報を持っているだけで、タグの別名や、タグ間の親子関係など、様々な情報を十分に扱うことが出来ていないと考えています。
               OtoMADBではこれらを予め組み込んだ上で、頑強なタグシステムを構築することを目標としています。
@@ -165,12 +165,12 @@ export default async function Page() {
           </section>
           <section className={clsx("py-16")}>
             <div>
-              <h3 className={clsx("text-xl text-text-primary font-light")}>
+              <h3 className={clsx("text-xl font-light text-text-primary")}>
                 パーソナライズドされた音MADの推薦
               </h3>
             </div>
             <p
-              className={clsx("mt-4 text-sm text-text-primary leading-relaxed")}
+              className={clsx("mt-4 text-sm leading-relaxed text-text-primary")}
             >
               <i className={clsx(["text-text-muted"])}>実装中です。</i>
               あなたの音MADのいいね情報などから好みの傾向を分析し、それに合わせた音MADを推薦します。
@@ -178,12 +178,12 @@ export default async function Page() {
           </section>
           <section className={clsx("py-16")}>
             <div>
-              <h3 className={clsx("text-xl text-text-primary font-light")}>
+              <h3 className={clsx("text-xl font-light text-text-primary")}>
                 コミュニティ機能の実装
               </h3>
             </div>
             <p
-              className={clsx("mt-4 text-sm text-text-primary leading-relaxed")}
+              className={clsx("mt-4 text-sm leading-relaxed text-text-primary")}
             >
               <i className={clsx(["text-text-muted"])}>実装中です。</i>
               MADページにコメント欄などを実装したりすることで、コミュニティ機能を提供したいと思います。
@@ -191,20 +191,20 @@ export default async function Page() {
           </section>
         </div>
       </section>
-      <section className={clsx("py-12 bg-background-deeper")}>
+      <section className={clsx("bg-background-deeper py-12")}>
         <div
           className={clsx(
-            "mx-auto max-w-screen-md px-8 md:px-4 flex flex-col md:flex-row items-start md:items-center"
+            "mx-auto flex max-w-screen-md flex-col items-start px-8 md:flex-row md:items-center md:px-4"
           )}
         >
           <h2
             className={clsx(
-              "w-full mx-auto flex-grow text-2xl font-light text-text-primary"
+              "mx-auto w-full grow text-2xl font-light text-text-primary"
             )}
           >
             最近追加された音MAD
           </h2>
-          <div className={clsx(["flex-shrink-0"])}>
+          <div className={clsx(["shrink-0"])}>
             <AllVideosPageLink
               className={clsx(
                 "text-sm font-semibold text-text-muted hover:underline"
@@ -218,28 +218,28 @@ export default async function Page() {
           <Suspense fallback={<p>音MADを取得中です</p>}>
             <div
               className={clsx(
-                "items-stretch overflow-scroll grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-x-1 gap-y-1 max-w-screen-2xl px-2 md:px-4 mx-auto"
+                "mx-auto grid max-w-screen-2xl grid-cols-2 items-stretch gap-1 overflow-scroll px-2 sm:grid-cols-3 md:grid-cols-4 md:px-4 lg:grid-cols-6"
               )}
             >
               {(await getMADs()).map((node) => (
                 <div
                   key={node.id}
                   className={clsx(
-                    "flex-shrink-0 bg-background-primary border border-background-shallower overflow-hidden rounded-sm"
+                    "shrink-0 overflow-hidden rounded-sm border border-background-shallower bg-background-primary"
                   )}
                 >
                   <LinkVideo className={clsx(["flex"])} fragment={node}>
                     <VideoThumbnail
                       fragment={node}
-                      className={clsx(["w-full h-32"])}
+                      className={clsx(["h-32 w-full"])}
                       imageSize="large"
                     />
                   </LinkVideo>
-                  <div className={clsx("px-2 py-2 flex flex-col gap-y-2")}>
+                  <div className={clsx("flex flex-col gap-y-2 p-2")}>
                     <LinkVideo
                       fragment={node}
                       className={clsx(
-                        "text-xs font-bold text-text-primary hover:text-accent-primary hover:underline line-clamp-1"
+                        "line-clamp-1 text-xs font-bold text-text-primary hover:text-accent-primary hover:underline"
                       )}
                     >
                       {node.title}
@@ -250,9 +250,7 @@ export default async function Page() {
                           タグ付けがありません
                         </div>
                       )}
-                      <div
-                        className={clsx(["flex flex-wrap gap-x-0.5 gap-y-0.5"])}
-                      >
+                      <div className={clsx(["flex flex-wrap gap-0.5"])}>
                         {node.taggings.nodes.map((tagging) => (
                           <LinkTag
                             key={tagging.id}
@@ -262,7 +260,7 @@ export default async function Page() {
                             <CommonTag2
                               size="xs"
                               fragment={tagging.tag}
-                              className={clsx(["text-xxs px-1 py-0.5"])}
+                              className={clsx(["px-1 py-0.5 text-xxs"])}
                             />
                           </LinkTag>
                         ))}
@@ -277,17 +275,17 @@ export default async function Page() {
       </section>
       <section
         className={clsx(
-          "py-48 md:py-64 bg-cover bg-[url('/distinct.gif')] before:backdrop-blur-sm relative before:bg-vivid-primary/80 before:inset-0 before:absolute before:z-0"
+          "relative bg-[url('/distinct.gif')] bg-cover py-48 before:absolute before:inset-0 before:z-0 before:bg-vivid-primary/80 before:backdrop-blur-sm md:py-64"
         )}
       >
         <div
           className={clsx(
-            "mx-auto max-w-screen-md px-8 md:px-4 flex flex-col items-center z-infinity relative"
+            "relative z-infinity mx-auto flex max-w-screen-md flex-col items-center px-8 md:px-4"
           )}
         >
           <h2
             className={clsx(
-              "text-2xl font-light text-coal-darker text-center md:text-left"
+              "text-center text-2xl font-light text-coal-darker md:text-left"
             )}
           >
             Join <strong className={clsx("text-coal-darkest")}>OtoMADB</strong>.

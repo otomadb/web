@@ -28,7 +28,7 @@ export const ToggleSwitch: React.FC<{
         ["rounded-full"],
         ["overflow-hidden"],
         ["bg-slate-400", "aria-checked:bg-green-400"],
-        ["transition-color", "duration-75"],
+        ["transition-colors", "duration-75"],
         ["relative"]
       )}
       tabIndex={0}

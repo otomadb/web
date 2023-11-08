@@ -36,7 +36,7 @@ export default async function Layout({
     <div className={clsx(["flex"])}>
       <div
         className={clsx(
-          ["flex-shrink-0"],
+          ["shrink-0"],
           ["w-72"],
           ["h-[calc(100vh-64px)]"],
           ["sticky", "top-[64px]"]
@@ -44,7 +44,7 @@ export default async function Layout({
       >
         <SideMylistList fetcher={findUser.mylists} />
       </div>
-      <div className={clsx(["flex-grow"])}>{children}</div>
+      <div className={clsx(["grow"])}>{children}</div>
     </div>
   );
 }

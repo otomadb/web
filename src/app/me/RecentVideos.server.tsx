@@ -47,7 +47,7 @@ export default async function RecentVideoListSC() {
           className={clsx(
             ["first:ml-4", "last:mr-4"],
             ["snap-start"],
-            ["flex-shrink-0"],
+            ["shrink-0"],
             [
               "w-full",
               "@[512px]:w-1/2",

@@ -39,7 +39,7 @@ export default function AlreadyRequested({
     >
       <div className={clsx(["flex", "gap-x-4"])}>
         <RequestPageLink
-          className={clsx(["flex-shrink-0"])}
+          className={clsx(["shrink-0"])}
           sourceId={fragment.sourceId}
         >
           <Image

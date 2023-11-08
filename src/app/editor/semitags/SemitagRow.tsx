@@ -83,7 +83,7 @@ const SemitagRow: React.FC<{
     >
       <div
         className={clsx(
-          ["flex-shrink-0"],
+          ["shrink-0"],
           ["w-64"],
           ["flex", "flex-col", "gap-y-1"]
         )}
@@ -97,12 +97,10 @@ const SemitagRow: React.FC<{
           </p>
         </div>
       </div>
-      <div
-        className={clsx(["flex-grow"], ["flex", "items-stretch", "gap-x-2"])}
-      >
+      <div className={clsx(["grow"], ["flex", "items-stretch", "gap-x-2"])}>
         <div
           className={clsx(
-            ["flex-grow"],
+            ["grow"],
             ["flex", "items-center", "flex-wrap", "gap-x-1", "gap-y-1"]
           )}
         >
@@ -142,7 +140,7 @@ const SemitagRow: React.FC<{
             </label>
           ))}
         </div>
-        <div className={clsx(["flex-shrink-0"], ["flex", "items-center"])}>
+        <div className={clsx(["shrink-0"], ["flex", "items-center"])}>
           <label
             aria-disabled={fragment.checked}
             className={clsx(
@@ -174,7 +172,7 @@ const SemitagRow: React.FC<{
           </label>
         </div>
       </div>
-      <div className={clsx(["flex-shrink-0"])}>
+      <div className={clsx(["shrink-0"])}>
         <Button
           submit
           color="blue"

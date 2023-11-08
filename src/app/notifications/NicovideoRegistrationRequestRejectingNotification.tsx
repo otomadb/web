@@ -53,9 +53,7 @@ export default function NicovideoRegistrationRequestRejectingNotification({
           ["border"]
         )}
       >
-        <div
-          className={clsx(["flex-grow"], ["flex", "items-center", "gap-x-1"])}
-        >
+        <div className={clsx(["grow"], ["flex", "items-center", "gap-x-1"])}>
           <Pictogram
             icon="reject"
             className={clsx(["w-4", "h-4"], ["text-red-500"])}
@@ -69,12 +67,12 @@ export default function NicovideoRegistrationRequestRejectingNotification({
             は棄却されました。
           </p>
         </div>
-        <div className={clsx(["flex-shrink-0"], ["flex", "items-center"])}>
+        <div className={clsx(["shrink-0"], ["flex", "items-center"])}>
           <LinkUser fragment={rejectedBy}>
             <UserIcon fragment={rejectedBy} size={32} />
           </LinkUser>
         </div>
-        <div className={clsx(["flex-shrink-0"], ["flex", "items-center"])}>
+        <div className={clsx(["shrink-0"], ["flex", "items-center"])}>
           <p className={clsx(["text-xs", "text-slate-600"])}>
             <DateTime date={createdAt} />
           </p>

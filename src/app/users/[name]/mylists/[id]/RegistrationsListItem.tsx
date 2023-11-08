@@ -52,14 +52,14 @@ export const RegistrationsListItem: React.FC<{
       <VideoThumbnail
         fragment={video}
         className={clsx(
-          ["flex-shrink-0"],
+          ["shrink-0"],
           ["w-[144px]", "@[1024px]/registration:w-[112px]"],
           ["h-[108px]", "@[1024px]/registration:h-[84px]"],
           ["border", "border-slate-400"]
         )}
         imageSize="medium"
       />
-      <div className={clsx(["flex-grow"], ["px-4"], ["flex", "flex-col"])}>
+      <div className={clsx(["grow"], ["px-4"], ["flex", "flex-col"])}>
         <div className={clsx()}>
           <p className={clsx(["text-base"], ["text-slate-900"])}>
             {video.title}
