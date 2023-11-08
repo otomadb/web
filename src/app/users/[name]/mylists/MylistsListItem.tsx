@@ -49,7 +49,7 @@ export const MylistListItem: React.FC<{
         ["group/mylist"]
       )}
     >
-      <div className={clsx(["flex-grow"], ["flex-col"])}>
+      <div className={clsx(["grow"], ["flex-col"])}>
         <div>
           <Link>
             <MylistTitle fragment={fragment} />

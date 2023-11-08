@@ -25,9 +25,7 @@ export default function OriginalSource({
   return (
     <div className={clsx(className, ["flex", "flex-col", "gap-y-2"])}>
       <div className={clsx(["flex"], ["gap-x-4"])}>
-        <div
-          className={clsx(["flex-shrink-0"], ["flex", "flex-col", "gap-y-4"])}
-        >
+        <div className={clsx(["shrink-0"], ["flex", "flex-col", "gap-y-4"])}>
           <CoolImage
             className={clsx(["w-[96px]"], ["h-[64px]"])}
             src={fragment.thumbnailUrl}
@@ -37,7 +35,7 @@ export default function OriginalSource({
             unoptimized={true}
           />
         </div>
-        <div className={clsx(["py-2"], ["flex-grow"], ["flex", "flex-col"])}>
+        <div className={clsx(["py-2"], ["grow"], ["flex", "flex-col"])}>
           <div className={clsx(["text-slate-300"], ["text-sm", "font-bold"])}>
             {/* 無いので */}
             <span>タイトルを取得できませんでした</span>

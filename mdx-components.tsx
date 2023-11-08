@@ -99,7 +99,10 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       </hr>
     ),
     p: ({ children, className, ...props }) => (
-      <p {...props} className={clsx(className, ["text-slate-900", "text-md"])}>
+      <p
+        {...props}
+        className={clsx(className, ["text-slate-900", " text-base"])}
+      >
         {children}
       </p>
     ),
@@ -112,7 +115,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       </a>
     ),
     em: ({ children, className, ...props }) => (
-      <em {...props} className={clsx(className, ["font-italic"])}>
+      <em {...props} className={clsx(className, "italic")}>
         {children}
       </em>
     ),

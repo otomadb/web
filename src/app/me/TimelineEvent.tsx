@@ -112,10 +112,10 @@ export default function TimelineEvent({
       style={style}
     >
       {fragment.__typename === "MadRegisteredTimelineEvent" && (
-        <div className={clsx(className, ["flex-grow"], ["flex", "gap-x-4"])}>
+        <div className={clsx(className, ["grow"], ["flex", "gap-x-4"])}>
           <LinkVideo
             fragment={fragment.video}
-            className={clsx(["block"], ["flex-shrink-0"])}
+            className={clsx(["block"], ["shrink-0"])}
           >
             <VideoThumbnail
               className={clsx(["w-36"], ["h-24"])}
@@ -123,14 +123,9 @@ export default function TimelineEvent({
               fragment={fragment.video}
             />
           </LinkVideo>
-          <div className={clsx(["flex-grow"], ["py-2"])}>
+          <div className={clsx(["grow"], ["py-2"])}>
             <div className={clsx(["flex"])}>
-              <p
-                className={clsx(
-                  ["flex-grow"],
-                  ["text-text-primary", "text-sm"]
-                )}
-              >
+              <p className={clsx(["grow"], ["text-text-primary", "text-sm"])}>
                 <LinkVideo
                   fragment={fragment.video}
                   className={clsx([
@@ -241,9 +236,9 @@ export default function TimelineEvent({
         </div>
       )}
       {fragment.__typename === "NicovideoMadRequestedTimelineEvent" && (
-        <div className={clsx(className, ["flex-grow"], ["flex", "gap-x-4"])}>
+        <div className={clsx(className, ["grow"], ["flex", "gap-x-4"])}>
           <LinkNicovideoRegistrationRequest
-            className={clsx(["block"], ["flex-shrink-0"])}
+            className={clsx(["block"], ["shrink-0"])}
             fragment={fragment.request}
           >
             <CoolImage2
@@ -254,7 +249,7 @@ export default function TimelineEvent({
               src={fragment.request.thumbnailUrl}
             />
           </LinkNicovideoRegistrationRequest>
-          <div className={clsx(["flex-grow"], ["py-2"])}>
+          <div className={clsx(["grow"], ["py-2"])}>
             <p className={clsx(["text-text-primary", "text-sm"])}>
               <LinkNicovideoRegistrationRequest
                 fragment={fragment.request}
@@ -287,9 +282,9 @@ export default function TimelineEvent({
         </div>
       )}
       {fragment.__typename === "YoutubeMadRequestedTimelineEvent" && (
-        <div className={clsx(className, ["flex-grow"], ["flex", "gap-x-4"])}>
+        <div className={clsx(className, ["grow"], ["flex", "gap-x-4"])}>
           <YoutubeRequestPageLink
-            className={clsx(["block"], ["flex-shrink-0"])}
+            className={clsx(["block"], ["shrink-0"])}
             fragment={fragment.request}
           >
             <CoolImage2
@@ -300,7 +295,7 @@ export default function TimelineEvent({
               src={fragment.request.thumbnailUrl}
             />
           </YoutubeRequestPageLink>
-          <div className={clsx(["flex-grow"], ["py-2"])}>
+          <div className={clsx(["grow"], ["py-2"])}>
             <p className={clsx(["text-text-primary", "text-sm"])}>
               <YoutubeRequestPageLink
                 fragment={fragment.request}
@@ -332,21 +327,15 @@ export default function TimelineEvent({
           </div>
         </div>
       )}
-      <div className={clsx(["flex-shrink-0"], ["flex", "flex-col", "gap-y-1"])}>
+      <div className={clsx(["shrink-0"], ["flex", "flex-col", "gap-y-1"])}>
         <DateTime2
           date={fragment.createdAt}
           className={clsx(
-            ["flex-shrink-0"],
+            ["shrink-0"],
             ["font-mono", "text-xs", "text-text-muted"]
           )}
         />
-        <div
-          className={clsx(
-            ["flex-grow"],
-            ["flex-shrink-0"],
-            ["flex", "gap-x-1"]
-          )}
-        >
+        <div className={clsx(["grow"], ["shrink-0"], ["flex", "gap-x-1"])}>
           <UserIconLink fragment={fragment.event.user} />
           <UserDisplayNameLink
             fragment={fragment.event.user}

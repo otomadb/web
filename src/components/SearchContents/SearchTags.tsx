@@ -49,16 +49,13 @@ export const SearchTags: React.FC<{
             fragment={tag}
             tabIndex={0}
             className={clsx(
-              [["flex"], ["items-center"]],
-              ["divide-x", "border-slate-300/75"],
-              ["hover:bg-sky-300/50", "focus:bg-sky-4 00/50"],
-              ["py-2"]
+              "flex items-center divide-x border-slate-300/75 py-2 hover:bg-sky-300/50 focus:bg-sky-400/50"
             )}
             onClick={(e) => {
               e.currentTarget.blur();
             }}
           >
-            <div className={clsx(["flex-shrink-0"], ["w-36"], ["px-2"])}>
+            <div className={clsx(["shrink-0"], ["w-36"], ["px-2"])}>
               <div
                 className={clsx(
                   ["text-slate-500"],
@@ -71,7 +68,7 @@ export const SearchTags: React.FC<{
             </div>
             <div
               className={clsx(
-                ["flex-grow"],
+                ["grow"],
                 ["flex", "flex-col", "justify-start"],
                 ["px-2"]
               )}

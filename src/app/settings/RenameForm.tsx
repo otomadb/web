@@ -77,7 +77,7 @@ export default function RenameForm({
       </div>
       <Button
         submit
-        className={clsx(["flex-shrink-0"])}
+        className={clsx(["shrink-0"])}
         color="blue"
         size="small"
         icon="plus"

@@ -49,16 +49,14 @@ export const SourceExists: React.FC<{
         ["hover:bg-sky-300/50", "focus:bg-sky-400/50"]
       )}
     >
-      <div className={clsx(["flex-shrink-0"])}>
+      <div className={clsx(["shrink-0"])}>
         <VideoThumbnail
           className={clsx(["w-36"], ["h-18"])}
           imageSize="small"
           fragment={fragment.video}
         />
       </div>
-      <div
-        className={clsx(["flex-grow"], ["flex", "flex-col", "justify-center"])}
-      >
+      <div className={clsx(["grow"], ["flex", "flex-col", "justify-center"])}>
         <div className={clsx(["flex"])}>
           <p className={clsx(["text-slate-500"], ["text-xs"])}>
             <span className={clsx(["font-mono"])}>{fragment.sourceId}</span>
@@ -70,7 +68,7 @@ export const SourceExists: React.FC<{
             {fragment.video.title}
           </p>
         </div>
-        <div className={clsx(["mt-2"], ["flex-grow"], ["flex"])}>
+        <div className={clsx(["mt-2"], ["grow"], ["flex"])}>
           {fragment.video.taggings.nodes.length === 0 && (
             <p className={clsx(["text-xs", "text-slate-400"])}>
               タグ付けがありません。

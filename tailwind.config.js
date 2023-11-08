@@ -34,6 +34,9 @@ module.exports = {
         1: 1,
         infinity: 2147483647,
       },
+      transitionDuration: {
+        50: "50ms",
+      },
       colors: {
         accent: {
           primary: "hsl(168, 81%, 65%)",

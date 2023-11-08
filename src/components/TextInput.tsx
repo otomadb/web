@@ -83,7 +83,7 @@ export const TextInput2 = forwardRef<
         {LeftDecoration && (
           <div
             className={clsx(
-              ["flex-shrink-0"],
+              ["shrink-0"],
               {
                 small: ["px-3"],
                 medium: ["px-4"],
@@ -98,7 +98,7 @@ export const TextInput2 = forwardRef<
         )}
         <div
           className={clsx(
-            ["flex-grow"],
+            ["grow"],
             ["bg-slate-950", "group-aria-disabled/textinput:bg-slate-600"],
             {
               small: ["py-1", "px-2", "text-sm"],
@@ -113,7 +113,7 @@ export const TextInput2 = forwardRef<
               ["w-full", "h-full"],
               ["bg-transparent"],
               ["outline-none"],
-              ["text-slate-300", "placeholder-slate-700"]
+              ["text-slate-300", "placeholder:text-slate-700"]
             )}
             type={"text"}
             placeholder={placeholder}

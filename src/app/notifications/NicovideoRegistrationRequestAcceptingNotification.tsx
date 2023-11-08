@@ -60,9 +60,7 @@ export default function NicovideoRegistrationRequestAcceptingNotification({
           ["border"]
         )}
       >
-        <div
-          className={clsx(["flex-grow"], ["flex", "items-center", "gap-x-1"])}
-        >
+        <div className={clsx(["grow"], ["flex", "items-center", "gap-x-1"])}>
           <Pictogram
             icon="accept"
             className={clsx(["w-4", "h-4"], ["text-teal-500"])}
@@ -82,7 +80,7 @@ export default function NicovideoRegistrationRequestAcceptingNotification({
             </LinkVideo>
           </p>
         </div>
-        <div className={clsx(["flex-shrink-0"], ["flex", "items-center"])}>
+        <div className={clsx(["shrink-0"], ["flex", "items-center"])}>
           <LinkVideo fragment={video}>
             <VideoThumbnail
               fragment={video}
@@ -91,12 +89,12 @@ export default function NicovideoRegistrationRequestAcceptingNotification({
             />
           </LinkVideo>
         </div>
-        <div className={clsx(["flex-shrink-0"], ["flex", "items-center"])}>
+        <div className={clsx(["shrink-0"], ["flex", "items-center"])}>
           <LinkUser fragment={acceptedBy}>
             <UserIcon fragment={acceptedBy} size={32} />
           </LinkUser>
         </div>
-        <div className={clsx(["flex-shrink-0"], ["flex", "items-center"])}>
+        <div className={clsx(["shrink-0"], ["flex", "items-center"])}>
           <p className={clsx(["text-xs", "text-slate-600"])}>
             <DateTime date={createdAt} />
           </p>

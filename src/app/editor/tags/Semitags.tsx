@@ -61,7 +61,7 @@ export const Semitags: React.FC<{
       )}
       style={style}
     >
-      <div className={clsx(["flex-shrink-0"], ["flex", "flex-col"])}>
+      <div className={clsx(["shrink-0"], ["flex", "flex-col"])}>
         <div className={clsx(["px-2"])}>
           <div className={clsx(["text-xs", "text-slate-400"])}>
             選択中の仮タグ
@@ -122,10 +122,10 @@ export const Semitags: React.FC<{
                   >
                     <Pictogram icon="check" className={clsx(["w-4", "h-4"])} />
                   </div>
-                  <div className={clsx(["flex-grow"], ["flex"])}>
+                  <div className={clsx(["grow"], ["flex"])}>
                     <div
                       className={clsx(
-                        ["flex-grow"],
+                        ["grow"],
                         ["text-sm", "text-slate-300", "text-left"]
                       )}
                     >
@@ -163,7 +163,7 @@ export const Semitags: React.FC<{
                   </div>
                   <div
                     className={clsx(
-                      ["w-2/5", "flex-shrink-0"],
+                      ["w-2/5", "shrink-0"],
                       ["text-sm", "text-slate-300", "text-left"]
                     )}
                   >
@@ -176,11 +176,7 @@ export const Semitags: React.FC<{
         </div>
       </div>
       <div
-        className={clsx(
-          ["flex-grow"],
-          ["flex", "flex-col"],
-          ["overflow-y-hidden"]
-        )}
+        className={clsx(["grow"], ["flex", "flex-col"], ["overflow-y-hidden"])}
       >
         <div className={clsx(["px-2"])}>
           <div className={clsx(["text-xs", "text-slate-400"])}>
@@ -259,7 +255,7 @@ export const Semitags: React.FC<{
                   </div>
                   <div
                     className={clsx(
-                      ["flex-grow"],
+                      ["grow"],
                       [
                         "text-sm",
                         {
@@ -275,7 +271,7 @@ export const Semitags: React.FC<{
                   </div>
                   <div
                     className={clsx(
-                      ["w-2/5", "flex-shrink-0"],
+                      ["w-2/5", "shrink-0"],
                       [
                         "text-sm",
                         {

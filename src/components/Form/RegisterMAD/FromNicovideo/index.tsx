@@ -151,7 +151,7 @@ export default function RegisterForm({
     <div
       className={clsx(
         className,
-        ["flex-grow"],
+        ["grow"],
         [["px-4"], ["py-4"]],
         ["flex", "flex-col", "gap-y-4"]
       )}
@@ -176,7 +176,7 @@ export default function RegisterForm({
           }}
         >
           <div className={clsx(["flex", "flex-col", "gap-y-4"])}>
-            <div className={clsx(["flex-shrink-0"], ["w-full"])}>
+            <div className={clsx(["shrink-0"], ["w-full"])}>
               <label className={clsx(["flex", "flex-col", "gap-y-1"])}>
                 <div
                   className={clsx(["text-xs", "font-bold", "text-slate-400"])}
@@ -196,7 +196,7 @@ export default function RegisterForm({
                 <div
                   className={clsx(
                     ["py-0.5"],
-                    ["flex-shrink-0"],
+                    ["shrink-0"],
                     ["text-xs", "font-bold", "text-slate-400"]
                   )}
                 >
@@ -206,7 +206,7 @@ export default function RegisterForm({
                   <div
                     className={clsx(
                       ["self-center"],
-                      ["flex-shrink-0"],
+                      ["shrink-0"],
                       ["text-xs", "text-slate-400"]
                     )}
                   >
@@ -241,7 +241,7 @@ export default function RegisterForm({
                 <div
                   className={clsx(
                     ["py-0.5"],
-                    ["flex-shrink-0"],
+                    ["shrink-0"],
                     ["text-xs", "font-bold", "text-slate-400"]
                   )}
                 >
@@ -251,7 +251,7 @@ export default function RegisterForm({
                   <div
                     className={clsx(
                       ["self-center"],
-                      ["flex-shrink-0"],
+                      ["shrink-0"],
                       ["text-xs", "text-slate-400"]
                     )}
                   >
@@ -283,7 +283,7 @@ export default function RegisterForm({
                   </div>
                 )}
               </div>
-              <div className={clsx(["mt-auto"], ["flex-shrink-0"])}>
+              <div className={clsx(["mt-auto"], ["shrink-0"])}>
                 <TagSearcher
                   limit={5}
                   size="small"
@@ -305,7 +305,7 @@ export default function RegisterForm({
                       </div>
                       <div
                         className={clsx(
-                          ["flex-shrink-0"],
+                          ["shrink-0"],
                           ["text-sm"],
                           ["text-slate-500"]
                         )}
@@ -449,12 +449,7 @@ export default function RegisterForm({
             </div>
           </div>
           <div
-            className={clsx(
-              ["flex"],
-              ["mt-auto"],
-              ["flex-shrink-0"],
-              ["w-full"]
-            )}
+            className={clsx(["flex"], ["mt-auto"], ["shrink-0"], ["w-full"])}
           >
             <Button submit text="登録する" size="medium" color="blue" />
             <Button

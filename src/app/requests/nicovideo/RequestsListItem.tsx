@@ -63,7 +63,7 @@ export default function RequestsListItem({
       style={style}
     >
       <NicovideoRegistrationRequestLink
-        className={clsx(["self-center"], ["flex-shrink-0"], ["flex"])}
+        className={clsx(["self-center"], ["shrink-0"], ["flex"])}
         fragment={fragment}
       >
         <CoolImage
@@ -75,11 +75,11 @@ export default function RequestsListItem({
           className={clsx(["w-[128px]", "h-[96px]"])}
         />
       </NicovideoRegistrationRequestLink>
-      <div className={clsx(["flex-grow"], ["flex", "flex-col", "gap-y-2"])}>
+      <div className={clsx(["grow"], ["flex", "flex-col", "gap-y-2"])}>
         <NicovideoRegistrationRequestLink
           fragment={fragment}
           className={clsx([
-            "text-md",
+            " text-base",
             "font-bold",
             "text-slate-300",
             "line-clamp-2",
@@ -88,15 +88,11 @@ export default function RequestsListItem({
           {fragment.title}
         </NicovideoRegistrationRequestLink>
         <div className={clsx(["flex", "gap-x-2", "items-center"])}>
-          <div
-            className={clsx(["flex-shrink-0"], ["text-xs", "text-slate-500"])}
-          >
+          <div className={clsx(["shrink-0"], ["text-xs", "text-slate-500"])}>
             タグ
           </div>
           {fragment.taggings.length === 0 && (
-            <div
-              className={clsx(["flex-shrink-0"], ["text-xs", "text-slate-400"])}
-            >
+            <div className={clsx(["shrink-0"], ["text-xs", "text-slate-400"])}>
               なし
             </div>
           )}
@@ -111,15 +107,11 @@ export default function RequestsListItem({
           )}
         </div>
         <div className={clsx(["flex", "gap-x-2", "items-center"])}>
-          <div
-            className={clsx(["flex-shrink-0"], ["text-xs", "text-slate-500"])}
-          >
+          <div className={clsx(["shrink-0"], ["text-xs", "text-slate-500"])}>
             仮タグ
           </div>
           {fragment.semitaggings.length === 0 && (
-            <div
-              className={clsx(["flex-shrink-0"], ["text-xs", "text-slate-400"])}
-            >
+            <div className={clsx(["shrink-0"], ["text-xs", "text-slate-400"])}>
               なし
             </div>
           )}
@@ -146,7 +138,7 @@ export default function RequestsListItem({
       <div
         className={clsx(
           ["self-center"],
-          ["flex-shrink-0"],
+          ["shrink-0"],
           ["w-1/5"],
           ["flex", "flex-col", "gap-y-4"]
         )}

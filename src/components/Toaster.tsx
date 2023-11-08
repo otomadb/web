@@ -33,8 +33,7 @@ const Toast = ({
       className={clsx(
         ["group"],
         ["relative"],
-        ["bg-white", "bg-opacity-75", "backdrop-blur"],
-        ["overflow"],
+        ["bg-white/75", "backdrop-blur"],
         ["shadow"],
         css`
           &[aria-hidden="true"] {
@@ -52,7 +51,7 @@ const Toast = ({
           ["w-full"],
           ["h-[2px]"],
           ["bg-teal-400"],
-          ["group-hover:animation-pause"],
+          ["group-hover:animation-paused"],
           css`
             transform-origin: left;
             animation-name: ${barscale};

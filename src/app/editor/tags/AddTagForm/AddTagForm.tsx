@@ -138,7 +138,7 @@ export const AddTagForm: React.FC<{
       <div
         className={clsx(
           ["mt-4", "mb-6"],
-          ["flex-grow", "flex-shrink-0"],
+          ["grow", "shrink-0"],
           ["flex", "flex-col", ["gap-y-4"]]
         )}
       >
@@ -151,7 +151,7 @@ export const AddTagForm: React.FC<{
               <div className={clsx(["w-full"])}>
                 <TextInput2
                   size={"small"}
-                  className={clsx(["w-full"], ["flex-grow"])}
+                  className={clsx(["w-full"], ["grow"])}
                   placeholder="タグの主な名前"
                   value={primaryName}
                   onChange={(v) => setPrimaryName(v)}
@@ -169,13 +169,13 @@ export const AddTagForm: React.FC<{
               <div className={clsx(["w-full"], ["flex", "gap-x-2"])}>
                 <TextInput2
                   size="small"
-                  className={clsx(["w-full"], ["flex-grow"])}
+                  className={clsx(["w-full"], ["grow"])}
                   placeholder="タグの追加の名前"
                   value={extraNameInput}
                   onChange={(v) => setExtraNameInput(v)}
                 />
                 <Button
-                  className={clsx(["flex-shrink-0"])}
+                  className={clsx(["shrink-0"])}
                   color="blue"
                   size="small"
                   icon="plus"
@@ -199,7 +199,7 @@ export const AddTagForm: React.FC<{
                 <div key={name} className={clsx(["flex", "gap-x-2"])}>
                   <input
                     className={clsx(
-                      ["flex-grow"],
+                      ["grow"],
                       ["rounded"],
                       ["text-sm"],
                       [["py-0.5"], ["px-2"]],
@@ -214,7 +214,7 @@ export const AddTagForm: React.FC<{
                   <Button
                     size="small"
                     color="red"
-                    className={clsx(["flex-shrink-0"])}
+                    className={clsx(["shrink-0"])}
                     onClick={() => dispatchExtraNames({ type: "remove", name })}
                     icon="x"
                   />
@@ -273,10 +273,10 @@ export const AddTagForm: React.FC<{
           )}
         </div>
       </div>
-      <div className={clsx(["flex-shrink-0"])}>
+      <div className={clsx(["shrink-0"])}>
         <Button
           submit
-          className={clsx(["flex-shrink-0"])}
+          className={clsx(["shrink-0"])}
           color="blue"
           size="small"
           icon="plus"

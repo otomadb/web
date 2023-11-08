@@ -90,7 +90,7 @@ export default function ProfileAccordion({
       style={style}
       className={clsx(
         className,
-        ["divide-y", "divide-y-slate-400/75"],
+        ["divide-y"], // "divide-y-slate-400/75"
         ["shadow"],
         ["flex", "flex-col"],
         ["rounded-md"],

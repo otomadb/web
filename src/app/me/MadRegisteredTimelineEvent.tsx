@@ -36,7 +36,7 @@ export const MadRegisteredTimelineEvent = ({
           fragment={fragment.video}
         />
       </LinkVideo>
-      <div className={clsx(["flex-grow"])}>
+      <div className={clsx(["grow"])}>
         <p>
           <LinkVideo fragment={fragment.video}>
             {fragment.video.title}

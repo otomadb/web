@@ -36,15 +36,9 @@ export const EventTemplate: React.FC<{
         ["rounded"]
       )}
     >
-      <div className={clsx(["flex-grow"], ["flex", "items-center"])}>
-        {children}
-      </div>
+      <div className={clsx(["grow"], ["flex", "items-center"])}>{children}</div>
       <div
-        className={clsx(
-          ["self-start"],
-          ["flex-shrink-0"],
-          ["flex", "items-center"]
-        )}
+        className={clsx(["self-start"], ["shrink-0"], ["flex", "items-center"])}
       >
         <LinkUser
           fragment={fragment.user}

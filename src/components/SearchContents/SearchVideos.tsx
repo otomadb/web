@@ -42,7 +42,7 @@ const SearchVideosItem: React.FC<{
       tabIndex={0}
       fragment={video}
     >
-      <div className={clsx(["flex-shrink-0"])}>
+      <div className={clsx(["shrink-0"])}>
         <VideoThumbnail
           className={clsx(["w-32"], ["h-16"])}
           imageSize="small"
@@ -51,7 +51,7 @@ const SearchVideosItem: React.FC<{
       </div>
       <div
         className={clsx(
-          ["flex-grow"],
+          ["grow"],
           ["py-1"],
           ["flex", "flex-col", "gap-y-1", "justify-center"]
         )}

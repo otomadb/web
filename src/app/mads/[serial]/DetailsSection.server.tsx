@@ -47,8 +47,8 @@ export default async function DetailsSectionSC({
           ["gap-y-4"]
         )}
       >
-        <VideoImage className={clsx(["flex-shrink-0"])} fragment={getVideo} />
-        <div className={clsx(["flex-grow"])}>
+        <VideoImage className={clsx(["shrink-0"])} fragment={getVideo} />
+        <div className={clsx(["grow"])}>
           <h1
             className={clsx(
               ["text-lg", "lg:text-xl"],

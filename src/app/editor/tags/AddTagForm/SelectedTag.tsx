@@ -27,7 +27,7 @@ export const SelectedTag: React.FC<{
   const [{ data }] = useQuery({ query: Query, variables: { id: tagId } });
   return (
     <div className={clsx(className, ["flex", "gap-x-2"])} style={style}>
-      <div className={clsx(["flex-grow"])}>
+      <div className={clsx(["grow"])}>
         {data && (
           <CommonTag
             fragment={data.getTag}
@@ -36,7 +36,7 @@ export const SelectedTag: React.FC<{
         )}
       </div>
       <Button
-        className={clsx(["flex-shrink-0"])}
+        className={clsx(["shrink-0"])}
         onClick={() => remove()}
         icon="x"
         size="small"
