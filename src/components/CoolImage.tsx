@@ -68,7 +68,7 @@ export const CoolImage2: React.FC<{
       className={clsx(
         className,
         ["flex", "justify-center"],
-        ["rounded-lg"],
+        // ["rounded-lg"],
         ["overflow-hidden"],
         ["relative"]
       )}
