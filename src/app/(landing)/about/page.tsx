@@ -3,78 +3,128 @@ import "server-only";
 import clsx from "clsx";
 import { Suspense } from "react";
 
+import { LinkVideo } from "~/app/mads/[serial]/Link";
 import { AllVideosPageLink } from "~/app/mads/Link";
+import { LinkTag } from "~/app/tags/[serial]/Link";
+import { CommonTag2 } from "~/components/CommonTag";
 import { Logo } from "~/components/Logo";
 import { SearchContents } from "~/components/SearchContents/SearchContents";
+import { VideoThumbnail } from "~/components/VideoThumbnail";
+import { graphql } from "~/gql";
+import { makeGraphQLClient } from "~/gql/fetch";
 
-import RecentVideos from "./RecentVideos.server";
 import { SignupButton } from "./SignUpButton";
 
-export default function Page() {
+const getMadsCount = () =>
+  makeGraphQLClient({ next: { revalidate: 120 } })
+    .request(
+      graphql(`
+        query AboutPage_MadsCount {
+          countAllMads
+        }
+      `)
+    )
+    .then((result) => result.countAllMads);
+
+const getTagsCount = () =>
+  makeGraphQLClient({ next: { revalidate: 120 } })
+    .request(
+      graphql(`
+        query AboutPage_TagsCount {
+          countAllTags
+        }
+      `)
+    )
+    .then((result) => result.countAllTags);
+
+const getMADs = () =>
+  makeGraphQLClient({ next: { revalidate: 120 } })
+    .request(
+      graphql(`
+        query AboutPage_RecentVideos {
+          findVideos(first: 12) {
+            nodes {
+              id
+              title
+              ...Link_Video
+              ...VideoThumbnail
+              taggings(first: 3) {
+                nodes {
+                  id
+                  tag {
+                    ...CommonTag
+                    ...Link_Tag
+                  }
+                }
+              }
+            }
+          }
+        }
+      `)
+    )
+    .then((result) => result.findVideos.nodes);
+
+export default async function Page() {
   return (
     <main className={clsx("flex w-full flex-col")}>
       <header
-        className={clsx(["w-full"], "min-h-[calc(100vh-192px)]", [
-          "flex items-center gap-x-8 bg-black px-8 py-16",
-        ])}
+        className={clsx(
+          "flex min-h-[calc(100vh-192px)] w-full items-center gap-x-8 bg-black px-8 py-16"
+        )}
       >
         <div
-          className={clsx("-mt-48 md:-mt-32", [
-            "w-full",
-            "max-w-screen-md",
-            "mx-auto",
-          ])}
+          className={clsx("mx-auto -mt-48 w-full max-w-screen-md md:-mt-32")}
         >
           <div
             className={clsx("flex flex-col items-center gap-x-8 md:flex-row")}
           >
-            <div className={clsx("w-[196px]")}>
-              <Logo className={clsx("w-full fill-text-primary")} />
+            <div className={clsx("w-[196px] shrink-0")}>
+              <Logo className={clsx("w-full fill-accent-primary")} />
             </div>
-            <div>
+            <div className={clsx("grow")}>
               <h1
-                className={clsx([
-                  "grow text-xl font-light text-text-primary md:text-2xl",
-                ])}
+                className={clsx(
+                  "grow text-xl font-light text-text-primary md:text-2xl"
+                )}
               >
                 <strong className={clsx("text-accent-primary")}>音MAD</strong>
                 のデータベースを作る
               </h1>
-              <div
-                className={clsx([
-                  "mt-4 flex justify-center gap-x-8 md:justify-start",
-                ])}
-              >
-                <div className={clsx("flex flex-col")}>
-                  <span className={clsx("text-xs text-text-muted")}>音MAD</span>
+              <div className={clsx(["mt-4 grid grid-cols-4 gap-x-8"])}>
+                <div className={clsx(["flex flex-col"])}>
+                  <span className={clsx(["text-xs text-text-muted"])}>
+                    音MAD
+                  </span>
                   <span
                     className={clsx([
-                      "font-mono text-xl text-cyan-400 md:text-2xl",
+                      "font-mono text-xl font-thin text-accent-primary md:text-2xl",
                     ])}
                   >
-                    1000
+                    <Suspense fallback={"0"}>{await getMadsCount()}</Suspense>
                   </span>
                 </div>
-                <div className={clsx("flex flex-col")}>
-                  <span className={clsx("text-xs text-text-muted")}>タグ</span>
+                <div className={clsx(["flex flex-col"])}>
+                  <span className={clsx(["text-xs text-text-muted"])}>
+                    タグ
+                  </span>
                   <span
                     className={clsx([
-                      "font-mono text-xl text-cyan-400 md:text-2xl",
+                      "font-mono text-xl font-thin text-accent-primary md:text-2xl",
                     ])}
                   >
-                    1000
+                    <Suspense fallback={"0"}>{await getTagsCount()}</Suspense>
                   </span>
                 </div>
               </div>
             </div>
           </div>
-          <SearchContents className={clsx("mt-4 w-full")} />
+          <SearchContents className={clsx(["mt-4 w-full"])} />
         </div>
       </header>
       <section className={clsx("bg-background-primary py-28")}>
         <div className={clsx("mx-auto max-w-screen-md px-8 md:px-4")}>
           <h2 className={clsx("text-2xl font-light text-text-primary")}>
-            <strong className={clsx("text-accent-primary")}>OtoMADB</strong>
+            <strong className={clsx(["text-accent-primary"])}>OtoMADB</strong>
             とは何か、そして何であるべきか
           </h2>
           <p className={clsx("mt-2 text-sm text-text-muted")}>
@@ -83,12 +133,7 @@ export default function Page() {
         </div>
         <div
           className={clsx(
-            "px-8",
-            "md:px-4",
-            "mx-auto",
-            "max-w-screen-lg",
-            "divide-y",
-            "divide-background-shallower"
+            "mx-auto max-w-screen-lg divide-y divide-background-shallower px-8 md:px-4"
           )}
         >
           <section className={clsx("py-16")}>
@@ -149,29 +194,21 @@ export default function Page() {
       <section className={clsx("bg-background-deeper py-12")}>
         <div
           className={clsx(
-            "mx-auto",
-            "max-w-screen-md",
-            "px-8",
-            "md:px-4",
-            "flex",
-            "flex-col",
-            "md:flex-row",
-            "items-start",
-            "md:items-center"
+            "mx-auto flex max-w-screen-md flex-col items-start px-8 md:flex-row md:items-center md:px-4"
           )}
         >
           <h2
-            className={clsx([
-              "mx-auto w-full grow text-2xl font-light text-text-primary",
-            ])}
+            className={clsx(
+              "mx-auto w-full grow text-2xl font-light text-text-primary"
+            )}
           >
             最近追加された音MAD
           </h2>
           <div className={clsx("shrink-0")}>
             <AllVideosPageLink
-              className={clsx([
-                "text-sm font-semibold text-text-muted hover:underline",
-              ])}
+              className={clsx(
+                "text-sm font-semibold text-text-muted hover:underline"
+              )}
             >
               もっと見る
             </AllVideosPageLink>
@@ -179,40 +216,84 @@ export default function Page() {
         </div>
         <div className={clsx("mt-8")}>
           <Suspense fallback={<p>音MADを取得中です</p>}>
-            <RecentVideos className={clsx()} />
+            <div
+              className={clsx(
+                "mx-auto grid max-w-screen-2xl grid-cols-2 items-stretch gap-1 overflow-scroll px-2 sm:grid-cols-3 md:grid-cols-4 md:px-4 lg:grid-cols-6"
+              )}
+            >
+              {(await getMADs()).map((node) => (
+                <div
+                  key={node.id}
+                  className={clsx(
+                    "shrink-0 overflow-hidden rounded-sm border border-background-shallower bg-background-primary"
+                  )}
+                >
+                  <LinkVideo className={clsx(["flex"])} fragment={node}>
+                    <VideoThumbnail
+                      fragment={node}
+                      className={clsx(["h-32 w-full"])}
+                      imageSize="large"
+                    />
+                  </LinkVideo>
+                  <div className={clsx("flex flex-col gap-y-2 p-2")}>
+                    <LinkVideo
+                      fragment={node}
+                      className={clsx(
+                        "line-clamp-1 text-xs font-bold text-text-primary hover:text-accent-primary hover:underline"
+                      )}
+                    >
+                      {node.title}
+                    </LinkVideo>
+                    <div className={clsx([])}>
+                      {node.taggings.nodes.length === 0 && (
+                        <div className={clsx("text-xxs text-slate-500")}>
+                          タグ付けがありません
+                        </div>
+                      )}
+                      <div className={clsx(["flex flex-wrap gap-0.5"])}>
+                        {node.taggings.nodes.map((tagging) => (
+                          <LinkTag
+                            key={tagging.id}
+                            fragment={tagging.tag}
+                            className={clsx(["flex"])}
+                          >
+                            <CommonTag2
+                              size="xs"
+                              fragment={tagging.tag}
+                              className={clsx(["px-1 py-0.5 text-xxs"])}
+                            />
+                          </LinkTag>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </Suspense>
         </div>
       </section>
-      <section className={clsx("bg-background-root py-48")}>
+      <section
+        className={clsx(
+          "relative bg-[url('/distinct.gif')] bg-cover py-48 before:absolute before:inset-0 before:z-0 before:bg-vivid-primary/80 before:backdrop-blur-sm md:py-64"
+        )}
+      >
         <div
           className={clsx(
-            "mx-auto",
-            "max-w-screen-md",
-            "px-8",
-            "md:px-4",
-            "flex",
-            "flex-col"
+            "relative z-infinity mx-auto flex max-w-screen-md flex-col items-center px-8 md:px-4"
           )}
         >
           <h2
             className={clsx(
-              ["mx-auto w-full grow"],
-              "text-center text-2xl font-light text-text-primary md:text-left"
+              "text-center text-2xl font-light text-coal-darker md:text-left"
             )}
           >
-            Join{" "}
-            <strong className={clsx("text-accent-primary")}>OtoMADB</strong>
+            Join <strong className={clsx("text-coal-darkest")}>OtoMADB</strong>.
           </h2>
-          <div
-            className={clsx(
-              "mt-8 flex flex-col items-center gap-y-4 md:items-start"
-            )}
-          >
-            <p className={clsx("text-lg text-text-primary")}>
-              皆も一緒にやってみよう
-            </p>
-            <SignupButton color="blue" size="medium" />
-          </div>
+          <p className={clsx(["text-base text-coal-darker"])}>
+            皆も一緒にやってみよう
+          </p>
+          <SignupButton className={clsx("mt-12")} />
         </div>
       </section>
     </main>
