@@ -23,18 +23,18 @@ export const SignupButton = ({ className }: { className?: string }) => {
       aria-label="ユーザー登録"
       className={clsx(
         className,
-        "group/button duration-50 flex items-center gap-x-2 rounded-sm border border-coal-darker bg-transparent px-4 py-2 transition-colors hover:bg-coal-darker"
+        "group/button flex items-center gap-x-2 rounded-sm border border-coal-darker bg-transparent px-4 py-2 transition-colors duration-100 hover:bg-coal-darker"
       )}
     >
       <Pictogram
         icon="signup"
         className={clsx(
-          "duration-50  h-4 text-coal-darker transition-colors group-hover/button:text-vivid-primary"
+          "h-4  text-coal-darker transition-colors duration-100 group-hover/button:text-vivid-primary"
         )}
       />
       <span
         className={clsx(
-          "duration-50 whitespace-nowrap text-sm text-coal-darker transition-colors group-hover/button:text-vivid-primary"
+          "whitespace-nowrap text-sm text-coal-darker transition-colors duration-100 group-hover/button:text-vivid-primary"
         )}
       >
         ユーザー登録
