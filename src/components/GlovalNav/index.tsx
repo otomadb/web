@@ -67,12 +67,12 @@ export default function GlobalNav({
         >
           <div className={clsx(["w-[96px]"])}>
             <TopLink className={clsx("w-full", { hidden: isAuthenticated })}>
-              <Logo className={clsx(["fill-white"])} />
+              <Logo className={clsx(["w-full"], ["fill-white"])} />
             </TopLink>
             <MyPageLink
               className={clsx("w-full", { hidden: !isAuthenticated })}
             >
-              <Logo className={clsx(["fill-white"])} />
+              <Logo className={clsx(["w-full"], ["fill-white"])} />
             </MyPageLink>
           </div>
         </div>

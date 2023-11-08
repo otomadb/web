@@ -1005,6 +1005,12 @@ type PageInfo {
 }
 
 type Query {
+  """全ての音MADの個数を数える"""
+  countAllMads: Int!
+
+  """全てのタグの個数を数える"""
+  countAllTags: Int!
+
   """Bilibiliから動画情報を取得する"""
   fetchBilibili(input: FetchBilibiliInput!): FetchBilibiliPayload!
 
@@ -1688,7 +1694,7 @@ type SoundcloudRegistrationRequest implements Node & RegistrationRequest {
 
   """
   Soundcloud側のサムネイル画像のURL
-
+  
   **無い場合もある場合に注意.**
   """
   originalThumbnailUrl: String
@@ -1700,7 +1706,7 @@ type SoundcloudRegistrationRequest implements Node & RegistrationRequest {
 
   """
   OtoMADB側でプロキシしているサムネイル画像のURL
-
+  
   **無い場合は適当にダミー画像を返す．**
   """
   thumbnailUrl: String!

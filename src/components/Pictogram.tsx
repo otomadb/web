@@ -18,6 +18,7 @@ import {
   NoSymbolIcon,
   PencilIcon,
   PlusIcon,
+  UserPlusIcon,
   XMarkIcon,
 } from "@heroicons/react/24/solid";
 import clsx from "clsx";
@@ -43,7 +44,8 @@ export default function Pictogram({
     | "youtube"
     | "bilibili"
     | "twitter"
-    | "github";
+    | "github"
+    | "signup";
   className?: string;
   style?: React.CSSProperties;
 }): JSX.Element {
@@ -75,6 +77,8 @@ export default function Pictogram({
       return <CheckIcon {...props} />;
     case "external-link":
       return <ArrowTopRightOnSquareIcon {...props} />;
+    case "signup":
+      return <UserPlusIcon {...props} />;
     case "nicovideo":
       return (
         <svg viewBox="0 0 22 22" {...props}>

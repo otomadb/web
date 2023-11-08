@@ -2,8 +2,13 @@
 
 import { TypedDocumentNode } from "@graphql-typed-document-node/core";
 import { DocumentNode, Kind, print } from "graphql";
+import { GraphQLClient } from "graphql-request";
+import { RequestConfig } from "graphql-request/build/esm/types";
 
 import { err, ok, Result } from "~/utils/Result";
+
+export const makeGraphQLClient = (config: RequestConfig = {}) =>
+  new GraphQLClient(process.env.GRAPHQL_API_ENDPOINT, config);
 
 /** Returns the name of the `DocumentNode`'s operation, if any.
  * @param query - A {@link DocumentNode}

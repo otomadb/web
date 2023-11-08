@@ -2,7 +2,7 @@ import "server-only";
 
 import clsx from "clsx";
 
-import AboutPage from "~/app/about/page";
+import AboutPage from "~/app/(landing)/about/page";
 import { CallToast } from "~/components/Toaster";
 
 import LoginCheck from "./LoginCheck";

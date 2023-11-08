@@ -2,7 +2,7 @@ import clsx from "clsx";
 import Link from "next/link";
 import React from "react";
 
-import { AboutPageLink } from "~/app/about/Link";
+import { AboutPageLink } from "~/app/(landing)/about/Link";
 import { TopLink } from "~/app/Link";
 import { Logo } from "~/components/Logo";
 
@@ -33,9 +33,7 @@ export const GlobalFooter: React.FC = () => {
           )}
         >
           <TopLink>
-            <div className={clsx(["w-[160px]"])}>
-              <Logo className={clsx(["fill-slate-100"])} />
-            </div>
+            <Logo className={clsx(["w-[160px]"], ["fill-slate-100"])} />
           </TopLink>
           <p className={clsx(["mt-1"], ["text-slate-300"], ["text-xs"])}>
             音MADの体系的なデータベースを作る
