@@ -49,10 +49,7 @@ export const SearchTags: React.FC<{
             fragment={tag}
             tabIndex={0}
             className={clsx(
-              [["flex items-center"]],
-              [
-                "focus:bg-sky-4 00/50 divide-x border-slate-300/75 py-2 hover:bg-sky-300/50",
-              ]
+              "flex items-center divide-x border-slate-300/75 py-2 hover:bg-sky-300/50 focus:bg-sky-400"
             )}
             onClick={(e) => {
               e.currentTarget.blur();

@@ -31,7 +31,7 @@ const Toast = ({
   return (
     <div
       className={clsx(
-        ["overflow group relative bg-white bg-opacity-75 shadow backdrop-blur"],
+        "group relative bg-white/75 shadow backdrop-blur",
         css`
           &[aria-hidden="true"] {
             animation-duration: 0.25s;
@@ -45,7 +45,7 @@ const Toast = ({
       <div className={clsx("px-4 py-2")}>{children}</div>
       <div
         className={clsx(
-          ["group-hover:animation-pause h-[2px] w-full bg-teal-400"],
+          "h-[2px] w-full bg-teal-400 group-hover:animation-paused",
           css`
             transform-origin: left;
             animation-name: ${barscale};

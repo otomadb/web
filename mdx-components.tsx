@@ -87,7 +87,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       </a>
     ),
     em: ({ children, className, ...props }) => (
-      <em {...props} className={clsx(className, "font-italic")}>
+      <em {...props} className={clsx(className, "italic")}>
         {children}
       </em>
     ),

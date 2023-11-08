@@ -16,14 +16,14 @@ export default async function Page() {
         className={clsx(["flex", ["flex-col @w320/main:flex-row"], "gap-4"])}
       >
         <Timeline
-          className={clsx([
-            "@w320/main:order-0 order-1 w-full grow @w320/main:w-[1024px]",
-          ])}
+          className={clsx(
+            "order-2 w-full grow @w320/main:order-1 @w320/main:w-[1024px]"
+          )}
         />
         <div
-          className={clsx([
-            "order-0 flex shrink-0 flex-col @w320/main:order-1 @w320/main:w-128",
-          ])}
+          className={clsx(
+            "order-1 flex shrink-0 flex-col @w320/main:order-2 @w320/main:w-128"
+          )}
         >
           <RecentLikes />
         </div>

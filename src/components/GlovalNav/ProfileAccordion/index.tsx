@@ -83,7 +83,7 @@ export default function ProfileAccordion({
     <div
       style={style}
       className={clsx(className, [
-        "divide-y-slate-400/75 flex flex-col divide-y overflow-hidden rounded-md shadow backdrop-blur-[6px]",
+        "flex-col divide-y overflow-hidden rounded-md shadow backdrop-blur-[6px]",
       ])}
     >
       <AboutMe fragment={fragment} className={clsx("px-4 py-3")} />

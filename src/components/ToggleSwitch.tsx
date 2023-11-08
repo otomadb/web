@@ -21,7 +21,7 @@ export const ToggleSwitch: React.FC<{
         height: size * 1.25,
       }}
       className={clsx(className, [
-        "group/toggle transition-color relative flex cursor-pointer overflow-hidden rounded-full bg-slate-400 duration-75 aria-checked:bg-green-400",
+        "group/toggle relative flex cursor-pointer overflow-hidden rounded-full bg-slate-400 duration-75 aria-checked:bg-green-400",
       ])}
       tabIndex={0}
       role="checkbox"

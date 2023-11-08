@@ -28,11 +28,10 @@ export default function LoginButton({
           },
         });
       }}
-      className={clsx(className, [
-        "flex flex-row items-center rounded border px-3 py-1 transition-colors duration-75",
-        ["border-sky-400 hover:border-sky-300"],
-        "bg-sky-400 bg-opacity-25 text-sky-400 hover:bg-opacity-40 hover:text-sky-300",
-      ])}
+      className={clsx(
+        className,
+        "flex flex-row items-center rounded border border-sky-400 bg-sky-400/25 px-3 py-1 text-sky-400 transition-colors duration-75 hover:border-sky-300 hover:text-sky-300"
+      )}
     >
       <span>ログイン</span>
     </button>

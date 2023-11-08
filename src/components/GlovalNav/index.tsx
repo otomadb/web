@@ -79,7 +79,7 @@ export default function GlobalNav({
               <UserIndicator fragment={data} className={clsx("z-1")} />
               <div
                 className={clsx([
-                  "invisible right-0 z-0 pt-1 xl:-left-[7rem] xl:right-auto",
+                  "invisible right-0 z-0 pt-1 xl:left-[-7rem] xl:right-auto",
                   // "group-focus-within:visible group-hover:visible absolute top-full",
                 ])}
               >
