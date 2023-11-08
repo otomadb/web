@@ -5,8 +5,9 @@ import type { Metadata } from "next";
 import React from "react";
 
 import { GlobalFooter } from "~/components/GlobalFooter";
-import Auth0Provider from "./Auth0Provider";
 import { ToastProvider } from "~/components/Toaster";
+
+import Auth0Provider from "./Auth0Provider";
 import UrqlProvider from "./UrqlProvider";
 
 export const metadata: Metadata = {
