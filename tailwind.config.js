@@ -53,6 +53,23 @@ module.exports = {
 
           muted: colors.gray[100],
         },
+        vivid: {
+          primary: "hsl(168, 81%, 65%)",
+        },
+        coal: {
+          darkest: "hsl(15, 14%, 7%)",
+          darker: "hsl(15, 14%, 7%)",
+          primary: "hsl(15, 21%, 12%)",
+          lighter: "hsl(15, 16%, 16%)",
+          lightest: colors.gray[600],
+        },
+        snow: {
+          darkest: colors.gray[100],
+          darker: colors.gray[200],
+          primary: colors.gray[300],
+          lighter: colors.gray[400],
+          lightest: colors.gray[500],
+        },
         nicovideo: {
           primary: "#FFF",
           sub: "#252525",

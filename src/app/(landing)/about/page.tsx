@@ -9,10 +9,11 @@ import { LinkTag } from "~/app/tags/[serial]/Link";
 import { CommonTag2 } from "~/components/CommonTag";
 import { Logo } from "~/components/Logo";
 import { SearchContents } from "~/components/SearchContents/SearchContents";
-import { SignupButton } from "~/components/SignUpButton";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { graphql } from "~/gql";
 import { makeGraphQLClient } from "~/gql/fetch";
+
+import { SignupButton } from "./SignUpButton";
 
 const getMadsCount = () =>
   makeGraphQLClient({ next: { revalidate: 120 } })
@@ -274,28 +275,27 @@ export default async function Page() {
           </Suspense>
         </div>
       </section>
-      <section className={clsx("py-48 bg-background-root")}>
+      <section
+        className={clsx(
+          "py-48 md:py-64 bg-cover bg-[url('/distinct.gif')] before:backdrop-blur-sm relative before:bg-vivid-primary/80 before:inset-0 before:absolute before:z-0"
+        )}
+      >
         <div
-          className={clsx("mx-auto max-w-screen-md px-8 md:px-4 flex flex-col")}
+          className={clsx(
+            "mx-auto max-w-screen-md px-8 md:px-4 flex flex-col items-center z-infinity relative"
+          )}
         >
           <h2
             className={clsx(
-              "w-full mx-auto flex-grow text-2xl font-light text-text-primary text-center md:text-left"
+              "text-2xl font-light text-coal-darker text-center md:text-left"
             )}
           >
-            Join{" "}
-            <strong className={clsx("text-accent-primary")}>OtoMADB</strong>
+            Join <strong className={clsx("text-coal-darkest")}>OtoMADB</strong>.
           </h2>
-          <div
-            className={clsx(
-              "mt-8 flex flex-col items-center md:items-start gap-y-4"
-            )}
-          >
-            <p className={clsx(["text-text-primary text-lg"])}>
-              皆も一緒にやってみよう
-            </p>
-            <SignupButton color="blue" size="medium" />
-          </div>
+          <p className={clsx(["text-base text-coal-darker"])}>
+            皆も一緒にやってみよう
+          </p>
+          <SignupButton className={clsx("mt-12")} />
         </div>
       </section>
     </main>
