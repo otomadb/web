@@ -7,6 +7,7 @@ module.exports = {
     "next/core-web-vitals",
     "plugin:eslint-comments/recommended",
     "plugin:storybook/recommended",
+    "plugin:tailwindcss/recommended",
   ],
   plugins: ["unused-imports", "simple-import-sort"],
   rules: {
