@@ -1,7 +1,7 @@
 import { ResultOf } from "@graphql-typed-document-node/core";
 
-import { Fragment as UserIconFragment } from "~/components/UserIcon";
 import { makeFragmentData } from "~/gql";
+import { Fragment as UserIconFragment } from "~~/components/UserIcon";
 
 import { Fragment as UserPageLinkFragment } from "../users/[name]/Link";
 import { Fragment as RejectingFragment } from "./NicovideoRegistrationRequestRejectingNotification";

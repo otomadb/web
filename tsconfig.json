@@ -9,8 +9,7 @@
     "noEmit": true,
     "baseUrl": "./",
     "paths": {
-      "~/*": ["./src/*"],
-      "~~/*": ["./*"]
+      "~/*": ["./*"]
     },
     "allowJs": true,
     "incremental": true,

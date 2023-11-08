@@ -1,16 +1,16 @@
 import { graphql as mswGql } from "msw";
 
-import { Fragment as CommonTagFragment } from "~/components/CommonTag";
-import { Query as RegisterFromBilibiliFormCheckQuery } from "~/components/Form/RegisterMAD/FromBilibili";
-import { Query as RegisterFromNicovideoFormCheckQuery } from "~/components/Form/RegisterMAD/FromNicovideo";
-import { Fragment as NicovideoOriginalSourceFragment } from "~/components/Form/RegisterMAD/FromNicovideo/OriginalSource";
-import { Fragment as BilibiliOriginalSourceFragment } from "~/components/Form/RegisterMAD/FromNicovideo/OriginalSource";
-import { Fragment as NicovideoRegReqFragment } from "~/components/Form/RegisterMAD/FromNicovideo/Request";
-import { Query as RegisterFromYoutubeFormCheckQuery } from "~/components/Form/RegisterMAD/FromYoutube";
-import { Fragment as YoutubeOriginalSourceFragment } from "~/components/Form/RegisterMAD/FromYoutube/OriginalSource";
-import { Fragment as YoutubeRegReqFragment } from "~/components/Form/RegisterMAD/FromYoutube/Request";
-import { Query as RequestFromNicovideoFormCheckQuery } from "~/components/Form/RequestMAD/FromNicovideo";
-import { Fragment as UserIconFragment } from "~/components/UserIcon";
+import { Fragment as CommonTagFragment } from "~~/components/CommonTag";
+import { Query as RegisterFromBilibiliFormCheckQuery } from "~~/components/Form/RegisterMAD/FromBilibili";
+import { Query as RegisterFromNicovideoFormCheckQuery } from "~~/components/Form/RegisterMAD/FromNicovideo";
+import { Fragment as NicovideoOriginalSourceFragment } from "~~/components/Form/RegisterMAD/FromNicovideo/OriginalSource";
+import { Fragment as BilibiliOriginalSourceFragment } from "~~/components/Form/RegisterMAD/FromNicovideo/OriginalSource";
+import { Fragment as NicovideoRegReqFragment } from "~~/components/Form/RegisterMAD/FromNicovideo/Request";
+import { Query as RegisterFromYoutubeFormCheckQuery } from "~~/components/Form/RegisterMAD/FromYoutube";
+import { Fragment as YoutubeOriginalSourceFragment } from "~~/components/Form/RegisterMAD/FromYoutube/OriginalSource";
+import { Fragment as YoutubeRegReqFragment } from "~~/components/Form/RegisterMAD/FromYoutube/Request";
+import { Query as RequestFromNicovideoFormCheckQuery } from "~~/components/Form/RequestMAD/FromNicovideo";
+import { Fragment as UserIconFragment } from "~~/components/UserIcon";
 import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
 
