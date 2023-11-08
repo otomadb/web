@@ -6,6 +6,7 @@ import React from "react";
 
 import { GlobalFooter } from "~/components/GlobalFooter";
 import { ToastProvider } from "~/components/Toaster";
+
 import Auth0Provider from "./Auth0Provider";
 import UrqlProvider from "./UrqlProvider";
 
