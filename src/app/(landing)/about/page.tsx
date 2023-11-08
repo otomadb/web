@@ -2,9 +2,11 @@ import "server-only";
 
 import clsx from "clsx";
 import { Suspense } from "react";
+
 import { AllVideosPageLink } from "~/app/mads/Link";
 import { Logo } from "~/components/Logo";
 import { SearchContents } from "~/components/SearchContents/SearchContents";
+
 import RecentVideos from "./RecentVideos.server";
 import { SignupButton } from "./SignUpButton";
 

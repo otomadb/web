@@ -18,8 +18,8 @@ import {
   NoSymbolIcon,
   PencilIcon,
   PlusIcon,
-  XMarkIcon,
   UserPlusIcon,
+  XMarkIcon,
 } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 
