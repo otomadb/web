@@ -29,7 +29,7 @@ export const SignupButton = ({
       aria-label="ユーザー登録"
       className={clsx(
         className,
-        "group/button duration-50 flex items-center gap-x-2 rounded-sm border bg-transparent px-4 py-2 transition-colors ",
+        "group/button flex items-center gap-x-2 rounded-sm border bg-transparent px-4 py-2 transition-colors duration-50 ",
         {
           "border-coal-darker hover:bg-coal-darker": theme === "coal",
           "border-vivid-primary hover:bg-vivid-primary": theme === "vivid",
@@ -38,7 +38,7 @@ export const SignupButton = ({
     >
       <Pictogram
         icon="signup"
-        className={clsx("duration-50 h-4 transition-colors", {
+        className={clsx("h-4 transition-colors duration-50", {
           "text-coal-darker group-hover/button:text-vivid-primary":
             theme === "coal",
           "text-vivid-primary group-hover/button:text-coal-darker":
@@ -47,7 +47,7 @@ export const SignupButton = ({
       />
       <span
         className={clsx(
-          "duration-50 whitespace-nowrap text-sm transition-colors",
+          "whitespace-nowrap text-sm transition-colors duration-50",
           {
             "text-coal-darker group-hover/button:text-vivid-primary":
               theme === "coal",
