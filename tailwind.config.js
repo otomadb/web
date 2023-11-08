@@ -36,7 +36,7 @@ module.exports = {
       },
       colors: {
         accent: {
-          primary: "hsl(182, 91%, 60%)",
+          primary: "hsl(168, 81%, 65%)",
         },
         text: {
           primary: "hsl(182, 26%, 92%)",

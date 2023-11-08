@@ -1,7 +1,7 @@
 import "server-only";
 
 import clsx from "clsx";
-import { cache, Suspense } from "react";
+import { Suspense } from "react";
 
 import { LinkVideo } from "~/app/mads/[serial]/Link";
 import { AllVideosPageLink } from "~/app/mads/Link";
@@ -14,32 +14,54 @@ import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { graphql } from "~/gql";
 import { makeGraphQLClient } from "~/gql/fetch";
 
-const getMADs = cache(async () => {
-  const result = await makeGraphQLClient({ next: { revalidate: 120 } }).request(
-    graphql(`
-      query AboutPage_RecentVideos {
-        findVideos(first: 12) {
-          nodes {
-            id
-            title
-            ...Link_Video
-            ...VideoThumbnail
-            taggings(first: 3) {
-              nodes {
-                id
-                tag {
-                  ...CommonTag
-                  ...Link_Tag
+const getMadsCount = () =>
+  makeGraphQLClient({ next: { revalidate: 120 } })
+    .request(
+      graphql(`
+        query AboutPage_MadsCount {
+          countAllMads
+        }
+      `)
+    )
+    .then((result) => result.countAllMads);
+
+const getTagsCount = () =>
+  makeGraphQLClient({ next: { revalidate: 120 } })
+    .request(
+      graphql(`
+        query AboutPage_TagsCount {
+          countAllTags
+        }
+      `)
+    )
+    .then((result) => result.countAllTags);
+
+const getMADs = () =>
+  makeGraphQLClient({ next: { revalidate: 120 } })
+    .request(
+      graphql(`
+        query AboutPage_RecentVideos {
+          findVideos(first: 12) {
+            nodes {
+              id
+              title
+              ...Link_Video
+              ...VideoThumbnail
+              taggings(first: 3) {
+                nodes {
+                  id
+                  tag {
+                    ...CommonTag
+                    ...Link_Tag
+                  }
                 }
               }
             }
           }
         }
-      }
-    `)
-  );
-  return result.findVideos.nodes;
-});
+      `)
+    )
+    .then((result) => result.findVideos.nodes);
 
 export default async function Page() {
   return (
@@ -55,10 +77,10 @@ export default async function Page() {
           <div
             className={clsx("flex flex-col md:flex-row items-center gap-x-8")}
           >
-            <div className={clsx("w-[196px]")}>
-              <Logo className={clsx("w-full fill-text-primary")} />
+            <div className={clsx("flex-shrink-0 w-[196px]")}>
+              <Logo className={clsx("w-full fill-accent-primary")} />
             </div>
-            <div>
+            <div className={clsx("flex-grow")}>
               <h1
                 className={clsx(
                   "flex-grow text-xl md:text-2xl font-light text-text-primary"
@@ -67,21 +89,17 @@ export default async function Page() {
                 <strong className={clsx("text-accent-primary")}>音MAD</strong>
                 のデータベースを作る
               </h1>
-              <div
-                className={clsx([
-                  "mt-4 flex gap-x-8 justify-center md:justify-start",
-                ])}
-              >
+              <div className={clsx(["mt-4 gap-x-8 grid grid-cols-4"])}>
                 <div className={clsx(["flex flex-col"])}>
                   <span className={clsx(["text-text-muted text-xs"])}>
                     音MAD
                   </span>
                   <span
                     className={clsx([
-                      "text-cyan-400 font-mono text-xl md:text-2xl",
+                      "text-accent-primary font-mono text-xl md:text-2xl font-thin",
                     ])}
                   >
-                    1000
+                    <Suspense fallback={"0"}>{await getMadsCount()}</Suspense>
                   </span>
                 </div>
                 <div className={clsx(["flex flex-col"])}>
@@ -90,10 +108,10 @@ export default async function Page() {
                   </span>
                   <span
                     className={clsx([
-                      "text-cyan-400 font-mono text-xl md:text-2xl",
+                      "text-accent-primary font-mono text-xl md:text-2xl font-thin",
                     ])}
                   >
-                    1000
+                    <Suspense fallback={"0"}>{await getTagsCount()}</Suspense>
                   </span>
                 </div>
               </div>
