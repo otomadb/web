@@ -13,7 +13,6 @@ export const metadata: Metadata = {
   title: "OtoMADB",
   description:
     "OtoMADBは音MADの体系的なデータベースを目指して開発されています。",
-  viewport: "width=device-width, initial-scale=1.0", // TODO: 多分ダメ(https://nextjs.org/docs/app/building-your-application/upgrading/codemods#use-viewport-export)
   openGraph: {
     type: "website",
     url: "https://otomadb.com",
@@ -27,6 +26,11 @@ export const metadata: Metadata = {
     title: `OtoMADB`,
     site: "@SnO2WMaN",
   },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1.0,
 };
 
 export default function RootLayout({
