@@ -11,6 +11,7 @@ import Auth0Provider from "./Auth0Provider";
 import UrqlProvider from "./UrqlProvider";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://otomadb.com"),
   title: "OtoMADB",
   description:
     "OtoMADBは音MADの体系的なデータベースを目指して開発されています。",
