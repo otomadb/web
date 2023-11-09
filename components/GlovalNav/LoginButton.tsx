@@ -2,32 +2,12 @@
 
 import "client-only";
 
-import { useAuth0 } from "@auth0/auth0-react";
 import clsx from "clsx";
-import { UseQueryExecute } from "urql";
 
-export default function LoginButton({
-  className,
-}: {
-  className?: string;
-  update: UseQueryExecute;
-}) {
-  const { loginWithRedirect } = useAuth0();
-
+export default function LoginButton({ className }: { className?: string }) {
   return (
-    <button
-      type="button"
-      onClick={async (e) => {
-        e.preventDefault();
-        await loginWithRedirect({
-          appState: {
-            returnTo:
-              typeof window === "object"
-                ? new URL("/me", window.location.origin).toString()
-                : undefined,
-          },
-        });
-      }}
+    <a
+      href="/api/auth/login"
       className={clsx(
         className,
         ["flex", "flex-row", "items-center"],
@@ -38,6 +18,6 @@ export default function LoginButton({
       )}
     >
       <span>ログイン</span>
-    </button>
+    </a>
   );
 }

@@ -2,15 +2,11 @@
 
 import "client-only";
 
-import { useAuth0 } from "@auth0/auth0-react";
-import { authExchange } from "@urql/exchange-auth";
-import { cacheExchange } from "@urql/exchange-graphcache";
-import { ReactNode, useCallback, useState } from "react";
+import { ReactNode } from "react";
 import { createClient, fetchExchange, Provider } from "urql";
 
-import schema from "~/gql/urql-introspection";
-
 export default function UrqlProvider({ children }: { children: ReactNode }) {
+  /*
   const { getAccessTokenSilently, isAuthenticated } = useAuth0();
   const [accessToken, setAccessToken] = useState<string | undefined>();
 
@@ -42,7 +38,9 @@ export default function UrqlProvider({ children }: { children: ReactNode }) {
           const t = await getAccessTokenSilently({});
           setAccessToken(t);
         },
-        addAuthToOperation(operation) {
+        async addAuthToOperation(operation) {
+          console.log(await getAccessToken());
+
           // Authorization header is already set
           const fetchOptions =
             typeof operation.context.fetchOptions === "function"
@@ -63,15 +61,17 @@ export default function UrqlProvider({ children }: { children: ReactNode }) {
     },
     [accessToken, getAccessTokenSilently, isAuthenticated]
   ) satisfies Parameters<typeof authExchange>[0];
+  */
 
   return (
     <Provider
       value={createClient({
-        url: process.env.NEXT_PUBLIC_GRAPHQL_API_ENDPOINT,
+        url: "/api/graphql", // process.env.NEXT_PUBLIC_GRAPHQL_API_ENDPOINT,
         fetchOptions: {
           mode: "cors",
         },
         exchanges: [
+          /*
           cacheExchange({
             schema,
             keys: {
@@ -132,6 +132,7 @@ export default function UrqlProvider({ children }: { children: ReactNode }) {
             },
           }),
           authExchange(authInit),
+          */
           fetchExchange,
         ],
       })}

@@ -3,7 +3,7 @@ import clsx from "clsx";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-import { MadPageLink } from "../../mads/[serial]/Link";
+import { MadPageLink } from "../mads/[serial]/Link";
 
 export const MadRegisteredTimelineEventFragment = graphql(`
   fragment MyTopPage_TimelineSegment_MadRegisteredTimelineEvent on MadRegisteredTimelineEvent {

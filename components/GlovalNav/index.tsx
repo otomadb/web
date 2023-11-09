@@ -5,7 +5,7 @@ import clsx from "clsx";
 import { CSSProperties } from "react";
 import { useQuery } from "urql";
 
-import { MyPageLink } from "~/app/(application)/(normal)/me/Link";
+import AppTopPage from "~/app/(application)/(normal)/Link";
 import TopPageLink from "~/app/(landing)/Link";
 import { SearchContents } from "~/components/SearchContents/SearchContents";
 import { graphql } from "~/gql";
@@ -31,10 +31,8 @@ export default function GlobalNav({
   className?: string;
   style?: CSSProperties;
 }) {
-  const { isAuthenticated } = useAuth0();
   const [{ data, fetching }, update] = useQuery({
     query: Query,
-    pause: !isAuthenticated,
     requestPolicy: "cache-first",
   });
 
@@ -66,16 +64,9 @@ export default function GlobalNav({
           )}
         >
           <div className={clsx(["w-[96px]"])}>
-            <TopPageLink
-              className={clsx("w-full", { hidden: isAuthenticated })}
-            >
+            <AppTopPage className={clsx("w-full")}>
               <Logo className={clsx(["w-full"], ["fill-white"])} />
-            </TopPageLink>
-            <MyPageLink
-              className={clsx("w-full", { hidden: !isAuthenticated })}
-            >
-              <Logo className={clsx(["w-full"], ["fill-white"])} />
-            </MyPageLink>
+            </AppTopPage>
           </div>
         </div>
         <div className={clsx(["grow"])}>
@@ -84,10 +75,7 @@ export default function GlobalNav({
         <div
           className={clsx(["w-36"], ["shrink-0"], ["flex", "justify-center"])}
         >
-          {(!isAuthenticated || (!fetching && !data)) && (
-            <LoginButton update={update} />
-          )}
-          {!data && fetching && (
+          {fetching && (
             <div
               className={clsx(
                 ["rounded-sm"],
@@ -98,7 +86,8 @@ export default function GlobalNav({
               )}
             />
           )}
-          {data && (
+          {!fetching && !data && <LoginButton update={update} />}
+          {!fetching && data && (
             <div className={clsx(["group"], ["relative"])}>
               <UserIndicator fragment={data} className={clsx(["z-1"])} />
               <div

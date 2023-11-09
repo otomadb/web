@@ -1,5 +1,6 @@
 import "./globals.css";
 
+import { UserProvider } from "@auth0/nextjs-auth0/client";
 import clsx from "clsx";
 import type { Metadata, Viewport } from "next";
 import React from "react";
@@ -7,7 +8,6 @@ import React from "react";
 import { GlobalFooter } from "~/components/GlobalFooter";
 import { ToastProvider } from "~/components/Toaster";
 
-import Auth0Provider from "./Auth0Provider";
 import UrqlProvider from "./UrqlProvider";
 
 export const metadata: Metadata = {
@@ -40,18 +40,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <Auth0Provider>
-      <UrqlProvider>
-        <ToastProvider selector="#toast">
-          <html lang="ja">
+    <html lang="ja">
+      <UserProvider>
+        <UrqlProvider>
+          <ToastProvider selector="#toast">
             <body className={clsx()}>
-              <div id="toast" />
               <main>{children}</main>
               <GlobalFooter />
+              <div id="toast" />
             </body>
-          </html>
-        </ToastProvider>
-      </UrqlProvider>
-    </Auth0Provider>
+          </ToastProvider>
+        </UrqlProvider>
+      </UserProvider>
+    </html>
   );
 }

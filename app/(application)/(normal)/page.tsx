@@ -1,11 +1,11 @@
+"use client";
+
 import clsx from "clsx";
 
 import RecentLikes from "./RecentLikes";
 import Timeline from "./Timeline";
 
-export const dynamic = "force-dynamic";
-
-export default async function Page() {
+export default function Page() {
   return (
     <main
       className={clsx(

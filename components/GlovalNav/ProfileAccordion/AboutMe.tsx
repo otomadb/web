@@ -2,7 +2,7 @@
 import clsx from "clsx";
 import React from "react";
 
-import { MyPageLink } from "~/app/(application)/(normal)/me/Link";
+import AppTopPage from "~/app/(application)/(normal)/Link";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const Fragment = graphql(`
@@ -25,7 +25,7 @@ export default function AboutMe({
   const { whoami } = useFragment(Fragment, props.fragment);
 
   return (
-    <MyPageLink
+    <AppTopPage
       style={style}
       className={clsx(
         className,
@@ -50,6 +50,6 @@ export default function AboutMe({
       >
         @{whoami.name}
       </div>
-    </MyPageLink>
+    </AppTopPage>
   );
 }

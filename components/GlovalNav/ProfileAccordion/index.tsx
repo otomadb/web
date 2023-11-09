@@ -237,17 +237,19 @@ export default function ProfileAccordion({
         </div>
       )}
       <div className={clsx(["flex"], ["py-2", "px-4"], ["bg-slate-300/75"])}>
-        <button
-          onClick={() => {
+        <a
+          href="/api/auth/logout"
+          /* onClick={() => {
             logout();
           }}
+          */
           className={clsx(
             ["text-xs"],
             ["text-slate-700", "hover:text-slate-500"]
           )}
         >
           ログアウト
-        </button>
+        </a>
       </div>
     </div>
   );

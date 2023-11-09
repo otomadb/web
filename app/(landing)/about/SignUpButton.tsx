@@ -16,16 +16,7 @@ export const SignupButton = ({
   return (
     <button
       type="button"
-      onClick={() => {
-        loginWithRedirect({
-          appState: {
-            returnTo:
-              typeof window === "object"
-                ? new URL("/me", window.location.origin).toString()
-                : undefined,
-          },
-        });
-      }}
+      onClick={() => loginWithRedirect()}
       aria-label="ユーザー登録"
       className={clsx(
         className,

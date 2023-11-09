@@ -8,7 +8,7 @@ import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
 import { MockedUrqlProvider } from "~/utils/MockedUrqlProvider";
 
-import { MadPageLinkFragment } from "../../mads/[serial]/Link";
+import { MadPageLinkFragment } from "../mads/[serial]/Link";
 import TimelineEvent, { TimelineEventFragment } from "./TimelineEvent";
 
 const mockHasRole = [

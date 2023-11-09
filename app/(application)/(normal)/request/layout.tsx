@@ -1,21 +1,17 @@
 "use client";
 
-import "client-only";
-
-import { withAuthenticationRequired } from "@auth0/auth0-react";
+import { withPageAuthRequired } from "@auth0/nextjs-auth0/client";
 import { ReactNode } from "react";
 
-const Guard = withAuthenticationRequired(
-  ({ children }: { children: ReactNode }) => <>{children}</>,
+export default withPageAuthRequired(
+  function Layout({ children }: { children: ReactNode }) {
+    return <>{children}</>;
+  }
+  /*
   {
-    loginOptions: {
-      authorizationParams: {
-        scope: ["create:registration_request"].join(" "),
-      },
+    authorizationParams: {
+      scope: ["create:registration_request"].join(" "),
     },
   }
+  */
 );
-
-export default function Layout({ children }: { children: React.ReactNode }) {
-  return <Guard>{children}</Guard>;
-}
