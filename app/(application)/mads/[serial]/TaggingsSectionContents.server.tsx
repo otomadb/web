@@ -1,7 +1,7 @@
 import clsx from "clsx";
 
 import { LinkTag } from "~/app/(application)/tags/[serial]/Link";
-import { CommonTag } from "~/components/CommonTag";
+import CommonTag from "~/components/CommonTag";
 import { TagType } from "~/components/TagType";
 import { FragmentType, graphql, useFragment } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
@@ -62,10 +62,7 @@ export default async function TagsSectionSC({
         {taggings.nodes.map((tagging) => (
           <div key={tagging.id} className={clsx(["flex"])}>
             <LinkTag fragment={tagging.tag}>
-              <CommonTag
-                fragment={tagging.tag}
-                className={clsx(["text-xs"], ["px-1"], ["py-0.5"])}
-              />
+              <CommonTag size="xs" fragment={tagging.tag} />
             </LinkTag>
           </div>
         ))}

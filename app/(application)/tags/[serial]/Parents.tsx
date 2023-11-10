@@ -1,6 +1,6 @@
 import clsx from "clsx";
 
-import { CommonTag } from "~/components/CommonTag";
+import CommonTag from "~/components/CommonTag";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 import { LinkTag } from "./Link";
@@ -34,7 +34,7 @@ export const Parents: React.FC<{
       <div className={clsx(["flex", "items-center", "gap-x-2"])}>
         {parents.nodes.map(({ id, parent }) => (
           <LinkTag key={id} fragment={parent}>
-            <CommonTag fragment={parent} className={clsx(["text-sm"])} />
+            <CommonTag fragment={parent} size="small" />
           </LinkTag>
         ))}
       </div>

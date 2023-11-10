@@ -4,7 +4,7 @@ import { userEvent, within } from "@storybook/testing-library";
 import { graphql } from "msw";
 import { ComponentProps } from "react";
 
-import { Fragment as CommonTagFragment } from "~/components/CommonTag";
+import { CommonTagFragment } from "~/components/CommonTag";
 import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
 import { MockedUrqlProvider } from "~/utils/MockedUrqlProvider";

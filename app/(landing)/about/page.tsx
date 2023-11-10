@@ -6,7 +6,7 @@ import { Suspense } from "react";
 import { MadPageLink } from "~/app/(application)/mads/[serial]/Link";
 import { AllVideosPageLink } from "~/app/(application)/mads/Link";
 import { LinkTag } from "~/app/(application)/tags/[serial]/Link";
-import { CommonTag2 } from "~/components/CommonTag";
+import CommonTag from "~/components/CommonTag";
 import { Logo } from "~/components/Logo";
 import { SearchContents } from "~/components/SearchContents/SearchContents";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
@@ -263,10 +263,10 @@ export default async function Page() {
                             fragment={tagging.tag}
                             className={clsx(["flex"])}
                           >
-                            <CommonTag2
+                            <CommonTag
                               size="xs"
+                              hoverable
                               fragment={tagging.tag}
-                              className={clsx(["px-1 py-0.5 text-xxs"])}
                             />
                           </LinkTag>
                         ))}

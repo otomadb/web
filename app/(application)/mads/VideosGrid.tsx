@@ -6,7 +6,7 @@ import React from "react";
 import { useQuery } from "urql";
 
 import { LinkTag } from "~/app/(application)/tags/[serial]/Link";
-import { CommonTag } from "~/components/CommonTag";
+import CommonTag from "~/components/CommonTag";
 import { InfiniteVideosGrid } from "~/components/InfiniteVideoGrid";
 import { FetcherContainer } from "~/components/InfiniteVideoGrid";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
@@ -129,10 +129,7 @@ const Video: React.FC<{
               fragment={tagging.tag}
               className={clsx(["flex"])}
             >
-              <CommonTag
-                fragment={tagging.tag}
-                className={clsx(["text-xxs"], ["px-1"], ["py-0.5"])}
-              />
+              <CommonTag size="xs" fragment={tagging.tag} />
             </LinkTag>
           ))}
         </div>

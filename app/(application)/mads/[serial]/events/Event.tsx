@@ -4,7 +4,7 @@ import React, { ReactNode } from "react";
 
 import { UserPageLink } from "~/app/(application)/users/[name]/Link";
 import Semitag from "~/components/CommonSemitag";
-import { CommonTag } from "~/components/CommonTag";
+import CommonTag from "~/components/CommonTag";
 import { UserIcon } from "~/components/UserIcon";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
@@ -327,7 +327,7 @@ export const VideoTagAttachEvent: React.FC<{
     <EventTemplate fragment={fragment}>
       <div className={clsx(["flex", "items-center"], ["text-[10px]"])}>
         タグ
-        <CommonTag fragment={fragment.videoTag.tag} />
+        <CommonTag size="small" fragment={fragment.videoTag.tag} />
         が追加されました。
       </div>
     </EventTemplate>
@@ -352,7 +352,7 @@ export const VideoTagDetachEvent: React.FC<{
     <EventTemplate fragment={fragment}>
       <div className={clsx(["flex", "items-center"], ["text-[10px]"])}>
         タグ
-        <CommonTag fragment={fragment.videoTag.tag} />
+        <CommonTag size="small" fragment={fragment.videoTag.tag} />
         が外されました
       </div>
     </EventTemplate>
@@ -438,7 +438,7 @@ export const SemitagResolveEvent: React.FC<{
         仮タグ
         <Semitag fragment={fragment.resolving.semitag} />
         は
-        <CommonTag fragment={fragment.resolving.resolveTo.tag} />
+        <CommonTag size="small" fragment={fragment.resolving.resolveTo.tag} />
         に解決しました。
       </div>
     </EventTemplate>

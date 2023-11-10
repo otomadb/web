@@ -5,8 +5,8 @@ import React from "react";
 import { useQuery } from "urql";
 
 import Button from "~/components/Button";
-import { CommonTag } from "~/components/CommonTag";
-import { Fragment as CommonTagFragment } from "~/components/CommonTag";
+import CommonTag from "~/components/CommonTag";
+import { CommonTagFragment } from "~/components/CommonTag";
 import { graphql, makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
 
@@ -28,12 +28,7 @@ export const SelectedTag: React.FC<{
   return (
     <div className={clsx(className, ["flex", "gap-x-2"])} style={style}>
       <div className={clsx(["grow"])}>
-        {data && (
-          <CommonTag
-            fragment={data.getTag}
-            className={clsx(["text-xs"], ["px-1"], ["py-0.5"])}
-          />
-        )}
+        {data && <CommonTag size="small" fragment={data.getTag} />}
       </div>
       <Button
         className={clsx(["shrink-0"])}

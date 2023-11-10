@@ -1,6 +1,6 @@
 import { graphql } from "msw";
 
-import { Fragment as CommonTagFragment } from "~/components/CommonTag";
+import { CommonTagFragment } from "~/components/CommonTag";
 import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
 

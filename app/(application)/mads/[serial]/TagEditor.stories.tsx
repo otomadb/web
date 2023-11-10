@@ -4,7 +4,7 @@ import { Meta, StoryObj } from "@storybook/react";
 import { graphql } from "msw";
 import { createClient, fetchExchange, Provider as UrqlProvider } from "urql";
 
-import { Fragment as CommonTagFragment } from "~/components/CommonTag";
+import { CommonTagFragment } from "~/components/CommonTag";
 import { mockTagSearcher } from "~/components/TagSearcher/index.mocks";
 import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";

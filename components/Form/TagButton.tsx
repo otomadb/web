@@ -2,8 +2,8 @@
 import clsx from "clsx";
 import React from "react";
 
-import { Fragment as CommonTagFragment } from "~/components/CommonTag";
-import { CommonTag2 } from "~/components/CommonTag";
+import { CommonTagFragment } from "~/components/CommonTag";
+import CommonTag from "~/components/CommonTag";
 import { FragmentType } from "~/gql";
 
 export const Fragment = CommonTagFragment;
@@ -24,7 +24,7 @@ export const TagButton: React.FC<{
         else append(props.fragment);
       }}
     >
-      <CommonTag2 size="xs" fragment={props.fragment} disabled={!selected} />
+      <CommonTag size="xs" fragment={props.fragment} disabled={!selected} />
     </div>
   );
 };

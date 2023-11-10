@@ -2,7 +2,7 @@ import { action } from "@storybook/addon-actions";
 import { Meta, StoryObj } from "@storybook/react";
 import { graphql as mswGql } from "msw";
 
-import { Fragment as CommonTagFragment } from "~/components/CommonTag";
+import { CommonTagFragment } from "~/components/CommonTag";
 import { Query as TagSearcherQuery } from "~/components/TagSearcher2";
 import { Fragment as TagSearcherSuggestItemFragment } from "~/components/TagSearcher2/SuggestItem";
 import { Fragment as TagSearcherSuggestsFragment } from "~/components/TagSearcher2/Suggests";

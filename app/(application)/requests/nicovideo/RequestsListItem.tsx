@@ -2,7 +2,7 @@
 import clsx from "clsx";
 import React from "react";
 
-import { CommonTag2 } from "~/components/CommonTag";
+import CommonTag from "~/components/CommonTag";
 import { CoolImage } from "~/components/CoolImage";
 import { useOpenRegisterFromNicovideoWithId } from "~/components/FormModal";
 import Pictogram from "~/components/Pictogram";
@@ -100,7 +100,7 @@ export default function RequestsListItem({
             <div className={clsx(["flex", "flex-wrap", "gap-x-1", "gap-y-1"])}>
               {fragment.taggings.map(({ id, tag }) => (
                 <div key={id}>
-                  <CommonTag2 size="xs" fragment={tag} />
+                  <CommonTag size="xs" fragment={tag} />
                 </div>
               ))}
             </div>

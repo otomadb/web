@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 import Button from "~/components/Button";
-import { CommonTag } from "~/components/CommonTag";
+import CommonTag from "~/components/CommonTag";
 import { useToaster } from "~/components/Toaster";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
@@ -132,7 +132,7 @@ const SemitagRow: React.FC<{
               ></input>
               <div className={clsx(["ml-2"])}>
                 <CommonTag
-                  className={clsx(["text-xs"], ["px-1"])}
+                  size="small"
                   fragment={tag}
                   disabled={fragment.checked || !canResolveTo}
                 />

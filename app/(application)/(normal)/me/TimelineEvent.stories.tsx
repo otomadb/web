@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { graphql as mswGql } from "msw";
 
-import { CommonTagFragment } from "~/components/CommonTag";
+import { CommonTagFragment } from "~/components/CommonTag/CommonTag";
 import { $UseHarRoleQuery } from "~/components/useHasRole";
 import { Fragment as VideoThumbnailFragment } from "~/components/VideoThumbnail";
 import { makeFragmentData } from "~/gql";

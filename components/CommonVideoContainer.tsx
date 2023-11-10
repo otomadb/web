@@ -3,7 +3,7 @@ import React from "react";
 
 import { MadPageLink } from "~/app/(application)/mads/[serial]/Link";
 import { LinkTag } from "~/app/(application)/tags/[serial]/Link";
-import { CommonTag } from "~/components/CommonTag";
+import CommonTag from "~/components/CommonTag";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
@@ -76,10 +76,7 @@ export const CommonVideoContainer: React.FC<{
               fragment={tagging.tag}
               className={clsx(["flex"])}
             >
-              <CommonTag
-                fragment={tagging.tag}
-                className={clsx(["text-xxs"], ["px-1"], ["py-0.5"])}
-              />
+              <CommonTag size="xs" fragment={tagging.tag} />
             </LinkTag>
           ))}
         </div>

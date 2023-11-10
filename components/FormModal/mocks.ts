@@ -1,6 +1,6 @@
 import { graphql as mswGql } from "msw";
 
-import { Fragment as CommonTagFragment } from "~/components/CommonTag";
+import { CommonTagFragment } from "~/components/CommonTag";
 import { Query as RegisterFromBilibiliFormCheckQuery } from "~/components/Form/RegisterMAD/FromBilibili";
 import { Query as RegisterFromNicovideoFormCheckQuery } from "~/components/Form/RegisterMAD/FromNicovideo";
 import { Fragment as NicovideoOriginalSourceFragment } from "~/components/Form/RegisterMAD/FromNicovideo/OriginalSource";
