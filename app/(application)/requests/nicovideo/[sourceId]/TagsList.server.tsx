@@ -1,7 +1,4 @@
-import clsx from "clsx";
-
-import { LinkTag } from "~/app/(application)/tags/[serial]/Link";
-import { CommonTag } from "~/components/CommonTag";
+import CommonTagLink from "~/components/CommonTagLink";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 const Fragment = graphql(`
@@ -9,8 +6,7 @@ const Fragment = graphql(`
     taggings {
       id
       tag {
-        ...CommonTag
-        ...Link_Tag
+        ...CommonTagLink
       }
       note
     }
@@ -28,9 +24,7 @@ export function TagsList({
       {taggings.map((tagging) => (
         <div key={tagging.id}>
           <div>
-            <LinkTag className={clsx(["block"])} fragment={tagging.tag}>
-              <CommonTag fragment={tagging.tag} />
-            </LinkTag>
+            <CommonTagLink size="small" fragment={tagging.tag} />
           </div>
           <div>{tagging.note && <span>{tagging.note}</span>}</div>
         </div>

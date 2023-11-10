@@ -1,7 +1,7 @@
 import clsx from "clsx";
 
 import { MadPageLink } from "~/app/(application)/mads/[serial]/Link";
-import { CommonTag2 } from "~/components/CommonTag";
+import CommonTagLink from "~/components/CommonTagLink";
 import { CoolImage2 } from "~/components/CoolImage";
 import DateTime2 from "~/components/DateTime2";
 import {
@@ -17,7 +17,6 @@ import { FragmentType, graphql, useFragment } from "~/gql";
 
 import { LinkNicovideoRegistrationRequest } from "../../requests/nicovideo/[sourceId]/Link";
 import { YoutubeRequestPageLink } from "../../requests/youtube/[sourceId]/Link";
-import { LinkTag } from "../../tags/[serial]/Link";
 
 export const TimelineEventFragment = graphql(`
   fragment MyTopPage_TimelineSegment_TimelineEvent on TimelineEvent {
@@ -41,8 +40,7 @@ export const TimelineEventFragment = graphql(`
           nodes {
             id
             tag {
-              ...Link_Tag
-              ...CommonTag
+              ...CommonTagLink
             }
           }
         }
@@ -227,9 +225,7 @@ export default function TimelineEvent({
               )}
             >
               {fragment.video.taggings.nodes.map(({ id: taggingId, tag }) => (
-                <LinkTag key={taggingId} fragment={tag}>
-                  <CommonTag2 size="xs" fragment={tag} />
-                </LinkTag>
+                <CommonTagLink key={taggingId} size="xs" fragment={tag} />
               ))}
             </div>
           </div>

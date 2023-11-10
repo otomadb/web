@@ -1,6 +1,22 @@
 const plugin = require("tailwindcss/plugin");
 const colors = require("tailwindcss/colors");
 
+const mkTagTheme = (color) => ({
+  primary: color[300],
+  secondary: color[400],
+  vivid: color[200],
+
+  disabled: color[700],
+
+  bg: color[950],
+  bgHover: color[900],
+  bgDisabled: color[800],
+
+  frame: color[700],
+  frameHover: color[600],
+  frameDisabled: color[400],
+});
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -38,15 +54,15 @@ module.exports = {
         50: "50ms",
       },
       colors: {
-        accent: {
+        "accent": {
           primary: "hsl(168, 81%, 65%)",
         },
-        text: {
+        "text": {
           primary: "hsl(182, 26%, 92%)",
           muted: "hsl(182, 8%, 53%)",
           disabled: "hsl(182, 20%, 29%)",
         },
-        background: {
+        "background": {
           root: "hsl(212, 24%, 5%)",
 
           deeper: "hsl(212, 14%, 7%)",
@@ -56,36 +72,41 @@ module.exports = {
 
           muted: colors.gray[100],
         },
-        vivid: {
+        "vivid": {
           primary: "hsl(168, 81%, 65%)",
         },
-        coal: {
+        "coal": {
           darkest: "hsl(15, 14%, 7%)",
           darker: "hsl(15, 14%, 7%)",
           primary: "hsl(15, 21%, 12%)",
           lighter: "hsl(15, 16%, 16%)",
           lightest: colors.gray[600],
         },
-        snow: {
+        "snow": {
           darkest: colors.gray[100],
           darker: colors.gray[200],
           primary: colors.gray[300],
           lighter: colors.gray[400],
           lightest: colors.gray[500],
         },
-        nicovideo: {
+        "nicovideo": {
           primary: "#FFF",
           sub: "#252525",
         },
-        youtube: { primary: "#FF0000" },
-        bilibili: { primary: "#22A8DE" },
-        soundcloud: { primary: "#FF5500" },
-        copyright: colors.pink,
-        character: colors.green,
-        music: colors.sky,
-        event: colors.teal,
-        series: colors.purple,
-        phrase: colors.gray,
+        "youtube": { primary: "#FF0000" },
+        "bilibili": { primary: "#22A8DE" },
+        "soundcloud": { primary: "#FF5500" },
+        "tag-copyright": mkTagTheme(colors.rose),
+        "tag-character": mkTagTheme(colors.green),
+        "tag-class": mkTagTheme(colors.slate),
+        "tag-music": mkTagTheme(colors.sky),
+        "tag-event": mkTagTheme(colors.teal),
+        "tag-series": mkTagTheme(colors.purple),
+        "tag-phrase": mkTagTheme(colors.yellow),
+        "tag-style": mkTagTheme(colors.slate),
+        "tag-subtle": mkTagTheme(colors.slate),
+        "tag-tactics": mkTagTheme(colors.slate),
+        "tag-unknown": mkTagTheme(colors.slate),
       },
     },
   },

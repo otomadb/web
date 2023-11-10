@@ -2,7 +2,7 @@ import clsx from "clsx";
 import React from "react";
 
 import { MadPageLink } from "~/app/(application)/mads/[serial]/Link";
-import { CommonTag } from "~/components/CommonTag";
+import CommonTag from "~/components/CommonTag";
 import Pictogram from "~/components/Pictogram";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { FragmentType, graphql, useFragment } from "~/gql";
@@ -72,11 +72,7 @@ export const RegistrationsListItem: React.FC<{
           )}
         >
           {video.taggings.nodes.map((tagging) => (
-            <CommonTag
-              key={tagging.id}
-              className={clsx(["text-xs"], ["px-1"], ["py-0.5"])}
-              fragment={tagging.tag}
-            />
+            <CommonTag size="small" key={tagging.id} fragment={tagging.tag} />
           ))}
         </div>
         {note && note !== "" && (

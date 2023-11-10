@@ -2,7 +2,7 @@
 import clsx from "clsx";
 import React from "react";
 
-import { CommonTag } from "~/components/CommonTag";
+import CommonTag from "~/components/CommonTag";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const Fragment = graphql(`
@@ -43,10 +43,7 @@ const SuggestItem: React.FC<{
       }}
     >
       <div>
-        <CommonTag
-          fragment={fragment.tag}
-          className={clsx(["text-xs"], ["px-1"], ["py-0.5"])}
-        />
+        <CommonTag size="small" fragment={fragment.tag} />
       </div>
       {!fragment.name.primary && (
         <div className={clsx(["px-1"], ["mt-1"])}>

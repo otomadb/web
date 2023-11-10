@@ -3,17 +3,17 @@ import React, { ComponentProps } from "react";
 
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-const Fragment = graphql(`
+const TagPageLinkFragment = graphql(`
   fragment Link_Tag on Tag {
     serial
   }
 `);
-export const LinkTag: React.FC<
+export const TagPageLink: React.FC<
   Omit<ComponentProps<typeof Link>, "href"> & {
-    fragment: FragmentType<typeof Fragment>;
+    fragment: FragmentType<typeof TagPageLinkFragment>;
   }
 > = ({ children, fragment, ...props }) => {
-  const { serial } = useFragment(Fragment, fragment);
+  const { serial } = useFragment(TagPageLinkFragment, fragment);
   return (
     <Link href={`/tags/${serial}`} {...props}>
       {children}

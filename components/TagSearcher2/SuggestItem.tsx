@@ -2,8 +2,8 @@
 import clsx from "clsx";
 import React from "react";
 
-import { CommonTag2 } from "~/components/CommonTag";
-import { Fragment as CommonTagFragment } from "~/components/CommonTag";
+import CommonTag from "~/components/CommonTag";
+import { CommonTagFragment } from "~/components/CommonTag";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const Fragment = graphql(`
@@ -63,7 +63,7 @@ export default function SuggestItem({
       style={style}
     >
       <div>
-        <CommonTag2
+        <CommonTag
           className={clsx()}
           size={size === "large" ? "small" : "xs"}
           fragment={fragment.tag}

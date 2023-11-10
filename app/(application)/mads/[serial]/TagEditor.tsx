@@ -7,7 +7,7 @@ import clsx from "clsx";
 import { useCallback } from "react";
 import { useMutation, useQuery } from "urql";
 
-import { CommonTag } from "~/components/CommonTag";
+import CommonTag from "~/components/CommonTag";
 import { TagSearcher } from "~/components/TagSearcher";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
@@ -34,10 +34,7 @@ const TagList: React.FC<{
     <div className={clsx(className, ["flex", ["gap-x-1", "gap-y-1"]])}>
       {taggings.nodes.map((tagging) => (
         <div key={tagging.id}>
-          <CommonTag
-            fragment={tagging.tag}
-            className={clsx(["px-1", "py-0.5"])}
-          />
+          <CommonTag size="small" fragment={tagging.tag} />
         </div>
       ))}
     </div>

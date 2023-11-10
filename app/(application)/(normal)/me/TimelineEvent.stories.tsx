@@ -1,11 +1,9 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { graphql as mswGql } from "msw";
 
-import { CommonTagFragment } from "~/components/CommonTag";
 import { $UseHarRoleQuery } from "~/components/useHasRole";
 import { Fragment as VideoThumbnailFragment } from "~/components/VideoThumbnail";
 import { makeFragmentData } from "~/gql";
-import { TagType } from "~/gql/graphql";
 import { MockedUrqlProvider } from "~/utils/MockedUrqlProvider";
 
 import { MadPageLinkFragment } from "../../mads/[serial]/Link";
@@ -59,12 +57,18 @@ export const MadRegistered: Story = {
           title: "Title 1",
           taggings: {
             nodes: [
+              /*
               {
                 id: "tagging:1",
                 tag: {
                   ...makeFragmentData(
-                    { name: "tag1", type: TagType.Character },
-                    CommonTagFragment
+                    {
+                      ...makeFragmentData(
+                        { name: "tag1", type: TagType.Character },
+                        CommonTagFragment
+                      ),
+                    },
+                    CommonTagLinkFragment
                   ),
                 },
               },
@@ -104,6 +108,7 @@ export const MadRegistered: Story = {
                   ),
                 },
               },
+              */
             ],
           },
           nicovideoSources: [

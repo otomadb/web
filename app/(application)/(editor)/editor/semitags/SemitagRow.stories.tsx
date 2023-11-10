@@ -7,7 +7,7 @@ import {
 } from "urql";
 
 import { Fragment as CommonSemitagFragment } from "~/components/CommonSemitag";
-import { Fragment as CommonTagFragment } from "~/components/CommonTag";
+import { CommonTagFragment } from "~/components/CommonTag";
 import { ToastContext } from "~/components/Toaster";
 import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";

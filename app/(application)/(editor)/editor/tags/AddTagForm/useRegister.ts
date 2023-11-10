@@ -8,7 +8,7 @@ import { graphql as mswGraphQL } from "msw";
 import { useCallback } from "react";
 import { useMutation } from "urql";
 
-import { Fragment as CommonTagFragment } from "~/components/CommonTag";
+import { CommonTagFragment } from "~/components/CommonTag";
 import { graphql, makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
 

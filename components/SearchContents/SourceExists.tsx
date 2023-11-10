@@ -3,7 +3,7 @@ import clsx from "clsx";
 import React from "react";
 
 import { MadPageLink } from "~/app/(application)/mads/[serial]/Link";
-import { CommonTag } from "~/components/CommonTag";
+import CommonTag from "~/components/CommonTag";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
@@ -77,10 +77,7 @@ export const SourceExists: React.FC<{
           <div className={clsx(["flex", "flex-wrap", "gap-x-1"])}>
             {fragment.video.taggings.nodes.map((tagging) => (
               <div key={tagging.id} className={clsx()}>
-                <CommonTag
-                  fragment={tagging.tag}
-                  className={clsx(["text-xs"], ["px-1"], ["py-0.5"])}
-                />
+                <CommonTag size="small" fragment={tagging.tag} />
               </div>
             ))}
           </div>

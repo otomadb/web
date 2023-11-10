@@ -5,8 +5,7 @@ import { Suspense } from "react";
 
 import { MadPageLink } from "~/app/(application)/mads/[serial]/Link";
 import { AllVideosPageLink } from "~/app/(application)/mads/Link";
-import { LinkTag } from "~/app/(application)/tags/[serial]/Link";
-import { CommonTag2 } from "~/components/CommonTag";
+import CommonTagLink from "~/components/CommonTagLink";
 import { Logo } from "~/components/Logo";
 import { SearchContents } from "~/components/SearchContents/SearchContents";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
@@ -52,8 +51,7 @@ const getMADs = () =>
                 nodes {
                   id
                   tag {
-                    ...CommonTag
-                    ...Link_Tag
+                    ...CommonTagLink
                   }
                 }
               }
@@ -258,17 +256,12 @@ export default async function Page() {
                       )}
                       <div className={clsx(["flex flex-wrap gap-0.5"])}>
                         {node.taggings.nodes.map((tagging) => (
-                          <LinkTag
+                          <CommonTagLink
                             key={tagging.id}
                             fragment={tagging.tag}
                             className={clsx(["flex"])}
-                          >
-                            <CommonTag2
-                              size="xs"
-                              fragment={tagging.tag}
-                              className={clsx(["px-1 py-0.5 text-xxs"])}
-                            />
-                          </LinkTag>
+                            size="xs"
+                          />
                         ))}
                       </div>
                     </div>

@@ -2,7 +2,7 @@ import { Meta, StoryObj } from "@storybook/react";
 import { graphql as mswGql } from "msw";
 
 import { UserPageLinkFragment } from "~/app/(application)/users/[name]/Link";
-import { Fragment as CommonTagFragment } from "~/components/CommonTag";
+import { CommonTagFragment } from "~/components/CommonTag";
 import { $UseHarRoleQuery as useHasRoleQuery } from "~/components/useHasRole";
 import { Fragment as UserIconFragment } from "~/components/UserIcon";
 import { makeFragmentData } from "~/gql";

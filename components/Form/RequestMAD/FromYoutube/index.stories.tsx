@@ -3,7 +3,7 @@ import { Meta, StoryObj } from "@storybook/react";
 import { graphql as mswGql } from "msw";
 
 import { MadPageLinkFragment as VideoLinkFragment } from "~/app/(application)/mads/[serial]/Link";
-import { Fragment as CommonTagFragment } from "~/components/CommonTag";
+import { CommonTagFragment } from "~/components/CommonTag";
 import { Fragment as AlreadyRegisteredFragment } from "~/components/Form/AlreadyRegistered";
 import { Fragment as SourceFragment } from "~/components/Form/RegisterMAD/FromYoutube/OriginalSource";
 import { Query as TagSearcherQuery } from "~/components/TagSearcher2";

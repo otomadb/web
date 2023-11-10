@@ -1,7 +1,7 @@
 import clsx from "clsx";
 
 import CommonSemitag from "~/components/CommonSemitag";
-import { CommonTag } from "~/components/CommonTag";
+import CommonTag from "~/components/CommonTag";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const Fragment = graphql(`
@@ -33,8 +33,9 @@ const SucceededResolveToast: React.FC<{
       />
       は
       <CommonTag
+        size="small"
         fragment={fragment.resolving.resolveTo.tag}
-        className={clsx(["px-1", "py-0.5"], ["mx-0.5"])}
+        className={clsx(["mx-0.5"])}
       />
       に解決されました。
     </p>
