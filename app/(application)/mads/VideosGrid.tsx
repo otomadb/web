@@ -5,8 +5,7 @@ import clsx from "clsx";
 import React from "react";
 import { useQuery } from "urql";
 
-import { LinkTag } from "~/app/(application)/tags/[serial]/Link";
-import CommonTag from "~/components/CommonTag";
+import CommonTagLink from "~/components/CommonTagLink";
 import { InfiniteVideosGrid } from "~/components/InfiniteVideoGrid";
 import { FetcherContainer } from "~/components/InfiniteVideoGrid";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
@@ -69,8 +68,7 @@ const Fragment = graphql(`
       nodes {
         id
         tag {
-          ...CommonTag
-          ...Link_Tag
+          ...CommonTagLink
         }
       }
     }
@@ -124,13 +122,7 @@ const Video: React.FC<{
           )}
         >
           {fragment.taggings.nodes.map((tagging) => (
-            <LinkTag
-              key={tagging.id}
-              fragment={tagging.tag}
-              className={clsx(["flex"])}
-            >
-              <CommonTag size="xs" fragment={tagging.tag} />
-            </LinkTag>
+            <CommonTagLink key={tagging.id} size="xs" fragment={tagging.tag} />
           ))}
         </div>
       </div>

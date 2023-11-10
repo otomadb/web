@@ -2,10 +2,10 @@ import clsx from "clsx";
 import React from "react";
 
 import { MadPageLink } from "~/app/(application)/mads/[serial]/Link";
-import { LinkTag } from "~/app/(application)/tags/[serial]/Link";
-import CommonTag from "~/components/CommonTag";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { FragmentType, graphql, useFragment } from "~/gql";
+
+import CommonTagLink from "./CommonTagLink";
 
 export const Fragment = graphql(`
   fragment CommonVideoContainer on Video {
@@ -17,8 +17,7 @@ export const Fragment = graphql(`
       nodes {
         id
         tag {
-          ...CommonTag
-          ...Link_Tag
+          ...CommonTagLink
         }
       }
     }
@@ -71,13 +70,7 @@ export const CommonVideoContainer: React.FC<{
           )}
         >
           {fragment.taggings.nodes.map((tagging) => (
-            <LinkTag
-              key={tagging.id}
-              fragment={tagging.tag}
-              className={clsx(["flex"])}
-            >
-              <CommonTag size="xs" fragment={tagging.tag} />
-            </LinkTag>
+            <CommonTagLink key={tagging.id} size="xs" fragment={tagging.tag} />
           ))}
         </div>
       </div>

@@ -4,7 +4,7 @@ import "client-only";
 import clsx from "clsx";
 import React from "react";
 
-import { LinkTag } from "~/app/(application)/tags/[serial]/Link";
+import { TagPageLink } from "~/app/(application)/tags/[serial]/Link";
 import { TagType } from "~/components/TagType";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
@@ -44,7 +44,7 @@ export const SearchTags: React.FC<{
       )}
       <div className={clsx(["divide-y", "divide-slate-400/75"])}>
         {items.map(({ tag, name }) => (
-          <LinkTag
+          <TagPageLink
             key={tag.id}
             fragment={tag}
             tabIndex={0}
@@ -82,7 +82,7 @@ export const SearchTags: React.FC<{
                 <TagType className={clsx(["text-xs"])} fragment={tag} />
               </div>
             </div>
-          </LinkTag>
+          </TagPageLink>
         ))}
       </div>
     </div>
