@@ -197,8 +197,8 @@ devDependencies:
     specifier: 3.0.0
     version: 3.0.0(@typescript-eslint/eslint-plugin@6.11.0)(eslint@8.53.0)
   graphql-codegen-typescript-mock-data:
-    specifier: 3.0.0
-    version: 3.0.0(graphql@16.8.1)
+    specifier: 3.6.0
+    version: 3.6.0(graphql@16.8.1)
   msw:
     specifier: 1.3.2
     version: 1.3.2(encoding@0.1.13)(typescript@5.2.2)
@@ -9746,8 +9746,8 @@ packages:
     resolution: {integrity: sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==}
     dev: true
 
-  /graphql-codegen-typescript-mock-data@3.0.0(graphql@16.8.1):
-    resolution: {integrity: sha512-bJVpC8uy5kU351Gu0K7noruzmpN45p1402rpU0O0d2k19qveggjBL0+0/qH+aju8iJtVSGMiajeLMAUj5t1zrQ==}
+  /graphql-codegen-typescript-mock-data@3.6.0(graphql@16.8.1):
+    resolution: {integrity: sha512-yvoSmktRZT69YdCJRtR/BNuUDz7qLEqZ0CGZfLMzUq8rOO/fQUjOYzVnh3KjSLMfIJRX7ZNnimLq41irZnoYLg==}
     peerDependencies:
       graphql: ^14.6.0 || ^15.0.0 || ^16.0.0
     dependencies:
