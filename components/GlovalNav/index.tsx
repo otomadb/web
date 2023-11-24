@@ -10,7 +10,7 @@ import TopPageLink from "~/app/(landing)/Link";
 import { SearchContents } from "~/components/SearchContents/SearchContents";
 import { graphql } from "~/gql";
 
-import { Logo } from "../Logo";
+import Logo from "../Logo";
 import LoginButton from "./LoginButton";
 import ProfileAccordion from "./ProfileAccordion";
 import UserIndicator from "./UserIndicator";

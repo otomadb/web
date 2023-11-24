@@ -4,7 +4,7 @@ import React from "react";
 
 import { AboutPageLink } from "~/app/(landing)/about/Link";
 import TopPageLink from "~/app/(landing)/Link";
-import { Logo } from "~/components/Logo";
+import Logo from "~/components/Logo";
 
 export const GlobalFooter: React.FC = () => {
   return (

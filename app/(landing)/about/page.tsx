@@ -6,7 +6,7 @@ import { Suspense } from "react";
 import { MadPageLink } from "~/app/(application)/mads/[serial]/Link";
 import { AllVideosPageLink } from "~/app/(application)/mads/Link";
 import CommonTagLink from "~/components/CommonTagLink";
-import { Logo } from "~/components/Logo";
+import Logo from "~/components/Logo";
 import { SearchContents } from "~/components/SearchContents/SearchContents";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { graphql } from "~/gql";
