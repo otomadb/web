@@ -10,10 +10,10 @@ pre-commit:
     eslint:
       glob: "*.{js,ts,jsx,tsx}"
       run: |
-        pnpx eslint --fix {staged_files}
+        pnpm eslint --fix {staged_files}
         git add {staged_files}
     prettier:
       glob: "*.{js,ts,jsx,tsx,md,html,json,yml,yaml,graphql}"
       run: |
-        pnpx prettier --write --ignore-unknown {staged_files}
+        pnpm prettier --write --ignore-unknown {staged_files}
         git add {staged_files}
