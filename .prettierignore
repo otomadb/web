@@ -30,3 +30,6 @@ storybook-static
 
 # GraphQL Inspector
 .inspector-validate-report.json
+
+# husky
+.husky

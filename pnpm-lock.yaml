@@ -199,6 +199,9 @@ devDependencies:
   graphql-codegen-typescript-mock-data:
     specifier: 3.0.0
     version: 3.0.0(graphql@16.8.1)
+  lefthook:
+    specifier: ^1.5.3
+    version: 1.5.3
   msw:
     specifier: 1.3.2
     version: 1.3.2(encoding@0.1.13)(typescript@5.3.2)
@@ -11173,6 +11176,85 @@ packages:
       app-root-dir: 1.0.2
       dotenv: 16.3.1
       dotenv-expand: 10.0.0
+    dev: true
+
+  /lefthook-darwin-arm64@1.5.3:
+    resolution: {integrity: sha512-MZhbxsm42LNSzGn9tC7ZkEelr+JYpwT83Uozxk1XKyYk9cl65ZjfFYm6LPSEoYl+LMp5hTLR2Cn6f3W+egjwew==}
+    cpu: [arm64]
+    os: [darwin]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /lefthook-darwin-x64@1.5.3:
+    resolution: {integrity: sha512-0gaJe6zazaDovIzguVvvULM/ORnhOvC10QxY9fRslCZQO9wZpHSyYskqbW2+KWPbheGcA+MLn2PmBXbcQ4+ckA==}
+    cpu: [x64]
+    os: [darwin]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /lefthook-freebsd-arm64@1.5.3:
+    resolution: {integrity: sha512-TgNW9Rc7W6B7WEkquUGaKR6mdgYmjAvf8Wg9cRLWmXG9yzZjwBlDSzJMNwaLFIWakkkLZ/nODbhPldR4+mOyBA==}
+    cpu: [arm64]
+    os: [freebsd]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /lefthook-freebsd-x64@1.5.3:
+    resolution: {integrity: sha512-ihrHaZ3QEBP6rQhvIgNElZcoqHXjAIArak86KIQydtCHpPU5ZqcQO47/NLyWfbG1E0GC0MdC3dWL4gmo//e3Gg==}
+    cpu: [x64]
+    os: [freebsd]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /lefthook-linux-arm64@1.5.3:
+    resolution: {integrity: sha512-Nwj6V8aQjROrngoEByfzeYmIYcZb0z7kwvh6rH3zyy/VtHhqXgaoqelBfHrSgwL6HCFgh4cry/BAPvZzS5kLGA==}
+    cpu: [arm64]
+    os: [linux]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /lefthook-linux-x64@1.5.3:
+    resolution: {integrity: sha512-ue3M4qCBcdKQJ6CeVz32zwUPYH2AnuytbR4yYVPFfWxLklqG0NtMNOaK0muJRvmXW8PSJr06z0me1z+ld6FwpQ==}
+    cpu: [x64]
+    os: [linux]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /lefthook-windows-arm64@1.5.3:
+    resolution: {integrity: sha512-6pgUJAnyhGvIcej74KVuUwmSVkK7Boi8E9vuzpeQ0wFGN2lNMkVcYTaMI5bLKCX0l15f1htMnvOfKLnWEmxCfg==}
+    cpu: [arm64]
+    os: [win32]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /lefthook-windows-x64@1.5.3:
+    resolution: {integrity: sha512-t8Pipk1zkniqXh9sL1KEtvPLA6t+Q/q/m5kcugFmT8r/IcMJLwEZC4DYfX0z7j7H2fSkZfTXaMPAJblfXJ7MJw==}
+    cpu: [x64]
+    os: [win32]
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /lefthook@1.5.3:
+    resolution: {integrity: sha512-s3ZtCTsEZt9NOxiUFNwu4czNvuycsMQYdKAn4pvxNCslmjcTlvIIpzOdPUtP/QfSuRhRWjk0fMQL2MJwblEppQ==}
+    hasBin: true
+    requiresBuild: true
+    optionalDependencies:
+      lefthook-darwin-arm64: 1.5.3
+      lefthook-darwin-x64: 1.5.3
+      lefthook-freebsd-arm64: 1.5.3
+      lefthook-freebsd-x64: 1.5.3
+      lefthook-linux-arm64: 1.5.3
+      lefthook-linux-x64: 1.5.3
+      lefthook-windows-arm64: 1.5.3
+      lefthook-windows-x64: 1.5.3
     dev: true
 
   /leven@3.1.0:
