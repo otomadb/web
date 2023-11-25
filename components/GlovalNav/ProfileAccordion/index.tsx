@@ -1,6 +1,5 @@
 "use client";
 
-import { useAuth0 } from "@auth0/auth0-react";
 import clsx from "clsx";
 import React, { ReactNode } from "react";
 
@@ -9,6 +8,7 @@ import { TagRegisterPageLink } from "~/app/(application)/(editor)/editor/tags/Li
 import { YouLikesPageLink } from "~/app/(application)/(normal)/me/likes/Link";
 import MyMylistsPageLink from "~/app/(application)/(normal)/me/mylists/Link";
 import { SettingPageLink } from "~/app/(application)/(normal)/settings/Link";
+import { LogoutLink } from "~/components/AuthLink";
 import {
   useOpenRegisterFromBilibili,
   useOpenRegisterFromNicovideo,
@@ -72,7 +72,6 @@ export default function ProfileAccordion({
   style?: React.CSSProperties;
   fragment: FragmentType<typeof Fragment>;
 }) {
-  const { logout } = useAuth0();
   const fragment = useFragment(Fragment, props.fragment);
   const { whoami } = fragment;
   const openRequestFromNicovideo = useOpenRequestFromNicovideo();
@@ -237,17 +236,11 @@ export default function ProfileAccordion({
         </div>
       )}
       <div className={clsx(["flex"], ["py-2", "px-4"], ["bg-slate-300/75"])}>
-        <button
-          onClick={() => {
-            logout();
-          }}
-          className={clsx(
-            ["text-xs"],
-            ["text-slate-700", "hover:text-slate-500"]
-          )}
+        <LogoutLink
+          className={clsx("text-xs text-slate-700", "hover:text-slate-500")}
         >
           ログアウト
-        </button>
+        </LogoutLink>
       </div>
     </div>
   );

@@ -2,8 +2,13 @@
 
 import "client-only";
 
-import { Guard } from "./Guard";
+import { withPageAuthRequired } from "@auth0/nextjs-auth0/client";
+import { ReactNode } from "react";
 
-export default function Layout({ children }: { children: React.ReactNode }) {
-  return <Guard>{children}</Guard>;
-}
+export default withPageAuthRequired(function Layout({
+  children,
+}: {
+  children: ReactNode;
+}) {
+  return <>{children}</>;
+}, {});

@@ -1,17 +1,16 @@
 "use client";
 
-import { useAuth0 } from "@auth0/auth0-react";
 import clsx from "clsx";
 import { CSSProperties } from "react";
 import { useQuery } from "urql";
 
-import { MyPageLink } from "~/app/(application)/(normal)/me/Link";
 import TopPageLink from "~/app/(landing)/Link";
+import { LoginLink } from "~/components/AuthLink";
+import Pictogram from "~/components/Pictogram";
 import { SearchContents } from "~/components/SearchContents/SearchContents";
 import { graphql } from "~/gql";
 
 import Logo from "../Logo";
-import LoginButton from "./LoginButton";
 import ProfileAccordion from "./ProfileAccordion";
 import UserIndicator from "./UserIndicator";
 
@@ -19,9 +18,6 @@ export const Query = graphql(`
   query GlobalNav {
     ...GlobalNav_ProfileIndicator
     ...GlobalNav_ProfileAccordion
-    whoami {
-      id
-    }
   }
 `);
 export default function GlobalNav({
@@ -31,11 +27,8 @@ export default function GlobalNav({
   className?: string;
   style?: CSSProperties;
 }) {
-  const { isAuthenticated } = useAuth0();
-  const [{ data, fetching }, update] = useQuery({
+  const [{ data, fetching }] = useQuery({
     query: Query,
-    pause: !isAuthenticated,
-    requestPolicy: "cache-first",
   });
 
   return (
@@ -66,16 +59,9 @@ export default function GlobalNav({
           )}
         >
           <div className={clsx(["w-[96px]"])}>
-            <TopPageLink
-              className={clsx("w-full", { hidden: isAuthenticated })}
-            >
+            <TopPageLink className={clsx("w-full")}>
               <Logo className={clsx(["w-full"], ["fill-white"])} />
             </TopPageLink>
-            <MyPageLink
-              className={clsx("w-full", { hidden: !isAuthenticated })}
-            >
-              <Logo className={clsx(["w-full"], ["fill-white"])} />
-            </MyPageLink>
           </div>
         </div>
         <div className={clsx(["grow"])}>
@@ -84,10 +70,7 @@ export default function GlobalNav({
         <div
           className={clsx(["w-36"], ["shrink-0"], ["flex", "justify-center"])}
         >
-          {(!isAuthenticated || (!fetching && !data)) && (
-            <LoginButton update={update} />
-          )}
-          {!data && fetching && (
+          {fetching ? (
             <div
               className={clsx(
                 ["rounded-sm"],
@@ -97,8 +80,16 @@ export default function GlobalNav({
                 ["animate-pulse"]
               )}
             />
-          )}
-          {data && (
+          ) : !data ? (
+            <LoginLink
+              className={clsx(
+                "flex items-center gap-x-2 rounded-sm border border-vivid-primary bg-transparent px-4 py-2 text-vivid-primary duration-50 hover:bg-vivid-primary hover/button:text-coal-darker"
+              )}
+            >
+              <Pictogram icon="signin" className={clsx("h-4")} />
+              <span className={clsx("text-sm")}>ログイン</span>
+            </LoginLink>
+          ) : (
             <div className={clsx(["group"], ["relative"])}>
               <UserIndicator fragment={data} className={clsx(["z-1"])} />
               <div

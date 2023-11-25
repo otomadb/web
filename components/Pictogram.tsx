@@ -6,6 +6,7 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  ArrowLeftOnRectangleIcon,
   ArrowTopRightOnSquareIcon,
   CheckIcon,
   HeartIcon,
@@ -45,7 +46,8 @@ export default function Pictogram({
     | "bilibili"
     | "twitter"
     | "github"
-    | "signup";
+    | "signup"
+    | "signin";
   className?: string;
   style?: React.CSSProperties;
 }): JSX.Element {
@@ -77,6 +79,8 @@ export default function Pictogram({
       return <CheckIcon {...props} />;
     case "external-link":
       return <ArrowTopRightOnSquareIcon {...props} />;
+    case "signin":
+      return <ArrowLeftOnRectangleIcon {...props} />;
     case "signup":
       return <UserPlusIcon {...props} />;
     case "nicovideo":
