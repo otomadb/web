@@ -14,7 +14,8 @@ export const TagButton: React.FC<{
   selected: boolean;
   append(f: FragmentType<typeof Fragment>): void;
   remove(): void;
-}> = ({ className, selected, remove, append, ...props }) => {
+  size?: "xs" | "small";
+}> = ({ className, selected, remove, append, size = "xs", ...props }) => {
   return (
     <div
       className={clsx(className, ["select-none"])}
@@ -24,7 +25,12 @@ export const TagButton: React.FC<{
         else append(props.fragment);
       }}
     >
-      <CommonTag size="xs" fragment={props.fragment} disabled={!selected} />
+      <CommonTag
+        size={size}
+        fragment={props.fragment}
+        selectable
+        selected={selected}
+      />
     </div>
   );
 };
