@@ -200,7 +200,7 @@ devDependencies:
     specifier: 3.0.0
     version: 3.0.0(graphql@16.8.1)
   lefthook:
-    specifier: ^1.5.3
+    specifier: 1.5.3
     version: 1.5.3
   msw:
     specifier: 1.3.2
