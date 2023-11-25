@@ -83,19 +83,18 @@ module.exports = {
           lightest: colors.gray[600],
         },
         "snow": {
-          darkest: colors.gray[100],
-          darker: colors.gray[200],
+          darkest: colors.gray[700],
+          darker: colors.gray[500],
           primary: colors.gray[300],
-          lighter: colors.gray[400],
-          lightest: colors.gray[500],
+          lighter: colors.gray[200],
+          lightest: colors.gray[100],
         },
-        "nicovideo": {
-          primary: "#FFF",
-          sub: "#252525",
-        },
+        // other services
+        "nicovideo": { primary: "#FFF", sub: "#252525" },
         "youtube": { primary: "#FF0000" },
         "bilibili": { primary: "#22A8DE" },
         "soundcloud": { primary: "#FF5500" },
+        // tags
         "tag-copyright": mkTagTheme(colors.rose),
         "tag-character": mkTagTheme(colors.green),
         "tag-class": mkTagTheme(colors.slate),

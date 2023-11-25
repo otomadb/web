@@ -16,8 +16,14 @@ module.exports = {
     options: {},
   },
   webpackFinal: async (config) => {
-    config.resolve.fallback.querystring = false;
-
+    config.module.rules = config.module.rules.map((rule) => {
+      if (/svg/.test(rule.test)) return { ...rule, exclude: /\.svg$/i };
+      return rule;
+    });
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ["@svgr/webpack"],
+    });
     return config;
   },
 };
