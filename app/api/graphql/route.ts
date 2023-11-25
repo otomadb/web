@@ -17,6 +17,5 @@ export const POST = async (req: NextRequest) => {
   });
 
   const data = await response.json();
-  console.dir(data);
   return Response.json(data);
 };
