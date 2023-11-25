@@ -5,14 +5,14 @@ import { Suspense } from "react";
 
 import { MadPageLink } from "~/app/(application)/mads/[serial]/Link";
 import { AllVideosPageLink } from "~/app/(application)/mads/Link";
+import { LoginLink } from "~/components/AuthLink";
 import CommonTagLink from "~/components/CommonTagLink";
 import Logo from "~/components/Logo";
+import Pictogram from "~/components/Pictogram";
 import { SearchContents } from "~/components/SearchContents/SearchContents";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { graphql } from "~/gql";
 import { makeGraphQLClient } from "~/gql/fetch";
-
-import { SignupButton } from "./SignUpButton";
 
 const getMadsCount = () =>
   makeGraphQLClient({ next: { revalidate: 120 } })
@@ -70,10 +70,14 @@ export default async function Page() {
           "relative flex min-h-[calc(100vh-96px)] w-full items-center gap-x-8 bg-black px-8 py-16"
         )}
       >
-        <SignupButton
-          className={clsx("absolute right-8 top-4")}
-          theme="vivid"
-        />
+        <LoginLink
+          className={clsx(
+            "absolute right-8 top-4 flex items-center gap-x-2 rounded-sm border border-vivid-primary bg-transparent px-4 py-2 text-vivid-primary duration-50 hover:bg-vivid-primary hover/button:text-coal-darker"
+          )}
+        >
+          <Pictogram icon="signup" className={clsx("h-4")} />
+          <span className={clsx("text-sm")}>参加してみる</span>
+        </LoginLink>
         <div
           className={clsx(
             "mx-auto mt-[-96px] w-full max-w-screen-md md:-mt-32"
@@ -292,7 +296,14 @@ export default async function Page() {
           <p className={clsx(["text-base text-coal-darker"])}>
             皆も一緒にやってみよう
           </p>
-          <SignupButton className={clsx("mt-12")} theme="coal" />
+          <LoginLink
+            className={clsx(
+              "mt-12 flex items-center gap-x-2 rounded-sm border border-coal-darker bg-transparent px-4 py-2 text-coal-darker duration-50 hover:bg-coal-darker hover/button:text-vivid-primary"
+            )}
+          >
+            <Pictogram icon="signup" className={clsx("h-4")} />
+            <span className={clsx("text-sm")}>参加してみる</span>
+          </LoginLink>
         </div>
       </section>
     </main>

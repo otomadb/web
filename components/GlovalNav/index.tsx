@@ -7,11 +7,12 @@ import { useQuery } from "urql";
 
 import { MyPageLink } from "~/app/(application)/(normal)/me/Link";
 import TopPageLink from "~/app/(landing)/Link";
+import { LoginLink } from "~/components/AuthLink";
+import Pictogram from "~/components/Pictogram";
 import { SearchContents } from "~/components/SearchContents/SearchContents";
 import { graphql } from "~/gql";
 
 import Logo from "../Logo";
-import LoginButton from "./LoginButton";
 import ProfileAccordion from "./ProfileAccordion";
 import UserIndicator from "./UserIndicator";
 
@@ -85,7 +86,14 @@ export default function GlobalNav({
           className={clsx(["w-36"], ["shrink-0"], ["flex", "justify-center"])}
         >
           {(!isAuthenticated || (!fetching && !data)) && (
-            <LoginButton update={update} />
+            <LoginLink
+              className={clsx(
+                "flex items-center gap-x-2 rounded-sm border border-vivid-primary bg-transparent px-4 py-2 text-vivid-primary duration-50 hover:bg-vivid-primary hover/button:text-coal-darker"
+              )}
+            >
+              <Pictogram icon="signin" className={clsx("h-4")} />
+              <span className={clsx("text-sm")}>ログイン</span>
+            </LoginLink>
           )}
           {!data && fetching && (
             <div
