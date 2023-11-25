@@ -9,3 +9,7 @@ export default async function middleware(req: NextRequest) {
     if (session?.user) return NextResponse.redirect(new URL("/me", req.url));
   }
 }
+
+export const config = {
+  matcher: ["/"],
+};
