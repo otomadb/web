@@ -1,10 +1,14 @@
 import { Meta, StoryObj } from "@storybook/react";
 
-import { GlobalFooter } from ".";
+import { Presentation } from ".";
 
 const meta = {
-  component: GlobalFooter,
-} as Meta<typeof GlobalFooter>;
+  component: Presentation,
+  args: {
+    madsCount: 100,
+    tagsCount: 100,
+  },
+} as Meta<typeof Presentation>;
 export default meta;
 
 export const Primary: StoryObj<typeof meta> = {

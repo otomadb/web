@@ -5,80 +5,92 @@ import React from "react";
 import { AboutPageLink } from "~/app/(landing)/about/Link";
 import TopPageLink from "~/app/(landing)/Link";
 import Logo from "~/components/Logo";
+import { graphql } from "~/gql";
+import { makeGraphQLClient } from "~/gql/fetch";
 
-export const GlobalFooter: React.FC = () => {
-  return (
-    <footer className={clsx(["bg-slate-900"], ["py-24"])}>
+export const Presentation: React.FC<{
+  className?: string;
+  madsCount: number;
+  tagsCount: number;
+}> = ({ className, madsCount, tagsCount }) => (
+  <footer className={clsx(className, "bg-coal-darker py-24")}>
+    <div
+      className={clsx(
+        "container mx-auto flex max-w-screen-xl flex-row flex-wrap items-center gap-8 px-12 @container/footer"
+      )}
+    >
       <div
         className={clsx(
-          ["@container/footer"],
-          ["container", "max-w-screen-xl", "mx-auto"],
-          ["px-12"],
-          [
-            "flex",
-            "justify-between",
-            "items-center",
-            "flex-wrap",
-            "gap-x-8",
-            "gap-y-4",
-          ]
+          "flex w-full max-w-[256px] shrink-0 flex-col items-start gap-y-4 @container/info"
+        )}
+      >
+        <div className={clsx("flex flex-col")}>
+          <TopPageLink className={clsx("block")}>
+            <Logo className={clsx("w-[160px] fill-vivid-primary")} />
+          </TopPageLink>
+          <p className={clsx("text-xs text-snow-primary")}>
+            音MADの体系的なデータベースを作る
+          </p>
+        </div>
+        <div className="flex grow gap-x-4">
+          <div
+            className={clsx("flex flex-col gap-y-2 text-sm text-snow-darker")}
+          >
+            <div className={clsx("text-xs")}>音MAD</div>
+            <div
+              className={clsx(
+                "font-mono text-base leading-none text-accent-primary"
+              )}
+            >
+              {madsCount}
+            </div>
+          </div>
+          <div
+            className={clsx("flex flex-col gap-y-2 text-sm text-snow-darker")}
+          >
+            <div className={clsx("text-xs")}>タグ</div>
+            <div
+              className={clsx(
+                "font-mono text-base leading-none text-accent-primary"
+              )}
+            >
+              {tagsCount}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className={clsx(
+          "grow @container/sitemap @[384px]/footer:grid-cols-2 @[512px]/footer:grid-cols-3"
         )}
       >
         <div
           className={clsx(
-            ["shrink-0"],
-            ["w-full", "@[512px]/footer:w-[256px]"],
-            ["flex", "flex-col", "items-start"],
-            ["select-none"]
-          )}
-        >
-          <TopPageLink>
-            <Logo className={clsx(["w-[160px]"], ["fill-slate-100"])} />
-          </TopPageLink>
-          <p className={clsx(["mt-1"], ["text-slate-300"], ["text-xs"])}>
-            音MADの体系的なデータベースを作る
-          </p>
-        </div>
-        <div
-          className={clsx(
-            ["grow"],
-            [
-              "grid",
-              [
-                "grid-cols-1",
-                "@[384px]/footer:grid-cols-2",
-                "@[512px]/footer:grid-cols-3",
-              ],
-              // ["grid-cols-1", "@[384px]/grid-cols-2", "@[512px]/grid-cols-3"],
-              ["gap-x-4"],
-              ["gap-y-4"],
-            ]
+            "grid grid-cols-1 gap-4 @[384px]/sitemap:grid-cols-2 @[512px]/sitemap:grid-cols-3"
           )}
         >
           <nav>
-            <p className={clsx(["text-slate-500"], ["text-sm", "font-bold"])}>
+            <p className={clsx("text-sm font-bold text-vivid-primary")}>
               About
             </p>
-            <ul className={clsx(["mt-1"], ["flex", "flex-col", "gap-y-2"])}>
-              <li className={clsx(["flex"])}>
-                <AboutPageLink
-                  className={clsx(["text-slate-300"], ["text-sm"])}
-                >
+            <ul className={clsx("mt-1 flex flex-col gap-y-2")}>
+              <li className={clsx("flex")}>
+                <AboutPageLink className={clsx("text-sm text-snow-primary")}>
                   OtoMADBについて
                 </AboutPageLink>
               </li>
-              <li className={clsx(["flex"])}>
+              <li className={clsx("flex")}>
                 <a
                   aria-disabled="true"
-                  className={clsx(["text-slate-700"], ["text-sm"])}
+                  className={clsx("text-sm text-snow-darkest")}
                 >
                   利用規約
                 </a>
               </li>
-              <li className={clsx(["flex"])}>
+              <li className={clsx("flex")}>
                 <a
                   aria-disabled="true"
-                  className={clsx(["text-slate-700"], ["text-sm"])}
+                  className={clsx("text-sm text-snow-darkest")}
                 >
                   プライバシーポリシー
                 </a>
@@ -86,25 +98,25 @@ export const GlobalFooter: React.FC = () => {
             </ul>
           </nav>
           <nav>
-            <p className={clsx(["text-slate-500"], ["text-sm", "font-bold"])}>
+            <p className={clsx("text-sm font-bold text-vivid-primary")}>
               Guides
             </p>
-            <ul className={clsx(["mt-1"], ["flex", "flex-col", "gap-y-2"])}>
-              <li className={clsx(["flex"])}>
-                <a className={clsx(["text-slate-700"], ["text-sm"])}>使い方</a>
+            <ul className={clsx("mt-1 flex flex-col gap-y-2")}>
+              <li className={clsx("flex")}>
+                <a className={clsx("text-sm text-snow-darkest")}>使い方</a>
               </li>
-              <li className={clsx(["flex"])}>
+              <li className={clsx("flex")}>
                 <Link
                   href={"/docs/faq"}
-                  className={clsx(["text-slate-300"], ["text-sm"])}
+                  className={clsx("text-sm text-snow-primary")}
                 >
                   よくある質問
                 </Link>
               </li>
-              <li className={clsx(["flex"])}>
+              <li className={clsx("flex")}>
                 <Link
                   href={"/docs/faq#要望やバグ報告について"}
-                  className={clsx(["text-slate-300"], ["text-sm"])}
+                  className={clsx("text-sm text-snow-primary")}
                 >
                   要望やバグ報告
                 </Link>
@@ -112,31 +124,25 @@ export const GlobalFooter: React.FC = () => {
             </ul>
           </nav>
           <nav>
-            <p className={clsx(["text-slate-500"], ["text-sm", "font-bold"])}>
+            <p className={clsx("text-sm font-bold text-vivid-primary")}>
               Socials
             </p>
-            <ul className={clsx(["mt-1"], ["flex", "flex-col", "gap-y-2"])}>
-              <li className={clsx(["flex"])}>
+            <ul className={clsx("mt-1 flex flex-col gap-y-2")}>
+              <li className={clsx("flex")}>
                 <a
                   href="https://github.com/otomadb"
-                  className={clsx(["text-slate-300"], ["text-sm"])}
+                  className={clsx("text-sm text-snow-primary")}
                 >
                   GitHub
                 </a>
               </li>
-              <li className={clsx(["flex"])}>
+              <li className={clsx("flex")}>
                 <a
                   href="https://twitter.com/SnO2WMaN"
-                  className={clsx(["text-slate-300"], ["text-sm"])}
+                  className={clsx("text-sm text-snow-primary")}
                 >
                   Twitter
-                  <span
-                    className={clsx(
-                      ["ml-1"],
-                      ["text-slate-400"],
-                      ["font-mono"]
-                    )}
-                  >
+                  <span className={clsx("ml-1 font-mono text-snow-darker")}>
                     (@SnO2WMaN)
                   </span>
                 </a>
@@ -145,6 +151,19 @@ export const GlobalFooter: React.FC = () => {
           </nav>
         </div>
       </div>
-    </footer>
+    </div>
+  </footer>
+);
+
+export default async function GlobalFooter() {
+  const { countAllMads, countAllTags } = await makeGraphQLClient().request(
+    graphql(`
+      query GlobalFooter {
+        countAllMads
+        countAllTags
+      }
+    `)
   );
-};
+
+  return <Presentation madsCount={countAllMads} tagsCount={countAllTags} />;
+}

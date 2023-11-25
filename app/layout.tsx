@@ -4,7 +4,7 @@ import clsx from "clsx";
 import type { Metadata, Viewport } from "next";
 import React from "react";
 
-import { GlobalFooter } from "~/components/GlobalFooter";
+import GlobalFooter from "~/components/GlobalFooter";
 import { ToastProvider } from "~/components/Toaster";
 
 import Auth0Provider from "./Auth0Provider";
