@@ -44,9 +44,11 @@ export const Query = graphql(`
     }
     fetchNicovideo(input: { sourceId: $sourceId }) {
       source {
-        title
-        thumbnailUrl
         ...RegisterFromNicovideoForm_OriginalSource
+        info {
+          title
+          thumbnailUrl
+        }
       }
     }
   }
@@ -142,9 +144,9 @@ export default function RequestForm({
 
   // 自動的にタイトルを挿入
   useEffect(() => {
-    if (title === "" && data?.fetchNicovideo.source?.title)
-      setTitle(data.fetchNicovideo.source.title);
-  }, [data?.fetchNicovideo.source?.title, title]);
+    if (title === "" && data?.fetchNicovideo.source?.info.title)
+      setTitle(data.fetchNicovideo.source.info.title);
+  }, [data?.fetchNicovideo.source?.info.title, title]);
 
   const [tab, setTab] = useState<"SOURCE">("SOURCE");
 
@@ -156,7 +158,7 @@ export default function RequestForm({
       title,
       taggings: taggings.map(({ id }) => ({ tagId: id, note: null })),
       semitaggings: semitaggings.map(({ name }) => ({ name, note: null })),
-      thumbnailUrl: data.fetchNicovideo.source.thumbnailUrl,
+      thumbnailUrl: data.fetchNicovideo.source.info.thumbnailUrl,
     } satisfies Parameters<typeof requestVideo>[0];
   }, [data, semitaggings, sourceId, taggings, title]);
   const handleSubmit = useCallback(() => {

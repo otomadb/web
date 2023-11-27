@@ -151,6 +151,17 @@ type BilibiliOriginalSourceTagSearchTagsPayload {
   items: [TagSearchItemByName!]!
 }
 
+input CalcMadCountGrowthInput {
+  """終了日時"""
+  end: DateTime!
+
+  """何分割するか"""
+  split: Int!
+
+  """開始日時"""
+  start: DateTime!
+}
+
 input ChangeMylistShareRangeInput {
   mylistId: ID!
   range: MylistShareRange!
@@ -212,6 +223,9 @@ type CreateMylistSucceededPayload {
   mylist: Mylist!
 }
 
+"""
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
 scalar DateTime
 
 interface Event implements Node {
@@ -454,6 +468,11 @@ union LikeVideoReturnUnion = LikeVideoAlreadyLikedError | LikeVideoSucceededPayl
 
 type LikeVideoSucceededPayload {
   registration: MylistRegistration!
+}
+
+type MadCountGrowth {
+  count: Int!
+  date: DateTime!
 }
 
 """音MADが登録されたことを表すタイムラインイベント"""
@@ -765,27 +784,51 @@ type NicovideoMadRequestedTimelineEvent implements TimelineEvent {
 }
 
 type NicovideoOriginalSource {
+  """ニコニコ動画の埋め込み用URL"""
+  embedUrl: String!
+  info: NicovideoOriginalSourceFreshInfo!
+
+  """ニコニコ動画での動画ID"""
+  sourceId: String!
+
+  """ニコニコ動画での動画URL"""
+  url: String!
+}
+
+"""ニコニコ動画のフレッシュな動画情報"""
+type NicovideoOriginalSourceFreshInfo {
+  """コメントの数"""
   countComments: Int!
+
+  """いいね！の数"""
   countLikes: Int!
+
+  """マイリストの数"""
   countMylists: Int!
+
+  """再生数"""
   countViews: Int!
+
+  """説明文"""
+  description: String!
 
   """動画の長さ"""
   duration: Int!
 
-  """ニコニコ動画の埋め込み用URL"""
-  embedUrl: String!
-
-  """タグのうち、「音MAD」など範囲が広すぎるので除外するもの"""
+  """「音MAD」など範囲が広すぎるので除外したタグ"""
   excludeTags: [String!]!
-  registeredAt: DateTime!
-  sourceId: String!
-  tags: [NicovideoOriginalSourceTag!]!
-  thumbnailUrl: String!
-  title: String!
 
-  """ニコニコ動画の動画URL"""
-  url: String!
+  """ニコニコ動画での投稿日時"""
+  registeredAt: DateTime!
+
+  """検索可能なタグ"""
+  tags: [NicovideoOriginalSourceTag!]!
+
+  """サムネイル画像のURL"""
+  thumbnailUrl: String!
+
+  """タイトル"""
+  title: String!
 }
 
 type NicovideoOriginalSourceTag {
@@ -1005,6 +1048,9 @@ type PageInfo {
 }
 
 type Query {
+  """一定区間の音MADの登録個数の時系列データを計算する"""
+  calcMadCountGrowth(input: CalcMadCountGrowthInput!): [MadCountGrowth]!
+
   """全ての音MADの個数を数える"""
   countAllMads: Int!
 

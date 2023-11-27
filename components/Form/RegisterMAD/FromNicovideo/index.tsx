@@ -30,9 +30,11 @@ export const Query = graphql(`
   query RegisterFromNicovideoForm_Check($sourceId: String!) {
     fetchNicovideo(input: { sourceId: $sourceId }) {
       source {
-        title
-        thumbnailUrl
         ...RegisterFromNicovideoForm_OriginalSource
+        info {
+          title
+          thumbnailUrl
+        }
       }
     }
     findNicovideoRegistrationRequest(input: { sourceId: $sourceId }) {
@@ -115,10 +117,10 @@ export default function RegisterForm({
 
   // 自動的にタイトルを挿入
   useEffect(() => {
-    if (title === "" && data?.fetchNicovideo.source?.title) {
-      setTitle(data.fetchNicovideo.source.title);
+    if (title === "" && data?.fetchNicovideo.source?.info.title) {
+      setTitle(data.fetchNicovideo.source.info.title);
     }
-  }, [data?.fetchNicovideo.source?.title, title]);
+  }, [data?.fetchNicovideo.source?.info.title, title]);
 
   const [tab, setTab] = useState<"SOURCE" | "REQUEST">("SOURCE");
 
@@ -135,7 +137,7 @@ export default function RegisterForm({
     return {
       sourceId,
       title,
-      thumbnailUrl: data.fetchNicovideo.source.thumbnailUrl,
+      thumbnailUrl: data.fetchNicovideo.source.info.thumbnailUrl,
       nicovideoRequestId: data.findNicovideoRegistrationRequest?.id,
       tagIds,
       semitagNames,

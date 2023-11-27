@@ -208,35 +208,39 @@ export const 登録可能: Story = {
                 findNicovideoVideoSource: null,
                 fetchNicovideo: {
                   source: {
-                    title: "Title",
-                    thumbnailUrl: "/960x540.jpg",
+                    info: {
+                      title: "Title",
+                      thumbnailUrl: "/960x540.jpg",
+                    },
                     ...makeFragmentData(
                       {
-                        title: "Title",
                         sourceId: "sm2057168",
                         url: "https://www.nicovideo.jp/watch/sm2057168",
-                        thumbnailUrl: "/960x540.jpg",
-                        tags: [...new Array(11)].map((_, i) => ({
-                          name: `Tag ${i + 1}`,
-                          searchTags: {
-                            items: [...new Array(3)].map((_, j) => ({
-                              tag: {
-                                id: `tag:${j + 1}`,
-                                ...makeFragmentData(
-                                  {
-                                    name: `Tag ${j + 1}`,
-                                    type: TagType.Character,
-                                    explicitParent: {
-                                      id: `tag:0`,
-                                      name: "Tag 0",
+                        info: {
+                          title: "Title",
+                          thumbnailUrl: "/960x540.jpg",
+                          tags: [...new Array(11)].map((_, i) => ({
+                            name: `Tag ${i + 1}`,
+                            searchTags: {
+                              items: [...new Array(3)].map((_, j) => ({
+                                tag: {
+                                  id: `tag:${j + 1}`,
+                                  ...makeFragmentData(
+                                    {
+                                      name: `Tag ${j + 1}`,
+                                      type: TagType.Character,
+                                      explicitParent: {
+                                        id: `tag:0`,
+                                        name: "Tag 0",
+                                      },
                                     },
-                                  },
-                                  CommonTagFragment
-                                ),
-                              },
-                            })),
-                          },
-                        })),
+                                    CommonTagFragment
+                                  ),
+                                },
+                              })),
+                            },
+                          })),
+                        },
                       },
                       SourceFragment
                     ),
