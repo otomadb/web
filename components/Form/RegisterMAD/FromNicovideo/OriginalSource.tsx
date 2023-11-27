@@ -11,16 +11,18 @@ import { Fragment as TagButtonFragment, TagButton } from "../../TagButton";
 export const Fragment = graphql(`
   fragment RegisterFromNicovideoForm_OriginalSource on NicovideoOriginalSource {
     sourceId
-    title
     url
-    thumbnailUrl
-    tags {
-      name
-      searchTags(input: { limit: 3 }) {
-        items {
-          tag {
-            id
-            ...CommonTag
+    info {
+      title
+      thumbnailUrl
+      tags {
+        name
+        searchTags(input: { limit: 3 }) {
+          items {
+            tag {
+              id
+              ...CommonTag
+            }
           }
         }
       }
@@ -59,7 +61,7 @@ export default function OriginalSource({
         <div className={clsx(["shrink-0"], ["flex", "flex-col", "gap-y-4"])}>
           <CoolImage
             className={clsx(["w-[96px]"], ["h-[64px]"])}
-            src={fragment.thumbnailUrl}
+            src={fragment.info.thumbnailUrl}
             width={96}
             height={64}
             alt={`${fragment.sourceId}のサムネイル`}
@@ -68,7 +70,7 @@ export default function OriginalSource({
         </div>
         <div className={clsx(["py-2"], ["grow"], ["flex", "flex-col"])}>
           <div className={clsx(["text-slate-300"], ["text-sm", "font-bold"])}>
-            {fragment.title}
+            {fragment.info.title}
           </div>
           <div className={clsx(["mt-auto"], ["flex", "gap-x-2"])}>
             <a
@@ -91,7 +93,7 @@ export default function OriginalSource({
         </div>
       </div>
       <div className={clsx(["grid", "grid-cols-2", "gap-x-2", "gap-y-2"])}>
-        {fragment.tags.map((originalTag) => (
+        {fragment.info.tags.map((originalTag) => (
           <div
             key={originalTag.name}
             className={clsx(["flex", "flex-col", "items-start"], ["gap-y-1"])}

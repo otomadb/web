@@ -2,9 +2,9 @@ import { graphql as mswGql } from "msw";
 
 import { CommonTagFragment } from "~/components/CommonTag";
 import { Query as RegisterFromBilibiliFormCheckQuery } from "~/components/Form/RegisterMAD/FromBilibili";
+import { Fragment as BilibiliOriginalSourceFragment } from "~/components/Form/RegisterMAD/FromBilibili/OriginalSource";
 import { Query as RegisterFromNicovideoFormCheckQuery } from "~/components/Form/RegisterMAD/FromNicovideo";
 import { Fragment as NicovideoOriginalSourceFragment } from "~/components/Form/RegisterMAD/FromNicovideo/OriginalSource";
-import { Fragment as BilibiliOriginalSourceFragment } from "~/components/Form/RegisterMAD/FromNicovideo/OriginalSource";
 import { Fragment as NicovideoRegReqFragment } from "~/components/Form/RegisterMAD/FromNicovideo/Request";
 import { Query as RegisterFromYoutubeFormCheckQuery } from "~/components/Form/RegisterMAD/FromYoutube";
 import { Fragment as YoutubeOriginalSourceFragment } from "~/components/Form/RegisterMAD/FromYoutube/OriginalSource";
@@ -20,35 +20,39 @@ export const mocksRegisterFromNicovideo = [
       ctx.data({
         fetchNicovideo: {
           source: {
-            title: "Title",
-            thumbnailUrl: "/960x540.jpg",
+            info: {
+              title: "Title",
+              thumbnailUrl: "/960x540.jpg",
+            },
             ...makeFragmentData(
               {
-                title: "Title",
                 sourceId: "sm2057168",
                 url: "https://www.nicovideo.jp/watch/sm2057168",
-                thumbnailUrl: "/960x540.jpg",
-                tags: [...new Array(11)].map((_, i) => ({
-                  name: `Tag ${i + 1}`,
-                  searchTags: {
-                    items: [...new Array(3)].map((_, j) => ({
-                      tag: {
-                        id: `tag:${j + 1}`,
-                        ...makeFragmentData(
-                          {
-                            name: `Tag ${j + 1}`,
-                            type: TagType.Character,
-                            explicitParent: {
-                              id: `tag:0`,
-                              name: "Tag 0",
+                info: {
+                  title: "Title",
+                  thumbnailUrl: "/960x540.jpg",
+                  tags: [...new Array(11)].map((_, i) => ({
+                    name: `Tag ${i + 1}`,
+                    searchTags: {
+                      items: [...new Array(3)].map((_, j) => ({
+                        tag: {
+                          id: `tag:${j + 1}`,
+                          ...makeFragmentData(
+                            {
+                              name: `Tag ${j + 1}`,
+                              type: TagType.Character,
+                              explicitParent: {
+                                id: `tag:0`,
+                                name: "Tag 0",
+                              },
                             },
-                          },
-                          CommonTagFragment
-                        ),
-                      },
-                    })),
-                  },
-                })),
+                            CommonTagFragment
+                          ),
+                        },
+                      })),
+                    },
+                  })),
+                },
               },
               NicovideoOriginalSourceFragment
             ),
@@ -218,35 +222,39 @@ export const mocksRequestFromNicovideo = [
         findNicovideoVideoSource: null,
         fetchNicovideo: {
           source: {
-            title: "Title",
-            thumbnailUrl: "/960x540.jpg",
+            info: {
+              title: "Title",
+              thumbnailUrl: "/960x540.jpg",
+            },
             ...makeFragmentData(
               {
-                title: "Title",
                 sourceId: "sm2057168",
                 url: "https://www.nicovideo.jp/watch/sm2057168",
-                thumbnailUrl: "/960x540.jpg",
-                tags: [...new Array(11)].map((_, i) => ({
-                  name: `Tag ${i + 1}`,
-                  searchTags: {
-                    items: [...new Array(3)].map((_, j) => ({
-                      tag: {
-                        id: `tag:${j + 1}`,
-                        ...makeFragmentData(
-                          {
-                            name: `Tag ${j + 1}`,
-                            type: TagType.Character,
-                            explicitParent: {
-                              id: `tag:0`,
-                              name: "Tag 0",
+                info: {
+                  title: "Title",
+                  thumbnailUrl: "/960x540.jpg",
+                  tags: [...new Array(11)].map((_, i) => ({
+                    name: `Tag ${i + 1}`,
+                    searchTags: {
+                      items: [...new Array(3)].map((_, j) => ({
+                        tag: {
+                          id: `tag:${j + 1}`,
+                          ...makeFragmentData(
+                            {
+                              name: `Tag ${j + 1}`,
+                              type: TagType.Character,
+                              explicitParent: {
+                                id: `tag:0`,
+                                name: "Tag 0",
+                              },
                             },
-                          },
-                          CommonTagFragment
-                        ),
-                      },
-                    })),
-                  },
-                })),
+                            CommonTagFragment
+                          ),
+                        },
+                      })),
+                    },
+                  })),
+                },
               },
               NicovideoOriginalSourceFragment
             ),
