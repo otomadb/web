@@ -10,7 +10,7 @@ import {
 } from "react";
 import { useQuery } from "urql";
 
-import { MadPageLink } from "~/app/(application)/mads/[serial]/Link";
+import { MadPageLink } from "~/app/(v2)/mads/[serial]/Link";
 import Button from "~/components/Button";
 import AlreadyRegistered from "~/components/Form/AlreadyRegistered";
 import AlreadyRequested from "~/components/Form/AlreadyRequested";

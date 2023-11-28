@@ -1,7 +1,7 @@
 import { action } from "@storybook/addon-actions";
 import { Meta, StoryObj } from "@storybook/react";
 
-import { MadPageLinkFragment as VideoLinkFragment } from "~/app/(application)/mads/[serial]/Link";
+import { MadPageLinkFragment as VideoLinkFragment } from "~/app/(v2)/mads/[serial]/Link";
 import AlreadyRegistered, {
   Fragment,
 } from "~/components/Form/AlreadyRegistered";

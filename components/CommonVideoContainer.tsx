@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import React from "react";
 
-import { MadPageLink } from "~/app/(application)/mads/[serial]/Link";
+import { MadPageLink } from "~/app/(v2)/mads/[serial]/Link";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { FragmentType, graphql, useFragment } from "~/gql";
 

@@ -1,6 +1,6 @@
 import { ResultOf } from "@graphql-typed-document-node/core";
 
-import { MadPageLinkFragment as VideoPageLinkFragment } from "~/app/(application)/mads/[serial]/Link";
+import { MadPageLinkFragment as VideoPageLinkFragment } from "~/app/(v2)/mads/[serial]/Link";
 import { Fragment as UserIconFragment } from "~/components/UserIcon";
 import { Fragment as VideoThumbnailFragment } from "~/components/VideoThumbnail";
 import { makeFragmentData } from "~/gql";

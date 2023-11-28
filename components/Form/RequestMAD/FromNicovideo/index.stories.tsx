@@ -2,7 +2,7 @@ import { action } from "@storybook/addon-actions";
 import { Meta, StoryObj } from "@storybook/react";
 import { graphql as mswGql } from "msw";
 
-import { MadPageLinkFragment as VideoLinkFragment } from "~/app/(application)/mads/[serial]/Link";
+import { MadPageLinkFragment as VideoLinkFragment } from "~/app/(v2)/mads/[serial]/Link";
 import { CommonTagFragment } from "~/components/CommonTag";
 import { Fragment as AlreadyRegisteredFragment } from "~/components/Form/AlreadyRegistered";
 import { Fragment as AlreadyRequestedFragment } from "~/components/Form/AlreadyRequested";

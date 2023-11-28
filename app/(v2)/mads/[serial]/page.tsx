@@ -8,9 +8,7 @@ import { graphql } from "~/gql";
 import { fetchGql } from "~/gql/fetch";
 import { isErr } from "~/utils/Result";
 
-import { SimilarVideos } from "./SimilarVideos.server";
-
-export const dynamic = "force-dynamic";
+import SimilarVideos from "./SimilarVideos";
 
 export async function generateMetadata({
   params,
@@ -19,8 +17,8 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const result = await fetchGql(
     graphql(`
-      query VideoPage_Title($serial: Int!) {
-        findVideo(input: { serial: $serial }) {
+      query MadPage_Metadata($serial: Int!) {
+        findMadBySerial(serial: $serial) {
           title
           serial
         }
@@ -38,20 +36,20 @@ export async function generateMetadata({
     }
   }
 
-  if (!result.data.findVideo) notFound();
-  const { findVideo } = result.data;
+  if (!result.data.findMadBySerial) notFound();
+  const { title, serial } = result.data.findMadBySerial;
 
   return {
-    title: `${findVideo.title} | OtoMADB`,
+    title: `${title} | OtoMADB`,
     openGraph: {
       type: "website",
       siteName: "OtoMADB",
-      url: `https://otomadb.com/videos/${findVideo.serial}`,
-      title: `${findVideo.title} | OtoMADB`,
+      url: `https://otomadb.com/mads/${serial}`,
+      title: `${title} | OtoMADB`,
     },
     twitter: {
       card: "summary_large_image",
-      title: `${findVideo.title} | OtoMADB`,
+      title: `${title} | OtoMADB`,
       site: "@SnO2WMaN",
     },
   };
@@ -102,17 +100,16 @@ export default async function Page({ params }: { params: PageParams }) {
   if (!result.data.findVideo) notFound();
 
   return (
-    <div className={clsx(["flex", "flex-col", "gap-y-4"])}>
+    <div className={clsx("flex flex-col gap-y-4")}>
       <section>
-        <h2 className={clsx([" text-base"], ["text-slate-900"])}>
-          似ている動画
-        </h2>
-        <div className={clsx(["mt-2"])}>
-          <Suspense>
-            <SimilarVideos
-              // props
-              videoId={result.data.findVideo.id}
-            />
+        <h2 className={clsx("text-base text-snow-darker")}>似ている動画</h2>
+        <div className={clsx("mt-2")}>
+          <Suspense
+            fallback={
+              <p className={clsx("text-sm text-snow-darkest")}>Loading...</p>
+            }
+          >
+            <SimilarVideos videoId={result.data.findVideo.id} />
           </Suspense>
         </div>
       </section>
