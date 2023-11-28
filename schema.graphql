@@ -470,6 +470,11 @@ type LikeVideoSucceededPayload {
   registration: MylistRegistration!
 }
 
+input ListNicovideoBotRegistrationRequestsInput {
+  limit: Int!
+  skip: Int!
+}
+
 type MadCountGrowth {
   count: Int!
   date: DateTime!
@@ -1108,6 +1113,9 @@ type Query {
   getVideo(id: ID!): Video!
   getYoutubeRegistrationRequest(id: ID!): YoutubeRegistrationRequest!
   getYoutubeVideoSource(id: ID!): YoutubeVideoSource!
+
+  """自動的に検知したニコニコ動画の音MADを列挙する"""
+  listNicovideoBotRegistrationRequests(input: ListNicovideoBotRegistrationRequestsInput!): [NicovideoOriginalSource!]!
   notifications(after: String, before: String, filter: NotificationsFilter! = {}, first: Int, last: Int, orderBy: NotificationsOrderBy! = {createdAt: DESC}): NotificationConnection!
   searchTags(input: SearchTagInput!): SearchTagsPayload!
   searchVideos(input: SearchVideoInput!): SearchVideosPayload!
@@ -1891,6 +1899,9 @@ type Tag implements Node {
   parents(after: String, before: String, categoryTag: Boolean, first: Int, last: Int, orderBy: TagParentsOrderBy! = {createdAt: DESC}): TagParentConnection!
   serial: Int!
   taggedVideos(after: String, before: String, first: Int, last: Int, orderBy: TagTaggedVideosOrderBy! = {createdAt: DESC}): VideoTagConnection!
+
+  """offsetベースでタグ付けされた動画を取得する"""
+  taggedVideosByOffset(input: TaggedVideosByOffsetInput!): TagTaggedVideosByOffsetPayload!
   type: TagType!
 }
 
@@ -2046,6 +2057,12 @@ type TagSearchItemByName {
   tag: Tag!
 }
 
+type TagTaggedVideosByOffsetPayload {
+  hasMore: Boolean!
+  nodes: [VideoTag!]!
+  totalCount: Int!
+}
+
 input TagTaggedVideosOrderBy {
   createdAt: SortOrder
 }
@@ -2086,6 +2103,12 @@ enum TagType {
 
   """タイプを算出できなかった場合"""
   UNKNOWN
+}
+
+input TaggedVideosByOffsetInput {
+  offset: Int!
+  orderBy: TagTaggedVideosOrderBy! = {createdAt: DESC}
+  take: Int!
 }
 
 interface TimelineEvent {
