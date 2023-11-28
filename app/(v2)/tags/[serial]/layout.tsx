@@ -77,7 +77,7 @@ export default async function Layout({
             nodes {
               id
               explicit
-              parent {
+              child {
                 ...CommonTagLink
                 id
               }
@@ -136,10 +136,7 @@ export default async function Layout({
               <div className={clsx("text-xs text-snow-darker")}>別の表記</div>
               <div className={clsx("flex flex-col items-start gap-y-1")}>
                 {aliases.map(({ id, name }) => (
-                  <div
-                    key={id}
-                    className={clsx(["text-base text-snow-primary"])}
-                  >
+                  <div key={id} className={clsx(["text-sm text-snow-primary"])}>
                     {name}
                   </div>
                 ))}
@@ -173,11 +170,11 @@ export default async function Layout({
             >
               <div className={clsx("text-xs text-snow-darker")}>子タグ</div>
               <div className={clsx("flex flex-col items-start gap-y-1")}>
-                {childTags.nodes.map(({ id, parent }) => (
+                {childTags.nodes.map(({ id, child }) => (
                   <CommonTagLink
                     key={id}
                     size="xs"
-                    fragment={parent}
+                    fragment={child}
                     className={clsx("block")}
                   />
                 ))}
