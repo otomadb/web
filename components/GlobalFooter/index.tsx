@@ -13,7 +13,7 @@ export const Presentation: React.FC<{
   madsCount: number;
   tagsCount: number;
 }> = ({ className, madsCount, tagsCount }) => (
-  <footer className={clsx(className, "bg-coal-darker py-24")}>
+  <footer className={clsx(className, "bg-obsidian-darker py-24")}>
     <div
       className={clsx(
         "container mx-auto flex max-w-screen-xl flex-row flex-wrap items-center gap-8 px-12 @container/footer"
@@ -39,7 +39,7 @@ export const Presentation: React.FC<{
             <div className={clsx("text-xs")}>音MAD</div>
             <div
               className={clsx(
-                "font-mono text-base leading-none text-accent-primary"
+                "font-mono text-base leading-none text-vivid-primary"
               )}
             >
               {madsCount}
@@ -51,7 +51,7 @@ export const Presentation: React.FC<{
             <div className={clsx("text-xs")}>タグ</div>
             <div
               className={clsx(
-                "font-mono text-base leading-none text-accent-primary"
+                "font-mono text-base leading-none text-vivid-primary"
               )}
             >
               {tagsCount}

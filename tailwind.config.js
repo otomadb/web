@@ -54,33 +54,8 @@ module.exports = {
         50: "50ms",
       },
       colors: {
-        "accent": {
-          primary: "hsl(168, 81%, 65%)",
-        },
-        "text": {
-          primary: "hsl(182, 26%, 92%)",
-          muted: "hsl(182, 8%, 53%)",
-          disabled: "hsl(182, 20%, 29%)",
-        },
-        "background": {
-          root: "hsl(212, 24%, 5%)",
-
-          deeper: "hsl(212, 14%, 7%)",
-          primary: "hsl(212, 21%, 12%)",
-          shallower: "hsl(212, 16%, 16%)",
-          shallowest: colors.gray[600],
-
-          muted: colors.gray[100],
-        },
         "vivid": {
           primary: "hsl(168, 81%, 65%)",
-        },
-        "coal": {
-          darkest: "hsl(15, 25%, 5%)",
-          darker: "hsl(15, 14%, 7%)",
-          primary: "hsl(15, 21%, 12%)",
-          lighter: "hsl(15, 16%, 16%)",
-          lightest: colors.gray[600],
         },
         "obsidian": {
           darkest: "hsl(222, 25%, 5%)",
