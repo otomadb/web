@@ -49,9 +49,6 @@ export default async function Layout({
       query TagPageLayout($serial: Int!) {
         findTagBySerial(serial: $serial) {
           ...TagType
-          ...TagPageLayout_TypeDetail
-          ...TagPageLayout_AliasesDetail
-          ...TagPageLayout_Parents
           id
           name
           type
