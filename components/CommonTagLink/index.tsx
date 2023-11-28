@@ -1,4 +1,4 @@
-import { TagPageLink } from "~/app/(application)/tags/[serial]/Link";
+import { TagPageLink } from "~/app/(v2)/tags/[serial]/Link";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 import CommonTag from "../CommonTag";

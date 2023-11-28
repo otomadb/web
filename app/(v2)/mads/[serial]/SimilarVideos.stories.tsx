@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 
-import { TagPageLinkFragment } from "~/app/(application)/tags/[serial]/Link";
 import { MadPageLinkFragment } from "~/app/(v2)/mads/[serial]/Link";
+import { TagPageLinkFragment } from "~/app/(v2)/tags/[serial]/Link";
 import { CommonTagFragment } from "~/components/CommonTag";
 import { CommonTagLinkFragment } from "~/components/CommonTagLink";
 import { Fragment } from "~/components/VideoThumbnail";
