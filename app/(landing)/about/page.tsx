@@ -72,7 +72,7 @@ export default async function Page() {
       >
         <LoginLink
           className={clsx(
-            "absolute right-8 top-4 flex items-center gap-x-2 rounded-sm border border-vivid-primary bg-transparent px-4 py-2 text-vivid-primary duration-50 hover:bg-vivid-primary hover/button:text-coal-darker"
+            "absolute right-8 top-4 flex items-center gap-x-2 rounded-sm border border-vivid-primary bg-transparent px-4 py-2 text-vivid-primary duration-50 hover:bg-vivid-primary hover/button:text-obsidian-darker"
           )}
         >
           <Pictogram icon="signup" className={clsx("h-4")} />
@@ -288,17 +288,18 @@ export default async function Page() {
         >
           <h2
             className={clsx(
-              "text-center text-2xl font-light text-coal-darker md:text-left"
+              "text-center text-2xl font-light text-obsidian-darker md:text-left"
             )}
           >
-            Join <strong className={clsx("text-coal-darkest")}>OtoMADB</strong>.
+            Join{" "}
+            <strong className={clsx("text-obsidian-darkest")}>OtoMADB</strong>.
           </h2>
-          <p className={clsx(["text-base text-coal-darker"])}>
+          <p className={clsx(["text-base text-obsidian-darker"])}>
             皆も一緒にやってみよう
           </p>
           <LoginLink
             className={clsx(
-              "mt-12 flex items-center gap-x-2 rounded-sm border border-coal-darker bg-transparent px-4 py-2 text-coal-darker duration-50 hover:bg-coal-darker hover/button:text-vivid-primary"
+              "mt-12 flex items-center gap-x-2 rounded-sm border border-obsidian-darker bg-transparent px-4 py-2 text-obsidian-darker duration-50 hover:bg-obsidian-darker hover/button:text-vivid-primary"
             )}
           >
             <Pictogram icon="signup" className={clsx("h-4")} />

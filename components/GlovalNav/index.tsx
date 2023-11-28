@@ -83,7 +83,7 @@ export default function GlobalNav({
           ) : !data ? (
             <LoginLink
               className={clsx(
-                "flex items-center gap-x-2 rounded-sm border border-vivid-primary bg-transparent px-4 py-2 text-vivid-primary duration-50 hover:bg-vivid-primary hover/button:text-coal-darker"
+                "flex items-center gap-x-2 rounded-sm border border-vivid-primary bg-transparent px-4 py-2 text-vivid-primary duration-50 hover:bg-vivid-primary hover/button:text-obsidian-darker"
               )}
             >
               <Pictogram icon="signin" className={clsx("h-4")} />

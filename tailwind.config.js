@@ -75,13 +75,6 @@ module.exports = {
         "vivid": {
           primary: "hsl(168, 81%, 65%)",
         },
-        "coal": {
-          darkest: "hsl(15, 25%, 5%)",
-          darker: "hsl(15, 14%, 7%)",
-          primary: "hsl(15, 21%, 12%)",
-          lighter: "hsl(15, 16%, 16%)",
-          lightest: colors.gray[600],
-        },
         "obsidian": {
           darkest: "hsl(222, 25%, 5%)",
           darker: "hsl(222, 14%, 7%)",
