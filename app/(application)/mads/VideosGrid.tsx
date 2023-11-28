@@ -11,7 +11,7 @@ import { FetcherContainer } from "~/components/InfiniteVideoGrid";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-import { MadPageLink } from "./[serial]/Link";
+import { MadPageLink } from "../../(v2)/mads/[serial]/Link";
 
 export const VideoGrid: React.FC<{ initAfter?: string }> = ({ initAfter }) => (
   <InfiniteVideosGrid

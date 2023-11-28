@@ -1,6 +1,6 @@
 import clsx from "clsx";
 
-import { MadPageLink } from "~/app/(application)/mads/[serial]/Link";
+import { MadPageLink } from "~/app/(v2)/mads/[serial]/Link";
 import CommonTagLink from "~/components/CommonTagLink";
 import { CoolImage2 } from "~/components/CoolImage";
 import DateTime2 from "~/components/DateTime2";

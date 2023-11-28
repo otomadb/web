@@ -3,8 +3,8 @@ import "server-only";
 import clsx from "clsx";
 import { Suspense } from "react";
 
-import { MadPageLink } from "~/app/(application)/mads/[serial]/Link";
 import { AllVideosPageLink } from "~/app/(application)/mads/Link";
+import { MadPageLink } from "~/app/(v2)/mads/[serial]/Link";
 import { LoginLink } from "~/components/AuthLink";
 import CommonTagLink from "~/components/CommonTagLink";
 import Logo from "~/components/Logo";

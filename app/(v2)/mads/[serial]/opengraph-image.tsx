@@ -1,7 +1,7 @@
-import { GraphQLClient } from "graphql-request";
 import { ImageResponse } from "next/og";
 
 import { graphql } from "~/gql";
+import { makeGraphQLClient } from "~/gql/fetch";
 import { loadGoogleFont } from "~/utils/loadGoogleFonts";
 
 export const size = {
@@ -12,26 +12,25 @@ export const contentType = "image/png";
 export const revalidate = 86400;
 
 export default async function og({ params }: { params: { serial: string } }) {
-  const result = await new GraphQLClient(process.env.GRAPHQL_API_ENDPOINT, {
-    fetch,
-  }).request(
-    graphql(`
-      query OGImage_Video($serial: Int!) {
-        findVideo(input: { serial: $serial }) {
-          title
-          serial
-          thumbnailUrl
+  const result = await makeGraphQLClient()
+    .request(
+      graphql(`
+        query MadPage_OGImage($serial: Int!) {
+          findMadBySerial(serial: $serial) {
+            title
+            serial
+            thumbnailUrl
+          }
         }
-      }
-    `),
-    { serial: parseInt(params.serial, 10) }
-  );
+      `),
+      { serial: parseInt(params.serial, 10) }
+    )
+    .then((data) => data.findMadBySerial);
 
-  const { findVideo } = result;
-  if (!findVideo) return new Response("Video not found", { status: 404 });
+  if (!result) return new Response("Video not found", { status: 404 });
 
-  const { title, serial, thumbnailUrl } = findVideo;
-  const urltext = `otomadb.com/videos/${serial}`;
+  const { title, serial, thumbnailUrl } = result;
+  const urltext = `otomadb.com/mads/${serial}`;
 
   const notoserif = await loadGoogleFont({
     family: "Noto Serif JP",

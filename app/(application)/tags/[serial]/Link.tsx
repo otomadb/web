@@ -3,7 +3,7 @@ import React, { ComponentProps } from "react";
 
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-const TagPageLinkFragment = graphql(`
+export const TagPageLinkFragment = graphql(`
   fragment Link_Tag on Tag {
     serial
   }

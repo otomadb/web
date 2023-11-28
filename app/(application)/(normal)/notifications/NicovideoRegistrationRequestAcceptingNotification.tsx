@@ -2,7 +2,7 @@
 
 import clsx from "clsx";
 
-import { MadPageLink } from "~/app/(application)/mads/[serial]/Link";
+import { MadPageLink } from "~/app/(v2)/mads/[serial]/Link";
 import { DateTime } from "~/components/DateTime";
 import Pictogram from "~/components/Pictogram";
 import { UserIcon } from "~/components/UserIcon";

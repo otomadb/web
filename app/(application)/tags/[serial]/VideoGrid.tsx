@@ -5,7 +5,7 @@ import clsx from "clsx";
 import React from "react";
 import { useQuery } from "urql";
 
-import { MadPageLink } from "~/app/(application)/mads/[serial]/Link";
+import { MadPageLink } from "~/app/(v2)/mads/[serial]/Link";
 import { InfiniteVideosGrid } from "~/components/InfiniteVideoGrid";
 import { FetcherContainer } from "~/components/InfiniteVideoGrid";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
