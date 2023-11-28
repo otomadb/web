@@ -9,7 +9,7 @@ import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const Fragment = graphql(`
-  fragment VideoPageLayout_DetailsSection_VideoPreview on Video {
+  fragment MadPageLayout_Preview on Video {
     ...VideoThumbnail
     nicovideoSources {
       id
@@ -37,7 +37,7 @@ export const Fragment = graphql(`
     }
   }
 `);
-export default function VideoPreview({
+export default function Preview({
   className,
   ...props
 }: {

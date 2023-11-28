@@ -2,12 +2,12 @@ import clsx from "clsx";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
-import VideoPreview from "~/app/(v2)/(authenticated)/me/VideoPreview";
-import { LinkVideoEvents } from "~/app/(v2)/mads/[serial]/events/Link";
-import { MadPageLink } from "~/app/(v2)/mads/[serial]/Link";
 import { graphql } from "~/gql";
 import { makeGraphQLClient } from "~/gql/fetch";
 
+import { LinkVideoEvents } from "./events/Link";
+import { MadPageLink } from "./Link";
+import Preview from "./Preview";
 import Semitags from "./Semitags";
 import Taggings from "./Taggings";
 
@@ -27,10 +27,9 @@ export default async function Layout({
             title
             ...Link_Video
             ...Link_VideoEvents
-            ...VideoPageLayout_DetailsSection
-            ...VideoPageLayout_TaggingsSectionContents
-            ...VideoPageLayout_SemitagsSectionContents
-            ...VideoPageLayout_DetailsSection_VideoPreview
+            ...MadPageLayout_Taggings
+            ...MadPageLayout_Semitags
+            ...MadPageLayout_Preview
           }
         }
       `),
@@ -49,7 +48,7 @@ export default async function Layout({
             "flex flex-col gap-x-8 gap-y-4 @[1024px]/details:flex-row"
           )}
         >
-          <VideoPreview className={clsx("shrink-0")} fragment={data} />
+          <Preview className={clsx("shrink-0")} fragment={data} />
           <div className={clsx("grow")}>
             <h1
               className={clsx("text-lg font-bold text-snow-primary lg:text-xl")}

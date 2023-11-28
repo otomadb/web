@@ -5,7 +5,7 @@ import { FragmentType, graphql, useFragment } from "~/gql";
 import { makeGraphQLClient } from "~/gql/fetch";
 
 export const Fragment = graphql(`
-  fragment VideoPageLayout_SemitagsSectionContents on Video {
+  fragment MadPageLayout_Semitags on Video {
     id
   }
 `);
@@ -20,7 +20,7 @@ export default async function SemitagsSectionSC({
     getVideo: { semitags },
   } = await makeGraphQLClient().request(
     graphql(`
-      query VideoPageLayout_SemitagsSectionContentsQuery($id: ID!) {
+      query MadPageLayout_SemitagsQuery($id: ID!) {
         getVideo(id: $id) {
           semitags(checked: false) {
             id

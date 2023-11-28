@@ -6,7 +6,7 @@ import { FragmentType, graphql, useFragment } from "~/gql";
 import { makeGraphQLClient } from "~/gql/fetch";
 
 export const Fragment = graphql(`
-  fragment VideoPageLayout_TaggingsSectionContents on Video {
+  fragment MadPageLayout_Taggings on Video {
     id
   }
 `);
@@ -21,7 +21,7 @@ export default async function Taggings({
     getVideo: { taggings },
   } = await makeGraphQLClient({ next: { revalidate: 0 } }).request(
     graphql(`
-      query VideoPageLayout_TaggingsSectionContentsQuery($id: ID!) {
+      query MadPageLayout_TaggingsQuery($id: ID!) {
         getVideo(id: $id) {
           taggings {
             nodes {
