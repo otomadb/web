@@ -87,37 +87,37 @@ export default async function Page() {
             className={clsx("flex flex-col items-center gap-x-8 md:flex-row")}
           >
             <div className={clsx("w-[196px] shrink-0")}>
-              <Logo className={clsx("w-full fill-accent-primary")} />
+              <Logo className={clsx("w-full fill-vivid-primary")} />
             </div>
             <div className={clsx("grow")}>
               <h1
                 className={clsx(
-                  "grow text-xl font-light text-text-primary md:text-2xl"
+                  "grow text-xl font-light text-snow-primary md:text-2xl"
                 )}
               >
-                <strong className={clsx("text-accent-primary")}>音MAD</strong>
+                <strong className={clsx("text-vivid-primary")}>音MAD</strong>
                 のデータベースを作る
               </h1>
               <div className={clsx(["mt-4 grid grid-cols-4 gap-x-8"])}>
                 <div className={clsx(["flex flex-col"])}>
-                  <span className={clsx(["text-xs text-text-muted"])}>
+                  <span className={clsx(["text-xs text-snow-darker"])}>
                     音MAD
                   </span>
                   <span
                     className={clsx([
-                      "font-mono text-xl font-thin text-accent-primary md:text-2xl",
+                      "font-mono text-xl font-thin text-vivid-primary md:text-2xl",
                     ])}
                   >
                     <Suspense fallback={"0"}>{await getMadsCount()}</Suspense>
                   </span>
                 </div>
                 <div className={clsx(["flex flex-col"])}>
-                  <span className={clsx(["text-xs text-text-muted"])}>
+                  <span className={clsx(["text-xs text-snow-darker"])}>
                     タグ
                   </span>
                   <span
                     className={clsx([
-                      "font-mono text-xl font-thin text-accent-primary md:text-2xl",
+                      "font-mono text-xl font-thin text-vivid-primary md:text-2xl",
                     ])}
                   >
                     <Suspense fallback={"0"}>{await getTagsCount()}</Suspense>
@@ -129,29 +129,29 @@ export default async function Page() {
           <SearchContents className={clsx(["mt-4 w-full"])} />
         </div>
       </section>
-      <section className={clsx("bg-background-primary py-28")}>
+      <section className={clsx("bg-obsidian-primary py-28")}>
         <div className={clsx("mx-auto max-w-screen-md px-8 md:px-4")}>
-          <h2 className={clsx("text-2xl font-light text-text-primary")}>
-            <strong className={clsx(["text-accent-primary"])}>OtoMADB</strong>
+          <h2 className={clsx("text-2xl font-light text-snow-primary")}>
+            <strong className={clsx(["text-vivid-primary"])}>OtoMADB</strong>
             とは何か、そして何であるべきか
           </h2>
-          <p className={clsx("mt-2 text-sm text-text-muted")}>
+          <p className={clsx("mt-2 text-sm text-snow-darker")}>
             ここに記載する内容は、一部実装中の内容を含むことが有ります。
           </p>
         </div>
         <div
           className={clsx(
-            "mx-auto max-w-screen-lg divide-y divide-background-shallower px-8 md:px-4"
+            "mx-auto max-w-screen-lg divide-y divide-obsidian-lighter px-8 md:px-4"
           )}
         >
           <section className={clsx("py-16")}>
             <div>
-              <h3 className={clsx("text-xl font-light text-text-primary")}>
+              <h3 className={clsx("text-xl font-light text-snow-primary")}>
                 プラットフォームを跨いで音MADを記録する
               </h3>
             </div>
             <p
-              className={clsx("mt-4 text-sm leading-relaxed text-text-primary")}
+              className={clsx("mt-4 text-sm leading-relaxed text-snow-primary")}
             >
               ニコニコ動画、YouTube、Bilibili、SoundCloudなど、音MADは様々な動画/音声投稿プラットフォームに投稿されています。
               それらを統一的に管理し、タグ情報などの適切なメタデータを与えることで、より様々な音MADを探しやすくします。
@@ -160,12 +160,12 @@ export default async function Page() {
           </section>
           <section className={clsx("py-16")}>
             <div>
-              <h3 className={clsx("text-xl font-light text-text-primary")}>
+              <h3 className={clsx("text-xl font-light text-snow-primary")}>
                 より頑強なタグシステムの構築
               </h3>
             </div>
             <p
-              className={clsx("mt-4 text-sm leading-relaxed text-text-primary")}
+              className={clsx("mt-4 text-sm leading-relaxed text-snow-primary")}
             >
               現状のニコニコ動画などのタグシステムにおいて、タグは単なる文字情報を持っているだけで、タグの別名や、タグ間の親子関係など、様々な情報を十分に扱うことが出来ていないと考えています。
               OtoMADBではこれらを予め組み込んだ上で、頑強なタグシステムを構築することを目標としています。
@@ -173,33 +173,33 @@ export default async function Page() {
           </section>
           <section className={clsx("py-16")}>
             <div>
-              <h3 className={clsx("text-xl font-light text-text-primary")}>
+              <h3 className={clsx("text-xl font-light text-snow-primary")}>
                 パーソナライズドされた音MADの推薦
               </h3>
             </div>
             <p
-              className={clsx("mt-4 text-sm leading-relaxed text-text-primary")}
+              className={clsx("mt-4 text-sm leading-relaxed text-snow-primary")}
             >
-              <i className={clsx(["text-text-muted"])}>実装中です。</i>
+              <i className={clsx(["text-snow-darker"])}>実装中です。</i>
               あなたの音MADのいいね情報などから好みの傾向を分析し、それに合わせた音MADを推薦します。
             </p>
           </section>
           <section className={clsx("py-16")}>
             <div>
-              <h3 className={clsx("text-xl font-light text-text-primary")}>
+              <h3 className={clsx("text-xl font-light text-snow-primary")}>
                 コミュニティ機能の実装
               </h3>
             </div>
             <p
-              className={clsx("mt-4 text-sm leading-relaxed text-text-primary")}
+              className={clsx("mt-4 text-sm leading-relaxed text-snow-primary")}
             >
-              <i className={clsx(["text-text-muted"])}>実装中です。</i>
+              <i className={clsx(["text-snow-darker"])}>実装中です。</i>
               MADページにコメント欄などを実装したりすることで、コミュニティ機能を提供したいと思います。
             </p>
           </section>
         </div>
       </section>
-      <section className={clsx("bg-background-deeper py-12")}>
+      <section className={clsx("bg-obsidian-darker py-12")}>
         <div
           className={clsx(
             "mx-auto flex max-w-screen-md flex-col items-start px-8 md:flex-row md:items-center md:px-4"
@@ -207,7 +207,7 @@ export default async function Page() {
         >
           <h2
             className={clsx(
-              "mx-auto w-full grow text-2xl font-light text-text-primary"
+              "mx-auto w-full grow text-2xl font-light text-snow-primary"
             )}
           >
             最近追加された音MAD
@@ -215,7 +215,7 @@ export default async function Page() {
           <div className={clsx(["shrink-0"])}>
             <AllVideosPageLink
               className={clsx(
-                "text-sm font-semibold text-text-muted hover:underline"
+                "text-sm font-semibold text-snow-darker hover:underline"
               )}
             >
               もっと見る
@@ -233,7 +233,7 @@ export default async function Page() {
                 <div
                   key={node.id}
                   className={clsx(
-                    "shrink-0 overflow-hidden rounded-sm border border-background-shallower bg-background-primary"
+                    "shrink-0 overflow-hidden rounded-sm border border-obsidian-lighter bg-obsidian-primary"
                   )}
                 >
                   <MadPageLink className={clsx(["flex"])} fragment={node}>
@@ -247,7 +247,7 @@ export default async function Page() {
                     <MadPageLink
                       fragment={node}
                       className={clsx(
-                        "line-clamp-1 text-xs font-bold text-text-primary hover:text-accent-primary hover:underline"
+                        "line-clamp-1 text-xs font-bold text-snow-primary hover:text-vivid-primary hover:underline"
                       )}
                     >
                       {node.title}

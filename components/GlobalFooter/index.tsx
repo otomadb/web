@@ -39,7 +39,7 @@ export const Presentation: React.FC<{
             <div className={clsx("text-xs")}>音MAD</div>
             <div
               className={clsx(
-                "font-mono text-base leading-none text-accent-primary"
+                "font-mono text-base leading-none text-vivid-primary"
               )}
             >
               {madsCount}
@@ -51,7 +51,7 @@ export const Presentation: React.FC<{
             <div className={clsx("text-xs")}>タグ</div>
             <div
               className={clsx(
-                "font-mono text-base leading-none text-accent-primary"
+                "font-mono text-base leading-none text-vivid-primary"
               )}
             >
               {tagsCount}
