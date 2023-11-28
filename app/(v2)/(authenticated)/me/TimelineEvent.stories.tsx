@@ -6,7 +6,7 @@ import { Fragment as VideoThumbnailFragment } from "~/components/VideoThumbnail"
 import { makeFragmentData } from "~/gql";
 import { MockedUrqlProvider } from "~/utils/MockedUrqlProvider";
 
-import { MadPageLinkFragment } from "../../mads/[serial]/Link";
+import { MadPageLinkFragment } from "../../../(application)/mads/[serial]/Link";
 import TimelineEvent, { TimelineEventFragment } from "./TimelineEvent";
 
 const mockHasRole = [

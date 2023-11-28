@@ -21,9 +21,7 @@ export default function Timeline({ className }: { className?: string }) {
     <div
       className={clsx(
         className,
-        ["bg-background-deeper"],
-        ["py-4", "px-4"],
-        ["flex", "flex-col", "items-stretch", "gap-y-2"]
+        "flex flex-col items-stretch gap-y-2 rounded-lg border border-obsidian-primary bg-obsidian-darker p-4 "
       )}
     >
       {segments.map(({ skip, take }, i, { length }) => (
