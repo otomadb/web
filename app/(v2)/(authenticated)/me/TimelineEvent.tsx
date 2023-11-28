@@ -15,8 +15,8 @@ import UserIconLink from "~/components/UserLink/UserIconLink";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-import { LinkNicovideoRegistrationRequest } from "../../requests/nicovideo/[sourceId]/Link";
-import { YoutubeRequestPageLink } from "../../requests/youtube/[sourceId]/Link";
+import { LinkNicovideoRegistrationRequest } from "../../../(application)/requests/nicovideo/[sourceId]/Link";
+import { YoutubeRequestPageLink } from "../../../(application)/requests/youtube/[sourceId]/Link";
 
 export const TimelineEventFragment = graphql(`
   fragment MyTopPage_TimelineSegment_TimelineEvent on TimelineEvent {
@@ -102,41 +102,36 @@ export default function TimelineEvent({
     <div
       className={clsx(
         className,
-        ["flex", "gap-x-4"],
-        ["bg-background-primary"],
-        ["px-4", "py-2"],
-        ["rounded"]
+        "flex gap-x-4 rounded border border-obsidian-lighter bg-obsidian-primary px-4 py-2"
       )}
       style={style}
     >
       {fragment.__typename === "MadRegisteredTimelineEvent" && (
-        <div className={clsx(className, ["grow"], ["flex", "gap-x-4"])}>
+        <div className={clsx("flex grow gap-x-4")}>
           <MadPageLink
             fragment={fragment.video}
-            className={clsx(["block"], ["shrink-0"])}
+            className={clsx("block shrink-0")}
           >
             <VideoThumbnail
-              className={clsx(["w-36"], ["h-24"])}
+              className={clsx("h-24 w-36")}
               imageSize="medium"
               fragment={fragment.video}
             />
           </MadPageLink>
-          <div className={clsx(["grow"], ["py-2"])}>
-            <div className={clsx(["flex"])}>
-              <p className={clsx(["grow"], ["text-text-primary", "text-sm"])}>
+          <div className={clsx("grow py-2")}>
+            <div className={clsx("flex")}>
+              <p className={clsx("grow text-sm text-snow-primary")}>
                 <MadPageLink
                   fragment={fragment.video}
-                  className={clsx([
-                    "text-accent-primary",
-                    "font-bold",
-                    "hover:underline",
-                  ])}
+                  className={clsx(
+                    "font-bold text-vivid-primary hover:underline"
+                  )}
                 >
                   {fragment.video.title}
                 </MadPageLink>
                 が追加されました。
               </p>
-              <div className={clsx(["flex", "items-start", "gap-x-2"])}>
+              <div className={clsx("flex items-start gap-x-2")}>
                 {fragment.video.nicovideoSources.map(({ id, url }) => (
                   <a
                     key={id}
@@ -144,16 +139,10 @@ export default function TimelineEvent({
                     title={url}
                     target="_blank"
                     className={clsx(
-                      ["flex"],
-                      ["bg-nicovideo-primary/50", "hover:bg-nicovideo-primary"],
-                      ["border", "border-nicovideo-primary"],
-                      [["text-black/75", "hover:text-black"], "rounded", "p-1"]
+                      "flex rounded border border-nicovideo-primary bg-nicovideo-primary/50 p-1 text-black/75 hover:bg-nicovideo-primary hover:text-black"
                     )}
                   >
-                    <Pictogram
-                      icon="nicovideo"
-                      className={clsx(["w-4", "h-4"])}
-                    />
+                    <Pictogram icon="nicovideo" className={clsx("h-4 w-4")} />
                   </a>
                 ))}
                 {fragment.video.youtubeSources.map(({ id, url }) => (
@@ -163,16 +152,10 @@ export default function TimelineEvent({
                     title={url}
                     target="_blank"
                     className={clsx(
-                      ["flex"],
-                      ["bg-youtube-primary/50", "hover:bg-youtube-primary"],
-                      ["border", "border-youtube-primary"],
-                      [["text-white/75", "hover:text-white"], "rounded", "p-1"]
+                      "flex rounded border border-youtube-primary bg-youtube-primary/50 p-1 text-white/75 hover:bg-youtube-primary hover:text-white"
                     )}
                   >
-                    <Pictogram
-                      icon="youtube"
-                      className={clsx(["w-4", "h-4"])}
-                    />
+                    <Pictogram icon="youtube" className={clsx("h-4 w-4")} />
                   </a>
                 ))}
                 {fragment.video.bilibiliSources.map(({ id, url }) => (
@@ -182,16 +165,10 @@ export default function TimelineEvent({
                     title={url}
                     target="_blank"
                     className={clsx(
-                      ["flex"],
-                      ["bg-bilibili-primary/50", "hover:bg-bilibili-primary"],
-                      ["border", "border-bilibili-primary"],
-                      [["text-white/75", "hover:text-white"], "rounded", "p-1"]
+                      "flex rounded border border-bilibili-primary bg-bilibili-primary/50 p-1 text-white/75 hover:bg-bilibili-primary hover:text-white"
                     )}
                   >
-                    <Pictogram
-                      icon="bilibili"
-                      className={clsx(["w-4", "h-4"])}
-                    />
+                    <Pictogram icon="bilibili" className={clsx("h-4 w-4")} />
                   </a>
                 ))}
                 {fragment.video.soundcloudSources.map(({ id, url }) => (
@@ -201,29 +178,15 @@ export default function TimelineEvent({
                     title={url}
                     target="_blank"
                     className={clsx(
-                      ["flex"],
-                      [
-                        "bg-soundcloud-primary/50",
-                        "hover:bg-soundcloud-primary",
-                      ],
-                      ["border", "border-soundcloud-primary"],
-                      [["text-white/75", "hover:text-white"], "rounded", "p-1"]
+                      "flex rounded border border-soundcloud-primary bg-soundcloud-primary/50 p-1 text-white/75 hover:bg-soundcloud-primary hover:text-white"
                     )}
                   >
-                    <Pictogram
-                      icon="soundcloud"
-                      className={clsx(["w-4", "h-4"])}
-                    />
+                    <Pictogram icon="soundcloud" className={clsx("h-4 w-4")} />
                   </a>
                 ))}
               </div>
             </div>
-            <div
-              className={clsx(
-                ["mt-2"],
-                ["flex", "gap-x-1", "gap-y-1", "flex-wrap"]
-              )}
-            >
+            <div className={clsx("mt-2 flex flex-wrap gap-1")}>
               {fragment.video.taggings.nodes.map(({ id: taggingId, tag }) => (
                 <CommonTagLink key={taggingId} size="xs" fragment={tag} />
               ))}
@@ -232,45 +195,39 @@ export default function TimelineEvent({
         </div>
       )}
       {fragment.__typename === "NicovideoMadRequestedTimelineEvent" && (
-        <div className={clsx(className, ["grow"], ["flex", "gap-x-4"])}>
+        <div className={clsx("flex grow gap-x-4")}>
           <LinkNicovideoRegistrationRequest
-            className={clsx(["block"], ["shrink-0"])}
+            className={clsx("block shrink-0")}
             fragment={fragment.request}
           >
             <CoolImage2
-              className={clsx(["w-36"], ["h-24"])}
+              className={clsx("h-24 w-36")}
               width={144}
               height={96}
               alt={fragment.request.title}
               src={fragment.request.thumbnailUrl}
             />
           </LinkNicovideoRegistrationRequest>
-          <div className={clsx(["grow"], ["py-2"])}>
-            <p className={clsx(["text-text-primary", "text-sm"])}>
+          <div className={clsx("grow py-2")}>
+            <p className={clsx("text-sm text-snow-primary")}>
               <LinkNicovideoRegistrationRequest
                 fragment={fragment.request}
-                className={clsx([
-                  "text-accent-primary",
-                  "font-bold",
-                  "hover:underline",
-                ])}
+                className={clsx("font-bold text-vivid-primary hover:underline")}
               >
                 {fragment.request.title}
               </LinkNicovideoRegistrationRequest>
               がリクエストされました。
             </p>
-            <div className={clsx(["mt-2"], ["flex", "gap-x-1"])}>
+            <div className={clsx("mt-2 flex gap-x-1")}>
               <a
                 className={clsx(
-                  ["cursor-pointer"],
-                  ["font-mono", "text-sm", "text-text-muted"],
-                  ["inline-flex", "items-center", "gap-x-1"]
+                  "inline-flex cursor-pointer items-center gap-x-1 font-mono text-sm text-snow-darker"
                 )}
                 href={fragment.request.originalUrl}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Pictogram icon="external-link" className={clsx(["h-4"])} />
+                <Pictogram icon="external-link" className={clsx("h-4")} />
                 <span>{fragment.request.sourceId}</span>
               </a>
             </div>
@@ -278,93 +235,82 @@ export default function TimelineEvent({
         </div>
       )}
       {fragment.__typename === "YoutubeMadRequestedTimelineEvent" && (
-        <div className={clsx(className, ["grow"], ["flex", "gap-x-4"])}>
+        <div className={clsx("flex grow gap-x-4")}>
           <YoutubeRequestPageLink
-            className={clsx(["block"], ["shrink-0"])}
+            className={clsx("block shrink-0")}
             fragment={fragment.request}
           >
             <CoolImage2
-              className={clsx(["w-36"], ["h-24"])}
+              className={clsx("h-24 w-36")}
               width={144}
               height={96}
               alt={fragment.request.title}
               src={fragment.request.thumbnailUrl}
             />
           </YoutubeRequestPageLink>
-          <div className={clsx(["grow"], ["py-2"])}>
-            <p className={clsx(["text-text-primary", "text-sm"])}>
+          <div className={clsx("grow py-2")}>
+            <p className={clsx("text-sm text-snow-primary")}>
               <YoutubeRequestPageLink
                 fragment={fragment.request}
-                className={clsx([
-                  "text-accent-primary",
-                  "font-bold",
-                  "hover:underline",
-                ])}
+                className={clsx("font-bold text-vivid-primary hover:underline")}
               >
                 {fragment.request.title}
               </YoutubeRequestPageLink>
               がリクエストされました。
             </p>
-            <div className={clsx(["mt-2"], ["flex", "gap-x-1"])}>
+            <div className={clsx("mt-2 flex gap-x-1")}>
               <a
                 className={clsx(
-                  ["cursor-pointer"],
-                  ["font-mono", "text-sm", "text-text-muted"],
-                  ["inline-flex", "items-center", "gap-x-1"]
+                  "inline-flex cursor-pointer items-center gap-x-1 font-mono text-sm text-snow-darker"
                 )}
                 href={fragment.request.originalUrl}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Pictogram icon="external-link" className={clsx(["h-4"])} />
+                <Pictogram icon="external-link" className={clsx("h-4")} />
                 <span>{fragment.request.sourceId}</span>
               </a>
             </div>
           </div>
         </div>
       )}
-      <div className={clsx(["shrink-0"], ["flex", "flex-col", "gap-y-1"])}>
+      <div className={clsx("flex shrink-0 flex-col gap-y-1")}>
         <DateTime2
           date={fragment.createdAt}
-          className={clsx(
-            ["shrink-0"],
-            ["font-mono", "text-xs", "text-text-muted"]
-          )}
+          className={clsx("shrink-0 font-mono text-xs text-snow-darkest")}
         />
-        <div className={clsx(["grow"], ["shrink-0"], ["flex", "gap-x-1"])}>
+        <div className={clsx("flex shrink-0 grow gap-x-1")}>
           <UserIconLink fragment={fragment.event.user} />
           <UserDisplayNameLink
             fragment={fragment.event.user}
-            className={clsx(["text-xs", "text-text-muted"])}
+            className={clsx("text-xs text-snow-darker")}
           />
         </div>
-        <div className={clsx(["flex", "justify-end"])}>
+        <div className={clsx("flex justify-end")}>
           {fragment.__typename === "NicovideoMadRequestedTimelineEvent" && (
             <button
               role="button"
               className={clsx(
-                ["disabled:hidden"],
-                ["text-text-primary", "hover:text-accent-primary"]
+                "text-snow-primary hover:text-vivid-primary disabled:hidden"
               )}
               disabled={!registarable}
               onClick={() =>
                 openRegisterNicovideoForm(fragment.request.sourceId)
               }
             >
-              <Pictogram icon="plus" className={clsx(["w-6", "h-6"])} />
+              <Pictogram icon="plus" className={clsx("h-6 w-6")} />
             </button>
           )}
           {fragment.__typename === "YoutubeMadRequestedTimelineEvent" && (
             <button
               role="button"
               className={clsx(
-                ["disabled:hidden"],
-                ["text-text-primary", "hover:text-accent-primary"]
+                "text-snow-primary hover:text-vivid-primary disabled:hidden"
               )}
               disabled={!registarable}
               onClick={() => openRegisterYoutubeForm(fragment.request.sourceId)}
             >
-              <Pictogram icon="plus" className={clsx(["w-6", "h-6"])} />
+              <Pictogram icon="plus" className={clsx("h-6 w-6")} />
             </button>
           )}
         </div>
