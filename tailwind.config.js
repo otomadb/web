@@ -93,7 +93,8 @@ module.exports = {
   },
   plugins: [
     require("@tailwindcss/container-queries"),
-    plugin(({ addUtilities }) => {
+    plugin(({ addUtilities, addVariant }) => {
+      addVariant("aria-current-page", '&[aria-current="page"]');
       addUtilities({
         ".animation-paused": {
           "animation-play-state": "paused",
