@@ -3,7 +3,5 @@
   "tabWidth": 2,
   "semi": true,
   "singleQuote": false,
-  "quoteProps": "consistent",
-  "plugins": ["prettier-plugin-tailwindcss"],
-  "tailwindFunctions": ["clsx"]
+  "quoteProps": "consistent"
 }
