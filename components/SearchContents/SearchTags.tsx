@@ -4,7 +4,7 @@ import "client-only";
 import clsx from "clsx";
 import React from "react";
 
-import { TagPageLink } from "~/app/(application)/tags/[serial]/Link";
+import { TagPageLink } from "~/app/(v2)/tags/[serial]/Link";
 import { TagType } from "~/components/TagType";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
