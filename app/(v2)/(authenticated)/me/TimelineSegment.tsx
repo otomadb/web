@@ -38,7 +38,7 @@ export default function TimelineSegment({
       style={style}
     >
       {fetching && (
-        <div className={clsx("px-4 py-2 text-center text-text-muted")}>
+        <div className={clsx("px-4 py-2 text-center text-snow-darker")}>
           タイムラインを取得中です
         </div>
       )}
@@ -57,7 +57,7 @@ export default function TimelineSegment({
             fetchMore();
           }}
         >
-          <span className={clsx("font-bold text-accent-primary")}>
+          <span className={clsx("font-bold text-vivid-primary")}>
             もっと見る
           </span>
         </button>

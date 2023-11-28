@@ -124,7 +124,7 @@ export default function TimelineEvent({
                 <MadPageLink
                   fragment={fragment.video}
                   className={clsx(
-                    "font-bold text-accent-primary hover:underline"
+                    "font-bold text-vivid-primary hover:underline"
                   )}
                 >
                   {fragment.video.title}
@@ -212,9 +212,7 @@ export default function TimelineEvent({
             <p className={clsx("text-sm text-snow-primary")}>
               <LinkNicovideoRegistrationRequest
                 fragment={fragment.request}
-                className={clsx(
-                  "font-bold text-accent-primary hover:underline"
-                )}
+                className={clsx("font-bold text-vivid-primary hover:underline")}
               >
                 {fragment.request.title}
               </LinkNicovideoRegistrationRequest>
@@ -254,9 +252,7 @@ export default function TimelineEvent({
             <p className={clsx("text-sm text-snow-primary")}>
               <YoutubeRequestPageLink
                 fragment={fragment.request}
-                className={clsx(
-                  "font-bold text-accent-primary hover:underline"
-                )}
+                className={clsx("font-bold text-vivid-primary hover:underline")}
               >
                 {fragment.request.title}
               </YoutubeRequestPageLink>
@@ -295,7 +291,7 @@ export default function TimelineEvent({
             <button
               role="button"
               className={clsx(
-                "text-snow-primary hover:text-accent-primary disabled:hidden"
+                "text-snow-primary hover:text-vivid-primary disabled:hidden"
               )}
               disabled={!registarable}
               onClick={() =>
@@ -309,7 +305,7 @@ export default function TimelineEvent({
             <button
               role="button"
               className={clsx(
-                "text-snow-primary hover:text-accent-primary disabled:hidden"
+                "text-snow-primary hover:text-vivid-primary disabled:hidden"
               )}
               disabled={!registarable}
               onClick={() => openRegisterYoutubeForm(fragment.request.sourceId)}

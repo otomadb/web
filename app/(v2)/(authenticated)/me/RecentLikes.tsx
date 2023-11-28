@@ -81,7 +81,7 @@ export default function RecentLikes({ className }: { className?: string }) {
                 <MadPageLink
                   fragment={like.video}
                   className={clsx(
-                    "line-clamp-1 text-sm font-bold text-accent-primary hover:underline @w128/likes:text-xs"
+                    "line-clamp-1 text-sm font-bold text-vivid-primary hover:underline @w128/likes:text-xs"
                   )}
                 >
                   {like.video.title}
