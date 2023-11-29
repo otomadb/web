@@ -169,6 +169,9 @@ const Frames: { dx: number; dy: number; F: number }[] = [
   { dx: -0.025, dy: 0, F: 3 },
   { dx: -0.025, dy: 0, F: 3 },
   { dx: -0.025, dy: 0, F: 3 },
+  { dx: -0.025, dy: 0, F: 3 },
+  { dx: -0.025, dy: 0, F: 3 },
+  { dx: -0.025, dy: 0, F: 3 },
 ].map(({ F, ...rest }) => ({ F: F * 2, ...rest }));
 const totalF = Frames.reduce((prev, curr) => prev + curr.F, 0);
 const WaitNext = 100;
@@ -179,7 +182,6 @@ const Anim = () => {
 
   useTick((delta) => {
     setLoop((prev) => (prev + delta) % (totalF + WaitNext));
-    console.log(Math.floor(loop / 60));
   });
   const draw = useCallback<
     Exclude<ComponentProps<typeof Graphics>["draw"], undefined>
@@ -204,9 +206,9 @@ const Anim = () => {
           const y = app.screen.height * 0.5 + dyInt * 70;
           g.beginFill(
             { h: (360 * (i / Frames.length) * 3) % 360, s: 75, l: 70 },
-            1 - Math.max((loop - totalF) / WaitNext, 0)
+            (1 - Math.max((loop - totalF) / WaitNext, 0)) * 0.95
           )
-            .drawCircle(x, y, app.screen.width * 0.05)
+            .drawCircle(x, y, app.screen.width * 0.025)
             .endFill();
         }
       }
