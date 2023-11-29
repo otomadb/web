@@ -208,7 +208,7 @@ const Anim = () => {
             { h: (360 * (i / Frames.length) * 3) % 360, s: 75, l: 70 },
             (1 - Math.max((loop - totalF) / WaitNext, 0)) * 0.95
           )
-            .drawCircle(x, y, app.screen.width * 0.025)
+            .drawCircle(x, y, 64)
             .endFill();
         }
       }
