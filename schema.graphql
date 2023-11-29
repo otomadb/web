@@ -310,6 +310,22 @@ input FindBilibiliMADSourceInput {
   sourceId: String
 }
 
+input FindMadsByOffsetInput {
+  offset: Int!
+  orderBy: FindMadsByOffsetInputOrderBy! = {createdAt: DESC}
+  take: Int!
+}
+
+input FindMadsByOffsetInputOrderBy {
+  createdAt: SortOrder
+}
+
+type FindMadsByOffsetPayload {
+  hasMore: Boolean!
+  nodes: [Video!]!
+  totalCount: Int!
+}
+
 input FindMylistInput {
   pair: FindMylistInputHolderNameMylistSlugPair!
 }
@@ -1075,6 +1091,9 @@ type Query {
   fetchYoutube(input: FetchYoutubeInput!): FetchYoutubePayload!
   findBilibiliMADSource(input: FindBilibiliMADSourceInput!): BilibiliMADSource
   findMadBySerial(serial: Int!): Video
+
+  """OffsetベースでMADを複数取得する"""
+  findMadsByOffset(input: FindMadsByOffsetInput!): FindMadsByOffsetPayload!
   findMylist(input: FindMylistInput!): Mylist
   findNicovideoRegistrationRequest(input: FindNicovideoRegistrationRequestInput): NicovideoRegistrationRequest
   findNicovideoRegistrationRequests(after: String, before: String, checked: Boolean, first: Int, last: Int, orderBy: FindNicovideoRegistrationRequestsOrderBy! = {createdAt: DESC}): NicovideoRegistrationRequestConnection!

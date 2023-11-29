@@ -33,6 +33,91 @@ const calcPagination = (
   };
 };
 
+export const AbstractPaginateLink = ({
+  pathname,
+  current,
+  ths,
+  size,
+}: {
+  pathname: string;
+  current: number;
+  ths: number;
+  size: "sm" | "md";
+}) => {
+  return (
+    <Link
+      href={{ pathname, query: ths === 1 ? {} : { page: ths } }}
+      aria-current={current === ths && "page"}
+      className={clsx(
+        "block rounded border border-obsidian-primary bg-obsidian-darker font-mono text-snow-primary hover:border-vivid-primary hover:bg-vivid-primary hover:text-obsidian-primary aria-current-page:border-vivid-primary aria-current-page:bg-vivid-primary aria-current-page:text-obsidian-primary",
+        { sm: "text-base px-2 py-1", md: "text-xl px-4 py-2" }[size]
+      )}
+    >
+      {ths}
+    </Link>
+  );
+};
+
+export function AbstractPagenation({
+  className,
+  currentPage,
+  pageMax,
+  PaginateLink,
+  size,
+}: {
+  className?: string;
+  currentPage: number;
+  pageMax: number;
+  PaginateLink(props: {
+    current: number;
+    ths: number;
+    size: "sm" | "md";
+  }): JSX.Element;
+  size: "sm" | "md";
+}) {
+  if (pageMax === 1) return null;
+
+  const pg = calcPagination(currentPage, pageMax);
+
+  return (
+    <div
+      className={clsx(
+        className,
+        "flex items-center justify-center",
+        { sm: "gap-x-2", md: "gap-x-4" }[size]
+      )}
+    >
+      {pg["1"] && <PaginateLink size={size} current={currentPage} ths={1} />}
+      {pg["2"] && <PaginateLink size={size} current={currentPage} ths={2} />}
+      {pg["C-s"] && (
+        <div>
+          <span className={clsx("text-snow-darker")}>…</span>
+        </div>
+      )}
+      {pg["C-"] && (
+        <PaginateLink size={size} current={currentPage} ths={pg["C-"]} />
+      )}
+      {pg["C"] && (
+        <PaginateLink size={size} current={currentPage} ths={pg["C"]} />
+      )}
+      {pg["C+"] && (
+        <PaginateLink size={size} current={currentPage} ths={pg["C+"]} />
+      )}
+      {pg["C+s"] && (
+        <div>
+          <span className={clsx("text-snow-darker")}>…</span>
+        </div>
+      )}
+      {pg["M-"] && (
+        <PaginateLink size={size} current={currentPage} ths={pageMax - 1} />
+      )}
+      {pg["M"] && (
+        <PaginateLink size={size} current={currentPage} ths={pageMax} />
+      )}
+    </div>
+  );
+}
+
 const PaginateLink = ({
   serial,
   current,
