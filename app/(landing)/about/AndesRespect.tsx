@@ -169,7 +169,7 @@ const Frames: { dx: number; dy: number; F: number }[] = [
   { dx: -0.025, dy: 0, F: 3 },
   { dx: -0.025, dy: 0, F: 3 },
   { dx: -0.025, dy: 0, F: 3 },
-];
+].map(({ F, ...rest }) => ({ F: F * 2, ...rest }));
 const totalF = Frames.reduce((prev, curr) => prev + curr.F, 0);
 const WaitNext = 100;
 
@@ -178,7 +178,8 @@ const Anim = () => {
   const [loop, setLoop] = useState<number>(0);
 
   useTick((delta) => {
-    setLoop((prev) => (prev + delta * 0.5) % (totalF + WaitNext));
+    setLoop((prev) => (prev + delta) % (totalF + WaitNext));
+    console.log(Math.floor(loop / 60));
   });
   const draw = useCallback<
     Exclude<ComponentProps<typeof Graphics>["draw"], undefined>
@@ -205,7 +206,7 @@ const Anim = () => {
             { h: (360 * (i / Frames.length) * 3) % 360, s: 75, l: 70 },
             1 - Math.max((loop - totalF) / WaitNext, 0)
           )
-            .drawCircle(x, y, 50)
+            .drawCircle(x, y, app.screen.width * 0.05)
             .endFill();
         }
       }
@@ -221,7 +222,7 @@ export default function AndesSpace({
   style,
 }: {
   className?: string;
-  style: React.CSSProperties;
+  style?: React.CSSProperties;
 }) {
   const [ref, { width, height }] = useMeasure<HTMLDivElement>();
 
@@ -230,7 +231,7 @@ export default function AndesSpace({
       <Stage
         width={width}
         height={height}
-        options={{ width, height, backgroundAlpha: 0 }}
+        options={{ width, height, background: 0x000000, antialias: true }}
       >
         <Starfield />
         <Anim />
