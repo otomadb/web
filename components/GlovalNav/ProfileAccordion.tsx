@@ -61,7 +61,7 @@ export default function ProfileAccordion({
       style={style}
       className={clsx(
         className,
-        "flex flex-col divide-y divide-obsidian-lighter overflow-hidden rounded-md border border-obsidian-lighter/90 bg-obsidian-primary/90 shadow-md backdrop-blur-sm"
+        "flex flex-col divide-y divide-obsidian-lighter overflow-hidden rounded-md border border-obsidian-lighter bg-obsidian-primary/90 shadow-md backdrop-blur-md"
       )}
     >
       <MyPageLink
