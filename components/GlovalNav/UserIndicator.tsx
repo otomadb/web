@@ -28,32 +28,17 @@ export default function UserIndicator({
   const { whoami, notifications } = useFragment(Fragment, props.fragment);
 
   return (
-    <div
-      style={style}
-      className={clsx(className, ["relative"], ["w-[32px]", "h-[32px]"])}
-      tabIndex={0}
-    >
-      <UserIcon
-        className={clsx(["w-[32px]", "h-[32px]"])}
-        fragment={whoami}
-        size={32}
-      />
+    <div style={style} className={clsx(className, "relative")} tabIndex={0}>
+      <UserIcon className={clsx("h-full w-full")} fragment={whoami} size={32} />
       {0 < notifications.totalCount && (
         <div
           className={clsx(
-            ["absolute", "top-[75%]", "left-[75%]"],
-            ["bg-sky-500/90"],
-            ["px-2", "py-1"],
-            ["flex"],
-            ["rounded-full"],
-            ["select-none"]
+            "absolute left-[75%] top-[75%] flex select-none rounded-full bg-vivid-primary px-2 py-1 shadow-[0_0_8px] shadow-vivid-primary/25"
           )}
         >
           <span
             className={clsx(
-              ["text-xs", "font-bold"],
-              ["leading-none"],
-              ["text-sky-100"]
+              "text-xxs font-bold leading-none text-obsidian-primary"
             )}
           >
             {notifications.totalCount}

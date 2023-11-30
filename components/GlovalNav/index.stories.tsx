@@ -1,81 +1,103 @@
-import { Auth0Context, Auth0ContextInterface } from "@auth0/auth0-react";
+import { ResultOf } from "@graphql-typed-document-node/core";
 import { Meta, StoryObj } from "@storybook/react";
-import { createClient, fetchExchange, Provider as UrqlProvider } from "urql";
+import { graphql as mswGraphql } from "msw";
 
-import GlobalNav from ".";
-import {
-  mockLoadingQuery,
-  mockSuccessfulQuery,
-  mockUnauthorizedQuery,
-} from "./index.mocks";
+import { $handlerSourceAndRequests } from "~/components/SearchContents/Nicovideo.stories";
+import { $handlerSomeMadsHit } from "~/components/SearchContents/SearchMads.stories";
+import { $handlerSomeTagsHit } from "~/components/SearchContents/SearchTags.stories";
+import { MockedUrqlProvider } from "~/utils/MockedUrqlProvider";
+
+import GlobalNav, { GlobalNavQuery } from ".";
 
 const meta = {
   component: GlobalNav,
   args: {
     style: {
-      width: "100%",
-      height: "64px",
+      width: 1024,
+      height: 64,
     },
   },
   render: (args) => (
-    <Auth0Context.Provider
-      value={{ isAuthenticated: true } as Auth0ContextInterface}
-    >
-      <UrqlProvider
-        value={createClient({ url: "/graphql", exchanges: [fetchExchange] })}
-      >
-        <GlobalNav {...args} />
-      </UrqlProvider>
-    </Auth0Context.Provider>
+    <MockedUrqlProvider>
+      <GlobalNav {...args} />
+    </MockedUrqlProvider>
   ),
   parameters: {
     msw: {
       handlers: {
-        concern: [mockSuccessfulQuery],
+        misc: [
+          $handlerSourceAndRequests,
+          $handlerSomeMadsHit,
+          $handlerSomeTagsHit,
+        ],
       },
     },
   },
+  excludeStories: /^\$handler/,
 } as Meta<typeof GlobalNav>;
 
 export default meta;
 
 export const NotAuthenticated: StoryObj<typeof meta> = {
   name: "未ログイン",
-  render: (args) => (
-    <Auth0Context.Provider
-      value={{ isAuthenticated: false } as Auth0ContextInterface}
-    >
-      <UrqlProvider
-        value={createClient({ url: "/graphql", exchanges: [fetchExchange] })}
-      >
-        <GlobalNav {...args} />
-      </UrqlProvider>
-    </Auth0Context.Provider>
-  ),
 };
+
+const $handlerFailed = mswGraphql.query(GlobalNavQuery, (req, res, ctx) => {
+  return res(ctx.errors([{ message: "Unauthorized" }]));
+});
 
 export const Unauthorized: StoryObj<typeof meta> = {
   name: "ユーザ情報の取得に失敗",
   parameters: {
     msw: {
       handlers: {
-        concern: [mockUnauthorizedQuery],
+        concern: [$handlerFailed],
       },
     },
   },
 };
 
+const $handlerLoading = mswGraphql.query(
+  GlobalNavQuery,
+  async (req, res, ctx) => {
+    return res(ctx.delay("infinite"));
+  }
+);
 export const Loading: StoryObj<typeof meta> = {
   name: "ユーザーをロード中",
   parameters: {
     msw: {
       handlers: {
-        concern: [mockLoadingQuery],
+        concern: [$handlerLoading],
       },
     },
   },
 };
 
+const $handlerSuccessful = mswGraphql.query(GlobalNavQuery, (req, res, ctx) => {
+  return res(
+    ctx.data({
+      whoami: {
+        id: "1",
+        name: "user1",
+        displayName: "User 1",
+        icon: "/512x512.png",
+        isEditor: false,
+        isAdministrator: false,
+      },
+      notifications: {
+        totalCount: 9,
+      },
+    } as ResultOf<typeof GlobalNavQuery>)
+  );
+});
 export const LoggedIn: StoryObj<typeof meta> = {
   name: "ログイン済み",
+  parameters: {
+    msw: {
+      handlers: {
+        concern: [$handlerSuccessful],
+      },
+    },
+  },
 };
