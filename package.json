@@ -67,6 +67,7 @@
     "@graphql-codegen/urql-introspection": "3.0.0",
     "@graphql-inspector/cli": "4.0.3",
     "@graphql-typed-document-node/core": "3.2.0",
+    "@otomadb/tailwind-config": "github:otomadb/tailwind-config",
     "@storybook/addon-actions": "7.6.1",
     "@storybook/addon-docs": "7.6.1",
     "@storybook/addon-essentials": "7.6.1",
