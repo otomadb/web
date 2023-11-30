@@ -10,8 +10,8 @@ import useHasRole from "~/components/useHasRole";
 import { UserIcon } from "~/components/UserIcon";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
+import { NicovideoRegistrationRequestLink } from "../../../(v2)/requests/nicovideo/[sourceId]/Link";
 import { UserPageLink } from "../../users/[name]/Link";
-import { LinkNicovideoRegistrationRequest as NicovideoRegistrationRequestLink } from "./[sourceId]/Link";
 
 export const Fragment = graphql(`
   fragment NicovideoRequestsPage_RequestsListItem on NicovideoRegistrationRequest {

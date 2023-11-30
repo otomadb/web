@@ -1,19 +1,22 @@
 import Link from "next/link";
-import React, { ComponentProps } from "react";
+import { ComponentProps } from "react";
 
-import { FragmentType, graphql, useFragment } from "~/gql";
+import { graphql, useFragment } from "~/gql";
+import FragmentedLink from "~/utils/FragmentedLink";
 
-export const NicovideoRequestPageLinkFragment = graphql(`
+export const NicovideoRegistrationRequestLinkFragment = graphql(`
   fragment Link_NicovideoRegistrationRequest on NicovideoRegistrationRequest {
     sourceId
   }
 `);
-export const LinkNicovideoRegistrationRequest: React.FC<
-  Omit<ComponentProps<typeof Link>, "href"> & {
-    fragment: FragmentType<typeof NicovideoRequestPageLinkFragment>;
-  }
+
+export const NicovideoRegistrationRequestLink: FragmentedLink<
+  typeof NicovideoRegistrationRequestLinkFragment
 > = ({ children, fragment, ...props }) => {
-  const { sourceId } = useFragment(NicovideoRequestPageLinkFragment, fragment);
+  const { sourceId } = useFragment(
+    NicovideoRegistrationRequestLinkFragment,
+    fragment
+  );
   return (
     <Link href={`/requests/nicovideo/${sourceId}`} {...props}>
       {children}

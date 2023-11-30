@@ -7,7 +7,7 @@ import Pictogram from "~/components/Pictogram";
 import { UserIcon } from "~/components/UserIcon";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-import { LinkNicovideoRegistrationRequest } from "../../requests/nicovideo/[sourceId]/Link";
+import { NicovideoRegistrationRequestLink } from "../../../(v2)/requests/nicovideo/[sourceId]/Link";
 import { UserPageLink } from "../../users/[name]/Link";
 
 export const Fragment = graphql(`
@@ -60,10 +60,10 @@ export default function NicovideoRegistrationRequestRejectingNotification({
           />
           <p className={clsx(["text-sm", "text-slate-900"])}>
             あなたの動画登録リクエスト
-            <LinkNicovideoRegistrationRequest fragment={request}>
+            <NicovideoRegistrationRequestLink fragment={request}>
               <span className={clsx(["font-bold"])}>{request.title}</span>
               <span className={clsx()}>({request.sourceId})</span>
-            </LinkNicovideoRegistrationRequest>
+            </NicovideoRegistrationRequestLink>
             は棄却されました。
           </p>
         </div>

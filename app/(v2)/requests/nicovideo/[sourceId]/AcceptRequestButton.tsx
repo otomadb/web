@@ -5,7 +5,8 @@ import "client-only";
 import clsx from "clsx";
 import { useQuery } from "urql";
 
-import { NicovideoRegisterPageLink } from "~/app/(application)/(editor)/editor/nicovideo/Link";
+import Button from "~/components/Button";
+import { useOpenRegisterFromNicovideoWithId } from "~/components/FormModal";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 const Fragment = graphql(`
@@ -13,7 +14,7 @@ const Fragment = graphql(`
     sourceId
   }
 `);
-export const Editor: React.FC<{
+const AcceptRequestButton: React.FC<{
   className?: string;
   fragment: FragmentType<typeof Fragment>;
 }> = ({ className, fragment }) => {
@@ -21,22 +22,27 @@ export const Editor: React.FC<{
   const [{ data }] = useQuery({
     query: graphql(`
       query NicovideoRequestPage_EditorButton_Check {
-        whoami {
-          id
+        viewer {
           isEditor: hasRole(role: EDITOR)
         }
       }
     `),
     requestPolicy: "cache-first",
   });
+  const openModal = useOpenRegisterFromNicovideoWithId();
+  if (!data?.viewer?.isEditor) return null;
 
   return (
-    <div className={clsx(className)}>
-      {data?.whoami?.isEditor && (
-        <NicovideoRegisterPageLink sourceId={sourceId}>
-          登録する
-        </NicovideoRegisterPageLink>
-      )}
-    </div>
+    <Button
+      color="blue"
+      size="medium"
+      icon="plus"
+      text="登録する"
+      className={clsx(className)}
+      onClick={() => {
+        openModal(sourceId);
+      }}
+    />
   );
 };
+export default AcceptRequestButton;

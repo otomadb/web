@@ -11,8 +11,8 @@ import {
 } from "react";
 import { useQuery } from "urql";
 
-import NicovideoRequestLink from "~/app/(application)/requests/nicovideo/[sourceId]/Link";
 import { MadPageLink } from "~/app/(v2)/mads/[serial]/Link";
+import NicovideoRequestLink from "~/app/(v2)/requests/nicovideo/[sourceId]/Link";
 import Button from "~/components/Button";
 import AlreadyRegistered from "~/components/Form/AlreadyRegistered";
 import AlreadyRequested from "~/components/Form/AlreadyRequested";

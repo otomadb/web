@@ -9,7 +9,7 @@ import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
 import { MockedUrqlProvider } from "~/utils/MockedUrqlProvider";
 
-import { NicovideoRequestPageLinkFragment } from "./[sourceId]/Link";
+import { NicovideoRegistrationRequestLinkFragment } from "../../../(v2)/requests/nicovideo/[sourceId]/Link";
 import RequestsList, { Fragment } from "./RequestsList";
 import { Fragment as ItemFragment } from "./RequestsListItem";
 
@@ -58,7 +58,7 @@ const meta = {
               } as never, // TODO: Fix type
               ...makeFragmentData(
                 { sourceId: "sm9" },
-                NicovideoRequestPageLinkFragment
+                NicovideoRegistrationRequestLinkFragment
               ),
             },
             ItemFragment

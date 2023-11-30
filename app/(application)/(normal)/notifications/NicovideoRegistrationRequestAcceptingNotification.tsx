@@ -9,7 +9,7 @@ import { UserIcon } from "~/components/UserIcon";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-import { LinkNicovideoRegistrationRequest } from "../../requests/nicovideo/[sourceId]/Link";
+import { NicovideoRegistrationRequestLink } from "../../../(v2)/requests/nicovideo/[sourceId]/Link";
 import { UserPageLink } from "../../users/[name]/Link";
 
 export const Fragment = graphql(`
@@ -67,10 +67,10 @@ export default function NicovideoRegistrationRequestAcceptingNotification({
           />
           <p className={clsx(["text-sm", "text-slate-900"])}>
             あなたの動画登録リクエスト
-            <LinkNicovideoRegistrationRequest fragment={request}>
+            <NicovideoRegistrationRequestLink fragment={request}>
               <span className={clsx(["font-bold"])}>{request.title}</span>
               <span className={clsx()}>({request.sourceId})</span>
-            </LinkNicovideoRegistrationRequest>
+            </NicovideoRegistrationRequestLink>
             は
             <MadPageLink
               fragment={video}
