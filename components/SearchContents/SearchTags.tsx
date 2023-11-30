@@ -3,88 +3,110 @@ import "client-only";
 
 import clsx from "clsx";
 import React from "react";
+import { useQuery } from "urql";
 
 import { TagPageLink } from "~/app/(v2)/tags/[serial]/Link";
-import { TagType } from "~/components/TagType";
-import { FragmentType, graphql, useFragment } from "~/gql";
+import CommonTag from "~/components/CommonTag";
+import Pictogram from "~/components/Pictogram";
+import { graphql } from "~/gql";
 
-export const Fragment = graphql(`
-  fragment SearchContents_SearchTags on SearchTagsPayload {
-    items {
-      name {
-        name
-      }
-      tag {
-        ...Link_Tag
-        ...TagType
-        id
-        name
-        type
-        explicitParent {
-          id
+export const SearchTagsQuery = graphql(`
+  query SearchContents_SearchTags($query: String!) {
+    searchTags(input: { query: $query, limit: 6 }) {
+      items {
+        name {
           name
+        }
+        tag {
+          ...Link_Tag
+          ...CommonTag
         }
       }
     }
   }
 `);
-export const SearchTags: React.FC<{
+const SearchTags: React.FC<{
   className?: string;
-  fragment: FragmentType<typeof Fragment>;
-}> = ({ className, ...props }) => {
-  const fragment = useFragment(Fragment, props.fragment);
-  const { items } = fragment;
+  style?: React.CSSProperties;
+  size: "md";
+  query: string;
+}> = ({ className, style, size, query }) => {
+  const [{ data, fetching }] = useQuery({
+    query: SearchTagsQuery,
+    variables: { query },
+  });
 
   return (
-    <div className={clsx(className)}>
-      {items.length === 0 && (
-        <div className={clsx(["px-4", "py-2"])}>
-          <p className={clsx(["text-xs"], ["text-slate-500"])}>該当なし</p>
+    <div
+      style={style}
+      className={clsx(className, "border-l-4 border-obsidian-lightest")}
+    >
+      <div className="flex items-center">
+        <div
+          className={clsx(
+            "font-bold text-snow-darker",
+            { md: "py-2 pl-4 text-sm" }[size]
+          )}
+        >
+          タグ
         </div>
-      )}
-      <div className={clsx(["divide-y", "divide-slate-400/75"])}>
-        {items.map(({ tag, name }) => (
-          <TagPageLink
-            key={tag.id}
-            fragment={tag}
-            tabIndex={0}
-            className={clsx(
-              "flex items-center divide-x border-slate-300/75 py-2 hover:bg-sky-300/50 focus:bg-sky-400/50"
-            )}
-            onClick={(e) => {
-              e.currentTarget.blur();
-            }}
+        {fetching && (
+          <div
+            className={clsx("ml-2 flex items-center gap-x-2 text-snow-darkest")}
           >
-            <div className={clsx(["shrink-0"], ["w-36"], ["px-2"])}>
-              <div
-                className={clsx(
-                  ["text-slate-500"],
-                  ["text-xs"],
-                  ["text-right"]
-                )}
-              >
-                {name.name}
-              </div>
+            <Pictogram icon="loading" className={clsx("h-4")} />
+            <div className={clsx("text-sm")}>検索中</div>
+          </div>
+        )}
+      </div>
+      <div>
+        {data ? (
+          data.searchTags.items.length === 0 ? (
+            <div className={clsx("px-4 py-2")}>
+              <p className={clsx("text-sm text-snow-darkest")}>ヒットなし</p>
             </div>
-            <div
-              className={clsx(
-                ["grow"],
-                ["flex", "flex-col", "justify-start"],
-                ["px-2"]
-              )}
-            >
-              <div
-                className={clsx(["text-slate-900"], ["text-sm"], ["font-bold"])}
-              >
-                {tag.name}
-              </div>
-              <div className={clsx(["flex"])}>
-                <TagType className={clsx(["text-xs"])} fragment={tag} />
-              </div>
+          ) : (
+            <div className={clsx("divide-y divide-obsidian-lighter")}>
+              {data.searchTags.items.map(({ tag, name }, i) => (
+                <TagPageLink
+                  key={i}
+                  fragment={tag}
+                  tabIndex={0}
+                  className={clsx(
+                    "group flex items-center gap-x-4 p-2 hover:bg-vivid-primary"
+                  )}
+                  onClick={(e) => {
+                    e.currentTarget.blur();
+                  }}
+                >
+                  <div className={clsx("w-48 shrink-0 px-2")}>
+                    <div
+                      className={clsx(
+                        "text-xs text-snow-darker  group-hover:text-obsidian-darker"
+                      )}
+                    >
+                      {name.name}
+                    </div>
+                  </div>
+                  <div
+                    className={clsx(
+                      "flex grow flex-col justify-start border-l border-l-obsidian-lighter px-2 py-1 group-hover:border-l-obsidian-darker"
+                    )}
+                  >
+                    <CommonTag
+                      className={clsx()}
+                      fragment={tag}
+                      size="small"
+                      hoverable={false}
+                    />
+                  </div>
+                </TagPageLink>
+              ))}
             </div>
-          </TagPageLink>
-        ))}
+          )
+        ) : null}
       </div>
     </div>
   );
 };
+export default SearchTags;

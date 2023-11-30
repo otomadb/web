@@ -58,11 +58,11 @@ module.exports = {
           primary: "hsl(162, 91%, 73%)",
         },
         "obsidian": {
-          darkest: "hsl(232, 28%, 2%)",
+          darkest: "hsl(232, 34%, 6%)",
           darker: "hsl(228, 21%, 9%)",
           primary: "hsl(222, 17%, 13%)",
-          lighter: "hsl(218, 16%, 19%)",
-          lightest: "hsl(216, 13%, 24%)",
+          lighter: "hsl(218, 20%, 21%)",
+          lightest: "hsl(216, 13%, 28%)",
         },
         "snow": {
           darkest: "hsl(210, 16%, 62%)",
