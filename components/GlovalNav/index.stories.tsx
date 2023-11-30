@@ -1,4 +1,3 @@
-import { ResultOf } from "@graphql-typed-document-node/core";
 import { Meta, StoryObj } from "@storybook/react";
 import { graphql as mswGraphql } from "msw";
 
@@ -38,20 +37,22 @@ const meta = {
 
 export default meta;
 
-export const NotAuthenticated: StoryObj<typeof meta> = {
+const $handlerNotLoggedIn = mswGraphql.query(
+  GlobalNavQuery,
+  (req, res, ctx) => {
+    return res(
+      ctx.data({
+        viewer: null,
+      })
+    );
+  }
+);
+export const NotLoggedIn: StoryObj<typeof meta> = {
   name: "未ログイン",
-};
-
-const $handlerFailed = mswGraphql.query(GlobalNavQuery, (req, res, ctx) => {
-  return res(ctx.errors([{ message: "Unauthorized" }]));
-});
-
-export const Unauthorized: StoryObj<typeof meta> = {
-  name: "ユーザ情報の取得に失敗",
   parameters: {
     msw: {
       handlers: {
-        concern: [$handlerFailed],
+        concern: [$handlerNotLoggedIn],
       },
     },
   },
@@ -77,18 +78,8 @@ export const Loading: StoryObj<typeof meta> = {
 const $handlerSuccessful = mswGraphql.query(GlobalNavQuery, (req, res, ctx) => {
   return res(
     ctx.data({
-      whoami: {
-        id: "1",
-        name: "user1",
-        displayName: "User 1",
-        icon: "/512x512.png",
-        isEditor: false,
-        isAdministrator: false,
-        notifications: {
-          totalCount: 9,
-        },
-      },
-    } as ResultOf<typeof GlobalNavQuery>)
+      viewer: {},
+    })
   );
 });
 export const LoggedIn: StoryObj<typeof meta> = {

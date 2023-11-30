@@ -1140,6 +1140,7 @@ type Query {
   """ユーザーのタイムラインを取得する"""
   showTimeline(input: ShowTimelineInput!): [TimelineEvent!]!
   whoami: User!
+  viewer: User
 }
 
 input RegisterBilibiliMADInput {
@@ -1765,7 +1766,7 @@ type SoundcloudRegistrationRequest implements Node & RegistrationRequest {
 
   """
   Soundcloud側のサムネイル画像のURL
-  
+
   **無い場合もある場合に注意.**
   """
   originalThumbnailUrl: String
@@ -1777,7 +1778,7 @@ type SoundcloudRegistrationRequest implements Node & RegistrationRequest {
 
   """
   OtoMADB側でプロキシしているサムネイル画像のURL
-  
+
   **無い場合は適当にダミー画像を返す．**
   """
   thumbnailUrl: String!
