@@ -16,8 +16,10 @@ import UserIndicator from "./UserIndicator";
 
 export const GlobalNavQuery = graphql(`
   query GlobalNav {
-    ...GlobalNav_ProfileIndicator
-    ...GlobalNav_ProfileAccordion
+    viewer {
+      ...GlobalNav_ProfileIndicator
+      ...GlobalNav_ProfileAccordion
+    }
   }
 `);
 export default function GlobalNav({
@@ -59,7 +61,7 @@ export default function GlobalNav({
                 "h-[32px] w-[32px] animate-pulse rounded-sm bg-obsidian-lighter"
               )}
             />
-          ) : !data ? (
+          ) : !data?.viewer ? (
             <LoginLink
               className={clsx(
                 "flex items-center gap-x-2 rounded-sm border border-vivid-primary bg-transparent px-4 py-2 text-vivid-primary duration-50 hover:bg-vivid-primary hover/button:text-obsidian-darker"
@@ -71,7 +73,7 @@ export default function GlobalNav({
           ) : (
             <div className={clsx("group/user relative")}>
               <UserIndicator
-                fragment={data}
+                fragment={data.viewer}
                 className={clsx("z-1 h-[32px] w-[32px]")}
               />
               <div
@@ -79,7 +81,10 @@ export default function GlobalNav({
                   "invisible absolute right-0 top-full z-0 pt-1 group-hover/user:visible"
                 )}
               >
-                <ProfileAccordion fragment={data} className={clsx("w-64")} />
+                <ProfileAccordion
+                  fragment={data.viewer}
+                  className={clsx("w-64")}
+                />
               </div>
             </div>
           )}

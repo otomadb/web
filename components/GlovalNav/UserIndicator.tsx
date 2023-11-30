@@ -7,11 +7,9 @@ import { UserIcon } from "~/components/UserIcon";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const Fragment = graphql(`
-  fragment GlobalNav_ProfileIndicator on Query {
-    whoami {
-      ...UserIcon
-    }
-    notifications(filter: { watched: false }) {
+  fragment GlobalNav_ProfileIndicator on User {
+    ...UserIcon
+    notifications(input: { filter: { watched: false } }) {
       totalCount
     }
   }
@@ -25,12 +23,17 @@ export default function UserIndicator({
   style?: React.CSSProperties;
   fragment: FragmentType<typeof Fragment>;
 }) {
-  const { whoami, notifications } = useFragment(Fragment, props.fragment);
+  const fragment = useFragment(Fragment, props.fragment);
+  const totalCount = fragment.notifications.totalCount;
 
   return (
     <div style={style} className={clsx(className, "relative")} tabIndex={0}>
-      <UserIcon className={clsx("h-full w-full")} fragment={whoami} size={32} />
-      {0 < notifications.totalCount && (
+      <UserIcon
+        className={clsx("h-full w-full")}
+        fragment={fragment}
+        size={32}
+      />
+      {0 < totalCount && (
         <div
           className={clsx(
             "absolute left-[75%] top-[75%] flex select-none rounded-full bg-vivid-primary px-2 py-1 shadow-[0_0_8px] shadow-vivid-primary/25"
@@ -41,7 +44,7 @@ export default function UserIndicator({
               "text-xxs font-bold leading-none text-obsidian-primary"
             )}
           >
-            {notifications.totalCount}
+            {totalCount}
           </span>
         </div>
       )}
