@@ -1,163 +1,168 @@
+import { ResultOf } from "@graphql-typed-document-node/core";
 import { Meta, StoryObj } from "@storybook/react";
 import { graphql } from "msw";
-import {
-  createClient as createUrqlClient,
-  Provider as UrqlProvider,
-} from "urql";
 
-import { SearchContents_SearchNicovideoDocument } from "~/gql/graphql";
-import {
-  aNicovideoRegistrationRequest,
-  aNicovideoVideoSource,
-  aTag,
-  aUser,
-  aVideo,
-  aVideoTag,
-  aVideoTagConnection,
-} from "~/gql/mock";
+import { UserPageLinkFragment } from "~/app/(application)/users/[name]/Link";
+import { MadPageLinkFragment } from "~/app/(v2)/mads/[serial]/Link";
+import { TagPageLinkFragment } from "~/app/(v2)/tags/[serial]/Link";
+import { makeFragmentData } from "~/gql";
+import { TagType } from "~/gql/graphql";
+import { MockedUrqlProvider } from "~/utils/MockedUrqlProvider";
 
-import { SearchNicovideo } from "./Nicovideo";
+import { CommonTagFragment } from "../CommonTag";
+import { Fragment as UserIconFragment } from "../UserIcon";
+import { Fragment as VideoThumbnailFragment } from "../VideoThumbnail";
+import SearchNicovideo, { SearchNicovideoQuery } from "./Nicovideo";
 
 const meta = {
   component: SearchNicovideo,
   args: {
+    size: "md",
+    style: {
+      width: 640,
+    },
     sourceId: "sm2057168",
   },
   render(args) {
     return (
-      <UrqlProvider
-        value={createUrqlClient({ url: "/graphql", exchanges: [] })}
-      >
+      <MockedUrqlProvider>
         <SearchNicovideo {...args} />
-      </UrqlProvider>
+      </MockedUrqlProvider>
     );
   },
+  excludeStories: /^\$handler/,
 } as Meta<typeof SearchNicovideo>;
 export default meta;
 
-export const Loading: StoryObj<typeof meta> = {
+export const $handlerNicovideoLoading = graphql.query(
+  SearchNicovideoQuery,
+  (req, res, ctx) => res(ctx.delay("infinite"))
+);
+export const Searching: StoryObj<typeof meta> = {
+  name: "検索中",
   parameters: {
     msw: {
-      handlers: [
-        graphql.query(SearchContents_SearchNicovideoDocument, (req, res, ctx) =>
-          res(ctx.delay("infinite"))
-        ),
-      ],
+      handlers: [$handlerNicovideoLoading],
     },
   },
 };
 
-const mockFindNicovideoVideoSource = aNicovideoVideoSource({
+const source: Exclude<
+  ResultOf<typeof SearchNicovideoQuery>["findNicovideoVideoSource"],
+  undefined | null
+> = {
+  id: "s1",
   sourceId: "sm2057168",
-  video: aVideo({
+  video: {
     id: "v1",
     title: "Title 1",
-    thumbnailUrl: "/960x540.jpg",
-    taggings: aVideoTagConnection({
+    ...makeFragmentData(
+      { title: "Title 1", thumbnailUrl: "/thumbnail.jpg" },
+      VideoThumbnailFragment
+    ),
+    ...makeFragmentData({ serial: 1 }, MadPageLinkFragment),
+    taggings: {
       nodes: [
-        aVideoTag({
+        {
           id: "tagging1",
-          tag: aTag({
+          tag: {
             id: "t1",
-            name: "Tag 1",
-            explicitParent: null,
-          }),
-        }),
-        aVideoTag({
+            ...makeFragmentData(
+              { name: "name 1", type: TagType.Character, explicitParent: null },
+              CommonTagFragment
+            ),
+            ...makeFragmentData({ serial: 1 }, TagPageLinkFragment),
+          } as (typeof source)["video"]["taggings"]["nodes"][number]["tag"], // TODO: codegenの制約上ごまかしている
+        },
+        {
           id: "tagging2",
-          tag: aTag({
+          tag: {
             id: "t2",
-            name: "Tag 2",
-            explicitParent: null,
-          }),
-        }),
+            ...makeFragmentData(
+              { name: "name 2", type: TagType.Character, explicitParent: null },
+              CommonTagFragment
+            ),
+            ...makeFragmentData({ serial: 2 }, TagPageLinkFragment),
+          } as (typeof source)["video"]["taggings"]["nodes"][number]["tag"], // TODO: codegenの制約上ごまかしている
+        },
       ],
-    }),
-  }),
-});
-
-const mockFindNicovideoRegistrationRequest = aNicovideoRegistrationRequest({
+    },
+  } as (typeof source)["video"], // TODO: codegenの制約上ごまかしている
+};
+const request: Exclude<
+  ResultOf<typeof SearchNicovideoQuery>["findNicovideoRegistrationRequest"],
+  undefined | null
+> = {
+  id: "r1",
   sourceId: "sm2057168",
   title: "Title 1",
   thumbnailUrl: "/960x540.jpg",
-  requestedBy: aUser({
+  requestedBy: {
     id: "u1",
     name: "user1",
-    displayName: "User 1",
-    icon: "/512x512.png",
-  }),
-});
-
-export const SourceExists_And_RequestsExists: StoryObj<typeof meta> = {
+    ...makeFragmentData(
+      { displayName: "User 1", icon: "/icon.png" },
+      UserIconFragment
+    ),
+    ...makeFragmentData({ name: "user1" }, UserPageLinkFragment),
+  } as (typeof request)["requestedBy"], // TODO: codegenの制約上ごまかしている
+};
+export const $handlerSourceAndRequests = graphql.query(
+  SearchNicovideoQuery,
+  (req, res, ctx) =>
+    res(
+      ctx.data({
+        findNicovideoVideoSource: source,
+        findNicovideoRegistrationRequest: request,
+      })
+    )
+);
+export const SourceAndRequest: StoryObj<typeof meta> = {
   name: "動画ソースとリクエストの両方がある",
-  parameters: {
-    msw: {
-      handlers: [
-        graphql.query(SearchContents_SearchNicovideoDocument, (req, res, ctx) =>
-          res(
-            ctx.data({
-              findNicovideoVideoSource: mockFindNicovideoVideoSource,
-              findNicovideoRegistrationRequest:
-                mockFindNicovideoRegistrationRequest,
-            })
-          )
-        ),
-      ],
-    },
-  },
+  parameters: { msw: { handlers: [$handlerSourceAndRequests] } },
 };
 
-export const SourceExists_But_RequestNotExists: StoryObj<typeof meta> = {
+export const $handlerSourceAndNoRequest = graphql.query(
+  SearchNicovideoQuery,
+  (req, res, ctx) =>
+    res(
+      ctx.data({
+        findNicovideoVideoSource: source,
+        findNicovideoRegistrationRequest: null,
+      })
+    )
+);
+export const SourceAndNoRequest: StoryObj<typeof meta> = {
   name: "動画ソースはあるがリクエストは無い",
-  parameters: {
-    msw: {
-      handlers: [
-        graphql.query(SearchContents_SearchNicovideoDocument, (req, res, ctx) =>
-          res(
-            ctx.data({
-              findNicovideoVideoSource: mockFindNicovideoVideoSource,
-              findNicovideoRegistrationRequest: null,
-            })
-          )
-        ),
-      ],
-    },
-  },
+  parameters: { msw: { handlers: [$handlerSourceAndNoRequest] } },
 };
 
-export const SourceNotExists_But_RequestExists: StoryObj<typeof meta> = {
+export const $handlerNoSourceAndRequest = graphql.query(
+  SearchNicovideoQuery,
+  (req, res, ctx) =>
+    res(
+      ctx.data({
+        findNicovideoVideoSource: null,
+        findNicovideoRegistrationRequest: request,
+      })
+    )
+);
+export const NoSourceAndRequest: StoryObj<typeof meta> = {
   name: "動画ソースは無いがリクエストがある",
-  parameters: {
-    msw: {
-      handlers: [
-        graphql.query(SearchContents_SearchNicovideoDocument, (req, res, ctx) =>
-          res(
-            ctx.data({
-              findNicovideoVideoSource: null,
-              findNicovideoRegistrationRequest:
-                mockFindNicovideoRegistrationRequest,
-            })
-          )
-        ),
-      ],
-    },
-  },
+  parameters: { msw: { handlers: [$handlerNoSourceAndRequest] } },
 };
 
-export const SourceNotExists_And_RequestNotExists: StoryObj<typeof meta> = {
+export const $handlerNoSourceAndNoRequest = graphql.query(
+  SearchNicovideoQuery,
+  (req, res, ctx) =>
+    res(
+      ctx.data({
+        findNicovideoVideoSource: null,
+        findNicovideoRegistrationRequest: null,
+      })
+    )
+);
+export const NoSourceAndNoRequest: StoryObj<typeof meta> = {
   name: "動画ソースもリクエストも両方ない",
-  parameters: {
-    msw: {
-      handlers: [
-        graphql.query(SearchContents_SearchNicovideoDocument, (req, res, ctx) =>
-          res(
-            ctx.data({
-              findNicovideoVideoSource: null,
-              findNicovideoRegistrationRequest: null,
-            })
-          )
-        ),
-      ],
-    },
-  },
+  parameters: { msw: { handlers: [$handlerNoSourceAndNoRequest] } },
 };

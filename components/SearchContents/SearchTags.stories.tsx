@@ -1,58 +1,100 @@
 import { Meta, StoryObj } from "@storybook/react";
+import { graphql } from "msw";
 
+import { TagPageLinkFragment } from "~/app/(v2)/tags/[serial]/Link";
 import { makeFragmentData } from "~/gql";
-import {
-  aSearchTagsPayload,
-  aTag,
-  aTagName,
-  aTagSearchItemByName,
-} from "~/gql/mock";
+import { TagType } from "~/gql/graphql";
+import { MockedUrqlProvider } from "~/utils/MockedUrqlProvider";
 
-import { Fragment, SearchTags } from "./SearchTags";
+import { CommonTagFragment } from "../CommonTag";
+import SearchTags, { SearchTagsQuery } from "./SearchTags";
 
 const meta = {
   component: SearchTags,
-  args: {},
+  args: {
+    size: "md",
+    style: {
+      width: 640,
+    },
+  },
+  render(args) {
+    return (
+      <MockedUrqlProvider>
+        <SearchTags {...args} />
+      </MockedUrqlProvider>
+    );
+  },
+  excludeStories: /^\$handler/,
 } as Meta<typeof SearchTags>;
 export default meta;
 
-export const Primary: StoryObj<typeof meta> = {
-  args: {
-    fragment: makeFragmentData(
-      aSearchTagsPayload({
-        items: [
-          aTagSearchItemByName({
-            name: aTagName({
-              name: "name1",
-            }),
-            tag: aTag({
-              id: "t1",
-              name: "name1",
-            }),
-          }),
-          aTagSearchItemByName({
-            name: aTagName({
-              name: "name2",
-            }),
-            tag: aTag({
-              id: "t2",
-              name: "Name 2",
-            }),
-          }),
-        ],
-      }),
-      Fragment
-    ),
+export const $handlerTagsSearching = graphql.query(
+  SearchTagsQuery,
+  (req, res, ctx) => res(ctx.delay("infinite"))
+);
+export const Loading: StoryObj<typeof meta> = {
+  name: "検索中",
+  parameters: {
+    msw: {
+      handlers: [$handlerTagsSearching],
+    },
   },
 };
 
-export const NoMatch: StoryObj<typeof meta> = {
-  args: {
-    fragment: makeFragmentData(
-      aSearchTagsPayload({
-        items: [],
-      }),
-      Fragment
-    ),
+export const $handlerSomeTagsHit = graphql.query(
+  SearchTagsQuery,
+  (req, res, ctx) =>
+    res(
+      ctx.data({
+        searchTags: {
+          items: [
+            {
+              name: { name: "name1" },
+              tag: {
+                ...makeFragmentData({ serial: 1 }, TagPageLinkFragment),
+                ...makeFragmentData(
+                  {
+                    name: "Name 1",
+                    type: TagType.Character,
+                    explicitParent: null,
+                  },
+                  CommonTagFragment
+                ),
+              } as any, // eslint-disable-line @typescript-eslint/no-explicit-any -- codegenが悪い
+            },
+            {
+              name: { name: "name2" },
+              tag: {
+                ...makeFragmentData({ serial: 2 }, TagPageLinkFragment),
+                ...makeFragmentData(
+                  {
+                    name: "Name 2",
+                    type: TagType.Character,
+                    explicitParent: null,
+                  },
+                  CommonTagFragment
+                ),
+              } as any, // eslint-disable-line @typescript-eslint/no-explicit-any -- codegenが悪い
+            },
+          ],
+        },
+      })
+    )
+);
+export const SomeTagsHit: StoryObj<typeof meta> = {
+  name: "何件かヒットした場合",
+  parameters: { msw: { handlers: [$handlerSomeTagsHit] } },
+};
+
+export const NoTagsHit: StoryObj<typeof meta> = {
+  name: "何もヒットしない場合",
+  parameters: {
+    msw: {
+      handlers: [
+        graphql.query(SearchTagsQuery, (req, res, ctx) =>
+          res(ctx.data({ searchTags: { items: [] } }))
+        ),
+      ],
+    },
   },
 };

@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import { LoginLink } from "~/components/AuthLink";
 import Logo from "~/components/Logo";
 import Pictogram from "~/components/Pictogram";
-import { SearchContents } from "~/components/SearchContents/SearchContents";
+import SearchContents from "~/components/SearchContents";
 import { graphql } from "~/gql";
 import { makeGraphQLClient } from "~/gql/fetch";
 
@@ -95,7 +95,7 @@ export default async function Top({ className }: { className?: string }) {
             </div>
           </div>
         </div>
-        <SearchContents className={clsx(["mt-4 w-full"])} />
+        <SearchContents className={clsx("mt-4 w-full")} opacity={true} />
       </div>
     </section>
   );

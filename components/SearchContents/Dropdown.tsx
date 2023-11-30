@@ -1,93 +1,37 @@
 "use client";
 import clsx from "clsx";
 import React from "react";
-import { useQuery } from "urql";
 
-import { graphql } from "~/gql";
-
-import { SearchNicovideo } from "./Nicovideo";
-import { SearchTags } from "./SearchTags";
-import { SearchVideos } from "./SearchVideos";
+import SearchNicovideo from "./Nicovideo";
+import SearchMads from "./SearchMads";
+import SearchTags from "./SearchTags";
 
 export const regexNicovideoSourceID = /sm\d+/;
 
 export const Dropdown: React.FC<{
   classname?: string;
+  style?: React.CSSProperties;
   query: string;
-}> = ({ classname, query }) => {
-  const [{ data }] = useQuery({
-    query: graphql(`
-      query SearchContents($query: String!) {
-        searchTags(input: { query: $query, limit: 6 }) {
-          ...SearchContents_SearchTags
-        }
-        searchVideos(input: { query: $query, limit: 3 }) {
-          ...SearchContents_SearchVideos
-        }
-      }
-    `),
-    variables: { query },
-  });
-
+  size: "md";
+}> = ({ classname, style, size = "md", query }) => {
   return (
     <div
+      style={style}
       className={clsx(
         classname,
-        ["shadow-md"],
-        ["bg-white/90"],
-        ["backdrop-blur-sm"],
-        ["rounded-b-md", "border-x", "border-b", "border-slate-300/75"],
-        ["px-2"],
-        ["py-3"]
+        "rounded-b-md border-x border-b border-obsidian-lighter/90 bg-obsidian-primary/90 shadow-md backdrop-blur-sm",
+        { md: "px-2 py-3" }[size]
       )}
     >
-      <div className={clsx(["flex", "flex-col", "gap-y-2"])}>
-        <div className={clsx()}>
-          <div
-            className={clsx(
-              ["text-xs"],
-              ["px-4", "py-1"],
-              ["text-slate-600"],
-              ["border-b", "border-slate-300/75"]
-            )}
-          >
-            タグ
-          </div>
-          {data?.searchTags && (
-            <SearchTags className={clsx()} fragment={data.searchTags} />
-          )}
-        </div>
-        <div className={clsx()}>
-          <div
-            className={clsx(
-              ["text-xs"],
-              ["px-4", "py-1"],
-              ["text-slate-600"],
-              ["border-b", "border-slate-300/75"]
-            )}
-          >
-            動画
-          </div>
-          {data?.searchVideos && (
-            <SearchVideos className={clsx()} fragment={data.searchVideos} />
-          )}
-        </div>
+      <div className={clsx("flex flex-col gap-y-2")}>
+        <SearchTags className={clsx("w-full")} size={size} query={query} />
+        <SearchMads className={clsx("w-full")} size={size} query={query} />
         {regexNicovideoSourceID.test(query) && (
-          <div className={clsx()}>
-            <div
-              className={clsx(
-                ["text-xs"],
-                ["px-4", "py-1"],
-                ["text-slate-600"],
-                ["border-b", "border-slate-300/75"]
-              )}
-            >
-              ニコニコ動画の
-              <span className={clsx(["font-mono"])}>{query}</span>
-              の検索
-            </div>
-            <SearchNicovideo className={clsx()} sourceId={query} />
-          </div>
+          <SearchNicovideo
+            className={clsx("w-full")}
+            sourceId={query}
+            size={size}
+          />
         )}
       </div>
     </div>
