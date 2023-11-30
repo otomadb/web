@@ -95,7 +95,13 @@ export default async function Top({ className }: { className?: string }) {
             </div>
           </div>
         </div>
-        <SearchContents className={clsx("mt-4 w-full")} opacity={true} />
+        <SearchContents
+          className={clsx("mt-4 w-full")}
+          opacity={true}
+          searchMads={true}
+          searchNicovideo={false}
+          searchTags={false}
+        />
       </div>
     </section>
   );
