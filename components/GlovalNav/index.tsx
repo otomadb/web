@@ -14,7 +14,7 @@ import Logo from "../Logo";
 import ProfileAccordion from "./ProfileAccordion";
 import UserIndicator from "./UserIndicator";
 
-export const Query = graphql(`
+export const GlobalNavQuery = graphql(`
   query GlobalNav {
     ...GlobalNav_ProfileIndicator
     ...GlobalNav_ProfileAccordion
@@ -28,56 +28,35 @@ export default function GlobalNav({
   style?: CSSProperties;
 }) {
   const [{ data, fetching }] = useQuery({
-    query: Query,
+    query: GlobalNavQuery,
   });
 
   return (
     <nav
+      style={style}
       className={clsx(
         className,
-        ["z-infinity"],
-        ["bg-slate-900"],
-        ["shadow-lg"]
+        "z-infinity border-b border-obsidian-lighter bg-obsidian-primary shadow-lg @container/globalnav"
       )}
-      style={style}
     >
       <div
         className={clsx(
-          ["h-full"],
-          ["container", ["max-w-screen-lg"]],
-          ["mx-auto"],
-          ["px-4"],
-          ["flex", ["items-center"], ["justify-between"]],
-          ["gap-x-0", "md:gap-x-2"]
+          "mx-auto flex h-full max-w-[1024px] items-center justify-between gap-x-8 px-8"
         )}
       >
-        <div
+        <TopPageLink
           className={clsx(
-            ["hidden", ["md:flex", ["justify-center"]]],
-            ["w-36"],
-            ["shrink-0"]
+            "block shrink-0 fill-snow-primary px-2 transition-colors duration-75 hover:fill-vivid-primary"
           )}
         >
-          <div className={clsx(["w-[96px]"])}>
-            <TopPageLink className={clsx("w-full")}>
-              <Logo className={clsx(["w-full"], ["fill-white"])} />
-            </TopPageLink>
-          </div>
-        </div>
-        <div className={clsx(["grow"])}>
-          <SearchContents className={clsx(["mx-auto"])} />
-        </div>
-        <div
-          className={clsx(["w-36"], ["shrink-0"], ["flex", "justify-center"])}
-        >
+          <Logo className={clsx("h-6")} />
+        </TopPageLink>
+        <SearchContents className={clsx("z-0 grow")} />
+        <div className={clsx("z-1 flex shrink-0 justify-center")}>
           {fetching ? (
             <div
               className={clsx(
-                ["rounded-sm"],
-                ["w-8"],
-                ["h-8"],
-                ["bg-slate-700"],
-                ["animate-pulse"]
+                "h-[32px] w-[32px] animate-pulse rounded-sm bg-obsidian-lighter"
               )}
             />
           ) : !data ? (
@@ -90,24 +69,17 @@ export default function GlobalNav({
               <span className={clsx("text-sm")}>ログイン</span>
             </LoginLink>
           ) : (
-            <div className={clsx(["group"], ["relative"])}>
-              <UserIndicator fragment={data} className={clsx(["z-1"])} />
+            <div className={clsx("group/user relative")}>
+              <UserIndicator
+                fragment={data}
+                className={clsx("z-1 h-[32px] w-[32px]")}
+              />
               <div
                 className={clsx(
-                  ["z-0"],
-                  ["pt-1"],
-                  [
-                    "invisible",
-                    // "group-focus-within:visible",
-                    "group-hover:visible",
-                    "absolute",
-                    "top-full",
-                    ["right-0", "xl:right-auto"],
-                    ["xl:left-[-7rem]"],
-                  ]
+                  "invisible absolute right-0 top-full z-0 pt-1 group-hover/user:visible"
                 )}
               >
-                <ProfileAccordion fragment={data} className={clsx(["w-64"])} />
+                <ProfileAccordion fragment={data} className={clsx("w-64")} />
               </div>
             </div>
           )}

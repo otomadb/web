@@ -7,6 +7,12 @@ import UserIndicator, { Fragment } from "./UserIndicator";
 
 const meta = {
   component: UserIndicator,
+  args: {
+    style: {
+      width: 32,
+      height: 32,
+    },
+  },
 } as Meta<typeof UserIndicator>;
 export default meta;
 

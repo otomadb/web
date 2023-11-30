@@ -2,7 +2,7 @@ import { Meta, StoryObj } from "@storybook/react";
 
 import { makeFragmentData } from "~/gql";
 
-import ProfileAccordion, { Fragment } from ".";
+import ProfileAccordion, { AccordionFragment } from "./ProfileAccordion";
 
 const meta = {
   component: ProfileAccordion,
@@ -26,7 +26,7 @@ export const Normal: StoryObj<typeof meta> = {
           totalCount: 9,
         },
       },
-      Fragment
+      AccordionFragment
     ),
   },
 };
@@ -47,7 +47,7 @@ export const Editor: StoryObj<typeof meta> = {
           totalCount: 9,
         },
       },
-      Fragment
+      AccordionFragment
     ),
   },
 };
@@ -68,7 +68,7 @@ export const Adnimistrator: StoryObj<typeof meta> = {
           totalCount: 9,
         },
       },
-      Fragment
+      AccordionFragment
     ),
   },
 };
