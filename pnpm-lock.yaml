@@ -125,8 +125,8 @@ devDependencies:
     specifier: 7.6.2
     version: 7.6.2(@types/react-dom@18.2.17)(@types/react@18.2.39)(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)
   '@storybook/addon-interactions':
-    specifier: 7.6.1
-    version: 7.6.1
+    specifier: 7.6.2
+    version: 7.6.2
   '@storybook/addon-links':
     specifier: 7.6.2
     version: 7.6.2(react@18.2.0)
@@ -137,8 +137,8 @@ devDependencies:
     specifier: 7.6.2
     version: 7.6.2(@swc/core@1.3.99)(encoding@0.1.13)(esbuild@0.18.20)(next@14.0.3)(react-dom@18.2.0)(react@18.2.0)(sass@1.69.5)(typescript@5.3.2)(webpack@5.89.0)
   '@storybook/react':
-    specifier: 7.6.1
-    version: 7.6.1(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.2)
+    specifier: 7.6.2
+    version: 7.6.2(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.2)
   '@storybook/testing-library':
     specifier: 0.2.2
     version: 0.2.2
@@ -5165,11 +5165,11 @@ packages:
       '@storybook/global': 5.0.0
     dev: true
 
-  /@storybook/addon-interactions@7.6.1:
-    resolution: {integrity: sha512-QaD4BGkai2tQLedyYDqSCSSr+Xt7T4uq5Sv8M8vFBatoP4ojpWdKzfoMhCXErjz5ybh2EGx1R6XwHWLjaaH+sA==}
+  /@storybook/addon-interactions@7.6.2:
+    resolution: {integrity: sha512-dKl3QLx/s+DUiB4eJ2ActxS+thykmFSJI2pVxWd7BJixMDsFnBsOytsZMEJYwaQMd6NbrVcC+xQaNzKSSMFLHA==}
     dependencies:
       '@storybook/global': 5.0.0
-      '@storybook/types': 7.6.1
+      '@storybook/types': 7.6.2
       jest-mock: 27.5.1
       polished: 4.2.2
       ts-dedent: 2.2.0
@@ -5330,17 +5330,6 @@ packages:
       - webpack-cli
     dev: true
 
-  /@storybook/channels@7.6.1:
-    resolution: {integrity: sha512-wQBiY8gLRs6I3V8Cr5xHNx3OImDhzsYGOMM8tUnVKO4HpcxsJ7ipQ8UvIU88MNbk+gx3WCsM4FZBBPF4f1Ar/g==}
-    dependencies:
-      '@storybook/client-logger': 7.6.1
-      '@storybook/core-events': 7.6.1
-      '@storybook/global': 5.0.0
-      qs: 6.11.2
-      telejson: 7.2.0
-      tiny-invariant: 1.3.1
-    dev: true
-
   /@storybook/channels@7.6.2:
     resolution: {integrity: sha512-pSVpnMAfMsImPyAorYPcfkZmBY34+eHmcj8Zab0m/36/M0AQrUq7VSxA+7KD3rhoZaJjioeouxqigjiznNAbZw==}
     dependencies:
@@ -5404,12 +5393,6 @@ packages:
       - utf-8-validate
     dev: true
 
-  /@storybook/client-logger@7.6.1:
-    resolution: {integrity: sha512-klaeDFGK2NAXoRDgp8+55Qn9mdVVNk16POb2/lbXYo8ydZDYaNjjLISO9+dLA65SL8NUEQw1m8YVhzyAQCE5bg==}
-    dependencies:
-      '@storybook/global': 5.0.0
-    dev: true
-
   /@storybook/client-logger@7.6.2:
     resolution: {integrity: sha512-9hlDm7q6jZPVBoqW8V7DTMNMsjMaL2t45h+I8veQhnC2ZW6g+lARXQQDHZpL6MKVkJn6mEA9F0nJBIknbQpqBQ==}
     dependencies:
@@ -5460,49 +5443,11 @@ packages:
       - '@types/react-dom'
     dev: true
 
-  /@storybook/core-client@7.6.1:
-    resolution: {integrity: sha512-izolLY0QAPREwm3ZCp9PZasa0OBchzxWYFaVekgbX66lhFJvAVfp84L17oi3HyVbQt7xbAlGPoSoP6wcfMecTw==}
-    dependencies:
-      '@storybook/client-logger': 7.6.1
-      '@storybook/preview-api': 7.6.1
-    dev: true
-
   /@storybook/core-client@7.6.2:
     resolution: {integrity: sha512-hYSLZM6F2K2WxNoXsI+V+8Ya7mymNrdZpqKhCfQrr8Oi3HPaBRdNWyBD5k96lLp4dHR5ctEUWd8LcdNc+dwGsg==}
     dependencies:
       '@storybook/client-logger': 7.6.2
       '@storybook/preview-api': 7.6.2
-    dev: true
-
-  /@storybook/core-common@7.6.1(encoding@0.1.13):
-    resolution: {integrity: sha512-6K9UXUxO708T0H29Z2QDrLHU5nFL3VEWuS1vzbC/naJVt/yg+w1jzgknP7IFmmDf2e02tLQS886cE+M23249Tg==}
-    dependencies:
-      '@storybook/core-events': 7.6.1
-      '@storybook/node-logger': 7.6.1
-      '@storybook/types': 7.6.1
-      '@types/find-cache-dir': 3.2.1
-      '@types/node': 18.18.14
-      '@types/node-fetch': 2.6.9
-      '@types/pretty-hrtime': 1.0.3
-      chalk: 4.1.2
-      esbuild: 0.18.20
-      esbuild-register: 3.5.0(esbuild@0.18.20)
-      file-system-cache: 2.3.0
-      find-cache-dir: 3.3.2
-      find-up: 5.0.0
-      fs-extra: 11.1.1
-      glob: 10.3.10
-      handlebars: 4.7.8
-      lazy-universal-dotenv: 4.0.0
-      node-fetch: 2.7.0(encoding@0.1.13)
-      picomatch: 2.3.1
-      pkg-dir: 5.0.0
-      pretty-hrtime: 1.0.3
-      resolve-from: 5.0.0
-      ts-dedent: 2.2.0
-    transitivePeerDependencies:
-      - encoding
-      - supports-color
     dev: true
 
   /@storybook/core-common@7.6.2(encoding@0.1.13):
@@ -5534,12 +5479,6 @@ packages:
     transitivePeerDependencies:
       - encoding
       - supports-color
-    dev: true
-
-  /@storybook/core-events@7.6.1:
-    resolution: {integrity: sha512-4B55//oGyvdiKQUCMRHLlA6v7HW69tf4mqjHdPbwETyj9PzFTpo4S8tsYxkba/azCxvqncotPDsMkxycritGbA==}
-    dependencies:
-      ts-dedent: 2.2.0
     dev: true
 
   /@storybook/core-events@7.6.2:
@@ -5651,21 +5590,6 @@ packages:
 
   /@storybook/docs-mdx@0.1.0:
     resolution: {integrity: sha512-JDaBR9lwVY4eSH5W8EGHrhODjygPd6QImRbwjAuJNEnY0Vw4ie3bPkeGfnacB3OBW6u/agqPv2aRlR46JcAQLg==}
-    dev: true
-
-  /@storybook/docs-tools@7.6.1(encoding@0.1.13):
-    resolution: {integrity: sha512-F6mbKFWwqzCTM39xnsW5FH/wSxeQTZ/N9j1MM8J+x39QbWbLi2VodSuPjKyS1L7CPcYhc3N1Re/F3lIgpF2piw==}
-    dependencies:
-      '@storybook/core-common': 7.6.1(encoding@0.1.13)
-      '@storybook/preview-api': 7.6.1
-      '@storybook/types': 7.6.1
-      '@types/doctrine': 0.0.3
-      assert: 2.1.0
-      doctrine: 3.0.0
-      lodash: 4.17.21
-    transitivePeerDependencies:
-      - encoding
-      - supports-color
     dev: true
 
   /@storybook/docs-tools@7.6.2(encoding@0.1.13):
@@ -5802,10 +5726,6 @@ packages:
       - webpack-plugin-serve
     dev: true
 
-  /@storybook/node-logger@7.6.1:
-    resolution: {integrity: sha512-aHQUfWJBJBBof4WfNN552I76QZmMwLHeerI+98NE3IphRHlM+OW96crKXKvX7DWaN5otgxdXroZFpEABKhHIwQ==}
-    dev: true
-
   /@storybook/node-logger@7.6.2:
     resolution: {integrity: sha512-BiHADIHeKDSIJFWXPlNGb7UlR48jlTLcGXmWm68ucFWxkngwG81Tih/lJ1WW2GxTFl2LSrhvO9uKIFBBeVltzA==}
     dev: true
@@ -5864,25 +5784,6 @@ packages:
       - webpack-plugin-serve
     dev: true
 
-  /@storybook/preview-api@7.6.1:
-    resolution: {integrity: sha512-lhuwkDHBZCq3UtQXRkGKTBntINkXPXyAA7fSYWrwfQBr/3NhaCoj859b+71Ax8sYcSFF4+U3S6+o8XE3dz+kwA==}
-    dependencies:
-      '@storybook/channels': 7.6.1
-      '@storybook/client-logger': 7.6.1
-      '@storybook/core-events': 7.6.1
-      '@storybook/csf': 0.1.2
-      '@storybook/global': 5.0.0
-      '@storybook/types': 7.6.1
-      '@types/qs': 6.9.10
-      dequal: 2.0.3
-      lodash: 4.17.21
-      memoizerific: 1.11.3
-      qs: 6.11.2
-      synchronous-promise: 2.0.17
-      ts-dedent: 2.2.0
-      util-deprecate: 1.0.2
-    dev: true
-
   /@storybook/preview-api@7.6.2:
     resolution: {integrity: sha512-5scmFblrBKBLQSZVlwNUCXhos8GJ8alzMSs0msAbguytjWEuNQ2EKoO7EoO3wvaYf7K3mkOg082RU9nH8SM6mg==}
     dependencies:
@@ -5925,16 +5826,6 @@ packages:
       - supports-color
     dev: true
 
-  /@storybook/react-dom-shim@7.6.1(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-COIVtG33Pfa8o8PR7VlQKjBOD5jG3dUPLuRBwvomy3+fkoS5JZNTnehZrgDDMkevpZr8eb0A+uCfLckicsg/ig==}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0
-      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
-    dependencies:
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
-    dev: true
-
   /@storybook/react-dom-shim@7.6.2(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-YyZUzQ56ivh2WIkWnzb57ihIuyk4iMcr4fw7Lpq/Qj7XIJu+SkX/xFhDhvBXj7IFZPfOwMmhl5A7IfcGc43gbQ==}
     peerDependencies:
@@ -5943,46 +5834,6 @@ packages:
     dependencies:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-    dev: true
-
-  /@storybook/react@7.6.1(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.2):
-    resolution: {integrity: sha512-zl157OA2ihP7sGDzgiU9lnXJ+iDDnxcEJu0xVCVsAjD1BvAKYB1Otc6aRIRCHLQLP8yoM7ekxzWYl9lGjXunNA==}
-    engines: {node: '>=16.0.0'}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0
-      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
-      typescript: '*'
-    peerDependenciesMeta:
-      typescript:
-        optional: true
-    dependencies:
-      '@storybook/client-logger': 7.6.1
-      '@storybook/core-client': 7.6.1
-      '@storybook/docs-tools': 7.6.1(encoding@0.1.13)
-      '@storybook/global': 5.0.0
-      '@storybook/preview-api': 7.6.1
-      '@storybook/react-dom-shim': 7.6.1(react-dom@18.2.0)(react@18.2.0)
-      '@storybook/types': 7.6.1
-      '@types/escodegen': 0.0.6
-      '@types/estree': 0.0.51
-      '@types/node': 18.18.14
-      acorn: 7.4.1
-      acorn-jsx: 5.3.2(acorn@7.4.1)
-      acorn-walk: 7.2.0
-      escodegen: 2.1.0
-      html-tags: 3.3.1
-      lodash: 4.17.21
-      prop-types: 15.8.1
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
-      react-element-to-jsx-string: 15.0.0(react-dom@18.2.0)(react@18.2.0)
-      ts-dedent: 2.2.0
-      type-fest: 2.19.0
-      typescript: 5.3.2
-      util-deprecate: 1.0.2
-    transitivePeerDependencies:
-      - encoding
-      - supports-color
     dev: true
 
   /@storybook/react@7.6.2(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.2):
@@ -6069,15 +5920,6 @@ packages:
       memoizerific: 1.11.3
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-    dev: true
-
-  /@storybook/types@7.6.1:
-    resolution: {integrity: sha512-xwEdMHbms7nnyPugqrxjz62n1CoAZ6I+m6y7Rfk/2C0nsgpS0Go1UXUNmcWNxx2ZYX7bEgSPZtcYZa9buPSY3g==}
-    dependencies:
-      '@storybook/channels': 7.6.1
-      '@types/babel__core': 7.20.5
-      '@types/express': 4.17.21
-      file-system-cache: 2.3.0
     dev: true
 
   /@storybook/types@7.6.2:
