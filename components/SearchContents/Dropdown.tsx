@@ -13,7 +13,18 @@ export const Dropdown: React.FC<{
   style?: React.CSSProperties;
   query: string;
   size: "md";
-}> = ({ classname, style, size = "md", query }) => {
+  searchMads: boolean;
+  searchTags: boolean;
+  searchNicovideo: boolean;
+}> = ({
+  classname,
+  style,
+  size = "md",
+  query,
+  searchMads,
+  searchNicovideo,
+  searchTags,
+}) => {
   return (
     <div
       style={style}
@@ -24,9 +35,13 @@ export const Dropdown: React.FC<{
       )}
     >
       <div className={clsx("flex flex-col gap-y-2")}>
-        <SearchTags className={clsx("w-full")} size={size} query={query} />
-        <SearchMads className={clsx("w-full")} size={size} query={query} />
-        {regexNicovideoSourceID.test(query) && (
+        {searchTags && (
+          <SearchTags className={clsx("w-full")} size={size} query={query} />
+        )}
+        {searchMads && (
+          <SearchMads className={clsx("w-full")} size={size} query={query} />
+        )}
+        {searchNicovideo && regexNicovideoSourceID.test(query) && (
           <SearchNicovideo
             className={clsx("w-full")}
             sourceId={query}

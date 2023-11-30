@@ -14,6 +14,9 @@ export default function SearchContents({
   style,
   size = "md",
   opacity = false,
+  searchMads = true,
+  searchNicovideo = true,
+  searchTags = true,
 }: {
   className?: string;
   style?: React.CSSProperties;
@@ -23,6 +26,18 @@ export default function SearchContents({
    * @default false
    */
   opacity?: boolean;
+  /**
+   * 検索対象にMADを含める
+   */
+  searchMads?: boolean;
+  /**
+   * 検索対象にタグを含める
+   */
+  searchTags?: boolean;
+  /**
+   * 検索対象にニコニコ動画を含める
+   */
+  searchNicovideo?: boolean;
 }) {
   const [query, setQuery] = useState<string>("");
 
@@ -65,6 +80,9 @@ export default function SearchContents({
           )}
           size={size}
           query={query}
+          searchMads={searchMads}
+          searchNicovideo={searchNicovideo}
+          searchTags={searchTags}
         />
       )}
     </form>
