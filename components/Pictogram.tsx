@@ -63,8 +63,8 @@ export default function Pictogram({
     case "loading":
       return (
         <ArrowPathIcon
-          className={clsx(props.className, ["animate-spin"])}
           {...props}
+          className={clsx(props.className, ["animate-spin"])}
         />
       );
     case "note":

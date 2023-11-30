@@ -1,130 +1,42 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { graphql } from "msw";
-import {
-  createClient as createUrqlClient,
-  Provider as UrqlProvider,
-} from "urql";
 
-import {
-  SearchContents_SearchNicovideoDocument,
-  SearchContentsDocument,
-} from "~/gql/graphql";
-import {
-  aNicovideoRegistrationRequest,
-  aNicovideoVideoSource,
-  aSearchTagsPayload,
-  aSearchVideosPayload,
-  aTag,
-  aTagName,
-  aTagSearchItemByName,
-  aVideo,
-  aVideoSearchItemByTitle,
-  aVideoTag,
-  aVideoTagConnection,
-  aVideoTitle,
-} from "~/gql/mock";
+import { MockedUrqlProvider } from "~/utils/MockedUrqlProvider";
 
 import { Dropdown } from "./Dropdown";
+import {
+  $handlerNicovideoLoading,
+  $handlerSourceAndRequests as $handlerNicovideoSourceAndRequests,
+} from "./Nicovideo.stories";
+import {
+  $handlerMadsSearching,
+  $handlerSomeMadsHit,
+} from "./SearchMads.stories";
+import {
+  $handlerSomeTagsHit,
+  $handlerTagsSearching,
+} from "./SearchTags.stories";
 
 const meta = {
   component: Dropdown,
-  args: {},
+  args: {
+    style: {
+      width: 640,
+      size: "md",
+    },
+  },
   render(args) {
     return (
-      <UrqlProvider
-        value={createUrqlClient({ url: "/graphql", exchanges: [] })}
-      >
+      <MockedUrqlProvider>
         <Dropdown {...args} />
-      </UrqlProvider>
+      </MockedUrqlProvider>
     );
   },
   parameters: {
     msw: {
       handlers: [
-        graphql.query(SearchContentsDocument, (req, res, ctx) =>
-          res(
-            ctx.data({
-              searchTags: aSearchTagsPayload({
-                items: [
-                  aTagSearchItemByName({
-                    name: aTagName({
-                      name: "name1",
-                    }),
-                    tag: aTag({
-                      id: "t1",
-                    }),
-                  }),
-                  aTagSearchItemByName({
-                    name: aTagName({
-                      name: "name2",
-                    }),
-                    tag: aTag({
-                      id: "t2",
-                    }),
-                  }),
-                ],
-              }),
-              searchVideos: aSearchVideosPayload({
-                items: [
-                  aVideoSearchItemByTitle({
-                    title: aVideoTitle({
-                      title: "title1",
-                    }),
-                    video: aVideo({
-                      id: "v1",
-                      title: "Title 1",
-                      thumbnailUrl: "/960x540.jpg",
-                    }),
-                  }),
-                  aVideoSearchItemByTitle({
-                    title: aVideoTitle({
-                      title: "title2",
-                    }),
-                    video: aVideo({
-                      id: "v2",
-                      title: "Title 2",
-                      thumbnailUrl: "/960x540.jpg",
-                    }),
-                  }),
-                ],
-              }),
-            })
-          )
-        ),
-        graphql.query(SearchContents_SearchNicovideoDocument, (req, res, ctx) =>
-          res(
-            ctx.data({
-              findNicovideoVideoSource: aNicovideoVideoSource({
-                video: aVideo({
-                  id: "v1",
-                  title: "Title 1",
-                  thumbnailUrl: "/960x540.jpg",
-                  taggings: aVideoTagConnection({
-                    nodes: [
-                      aVideoTag({
-                        tag: aTag({
-                          id: "t1",
-                          name: "Tag 1",
-                          explicitParent: null,
-                        }),
-                      }),
-                      aVideoTag({
-                        tag: aTag({
-                          id: "t2",
-                          name: "Tag 2",
-                          explicitParent: null,
-                        }),
-                      }),
-                    ],
-                  }),
-                }),
-              }),
-              findNicovideoRegistrationRequest: aNicovideoRegistrationRequest(
-                {}
-              ),
-            })
-          )
-        ),
+        $handlerSomeMadsHit,
+        $handlerSomeTagsHit,
+        $handlerNicovideoSourceAndRequests,
       ],
     },
   },
@@ -135,9 +47,9 @@ export const Loading: StoryObj<typeof meta> = {
   parameters: {
     msw: {
       handlers: [
-        graphql.query(SearchContentsDocument, (req, res, ctx) =>
-          res(ctx.delay("infinite"))
-        ),
+        $handlerMadsSearching,
+        $handlerTagsSearching,
+        $handlerNicovideoLoading,
       ],
     },
   },
@@ -148,15 +60,5 @@ export const Primary: StoryObj<typeof meta> = {
 };
 
 export const NicovideoId: StoryObj<typeof meta> = {
-  args: {
-    query: "sm2057168",
-  },
+  args: { query: "sm2057168" },
 };
-
-/*
-export const Click: StoryObj<typeof meta> = {
-  play: async () => {
-    await userEvent.click(screen.getByLabelText("Search box input"));
-  },
-};
-*/
