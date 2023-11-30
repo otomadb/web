@@ -55,21 +55,21 @@ module.exports = {
       },
       colors: {
         "vivid": {
-          primary: "hsl(162, 91%, 73%)",
+          primary: "hsl(177.5, 92%, 69.5%)",
         },
         "obsidian": {
-          darkest: "hsl(232, 34%, 6%)",
-          darker: "hsl(228, 21%, 9%)",
-          primary: "hsl(222, 17%, 13%)",
-          lighter: "hsl(218, 20%, 21%)",
-          lightest: "hsl(216, 13%, 28%)",
+          darkest: "hsl(242, 37.5%, 6%)",
+          darker: "hsl(238, 26%, 12%)",
+          primary: "hsl(232, 19%, 16.5%)",
+          lighter: "hsl(228, 20%, 21%)",
+          lightest: "hsl(226, 23.5%, 26%)",
         },
         "snow": {
-          darkest: "hsl(210, 16%, 62%)",
-          darker: "hsl(210, 29%, 76%)",
+          darkest: "hsl(215, 18%, 65%)",
+          darker: "hsl(212, 24%, 76%)",
           primary: "hsl(210, 22%, 84%)",
-          lighter: "hsl(210, 18%, 92%)",
-          lightest: "hsl(210, 14%, 96%)",
+          lighter: "hsl(207, 29%, 92%)",
+          lightest: "hsl(204, 32%, 96%)",
         },
         // other services
         "nicovideo": { primary: "#FFF", sub: "#252525" },
