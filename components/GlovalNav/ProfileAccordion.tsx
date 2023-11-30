@@ -23,15 +23,13 @@ import {
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const AccordionFragment = graphql(`
-  fragment GlobalNav_ProfileAccordion on Query {
-    notifications(filter: { watched: false }) {
+  fragment GlobalNav_ProfileAccordion on User {
+    name
+    displayName
+    isEditor: hasRole(role: EDITOR)
+    isAdmin: hasRole(role: ADMIN)
+    notifications(input: { filter: { watched: false } }) {
       totalCount
-    }
-    whoami {
-      name
-      displayName
-      isEditor: hasRole(role: EDITOR)
-      isAdmin: hasRole(role: ADMIN)
     }
   }
 `);
@@ -45,7 +43,7 @@ export default function ProfileAccordion({
   fragment: FragmentType<typeof AccordionFragment>;
 }) {
   const fragment = useFragment(AccordionFragment, props.fragment);
-  const { whoami, notifications } = fragment;
+  const { notifications, displayName, name, isEditor } = fragment;
   const openRequestFromNicovideo = useOpenRequestFromNicovideo();
 
   const openRegisterFromNicovideo = useOpenRegisterFromNicovideo();
@@ -74,14 +72,14 @@ export default function ProfileAccordion({
             "text-sm font-bold text-snow-primary group-hover/link:text-obsidian-primary"
           )}
         >
-          {whoami.displayName}
+          {displayName}
         </div>
         <div
           className={clsx(
             "text-xs text-snow-darker group-hover/link:text-obsidian-primary"
           )}
         >
-          @{whoami.name}
+          @{name}
         </div>
       </MyPageLink>
       <NotificationsPageLink
@@ -166,7 +164,7 @@ export default function ProfileAccordion({
           設定
         </SettingPageLink>
       </div>
-      {whoami.isEditor && (
+      {isEditor && (
         <div className={clsx("grid grid-cols-2")}>
           <button
             type="button"

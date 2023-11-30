@@ -15,13 +15,11 @@ export const Normal: StoryObj<typeof meta> = {
   args: {
     fragment: makeFragmentData(
       {
-        whoami: {
-          name: "user1",
-          displayName: "User 1",
-          icon: "/512x512.png",
-          isEditor: false,
-          isAdministrator: false,
-        },
+        name: "user1",
+        displayName: "User 1",
+        icon: "/512x512.png",
+        isEditor: false,
+        isAdministrator: false,
         notifications: {
           totalCount: 9,
         },
@@ -36,13 +34,11 @@ export const Editor: StoryObj<typeof meta> = {
   args: {
     fragment: makeFragmentData(
       {
-        whoami: {
-          name: "user1",
-          displayName: "User 1",
-          icon: "/512x512.png",
-          isEditor: true,
-          isAdministrator: false,
-        },
+        name: "user1",
+        displayName: "User 1",
+        icon: "/512x512.png",
+        isEditor: true,
+        isAdministrator: false,
         notifications: {
           totalCount: 9,
         },
@@ -57,13 +53,11 @@ export const Adnimistrator: StoryObj<typeof meta> = {
   args: {
     fragment: makeFragmentData(
       {
-        whoami: {
-          name: "user1",
-          displayName: "User 1",
-          icon: "/512x512.png",
-          isEditor: true,
-          isAdministrator: true,
-        },
+        name: "user1",
+        displayName: "User 1",
+        icon: "/512x512.png",
+        isEditor: true,
+        isAdministrator: true,
         notifications: {
           totalCount: 9,
         },

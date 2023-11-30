@@ -21,12 +21,10 @@ export const SomeNotifications: StoryObj<typeof meta> = {
   args: {
     fragment: makeFragmentData(
       {
-        whoami: {
-          ...makeFragmentData(
-            { icon: "/512x512.png", displayName: "SnO2WmaN" },
-            UserIconFragment
-          ),
-        },
+        ...makeFragmentData(
+          { icon: "/512x512.png", displayName: "SnO2WMaN" },
+          UserIconFragment
+        ),
         notifications: {
           totalCount: 9,
         },
@@ -41,12 +39,10 @@ export const NoNotifications: StoryObj<typeof meta> = {
   args: {
     fragment: makeFragmentData(
       {
-        whoami: {
-          ...makeFragmentData(
-            { icon: "/512x512.png", displayName: "SnO2WmaN" },
-            UserIconFragment
-          ),
-        },
+        ...makeFragmentData(
+          { icon: "/512x512.png", displayName: "SnO2WmaN" },
+          UserIconFragment
+        ),
         notifications: {
           totalCount: 0,
         },

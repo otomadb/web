@@ -16,8 +16,10 @@ import UserIndicator from "./UserIndicator";
 
 export const GlobalNavQuery = graphql(`
   query GlobalNav {
-    ...GlobalNav_ProfileIndicator
-    ...GlobalNav_ProfileAccordion
+    whoami {
+      ...GlobalNav_ProfileIndicator
+      ...GlobalNav_ProfileAccordion
+    }
   }
 `);
 export default function GlobalNav({
@@ -71,7 +73,7 @@ export default function GlobalNav({
           ) : (
             <div className={clsx("group/user relative")}>
               <UserIndicator
-                fragment={data}
+                fragment={data.whoami}
                 className={clsx("z-1 h-[32px] w-[32px]")}
               />
               <div
@@ -79,7 +81,10 @@ export default function GlobalNav({
                   "invisible absolute right-0 top-full z-0 pt-1 group-hover/user:visible"
                 )}
               >
-                <ProfileAccordion fragment={data} className={clsx("w-64")} />
+                <ProfileAccordion
+                  fragment={data.whoami}
+                  className={clsx("w-64")}
+                />
               </div>
             </div>
           )}

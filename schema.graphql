@@ -1091,8 +1091,6 @@ type Query {
   fetchYoutube(input: FetchYoutubeInput!): FetchYoutubePayload!
   findBilibiliMADSource(input: FindBilibiliMADSourceInput!): BilibiliMADSource
   findMadBySerial(serial: Int!): Video
-
-  """OffsetベースでMADを複数取得する"""
   findMadsByOffset(input: FindMadsByOffsetInput!): FindMadsByOffsetPayload!
   findMylist(input: FindMylistInput!): Mylist
   findNicovideoRegistrationRequest(input: FindNicovideoRegistrationRequestInput): NicovideoRegistrationRequest
@@ -1921,6 +1919,7 @@ type Tag implements Node {
 
   """offsetベースでタグ付けされた動画を取得する"""
   taggedVideosByOffset(input: TaggedVideosByOffsetInput!): TagTaggedVideosByOffsetPayload!
+  totalTaggedVideos: Int!
   type: TagType!
 }
 
@@ -2197,6 +2196,9 @@ type User implements Node {
   mylists(after: String, before: String, first: Int, last: Int, orderBy: UserMylistsOrderBy! = {createdAt: DESC}, range: [MylistShareRange!]! = [PUBLIC]): MylistConnection!
   name: String!
   nicovideoRegistrationRequests(after: String, before: String, first: Int, last: Int, orderBy: UserNicovideoRegistrationRequestsOrderBy! = {createdAt: DESC}): NicovideoRegistrationRequestConnection!
+
+  """現在このユーザに届いている通知．"""
+  notifications(input: UserNotificationsInput!): NotificationConnection!
 }
 
 input UserMylistsOrderBy {
@@ -2204,6 +2206,23 @@ input UserMylistsOrderBy {
 }
 
 input UserNicovideoRegistrationRequestsOrderBy {
+  createdAt: SortOrder
+}
+
+input UserNotificationsFilter {
+  watched: Boolean
+}
+
+input UserNotificationsInput {
+  after: String
+  before: String
+  filter: UserNotificationsFilter! = {}
+  first: Int
+  last: Int
+  orderBy: UserNotificationsOrderBy! = {createdAt: DESC}
+}
+
+input UserNotificationsOrderBy {
   createdAt: SortOrder
 }
 

@@ -84,9 +84,9 @@ const $handlerSuccessful = mswGraphql.query(GlobalNavQuery, (req, res, ctx) => {
         icon: "/512x512.png",
         isEditor: false,
         isAdministrator: false,
-      },
-      notifications: {
-        totalCount: 9,
+        notifications: {
+          totalCount: 9,
+        },
       },
     } as ResultOf<typeof GlobalNavQuery>)
   );
