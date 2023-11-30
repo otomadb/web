@@ -27,7 +27,7 @@ export default function SearchContents({
   const [query, setQuery] = useState<string>("");
 
   return (
-    <form style={style} className={clsx(className, "group relative w-full")}>
+    <form style={style} className={clsx(className, "group/sc relative w-full")}>
       <div
         className={clsx(
           "rounded-md border",
@@ -61,7 +61,7 @@ export default function SearchContents({
       {query !== "" && (
         <Dropdown
           classname={clsx(
-            "invisible absolute top-full z-infinity w-full group-focus-within:visible"
+            "invisible absolute top-full z-infinity w-full group-focus-within/sc:visible"
           )}
           size={size}
           query={query}

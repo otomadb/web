@@ -3,6 +3,9 @@ import { Meta, StoryObj } from "@storybook/react";
 import { MockedUrqlProvider } from "~/utils/MockedUrqlProvider";
 
 import SearchContents from ".";
+import { $handlerSourceAndRequests as $handlerNicovideoSourceAndRequests } from "./Nicovideo.stories";
+import { $handlerSomeMadsHit } from "./SearchMads.stories";
+import { $handlerSomeTagsHit } from "./SearchTags.stories";
 
 const meta = {
   component: SearchContents,
@@ -17,6 +20,15 @@ const meta = {
         <SearchContents {...args} />
       </MockedUrqlProvider>
     );
+  },
+  parameters: {
+    msw: {
+      handlers: [
+        $handlerSomeMadsHit,
+        $handlerSomeTagsHit,
+        $handlerNicovideoSourceAndRequests,
+      ],
+    },
   },
 } satisfies Meta<typeof SearchContents>;
 export default meta;
