@@ -4,8 +4,8 @@ import React from "react";
 import { useQuery } from "urql";
 
 import NicovideoRequestPageLink from "~/app/(application)/(normal)/request/nicovideo/Link";
-import { LinkNicovideoRegistrationRequest as NicovideoRegistrationRequestLink } from "~/app/(application)/requests/nicovideo/[sourceId]/Link";
 import { MadPageLink } from "~/app/(v2)/mads/[serial]/Link";
+import { NicovideoRegistrationRequestLink } from "~/app/(v2)/requests/nicovideo/[sourceId]/Link";
 import CommonTag from "~/components/CommonTag";
 import { CoolImage } from "~/components/CoolImage";
 import Pictogram from "~/components/Pictogram";

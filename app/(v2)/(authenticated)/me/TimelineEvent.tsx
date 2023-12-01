@@ -15,8 +15,8 @@ import UserIconLink from "~/components/UserLink/UserIconLink";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-import { LinkNicovideoRegistrationRequest } from "../../../(application)/requests/nicovideo/[sourceId]/Link";
 import { YoutubeRequestPageLink } from "../../../(application)/requests/youtube/[sourceId]/Link";
+import { NicovideoRegistrationRequestLink } from "../../requests/nicovideo/[sourceId]/Link";
 
 export const TimelineEventFragment = graphql(`
   fragment MyTopPage_TimelineSegment_TimelineEvent on TimelineEvent {
@@ -196,7 +196,7 @@ export default function TimelineEvent({
       )}
       {fragment.__typename === "NicovideoMadRequestedTimelineEvent" && (
         <div className={clsx("flex grow gap-x-4")}>
-          <LinkNicovideoRegistrationRequest
+          <NicovideoRegistrationRequestLink
             className={clsx("block shrink-0")}
             fragment={fragment.request}
           >
@@ -207,15 +207,15 @@ export default function TimelineEvent({
               alt={fragment.request.title}
               src={fragment.request.thumbnailUrl}
             />
-          </LinkNicovideoRegistrationRequest>
+          </NicovideoRegistrationRequestLink>
           <div className={clsx("grow py-2")}>
             <p className={clsx("text-sm text-snow-primary")}>
-              <LinkNicovideoRegistrationRequest
+              <NicovideoRegistrationRequestLink
                 fragment={fragment.request}
                 className={clsx("font-bold text-vivid-primary hover:underline")}
               >
                 {fragment.request.title}
-              </LinkNicovideoRegistrationRequest>
+              </NicovideoRegistrationRequestLink>
               がリクエストされました。
             </p>
             <div className={clsx("mt-2 flex gap-x-1")}>

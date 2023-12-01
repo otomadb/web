@@ -4,7 +4,7 @@ import "client-only";
 import clsx from "clsx";
 import React from "react";
 
-import { LinkNicovideoRegistrationRequest } from "~/app/(application)/requests/nicovideo/[sourceId]/Link";
+import { NicovideoRegistrationRequestLink } from "~/app/(v2)/requests/nicovideo/[sourceId]/Link";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const Fragment = graphql(`
@@ -23,12 +23,12 @@ export const SucceededToast: React.FC<{
   return (
     <div>
       <p>
-        <LinkNicovideoRegistrationRequest
+        <NicovideoRegistrationRequestLink
           fragment={fragment.request}
           className={clsx(["font-bold"], ["text-blue-400"])}
         >
           {fragment.request.sourceId}
-        </LinkNicovideoRegistrationRequest>
+        </NicovideoRegistrationRequestLink>
         <span className={clsx(["text-slate-700"])}>をリクエストしました</span>
       </p>
     </div>

@@ -9,7 +9,7 @@ import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
 import { MockedUrqlProvider } from "~/utils/MockedUrqlProvider";
 
-import { NicovideoRequestPageLinkFragment } from "./[sourceId]/Link";
+import { NicovideoRegistrationRequestLinkFragment } from "../../../(v2)/requests/nicovideo/[sourceId]/Link";
 import RequestsListItem, { Fragment } from "./RequestsListItem";
 
 const meta = {
@@ -53,7 +53,7 @@ const meta = {
         } as never, // TODO: Fix type
         ...makeFragmentData(
           { sourceId: "sm9" },
-          NicovideoRequestPageLinkFragment
+          NicovideoRegistrationRequestLinkFragment
         ),
       },
       Fragment
@@ -145,7 +145,7 @@ export const タグ付けが多い: Story = {
         } as never, // TODO: Fix type
         ...makeFragmentData(
           { sourceId: "sm9" },
-          NicovideoRequestPageLinkFragment
+          NicovideoRegistrationRequestLinkFragment
         ),
       },
       Fragment
@@ -177,7 +177,7 @@ export const タグ付けが無い: Story = {
         } as never, // TODO: Fix type
         ...makeFragmentData(
           { sourceId: "sm9" },
-          NicovideoRequestPageLinkFragment
+          NicovideoRegistrationRequestLinkFragment
         ),
       },
       Fragment
@@ -224,7 +224,7 @@ export const 仮タグ付けが多い: Story = {
         } as never, // TODO: Fix type
         ...makeFragmentData(
           { sourceId: "sm9" },
-          NicovideoRequestPageLinkFragment
+          NicovideoRegistrationRequestLinkFragment
         ),
       },
       Fragment
@@ -268,7 +268,7 @@ export const 仮タグ付けが無い: Story = {
         } as never, // TODO: Fix type
         ...makeFragmentData(
           { sourceId: "sm9" },
-          NicovideoRequestPageLinkFragment
+          NicovideoRegistrationRequestLinkFragment
         ),
       },
       Fragment
