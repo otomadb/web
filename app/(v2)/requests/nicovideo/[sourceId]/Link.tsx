@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { ComponentProps } from "react";
 
-import { graphql, useFragment } from "~/gql";
-import FragmentedLink from "~/utils/FragmentedLink";
+import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const NicovideoRegistrationRequestLinkFragment = graphql(`
   fragment Link_NicovideoRegistrationRequest on NicovideoRegistrationRequest {
@@ -10,8 +9,10 @@ export const NicovideoRegistrationRequestLinkFragment = graphql(`
   }
 `);
 
-export const NicovideoRegistrationRequestLink: FragmentedLink<
-  typeof NicovideoRegistrationRequestLinkFragment
+export const NicovideoRegistrationRequestLink: React.FC<
+  Omit<ComponentProps<typeof Link>, "href"> & {
+    fragment: FragmentType<typeof NicovideoRegistrationRequestLinkFragment>;
+  }
 > = ({ children, fragment, ...props }) => {
   const { sourceId } = useFragment(
     NicovideoRegistrationRequestLinkFragment,
