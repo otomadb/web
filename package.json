@@ -106,11 +106,17 @@
     "prettier": "3.1.0",
     "serve": "14.2.1",
     "style-loader": "3.3.3",
+    "tailwind-scrollbar": "^3.0.5",
     "tailwindcss": "3.3.5",
     "typescript": "5.3.2",
     "vitest": "0.34.6"
   },
   "peerDependencies": {
     "@parcel/watcher": "2.3.0"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "tailwind-scrollbar@3.0.5": "patches/tailwind-scrollbar@3.0.5.patch"
+    }
   }
 }
