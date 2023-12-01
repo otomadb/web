@@ -5,9 +5,9 @@ import { useQuery } from "urql";
 
 import { LinkRegisterSemitag } from "~/app/(application)/(editor)/editor/semitags/Link";
 import { TagRegisterPageLink } from "~/app/(application)/(editor)/editor/tags/Link";
-import { AllNicovideoRequestsPageLink } from "~/app/(application)/requests/nicovideo/Link";
 import TopPageLink from "~/app/(landing)/Link";
 import { AllVideosPageLink } from "~/app/(v2)/mads/Link";
+import AllNicovideoRequestsPageLink from "~/app/(v2)/requests/nicovideo/Link";
 import {
   useOpenRegisterFromBilibili,
   useOpenRegisterFromNicovideo,
