@@ -3,13 +3,9 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import CommonMadBlock from "~/components/CommonMadBlock";
+import Paginator from "~/components/Paginator";
 import { graphql } from "~/gql";
 import { makeGraphQLClient } from "~/gql/fetch";
-
-import {
-  AbstractPagenation,
-  AbstractPaginateLink,
-} from "../tags/[serial]/Pagination";
 
 export async function generateMetadata({
   searchParams,
@@ -67,14 +63,12 @@ export default async function Page({
             登録されている音MAD一覧
           </h1>
         </div>
-        <AbstractPagenation
+        <Paginator
           size="sm"
           className={clsx()}
           pageMax={pageMax}
           currentPage={page}
-          PaginateLink={(props) => (
-            <AbstractPaginateLink {...props} pathname="/mads" />
-          )}
+          pathname="/mads"
         />
       </div>
       <div
@@ -87,13 +81,11 @@ export default async function Page({
         ))}
       </div>
       <div className={clsx("flex w-full justify-end px-4 py-2")}>
-        <AbstractPagenation
+        <Paginator
           size="sm"
           pageMax={pageMax}
           currentPage={page}
-          PaginateLink={(props) => (
-            <AbstractPaginateLink {...props} pathname="/mads" />
-          )}
+          pathname="/mads"
         />
       </div>
     </main>

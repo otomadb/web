@@ -2,10 +2,9 @@ import clsx from "clsx";
 import { notFound } from "next/navigation";
 
 import CommonMadBlock from "~/components/CommonMadBlock";
+import Paginator from "~/components/Paginator";
 import { graphql } from "~/gql";
 import { makeGraphQLClient } from "~/gql/fetch";
-
-import { Pagenation } from "./Pagination";
 
 export default async function Page({
   params,
@@ -24,6 +23,7 @@ export default async function Page({
           ...TagPage_Pagination
           id
           name
+          serial
           taggedVideosByOffset(input: { offset: $offset, take: 24 }) {
             hasMore
             totalCount
@@ -64,10 +64,11 @@ export default async function Page({
           ))}
         </div>
       </div>
-      <Pagenation
+      <Paginator
         pageMax={pageMax}
         currentPage={page}
-        fragment={result.findTagBySerial}
+        size="sm"
+        pathname={`/tags/${findTagBySerial.serial}`}
       />
     </div>
   );
