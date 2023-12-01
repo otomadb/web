@@ -10,10 +10,11 @@ import { makeGraphQLClient } from "~/gql/fetch";
 
 export const Presentation: React.FC<{
   className?: string;
+  style?: React.CSSProperties;
   madsCount: number;
   tagsCount: number;
-}> = ({ className, madsCount, tagsCount }) => (
-  <footer className={clsx(className, "bg-obsidian-darker py-24")}>
+}> = ({ className, style, madsCount, tagsCount }) => (
+  <footer className={clsx(className, "bg-obsidian-darker py-24")} style={style}>
     <div
       className={clsx(
         "container mx-auto flex max-w-screen-xl flex-row flex-wrap items-center gap-8 px-12 @container/footer"
@@ -155,7 +156,12 @@ export const Presentation: React.FC<{
   </footer>
 );
 
-export default async function GlobalFooter() {
+export default async function GlobalFooter({
+  ...props
+}: {
+  className?: string;
+  style?: React.CSSProperties;
+}) {
   const { countAllMads, countAllTags } = await makeGraphQLClient().request(
     graphql(`
       query GlobalFooter {
@@ -165,5 +171,11 @@ export default async function GlobalFooter() {
     `)
   );
 
-  return <Presentation madsCount={countAllMads} tagsCount={countAllTags} />;
+  return (
+    <Presentation
+      madsCount={countAllMads}
+      tagsCount={countAllTags}
+      {...props}
+    />
+  );
 }

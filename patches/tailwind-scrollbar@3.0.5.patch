@@ -1,0 +1,15 @@
+diff --git a/src/utilities.js b/src/utilities.js
+index 247f91bb0b3a073e8f572ac756efda063c563c13..c22973c251a06b2bd732ff6b4c8e105faab2bc0c 100644
+--- a/src/utilities.js
++++ b/src/utilities.js
+@@ -67,8 +67,8 @@ const SCROLLBAR_SIZE_UTILITIES = {
+ 
+     '&::-webkit-scrollbar': {
+       display: 'block',
+-      width: '8px',
+-      height: '8px'
++      width: 'var(--scrollbar-width, 8px)',
++      height: 'var(--scrollbar-height, 8px)'
+     }
+   },
+ 

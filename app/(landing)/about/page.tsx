@@ -7,6 +7,7 @@ import { MadPageLink } from "~/app/(v2)/mads/[serial]/Link";
 import { AllVideosPageLink } from "~/app/(v2)/mads/Link";
 import { LoginLink } from "~/components/AuthLink";
 import CommonTagLink from "~/components/CommonTagLink";
+import GlobalFooter from "~/components/GlobalFooter";
 import Pictogram from "~/components/Pictogram";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { graphql } from "~/gql";
@@ -222,6 +223,7 @@ export default async function Page() {
           </LoginLink>
         </div>
       </section>
+      <GlobalFooter className={clsx("w-full")} />
     </main>
   );
 }

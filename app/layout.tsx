@@ -4,7 +4,6 @@ import clsx from "clsx";
 import type { Metadata, Viewport } from "next";
 import React from "react";
 
-import GlobalFooter from "~/components/GlobalFooter";
 import { ToastProvider } from "~/components/Toaster";
 
 import Auth0Provider from "./Auth0Provider";
@@ -48,7 +47,6 @@ export default function RootLayout({
             <body className={clsx()}>
               <div id="toast" />
               <main>{children}</main>
-              <GlobalFooter />
             </body>
           </html>
         </ToastProvider>

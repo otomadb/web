@@ -38,7 +38,7 @@ export default function GlobalNav({
       style={style}
       className={clsx(
         className,
-        "z-infinity border-b border-obsidian-lighter bg-obsidian-primary/90 shadow-lg backdrop-blur-md @container/globalnav"
+        "z-infinity border-b border-b-obsidian-primary bg-obsidian-darker/90 shadow-lg backdrop-blur-md @container/globalnav"
       )}
     >
       <div

@@ -39,9 +39,7 @@ export default async function Layout({
   if (!data) notFound();
 
   return (
-    <main
-      className={clsx("container mx-auto flex grow flex-col gap-y-4 px-8 py-4")}
-    >
+    <main className={clsx("container mx-auto flex grow flex-col gap-y-4")}>
       <section className={clsx("@container/details")}>
         <div
           className={clsx(

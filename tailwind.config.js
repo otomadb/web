@@ -89,10 +89,21 @@ module.exports = {
         "tag-tactics": mkTagTheme(colors.slate),
         "tag-unknown": mkTagTheme(colors.slate),
       },
+      keyframes: {
+        "stretch-t-to-b": {
+          "0%": { transform: "scaleY(0)" },
+          "100%": { transform: "scaleY(100%)" },
+        },
+        "fade-slide-l-to-r": {
+          "0%": { opacity: 0, transform: "translateX(-1rem)" },
+          "100%": { opacity: 1, transform: "translateX(0)" },
+        },
+      },
     },
   },
   plugins: [
     require("@tailwindcss/container-queries"),
+    require("tailwind-scrollbar")({ nocompatible: true }),
     plugin(({ addUtilities, addVariant }) => {
       addVariant("aria-current-page", '&[aria-current="page"]');
       addUtilities({

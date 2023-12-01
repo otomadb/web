@@ -7,9 +7,7 @@ export const dynamic = "force-dynamic";
 
 export default async function Page() {
   return (
-    <main
-      className={clsx("mx-auto max-w-screen-2xl px-8 py-4 @container/page")}
-    >
+    <main className={clsx("mx-auto max-w-screen-2xl @container/page")}>
       <div className={clsx("flex flex-col gap-4 @[1280px]/page:flex-row")}>
         <Timeline
           className={clsx(

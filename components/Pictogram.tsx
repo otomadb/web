@@ -19,6 +19,7 @@ import {
   NoSymbolIcon,
   PencilIcon,
   PlusIcon,
+  TagIcon,
   UserPlusIcon,
   XMarkIcon,
 } from "@heroicons/react/24/solid";
@@ -47,7 +48,8 @@ export default function Pictogram({
     | "twitter"
     | "github"
     | "signup"
-    | "signin";
+    | "signin"
+    | "tag";
   className?: string;
   style?: React.CSSProperties;
 }): JSX.Element {
@@ -83,6 +85,8 @@ export default function Pictogram({
       return <ArrowLeftOnRectangleIcon {...props} />;
     case "signup":
       return <UserPlusIcon {...props} />;
+    case "tag":
+      return <TagIcon {...props} />;
     case "nicovideo":
       return (
         <svg viewBox="0 0 22 22" {...props}>

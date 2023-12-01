@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  tailwind-scrollbar@3.0.5:
+    hash: 33w7xnmejgt2bkjh64htemcnnu
+    path: patches/tailwind-scrollbar@3.0.5.patch
+
 dependencies:
   '@auth0/auth0-react':
     specifier: ^2.2.3
@@ -232,6 +237,9 @@ devDependencies:
   style-loader:
     specifier: 3.3.3
     version: 3.3.3(webpack@5.89.0)
+  tailwind-scrollbar:
+    specifier: ^3.0.5
+    version: 3.0.5(patch_hash=33w7xnmejgt2bkjh64htemcnnu)(tailwindcss@3.3.5)
   tailwindcss:
     specifier: 3.3.5
     version: 3.3.5
@@ -14508,6 +14516,16 @@ packages:
   /synchronous-promise@2.0.17:
     resolution: {integrity: sha512-AsS729u2RHUfEra9xJrE39peJcc2stq2+poBXX8bcM08Y6g9j/i/PUzwNQqkaJde7Ntg1TO7bSREbR5sdosQ+g==}
     dev: true
+
+  /tailwind-scrollbar@3.0.5(patch_hash=33w7xnmejgt2bkjh64htemcnnu)(tailwindcss@3.3.5):
+    resolution: {integrity: sha512-0ZwxTivevqq9BY9fRP9zDjHl7Tu+J5giBGbln+0O1R/7nHtBUKnjQcA1aTIhK7Oyjp6Uc/Dj6/dn8Dq58k5Uww==}
+    engines: {node: '>=12.13.0'}
+    peerDependencies:
+      tailwindcss: 3.x
+    dependencies:
+      tailwindcss: 3.3.5
+    dev: true
+    patched: true
 
   /tailwindcss@3.3.5:
     resolution: {integrity: sha512-5SEZU4J7pxZgSkv7FP1zY8i2TIAOooNZ1e/OGtxIEv6GltpoiXUqWvLy89+a10qYTB1N5Ifkuw9lqQkN9sscvA==}
