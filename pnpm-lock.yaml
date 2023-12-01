@@ -238,7 +238,7 @@ devDependencies:
     specifier: 3.3.3
     version: 3.3.3(webpack@5.89.0)
   tailwind-scrollbar:
-    specifier: ^3.0.5
+    specifier: 3.0.5
     version: 3.0.5(patch_hash=33w7xnmejgt2bkjh64htemcnnu)(tailwindcss@3.3.5)
   tailwindcss:
     specifier: 3.3.5
