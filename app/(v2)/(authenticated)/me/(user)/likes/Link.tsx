@@ -5,7 +5,7 @@ const MyLikesPageLink: React.FC<Omit<ComponentProps<typeof Link>, "href">> = ({
   children,
   ...props
 }) => (
-  <Link href={"/me/likes"} {...props}>
+  <Link href={"/home/likes"} {...props}>
     {children}
   </Link>
 );

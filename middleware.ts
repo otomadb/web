@@ -9,12 +9,15 @@ export default async function middleware(req: NextRequest) {
     if (session?.user) return NextResponse.redirect(new URL("/me", req.url));
   }
 
-  if (req.nextUrl.pathname.startsWith("/me")) {
+  if (
+    req.nextUrl.pathname.startsWith("/me") ||
+    req.nextUrl.pathname === "/home"
+  ) {
     const session = await getSession(req, new NextResponse());
     if (!session?.user) return NextResponse.redirect(new URL("/", req.url));
   }
 }
 
 export const config = {
-  matcher: ["/", "/me", "/me/(.*)"],
+  matcher: ["/", "/home", "/me", "/me/(.*)"],
 };

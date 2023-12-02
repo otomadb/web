@@ -7,9 +7,9 @@ import { LinkRegisterSemitag } from "~/app/(application)/(editor)/editor/semitag
 import { TagRegisterPageLink } from "~/app/(application)/(editor)/editor/tags/Link";
 import NotificationsPageLink from "~/app/(application)/(normal)/notifications/Link";
 import { SettingPageLink } from "~/app/(application)/(normal)/settings/Link";
+import { MyPageLink } from "~/app/(v2)/(authenticated)/home/Link";
 import MyLikesPageLink from "~/app/(v2)/(authenticated)/me/(user)/likes/Link";
 import MyMylistsPageLink from "~/app/(v2)/(authenticated)/me/(user)/mylists/Link";
-import { MyPageLink } from "~/app/(v2)/(authenticated)/me/Link";
 import { LogoutLink } from "~/components/AuthLink";
 import {
   useOpenRegisterFromBilibili,

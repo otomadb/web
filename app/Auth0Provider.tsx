@@ -14,7 +14,7 @@ export default function Auth0Provider({ children }: { children: ReactNode }) {
         audience: process.env.NEXT_PUBLIC_AUTH0_AUDIENCE,
         redirect_uri:
           typeof window === "object"
-            ? `${window.location.origin}/me`
+            ? `${window.location.origin}/home`
             : undefined,
         scope: [
           "create:mylist",

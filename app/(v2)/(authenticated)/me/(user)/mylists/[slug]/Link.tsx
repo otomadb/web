@@ -15,7 +15,7 @@ const YouMylistPageLink: React.FC<
 > = ({ children, fragment, ...props }) => {
   const { slug } = useFragment(Fragment, fragment);
   return (
-    <Link href={`/me/mylists/${slug}`} {...props}>
+    <Link href={`/home/mylists/${slug}`} {...props}>
       {children}
     </Link>
   );
