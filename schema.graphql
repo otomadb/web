@@ -1,4 +1,4 @@
-directive @auth(scopes: [String!]) on FIELD_DEFINITION
+directive @auth(optional: Boolean = false, scopes: [String!]) on FIELD_DEFINITION
 
 input AddMylistToMylistGroupInput {
   groupId: ID!
@@ -1154,8 +1154,8 @@ type Query {
 
   """ユーザーのタイムラインを取得する"""
   showTimeline(input: ShowTimelineInput!): [TimelineEvent!]!
-  whoami: User!
   viewer: User
+  whoami: User!
 }
 
 input RegisterBilibiliMADInput {
@@ -1781,7 +1781,7 @@ type SoundcloudRegistrationRequest implements Node & RegistrationRequest {
 
   """
   Soundcloud側のサムネイル画像のURL
-
+  
   **無い場合もある場合に注意.**
   """
   originalThumbnailUrl: String
@@ -1793,7 +1793,7 @@ type SoundcloudRegistrationRequest implements Node & RegistrationRequest {
 
   """
   OtoMADB側でプロキシしているサムネイル画像のURL
-
+  
   **無い場合は適当にダミー画像を返す．**
   """
   thumbnailUrl: String!
@@ -2215,6 +2215,7 @@ type User implements Node {
 
   """現在このユーザに届いている通知．"""
   notifications(input: UserNotificationsInput!): NotificationConnection!
+  publicMylist(slug: String!): Mylist
 }
 
 input UserMylistsOrderBy {

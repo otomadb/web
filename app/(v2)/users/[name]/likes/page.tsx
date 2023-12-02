@@ -45,7 +45,12 @@ export default async function Page({
   );
 
   const { findUser } = result;
-  if (!findUser || !findUser.likes) notFound();
+  if (
+    !findUser ||
+    !findUser.likes ||
+    (page !== 1 && findUser.likes.registrationsByOffset.nodes.length === 0)
+  )
+    notFound();
 
   const pageMax = Math.ceil(
     findUser.likes.registrationsByOffset.totalCount / PER_PAGE
@@ -67,24 +72,37 @@ export default async function Page({
           pathname={`/users/${findUser.name}/likes`}
         />
       </div>
-      <div
-        className={clsx(
-          "grid w-full grid-cols-1 flex-col gap-2 @[512px]/mylist:grid-cols-2 @[768px]/mylist:grid-cols-3 @[1024px]/mylist:grid-cols-4"
-        )}
-      >
-        {findUser.likes.registrationsByOffset.nodes.map((node) => (
-          <RegistrationItem key={node.id} fragment={node} />
-        ))}
-      </div>
-      <div className={clsx("flex w-full items-center justify-end px-4 py-2")}>
-        <Paginator
-          size="sm"
-          className={clsx()}
-          pageMax={pageMax}
-          currentPage={page}
-          pathname={`/users/${findUser.name}/likes`}
-        />
-      </div>
+      {findUser.likes.registrationsByOffset.nodes.length === 0 && (
+        <div>
+          <p className={clsx("text-center text-sm text-snow-darker")}>
+            このユーザーはまだ何も良いと思った音MADがありません。
+          </p>
+        </div>
+      )}
+      {findUser.likes.registrationsByOffset.nodes.length >= 1 && (
+        <>
+          <div
+            className={clsx(
+              "grid w-full grid-cols-1 flex-col gap-2 @[512px]/mylist:grid-cols-2 @[768px]/mylist:grid-cols-3 @[1024px]/mylist:grid-cols-4"
+            )}
+          >
+            {findUser.likes.registrationsByOffset.nodes.map((node) => (
+              <RegistrationItem key={node.id} fragment={node} />
+            ))}
+          </div>
+          <div
+            className={clsx("flex w-full items-center justify-end px-4 py-2")}
+          >
+            <Paginator
+              size="sm"
+              className={clsx()}
+              pageMax={pageMax}
+              currentPage={page}
+              pathname={`/users/${findUser.name}/likes`}
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 }
