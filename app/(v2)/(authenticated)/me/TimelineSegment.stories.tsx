@@ -3,7 +3,6 @@ import { Meta, StoryObj } from "@storybook/react";
 import { graphql as mswGql } from "msw";
 
 import { makeFragmentData } from "~/gql";
-import { MockedUrqlProvider } from "~/utils/MockedUrqlProvider";
 
 import { TimelineEventFragment } from "./TimelineEvent";
 import TimelineSegment, { Query } from "./TimelineSegment";
@@ -15,13 +14,6 @@ const meta = {
     skip: 0,
     take: 3,
     fetchMore: action("fetchMore"),
-  },
-  render(args) {
-    return (
-      <MockedUrqlProvider>
-        <TimelineSegment {...args} />
-      </MockedUrqlProvider>
-    );
   },
   parameters: {
     msw: {

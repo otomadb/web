@@ -7,7 +7,6 @@ import { ComponentProps } from "react";
 import { CommonTagFragment } from "~/components/CommonTag";
 import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
-import { MockedUrqlProvider } from "~/utils/MockedUrqlProvider";
 
 import TagSearcher, { Query } from ".";
 import { Fragment as SuggestItemFragment } from "./SuggestItem";
@@ -15,11 +14,6 @@ import { Fragment as SuggestsFragment } from "./Suggests";
 
 const meta = {
   component: TagSearcher,
-  render: (args) => (
-    <MockedUrqlProvider>
-      <TagSearcher {...args} />
-    </MockedUrqlProvider>
-  ),
   args: {
     style: { width: 320 },
     size: "medium",

@@ -3,7 +3,6 @@ import { Meta, StoryObj } from "@storybook/react";
 
 import { mockTagSearcher } from "~/components/TagSearcher/index.mocks";
 import { ToastContext } from "~/components/Toaster";
-import { MockedUrqlProvider } from "~/utils/MockedUrqlProvider";
 
 import { FormModalContext } from ".";
 import { mocksRequestFromNicovideo } from "./mocks";
@@ -19,19 +18,17 @@ const meta = {
   },
   render(args) {
     return (
-      <MockedUrqlProvider>
-        <ToastContext.Provider value={{ call: action("callToast") }}>
-          <FormModalContext.Provider
-            value={{
-              current: undefined,
-              open: action("openModal"),
-              close: action("closeModal"),
-            }}
-          >
-            <RequestMADFromNicovideoFormModal {...args} />
-          </FormModalContext.Provider>
-        </ToastContext.Provider>
-      </MockedUrqlProvider>
+      <ToastContext.Provider value={{ call: action("callToast") }}>
+        <FormModalContext.Provider
+          value={{
+            current: undefined,
+            open: action("openModal"),
+            close: action("closeModal"),
+          }}
+        >
+          <RequestMADFromNicovideoFormModal {...args} />
+        </FormModalContext.Provider>
+      </ToastContext.Provider>
     );
   },
   parameters: {

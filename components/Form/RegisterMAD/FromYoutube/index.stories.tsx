@@ -12,8 +12,6 @@ import { Fragment as UserIconFragment } from "~/components/UserIcon";
 import { Fragment as VideoThumbnailFragment } from "~/components/VideoThumbnail";
 import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
-import { MockedAuth0Provider } from "~/utils/MockedAuth0Provider";
-import { MockedUrqlProvider } from "~/utils/MockedUrqlProvider";
 
 import RegisterForm, { Query } from ".";
 import { Fragment as SourceFragment } from "./OriginalSource";
@@ -28,15 +26,6 @@ const meta = {
     },
     initThumbnailUrl: "/960x540.jpg",
     handleCancel: action("cancel"),
-  },
-  render(args) {
-    return (
-      <MockedAuth0Provider>
-        <MockedUrqlProvider>
-          <RegisterForm {...args} />
-        </MockedUrqlProvider>
-      </MockedAuth0Provider>
-    );
   },
   parameters: {
     msw: {
