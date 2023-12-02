@@ -4,7 +4,6 @@ import { graphql as mswGql } from "msw";
 import { $UseHarRoleQuery } from "~/components/useHasRole";
 import { Fragment as VideoThumbnailFragment } from "~/components/VideoThumbnail";
 import { makeFragmentData } from "~/gql";
-import { MockedUrqlProvider } from "~/utils/MockedUrqlProvider";
 
 import { MadPageLinkFragment } from "../../mads/[serial]/Link";
 import TimelineEvent, { TimelineEventFragment } from "./TimelineEvent";
@@ -23,14 +22,6 @@ const mockHasNoRole = [
 const meta = {
   component: TimelineEvent,
   args: { style: { width: 720 } },
-
-  render(args) {
-    return (
-      <MockedUrqlProvider>
-        <TimelineEvent {...args} />
-      </MockedUrqlProvider>
-    );
-  },
 } as Meta<typeof TimelineEvent>;
 export default meta;
 

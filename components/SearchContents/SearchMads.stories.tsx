@@ -3,7 +3,6 @@ import { graphql } from "msw";
 
 import { MadPageLinkFragment } from "~/app/(v2)/mads/[serial]/Link";
 import { makeFragmentData } from "~/gql";
-import { MockedUrqlProvider } from "~/utils/MockedUrqlProvider";
 
 import { Fragment } from "../VideoThumbnail";
 import SearchMads, { SearchMadsQuery } from "./SearchMads";
@@ -15,13 +14,6 @@ const meta = {
     style: {
       width: 640,
     },
-  },
-  render(args) {
-    return (
-      <MockedUrqlProvider>
-        <SearchMads {...args} />
-      </MockedUrqlProvider>
-    );
   },
   excludeStories: /^\$handler/,
 } as Meta<typeof SearchMads>;

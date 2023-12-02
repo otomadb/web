@@ -3,8 +3,6 @@ import { graphql as mswGql } from "msw";
 
 import { mockTagSearcher } from "~/components/TagSearcher/index.mocks";
 import { makeFragmentData } from "~/gql";
-import { MockedAuth0Provider } from "~/utils/MockedAuth0Provider";
-import { MockedUrqlProvider } from "~/utils/MockedUrqlProvider";
 
 import { commonMock as mockAddTagFormSelectedTag } from "./AddTagForm/SelectedTag";
 import { mockSuccessful } from "./AddTagForm/useRegister";
@@ -24,15 +22,6 @@ const meta = {
       width: 1536,
       height: 860,
     },
-  },
-  render(args) {
-    return (
-      <MockedAuth0Provider>
-        <MockedUrqlProvider>
-          <RegisterTagForm {...args} />
-        </MockedUrqlProvider>
-      </MockedAuth0Provider>
-    );
   },
   parameters: {
     msw: {
