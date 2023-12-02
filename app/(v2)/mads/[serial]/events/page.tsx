@@ -2,13 +2,12 @@ import clsx from "clsx";
 import { notFound } from "next/navigation";
 
 import { graphql } from "~/gql";
-import { fetchGql } from "~/gql/fetch";
-import { isErr } from "~/utils/Result";
+import { makeGraphQLClient } from "~/gql/fetch";
 
 import { MixedEventLists } from "./MixedEventLists";
 
 export default async function Page({ params }: { params: { serial: string } }) {
-  const result = await fetchGql(
+  const result = await makeGraphQLClient().request(
     graphql(`
       query VideoEventPage($serial: Int!) {
         findVideo(input: { serial: $serial }) {
@@ -46,13 +45,11 @@ export default async function Page({ params }: { params: { serial: string } }) {
         }
       }
     `),
-    { serial: parseInt(params.serial, 10) },
-    { next: { revalidate: 0 } }
+    { serial: parseInt(params.serial, 10) }
   );
 
-  if (isErr(result)) throw new Error("GraphQL fetching Error");
-  if (!result.data.findVideo) notFound();
-  const { findVideo } = result.data;
+  if (!result.findVideo) notFound();
+  const { findVideo } = result;
 
   return (
     <div className={clsx(["flex", "flex-col", "gap-y-4"])}>

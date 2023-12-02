@@ -5,8 +5,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
 import { graphql } from "~/gql";
-import { fetchGql } from "~/gql/fetch";
-import { isErr } from "~/utils/Result";
+import { makeGraphQLClient } from "~/gql/fetch";
 
 import SimilarVideos from "./SimilarVideos";
 
@@ -15,7 +14,7 @@ export async function generateMetadata({
 }: {
   params: { serial: string };
 }): Promise<Metadata> {
-  const result = await fetchGql(
+  const result = await makeGraphQLClient().request(
     graphql(`
       query MadPage_Metadata($serial: Int!) {
         findMadBySerial(serial: $serial) {
@@ -27,17 +26,8 @@ export async function generateMetadata({
     { serial: parseInt(params.serial, 10) }
   );
 
-  if (isErr(result)) {
-    switch (result.error.type) {
-      case "FETCH_ERROR":
-        throw new Error("Fetching error");
-      case "GRAPHQL_ERROR":
-        throw new Error("GraphQL Error");
-    }
-  }
-
-  if (!result.data.findMadBySerial) notFound();
-  const { title, serial } = result.data.findMadBySerial;
+  if (!result.findMadBySerial) notFound();
+  const { title, serial } = result.findMadBySerial;
 
   return {
     title: `${title} | OtoMADB`,
@@ -77,7 +67,7 @@ export async function generateStaticParams() {
 }
 
 export default async function Page({ params }: { params: PageParams }) {
-  const result = await fetchGql(
+  const result = await makeGraphQLClient().request(
     graphql(`
       query VideoPage($serial: Int!) {
         findVideo(input: { serial: $serial }) {
@@ -88,16 +78,7 @@ export default async function Page({ params }: { params: PageParams }) {
     { serial: parseInt(params.serial, 10) }
   );
 
-  if (isErr(result)) {
-    switch (result.error.type) {
-      case "FETCH_ERROR":
-        throw new Error("Fetching error");
-      case "GRAPHQL_ERROR":
-        throw new Error("GraphQL Error");
-    }
-  }
-
-  if (!result.data.findVideo) notFound();
+  if (!result.findVideo) notFound();
 
   return (
     <div className={clsx("flex flex-col gap-y-4")}>
@@ -109,7 +90,7 @@ export default async function Page({ params }: { params: PageParams }) {
               <p className={clsx("text-sm text-snow-darkest")}>Loading...</p>
             }
           >
-            <SimilarVideos videoId={result.data.findVideo.id} />
+            <SimilarVideos videoId={result.findVideo.id} />
           </Suspense>
         </div>
       </section>
