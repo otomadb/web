@@ -6,14 +6,11 @@ import { UserPageLink } from "~/app/(application)/users/[name]/Link";
 import { NicovideoRegistrationRequestLink } from "~/app/(v2)/requests/nicovideo/[sourceId]/Link";
 import CommonTag from "~/components/CommonTag";
 import { CoolImage } from "~/components/CoolImage";
+import Paginator from "~/components/Paginator";
 import { UserIcon } from "~/components/UserIcon";
 import { graphql } from "~/gql";
 import { makeGraphQLClient } from "~/gql/fetch";
 
-import {
-  AbstractPagenation,
-  AbstractPaginateLink,
-} from "../../tags/[serial]/Pagination";
 import RegisterButton from "./RegisterButton";
 
 export async function generateMetadata({
@@ -104,14 +101,12 @@ export default async function Page({
             リクエストされているニコニコ動画の音MAD一覧
           </h1>
         </div>
-        <AbstractPagenation
+        <Paginator
           size="sm"
           className={clsx()}
           pageMax={pageMax}
           currentPage={page}
-          PaginateLink={(props) => (
-            <AbstractPaginateLink {...props} pathname="/requests/nicovideo" />
-          )}
+          pathname="/requests/nicovideo"
         />
       </div>
       <div
@@ -237,13 +232,11 @@ export default async function Page({
         )}
       </div>
       <div className={clsx("flex w-full justify-end px-4 py-2")}>
-        <AbstractPagenation
+        <Paginator
           size="sm"
           pageMax={pageMax}
           currentPage={page}
-          PaginateLink={(props) => (
-            <AbstractPaginateLink {...props} pathname="/requests/nicovideo" />
-          )}
+          pathname="/requests/nicovideo"
         />
       </div>
     </main>
