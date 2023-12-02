@@ -7,9 +7,9 @@ import { LinkRegisterSemitag } from "~/app/(application)/(editor)/editor/semitag
 import { TagRegisterPageLink } from "~/app/(application)/(editor)/editor/tags/Link";
 import NotificationsPageLink from "~/app/(application)/(normal)/notifications/Link";
 import { SettingPageLink } from "~/app/(application)/(normal)/settings/Link";
-import MyLikesPageLink from "~/app/(v2)/(authenticated)/me/(user)/likes/Link";
-import MyMylistsPageLink from "~/app/(v2)/(authenticated)/me/(user)/mylists/Link";
-import { MyPageLink } from "~/app/(v2)/(authenticated)/me/Link";
+import MyLikesPageLink from "~/app/(v2)/(authenticated)/me/likes/Link";
+import MyTopPageLink from "~/app/(v2)/(authenticated)/me/Link";
+import MyMylistsPageLink from "~/app/(v2)/(authenticated)/me/mylists/Link";
 import { LogoutLink } from "~/components/AuthLink";
 import {
   useOpenRegisterFromBilibili,
@@ -62,7 +62,7 @@ export default function ProfileAccordion({
         "flex flex-col divide-y divide-obsidian-lighter overflow-hidden rounded-md border border-obsidian-lighter bg-obsidian-primary/90 shadow-md backdrop-blur-md"
       )}
     >
-      <MyPageLink
+      <MyTopPageLink
         className={clsx(
           "group/link flex flex-col px-4 py-3 hover:bg-vivid-primary"
         )}
@@ -81,7 +81,7 @@ export default function ProfileAccordion({
         >
           @{name}
         </div>
-      </MyPageLink>
+      </MyTopPageLink>
       <NotificationsPageLink
         className={clsx("group/link block px-4 py-2 hover:bg-vivid-primary")}
       >

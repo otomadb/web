@@ -16,7 +16,7 @@ export const SignupButton = (
           appState: {
             returnTo:
               typeof window === "object"
-                ? new URL("/me", window.location.origin).toString()
+                ? new URL("/home", window.location.origin).toString()
                 : undefined,
           },
         });
