@@ -8,8 +8,13 @@ export default async function middleware(req: NextRequest) {
     const session = await getSession(req, res);
     if (session?.user) return NextResponse.redirect(new URL("/me", req.url));
   }
+
+  if (req.nextUrl.pathname.startsWith("/me")) {
+    const session = await getSession(req, new NextResponse());
+    if (!session?.user) return NextResponse.redirect(new URL("/", req.url));
+  }
 }
 
 export const config = {
-  matcher: ["/"],
+  matcher: ["/", "/me"],
 };
