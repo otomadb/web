@@ -9,7 +9,6 @@ import { Fragment as TagSearcherSuggestItemFragment } from "~/components/TagSear
 import { Fragment as TagSearcherSuggestsFragment } from "~/components/TagSearcher2/Suggests";
 import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
-import { MockedUrqlProvider } from "~/utils/MockedUrqlProvider";
 
 import FormModal, { Current, FormModalContext } from ".";
 import {
@@ -21,17 +20,15 @@ import {
 const meta = {
   component: FormModal,
   render: ({ current, ...args }) => (
-    <MockedUrqlProvider>
-      <FormModalContext.Provider
-        value={{
-          current,
-          open: action("open"),
-          close: action("close"),
-        }}
-      >
-        <FormModal {...args} />
-      </FormModalContext.Provider>
-    </MockedUrqlProvider>
+    <FormModalContext.Provider
+      value={{
+        current,
+        open: action("open"),
+        close: action("close"),
+      }}
+    >
+      <FormModal {...args} />
+    </FormModalContext.Provider>
   ),
   parameters: {
     msw: {

@@ -4,7 +4,6 @@ import { graphql } from "msw";
 import { TagPageLinkFragment } from "~/app/(v2)/tags/[serial]/Link";
 import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
-import { MockedUrqlProvider } from "~/utils/MockedUrqlProvider";
 
 import { CommonTagFragment } from "../CommonTag";
 import SearchTags, { SearchTagsQuery } from "./SearchTags";
@@ -16,13 +15,6 @@ const meta = {
     style: {
       width: 640,
     },
-  },
-  render(args) {
-    return (
-      <MockedUrqlProvider>
-        <SearchTags {...args} />
-      </MockedUrqlProvider>
-    );
   },
   excludeStories: /^\$handler/,
 } as Meta<typeof SearchTags>;

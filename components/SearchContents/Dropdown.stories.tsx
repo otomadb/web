@@ -1,7 +1,5 @@
 import { Meta, StoryObj } from "@storybook/react";
 
-import { MockedUrqlProvider } from "~/utils/MockedUrqlProvider";
-
 import { Dropdown } from "./Dropdown";
 import {
   $handlerNicovideoLoading,
@@ -23,13 +21,6 @@ const meta = {
       width: 640,
       size: "md",
     },
-  },
-  render(args) {
-    return (
-      <MockedUrqlProvider>
-        <Dropdown {...args} />
-      </MockedUrqlProvider>
-    );
   },
   parameters: {
     msw: {

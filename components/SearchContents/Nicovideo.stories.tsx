@@ -7,7 +7,6 @@ import { MadPageLinkFragment } from "~/app/(v2)/mads/[serial]/Link";
 import { TagPageLinkFragment } from "~/app/(v2)/tags/[serial]/Link";
 import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
-import { MockedUrqlProvider } from "~/utils/MockedUrqlProvider";
 
 import { CommonTagFragment } from "../CommonTag";
 import { Fragment as UserIconFragment } from "../UserIcon";
@@ -22,13 +21,6 @@ const meta = {
       width: 640,
     },
     sourceId: "sm2057168",
-  },
-  render(args) {
-    return (
-      <MockedUrqlProvider>
-        <SearchNicovideo {...args} />
-      </MockedUrqlProvider>
-    );
   },
   excludeStories: /^\$handler/,
 } as Meta<typeof SearchNicovideo>;

@@ -4,7 +4,6 @@ import { graphql as mswGraphql } from "msw";
 import { $handlerSourceAndRequests } from "~/components/SearchContents/Nicovideo.stories";
 import { $handlerSomeMadsHit } from "~/components/SearchContents/SearchMads.stories";
 import { $handlerSomeTagsHit } from "~/components/SearchContents/SearchTags.stories";
-import { MockedUrqlProvider } from "~/utils/MockedUrqlProvider";
 
 import GlobalNav, { GlobalNavQuery } from ".";
 
@@ -16,11 +15,6 @@ const meta = {
       height: 64,
     },
   },
-  render: (args) => (
-    <MockedUrqlProvider>
-      <GlobalNav {...args} />
-    </MockedUrqlProvider>
-  ),
   parameters: {
     msw: {
       handlers: {
