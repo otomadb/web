@@ -1,0 +1,41 @@
+name: Update GraphQL Schema
+
+on:
+  schedule:
+    - cron: "0 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update:
+    name: Update schema
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - uses: actions/setup-node@8f152de45cc393bb48ce5d89d36b731f54556e65 # v4
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+      - name: Update graphql.schema
+        run: pnpm --package=@graphql-inspector/cli dlx graphql-inspector introspect $GRAPHQL_API_ENDPOINT --write schema.graphql
+        env:
+          GRAPHQL_API_ENDPOINT: "${{ vars.GRAPHQL_API_ENDPOINT }}"
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v5
+        with:
+          branch: update-graphql-schema
+          delete-branch: true
+          title: "Update `graphql.schema`"
+          commit-message: "Update `graphql.schema`"
+          labels: |
+            automated
+      - name: Enable Pull Request Automerge
+        if: steps.cpr.outputs.pull-request-operation == 'created'
+        run: gh pr merge --merge --auto "${{ steps.cpr.outputs.pull-request-number }}"
