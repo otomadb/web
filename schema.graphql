@@ -652,6 +652,9 @@ type Mylist implements Node {
   range: MylistShareRange!
   recommendedVideos(input: MylistRecommendedVideosInput!): MylistRecommendedVideosPayload!
   registrations(after: String, before: String, first: Int, last: Int, orderBy: MylistRegistrationsOrderBy! = {createdAt: DESC}): MylistRegistrationConnection!
+
+  """登録された音MADをoffsetベースで取得する"""
+  registrationsByOffset(input: MylistRegistrationsByOffsetInput!): MylistRegistrationsByOffsetPayload!
   slug: String!
   title: String!
   updatedAt: DateTime!
@@ -773,6 +776,18 @@ type MylistRegistrationConnection {
 type MylistRegistrationEdge {
   cursor: String!
   node: MylistRegistration!
+}
+
+input MylistRegistrationsByOffsetInput {
+  offset: Int!
+  orderBy: MylistRegistrationsOrderBy! = {createdAt: DESC}
+  take: Int!
+}
+
+type MylistRegistrationsByOffsetPayload {
+  hasMore: Boolean!
+  nodes: [MylistRegistration!]!
+  totalCount: Int!
 }
 
 input MylistRegistrationsOrderBy {
