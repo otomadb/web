@@ -20,7 +20,6 @@ export default async function Page({
     graphql(`
       query TagPage($serial: Int!, $offset: Int!) {
         findTagBySerial(serial: $serial) {
-          ...TagPage_Pagination
           id
           name
           serial
