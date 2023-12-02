@@ -1,8 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { graphql } from "msw";
 
-import { MockedUrqlProvider } from "~/utils/MockedUrqlProvider";
-
 import SearchContents, { AppSideNavQuery } from ".";
 import AppSideNav from ".";
 
@@ -13,13 +11,6 @@ const meta = {
       width: 300,
       height: 640,
     },
-  },
-  render(args) {
-    return (
-      <MockedUrqlProvider>
-        <AppSideNav {...args} />
-      </MockedUrqlProvider>
-    );
   },
 } satisfies Meta<typeof SearchContents>;
 export default meta;

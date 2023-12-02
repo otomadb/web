@@ -5,7 +5,6 @@ import { graphql as mockGql } from "msw";
 import { CommonTagFragment } from "~/components/CommonTag";
 import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
-import { MockedUrqlProvider } from "~/utils/MockedUrqlProvider";
 
 import { RegisterTagForm } from "../Form";
 import { Query, SelectedTag } from "./SelectedTag";
@@ -18,13 +17,6 @@ const meta = {
     },
     tagId: "id:tag1",
     remove: action("remove"),
-  },
-  render(args) {
-    return (
-      <MockedUrqlProvider>
-        <SelectedTag {...args} />
-      </MockedUrqlProvider>
-    );
   },
 } as Meta<typeof SelectedTag>;
 export default meta;

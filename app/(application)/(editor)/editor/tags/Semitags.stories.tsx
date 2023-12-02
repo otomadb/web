@@ -2,7 +2,6 @@ import { action } from "@storybook/addon-actions";
 import { Meta, StoryObj } from "@storybook/react";
 
 import { makeFragmentData } from "~/gql";
-import { MockedUrqlProvider } from "~/utils/MockedUrqlProvider";
 
 import { Fragment, Semitags } from "./Semitags";
 
@@ -13,13 +12,6 @@ const meta = {
     selectings: [],
     append: action("append"),
     remove: action("remove"),
-  },
-  render(args) {
-    return (
-      <MockedUrqlProvider>
-        <Semitags {...args} />
-      </MockedUrqlProvider>
-    );
   },
 } as Meta<typeof Semitags>;
 export default meta;

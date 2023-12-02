@@ -13,8 +13,6 @@ import { Fragment as TagSearcherSuggestsFragment } from "~/components/TagSearche
 import { Fragment as VideoThumbnailFragment } from "~/components/VideoThumbnail";
 import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
-import { MockedAuth0Provider } from "~/utils/MockedAuth0Provider";
-import { MockedUrqlProvider } from "~/utils/MockedUrqlProvider";
 
 import RequestForm, { Query } from ".";
 
@@ -27,15 +25,6 @@ const meta = {
     },
     sourceId: "sm",
     handleCancel: action("cancel"),
-  },
-  render(args) {
-    return (
-      <MockedAuth0Provider>
-        <MockedUrqlProvider>
-          <RequestForm {...args} />
-        </MockedUrqlProvider>
-      </MockedAuth0Provider>
-    );
   },
   parameters: {
     msw: {
