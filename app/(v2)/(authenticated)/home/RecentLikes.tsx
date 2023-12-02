@@ -7,7 +7,7 @@ import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { graphql } from "~/gql";
 
 import { MadPageLink } from "../../mads/[serial]/Link";
-import MyLikesPageLink from "../me/(user)/likes/Link";
+import MyLikesPageLink from "../me/likes/Link";
 
 export default function RecentLikes({ className }: { className?: string }) {
   const [{ data, fetching }] = useQuery({

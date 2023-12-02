@@ -6,7 +6,7 @@ export default function MyMylistsPageLink({
   ...props
 }: Omit<ComponentProps<typeof Link>, "href">) {
   return (
-    <Link href={"/home/mylists"} {...props}>
+    <Link href={"/me/mylists"} {...props}>
       {children}
     </Link>
   );
