@@ -2,7 +2,7 @@
 
 import clsx from "clsx";
 
-import { UserPageLink } from "~/app/(application)/users/[name]/Link";
+import UserPageLink from "~/app/(v2)/users/[name]/Link";
 import { SemitagButton } from "~/components/Form/SemitagButton";
 import {
   Fragment as TagButtonFragment,

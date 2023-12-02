@@ -10,7 +10,7 @@ import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 import { NicovideoRegistrationRequestLink } from "../../../(v2)/requests/nicovideo/[sourceId]/Link";
-import { UserPageLink } from "../../users/[name]/Link";
+import UserPageLink from "../../../(v2)/users/[name]/Link";
 
 export const Fragment = graphql(`
   fragment NotificationsPage_NicovideoRegistrationRequestAcceptingNotification on NicovideoRegistrationRequestAcceptingNotification {

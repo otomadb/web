@@ -3,20 +3,21 @@ import React, { ComponentProps } from "react";
 
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-const Fragment = graphql(`
+export const UserMylistsPageLinkFragment = graphql(`
   fragment UserMylistsPageLink on User {
     name
   }
 `);
-export const UserMylistsPageLink: React.FC<
+const UserMylistsPageLink: React.FC<
   Omit<ComponentProps<typeof Link>, "href"> & {
-    fragment: FragmentType<typeof Fragment>;
+    fragment: FragmentType<typeof UserMylistsPageLinkFragment>;
   }
 > = ({ children, fragment, ...props }) => {
-  const { name } = useFragment(Fragment, fragment);
+  const { name } = useFragment(UserMylistsPageLinkFragment, fragment);
   return (
     <Link href={`/users/${name}/mylists`} {...props}>
       {children}
     </Link>
   );
 };
+export default UserMylistsPageLink;

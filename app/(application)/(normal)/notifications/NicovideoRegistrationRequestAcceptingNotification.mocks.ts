@@ -5,7 +5,7 @@ import { Fragment as UserIconFragment } from "~/components/UserIcon";
 import { Fragment as VideoThumbnailFragment } from "~/components/VideoThumbnail";
 import { makeFragmentData } from "~/gql";
 
-import { UserPageLinkFragment } from "../../users/[name]/Link";
+import { UserPageLinkFragment } from "../../../(v2)/users/[name]/Link";
 import { Fragment } from "./NicovideoRegistrationRequestAcceptingNotification";
 
 export const mock = makeFragmentData(

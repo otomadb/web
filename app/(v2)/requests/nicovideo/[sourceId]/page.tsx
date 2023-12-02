@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { notFound } from "next/navigation";
 
-import { UserPageLink } from "~/app/(application)/users/[name]/Link";
+import UserPageLink from "~/app/(v2)/users/[name]/Link";
 import CommonTagLink from "~/components/CommonTagLink";
 import { UserIcon } from "~/components/UserIcon";
 import { graphql } from "~/gql";

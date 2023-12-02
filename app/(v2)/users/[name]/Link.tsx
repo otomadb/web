@@ -8,7 +8,7 @@ export const UserPageLinkFragment = graphql(`
     name
   }
 `);
-export const UserPageLink: React.FC<
+const UserPageLink: React.FC<
   Omit<ComponentProps<typeof Link>, "href"> & {
     fragment: FragmentType<typeof UserPageLinkFragment>;
   }
@@ -20,3 +20,4 @@ export const UserPageLink: React.FC<
     </Link>
   );
 };
+export default UserPageLink;
