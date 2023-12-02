@@ -2,9 +2,9 @@ import { ResultOf } from "@graphql-typed-document-node/core";
 import { Meta, StoryObj } from "@storybook/react";
 import { graphql } from "msw";
 
-import { UserPageLinkFragment } from "~/app/(application)/users/[name]/Link";
 import { MadPageLinkFragment } from "~/app/(v2)/mads/[serial]/Link";
 import { TagPageLinkFragment } from "~/app/(v2)/tags/[serial]/Link";
+import { UserPageLinkFragment } from "~/app/(v2)/users/[name]/Link";
 import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
 import { MockedUrqlProvider } from "~/utils/MockedUrqlProvider";

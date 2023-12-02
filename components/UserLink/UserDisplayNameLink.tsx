@@ -1,9 +1,8 @@
 import clsx from "clsx";
 
-import {
-  UserPageLink,
+import UserPageLink, {
   UserPageLinkFragment,
-} from "~/app/(application)/users/[name]/Link";
+} from "~/app/(v2)/users/[name]/Link";
 import { FragmentType, graphql, makeFragmentData, useFragment } from "~/gql";
 
 export const UserDisplayNameLinkFragment = graphql(`

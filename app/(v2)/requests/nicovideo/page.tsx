@@ -2,8 +2,8 @@ import clsx from "clsx";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { UserPageLink } from "~/app/(application)/users/[name]/Link";
 import { NicovideoRegistrationRequestLink } from "~/app/(v2)/requests/nicovideo/[sourceId]/Link";
+import UserPageLink from "~/app/(v2)/users/[name]/Link";
 import CommonTag from "~/components/CommonTag";
 import { CoolImage } from "~/components/CoolImage";
 import Paginator from "~/components/Paginator";

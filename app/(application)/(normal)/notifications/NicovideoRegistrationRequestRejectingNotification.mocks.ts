@@ -3,7 +3,7 @@ import { ResultOf } from "@graphql-typed-document-node/core";
 import { Fragment as UserIconFragment } from "~/components/UserIcon";
 import { makeFragmentData } from "~/gql";
 
-import { UserPageLinkFragment } from "../../users/[name]/Link";
+import { UserPageLinkFragment } from "../../../(v2)/users/[name]/Link";
 import { Fragment as RejectingFragment } from "./NicovideoRegistrationRequestRejectingNotification";
 
 export const mock = makeFragmentData(
