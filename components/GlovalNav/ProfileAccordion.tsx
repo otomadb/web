@@ -5,10 +5,10 @@ import React from "react";
 
 import { LinkRegisterSemitag } from "~/app/(application)/(editor)/editor/semitags/Link";
 import { TagRegisterPageLink } from "~/app/(application)/(editor)/editor/tags/Link";
-import { YouLikesPageLink } from "~/app/(application)/(normal)/me/likes/Link";
-import MyMylistsPageLink from "~/app/(application)/(normal)/me/mylists/Link";
 import NotificationsPageLink from "~/app/(application)/(normal)/notifications/Link";
 import { SettingPageLink } from "~/app/(application)/(normal)/settings/Link";
+import MyLikesPageLink from "~/app/(v2)/(authenticated)/me/(user)/likes/Link";
+import MyMylistsPageLink from "~/app/(v2)/(authenticated)/me/(user)/mylists/Link";
 import { MyPageLink } from "~/app/(v2)/(authenticated)/me/Link";
 import { LogoutLink } from "~/components/AuthLink";
 import {
@@ -106,13 +106,13 @@ export default function ProfileAccordion({
         )}
       </NotificationsPageLink>
       <div className={clsx("grid grid-cols-1")}>
-        <YouLikesPageLink
+        <MyLikesPageLink
           className={clsx(
             "block px-4 py-2 text-left text-xs text-snow-primary hover:bg-vivid-primary hover:text-obsidian-primary"
           )}
         >
           いいねした動画
-        </YouLikesPageLink>
+        </MyLikesPageLink>
         <MyMylistsPageLink
           className={clsx(
             "block px-4 py-2 text-left text-xs text-snow-primary hover:bg-vivid-primary hover:text-obsidian-primary"

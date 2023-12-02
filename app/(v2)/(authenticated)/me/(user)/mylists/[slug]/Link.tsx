@@ -9,7 +9,7 @@ const Fragment = graphql(`
     slug
   }
 `);
-export const YouMylistPageLink: React.FC<
+const YouMylistPageLink: React.FC<
   Omit<ComponentProps<typeof Link>, "href"> & {
     fragment: FragmentType<typeof Fragment>;
   }
@@ -21,3 +21,4 @@ export const YouMylistPageLink: React.FC<
     </Link>
   );
 };
+export default YouMylistPageLink;

@@ -6,8 +6,8 @@ import { useQuery } from "urql";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { graphql } from "~/gql";
 
-import { YouLikesPageLink } from "../../../(application)/(normal)/me/likes/Link";
 import { MadPageLink } from "../../mads/[serial]/Link";
+import MyLikesPageLink from "./(user)/likes/Link";
 
 export default function RecentLikes({ className }: { className?: string }) {
   const [{ data, fetching }] = useQuery({
@@ -44,11 +44,11 @@ export default function RecentLikes({ className }: { className?: string }) {
         <p className={clsx("grow text-base font-bold text-snow-primary")}>
           いいねした動画
         </p>
-        <YouLikesPageLink
+        <MyLikesPageLink
           className={clsx("text-xs text-snow-darker hover:underline")}
         >
           もっと見る
-        </YouLikesPageLink>
+        </MyLikesPageLink>
       </div>
       <div className={clsx("mt-2 flex", "flex-col", "items-stretch")}>
         {fetching && (
@@ -81,7 +81,7 @@ export default function RecentLikes({ className }: { className?: string }) {
                 <MadPageLink
                   fragment={like.video}
                   className={clsx(
-                    "line-clamp-1 text-sm font-bold text-vivid-primary hover:underline @w128/likes:text-xs"
+                    "line-clamp-1 text-sm font-bold text-vivid-primary @w128/likes:text-xs hover:underline"
                   )}
                 >
                   {like.video.title}
