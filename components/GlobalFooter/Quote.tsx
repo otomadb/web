@@ -1,4 +1,3 @@
-import { css, keyframes } from "@emotion/css";
 import clsx from "clsx";
 import React from "react";
 
@@ -62,17 +61,6 @@ export const quotes: {
   },
 ];
 
-const blur = keyframes`
-  from {
-    translate: 0 12px;
-    opacity: 0;
-  }
-
-  to {
-    translate: 0 0;
-    opacity: 1;
-  }
-`;
 export default function Quote({
   className,
   style,
@@ -82,30 +70,18 @@ export default function Quote({
   style?: React.CSSProperties;
   index: number;
 }) {
-  const q = quotes[index % quotes.length];
+  const q = quotes[index];
 
   return (
-    <figure
-      className={clsx(
-        className,
-        ["flex", "flex-col", "items-center"],
-        css`
-          & {
-            animation: ${blur} both 1s cubic-bezier(0.23, 1, 0.32, 1);
-          }
-        `
-      )}
-      style={style}
-    >
-      <blockquote>
-        <span className={clsx(["text-sm", "text-slate-700"])}>{q.quote}</span>
+    <figure className={clsx(className, "flex flex-col gap-y-1")} style={style}>
+      <blockquote className={clsx("font-serif")}>
+        <span className={clsx("text-sm font-bold text-snow-primary")}>
+          {q.quote}
+        </span>
         {q.saidby && (
           <span
             className={clsx(
-              ["italic"],
-              ["ml-1"],
-              ["before:content-['―']", "before:mr-0.5"],
-              ["text-xs", "text-slate-500"]
+              "ml-1 text-xs italic text-snow-darker before:mr-0.5 before:content-['―']"
             )}
           >
             {q.saidby}
@@ -114,16 +90,12 @@ export default function Quote({
       </blockquote>
       <figcaption
         className={clsx(
-          ["mt-1"],
-          ["before:content-['―']", "before:mr-0.5"],
-          ["text-xs", "text-slate-500"]
+          "font-serif text-xs text-snow-darkest before:mr-0.5 before:content-['―']"
         )}
       >
         {q.ref.author && <span>{q.ref.author}</span>}
-        {q.ref.series && (
-          <span className={clsx(["italic"])}>{q.ref.series}</span>
-        )}
-        <cite className={clsx(["italic"])}>『{q.ref.title}』</cite>
+        {q.ref.series && <span className={clsx("italic")}>{q.ref.series}</span>}
+        <cite className={clsx("font-bold italic")}>『{q.ref.title}』</cite>
         {q.ref.from && <span>{q.ref.from}より</span>}
       </figcaption>
     </figure>

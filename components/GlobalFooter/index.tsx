@@ -8,16 +8,25 @@ import Logo from "~/components/Logo";
 import { graphql } from "~/gql";
 import { makeGraphQLClient } from "~/gql/fetch";
 
+import Quote, { quotes } from "./Quote";
+
 export const Presentation: React.FC<{
   className?: string;
   style?: React.CSSProperties;
   madsCount: number;
   tagsCount: number;
-}> = ({ className, style, madsCount, tagsCount }) => (
-  <footer className={clsx(className, "bg-obsidian-darker py-24")} style={style}>
+  quote: number;
+}> = ({ className, style, madsCount, tagsCount, quote }) => (
+  <footer
+    className={clsx(
+      className,
+      "flex flex-col gap-y-8 bg-obsidian-darker pb-16 pt-24"
+    )}
+    style={style}
+  >
     <div
       className={clsx(
-        "container mx-auto flex max-w-screen-xl flex-row flex-wrap items-center gap-8 px-12 @container/footer"
+        "mx-auto flex w-full max-w-screen-xl flex-row flex-wrap items-center gap-8 px-12 @container/footer"
       )}
     >
       <div
@@ -153,6 +162,9 @@ export const Presentation: React.FC<{
         </div>
       </div>
     </div>
+    <div className={clsx("mx-auto flex w-full max-w-screen-xl px-12")}>
+      <Quote index={quote} className={clsx("")} />
+    </div>
   </footer>
 );
 
@@ -162,6 +174,7 @@ export default async function GlobalFooter({
   className?: string;
   style?: React.CSSProperties;
 }) {
+  const quote = Math.floor(Math.random() * quotes.length);
   const { countAllMads, countAllTags } = await makeGraphQLClient().request(
     graphql(`
       query GlobalFooter {
@@ -175,6 +188,7 @@ export default async function GlobalFooter({
     <Presentation
       madsCount={countAllMads}
       tagsCount={countAllTags}
+      quote={quote}
       {...props}
     />
   );
