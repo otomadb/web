@@ -5,7 +5,6 @@ import { FragmentType, graphql, useFragment } from "~/gql";
 
 const Fragment = graphql(`
   fragment YouMylistPageLink on Mylist {
-    id
     slug
   }
 `);

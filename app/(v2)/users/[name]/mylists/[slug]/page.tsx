@@ -11,7 +11,7 @@ export default async function Page({
   params,
   searchParams,
 }: {
-  params: { name: string; id: string };
+  params: { name: string; slug: string };
   searchParams: { page?: string };
 }) {
   const page = searchParams.page ? parseInt(searchParams.page, 10) : 1;
@@ -23,14 +23,14 @@ export default async function Page({
     graphql(`
       query UserMylistPage2(
         $name: String!
-        $mylistId: ID!
+        $slug: String!
         $offset: Int!
         $take: Int!
       ) {
         findUser(input: { name: $name }) {
           ...UserPage_SideNav
           name
-          mylist(id: $mylistId) {
+          publicMylist(slug: $slug) {
             slug
             title
             registrationsByOffset(input: { offset: $offset, take: $take }) {
@@ -46,17 +46,23 @@ export default async function Page({
     `),
     {
       name: params.name,
-      mylistId: params.id,
+      slug: params.slug,
       offset: (page - 1) * PER_PAGE,
       take: PER_PAGE,
     }
   );
 
   const { findUser } = result;
-  if (!findUser || !findUser.mylist) notFound();
+  if (
+    !findUser ||
+    !findUser.publicMylist ||
+    (page !== 1 &&
+      findUser.publicMylist.registrationsByOffset.nodes.length === 0)
+  )
+    notFound();
 
   const pageMax = Math.ceil(
-    findUser.mylist.registrationsByOffset.totalCount / PER_PAGE
+    findUser.publicMylist.registrationsByOffset.totalCount / PER_PAGE
   );
 
   return (
@@ -64,7 +70,7 @@ export default async function Page({
       <div className={clsx("flex w-full items-center px-4 py-2")}>
         <div className="shrink-0 grow">
           <h1 className="text-xl font-bold text-snow-primary">
-            {findUser.mylist.title}が良いと思った音MAD
+            {findUser.publicMylist.title}
           </h1>
         </div>
         <Paginator
@@ -72,27 +78,40 @@ export default async function Page({
           className={clsx()}
           pageMax={pageMax}
           currentPage={page}
-          pathname={`/users/${findUser.name}/mylists/${findUser.mylist.slug}`}
+          pathname={`/users/${findUser.name}/mylists/${findUser.publicMylist.slug}`}
         />
       </div>
-      <div
-        className={clsx(
-          "grid w-full grid-cols-1 flex-col gap-2 @[512px]/mylist:grid-cols-2 @[768px]/mylist:grid-cols-3 @[1024px]/mylist:grid-cols-4"
-        )}
-      >
-        {findUser.mylist.registrationsByOffset.nodes.map((node) => (
-          <RegistrationItem key={node.id} fragment={node} />
-        ))}
-      </div>
-      <div className={clsx("flex w-full items-center justify-end px-4 py-2")}>
-        <Paginator
-          size="sm"
-          className={clsx()}
-          pageMax={pageMax}
-          currentPage={page}
-          pathname={`/users/${findUser.name}/mylists/${findUser.mylist.slug}`}
-        />
-      </div>
+      {findUser.publicMylist.registrationsByOffset.nodes.length === 0 && (
+        <div>
+          <p className={clsx("text-center text-sm text-snow-darker")}>
+            このマイリストにはまだ何も登録されていません
+          </p>
+        </div>
+      )}
+      {findUser.publicMylist.registrationsByOffset.nodes.length >= 1 && (
+        <>
+          <div
+            className={clsx(
+              "grid w-full grid-cols-1 flex-col gap-2 @[512px]/mylist:grid-cols-2 @[768px]/mylist:grid-cols-3 @[1024px]/mylist:grid-cols-4"
+            )}
+          >
+            {findUser.publicMylist.registrationsByOffset.nodes.map((node) => (
+              <RegistrationItem key={node.id} fragment={node} />
+            ))}
+          </div>
+          <div
+            className={clsx("flex w-full items-center justify-end px-4 py-2")}
+          >
+            <Paginator
+              size="sm"
+              className={clsx()}
+              pageMax={pageMax}
+              currentPage={page}
+              pathname={`/users/${findUser.name}/mylists/${findUser.publicMylist.slug}`}
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 }
