@@ -6,7 +6,6 @@ import { graphql } from "~/gql";
 import { makeGraphQLClient } from "~/gql/fetch";
 
 import RegistrationItem from "../mylists/[slug]/RegistrationItem";
-import SideNav from "../SideNav";
 
 export default async function Page({
   params,
@@ -23,7 +22,6 @@ export default async function Page({
     graphql(`
       query UserLikesPage2($name: String!, $offset: Int!, $take: Int!) {
         findUser(input: { name: $name }) {
-          ...UserPage_SideNav
           name
           displayName
           likes {
@@ -54,49 +52,38 @@ export default async function Page({
   );
 
   return (
-    <div className={clsx("flex flex-wrap gap-x-4 @container/page")}>
-      <SideNav className={clsx("w-72")} primaryFragment={findUser} />
+    <div className={clsx("@container/mylist")}>
+      <div className={clsx("flex w-full items-center px-4 py-2")}>
+        <div className="shrink-0 grow">
+          <h1 className="text-xl font-bold text-snow-primary">
+            {findUser.displayName}が良いと思った音MAD
+          </h1>
+        </div>
+        <Paginator
+          size="sm"
+          className={clsx()}
+          pageMax={pageMax}
+          currentPage={page}
+          pathname={`/users/${findUser.name}/likes`}
+        />
+      </div>
       <div
         className={clsx(
-          "grow border border-obsidian-primary bg-obsidian-darker p-4"
+          "grid w-full grid-cols-1 flex-col gap-2 @[512px]/mylist:grid-cols-2 @[768px]/mylist:grid-cols-3 @[1024px]/mylist:grid-cols-4"
         )}
       >
-        <div className={clsx("@container/mylist")}>
-          <div className={clsx("flex w-full items-center px-4 py-2")}>
-            <div className="shrink-0 grow">
-              <h1 className="text-xl font-bold text-snow-primary">
-                {findUser.displayName}が良いと思った音MAD
-              </h1>
-            </div>
-            <Paginator
-              size="sm"
-              className={clsx()}
-              pageMax={pageMax}
-              currentPage={page}
-              pathname={`/users/${findUser.name}/likes`}
-            />
-          </div>
-          <div
-            className={clsx(
-              "grid w-full grid-cols-1 flex-col gap-2 @[512px]/mylist:grid-cols-2 @[768px]/mylist:grid-cols-3 @[1024px]/mylist:grid-cols-4"
-            )}
-          >
-            {findUser.likes.registrationsByOffset.nodes.map((node) => (
-              <RegistrationItem key={node.id} fragment={node} />
-            ))}
-          </div>
-          <div
-            className={clsx("flex w-full items-center justify-end px-4 py-2")}
-          >
-            <Paginator
-              size="sm"
-              className={clsx()}
-              pageMax={pageMax}
-              currentPage={page}
-              pathname={`/users/${findUser.name}/likes`}
-            />
-          </div>
-        </div>
+        {findUser.likes.registrationsByOffset.nodes.map((node) => (
+          <RegistrationItem key={node.id} fragment={node} />
+        ))}
+      </div>
+      <div className={clsx("flex w-full items-center justify-end px-4 py-2")}>
+        <Paginator
+          size="sm"
+          className={clsx()}
+          pageMax={pageMax}
+          currentPage={page}
+          pathname={`/users/${findUser.name}/likes`}
+        />
       </div>
     </div>
   );
