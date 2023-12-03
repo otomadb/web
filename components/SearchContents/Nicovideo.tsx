@@ -3,7 +3,6 @@ import clsx from "clsx";
 import React from "react";
 import { useQuery } from "urql";
 
-import NicovideoRequestPageLink from "~/app/(application)/(normal)/request/nicovideo/Link";
 import { MadPageLink } from "~/app/(v2)/mads/[serial]/Link";
 import { NicovideoRegistrationRequestLink } from "~/app/(v2)/requests/nicovideo/[sourceId]/Link";
 import CommonTag from "~/components/CommonTag";
@@ -12,6 +11,8 @@ import Pictogram from "~/components/Pictogram";
 import { UserIcon } from "~/components/UserIcon";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { graphql } from "~/gql";
+
+import { useOpenRequestFromNicovideoWithID } from "../FormModal";
 
 export const SearchNicovideoQuery = graphql(`
   query SearchContents_SearchNicovideo($sourceId: String!) {
@@ -60,6 +61,7 @@ const SearchNicovideo: React.FC<{
     query: SearchNicovideoQuery,
     variables: { sourceId },
   });
+  const openRequestFromNicovideo = useOpenRequestFromNicovideoWithID();
 
   return (
     <div
@@ -212,13 +214,13 @@ const SearchNicovideo: React.FC<{
               </div>
             </NicovideoRegistrationRequestLink>
           ) : (
-            <NicovideoRequestPageLink
+            <div
               className={clsx(
                 "group flex gap-x-4 p-2 px-4 hover:bg-vivid-primary"
               )}
-              sourceId={sourceId}
               onClick={(e) => {
                 e.currentTarget.blur();
+                openRequestFromNicovideo(sourceId);
               }}
             >
               <div className={clsx("flex")}>
@@ -232,7 +234,7 @@ const SearchNicovideo: React.FC<{
                   <span className="font-bold">リクエストしてみては？</span>
                 </p>
               </div>
-            </NicovideoRequestPageLink>
+            </div>
           ))}
       </div>
     </div>
