@@ -7,9 +7,7 @@ export const NicovideoRegisterPageLink: React.FC<
   Omit<ComponentProps<typeof Link>, "href"> & SearchParams
 > = ({ children, sourceId, ...props }) => (
   <Link
-    href={
-      sourceId ? `/editor/nicovideo?sourceId=${sourceId}` : "/editor/nicovideo"
-    }
+    href={{ pathname: "/editor/nicovideo", query: { sourceId } }}
     {...props}
   >
     {children}
