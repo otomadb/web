@@ -6,7 +6,7 @@ import React from "react";
 import { graphql } from "~/gql";
 import { makeGraphQLClient } from "~/gql/fetch";
 
-import Header from "./Header";
+import UserPageHeader from "./Header";
 
 export async function generateMetadata({
   params,
@@ -61,7 +61,7 @@ export default async function Layout({
     <div
       className={clsx("mx-auto flex grow flex-col gap-y-4 @container/layout")}
     >
-      <Header fragment={findUser} />
+      <UserPageHeader fragment={findUser} />
       <div className="mx-auto w-full max-w-screen-2xl">{children}</div>
     </div>
   );
