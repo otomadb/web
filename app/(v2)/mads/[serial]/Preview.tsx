@@ -8,6 +8,12 @@ import React, { useState } from "react";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
+export const mkBilibiliAutoplayDisabled = (baseUrl: string) => {
+  const url = new URL(baseUrl);
+  url.searchParams.set("autoplay", "0");
+  return url.toString();
+};
+
 export const Fragment = graphql(`
   fragment MadPageLayout_Preview on Video {
     ...VideoThumbnail
@@ -249,7 +255,7 @@ export default function Preview({
                 thumbnail[1] === source.id
               ),
             })}
-            src={source.embedUrl}
+            src={mkBilibiliAutoplayDisabled(source.embedUrl)}
           />
         ))}
       </div>
