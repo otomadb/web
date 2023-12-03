@@ -60,7 +60,6 @@ export default withPageAuthRequired(
 
     const { viewer } = result;
     if (!viewer) throw new Error("viewer is null");
-    if (!viewer.likes) throw new Error("viewer.likes is null");
     if (page !== 1 && viewer.likes.registrationsByOffset.nodes.length === 0)
       notFound();
 
