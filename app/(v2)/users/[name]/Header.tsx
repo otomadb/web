@@ -22,7 +22,7 @@ export default function UserPageHeader({
 }: {
   className?: string;
   fragment: FragmentType<typeof UserPageHeaderFragment>;
-  isMyPage: boolean;
+  isMyPage?: boolean;
 }) {
   const fragment = useFragment(UserPageHeaderFragment, props.fragment);
 
