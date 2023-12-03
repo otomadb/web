@@ -22,7 +22,7 @@ jobs:
         run: pnpm --package=@graphql-inspector/cli dlx graphql-inspector introspect $GRAPHQL_API_ENDPOINT --write schema.graphql
         env:
           GRAPHQL_API_ENDPOINT: "${{ vars.GRAPHQL_API_ENDPOINT }}"
-      - uses: tibdex/github-app-token@v1
+      - uses: tibdex/github-app-token@3beb63f4bd073e61482598c45c71c1019b59b73a # v2
         id: generate-token
         with:
           app_id: ${{ secrets.AUTOMERGE_APP_ID }}
