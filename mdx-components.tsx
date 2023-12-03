@@ -10,11 +10,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       <h1
         {...props}
         id={children?.toString()}
-        className={clsx(
-          className,
-          ["text-slate-800", "font-bold", "text-3xl"],
-          ["mb-2"]
-        )}
+        className={clsx(className, "mb-2 text-3xl font-bold text-snow-lighter")}
       >
         {children}
       </h1>
@@ -25,8 +21,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         id={children?.toString()}
         className={clsx(
           className,
-          ["text-slate-800", "text-2xl", "font-bold"],
-          ["mt-8", "mb-1"]
+          "mb-1 mt-12 text-2xl font-bold text-snow-lighter"
         )}
       >
         {children}
@@ -38,8 +33,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         id={children?.toString()}
         className={clsx(
           className,
-          ["text-slate-800", "text-lg", "font-semibold"],
-          ["mt-2", "mb-1"]
+          "mb-1 mt-4 text-lg font-semibold text-snow-lighter"
         )}
       >
         {children}
@@ -48,13 +42,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     ul: ({ children, className, ...props }) => (
       <ul
         {...props}
-        className={clsx(
-          className,
-          ["flex", "flex-col"],
-          ["list-disc"],
-          ["pl-8"],
-          ["my-2"]
-        )}
+        className={clsx(className, "my-2 flex list-disc flex-col pl-8")}
       >
         {children}
       </ul>
@@ -62,19 +50,13 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     ol: ({ children, className, ...props }) => (
       <ul
         {...props}
-        className={clsx(
-          className,
-          ["flex", "flex-col"],
-          ["list-decimal"],
-          ["pl-8"],
-          ["my-2"]
-        )}
+        className={clsx(className, "my-2 flex list-decimal flex-col pl-8")}
       >
         {children}
       </ul>
     ),
     li: ({ children, className, ...props }) => (
-      <li {...props} className={clsx(className, ["text-slate-900", "text-sm"])}>
+      <li {...props} className={clsx(className, "text-sm text-snow-primary")}>
         {children}
       </li>
     ),
@@ -83,25 +65,24 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         {...props}
         className={clsx(
           className,
-          ["bg-slate-200"],
-          ["border-l-4", "border-slate-500"],
-          ["py-2", "px-4"],
-          ["my-2"],
-          ["text-slate-900"]
+          "my-4 border-l-4 border-obsidian-lightest bg-obsidian-lighter px-4 py-2 text-snow-lighter"
         )}
       >
         {children}
       </blockquote>
     ),
     hr: ({ children, className, ...props }) => (
-      <hr {...props} className={clsx(className, ["my-2"])}>
+      <hr {...props} className={clsx(className, "my-2")}>
         {children}
       </hr>
     ),
     p: ({ children, className, ...props }) => (
       <p
         {...props}
-        className={clsx(className, ["text-slate-900", " text-base"])}
+        className={clsx(
+          className,
+          "text-base  leading-relaxed text-snow-primary"
+        )}
       >
         {children}
       </p>
@@ -109,7 +90,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     a: ({ children, className, ...props }) => (
       <a
         {...props}
-        className={clsx(className, ["hover:underline"], ["text-blue-600"])}
+        className={clsx(className, "text-vivid-primary hover:underline")}
       >
         {children}
       </a>
@@ -122,7 +103,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     strong: ({ children, className, ...props }) => (
       <strong
         {...props}
-        className={clsx(className, ["text-slate-700", "font-semibold"])}
+        className={clsx(className, "font-semibold text-snow-lighter")}
       >
         {children}
       </strong>
@@ -130,7 +111,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     code: ({ children, className, ...props }) => (
       <code
         {...props}
-        className={clsx(className, ["font-mono"], ["px-0.5"], ["bg-blue-100"])}
+        className={clsx(className, "bg-blue-100 px-0.5 font-mono")}
       >
         {children}
       </code>
