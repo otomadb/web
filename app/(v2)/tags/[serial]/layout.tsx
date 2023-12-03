@@ -54,6 +54,7 @@ export default async function Layout({
           type
           serial
           isCategoryTag
+          totalTaggedVideos
           explicitParent {
             id
             name
@@ -96,6 +97,7 @@ export default async function Layout({
     name,
     explicitParent,
     aliases,
+    totalTaggedVideos,
     parents: parentTags,
     children: childTags,
   } = findTagBySerial;
@@ -124,6 +126,16 @@ export default async function Layout({
           >
             <div className={clsx("text-xs text-snow-darker")}>タイプ</div>
             <TagType className={clsx("text-sm")} fragment={findTagBySerial} />
+          </div>
+          <div
+            className={clsx(
+              "flex flex-row items-center justify-between border-l border-obsidian-lighter px-2"
+            )}
+          >
+            <div className={clsx("text-xs text-snow-darker")}>音MADの数</div>
+            <p className={clsx("text-sm text-snow-primary")}>
+              {totalTaggedVideos}
+            </p>
           </div>
           {1 <= aliases.length && (
             <div
