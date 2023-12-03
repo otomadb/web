@@ -1148,14 +1148,14 @@ type Query {
 
   """自動的に検知したニコニコ動画の音MADを列挙する"""
   listNicovideoBotRegistrationRequests(input: ListNicovideoBotRegistrationRequestsInput!): [NicovideoOriginalSource!]!
-  notifications(after: String, before: String, filter: NotificationsFilter! = {}, first: Int, last: Int, orderBy: NotificationsOrderBy! = {createdAt: DESC}): NotificationConnection!
+  notifications(after: String, before: String, filter: NotificationsFilter! = {}, first: Int, last: Int, orderBy: NotificationsOrderBy! = {createdAt: DESC}): NotificationConnection! @deprecated(reason: "Use `User.notifications` instead")
   searchTags(input: SearchTagInput!): SearchTagsPayload!
   searchVideos(input: SearchVideoInput!): SearchVideosPayload!
 
   """ユーザーのタイムラインを取得する"""
   showTimeline(input: ShowTimelineInput!): [TimelineEvent!]!
   viewer: User
-  whoami: User!
+  whoami: User! @deprecated(reason: "Use `Query.viewer` instead")
 }
 
 input RegisterBilibiliMADInput {
@@ -2216,6 +2216,21 @@ type User implements Node {
   """現在このユーザに届いている通知．"""
   notifications(input: UserNotificationsInput!): NotificationConnection!
   publicMylist(slug: String!): Mylist
+
+  """公開マイリストの一覧をoffsetベースで取得する"""
+  publicMylistsByOffset(input: UserMylistsByOffsetInput!): UserMylistsByOffsetPayload!
+}
+
+input UserMylistsByOffsetInput {
+  offset: Int!
+  orderBy: UserMylistsOrderBy! = {createdAt: DESC}
+  take: Int!
+}
+
+type UserMylistsByOffsetPayload {
+  hasMore: Boolean!
+  nodes: [Mylist!]!
+  totalCount: Int!
 }
 
 input UserMylistsOrderBy {
