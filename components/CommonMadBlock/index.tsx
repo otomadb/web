@@ -22,15 +22,21 @@ export const CommonMadBlockFragment = graphql(`
   }
 `);
 export default function CommonMadBlock({
+  classNames,
+  style,
   ...props
 }: {
+  classNames?: string;
+  style?: React.CSSProperties;
   fragment: FragmentType<typeof CommonMadBlockFragment>;
 }) {
   const fragment = useFragment(CommonMadBlockFragment, props.fragment);
 
   return (
     <div
+      style={style}
       className={clsx(
+        classNames,
         "shrink-0 overflow-hidden rounded border border-obsidian-lighter bg-obsidian-primary"
       )}
     >

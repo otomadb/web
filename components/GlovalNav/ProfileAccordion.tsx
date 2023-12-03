@@ -5,11 +5,11 @@ import React from "react";
 
 import { LinkRegisterSemitag } from "~/app/(application)/(editor)/editor/semitags/Link";
 import { TagRegisterPageLink } from "~/app/(application)/(editor)/editor/tags/Link";
-import NotificationsPageLink from "~/app/(application)/(normal)/notifications/Link";
 import { SettingPageLink } from "~/app/(application)/(normal)/settings/Link";
 import MyLikesPageLink from "~/app/(v2)/(authenticated)/me/likes/Link";
 import MyTopPageLink from "~/app/(v2)/(authenticated)/me/Link";
 import MyMylistsPageLink from "~/app/(v2)/(authenticated)/me/mylists/Link";
+import NotificationsPageLink from "~/app/(v2)/(authenticated)/notifications/Link";
 import { LogoutLink } from "~/components/AuthLink";
 import {
   useOpenRegisterFromBilibili,
