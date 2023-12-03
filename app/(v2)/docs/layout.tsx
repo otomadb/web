@@ -8,9 +8,7 @@ export default async function Layout({
   return (
     <main
       className={clsx(
-        ["my-12"],
-        ["container", "max-w-screen-lg", "mx-auto"],
-        ["px-8"]
+        "mx-auto w-full max-w-screen-lg rounded-lg border border-obsidian-primary bg-obsidian-darker px-8 py-12"
       )}
     >
       {children}
