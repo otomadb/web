@@ -6,6 +6,11 @@ on:
       - main
   pull_request:
   merge_group:
+  workflow_run:
+    workflows:
+      - "Update GraphQL Schema"
+    types:
+      - completed
 
 jobs:
   lint:
