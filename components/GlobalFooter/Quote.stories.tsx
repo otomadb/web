@@ -5,8 +5,8 @@ import Quote from "./Quote";
 const meta = {
   component: Quote,
   args: {
-    style: { width: "384px" },
-    index: 1,
+    style: { width: 384 },
+    initIndex: 1,
   },
 } as Meta<typeof Quote>;
 export default meta;

@@ -7,6 +7,7 @@ const meta = {
   args: {
     madsCount: 100,
     tagsCount: 100,
+    quote: 1,
   },
 } as Meta<typeof Presentation>;
 export default meta;

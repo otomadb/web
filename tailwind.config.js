@@ -65,8 +65,8 @@ module.exports = {
           lightest: "hsl(216, 13%, 28%)",
         },
         "snow": {
-          darkest: "hsl(210, 16%, 62%)",
-          darker: "hsl(210, 29%, 76%)",
+          darkest: "hsl(210, 10.2%, 48.5%)",
+          darker: "hsl(210, 13%, 62%)",
           primary: "hsl(210, 22%, 84%)",
           lighter: "hsl(210, 18%, 92%)",
           lightest: "hsl(210, 14%, 96%)",
