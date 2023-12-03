@@ -1,12 +1,13 @@
 import clsx from "clsx";
-import React from "react";
+import React, { ReactNode } from "react";
 
 import { UserIcon } from "~/components/UserIcon";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
+import MyTopPageLink from "../../(authenticated)/me/Link";
 import UserPageLink from "./Link";
 
-const Fragment = graphql(`
+const UserPageHeaderFragment = graphql(`
   fragment UserPage_Header on User {
     ...UserIcon
     ...Link_User
@@ -14,14 +15,21 @@ const Fragment = graphql(`
     displayName
   }
 `);
-export default function Header({
+export default function UserPageHeader({
   className,
+  isMyPage = false,
   ...props
 }: {
   className?: string;
-  fragment: FragmentType<typeof Fragment>;
+  fragment: FragmentType<typeof UserPageHeaderFragment>;
+  isMyPage?: boolean;
 }) {
-  const fragment = useFragment(Fragment, props.fragment);
+  const fragment = useFragment(UserPageHeaderFragment, props.fragment);
+
+  const UserLink: React.FC<{ className?: string; children?: ReactNode }> =
+    isMyPage
+      ? (props) => <MyTopPageLink {...props} />
+      : (props) => <UserPageLink {...props} fragment={fragment} />;
 
   return (
     <header
@@ -32,14 +40,12 @@ export default function Header({
           "mx-auto flex w-full max-w-screen-lg items-center gap-x-8 px-12"
         )}
       >
-        <div className={clsx("h-[96px] w-[96px]")}>
+        <UserLink className={clsx("h-[96px] w-[96px]")}>
           <UserIcon size={96} fragment={fragment} />
-        </div>
+        </UserLink>
         <div className={clsx("")}>
           <h1 className={clsx("text-xl font-bold text-snow-primary")}>
-            <UserPageLink fragment={fragment}>
-              {fragment.displayName}
-            </UserPageLink>
+            <UserLink>{fragment.displayName}</UserLink>
           </h1>
           <p className={clsx("font-mono text-base text-snow-darker")}>
             @{fragment.name}
