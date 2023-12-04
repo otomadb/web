@@ -8,8 +8,12 @@ import Crust from "./Crust";
 
 export const ToastContext = createContext<{
   call: (
-    inner: JSX.Element,
-    option?: Partial<Pick<ComponentProps<typeof Crust>, "duration" | "type">>
+    inner: ReactNode,
+    option?: {
+      duration?: number;
+      type?: ComponentProps<typeof Crust>["type"];
+      onClick?(): void;
+    }
   ) => void;
 }>({
   call: () => {}, // eslint-disable-line no-empty-function -- for type safety
@@ -24,18 +28,20 @@ export const ToastProvider: React.FC<{
       prev: {
         id: string;
         duration: number;
-        inner: JSX.Element;
+        inner: ReactNode;
         fired: ComponentProps<typeof Crust>["fired"];
         type: ComponentProps<typeof Crust>["type"];
+        onClick: ComponentProps<typeof Crust>["onClick"];
       }[],
       action:
         | { type: "eat"; id: string }
         | {
             type: "call";
-            inner: JSX.Element;
+            inner: ReactNode;
             option: {
               duration: number;
               type: ComponentProps<typeof Crust>["type"];
+              onClick: ComponentProps<typeof Crust>["onClick"];
             };
           }
     ) => {
@@ -66,6 +72,7 @@ export const ToastProvider: React.FC<{
             option: {
               duration: option?.duration ?? 3000,
               type: option?.type ?? "info",
+              onClick: option?.onClick,
             },
           });
         },

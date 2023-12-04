@@ -1,14 +1,9 @@
 import { action } from "@storybook/addon-actions";
 import { Meta, StoryObj } from "@storybook/react";
 import { graphql } from "msw";
-import {
-  createClient as createUrqlClient,
-  Provider as UrqlProvider,
-} from "urql";
 
 import { Fragment as CommonSemitagFragment } from "~/components/CommonSemitag";
 import { CommonTagFragment } from "~/components/CommonTag";
-import { ToastContext } from "~/components/Toaster";
 import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
 
@@ -22,17 +17,6 @@ const meta = {
   component: SemitagRow,
   args: {
     updateList: action("updateList"),
-  },
-  render(args) {
-    return (
-      <UrqlProvider
-        value={createUrqlClient({ url: "/graphql", exchanges: [] })}
-      >
-        <ToastContext.Provider value={{ call: action("callToast") }}>
-          <SemitagRow {...args} />
-        </ToastContext.Provider>
-      </UrqlProvider>
-    );
   },
   parameters: {
     msw: {

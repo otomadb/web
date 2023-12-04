@@ -44,10 +44,10 @@ export default function RenameForm({
   const [{ fetching }, rename] = useRename({
     onSucceeded({ user: { displayName } }) {
       callToast(
-        <p className={clsx(["text-slate-900"])}>
-          名前を<span className={clsx(["font-bold"])}>{displayName}</span>
+        <>
+          名前を<strong className={clsx(["font-bold"])}>{displayName}</strong>
           に変更しました
-        </p>
+        </>
       );
     },
   });
