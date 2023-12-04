@@ -57,6 +57,13 @@ module.exports = {
         "vivid": {
           primary: "hsl(162, 91%, 73%)",
         },
+        "warn": {
+          primary: colors.yellow[400],
+        },
+        "error": {
+          primary: colors.rose[600],
+        },
+
         "obsidian": {
           darkest: "hsl(232, 34%, 6%)",
           darker: "hsl(228, 21%, 9%)",
@@ -94,8 +101,16 @@ module.exports = {
           "0%": { transform: "scaleY(0)" },
           "100%": { transform: "scaleY(100%)" },
         },
+        "scale-x-1-to-0": {
+          "0%": { transform: "scaleX(1)" },
+          "100%": { transform: "scaleX(0)" },
+        },
         "fade-slide-l-to-r": {
           "0%": { opacity: 0, transform: "translateX(-1rem)" },
+          "100%": { opacity: 1, transform: "translateX(0)" },
+        },
+        "fade-slide-r-to-l": {
+          "0%": { opacity: 0, transform: "translateX(1rem)" },
           "100%": { opacity: 1, transform: "translateX(0)" },
         },
       },

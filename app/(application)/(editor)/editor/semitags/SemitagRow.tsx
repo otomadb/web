@@ -6,7 +6,7 @@ import * as z from "zod";
 
 import Button from "~/components/Button";
 import CommonTag from "~/components/CommonTag";
-import { useToaster } from "~/components/Toaster";
+import useToaster from "~/components/Toaster/useToaster";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 import RejectSucceededToast from "./RejectSucceededToast";

@@ -8,7 +8,7 @@ import React, { useCallback, useMemo, useReducer, useState } from "react";
 import Button from "~/components/Button";
 import { TagSearcher } from "~/components/TagSearcher";
 import { TextInput2 } from "~/components/TextInput";
-import { useToaster } from "~/components/Toaster";
+import useToaster from "~/components/Toaster/useToaster";
 
 import { SelectedTag } from "./SelectedTag";
 import { SucceededToast } from "./SucceededToast";

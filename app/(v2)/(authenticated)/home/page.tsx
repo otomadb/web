@@ -2,6 +2,7 @@ import { getAccessToken, withPageAuthRequired } from "@auth0/nextjs-auth0";
 import clsx from "clsx";
 
 import CommonMadBlock from "~/components/CommonMadBlock";
+import ToastCaller from "~/components/Toaster/F";
 import { graphql } from "~/gql";
 import { makeGraphQLClient } from "~/gql/fetch";
 
@@ -47,6 +48,7 @@ export default withPageAuthRequired(
       <>
         <ModalOpener />
         <main className={clsx("mx-auto max-w-screen-2xl @container/page")}>
+          <ToastCaller />
           <div className={clsx("flex flex-col gap-4 @[1280px]/page:flex-row")}>
             <Timeline
               className={clsx(

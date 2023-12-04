@@ -9,7 +9,7 @@ import z from "zod";
 
 import Button from "~/components/Button";
 import { TextInput } from "~/components/TextInput";
-import { useToaster } from "~/components/Toaster";
+import useToaster from "~/components/Toaster/useToaster";
 
 import useRename from "./useRename";
 
