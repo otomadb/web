@@ -6,7 +6,7 @@ import clsx from "clsx";
 import { useQuery } from "urql";
 
 import Button from "~/components/Button";
-import { useOpenRegisterFromNicovideoWithId } from "~/components/FormModal";
+import { useOpenRegisterFromNicovideo } from "~/components/FormModal";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 const Fragment = graphql(`
@@ -29,7 +29,7 @@ const AcceptRequestButton: React.FC<{
     `),
     requestPolicy: "cache-first",
   });
-  const openModal = useOpenRegisterFromNicovideoWithId();
+  const openModal = useOpenRegisterFromNicovideo();
   if (!data?.viewer?.isEditor) return null;
 
   return (

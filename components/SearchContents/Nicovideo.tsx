@@ -12,7 +12,7 @@ import { UserIcon } from "~/components/UserIcon";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { graphql } from "~/gql";
 
-import { useOpenRequestFromNicovideoWithID } from "../FormModal";
+import { useOpenRequestFromNicovideo } from "../FormModal";
 
 export const SearchNicovideoQuery = graphql(`
   query SearchContents_SearchNicovideo($sourceId: String!) {
@@ -61,7 +61,7 @@ const SearchNicovideo: React.FC<{
     query: SearchNicovideoQuery,
     variables: { sourceId },
   });
-  const openRequestFromNicovideo = useOpenRequestFromNicovideoWithID();
+  const openRequestFromNicovideo = useOpenRequestFromNicovideo();
 
   return (
     <div

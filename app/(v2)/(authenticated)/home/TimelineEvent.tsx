@@ -5,7 +5,7 @@ import CommonTagLink from "~/components/CommonTagLink";
 import { CoolImage2 } from "~/components/CoolImage";
 import DateTime2 from "~/components/DateTime2";
 import {
-  useOpenRegisterFromNicovideoWithId,
+  useOpenRegisterFromNicovideo,
   useOpenRegisterFromYoutube,
 } from "~/components/FormModal";
 import Pictogram from "~/components/Pictogram";
@@ -95,7 +95,7 @@ export default function TimelineEvent({
 }) {
   const fragment = useFragment(TimelineEventFragment, props.fragment);
   const registarable = useHasRole();
-  const openRegisterNicovideoForm = useOpenRegisterFromNicovideoWithId();
+  const openRegisterNicovideoForm = useOpenRegisterFromNicovideo();
   const openRegisterYoutubeForm = useOpenRegisterFromYoutube();
 
   return (

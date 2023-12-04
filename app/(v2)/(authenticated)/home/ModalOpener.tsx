@@ -6,9 +6,9 @@ import * as z from "zod";
 
 import {
   useOpenRegisterFromBilibili,
-  useOpenRegisterFromNicovideoWithId,
+  useOpenRegisterFromNicovideo,
   useOpenRegisterFromYoutube,
-  useOpenRequestFromNicovideoWithID,
+  useOpenRequestFromNicovideo,
   useOpenRequestFromSoundcloud,
   useOpenRequestFromYoutube,
   useOpenSoundcloudRegisterModal,
@@ -42,10 +42,10 @@ export type OpenModalParams = z.infer<typeof schemaParams>;
 export const ModalOpener = () => {
   const params = useSearchParams();
 
-  const openRequestFromNicovideo = useOpenRequestFromNicovideoWithID();
+  const openRequestFromNicovideo = useOpenRequestFromNicovideo();
   const openRequestFromYoutube = useOpenRequestFromYoutube();
   const openRequestFromSoundcloud = useOpenRequestFromSoundcloud();
-  const openNicovideoRegisterModal = useOpenRegisterFromNicovideoWithId();
+  const openNicovideoRegisterModal = useOpenRegisterFromNicovideo();
   const openYoutubeRegisterModal = useOpenRegisterFromYoutube();
   const openBilibiliRegisterModal = useOpenRegisterFromBilibili();
   const openSoundcloudRegisterModal = useOpenSoundcloudRegisterModal();
