@@ -2,7 +2,7 @@
 
 import clsx from "clsx";
 
-import { useOpenRegisterFromNicovideoWithId } from "~/components/FormModal";
+import { useOpenRegisterFromNicovideo } from "~/components/FormModal";
 import Pictogram from "~/components/Pictogram";
 import useHasRole from "~/components/useHasRole";
 import { FragmentType, graphql, useFragment } from "~/gql";
@@ -23,7 +23,7 @@ export default function RegisterButton({
 }) {
   const fragment = useFragment(RegisterButtonFragment, props.fragment);
   const registarable = useHasRole();
-  const openRegisterForm = useOpenRegisterFromNicovideoWithId();
+  const openRegisterForm = useOpenRegisterFromNicovideo();
 
   return (
     <button

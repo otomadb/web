@@ -124,7 +124,7 @@ export default function ProfileAccordion({
           type="button"
           onClick={(e) => {
             e.currentTarget.blur();
-            openRequestFromNicovideo();
+            openRequestFromNicovideo(null);
           }}
           className={clsx(
             "block px-4 py-2 text-left text-xs text-snow-primary hover:bg-vivid-primary hover:text-obsidian-primary"
@@ -170,7 +170,7 @@ export default function ProfileAccordion({
             type="button"
             onClick={(e) => {
               e.currentTarget.blur();
-              openRegisterFromNicovideo();
+              openRegisterFromNicovideo(null);
             }}
             className={clsx(
               "col-span-2 block px-4 py-2 text-left text-xs text-snow-primary hover:bg-vivid-primary hover:text-obsidian-primary"

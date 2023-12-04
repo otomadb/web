@@ -160,7 +160,7 @@ export default function AppSideNav({
                 <button
                   type="button"
                   onClick={() => {
-                    openRequestFromNicovideo();
+                    openRequestFromNicovideo(null);
                   }}
                   className={clsx(
                     "group flex items-center gap-x-2 px-4 py-1 text-left text-snow-darkest hover:bg-vivid-primary hover:text-obsidian-primary"
@@ -229,7 +229,7 @@ export default function AppSideNav({
                 <button
                   type="button"
                   onClick={() => {
-                    openNicovideoRegisterModal();
+                    openNicovideoRegisterModal(null);
                   }}
                   className={clsx(
                     "group flex items-center gap-x-2 px-4 py-1 text-left text-snow-darkest hover:bg-vivid-primary hover:text-obsidian-primary"

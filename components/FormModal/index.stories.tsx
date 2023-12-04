@@ -87,7 +87,7 @@ export type Story = StoryObj<typeof meta>;
 
 export const ニコニコ動画からIDを入力して登録: Story = {
   args: {
-    current: { type: "REGISTER_FROM_NICOVIDEO" },
+    current: { type: "REGISTER_FROM_NICOVIDEO", sourceId: null },
   },
   parameters: {
     msw: {
@@ -100,7 +100,7 @@ export const ニコニコ動画からIDを入力して登録: Story = {
 
 export const ニコニコ動画から直接登録: Story = {
   args: {
-    current: { type: "REGISTER_FROM_NICOVIDEO_WITH_ID", sourceId: "sm2057168" },
+    current: { type: "REGISTER_FROM_NICOVIDEO", sourceId: "sm2057168" },
   },
   parameters: {
     msw: {
@@ -139,7 +139,7 @@ export const Youtubeから直接登録: Story = {
 
 export const ニコニコ動画からIDを入力してリクエスト: Story = {
   args: {
-    current: { type: "REQUEST_FROM_NICOVIDEO" },
+    current: { type: "REQUEST_FROM_NICOVIDEO", sourceId: null },
   },
   parameters: {
     msw: {
@@ -152,7 +152,7 @@ export const ニコニコ動画からIDを入力してリクエスト: Story = {
 
 export const ニコニコ動画から直接リクエスト: Story = {
   args: {
-    current: { type: "REQUEST_FROM_NICOVIDEO_WITH_ID", sourceId: "sm2057168" },
+    current: { type: "REQUEST_FROM_NICOVIDEO", sourceId: "sm2057168" },
   },
   parameters: {
     msw: {
