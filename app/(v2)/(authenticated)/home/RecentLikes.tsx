@@ -3,10 +3,9 @@
 import clsx from "clsx";
 import { useQuery } from "urql";
 
-import { VideoThumbnail } from "~/components/VideoThumbnail";
+import CommonMadBlock from "~/components/CommonMadBlock";
 import { graphql } from "~/gql";
 
-import { MadPageLink } from "../../mads/[serial]/Link";
 import MyLikesPageLink from "../me/likes/Link";
 
 export default function RecentLikes({ className }: { className?: string }) {
@@ -16,14 +15,12 @@ export default function RecentLikes({ className }: { className?: string }) {
         whoami {
           id
           likes {
-            registrations(first: 6) {
+            registrations(first: 8) {
               nodes {
                 id
                 video {
-                  ...VideoThumbnail
-                  ...Link_Video
                   id
-                  title
+                  ...CommonMadBlock
                 }
               }
             }
@@ -50,46 +47,29 @@ export default function RecentLikes({ className }: { className?: string }) {
           もっと見る
         </MyLikesPageLink>
       </div>
-      <div className={clsx("mt-2 flex", "flex-col", "items-stretch")}>
+      <div className={clsx("mt-2 flex flex-col items-stretch")}>
         {fetching && (
           <div className={clsx("px-4 py-2 text-center text-snow-darker")}>
             いいね欄を取得中です
           </div>
         )}
-        <div
-          className={clsx(
-            "grid grid-cols-1 gap-2 @w128/likes:grid-cols-3 @w240/likes:grid-cols-6"
-          )}
-        >
-          {data?.whoami.likes?.registrations.nodes.map((like) => (
-            <div
-              key={like.id}
-              className={clsx(
-                "flex flex-row gap-x-4 rounded border border-obsidian-lighter bg-obsidian-primary px-4 py-2 @w128/likes:flex-col @w128/likes:px-2 @w128/likes:py-1"
-              )}
-            >
-              <MadPageLink fragment={like.video}>
-                <VideoThumbnail
-                  className={clsx(
-                    "h-16 w-24 @w128/likes:h-24 @w128/likes:w-full @w192/likes:h-28 @w240/likes:h-32"
-                  )}
-                  fragment={like.video}
-                  imageSize="medium"
+        {data?.whoami.likes && (
+          <div
+            className={clsx(
+              "grid grid-cols-2 gap-2 @[512px]/likes:flex @[512px]/likes:overflow-x-scroll @[512px]/likes:pb-4"
+            )}
+          >
+            {data.whoami.likes.registrations.nodes.map((node) => (
+              <div key={node.id} className={clsx("shrink-0")}>
+                <CommonMadBlock
+                  size="small"
+                  fragment={node.video}
+                  classNames={clsx("h-full @[512px]/likes:w-48")}
                 />
-              </MadPageLink>
-              <div className={clsx("grow py-1 @w128/likes:mt-1")}>
-                <MadPageLink
-                  fragment={like.video}
-                  className={clsx(
-                    "line-clamp-1 text-sm font-bold text-vivid-primary @w128/likes:text-xs hover:underline"
-                  )}
-                >
-                  {like.video.title}
-                </MadPageLink>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

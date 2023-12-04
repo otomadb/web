@@ -29,6 +29,7 @@ export default function CommonMadBlock({
   classNames?: string;
   style?: React.CSSProperties;
   fragment: FragmentType<typeof CommonMadBlockFragment>;
+  size?: "small" | "medium";
 }) {
   const fragment = useFragment(CommonMadBlockFragment, props.fragment);
 
@@ -37,7 +38,7 @@ export default function CommonMadBlock({
       style={style}
       className={clsx(
         classNames,
-        "shrink-0 overflow-hidden rounded border border-obsidian-lighter bg-obsidian-primary"
+        "overflow-hidden rounded border border-obsidian-lighter bg-obsidian-primary"
       )}
     >
       <MadPageLink fragment={fragment} className={clsx(["block"])}>
