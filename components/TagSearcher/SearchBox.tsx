@@ -1,6 +1,6 @@
 import clsx from "clsx";
 
-import Pictogram from "~/components/Pictogram";
+import { LoadingPictogram, SearchPictogram } from "~/components/Pictogram";
 import { TextInput2 } from "~/components/TextInput";
 
 export default function SearchBox({
@@ -42,11 +42,10 @@ export default function SearchBox({
           )}
         >
           {!fetching && (
-            <Pictogram icon="search" className={clsx(["w-full", "h-full"])} />
+            <SearchPictogram className={clsx(["w-full", "h-full"])} />
           )}
           {fetching && (
-            <Pictogram
-              icon="loading"
+            <LoadingPictogram
               className={clsx(["w-full", "h-full"], ["animate-spin"])}
             />
           )}

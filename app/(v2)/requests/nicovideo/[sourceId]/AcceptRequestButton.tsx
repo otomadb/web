@@ -7,6 +7,7 @@ import { useQuery } from "urql";
 
 import Button from "~/components/Button";
 import { useOpenRegisterFromNicovideo } from "~/components/FormModal";
+import { PlusPictogram } from "~/components/Pictogram";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 const Fragment = graphql(`
@@ -36,7 +37,7 @@ const AcceptRequestButton: React.FC<{
     <Button
       color="blue"
       size="medium"
-      icon="plus"
+      Pictogram={PlusPictogram}
       text="登録する"
       className={clsx(className)}
       onClick={() => {

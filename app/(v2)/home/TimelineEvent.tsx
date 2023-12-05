@@ -8,7 +8,14 @@ import {
   useOpenRegisterFromNicovideo,
   useOpenRegisterFromYoutube,
 } from "~/components/FormModal";
-import Pictogram from "~/components/Pictogram";
+import {
+  BilibiliPictogram,
+  ExternalLinkPictogram,
+  NicovideoPictogram,
+  PlusPictogram,
+  SoundcloudPictogram,
+  YoutubePictogram,
+} from "~/components/Pictogram";
 import useHasRole from "~/components/useHasRole";
 import UserDisplayNameLink from "~/components/UserLink/UserDisplayNameLink";
 import UserIconLink from "~/components/UserLink/UserIconLink";
@@ -142,7 +149,7 @@ export default function TimelineEvent({
                       "flex rounded border border-nicovideo-primary bg-nicovideo-primary/50 p-1 text-black/75 hover:bg-nicovideo-primary hover:text-black"
                     )}
                   >
-                    <Pictogram icon="nicovideo" className={clsx("h-4 w-4")} />
+                    <NicovideoPictogram className={clsx("h-4 w-4")} />
                   </a>
                 ))}
                 {fragment.video.youtubeSources.map(({ id, url }) => (
@@ -155,7 +162,7 @@ export default function TimelineEvent({
                       "flex rounded border border-youtube-primary bg-youtube-primary/50 p-1 text-white/75 hover:bg-youtube-primary hover:text-white"
                     )}
                   >
-                    <Pictogram icon="youtube" className={clsx("h-4 w-4")} />
+                    <YoutubePictogram className={clsx("h-4 w-4")} />
                   </a>
                 ))}
                 {fragment.video.bilibiliSources.map(({ id, url }) => (
@@ -168,7 +175,7 @@ export default function TimelineEvent({
                       "flex rounded border border-bilibili-primary bg-bilibili-primary/50 p-1 text-white/75 hover:bg-bilibili-primary hover:text-white"
                     )}
                   >
-                    <Pictogram icon="bilibili" className={clsx("h-4 w-4")} />
+                    <BilibiliPictogram className={clsx("h-4 w-4")} />
                   </a>
                 ))}
                 {fragment.video.soundcloudSources.map(({ id, url }) => (
@@ -181,7 +188,7 @@ export default function TimelineEvent({
                       "flex rounded border border-soundcloud-primary bg-soundcloud-primary/50 p-1 text-white/75 hover:bg-soundcloud-primary hover:text-white"
                     )}
                   >
-                    <Pictogram icon="soundcloud" className={clsx("h-4 w-4")} />
+                    <SoundcloudPictogram className={clsx("h-4 w-4")} />
                   </a>
                 ))}
               </div>
@@ -227,7 +234,7 @@ export default function TimelineEvent({
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Pictogram icon="external-link" className={clsx("h-4")} />
+                <ExternalLinkPictogram className={clsx("h-4")} />
                 <span>{fragment.request.sourceId}</span>
               </a>
             </div>
@@ -267,7 +274,7 @@ export default function TimelineEvent({
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Pictogram icon="external-link" className={clsx("h-4")} />
+                <ExternalLinkPictogram className={clsx("h-4")} />
                 <span>{fragment.request.sourceId}</span>
               </a>
             </div>
@@ -298,7 +305,7 @@ export default function TimelineEvent({
                 openRegisterNicovideoForm(fragment.request.sourceId)
               }
             >
-              <Pictogram icon="plus" className={clsx("h-6 w-6")} />
+              <PlusPictogram className={clsx("h-6 w-6")} />
             </button>
           )}
           {fragment.__typename === "YoutubeMadRequestedTimelineEvent" && (
@@ -310,7 +317,7 @@ export default function TimelineEvent({
               disabled={!registarable}
               onClick={() => openRegisterYoutubeForm(fragment.request.sourceId)}
             >
-              <Pictogram icon="plus" className={clsx("h-6 w-6")} />
+              <PlusPictogram className={clsx("h-6 w-6")} />
             </button>
           )}
         </div>

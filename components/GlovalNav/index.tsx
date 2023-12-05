@@ -6,7 +6,7 @@ import { useQuery } from "urql";
 
 import TopPageLink from "~/app/(landing)/Link";
 import { LoginLink } from "~/components/AuthLink";
-import Pictogram from "~/components/Pictogram";
+import { SignInPictogram } from "~/components/Pictogram";
 import SearchContents from "~/components/SearchContents";
 import { graphql } from "~/gql";
 
@@ -68,7 +68,7 @@ export default function GlobalNav({
                 "flex items-center gap-x-2 rounded-sm border border-vivid-primary bg-transparent px-4 py-2 text-vivid-primary duration-50 hover:bg-vivid-primary hover/button:text-obsidian-darker"
               )}
             >
-              <Pictogram icon="signin" className={clsx("h-4")} />
+              <SignInPictogram className={clsx("h-4")} />
               <span className={clsx("text-sm")}>ログイン</span>
             </LoginLink>
           ) : (

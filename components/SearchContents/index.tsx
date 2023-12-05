@@ -5,7 +5,7 @@ import clsx from "clsx";
 import React, { useState } from "react";
 
 import { DelayedInput } from "~/components/DelayedInput";
-import Pictogram from "~/components/Pictogram";
+import { SearchPictogram } from "~/components/Pictogram";
 
 import { Dropdown } from "./Dropdown";
 
@@ -56,10 +56,7 @@ export default function SearchContents({
             "pointer-events-none absolute inset-y-0 flex items-center pl-4"
           )}
         >
-          <Pictogram
-            icon="search"
-            className={clsx("h-4 w-4 text-snow-darkest")}
-          />
+          <SearchPictogram className={clsx("h-4 w-4 text-snow-darkest")} />
         </div>
         <DelayedInput
           className={clsx(

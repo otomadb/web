@@ -7,6 +7,7 @@ import { useQuery } from "urql";
 import Button from "~/components/Button";
 import CommonTag from "~/components/CommonTag";
 import { CommonTagFragment } from "~/components/CommonTag";
+import { XMarkPictogram } from "~/components/Pictogram";
 import { graphql, makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
 
@@ -33,7 +34,7 @@ export const SelectedTag: React.FC<{
       <Button
         className={clsx(["shrink-0"])}
         onClick={() => remove()}
-        icon="x"
+        Pictogram={XMarkPictogram}
         size="small"
         color="red"
       />

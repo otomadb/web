@@ -3,10 +3,9 @@ import React from "react";
 import { useQuery } from "urql";
 
 import { MadPageLink } from "~/app/(v2)/mads/[serial]/Link";
+import { LoadingPictogram } from "~/components/Pictogram";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { graphql } from "~/gql";
-
-import Pictogram from "../Pictogram";
 
 export const SearchMadsQuery = graphql(`
   query SearchContents_SearchMads($query: String!) {
@@ -54,7 +53,7 @@ const SearchMads: React.FC<{
           <div
             className={clsx("ml-2 flex items-center gap-x-2 text-snow-darkest")}
           >
-            <Pictogram icon="loading" className={clsx("h-4")} />
+            <LoadingPictogram className={clsx("h-4")} />
             <div className={clsx("text-sm")}>検索中</div>
           </div>
         )}

@@ -6,7 +6,7 @@ import { MadPageLink } from "~/app/(v2)/mads/[serial]/Link";
 import { NicovideoRegistrationRequestLink } from "~/app/(v2)/requests/nicovideo/[sourceId]/Link";
 import UserPageLink from "~/app/(v2)/users/[name]/Link";
 import CommonMadBlock from "~/components/CommonMadBlock";
-import Pictogram from "~/components/Pictogram";
+import { AcceptPictogram } from "~/components/Pictogram";
 import { UserIcon } from "~/components/UserIcon";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
@@ -61,9 +61,8 @@ export default function NicovideoRegistrationRequestAcceptingNotification({
       className={className}
       fragment={fragment}
       Icon={({ className, ...props }) => (
-        <Pictogram
+        <AcceptPictogram
           {...props}
-          icon="accept"
           className={clsx(className, "text-teal-500")}
         />
       )}

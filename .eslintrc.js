@@ -8,6 +8,7 @@ module.exports = {
     "plugin:eslint-comments/recommended",
     "plugin:storybook/recommended",
     "plugin:tailwindcss/recommended",
+    "plugin:mdx/recommended",
   ],
   plugins: ["unused-imports", "simple-import-sort"],
   rules: {

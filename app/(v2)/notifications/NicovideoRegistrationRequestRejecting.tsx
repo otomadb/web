@@ -2,7 +2,7 @@
 
 import clsx from "clsx";
 
-import Pictogram from "~/components/Pictogram";
+import { RejectPictogram } from "~/components/Pictogram";
 import { UserIcon } from "~/components/UserIcon";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
@@ -53,9 +53,8 @@ export default function NicovideoRegistrationRequestRejectingNotification({
       className={className}
       fragment={fragment}
       Icon={({ className, ...props }) => (
-        <Pictogram
+        <RejectPictogram
           {...props}
-          icon="accept"
           className={clsx(className, "text-rose-500")}
         />
       )}

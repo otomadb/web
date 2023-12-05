@@ -6,6 +6,7 @@ import clsx from "clsx";
 import React, { useCallback, useMemo, useReducer, useState } from "react";
 
 import Button from "~/components/Button";
+import { PlusPictogram, XMarkPictogram } from "~/components/Pictogram";
 import TagSearcher from "~/components/TagSearcher";
 import { TextInput2 } from "~/components/TextInput";
 import useToaster from "~/components/Toaster/useToaster";
@@ -178,7 +179,7 @@ export const AddTagForm: React.FC<{
                   className={clsx(["shrink-0"])}
                   color="blue"
                   size="small"
-                  icon="plus"
+                  Pictogram={PlusPictogram}
                   onClick={() => {
                     if (!setExtraNameInput) return;
                     dispatchExtraNames({
@@ -216,7 +217,7 @@ export const AddTagForm: React.FC<{
                     color="red"
                     className={clsx(["shrink-0"])}
                     onClick={() => dispatchExtraNames({ type: "remove", name })}
-                    icon="x"
+                    Pictogram={XMarkPictogram}
                   />
                 </div>
               ))}
@@ -283,7 +284,7 @@ export const AddTagForm: React.FC<{
           className={clsx(["shrink-0"])}
           color="blue"
           size="small"
-          icon="plus"
+          Pictogram={PlusPictogram}
           text="追加"
           disabled={!ready}
         />

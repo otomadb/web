@@ -1,6 +1,6 @@
 import clsx from "clsx";
 
-import Pictogram from "~/components/Pictogram";
+import { FilledHeartPictogram } from "~/components/Pictogram";
 
 export const Presentation: React.FC<{
   className?: string;
@@ -27,8 +27,7 @@ export const Presentation: React.FC<{
       )}
     >
       <div>
-        <Pictogram
-          icon="like"
+        <FilledHeartPictogram
           className={clsx(
             "h-4 w-4 text-slate-400 transition-colors duration-75 group-hover:text-slate-500 group-disabled:text-slate-300 group-aria-checked:text-pink-600 group-aria-checked:group-hover:text-pink-500"
           )}

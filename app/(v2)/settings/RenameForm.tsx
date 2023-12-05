@@ -10,6 +10,7 @@ import { useMutation } from "urql";
 import z from "zod";
 
 import Button from "~/components/Button";
+import { PlusPictogram } from "~/components/Pictogram";
 import { TextInput } from "~/components/TextInput";
 import useToaster from "~/components/Toaster/useToaster";
 import { graphql } from "~/gql";
@@ -125,7 +126,7 @@ export default function RenameForm({
           submit
           color="blue"
           size="small"
-          icon="plus"
+          Pictogram={PlusPictogram}
           text="変更"
           disabled={fetching}
         />
