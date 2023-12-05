@@ -54,7 +54,11 @@ export const Normal: Story = {
       handlers: {
         main: [
           graphql.query(AppSideNavQuery, (req, res, ctx) =>
-            res(ctx.data({ viewer: { isAdmin: false, isEditor: false } }))
+            res(
+              ctx.data({
+                viewer: { id: "u1", isAdmin: false, isEditor: false },
+              })
+            )
           ),
         ],
       },
@@ -69,7 +73,9 @@ export const Editor: Story = {
       handlers: {
         main: [
           graphql.query(AppSideNavQuery, (req, res, ctx) =>
-            res(ctx.data({ viewer: { isAdmin: false, isEditor: true } }))
+            res(
+              ctx.data({ viewer: { id: "u1", isAdmin: false, isEditor: true } })
+            )
           ),
         ],
       },
@@ -84,7 +90,9 @@ export const Admin: Story = {
       handlers: {
         main: [
           graphql.query(AppSideNavQuery, (req, res, ctx) =>
-            res(ctx.data({ viewer: { isAdmin: true, isEditor: true } }))
+            res(
+              ctx.data({ viewer: { id: "u1", isAdmin: true, isEditor: true } })
+            )
           ),
         ],
       },

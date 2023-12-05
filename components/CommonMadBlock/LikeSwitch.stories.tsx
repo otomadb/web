@@ -14,14 +14,23 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const IsLiked: Story = {
+export const Loading: Story = {
+  name: "読み込み中",
   args: {
-    isLiked: true,
+    current: undefined,
+  },
+};
+
+export const IsLiked: Story = {
+  name: "いいね済み",
+  args: {
+    current: true,
   },
 };
 
 export const IsNotLiked: Story = {
+  name: "まだいいねしていない",
   args: {
-    isLiked: false,
+    current: false,
   },
 };
