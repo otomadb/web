@@ -18,7 +18,14 @@ import {
   useOpenSoundcloudRegisterModal,
 } from "~/components/FormModal";
 import Logo from "~/components/Logo";
-import Pictogram from "~/components/Pictogram";
+import {
+  BilibiliPictogram,
+  NicovideoPictogram,
+  PlusPictogram,
+  SoundcloudPictogram,
+  TagPictogram,
+  YoutubePictogram,
+} from "~/components/Pictogram";
 import { graphql } from "~/gql";
 
 export const AppSideNavQuery = graphql(`
@@ -96,7 +103,7 @@ export default function AppSideNav({
                   "group flex items-center gap-x-2 px-4 py-1 text-left text-snow-darkest hover:bg-vivid-primary hover:text-obsidian-primary"
                 )}
               >
-                <Pictogram icon="plus" className={clsx("h-4 w-4")} />
+                <PlusPictogram className={clsx("h-4 w-4")} />
                 <span className={clsx("text-sm")}>最近追加された音MAD</span>
               </AllVideosPageLink>
             </div>
@@ -122,7 +129,7 @@ export default function AppSideNav({
                     "group flex items-center gap-x-2 px-4 py-1 text-left text-snow-darkest hover:bg-vivid-primary hover:text-obsidian-primary"
                   )}
                 >
-                  <Pictogram icon="nicovideo" className={clsx("h-4 w-4")} />
+                  <NicovideoPictogram className={clsx("h-4 w-4")} />
                   <span className={clsx("text-sm")}>ニコニコ動画</span>
                 </AllNicovideoRequestsPageLink>
               </div>
@@ -167,7 +174,7 @@ export default function AppSideNav({
                     "group flex items-center gap-x-2 px-4 py-1 text-left text-snow-darkest hover:bg-vivid-primary hover:text-obsidian-primary"
                   )}
                 >
-                  <Pictogram icon="nicovideo" className={clsx("h-4 w-4")} />
+                  <NicovideoPictogram className={clsx("h-4 w-4")} />
                   <span className={clsx("text-sm")}>ニコニコ動画</span>
                 </button>
                 <button
@@ -179,7 +186,7 @@ export default function AppSideNav({
                     "group flex items-center gap-x-2 px-4 py-1 text-left text-snow-darkest hover:bg-vivid-primary hover:text-obsidian-primary"
                   )}
                 >
-                  <Pictogram icon="youtube" className={clsx("h-4 w-4 ")} />
+                  <YoutubePictogram className={clsx("h-4 w-4 ")} />
                   <span className={clsx("text-sm")}>YouTube</span>
                 </button>
                 <button
@@ -191,7 +198,7 @@ export default function AppSideNav({
                     "group flex items-center gap-x-2 px-4 py-1 text-left text-snow-darkest hover:bg-vivid-primary hover:text-obsidian-primary"
                   )}
                 >
-                  <Pictogram icon="soundcloud" className={clsx("h-4 w-4 ")} />
+                  <SoundcloudPictogram className={clsx("h-4 w-4 ")} />
                   <span className={clsx("text-sm")}>SoundCloud</span>
                 </button>
               </div>
@@ -236,7 +243,7 @@ export default function AppSideNav({
                     "group flex items-center gap-x-2 px-4 py-1 text-left text-snow-darkest hover:bg-vivid-primary hover:text-obsidian-primary"
                   )}
                 >
-                  <Pictogram icon="nicovideo" className={clsx("h-4 w-4")} />
+                  <NicovideoPictogram className={clsx("h-4 w-4")} />
                   <span className={clsx("text-sm")}>ニコニコ動画</span>
                 </button>
                 <button
@@ -248,7 +255,7 @@ export default function AppSideNav({
                     "group flex items-center gap-x-2 px-4 py-1 text-left text-snow-darkest hover:bg-vivid-primary hover:text-obsidian-primary"
                   )}
                 >
-                  <Pictogram icon="youtube" className={clsx("h-4 w-4 ")} />
+                  <YoutubePictogram className={clsx("h-4 w-4 ")} />
                   <span className={clsx("text-sm")}>YouTube</span>
                 </button>
                 <button
@@ -260,7 +267,7 @@ export default function AppSideNav({
                     "group flex items-center gap-x-2 px-4 py-1 text-left text-snow-darkest hover:bg-vivid-primary hover:text-obsidian-primary"
                   )}
                 >
-                  <Pictogram icon="soundcloud" className={clsx("h-4 w-4 ")} />
+                  <SoundcloudPictogram className={clsx("h-4 w-4 ")} />
                   <span className={clsx("text-sm")}>SoundCloud</span>
                 </button>
                 <button
@@ -272,7 +279,7 @@ export default function AppSideNav({
                     "group flex items-center gap-x-2 px-4 py-1 text-left text-snow-darkest hover:bg-vivid-primary hover:text-obsidian-primary"
                   )}
                 >
-                  <Pictogram icon="bilibili" className={clsx("h-4 w-4 ")} />
+                  <BilibiliPictogram className={clsx("h-4 w-4 ")} />
                   <span className={clsx("text-sm")}>Bilibili</span>
                 </button>
               </div>
@@ -299,7 +306,7 @@ export default function AppSideNav({
                     "group flex items-center gap-x-2 px-4 py-1 text-left text-snow-darkest hover:bg-vivid-primary hover:text-obsidian-primary"
                   )}
                 >
-                  <Pictogram icon="tag" className={clsx("h-4 w-4")} />
+                  <TagPictogram className={clsx("h-4 w-4")} />
                   <span className={clsx("text-sm")}>タグの登録</span>
                 </TagRegisterPageLink>
                 <LinkRegisterSemitag
@@ -307,7 +314,7 @@ export default function AppSideNav({
                     "group flex items-center gap-x-2 px-4 py-1 text-left text-snow-darkest hover:bg-vivid-primary hover:text-obsidian-primary"
                   )}
                 >
-                  <Pictogram icon="plus" className={clsx("h-4 w-4")} />
+                  <PlusPictogram className={clsx("h-4 w-4")} />
                   <span className={clsx("text-sm")}>仮タグの解決</span>
                 </LinkRegisterSemitag>
               </div>

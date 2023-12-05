@@ -10,7 +10,7 @@ pre-commit:
   parallel: true
   commands:
     eslint:
-      glob: "*.{js,ts,jsx,tsx}"
+      glob: "*.{js,ts,jsx,tsx,mdx}"
       run: |
         pnpm eslint --fix {staged_files}
         git add {staged_files}
@@ -18,7 +18,7 @@ pre-commit:
         - merge
         - rebase
     prettier:
-      glob: "*.{js,ts,jsx,tsx,md,html,json,yml,yaml,graphql}"
+      glob: "*.{js,ts,jsx,tsx,md,mdx,html,json,yml,yaml,graphql}"
       run: |
         pnpm prettier --write --ignore-unknown {staged_files}
         git add {staged_files}

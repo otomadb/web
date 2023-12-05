@@ -3,7 +3,7 @@
 import clsx from "clsx";
 
 import { CoolImage } from "~/components/CoolImage";
-import Pictogram from "~/components/Pictogram";
+import { ExternalLinkPictogram } from "~/components/Pictogram";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 import { Fragment as TagButtonFragment, TagButton } from "../../TagButton";
@@ -79,10 +79,7 @@ export default function OriginalSource({
                 ["text-slate-400", "hover:text-sky-400"]
               )}
             >
-              <Pictogram
-                icon="external-link"
-                className={clsx(["w-4", "h-4"])}
-              />
+              <ExternalLinkPictogram className={clsx(["w-4", "h-4"])} />
               <span className={clsx(["text-sm", "font-mono"])}>
                 {fragment.sourceId}
               </span>

@@ -1,14 +1,14 @@
 import clsx from "clsx";
-import React, { ComponentProps } from "react";
+import React from "react";
 
-import Pictogram from "./Pictogram";
+import { PictogramType } from "./Pictogram";
 
 export default function Button({
   className,
   style,
   size,
   color,
-  icon,
+  Pictogram,
   disabled,
   ariaLabel,
   ...props
@@ -21,8 +21,8 @@ export default function Button({
   disabled?: boolean;
   ariaLabel?: string;
 } & (
-  | { text: string; icon?: ComponentProps<typeof Pictogram>["icon"] }
-  | { icon: ComponentProps<typeof Pictogram>["icon"] }
+  | { text: string; Pictogram?: PictogramType }
+  | { Pictogram: PictogramType }
 ) &
   ({ onClick(): void } | { submit: true })) {
   return (
@@ -43,17 +43,17 @@ export default function Button({
         {
           small: [
             ["gap-x-0.5"],
-            ["py-1", !icon && "px-4", icon && "px-3"],
+            ["py-1", !Pictogram && "px-4", Pictogram && "px-3"],
             ["rounded-sm"],
           ],
           medium: [
             ["gap-x-1"],
-            ["py-2", !icon && "px-6", icon && "px-4"],
+            ["py-2", !Pictogram && "px-6", Pictogram && "px-4"],
             ["rounded"],
           ],
           large: [
             ["gap-x-2"],
-            ["py-3", !icon && "px-8", icon && "px-6"],
+            ["py-3", !Pictogram && "px-8", Pictogram && "px-6"],
             ["rounded"],
           ],
         }[size],
@@ -76,7 +76,7 @@ export default function Button({
       )}
       style={style}
     >
-      {icon && (
+      {Pictogram && (
         <Pictogram
           className={clsx(
             ["font-bold"],
@@ -92,7 +92,6 @@ export default function Button({
             }[color],
             "group-disabled/button:text-slate-600"
           )}
-          icon={icon}
         />
       )}
       {"text" in props && props.text !== "" && (

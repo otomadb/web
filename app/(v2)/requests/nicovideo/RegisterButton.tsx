@@ -3,7 +3,7 @@
 import clsx from "clsx";
 
 import { useOpenRegisterFromNicovideo } from "~/components/FormModal";
-import Pictogram from "~/components/Pictogram";
+import { PlusPictogram } from "~/components/Pictogram";
 import useHasRole from "~/components/useHasRole";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
@@ -36,7 +36,7 @@ export default function RegisterButton({
         "text-snow-darkest hover:text-vivid-primary disabled:text-obsidian-lighter"
       )}
     >
-      <Pictogram icon="plus" className={clsx("h-6 w-6")} />
+      <PlusPictogram className={clsx("h-6 w-6")} />
     </button>
   );
 }

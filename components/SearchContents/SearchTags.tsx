@@ -7,7 +7,7 @@ import { useQuery } from "urql";
 
 import { TagPageLink } from "~/app/(v2)/tags/[serial]/Link";
 import CommonTag from "~/components/CommonTag";
-import Pictogram from "~/components/Pictogram";
+import { LoadingPictogram } from "~/components/Pictogram";
 import { graphql } from "~/gql";
 
 export const SearchTagsQuery = graphql(`
@@ -54,7 +54,7 @@ const SearchTags: React.FC<{
           <div
             className={clsx("ml-2 flex items-center gap-x-2 text-snow-darkest")}
           >
-            <Pictogram icon="loading" className={clsx("h-4")} />
+            <LoadingPictogram className={clsx("h-4")} />
             <div className={clsx("text-sm")}>検索中</div>
           </div>
         )}

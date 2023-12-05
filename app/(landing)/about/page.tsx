@@ -8,7 +8,7 @@ import { AllVideosPageLink } from "~/app/(v2)/mads/Link";
 import { LoginLink } from "~/components/AuthLink";
 import CommonTagLink from "~/components/CommonTagLink";
 import GlobalFooter from "~/components/GlobalFooter";
-import Pictogram from "~/components/Pictogram";
+import { SignUpPictogram } from "~/components/Pictogram";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { graphql } from "~/gql";
 import { makeGraphQLClient } from "~/gql/fetch";
@@ -218,7 +218,7 @@ export default async function Page() {
               "mt-12 flex items-center gap-x-2 rounded-sm border border-obsidian-darker bg-transparent px-4 py-2 text-obsidian-darker duration-50 hover:bg-obsidian-darker hover/button:text-vivid-primary"
             )}
           >
-            <Pictogram icon="signup" className={clsx("h-4")} />
+            <SignUpPictogram className={clsx("h-4")} />
             <span className={clsx("text-sm")}>参加してみる</span>
           </LoginLink>
         </div>

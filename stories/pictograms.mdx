@@ -1,22 +1,105 @@
-import { Meta, Title, IconGallery, IconItem } from "@storybook/blocks";
+import { IconGallery, IconItem, Meta } from "@storybook/blocks";
 
-import Pictogram from "../components/Pictogram";
+import {
+  AcceptPictogram,
+  BilibiliPictogram,
+  CheckPictogram,
+  CopyPictogram,
+  ExternalLinkPictogram,
+  FilledHeartPictogram,
+  GithubPictogram,
+  LoadingPictogram,
+  NicovideoPictogram,
+  NotePictogram,
+  OutlineHeartPictogram,
+  PlusPictogram,
+  RejectPictogram,
+  SearchPictogram,
+  SignInPictogram,
+  SignUpPictogram,
+  SoundcloudPictogram,
+  TagPictogram,
+  TwitterPictogram,
+  XMarkPictogram,
+  YoutubePictogram,
+} from "../components/Pictogram";
 
 <Meta title="Pictograms" />
 
 # Pictograms
 
 <IconGallery>
+  <IconItem name="Plus">
+    <PlusPictogram />
+  </IconItem>
+  <IconItem name="X Mark">
+    <XMarkPictogram />
+  </IconItem>
+  <IconItem name="Copy">
+    <CopyPictogram />
+  </IconItem>
+  <IconItem name="Search">
+    <SearchPictogram />
+  </IconItem>
+  <IconItem name="External Link">
+    <ExternalLinkPictogram />
+  </IconItem>
+  <IconItem name="Filled Heart">
+    <FilledHeartPictogram />
+  </IconItem>
+  <IconItem name="Outline Heart">
+    <OutlineHeartPictogram />
+  </IconItem>
+  <IconItem name="Tag">
+    <TagPictogram />
+  </IconItem>
+  <IconItem name="Check">
+    <CheckPictogram />
+  </IconItem>
+  <IconItem name="Note">
+    <NotePictogram />
+  </IconItem>
+  <IconItem name="Accept">
+    <AcceptPictogram />
+  </IconItem>
+  <IconItem name="Reject">
+    <RejectPictogram />
+  </IconItem>
+  <IconItem name="Sign In">
+    <SignInPictogram />
+  </IconItem>
+  <IconItem name="Sign Up">
+    <SignUpPictogram />
+  </IconItem>
+</IconGallery>
+
+## Social
+
+<IconGallery>
   <IconItem name="Nicovideo">
-    <Pictogram icon="nicovideo" />
+    <NicovideoPictogram />
   </IconItem>
   <IconItem name="bilibili">
-    <Pictogram icon="bilibili" />
+    <BilibiliPictogram />
   </IconItem>
   <IconItem name="YouTube">
-    <Pictogram icon="youtube" />
+    <YoutubePictogram />
   </IconItem>
   <IconItem name="SoundCloud">
-    <Pictogram icon="soundcloud" />
+    <SoundcloudPictogram />
+  </IconItem>
+  <IconItem name="Twitter">
+    <TwitterPictogram />
+  </IconItem>
+  <IconItem name="GitHub">
+    <GithubPictogram />
+  </IconItem>
+</IconGallery>
+
+## Animated
+
+<IconGallery>
+  <IconItem name="Loading">
+    <LoadingPictogram />
   </IconItem>
 </IconGallery>

@@ -7,7 +7,7 @@ import { MadPageLink } from "~/app/(v2)/mads/[serial]/Link";
 import { NicovideoRegistrationRequestLink } from "~/app/(v2)/requests/nicovideo/[sourceId]/Link";
 import CommonTag from "~/components/CommonTag";
 import { CoolImage } from "~/components/CoolImage";
-import Pictogram from "~/components/Pictogram";
+import { LoadingPictogram } from "~/components/Pictogram";
 import { UserIcon } from "~/components/UserIcon";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { graphql } from "~/gql";
@@ -83,7 +83,7 @@ const SearchNicovideo: React.FC<{
           <div
             className={clsx("ml-2 flex items-center gap-x-2 text-snow-darkest")}
           >
-            <Pictogram icon="loading" className={clsx("h-4")} />
+            <LoadingPictogram className={clsx("h-4")} />
             <div className={clsx("text-sm")}>検索中</div>
           </div>
         )}

@@ -3,7 +3,7 @@ import { Suspense } from "react";
 
 import { LoginLink } from "~/components/AuthLink";
 import Logo from "~/components/Logo";
-import Pictogram from "~/components/Pictogram";
+import { SignUpPictogram } from "~/components/Pictogram";
 import SearchContents from "~/components/SearchContents";
 import { graphql } from "~/gql";
 import { makeGraphQLClient } from "~/gql/fetch";
@@ -48,7 +48,7 @@ export default async function Top({ className }: { className?: string }) {
           "absolute right-8 top-4 flex items-center gap-x-2 rounded-sm border border-vivid-primary bg-transparent px-4 py-2 text-vivid-primary duration-50 hover:bg-vivid-primary hover/button:text-obsidian-darker"
         )}
       >
-        <Pictogram icon="signup" className={clsx("h-4")} />
+        <SignUpPictogram className={clsx("h-4")} />
         <span className={clsx("text-sm")}>参加してみる</span>
       </LoginLink>
       <div
