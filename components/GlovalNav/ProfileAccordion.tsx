@@ -3,11 +3,11 @@
 import clsx from "clsx";
 import React from "react";
 
-import { SettingPageLink } from "~/app/(application)/(normal)/settings/Link";
 import MyLikesPageLink from "~/app/(v2)/(authenticated)/me/likes/Link";
 import MyTopPageLink from "~/app/(v2)/(authenticated)/me/Link";
 import MyMylistsPageLink from "~/app/(v2)/(authenticated)/me/mylists/Link";
 import NotificationsPageLink from "~/app/(v2)/(authenticated)/notifications/Link";
+import SettingPageLink from "~/app/(v2)/settings/Link";
 import { LogoutLink } from "~/components/AuthLink";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
