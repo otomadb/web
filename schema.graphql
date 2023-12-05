@@ -151,6 +151,141 @@ type BilibiliOriginalSourceTagSearchTagsPayload {
   items: [TagSearchItemByName!]!
 }
 
+type BilibiliRegistrationRequest implements Node & RegistrationRequest {
+  checked: Boolean!
+  checking: BilibiliRegistrationRequestChecking
+  embedUrl: String!
+  events(input: BilibiliRegistrationRequestEventsInput!): BilibiliRegistrationRequestEventConnection!
+  id: ID!
+
+  """Bilibili側のサムネイル画像のURL"""
+  originalThumbnailUrl: String!
+  originalUrl: String!
+  requestedBy: User!
+  semitaggings: [BilibiliRegistrationRequestSemitagging!]!
+  sourceId: String!
+  taggings: [BilibiliRegistrationRequestTagging!]!
+
+  """OtoMADB側でプロキシしているサムネイル画像のURL"""
+  thumbnailUrl: String!
+  title: String!
+}
+
+"""Bilibiliの動画をリクエストを承認した時に発生するイベント"""
+type BilibiliRegistrationRequestAcceptEvent implements BilibiliRegistrationRequestEvent & Event & Node {
+  createdAt: DateTime!
+  id: ID!
+  request: BilibiliRegistrationRequest!
+  series: String!
+  user: User!
+}
+
+type BilibiliRegistrationRequestAccepting {
+  acceptedBy: User!
+  note: String
+  request: BilibiliRegistrationRequest!
+  video: Video!
+}
+
+type BilibiliRegistrationRequestAcceptingNotification implements Node & Notification {
+  accepting: BilibiliRegistrationRequestAccepting!
+  createdAt: DateTime!
+  id: ID!
+  notifyTo: User!
+  watched: Boolean!
+}
+
+union BilibiliRegistrationRequestChecking = BilibiliRegistrationRequestAccepting | BilibiliRegistrationRequestRejecting
+
+type BilibiliRegistrationRequestConnection {
+  edges: [BilibiliRegistrationRequestEdge!]!
+  nodes: [BilibiliRegistrationRequest!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type BilibiliRegistrationRequestEdge {
+  cursor: String!
+  node: BilibiliRegistrationRequest!
+}
+
+"""Bilibiliの動画リクエスト関連のイベント"""
+interface BilibiliRegistrationRequestEvent implements Event & Node {
+  createdAt: DateTime!
+  id: ID!
+  request: BilibiliRegistrationRequest!
+  series: String!
+  user: User!
+}
+
+type BilibiliRegistrationRequestEventConnection {
+  edges: [BilibiliRegistrationRequestEventEdge!]!
+  nodes: [BilibiliRegistrationRequestEvent!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type BilibiliRegistrationRequestEventEdge {
+  cursor: String!
+  node: BilibiliRegistrationRequestEvent!
+}
+
+input BilibiliRegistrationRequestEventsInput {
+  after: String
+  before: String
+  first: Int
+  last: Int
+  orderBy: BilibiliRegistrationRequestEventsInputOrderBy! = {createdAt: DESC}
+}
+
+input BilibiliRegistrationRequestEventsInputOrderBy {
+  createdAt: SortOrder
+}
+
+"""Bilibiliの動画をリクエストを拒否した時に発生するイベント"""
+type BilibiliRegistrationRequestRejectEvent implements BilibiliRegistrationRequestEvent & Event & Node {
+  createdAt: DateTime!
+  id: ID!
+  request: BilibiliRegistrationRequest!
+  series: String!
+  user: User!
+}
+
+type BilibiliRegistrationRequestRejecting {
+  note: String
+  rejectedBy: User!
+  request: BilibiliRegistrationRequest!
+}
+
+type BilibiliRegistrationRequestRejectingNotification implements Node & Notification {
+  createdAt: DateTime!
+  id: ID!
+  notifyTo: User!
+  rejecting: BilibiliRegistrationRequestRejecting!
+  watched: Boolean!
+}
+
+"""Bilibiliの動画をリクエスト時に発生するイベント"""
+type BilibiliRegistrationRequestRequestEvent implements BilibiliRegistrationRequestEvent & Event & Node {
+  createdAt: DateTime!
+  id: ID!
+  request: BilibiliRegistrationRequest!
+  series: String!
+  user: User!
+}
+
+type BilibiliRegistrationRequestSemitagging implements Node & RegistrationRequestSemitagging {
+  id: ID!
+  name: String!
+  note: String
+}
+
+type BilibiliRegistrationRequestTagging implements Node & RegistrationRequestTagging {
+  id: ID!
+  note: String
+  tag: Tag!
+}
+
 input CalcMadCountGrowthInput {
   """終了日時"""
   end: DateTime!
@@ -384,6 +519,18 @@ input FindTagsInputOrder {
   updatedAt: SortOrder
 }
 
+input FindUncheckedBilibiliRegistrationRequestsInput {
+  after: String
+  before: String
+  first: Int
+  last: Int
+  orderBy: FindUncheckedBilibiliRegistrationRequestsOrderBy! = {createdAt: DESC}
+}
+
+input FindUncheckedBilibiliRegistrationRequestsOrderBy {
+  createdAt: SortOrder
+}
+
 type FindUncheckedNicovideoRegistrationRequestsByOffsetPayload {
   nodes: [NicovideoRegistrationRequest!]!
   totalCount: Int!
@@ -472,18 +619,15 @@ type ImplicitizeTagSucceededPayload {
   relation: TagParent!
 }
 
-type LikeVideoAlreadyLikedError {
-  registration: MylistRegistration!
-}
-
 input LikeVideoInput {
   videoId: ID!
 }
 
-union LikeVideoReturnUnion = LikeVideoAlreadyLikedError | LikeVideoSucceededPayload | MutationInvalidVideoIdError | MutationVideoNotFoundError
+union LikeVideoReturnUnion = LikeVideoSucceededPayload | MutationInvalidVideoIdError | MutationVideoNotFoundError
 
 type LikeVideoSucceededPayload {
   registration: MylistRegistration!
+  user: User!
 }
 
 input ListNicovideoBotRegistrationRequestsInput {
@@ -531,6 +675,7 @@ type Mutation {
   rejectSemitag(semitagId: ID!): RejectSemitagReturnUnion!
   removeTagFromVideo(input: RemoveTagFromVideoInput!): RemoveTagFromVideoPayload!
   removeVideoFromMylist(input: RemoveVideoFromMylistInput!): RemoveVideoFromMylistPayload!
+  requestBilibiliRegistration(input: RequestBilibiliRegistrationInput!): RequestBilibiliRegistrationReturnUnion!
   requestNicovideoRegistration(input: RequestNicovideoRegistrationInput!): RequestNicovideoRegistrationReturnUnion!
   requestSoundcloudRegistration(input: RequestSoundcloudRegistrationInput!): RequestSoundcloudRegistrationReturnUnion!
   requestYoutubeRegistration(input: RequestYoutubeRegistrationInput!): RequestYoutubeRegistrationReturnUnion!
@@ -1105,6 +1250,7 @@ type Query {
   """Youtubeから動画情報を取得する"""
   fetchYoutube(input: FetchYoutubeInput!): FetchYoutubePayload!
   findBilibiliMADSource(input: FindBilibiliMADSourceInput!): BilibiliMADSource
+  findBilibiliRegistrationRequestBySourceId(sourceId: String!): BilibiliRegistrationRequest
   findMadBySerial(serial: Int!): Video
   findMadsByOffset(input: FindMadsByOffsetInput!): FindMadsByOffsetPayload!
   findMylist(input: FindMylistInput!): Mylist
@@ -1118,6 +1264,7 @@ type Query {
   findTag(input: FindTagInput!): Tag @deprecated(reason: "Use `Query.findTagBySerial` instead.")
   findTagBySerial(serial: Int!): Tag
   findTags(input: FindTagsInput!): TagConnection!
+  findUncheckedBilibiliRegistrationRequests(input: FindUncheckedBilibiliRegistrationRequestsInput!): BilibiliRegistrationRequestConnection!
   findUncheckedNicovideoRegistrationRequests(input: FindUncheckedNicovideoRegistrationRequestsInput!): NicovideoRegistrationRequestConnection!
   findUncheckedNicovideoRegistrationRequestsByOffset(input: findUncheckedNicovideoRegistrationRequestsByOffsetInput!): FindUncheckedNicovideoRegistrationRequestsByOffsetPayload!
   findUncheckedSoundcloudRegistrationRequests(input: FindUncheckedSoundcloudRegistrationRequestsInput!): SoundcloudRegistrationRequestConnection!
@@ -1132,6 +1279,7 @@ type Query {
   """全てのTypeCategoryTagを取得する"""
   getAllTypeCategoryTag: [TypeCategoryTag!]!
   getBilibiliMADSource(id: ID!): BilibiliMADSource!
+  getBilibiliRegistrationRequest(id: ID!): BilibiliRegistrationRequest!
   getMylist(id: ID!): Mylist!
   getMylistGroup(id: ID!): MylistGroup!
   getNicovideoRegistrationRequest(id: ID!): NicovideoRegistrationRequest!
@@ -1485,6 +1633,37 @@ union RemoveVideoFromMylistPayload = RemoveVideoFromMylistFailedPayload | Remove
 type RemoveVideoFromMylistSucceededPayload {
   mylist: Mylist!
   video: Video!
+}
+
+input RequestBilibiliRegistrationInput {
+  semitaggings: [RequestBilibiliRegistrationInputSemitagging!]!
+  sourceId: String!
+  taggings: [RequestBilibiliRegistrationInputTagging!]!
+
+  """**Bilibili側の**サムネイル画像のURL"""
+  thumbnailUrl: String!
+  title: String!
+}
+
+input RequestBilibiliRegistrationInputSemitagging {
+  name: String!
+  note: String
+}
+
+input RequestBilibiliRegistrationInputTagging {
+  note: String
+  tagId: ID!
+}
+
+union RequestBilibiliRegistrationReturnUnion = MutationInvalidTagIdError | MutationTagNotFoundError | RequestBilibiliRegistrationSucceededPayload | RequestBilibiliRegistrationVideoAlreadyRegisteredError
+
+type RequestBilibiliRegistrationSucceededPayload {
+  request: BilibiliRegistrationRequest!
+}
+
+"""動画が既に登録されている場合のエラー"""
+type RequestBilibiliRegistrationVideoAlreadyRegisteredError {
+  source: BilibiliMADSource!
 }
 
 input RequestNicovideoRegistrationInput {
@@ -2189,15 +2368,10 @@ input UndoLikeVideoInput {
   videoId: ID!
 }
 
-type UndoLikeVideoNotLikedError {
-  likes: Mylist!
-  video: Video!
-}
-
-union UndoLikeVideoReturnUnion = MutationInvalidVideoIdError | MutationVideoNotFoundError | UndoLikeVideoNotLikedError | UndoLikeVideoSucceededPayload
+union UndoLikeVideoReturnUnion = MutationInvalidVideoIdError | MutationVideoNotFoundError | UndoLikeVideoSucceededPayload
 
 type UndoLikeVideoSucceededPayload {
-  registration: MylistRegistration!
+  user: User!
 }
 
 type User implements Node {
@@ -2207,6 +2381,7 @@ type User implements Node {
   id: ID!
   isAdministrator: Boolean! @deprecated(reason: "Use hasRole instead.")
   isEditor: Boolean! @deprecated(reason: "Use hasRole instead.")
+  like(videoId: ID!): MylistRegistration
   likes: Mylist!
   mylist(id: ID!): Mylist
   mylists(after: String, before: String, first: Int, last: Int, orderBy: UserMylistsOrderBy! = {createdAt: DESC}, range: [MylistShareRange!]! = [PUBLIC]): MylistConnection!
