@@ -4,7 +4,7 @@ import React, { ReactNode } from "react";
 import { UserIcon } from "~/components/UserIcon";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-import MyTopPageLink from "../../(authenticated)/me/Link";
+import MyTopPageLink from "../../me/Link";
 import UserPageLink from "./Link";
 
 const UserPageHeaderFragment = graphql(`

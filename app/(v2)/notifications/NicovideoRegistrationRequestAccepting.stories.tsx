@@ -6,7 +6,7 @@ import { Fragment as UserIconFragment } from "~/components/UserIcon";
 import { Fragment as VideoThumbnailFragment } from "~/components/VideoThumbnail";
 import { makeFragmentData } from "~/gql";
 
-import { UserPageLinkFragment } from "../../users/[name]/Link";
+import { UserPageLinkFragment } from "../users/[name]/Link";
 import NicovideoRegistrationRequestAccepting, {
   NicovideoRegistrationRequestAcceptingFragment,
 } from "./NicovideoRegistrationRequestAccepting";

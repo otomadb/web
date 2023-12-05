@@ -5,7 +5,7 @@ import { $UseHarRoleQuery } from "~/components/useHasRole";
 import { Fragment as VideoThumbnailFragment } from "~/components/VideoThumbnail";
 import { makeFragmentData } from "~/gql";
 
-import { MadPageLinkFragment } from "../../mads/[serial]/Link";
+import { MadPageLinkFragment } from "../mads/[serial]/Link";
 import TimelineEvent, { TimelineEventFragment } from "./TimelineEvent";
 
 const mockHasRole = [

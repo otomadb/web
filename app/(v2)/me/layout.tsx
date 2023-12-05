@@ -5,7 +5,7 @@ import React from "react";
 import { graphql } from "~/gql";
 import { makeGraphQLClient } from "~/gql/fetch";
 
-import UserPageHeader from "../../users/[name]/Header";
+import UserPageHeader from "../users/[name]/Header";
 
 export default async function Layout({
   children,
