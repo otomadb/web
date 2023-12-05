@@ -1,102 +1,78 @@
-import { action } from "@storybook/addon-actions";
 import { Meta, StoryObj } from "@storybook/react";
 
 import { CommonTagFragment } from "~/components/CommonTag";
 import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
 
-import { Fragment as SuggestItemFragment } from "./SuggestItem";
-import Suggests, { Fragment } from "./Suggests";
+import { SuggestItemFragment } from "./SuggestItem";
+import Suggests, { SuggestsFragment } from "./Suggests";
 
 const meta = {
   component: Suggests,
-  render: (args) => <Suggests {...args} style={{ width: "320px" }} />,
   args: {
-    handleSelect: action("handleSelect"),
+    style: { width: 360 },
+    size: "medium",
     fragment: makeFragmentData(
       {
-        items: [
-          {
-            ...makeFragmentData(
-              {
-                name: {
-                  id: "n1",
-                  primary: false,
-                  name: "ぼっち・ざ・まっど！",
-                },
-                tag: {
-                  id: "t1",
-                  ...makeFragmentData(
-                    {
-                      name: "ぼっち・ざ・ろっく！",
-                      type: TagType.Copyright,
-                      explicitParent: null,
-                    },
-                    CommonTagFragment
-                  ),
-                },
+        items: [...new Array(3)].map((_, i) => ({
+          ...makeFragmentData(
+            {
+              name: {
+                id: `tagname:${i + 1}`,
+                primary: true,
+                name: `Tag ${i + 1}`,
               },
-              SuggestItemFragment
-            ),
-          },
-          {
-            ...makeFragmentData(
-              {
-                name: { id: "n2", primary: true, name: "後藤ひとり" },
-                tag: {
-                  id: "t2",
-                  ...makeFragmentData(
-                    {
-                      name: "後藤ひとり",
-                      type: TagType.Character,
-                      explicitParent: {
-                        id: "t1",
-                        name: "ぼっち・ざ・ろっく！",
-                      },
+              tag: {
+                id: `tag:${i + 1}`,
+                ...makeFragmentData(
+                  {
+                    name: `Tag ${i + 1}`,
+                    type: TagType.Character,
+                    explicitParent: {
+                      id: "tag:0",
+                      name: "Tag 0",
                     },
-                    CommonTagFragment
-                  ),
-                },
+                  },
+                  CommonTagFragment
+                ),
               },
-              SuggestItemFragment
-            ),
-          },
-          {
-            ...makeFragmentData(
-              {
-                name: { id: "n3", primary: true, name: "伊地知虹夏" },
-                tag: {
-                  id: "t3",
-                  ...makeFragmentData(
-                    {
-                      name: "伊地知虹夏",
-                      type: TagType.Character,
-                      explicitParent: {
-                        id: "t1",
-                        name: "ぼっち・ざ・ろっく！",
-                      },
-                    },
-                    CommonTagFragment
-                  ),
-                },
-              },
-              SuggestItemFragment
-            ),
-          },
-        ],
+            },
+            SuggestItemFragment
+          ),
+        })),
       },
-      Fragment
+      SuggestsFragment
     ),
   },
 } as Meta<typeof Suggests>;
 
 export default meta;
 
-export const Primary: StoryObj<typeof meta> = {};
+type Story = StoryObj<typeof meta>;
 
-export const Nothing: StoryObj<typeof meta> = {
+export const Small: Story = {
+  args: {
+    style: { width: 240 },
+    size: "small",
+  },
+};
+
+export const Medium: Story = {
+  args: {
+    size: "medium",
+  },
+};
+
+export const Large: Story = {
+  args: {
+    style: { width: 480 },
+    size: "large",
+  },
+};
+
+export const Nothing: Story = {
   name: "検索候補がない",
   args: {
-    fragment: makeFragmentData({ items: [] }, Fragment),
+    fragment: makeFragmentData({ items: [] }, SuggestsFragment),
   },
 };

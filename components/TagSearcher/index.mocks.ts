@@ -5,8 +5,8 @@ import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
 
 import { Query } from ".";
-import { Fragment as SuggestItemFragment } from "./SuggestItem";
-import { Fragment as SuggestsFragment } from "./Suggests";
+import { SuggestItemFragment } from "./SuggestItem";
+import { SuggestsFragment } from "./Suggests";
 
 export const mockTagSearcher = graphql.query(Query, (req, res, ctx) =>
   res(

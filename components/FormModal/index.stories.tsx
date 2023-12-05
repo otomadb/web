@@ -4,9 +4,9 @@ import { graphql as mswGql } from "msw";
 import { ComponentProps } from "react";
 
 import { CommonTagFragment } from "~/components/CommonTag";
-import { Query as TagSearcherQuery } from "~/components/TagSearcher2";
-import { Fragment as TagSearcherSuggestItemFragment } from "~/components/TagSearcher2/SuggestItem";
-import { Fragment as TagSearcherSuggestsFragment } from "~/components/TagSearcher2/Suggests";
+import { Query as TagSearcherQuery } from "~/components/TagSearcher";
+import { SuggestItemFragment as TagSearcherSuggestItemFragment } from "~/components/TagSearcher/SuggestItem";
+import { SuggestsFragment as TagSearcherSuggestsFragment } from "~/components/TagSearcher/Suggests";
 import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
 

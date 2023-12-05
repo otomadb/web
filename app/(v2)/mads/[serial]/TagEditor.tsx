@@ -8,7 +8,7 @@ import { useCallback } from "react";
 import { useMutation, useQuery } from "urql";
 
 import CommonTag from "~/components/CommonTag";
-import { TagSearcher } from "~/components/TagSearcher";
+import TagSearcher from "~/components/TagSearcher";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const TagsListFragment = graphql(`
@@ -134,6 +134,8 @@ export default function TagEditor({
       <TagSearcher
         handleSelect={(tagId) => addTag(tagId)}
         className={clsx(["mt-4"])}
+        size="medium"
+        limit={3}
       />
     </div>
   );

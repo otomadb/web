@@ -1,35 +1,47 @@
-import { action } from "@storybook/addon-actions";
 import { Meta, StoryObj } from "@storybook/react";
-import { userEvent, within } from "@storybook/testing-library";
 
-import { SearchBox } from "./SearchBox";
+import SearchBox from "./SearchBox";
 
 const meta = {
   component: SearchBox,
   args: {
     style: { width: "320px" },
-    setQuery: action("setQuery"),
+    size: "medium",
   },
 } as Meta<typeof SearchBox>;
 
 export default meta;
 
-export const Primary: StoryObj<typeof meta> = {
-  args: {},
+type Story = StoryObj<typeof meta>;
+
+export const Small: Story = {
+  args: {
+    style: { width: 240 },
+    size: "small",
+  },
 };
 
-export const Fetching: StoryObj<typeof meta> = {
-  name: "取得中",
+export const Medium: Story = {
+  args: {
+    size: "medium",
+  },
+};
+
+export const Large: Story = {
+  args: {
+    style: { width: 480 },
+    size: "large",
+  },
+};
+
+export const Fetching: Story = {
   args: {
     fetching: true,
   },
 };
 
-export const InputQuery: StoryObj<typeof meta> = {
-  name: "何か入力",
-  args: {},
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    await userEvent.type(canvas.getByRole("textbox"), "Test");
+export const Disabled: Story = {
+  args: {
+    disabled: true,
   },
 };

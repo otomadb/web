@@ -14,7 +14,7 @@ import { useQuery } from "urql";
 import Button from "~/components/Button";
 import AlreadyRegistered from "~/components/Form/AlreadyRegistered";
 import SourceNotExists from "~/components/Form/SourceNotExists";
-import TagSearcher from "~/components/TagSearcher2";
+import TagSearcher from "~/components/TagSearcher";
 import { TextInput2 } from "~/components/TextInput";
 import useToaster from "~/components/Toaster/useToaster";
 import { FragmentType, graphql } from "~/gql";

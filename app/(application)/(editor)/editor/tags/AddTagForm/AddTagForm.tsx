@@ -6,7 +6,7 @@ import clsx from "clsx";
 import React, { useCallback, useMemo, useReducer, useState } from "react";
 
 import Button from "~/components/Button";
-import { TagSearcher } from "~/components/TagSearcher";
+import TagSearcher from "~/components/TagSearcher";
 import { TextInput2 } from "~/components/TextInput";
 import useToaster from "~/components/Toaster/useToaster";
 
@@ -229,6 +229,8 @@ export const AddTagForm: React.FC<{
               明示的な親タグ
             </div>
             <TagSearcher
+              size="medium"
+              limit={3}
               className={clsx(["mt-1"])}
               handleSelect={(tagId) =>
                 dispatchExplicitParentTag({ type: "set", tagId })
@@ -250,6 +252,8 @@ export const AddTagForm: React.FC<{
               非明示的な親タグ
             </div>
             <TagSearcher
+              size="medium"
+              limit={3}
               className={clsx(["mt-1"])}
               handleSelect={(tagId) =>
                 dispatchImplicitParentTags({ type: "append", tagId })

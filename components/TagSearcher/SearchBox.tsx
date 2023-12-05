@@ -1,54 +1,57 @@
-"use client";
-import "client-only";
-
 import clsx from "clsx";
 
 import Pictogram from "~/components/Pictogram";
-import { TextInput } from "~/components/TextInput";
+import { TextInput2 } from "~/components/TextInput";
 
-export const SearchBox: React.FC<{
+export default function SearchBox({
+  className,
+  style,
+  size,
+  fetching,
+  query,
+  setQuery,
+  disabled,
+}: {
   className?: string;
+  size: "small" | "medium" | "large";
   style?: React.CSSProperties;
-  limit: number;
+  limit?: number;
   fetching: boolean;
   disabled?: boolean;
+  query: string;
   setQuery(query: string): void;
-}> = ({ className, style, fetching, setQuery }) => {
+}) {
   return (
-    <label
-      className={clsx(
-        className,
-        ["flex", "items-stretch"],
-        ["border", "border-slate-300"],
-        ["rounded"],
-        ["overflow-hidden"]
-      )}
+    <TextInput2
+      size={size}
+      className={clsx(className)}
       style={style}
-    >
-      <div className={clsx(["shrink-0"], ["px-3", "py-2"], ["bg-slate-400"])}>
-        <Pictogram
-          icon="search"
+      value={query}
+      disabled={disabled}
+      onChange={(v) => setQuery(v)}
+      LeftDecoration={({ disabled }) => (
+        <div
+          aria-disabled={disabled}
           className={clsx(
-            { hidden: fetching },
-            ["w-4", "h-4"],
-            ["text-slate-200"]
+            {
+              small: ["w-3", "h-3"],
+              medium: ["w-4", "h-4"],
+              large: ["w-6", "h-6"],
+            }[size],
+            ["text-slate-400", disabled && ["text-slate-500"]]
           )}
-        />
-        <Pictogram
-          icon="loading"
-          className={clsx(
-            { hidden: !fetching },
-            ["text-slate-200"],
-            ["animate-spin"]
+        >
+          {!fetching && (
+            <Pictogram icon="search" className={clsx(["w-full", "h-full"])} />
           )}
-        />
-      </div>
-      <TextInput
-        className={clsx(["grow"], ["px-2"])}
-        onChange={(e) => {
-          setQuery(e.target.value);
-        }}
-      />
-    </label>
+          {fetching && (
+            <Pictogram
+              icon="loading"
+              className={clsx(["w-full", "h-full"], ["animate-spin"])}
+            />
+          )}
+        </div>
+      )}
+    />
   );
-};
+}
