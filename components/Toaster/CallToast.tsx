@@ -4,14 +4,15 @@ import { useEffectOnce } from "react-use";
 
 import useToaster from "./useToaster";
 
-const CallToast: React.FC<{
-  children: ReactNode;
-  duration?: number;
-}> = ({ children, duration = 3000 }) => {
+const CallToast: React.FC<
+  {
+    children: ReactNode;
+  } & Parameters<ReturnType<typeof useToaster>>[1]
+> = ({ children, ...callOptions }) => {
   const call = useToaster();
 
   useEffectOnce(() => {
-    call(<>{children}</>, { duration });
+    call(<>{children}</>, callOptions);
   });
   return null;
 };

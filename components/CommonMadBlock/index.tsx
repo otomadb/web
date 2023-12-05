@@ -1,9 +1,14 @@
+"use client";
+
 import clsx from "clsx";
+import { useState } from "react";
 
 import { MadPageLink } from "~/app/(v2)/mads/[serial]/Link";
 import CommonTagLink from "~/components/CommonTagLink";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { FragmentType, graphql, useFragment } from "~/gql";
+
+import LikeSwitch, { LikeSwitchFragment } from "./LikeSwitch";
 
 export const CommonMadBlockFragment = graphql(`
   fragment CommonMadBlock on Video {
@@ -24,30 +29,47 @@ export const CommonMadBlockFragment = graphql(`
 export default function CommonMadBlock({
   classNames,
   style,
+  likeable,
   ...props
 }: {
   classNames?: string;
   style?: React.CSSProperties;
   fragment: FragmentType<typeof CommonMadBlockFragment>;
   size?: "small" | "medium";
+  likeable?: FragmentType<typeof LikeSwitchFragment>;
 }) {
   const fragment = useFragment(CommonMadBlockFragment, props.fragment);
+  const [activate, setActivate] = useState(false);
 
   return (
     <div
+      onMouseOver={() => {
+        setActivate(true);
+      }}
       style={style}
       className={clsx(
         classNames,
         "overflow-hidden rounded border border-obsidian-lighter bg-obsidian-primary"
       )}
     >
-      <MadPageLink fragment={fragment} className={clsx(["block"])}>
-        <VideoThumbnail
-          fragment={fragment}
-          className={clsx("h-32 w-full")}
-          imageSize="medium"
-        />
-      </MadPageLink>
+      <div className={clsx("group/thumbnail relative")}>
+        <MadPageLink fragment={fragment} className={clsx("z-0 block")}>
+          <VideoThumbnail
+            fragment={fragment}
+            className={clsx("h-32 w-full")}
+            imageSize="medium"
+          />
+        </MadPageLink>
+        {likeable && (
+          <LikeSwitch
+            activate={activate}
+            fragment={likeable}
+            className={clsx(
+              "absolute bottom-2 right-2 z-1 opacity-0 transition-opacity duration-75 group-hover/thumbnail:opacity-100"
+            )}
+          />
+        )}
+      </div>
       <div className={clsx("flex flex-col gap-y-2 p-2")}>
         <MadPageLink
           fragment={fragment}

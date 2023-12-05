@@ -24,6 +24,7 @@ import { graphql } from "~/gql";
 export const AppSideNavQuery = graphql(`
   query AppSideNav {
     viewer {
+      id
       isEditor: hasRole(role: EDITOR)
       isAdmin: hasRole(role: ADMIN)
     }

@@ -30,6 +30,7 @@ export default async function Page({
               id
               video {
                 ...CommonMadBlock
+                ...CommonMadBlock_LikeSwitch
               }
             }
           }
@@ -59,7 +60,11 @@ export default async function Page({
           )}
         >
           {findTagBySerial.taggedVideosByOffset.nodes.map((item) => (
-            <CommonMadBlock key={item.id} fragment={item.video} />
+            <CommonMadBlock
+              key={item.id}
+              fragment={item.video}
+              likeable={item.video}
+            />
           ))}
         </div>
       </div>
