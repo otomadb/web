@@ -1,5 +1,4 @@
 "use client";
-import clsx from "clsx";
 import React from "react";
 
 import CommonTag from "~/components/CommonTag";
@@ -17,9 +16,9 @@ export const SucceededToast: React.FC<{
 }> = ({ ...props }) => {
   const fragment = useFragment(Fragment, props.fragment);
   return (
-    <div>
+    <>
       <CommonTag size="small" fragment={fragment.tag} />
-      <span className={clsx(["text-slate-700"])}>を登録しました．</span>
-    </div>
+      を登録しました．
+    </>
   );
 };

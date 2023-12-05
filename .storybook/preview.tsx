@@ -1,4 +1,6 @@
+import { action } from "@storybook/addon-actions";
 import "../app/globals.css";
+import { ToastContext } from "../components/Toaster";
 
 import { Preview } from "@storybook/react";
 import { initialize as initializeMSW, mswDecorator } from "msw-storybook-addon";
@@ -15,14 +17,16 @@ initializeMSW({
 const preview: Preview = {
   decorators: [
     (Story) => (
-      <UrqlProvider
-        value={createUrqlClient({
-          url: "/graphql",
-          exchanges: [fetchExchange],
-        })}
-      >
-        <Story />
-      </UrqlProvider>
+      <ToastContext.Provider value={{ call: action("callToast") }}>
+        <UrqlProvider
+          value={createUrqlClient({
+            url: "/graphql",
+            exchanges: [fetchExchange],
+          })}
+        >
+          <Story />
+        </UrqlProvider>
+      </ToastContext.Provider>
     ),
     mswDecorator,
   ],

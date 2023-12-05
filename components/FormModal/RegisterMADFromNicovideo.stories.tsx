@@ -2,7 +2,6 @@ import { action } from "@storybook/addon-actions";
 import { Meta, StoryObj } from "@storybook/react";
 
 import { mockTagSearcher } from "~/components/TagSearcher/index.mocks";
-import { ToastContext } from "~/components/Toaster";
 
 import { FormModalContext } from ".";
 import { mocksRegisterFromNicovideo } from "./mocks";
@@ -18,17 +17,15 @@ const meta = {
   },
   render(args) {
     return (
-      <ToastContext.Provider value={{ call: action("callToast") }}>
-        <FormModalContext.Provider
-          value={{
-            current: undefined,
-            open: action("openModal"),
-            close: action("closeModal"),
-          }}
-        >
-          <RegisterMADFromNicovideoFormModal {...args} />
-        </FormModalContext.Provider>
-      </ToastContext.Provider>
+      <FormModalContext.Provider
+        value={{
+          current: undefined,
+          open: action("openModal"),
+          close: action("closeModal"),
+        }}
+      >
+        <RegisterMADFromNicovideoFormModal {...args} />
+      </FormModalContext.Provider>
     );
   },
   parameters: {

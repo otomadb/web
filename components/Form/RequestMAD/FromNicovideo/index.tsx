@@ -25,7 +25,7 @@ import {
 } from "~/components/Form/TagButton";
 import TagSearcher from "~/components/TagSearcher2";
 import { TextInput2 } from "~/components/TextInput";
-import { useToaster } from "~/components/Toaster";
+import useToaster from "~/components/Toaster/useToaster";
 import { FragmentType, graphql } from "~/gql";
 
 import { SucceededToast } from "./SucceededToast";

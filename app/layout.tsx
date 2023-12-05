@@ -4,8 +4,6 @@ import clsx from "clsx";
 import type { Metadata, Viewport } from "next";
 import React from "react";
 
-import { ToastProvider } from "~/components/Toaster";
-
 import Auth0Provider from "./Auth0Provider";
 import UrqlProvider from "./UrqlProvider";
 
@@ -42,14 +40,12 @@ export default function RootLayout({
   return (
     <Auth0Provider>
       <UrqlProvider>
-        <ToastProvider selector="#toast">
-          <html lang="ja">
-            <body className={clsx()}>
-              <div id="toast" />
-              <main>{children}</main>
-            </body>
-          </html>
-        </ToastProvider>
+        <html lang="ja">
+          <body className={clsx()}>
+            <div id="toast" />
+            <main>{children}</main>
+          </body>
+        </html>
       </UrqlProvider>
     </Auth0Provider>
   );
