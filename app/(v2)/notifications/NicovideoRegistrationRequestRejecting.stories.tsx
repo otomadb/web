@@ -4,7 +4,7 @@ import { Meta, StoryObj } from "@storybook/react";
 import { Fragment as UserIconFragment } from "~/components/UserIcon";
 import { makeFragmentData } from "~/gql";
 
-import { UserPageLinkFragment } from "../../users/[name]/Link";
+import { UserPageLinkFragment } from "../users/[name]/Link";
 import NicovideoRegistrationRequestRejecting, {
   NicovideoRegistrationRequestRejectingFragment,
 } from "./NicovideoRegistrationRequestRejecting";

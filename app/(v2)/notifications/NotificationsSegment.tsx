@@ -3,8 +3,8 @@ import clsx from "clsx";
 import { Fragment, useCallback } from "react";
 import { useEffectOnce } from "react-use";
 
-import NicovideoRegistrationRequestAcceptingNotification from "~/app/(v2)/(authenticated)/notifications/NicovideoRegistrationRequestAccepting";
-import NicovideoRegistrationRequestRejectingNotification from "~/app/(v2)/(authenticated)/notifications/NicovideoRegistrationRequestRejecting";
+import NicovideoRegistrationRequestAcceptingNotification from "~/app/(v2)/notifications/NicovideoRegistrationRequestAccepting";
+import NicovideoRegistrationRequestRejectingNotification from "~/app/(v2)/notifications/NicovideoRegistrationRequestRejecting";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const NotificationsSegmentFragment = graphql(`

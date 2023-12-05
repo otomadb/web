@@ -2,20 +2,22 @@
 
 import clsx from "clsx";
 
+import { MadPageLink } from "~/app/(v2)/mads/[serial]/Link";
+import { NicovideoRegistrationRequestLink } from "~/app/(v2)/requests/nicovideo/[sourceId]/Link";
+import UserPageLink from "~/app/(v2)/users/[name]/Link";
+import CommonMadBlock from "~/components/CommonMadBlock";
 import Pictogram from "~/components/Pictogram";
 import { UserIcon } from "~/components/UserIcon";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-import { NicovideoRegistrationRequestLink } from "../../requests/nicovideo/[sourceId]/Link";
-import UserPageLink from "../../users/[name]/Link";
 import NotificationWrapper from "./NotificationWrapper";
 
-export const NicovideoRegistrationRequestRejectingFragment = graphql(`
-  fragment NotificationsPage_NicovideoRegistrationRequestRejectingNotification on NicovideoRegistrationRequestRejectingNotification {
+export const NicovideoRegistrationRequestAcceptingFragment = graphql(`
+  fragment NotificationsPage_NicovideoRegistrationRequestAcceptingNotification on NicovideoRegistrationRequestAcceptingNotification {
     ...NotificationsPage_NotificationWrapper
     watched
-    rejecting {
-      rejectedBy {
+    accepting {
+      acceptedBy {
         ...Link_User
         ...UserIcon
         id
@@ -27,24 +29,30 @@ export const NicovideoRegistrationRequestRejectingFragment = graphql(`
         sourceId
         title
       }
+      video {
+        ...Link_Video
+        ...CommonMadBlock
+        ...CommonMadBlock_LikeSwitch
+        id
+      }
     }
   }
 `);
-export default function NicovideoRegistrationRequestRejectingNotification({
+export default function NicovideoRegistrationRequestAcceptingNotification({
   className,
   style,
   ...props
 }: {
   className?: string;
   style?: React.CSSProperties;
-  fragment: FragmentType<typeof NicovideoRegistrationRequestRejectingFragment>;
+  fragment: FragmentType<typeof NicovideoRegistrationRequestAcceptingFragment>;
 }) {
   const fragment = useFragment(
-    NicovideoRegistrationRequestRejectingFragment,
+    NicovideoRegistrationRequestAcceptingFragment,
     props.fragment
   );
   const {
-    rejecting: { rejectedBy, request },
+    accepting: { acceptedBy, request, video },
   } = fragment;
 
   return (
@@ -56,14 +64,29 @@ export default function NicovideoRegistrationRequestRejectingNotification({
         <Pictogram
           {...props}
           icon="accept"
-          className={clsx(className, "text-rose-500")}
+          className={clsx(className, "text-teal-500")}
         />
       )}
       Title={({ ...props }) => (
-        <p {...props}>動画登録リクエストが拒否されました</p>
+        <p {...props}>
+          動画登録リクエストが
+          <MadPageLink
+            fragment={video}
+            className={clsx(
+              "font-mono font-bold text-vivid-primary hover:underline"
+            )}
+          >
+            受理されました。
+          </MadPageLink>
+        </p>
       )}
     >
       <div className={clsx("flex gap-x-4")}>
+        <CommonMadBlock
+          fragment={video}
+          likeable={video}
+          classNames={clsx("w-64 shrink-0")}
+        />
         <div
           className={clsx(
             "flex grow flex-col gap-y-2 rounded border border-obsidian-lighter bg-obsidian-darker p-4"
@@ -89,19 +112,19 @@ export default function NicovideoRegistrationRequestRejectingNotification({
             )}
           >
             <div className={clsx("text-xs text-snow-darker")}>
-              拒否した編集者
+              受理した編集者
             </div>
             <div className={clsx("flex items-center gap-x-2")}>
-              <UserPageLink fragment={rejectedBy}>
-                <UserIcon fragment={rejectedBy} size={24} />
+              <UserPageLink fragment={acceptedBy}>
+                <UserIcon fragment={acceptedBy} size={24} />
               </UserPageLink>
               <UserPageLink
-                fragment={rejectedBy}
+                fragment={acceptedBy}
                 className={clsx(
                   "text-sm text-snow-primary hover:text-vivid-primary hover:underline"
                 )}
               >
-                {rejectedBy.displayName}
+                {acceptedBy.displayName}
               </UserPageLink>
             </div>
           </div>

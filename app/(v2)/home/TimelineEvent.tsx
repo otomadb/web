@@ -15,8 +15,8 @@ import UserIconLink from "~/components/UserLink/UserIconLink";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-import { NicovideoRegistrationRequestLink } from "../../requests/nicovideo/[sourceId]/Link";
-import { YoutubeRequestPageLink } from "../../requests/youtube/[sourceId]/Link";
+import { NicovideoRegistrationRequestLink } from "../requests/nicovideo/[sourceId]/Link";
+import { YoutubeRequestPageLink } from "../requests/youtube/[sourceId]/Link";
 
 export const TimelineEventFragment = graphql(`
   fragment MyTopPage_TimelineSegment_TimelineEvent on TimelineEvent {
