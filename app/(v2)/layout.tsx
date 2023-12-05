@@ -32,9 +32,9 @@ export default function ApplicationLayout({
           <div
             id="toast2"
             className={clsx(
-              "fixed right-4 top-[64px] z-infinity max-h-[calc(100vh-64px)] min-w-[320px] py-4"
+              "fixed right-4 top-[64px] z-infinity max-h-[calc(100vh-64px)] min-w-[320px]"
             )}
-          ></div>
+          />
         </FormModalProvider>
       </ToastProvider>
     </UserProvider>
