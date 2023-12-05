@@ -1,5 +1,4 @@
 "use client";
-import { useAuth0 } from "@auth0/auth0-react";
 import { ResultOf } from "@graphql-typed-document-node/core";
 import { useCallback } from "react";
 import { useMutation } from "urql";
@@ -30,20 +29,10 @@ const useResolve = (
   }
 ) => {
   const [, resolve] = useMutation(Mutation);
-  const { getAccessTokenSilently } = useAuth0();
 
   return useCallback(
     async ({ resolvedTo }: { resolvedTo: string }) => {
-      const accessToken = await getAccessTokenSilently({
-        authorizationParams: { scope: "check:semitag" },
-      });
-
-      const { error, data } = await resolve(
-        { tagId: resolvedTo, semitagId },
-        {
-          fetchOptions: { headers: { authorization: `Bearer ${accessToken}` } },
-        }
-      );
+      const { error, data } = await resolve({ tagId: resolvedTo, semitagId });
       if (error || !data) return; // TODO
       switch (data.resovleSemitag.__typename) {
         case "ResolveSemitagSucceededPayload":
@@ -53,7 +42,7 @@ const useResolve = (
           return;
       }
     },
-    [getAccessTokenSilently, onSuccess, resolve, semitagId]
+    [onSuccess, resolve, semitagId]
   );
 };
 

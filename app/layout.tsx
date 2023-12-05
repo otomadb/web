@@ -4,7 +4,8 @@ import clsx from "clsx";
 import type { Metadata, Viewport } from "next";
 import React from "react";
 
-import Auth0Provider from "./Auth0Provider";
+import { ToastProvider } from "~/components/Toaster";
+
 import UrqlProvider from "./UrqlProvider";
 
 export const metadata: Metadata = {
@@ -38,15 +39,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <Auth0Provider>
-      <UrqlProvider>
+    <UrqlProvider>
+      <ToastProvider selector="#toast">
         <html lang="ja">
           <body className={clsx()}>
             <div id="toast" />
             <main>{children}</main>
           </body>
         </html>
-      </UrqlProvider>
-    </Auth0Provider>
+      </ToastProvider>
+    </UrqlProvider>
   );
 }

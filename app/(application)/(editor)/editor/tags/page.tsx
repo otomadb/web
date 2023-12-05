@@ -1,3 +1,4 @@
+import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import clsx from "clsx";
 import type { Metadata } from "next";
 
@@ -7,7 +8,7 @@ export const metadata: Metadata = {
   title: "タグの登録",
 };
 
-export default async function Page() {
+export default withPageAuthRequired(async function Page() {
   return (
     <main className={clsx(["max-w-screen-2xl", "w-full"], ["mx-auto"])}>
       <RegisterTagForm
@@ -15,4 +16,4 @@ export default async function Page() {
       />
     </main>
   );
-}
+});
