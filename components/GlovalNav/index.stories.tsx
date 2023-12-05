@@ -72,7 +72,9 @@ export const Loading: StoryObj<typeof meta> = {
 const $handlerSuccessful = mswGraphql.query(GlobalNavQuery, (req, res, ctx) => {
   return res(
     ctx.data({
-      viewer: {},
+      viewer: {
+        id: "u1",
+      },
     })
   );
 });

@@ -71,6 +71,9 @@ export default function UrqlProvider({ children }: { children: ReactNode }) {
               SemitagSuggestTagsReturn() {
                 return null;
               },
+              TimelineEvent() {
+                return null;
+              },
             },
           }),
           fetchExchange,

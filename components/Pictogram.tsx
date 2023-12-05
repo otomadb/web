@@ -9,13 +9,14 @@ import {
   ArrowLeftOnRectangleIcon,
   ArrowTopRightOnSquareIcon,
   CheckIcon,
-  HeartIcon,
+  HeartIcon as OutlineHeartIcon,
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
 import {
   ArrowPathIcon,
   CheckCircleIcon,
   ClipboardDocumentIcon,
+  HeartIcon as FilledHeartIcon,
   NoSymbolIcon,
   PencilIcon,
   PlusIcon,
@@ -24,6 +25,14 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/solid";
 import clsx from "clsx";
+
+export type TPictogram = (props: { className?: string }) => JSX.Element;
+export const FilledHeartPictogram: TPictogram = (props) => (
+  <FilledHeartIcon {...props} />
+);
+export const OutlineHeartPictogram: TPictogram = (props): JSX.Element => (
+  <OutlineHeartIcon {...props} />
+);
 
 export default function Pictogram({
   icon,
@@ -76,7 +85,7 @@ export default function Pictogram({
     case "reject":
       return <NoSymbolIcon {...props} />;
     case "like":
-      return <HeartIcon {...props} />;
+      return <OutlineHeartIcon {...props} />;
     case "check":
       return <CheckIcon {...props} />;
     case "external-link":

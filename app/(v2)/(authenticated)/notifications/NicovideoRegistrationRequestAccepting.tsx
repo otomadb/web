@@ -32,6 +32,7 @@ export const NicovideoRegistrationRequestAcceptingFragment = graphql(`
       video {
         ...Link_Video
         ...CommonMadBlock
+        ...CommonMadBlock_LikeSwitch
         id
       }
     }
@@ -81,7 +82,11 @@ export default function NicovideoRegistrationRequestAcceptingNotification({
       )}
     >
       <div className={clsx("flex gap-x-4")}>
-        <CommonMadBlock fragment={video} classNames={clsx("w-64 shrink-0")} />
+        <CommonMadBlock
+          fragment={video}
+          likeable={video}
+          classNames={clsx("w-64 shrink-0")}
+        />
         <div
           className={clsx(
             "flex grow flex-col gap-y-2 rounded border border-obsidian-lighter bg-obsidian-darker p-4"
