@@ -19,10 +19,7 @@ export const TextInput = forwardRef<
       ref={ref}
       className={clsx(
         className,
-        ["bg-slate-50"],
-        ["outline-teal-300"],
-        [["text-slate-900"], ["placeholder:text-slate-300"]],
-        ["border", "border-gray-300", "rounded"]
+        "rounded border border-obsidian-lighter bg-obsidian-darkest px-2 py-1 text-snow-primary outline-1 outline-vivid-primary placeholder:text-obsidian-lightest"
       )}
     />
   );
