@@ -8,6 +8,8 @@ import GlobalFooter from "~/components/GlobalFooter";
 import GlobalNav from "~/components/GlovalNav";
 import { ToastProvider } from "~/components/Toaster";
 
+import { NotifyEmailVerifycation } from "./(authenticated)/home/NotifyVerification";
+
 export default function ApplicationLayout({
   children,
 }: {
@@ -16,6 +18,7 @@ export default function ApplicationLayout({
   return (
     <UserProvider>
       <ToastProvider selector="#toast2">
+        <NotifyEmailVerifycation />
         <FormModalProvider>
           <div className={clsx("flex @container/app")}>
             <AppSideNav className="sticky top-0 h-screen w-[320px] shrink-0" />
