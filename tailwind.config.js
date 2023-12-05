@@ -63,7 +63,9 @@ module.exports = {
         "error": {
           primary: colors.rose[600],
         },
-
+        "like": {
+          primary: colors.pink[500],
+        },
         "obsidian": {
           darkest: "hsl(232, 34%, 6%)",
           darker: "hsl(228, 21%, 9%)",

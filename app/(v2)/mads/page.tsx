@@ -38,6 +38,7 @@ export default async function Page({
           nodes {
             id
             ...CommonMadBlock
+            ...CommonMadBlock_LikeSwitch
           }
           totalCount
         }
@@ -77,7 +78,7 @@ export default async function Page({
         )}
       >
         {findMadsByOffset.nodes.map((node) => (
-          <CommonMadBlock key={node.id} fragment={node} />
+          <CommonMadBlock key={node.id} fragment={node} likeable={node} />
         ))}
       </div>
       <div className={clsx("flex w-full justify-end px-4 py-2")}>

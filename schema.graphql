@@ -1960,7 +1960,7 @@ type SoundcloudRegistrationRequest implements Node & RegistrationRequest {
 
   """
   Soundcloud側のサムネイル画像のURL
-  
+
   **無い場合もある場合に注意.**
   """
   originalThumbnailUrl: String
@@ -1972,7 +1972,7 @@ type SoundcloudRegistrationRequest implements Node & RegistrationRequest {
 
   """
   OtoMADB側でプロキシしているサムネイル画像のURL
-  
+
   **無い場合は適当にダミー画像を返す．**
   """
   thumbnailUrl: String!
@@ -2383,6 +2383,7 @@ type User implements Node {
   isEditor: Boolean! @deprecated(reason: "Use hasRole instead.")
   like(videoId: ID!): MylistRegistration
   likes: Mylist!
+  like(videoId: ID!): MylistRegistration
   mylist(id: ID!): Mylist
   mylists(after: String, before: String, first: Int, last: Int, orderBy: UserMylistsOrderBy! = {createdAt: DESC}, range: [MylistShareRange!]! = [PUBLIC]): MylistConnection!
   name: String!

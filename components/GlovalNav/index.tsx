@@ -17,6 +17,7 @@ import UserIndicator from "./UserIndicator";
 export const GlobalNavQuery = graphql(`
   query GlobalNav {
     viewer {
+      id
       ...GlobalNav_ProfileIndicator
       ...GlobalNav_ProfileAccordion
     }

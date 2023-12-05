@@ -5,6 +5,8 @@ import CommonTagLink from "~/components/CommonTagLink";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
+import LikeSwitch, { LikeSwitchFragment } from "./LikeSwitch";
+
 export const CommonMadBlockFragment = graphql(`
   fragment CommonMadBlock on Video {
     ...Link_Video
@@ -24,12 +26,14 @@ export const CommonMadBlockFragment = graphql(`
 export default function CommonMadBlock({
   classNames,
   style,
+  likeable,
   ...props
 }: {
   classNames?: string;
   style?: React.CSSProperties;
   fragment: FragmentType<typeof CommonMadBlockFragment>;
   size?: "small" | "medium";
+  likeable?: FragmentType<typeof LikeSwitchFragment>;
 }) {
   const fragment = useFragment(CommonMadBlockFragment, props.fragment);
 
@@ -41,13 +45,23 @@ export default function CommonMadBlock({
         "overflow-hidden rounded border border-obsidian-lighter bg-obsidian-primary"
       )}
     >
-      <MadPageLink fragment={fragment} className={clsx(["block"])}>
-        <VideoThumbnail
-          fragment={fragment}
-          className={clsx("h-32 w-full")}
-          imageSize="medium"
-        />
-      </MadPageLink>
+      <div className={clsx("group/thumbnail relative")}>
+        <MadPageLink fragment={fragment} className={clsx("z-0 block")}>
+          <VideoThumbnail
+            fragment={fragment}
+            className={clsx("h-32 w-full")}
+            imageSize="medium"
+          />
+        </MadPageLink>
+        {likeable && (
+          <LikeSwitch
+            fragment={likeable}
+            className={clsx(
+              "absolute bottom-2 right-2 z-1 opacity-0 transition-opacity duration-50 group-hover/thumbnail:opacity-100"
+            )}
+          />
+        )}
+      </div>
       <div className={clsx("flex flex-col gap-y-2 p-2")}>
         <MadPageLink
           fragment={fragment}
