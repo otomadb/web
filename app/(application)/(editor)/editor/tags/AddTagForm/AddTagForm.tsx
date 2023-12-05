@@ -6,7 +6,7 @@ import clsx from "clsx";
 import React, { useCallback, useMemo, useReducer, useState } from "react";
 
 import Button from "~/components/Button";
-import TagSearcher from "~/components/TagSearcher2";
+import TagSearcher from "~/components/TagSearcher";
 import { TextInput2 } from "~/components/TextInput";
 import useToaster from "~/components/Toaster/useToaster";
 

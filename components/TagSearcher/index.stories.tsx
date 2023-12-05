@@ -1,57 +1,104 @@
 import { action } from "@storybook/addon-actions";
 import { Meta, StoryObj } from "@storybook/react";
 import { userEvent, within } from "@storybook/testing-library";
+import { graphql } from "msw";
 import { ComponentProps } from "react";
-import {
-  createClient as createUrqlClient,
-  fetchExchange,
-  Provider as UrqlProvider,
-} from "urql";
 
-import { TagSearcher } from ".";
-import {
-  mockTagSearcher,
-  mockTagSearcherLoading,
-  mockTagSearcherNothing,
-} from "./index.mocks";
+import { CommonTagFragment } from "~/components/CommonTag";
+import { makeFragmentData } from "~/gql";
+import { TagType } from "~/gql/graphql";
+
+import TagSearcher, { Query } from ".";
+import { SuggestItemFragment } from "./SuggestItem";
+import { SuggestsFragment } from "./Suggests";
 
 const meta = {
   component: TagSearcher,
-  render: (args) => (
-    <UrqlProvider
-      value={createUrqlClient({ url: "/graphql", exchanges: [fetchExchange] })}
-    >
-      <TagSearcher {...args} />
-    </UrqlProvider>
-  ),
   args: {
-    style: { width: "320px" },
+    style: { width: 320 },
+    size: "medium",
     handleSelect: action("handleSelect"),
   },
   parameters: {
     msw: {
-      handlers: [mockTagSearcher],
+      handlers: [
+        graphql.query(Query, (req, res, ctx) =>
+          res(
+            ctx.data({
+              searchTags: {
+                ...makeFragmentData(
+                  {
+                    items: [...new Array(3)].map((_, i) => ({
+                      ...makeFragmentData(
+                        {
+                          name: {
+                            id: `tagname:${i + 1}`,
+                            primary: true,
+                            name: `Tag ${i + 1}`,
+                          },
+                          tag: {
+                            id: `tag:${i + 1}`,
+                            ...makeFragmentData(
+                              {
+                                name: `Tag ${i + 1}`,
+                                type: TagType.Character,
+                                explicitParent: {
+                                  id: "tag:0",
+                                  name: "Tag 0",
+                                },
+                              },
+                              CommonTagFragment
+                            ),
+                          },
+                        },
+                        SuggestItemFragment
+                      ),
+                    })),
+                  },
+                  SuggestsFragment
+                ),
+              },
+            })
+          )
+        ),
+      ],
     },
   },
 } as Meta<typeof TagSearcher>;
 
 export default meta;
 
-export const Primary: StoryObj<typeof meta> = {};
+type Story = StoryObj<typeof meta>;
 
-export const InputQuery: StoryObj<typeof TagSearcher> = {
-  name: "適当なクエリを入力",
+export const Small: Story = {
+  args: {
+    style: { width: 240 },
+    size: "small",
+  },
+};
+
+export const Medium: Story = {};
+
+export const Large: Story = {
+  args: {
+    style: { width: 480 },
+    size: "large",
+  },
+};
+
+export const 適当なクエリを入力: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await userEvent.type(canvas.getByRole("textbox"), "Test");
   },
 };
 
-export const Fetching: StoryObj<typeof TagSearcher> = {
-  name: "取得中",
+export const 取得中: Story = {
   parameters: {
     msw: {
-      handlers: [mockTagSearcherLoading],
+      handlers: [
+        graphql.query(Query, (req, res, ctx) => res(ctx.delay("infinite"))),
+      ],
     },
   },
   play: async ({ canvasElement }) => {
@@ -60,11 +107,20 @@ export const Fetching: StoryObj<typeof TagSearcher> = {
   },
 };
 
-export const Nothing: StoryObj<typeof TagSearcher> = {
-  name: "検索候補がない",
+export const 検索候補がない: Story = {
   parameters: {
     msw: {
-      handlers: [mockTagSearcherNothing],
+      handlers: [
+        graphql.query(Query, (req, res, ctx) =>
+          res(
+            ctx.data({
+              searchTags: {
+                ...makeFragmentData({ items: [] }, SuggestsFragment),
+              },
+            })
+          )
+        ),
+      ],
     },
   },
   play: async ({ canvasElement }) => {
@@ -73,8 +129,7 @@ export const Nothing: StoryObj<typeof TagSearcher> = {
   },
 };
 
-export const Select: StoryObj<typeof TagSearcher> = {
-  name: "検索候補を選択",
+export const 検索候補を選択: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await userEvent.type(canvas.getByRole("textbox"), "Test");
@@ -84,35 +139,12 @@ export const Select: StoryObj<typeof TagSearcher> = {
   },
 };
 
-const Optional: ComponentProps<typeof TagSearcher>["Optional"] = ({
+const Additional: ComponentProps<typeof TagSearcher>["Additional"] = ({
   query,
-}) => (
-  <div>
-    <p>{query}</p>
-  </div>
-);
+}) => <span style={{ color: "white" }}>{query}</span>;
 
-export const OptionalChoice: StoryObj<typeof meta> = {
-  name: "別の選択肢を提示",
-  args: {
-    Optional,
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    await userEvent.type(canvas.getByRole("textbox"), "Test");
-  },
-};
-
-export const FetchingOptionalChoice: StoryObj<typeof meta> = {
-  name: "検索しつつ別の選択肢を提示",
-  args: {
-    Optional,
-  },
-  parameters: {
-    msw: {
-      handlers: [mockTagSearcherLoading],
-    },
-  },
+export const 別の選択肢を提示: Story = {
+  args: { Additional },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await userEvent.type(canvas.getByRole("textbox"), "Test");

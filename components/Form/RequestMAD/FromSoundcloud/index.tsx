@@ -21,7 +21,7 @@ import {
   Fragment as TagButtonFragment,
   TagButton,
 } from "~/components/Form/TagButton";
-import TagSearcher from "~/components/TagSearcher2";
+import TagSearcher from "~/components/TagSearcher";
 import { TextInput2 } from "~/components/TextInput";
 import useToaster from "~/components/Toaster/useToaster";
 import { FragmentType, graphql } from "~/gql";

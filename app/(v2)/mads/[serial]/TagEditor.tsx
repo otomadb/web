@@ -8,7 +8,7 @@ import { useCallback } from "react";
 import { useMutation, useQuery } from "urql";
 
 import CommonTag from "~/components/CommonTag";
-import TagSearcher from "~/components/TagSearcher2";
+import TagSearcher from "~/components/TagSearcher";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const TagsListFragment = graphql(`

@@ -3,9 +3,10 @@ import clsx from "clsx";
 import React from "react";
 
 import CommonTag from "~/components/CommonTag";
+import { CommonTagFragment } from "~/components/CommonTag";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-export const Fragment = graphql(`
+export const SuggestItemFragment = graphql(`
   fragment TagSearcher_SuggestItem on TagSearchItemByName {
     name {
       id
@@ -13,51 +14,76 @@ export const Fragment = graphql(`
       primary
     }
     tag {
-      ...CommonTag
       id
+      ...CommonTag
     }
   }
 `);
-const SuggestItem: React.FC<{
+export default function SuggestItem({
+  className,
+  style,
+  size,
+  handleSelect,
+  disabled = false,
+  ...props
+}: {
   className?: string;
-  handleSelect(id: string): void;
-  fragment: FragmentType<typeof Fragment>;
-}> = ({ className, handleSelect, ...props }) => {
-  const fragment = useFragment(Fragment, props.fragment);
+  size: "small" | "medium" | "large";
+  style?: React.CSSProperties;
+  handleSelect(
+    id: string,
+    fragment: FragmentType<typeof CommonTagFragment>
+  ): void;
+  fragment: FragmentType<typeof SuggestItemFragment>;
+  disabled?: boolean;
+}) {
+  const fragment = useFragment(SuggestItemFragment, props.fragment);
 
   return (
-    <button
-      type="button"
-      aria-label="検索候補"
+    <div
       tabIndex={0}
+      role="button"
+      aria-label="検索候補"
       className={clsx(
         className,
-        ["group"],
-        ["px-2", "py-2"],
+        {
+          small: ["py-1", "px-2", "gap-y-0.5"],
+          medium: ["py-2", "px-2", "gap-y-1"],
+          large: ["py-2", "px-2", "gap-y-2"],
+        }[size],
         ["flex", "flex-col", "items-start"],
-        ["bg-white", "hover:bg-teal-100"]
+        ["bg-slate-950", "hover:bg-slate-900"]
       )}
       onClick={(e) => {
-        handleSelect(fragment.tag.id);
+        e.preventDefault();
         e.currentTarget.blur();
+        if (disabled) return;
+        handleSelect(fragment.tag.id, fragment.tag);
       }}
+      style={style}
     >
       <div>
-        <CommonTag size="small" fragment={fragment.tag} />
+        <CommonTag
+          className={clsx()}
+          size={size === "large" ? "small" : "xs"}
+          fragment={fragment.tag}
+        />
       </div>
       {!fragment.name.primary && (
-        <div className={clsx(["px-1"], ["mt-1"])}>
-          <p
-            className={clsx(
-              ["text-xs", "italic"],
-              ["text-slate-600", "group-hover:text-teal-800"]
-            )}
-          >
-            {fragment.name.name}
-          </p>
+        <div
+          className={clsx(
+            {
+              small: ["text-xxs"],
+              medium: ["text-xs"],
+              large: ["text-sm"],
+            }[size],
+            ["italic"],
+            ["text-slate-400"]
+          )}
+        >
+          {fragment.name.name}
         </div>
       )}
-    </button>
+    </div>
   );
-};
-export default SuggestItem;
+}
