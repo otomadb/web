@@ -30,10 +30,11 @@ export type LikeButtonPresentation = React.FC<
 >;
 export const LikeSwitchSkelton: React.FC<
   PassThroughProps & {
+    activate?: boolean;
     fragment: FragmentType<typeof LikeSwitchSkeltonFragment>;
     Presentation: LikeButtonPresentation;
   }
-> = ({ fragment, Presentation, ...props }) => {
+> = ({ fragment, activate = false, Presentation, ...props }) => {
   const { id: videoId } = useFragment(LikeSwitchSkeltonFragment, fragment);
 
   const [{ data: currentData }, updateCurrent] = useQuery({
@@ -46,6 +47,7 @@ export const LikeSwitchSkelton: React.FC<
       }
     `),
     variables: { videoId },
+    pause: !activate,
     requestPolicy: "cache-first",
   });
   const innerFragment = useFragment(

@@ -23,25 +23,29 @@ export const Presentation: LikeButtonPresentation = ({
     <button
       type="button"
       role="checkbox"
-      disabled={typeof current === "undefined"}
-      aria-checked={typeof current === "undefined" ? "mixed" : current}
+      disabled={current === undefined}
+      aria-checked={
+        current === undefined ? "mixed" : current ? "true" : "false"
+      }
       onClick={() => {
-        if (typeof current === "undefined") return;
+        if (current === undefined) return;
         current ? unlike() : like();
       }}
-      className={clsx(className, "group/like")}
+      className={clsx(className, "group/like h-8 w-8")}
       style={style}
     >
-      {typeof current === "undefined" ? (
-        <></>
+      {current === undefined ? (
+        <OutlineHeartPictogram
+          className={clsx("h-full w-full text-snow-darkest/25")}
+        />
       ) : current ? (
         <FilledHeartPictogram
-          className={clsx("h-8 w-8 text-like-primary/75")}
+          className={clsx("h-full w-full text-like-primary/75")}
         />
       ) : (
         <OutlineHeartPictogram
           className={clsx(
-            "h-8 w-8 text-snow-lightest/75 transition-colors duration-100 group-hover/like:text-like-primary/75"
+            "h-full w-full text-snow-lightest/75 transition-colors duration-100 group-hover/like:text-like-primary/75"
           )}
         />
       )}
@@ -58,10 +62,12 @@ const LikeSwitch: React.FC<{
   className?: string;
   style?: React.CSSProperties;
   fragment: FragmentType<typeof LikeSwitchFragment>;
-}> = ({ fragment, ...props }) => {
+  activate: boolean;
+}> = ({ fragment, activate, ...props }) => {
   return (
     <LikeSwitchSkelton
       {...props}
+      activate={activate}
       fragment={useFragment(LikeSwitchFragment, fragment)}
       Presentation={Presentation}
     />
