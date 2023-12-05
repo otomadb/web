@@ -2,7 +2,6 @@
 
 import "client-only";
 
-import { useAuth0 } from "@auth0/auth0-react";
 import { ResultOf } from "@graphql-typed-document-node/core";
 import { graphql as mswGraphQL } from "msw";
 import { useCallback } from "react";
@@ -35,7 +34,6 @@ export const useRegister = ({
   ): void;
 }) => {
   const [, mutateRegisterTag] = useMutation(Mutation);
-  const { getAccessTokenSilently } = useAuth0();
 
   return useCallback(
     async ({
@@ -51,24 +49,15 @@ export const useRegister = ({
       implicitParents: string[];
       resolveSemitags: string[];
     }) => {
-      const accessToken = await getAccessTokenSilently({
-        authorizationParams: { scope: "create:tag" },
-      });
-
-      const { data, error } = await mutateRegisterTag(
-        {
-          input: {
-            primaryName,
-            extraNames,
-            explicitParent,
-            implicitParents,
-            resolveSemitags,
-          },
+      const { data, error } = await mutateRegisterTag({
+        input: {
+          primaryName,
+          extraNames,
+          explicitParent,
+          implicitParents,
+          resolveSemitags,
         },
-        {
-          fetchOptions: { headers: { authorization: `Bearer ${accessToken}` } },
-        }
-      );
+      });
       if (error || !data) {
         // TODO 重大な例外処理
         return;
@@ -84,7 +73,7 @@ export const useRegister = ({
         }
       }
     },
-    [getAccessTokenSilently, mutateRegisterTag, onSuccess]
+    [mutateRegisterTag, onSuccess]
   );
 };
 
