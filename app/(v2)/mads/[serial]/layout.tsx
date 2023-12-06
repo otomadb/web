@@ -6,6 +6,7 @@ import { graphql } from "~/gql";
 import { makeGraphQLClient } from "~/gql/fetch";
 
 import { LinkVideoEvents } from "./events/Link";
+import LikeButton from "./LikeButton";
 import { MadPageLink } from "./Link";
 import Preview from "./Preview";
 import Semitags from "./Semitags";
@@ -18,25 +19,26 @@ export default async function Layout({
   children: React.ReactNode;
   params: { serial: string };
 }) {
-  const data = await makeGraphQLClient()
-    .request(
-      graphql(`
-        query MadPageLayout($serial: Int!) {
-          findMadBySerial(serial: $serial) {
-            id
-            title
-            ...Link_Video
-            ...Link_VideoEvents
-            ...MadPageLayout_Taggings
-            ...MadPageLayout_Semitags
-            ...MadPageLayout_Preview
-          }
+  const data = await makeGraphQLClient().request(
+    graphql(`
+      query MadPageLayout($serial: Int!) {
+        findMadBySerial(serial: $serial) {
+          id
+          title
+          ...Link_Video
+          ...Link_VideoEvents
+          ...MadPageLayout_LikeSwitch
+          ...MadPageLayout_Taggings
+          ...MadPageLayout_Semitags
+          ...MadPageLayout_Preview
         }
-      `),
-      { serial: parseInt(params.serial, 10) }
-    )
-    .then((data) => data.findMadBySerial);
-  if (!data) notFound();
+      }
+    `),
+    { serial: parseInt(params.serial, 10) }
+  );
+
+  if (!data.findMadBySerial) notFound();
+  const { findMadBySerial: video } = data;
 
   return (
     <main className={clsx("container mx-auto flex grow flex-col gap-y-4")}>
@@ -46,16 +48,16 @@ export default async function Layout({
             "flex flex-col gap-x-8 gap-y-4 @[1024px]/details:flex-row"
           )}
         >
-          <Preview className={clsx("shrink-0")} fragment={data} />
+          <Preview className={clsx("shrink-0")} fragment={video} />
           <div className={clsx("grow")}>
             <h1
               className={clsx("text-lg font-bold text-snow-primary lg:text-xl")}
             >
-              <MadPageLink fragment={data}>{data.title}</MadPageLink>
+              <MadPageLink fragment={video}>{video.title}</MadPageLink>
             </h1>
             {/* <LikeButton className={clsx(["mt-2"])} fragment={getVideo} /> */}
             <LinkVideoEvents
-              fragment={data}
+              fragment={video}
               className={clsx("text-sm text-snow-darker")}
             >
               編集履歴を見る
@@ -65,6 +67,7 @@ export default async function Layout({
       </section>
       <div className={clsx("flex gap-x-4")}>
         <div className={clsx("flex w-[256px] shrink-0 flex-col gap-y-6")}>
+          <LikeButton fragment={video} className={clsx("w-full")} />
           <section className={clsx("flex flex-col gap-y-1")}>
             <h2 className={clsx("text-base text-snow-darker")}>タグ</h2>
             <Suspense
@@ -72,7 +75,7 @@ export default async function Layout({
                 <p className={clsx("text-sm text-snow-darkest")}>Loading...</p>
               }
             >
-              <Taggings fragment={data} />
+              <Taggings fragment={video} />
             </Suspense>
           </section>
           <section className={clsx("flex flex-col gap-y-1")}>
@@ -82,7 +85,7 @@ export default async function Layout({
                 <p className={clsx("text-sm text-snow-darkest")}>Loading...</p>
               }
             >
-              <Semitags fragment={data} />
+              <Semitags fragment={video} />
             </Suspense>
           </section>
         </div>
