@@ -4,6 +4,7 @@ import clsx from "clsx";
 import {
   CSSProperties,
   useCallback,
+  useEffect,
   useMemo,
   useReducer,
   useState,
@@ -45,7 +46,8 @@ export const Query = graphql(`
     fetchBilibili(input: { bvid: $sourceId }) {
       source {
         ...RegisterFromBilibiliForm_OriginalSource
-        thumbnailUrl(scale: LARGE)
+        title
+        originalThumbnailUrl
       }
     }
   }
@@ -137,16 +139,22 @@ export default function RequestForm({
     },
     onAlready({ source: { sourceId, video } }) {
       callToast(
-        <p>
+        <>
           <span>{sourceId}</span>は受理されて
           <MadPageLink fragment={video}>既に登録されています。</MadPageLink>
-        </p>
+        </>
       );
     },
     onFailure() {
-      callToast(<p>登録に失敗しました。</p>);
+      callToast(<>登録に失敗しました。</>);
     },
   });
+
+  // 自動的にタイトルを挿入
+  useEffect(() => {
+    if (title === "" && data?.fetchBilibili.source?.title)
+      setTitle(data.fetchBilibili.source.title);
+  }, [data?.fetchBilibili.source?.title, title]);
 
   const [tab, setTab] = useState<"SOURCE">("SOURCE");
 
@@ -158,7 +166,7 @@ export default function RequestForm({
       title,
       taggings: taggings.map(({ id }) => ({ tagId: id, note: null })),
       semitaggings: semitaggings.map(({ name }) => ({ name, note: null })),
-      thumbnailUrl: data.fetchBilibili.source.thumbnailUrl,
+      thumbnailUrl: data.fetchBilibili.source.originalThumbnailUrl,
     } satisfies Parameters<typeof requestVideo>[0];
   }, [data, semitaggings, sourceId, taggings, title]);
   const handleSubmit = useCallback(() => {

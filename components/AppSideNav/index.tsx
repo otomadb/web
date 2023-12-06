@@ -12,6 +12,7 @@ import {
   useOpenRegisterFromBilibili,
   useOpenRegisterFromNicovideo,
   useOpenRegisterFromYoutube,
+  useOpenRequestFromBilibili,
   useOpenRequestFromNicovideo,
   useOpenRequestFromSoundcloud,
   useOpenRequestFromYoutube,
@@ -51,6 +52,7 @@ export default function AppSideNav({
   const openRequestFromNicovideo = useOpenRequestFromNicovideo();
   const openRequestFromYoutube = useOpenRequestFromYoutube();
   const openRequestFromSoundcloud = useOpenRequestFromSoundcloud();
+  const openRequestFromBilibili = useOpenRequestFromBilibili();
 
   const openNicovideoRegisterModal = useOpenRegisterFromNicovideo();
   const openYoutubeRegisterModal = useOpenRegisterFromYoutube();
@@ -200,6 +202,18 @@ export default function AppSideNav({
                 >
                   <SoundcloudPictogram className={clsx("h-4 w-4 ")} />
                   <span className={clsx("text-sm")}>SoundCloud</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    openRequestFromBilibili(null);
+                  }}
+                  className={clsx(
+                    "group flex items-center gap-x-2 px-4 py-1 text-left text-snow-darkest hover:bg-vivid-primary hover:text-obsidian-primary"
+                  )}
+                >
+                  <BilibiliPictogram className={clsx("h-4 w-4")} />
+                  <span className={clsx("text-sm")}>Bilibili</span>
                 </button>
               </div>
             </div>
