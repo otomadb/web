@@ -60,6 +60,7 @@ module.exports = {
       files: ["*.stories.ts", "*.stories.tsx"],
       rules: {
         "storybook/prefer-pascal-case": 0,
+        "@typescript-eslint/no-explicit-any": 1,
       },
     },
   ],
