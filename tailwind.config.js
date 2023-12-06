@@ -61,10 +61,14 @@ module.exports = {
           primary: colors.yellow[400],
         },
         "error": {
-          primary: colors.rose[600],
+          primary: colors.red[600],
         },
         "like": {
-          primary: colors.pink[500],
+          darkest: colors.rose[950],
+          darker: colors.rose[900],
+          primary: colors.rose[500],
+          lighter: colors.rose[300],
+          lightest: colors.rose[100],
         },
         "obsidian": {
           darkest: "hsl(232, 34%, 6%)",
@@ -114,6 +118,11 @@ module.exports = {
         "fade-slide-r-to-l": {
           "0%": { opacity: 0, transform: "translateX(1rem)" },
           "100%": { opacity: 1, transform: "translateX(0)" },
+        },
+        "like": {
+          "0%": { opacity: 1, transform: "scale(0)" },
+          "50%": { opacity: 1 },
+          "100%": { opacity: 1, transform: "scale(1)" },
         },
       },
     },

@@ -1,6 +1,14 @@
-import clsx from "clsx";
+"use client";
 
-import { FilledHeartPictogram } from "~/components/Pictogram";
+import clsx from "clsx";
+import React from "react";
+
+import LikeSwitchSkelton from "~/components/LikeToggleSwitchSkelton";
+import {
+  FilledHeartPictogram,
+  OutlineHeartPictogram,
+} from "~/components/Pictogram";
+import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const Presentation: React.FC<{
   className?: string;
@@ -14,7 +22,7 @@ export const Presentation: React.FC<{
       role="checkbox"
       onClick={() => {
         if (current === undefined) return;
-        current ? like() : unlike();
+        current ? unlike() : like();
       }}
       aria-checked={
         current === undefined ? "mixed" : current ? "true" : "false"
@@ -23,23 +31,63 @@ export const Presentation: React.FC<{
       style={style}
       className={clsx(
         className,
-        "group flex items-center rounded-md border border-slate-400 bg-slate-200 px-2 py-1 transition-colors duration-100 aria-checked:border-pink-400 aria-checked:bg-pink-100 hover:bg-slate-300 aria-checked:hover:bg-pink-200 disabled:border-slate-300 disabled:bg-slate-200"
+        "group flex items-center justify-center gap-x-2 border py-2 transition-colors duration-100 ",
+        "disabled:border-obsidian-lightest disabled:bg-obsidian-lighter",
+        "border-obsidian-lighter bg-obsidian-primary hover:bg-obsidian-darker",
+        "aria-checked:border-like-darker aria-checked:bg-like-darkest aria-checked:hover:bg-like-darker"
       )}
     >
-      <div>
-        <FilledHeartPictogram
-          className={clsx(
-            "h-4 w-4 text-slate-400 transition-colors duration-75 group-hover:text-slate-500 group-disabled:text-slate-300 group-aria-checked:text-pink-600 group-aria-checked:group-hover:text-pink-500"
-          )}
-        />
+      <div className={clsx("h-6 w-6")}>
+        {current ? (
+          <FilledHeartPictogram
+            className={clsx(
+              "h-full w-full animate-[like_0.5s_cubic-bezier(0.175,0.885,0.320,1.275)] transition-colors duration-75",
+              "text-like-primary"
+            )}
+          />
+        ) : (
+          <OutlineHeartPictogram
+            className={clsx(
+              "h-full w-full  transition-colors duration-75",
+              "group-disabled:text-obsidian-lightest",
+              "text-snow-darker group-hover:text-snow-primary"
+            )}
+          />
+        )}
       </div>
       <div
         className={clsx(
-          "ml-1 text-sm text-slate-400 transition-colors duration-75 group-hover:text-slate-500 group-disabled:text-slate-300 group-aria-checked:text-pink-600 group-aria-checked:group-hover:text-pink-500"
+          "ml-1 text-sm font-bold transition-colors duration-75",
+          "group-disabled:text-obsidian-lightest",
+          "text-snow-darker group-hover:text-snow-primary",
+          "group-aria-checked:animate-[fade-slide-l-to-r_0.5s] group-aria-checked:text-like-lighter group-aria-checked:group-hover:text-like-lightest"
         )}
       >
-        Like
+        いいね
       </div>
     </button>
   );
 };
+
+const LikeSwitchFragment = graphql(`
+  fragment MadPageLayout_LikeSwitch on Video {
+    ...LikeSwitchSkelton
+  }
+`);
+export default function LikeButton({
+  fragment,
+  ...rest
+}: {
+  className?: string;
+  style?: React.CSSProperties;
+  fragment: FragmentType<typeof LikeSwitchFragment>;
+}) {
+  return (
+    <LikeSwitchSkelton
+      {...rest}
+      activate={true}
+      fragment={useFragment(LikeSwitchFragment, fragment)}
+      Presentation={Presentation}
+    />
+  );
+}
