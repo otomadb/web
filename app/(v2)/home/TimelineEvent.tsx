@@ -2,6 +2,7 @@ import { FragmentType, graphql, useFragment } from "~/gql";
 
 import { MadRegisteredTimelineEvent } from "./MadRegisteredTimelineEvent";
 import NicovideoRequestTimelineEvent from "./NicovideoRequestTimelineEvent";
+import SoundcloudRequestTimelineEvent from "./SoundcloudRequestTimelineEvent";
 import YoutubeRequestTimelineEvent from "./YoutubeRequestTimelineEvent";
 
 export const TimelineEventFragment = graphql(`
@@ -15,6 +16,9 @@ export const TimelineEventFragment = graphql(`
     }
     ... on YoutubeMadRequestedTimelineEvent {
       ...MyTopPage_TimelineSegment_YoutubeRequestiTimelineEvent
+    }
+    ... on SoundcloudMadRequestedTimelineEvent {
+      ...MyTopPage_TimelineSegment_SoundcloudRequestiTimelineEvent
     }
   }
 `);
@@ -35,5 +39,7 @@ export default function TimelineEvent({
       return <NicovideoRequestTimelineEvent fragment={fragment2} {...rest} />;
     case "YoutubeMadRequestedTimelineEvent":
       return <YoutubeRequestTimelineEvent fragment={fragment2} {...rest} />;
+    case "SoundcloudMadRequestedTimelineEvent":
+      return <SoundcloudRequestTimelineEvent fragment={fragment2} {...rest} />;
   }
 }
