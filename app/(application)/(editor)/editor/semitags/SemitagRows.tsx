@@ -1,7 +1,5 @@
 "use client";
 
-import "client-only";
-
 import clsx from "clsx";
 import { useQuery } from "urql";
 

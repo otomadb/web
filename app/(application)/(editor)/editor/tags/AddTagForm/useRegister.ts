@@ -1,7 +1,5 @@
 "use client";
 
-import "client-only";
-
 import { ResultOf } from "@graphql-typed-document-node/core";
 import { graphql as mswGraphQL } from "msw";
 import { useCallback } from "react";

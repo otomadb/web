@@ -1,7 +1,5 @@
 "use client";
 
-import "client-only";
-
 import clsx from "clsx";
 import copy from "copy-to-clipboard";
 import React, { useMemo } from "react";

@@ -1,5 +1,4 @@
 "use client";
-import "client-only";
 
 import clsx from "clsx";
 import React from "react";

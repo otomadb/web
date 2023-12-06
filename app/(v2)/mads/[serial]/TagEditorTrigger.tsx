@@ -1,7 +1,5 @@
 "use client";
 
-import "client-only";
-
 import clsx from "clsx";
 import { useState } from "react";
 import { useQuery } from "urql";

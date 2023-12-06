@@ -1,7 +1,5 @@
 "use client";
 
-import "client-only";
-
 import { cacheExchange } from "@urql/exchange-graphcache";
 import { ReactNode } from "react";
 import { createClient, fetchExchange, Provider } from "urql";
