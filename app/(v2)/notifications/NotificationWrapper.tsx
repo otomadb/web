@@ -3,7 +3,7 @@
 import clsx from "clsx";
 import { ReactNode } from "react";
 
-import DateTime2 from "~/components/DateTime2";
+import DateTime from "~/components/DateTime";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const NotificationWrapperWrapper = graphql(`
@@ -40,7 +40,7 @@ export default function NotificationWrapper({
       <div className={clsx("flex items-center gap-x-2")}>
         <Icon className={clsx("h-4 w-4")} />
         <Title className={clsx("grow text-sm text-snow-primary")} />
-        <DateTime2
+        <DateTime
           date={createdAt}
           className={clsx("shrink-0 font-mono text-xs text-snow-darkest")}
         />

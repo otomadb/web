@@ -1,6 +1,6 @@
 import clsx from "clsx";
 
-export default function DateTime2({
+export default function DateTime({
   className,
   date,
 }: {
