@@ -2444,7 +2444,7 @@ type Video implements Node {
   events(input: VideoEventsInput!): VideoEventsConnection!
   hasTag(id: ID!): Boolean!
   id: ID!
-  isLiked: Boolean!
+  isLiked: Boolean
   like: MylistRegistration
   nicovideoSources: [NicovideoVideoSource!]!
   registeredAt: DateTime!

@@ -1,20 +1,14 @@
 "use client";
 
-import { useMemo } from "react";
-import { useMutation, useQuery } from "urql";
+import { useState } from "react";
+import { useMutation } from "urql";
 
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const LikeSwitchSkeltonFragment = graphql(`
   fragment LikeSwitchSkelton on Video {
     id
-  }
-`);
-const LikeSwitchSkeltonInnerFragment = graphql(`
-  fragment LikeSwitchSkeltonInner on User {
-    like(videoId: $videoId) {
-      id
-    }
+    isLiked
   }
 `);
 export type PassThroughProps = {
@@ -30,45 +24,21 @@ export type LikeButtonPresentation = React.FC<
 >;
 export const LikeSwitchSkelton: React.FC<
   PassThroughProps & {
-    activate?: boolean;
     fragment: FragmentType<typeof LikeSwitchSkeltonFragment>;
     Presentation: LikeButtonPresentation;
   }
-> = ({ fragment, activate = false, Presentation, ...props }) => {
-  const { id: videoId } = useFragment(LikeSwitchSkeltonFragment, fragment);
-
-  const [{ data: currentData }, updateCurrent] = useQuery({
-    query: graphql(`
-      query LikeSwitchSkeltonCurrent($videoId: ID!) {
-        viewer {
-          ...LikeSwitchSkeltonInner
-          id
-        }
-      }
-    `),
-    variables: { videoId },
-    pause: !activate,
-    requestPolicy: "cache-first",
-  });
-  const innerFragment = useFragment(
-    LikeSwitchSkeltonInnerFragment,
-    currentData?.viewer
+> = ({ fragment, Presentation, ...props }) => {
+  const { id: videoId, isLiked: isLikedInit } = useFragment(
+    LikeSwitchSkeltonFragment,
+    fragment
   );
-  const currentStatus = useMemo<boolean | undefined>(() => {
-    if (!innerFragment) return undefined;
-    return !!innerFragment.like;
-  }, [innerFragment]);
+  const [isLiked, setIsLiked] = useState(isLikedInit);
 
   const [, mutateLike] = useMutation(
     graphql(`
       mutation LikeSwitchSkelton_mutateLike($videoId: ID!) {
         likeVideo(input: { videoId: $videoId }) {
           __typename
-          ... on LikeVideoSucceededPayload {
-            user {
-              ...LikeSwitchSkeltonInner
-            }
-          }
         }
       }
     `)
@@ -78,11 +48,6 @@ export const LikeSwitchSkelton: React.FC<
       mutation LikeSwitchSkelton_mutateUnlike($videoId: ID!) {
         undoLikeVideo(input: { videoId: $videoId }) {
           __typename
-          ... on UndoLikeVideoSucceededPayload {
-            user {
-              ...LikeSwitchSkeltonInner
-            }
-          }
         }
       }
     `)
@@ -91,29 +56,37 @@ export const LikeSwitchSkelton: React.FC<
   return (
     <Presentation
       {...props}
-      current={currentStatus}
+      current={typeof isLiked !== "boolean" ? undefined : isLiked}
       like={() => {
+        if (typeof isLiked !== "boolean") return;
+
+        setIsLiked(true);
         mutateLike({ videoId }).then((result) => {
           switch (result.data?.likeVideo.__typename) {
             case "LikeVideoSucceededPayload":
-              updateCurrent({ requestPolicy: "cache-and-network" });
+              setIsLiked(true);
               break;
             default:
+              setIsLiked(false);
               break;
           }
         });
       }}
-      unlike={() =>
+      unlike={() => {
+        if (typeof isLiked !== "boolean") return;
+
+        setIsLiked(false);
         mutateUnlike({ videoId }).then((result) => {
           switch (result.data?.undoLikeVideo.__typename) {
             case "UndoLikeVideoSucceededPayload":
-              updateCurrent({ requestPolicy: "cache-and-network" });
+              setIsLiked(false);
               break;
             default:
+              setIsLiked(true);
               break;
           }
-        })
-      }
+        });
+      }}
     />
   );
 };

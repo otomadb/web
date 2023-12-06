@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import CommonTagLink from "~/components/CommonTagLink";
 import { TagType } from "~/components/TagType";
 import { graphql } from "~/gql";
-import { makeGraphQLClient } from "~/gql/fetch";
+import { makeGraphQLClient, makeGraphQLClient2 } from "~/gql/fetch";
 
 export async function generateMetadata({
   params,
@@ -44,7 +44,9 @@ export default async function Layout({
   children: React.ReactNode;
   params: { serial: string };
 }) {
-  const result = await makeGraphQLClient().request(
+  const result = await (
+    await makeGraphQLClient2({ auth: "optional" })
+  ).request(
     graphql(`
       query TagPageLayout($serial: Int!) {
         findTagBySerial(serial: $serial) {

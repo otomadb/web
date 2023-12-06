@@ -85,7 +85,6 @@ export default function LikeButton({
   return (
     <LikeSwitchSkelton
       {...rest}
-      activate={true}
       fragment={useFragment(LikeSwitchFragment, fragment)}
       Presentation={Presentation}
     />

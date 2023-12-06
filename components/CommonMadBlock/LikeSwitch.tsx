@@ -62,12 +62,10 @@ const LikeSwitch: React.FC<{
   className?: string;
   style?: React.CSSProperties;
   fragment: FragmentType<typeof LikeSwitchFragment>;
-  activate: boolean;
-}> = ({ fragment, activate, ...props }) => {
+}> = ({ fragment, ...props }) => {
   return (
     <LikeSwitchSkelton
       {...props}
-      activate={activate}
       fragment={useFragment(LikeSwitchFragment, fragment)}
       Presentation={Presentation}
     />
