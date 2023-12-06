@@ -10,6 +10,7 @@ export const SimilarVideosFragment = graphql(`
       to {
         id
         ...CommonMadBlock
+        ...CommonMadBlock_LikeSwitch
       }
     }
   }
@@ -35,7 +36,12 @@ export function SimilarVideosPresentation({
         )}
       >
         {items.map((item) => (
-          <CommonMadBlock key={item.to.id} fragment={item.to} size="small" />
+          <CommonMadBlock
+            key={item.to.id}
+            fragment={item.to}
+            size="small"
+            likeable={item.to}
+          />
         ))}
       </div>
     </div>

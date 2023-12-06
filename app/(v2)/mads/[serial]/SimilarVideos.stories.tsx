@@ -1,6 +1,9 @@
+import { ResultOf } from "@graphql-typed-document-node/core";
 import { Meta, StoryObj } from "@storybook/react";
 
 import { $mockCommonMadBlockFragment } from "~/components/CommonMadBlock/index.stories";
+import { LikeSwitchFragment } from "~/components/CommonMadBlock/LikeSwitch";
+import { LikeSwitchSkeltonFragment } from "~/components/LikeToggleSwitchSkelton";
 import { makeFragmentData } from "~/gql";
 
 import {
@@ -35,7 +38,16 @@ export const Similars: Story = {
               title: `Video ${i}`,
               serial: i,
             }),
-          },
+            ...makeFragmentData(
+              {
+                ...makeFragmentData(
+                  { id: `video:${i}` },
+                  LikeSwitchSkeltonFragment
+                ),
+              },
+              LikeSwitchFragment
+            ),
+          } as ResultOf<typeof SimilarVideosFragment>["items"][number]["to"],
         })),
       },
       SimilarVideosFragment
