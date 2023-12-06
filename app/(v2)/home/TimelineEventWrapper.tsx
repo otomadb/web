@@ -1,6 +1,6 @@
 import clsx from "clsx";
 
-import DateTime2 from "~/components/DateTime2";
+import DateTime from "~/components/DateTime";
 import { PictogramType } from "~/components/Pictogram";
 import UserDisplayNameLink from "~/components/UserLink/UserDisplayNameLink";
 import UserIconLink from "~/components/UserLink/UserIconLink";
@@ -62,7 +62,7 @@ export const TimelineEventWrapper = ({
             </p>
           </div>
           <div className={clsx("shrink-0")}>
-            <DateTime2
+            <DateTime
               date={createdAt}
               className={clsx("font-mono text-xs text-snow-darkest")}
             />
