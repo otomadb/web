@@ -5,7 +5,7 @@ import { useMutation, useQuery } from "urql";
 
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-const LikeSwitchSkeltonFragment = graphql(`
+export const LikeSwitchSkeltonFragment = graphql(`
   fragment LikeSwitchSkelton on Video {
     id
   }

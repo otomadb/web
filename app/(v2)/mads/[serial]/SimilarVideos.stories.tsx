@@ -1,14 +1,15 @@
+import { ResultOf } from "@graphql-typed-document-node/core";
 import { Meta, StoryObj } from "@storybook/react";
 
-import { MadPageLinkFragment } from "~/app/(v2)/mads/[serial]/Link";
-import { TagPageLinkFragment } from "~/app/(v2)/tags/[serial]/Link";
-import { CommonTagFragment } from "~/components/CommonTag";
-import { CommonTagLinkFragment } from "~/components/CommonTagLink";
-import { Fragment } from "~/components/VideoThumbnail";
+import { $mockCommonMadBlockFragment } from "~/components/CommonMadBlock/index.stories";
+import { LikeSwitchFragment } from "~/components/CommonMadBlock/LikeSwitch";
+import { LikeSwitchSkeltonFragment } from "~/components/LikeToggleSwitchSkelton";
 import { makeFragmentData } from "~/gql";
-import { TagType } from "~/gql/graphql";
 
-import { SimilarVideosPresentation } from "./SimilarVideos";
+import {
+  SimilarVideosFragment,
+  SimilarVideosPresentation,
+} from "./SimilarVideos";
 
 const meta = {
   component: SimilarVideosPresentation,
@@ -20,58 +21,36 @@ type Story = StoryObj<typeof meta>;
 export const NoSimilar: Story = {
   name: "似ている動画が存在しない",
   args: {
-    data: {
-      getVideo: { similarVideos: { items: [] } },
-    },
+    fragment: makeFragmentData({ items: [] }, SimilarVideosFragment),
   },
 };
 
 export const Similars: Story = {
   name: "似ている動画が存在する",
   args: {
-    data: {
-      getVideo: {
-        similarVideos: {
-          items: [...new Array(12)].map(
-            (_, i) =>
-              ({
-                to: {
-                  id: `video:${i}`,
-                  title: `Video ${i}`,
-                  taggings: {
-                    nodes: [...new Array(3)].map((_, j) => ({
-                      id: `tagging:${i}:${j}`,
-                      tag: {
-                        id: `tag:${i}:${j}`,
-                        ...makeFragmentData(
-                          {
-                            ...makeFragmentData(
-                              { serial: i * 3 + j },
-                              TagPageLinkFragment
-                            ),
-                            ...makeFragmentData(
-                              {
-                                name: `Tag ${i}.${j}`,
-                                type: TagType.Character,
-                              },
-                              CommonTagFragment
-                            ),
-                          } as any, // eslint-disable-line @typescript-eslint/no-explicit-any -- Codegenが悪い
-                          CommonTagLinkFragment
-                        ),
-                      },
-                    })),
-                  },
-                  ...makeFragmentData({ serial: i }, MadPageLinkFragment),
-                  ...makeFragmentData(
-                    { title: `Video ${i}`, thumbnailUrl: "/thumbnail.jpg" },
-                    Fragment
-                  ),
-                },
-              }) as any // eslint-disable-line @typescript-eslint/no-explicit-any -- Codegenが悪い
-          ),
-        },
+    fragment: makeFragmentData(
+      {
+        items: [...new Array(12)].map((_, i) => ({
+          to: {
+            id: `video:${i}`,
+            ...$mockCommonMadBlockFragment({
+              id: `video:${i}`,
+              title: `Video ${i}`,
+              serial: i,
+            }),
+            ...makeFragmentData(
+              {
+                ...makeFragmentData(
+                  { id: `video:${i}` },
+                  LikeSwitchSkeltonFragment
+                ),
+              },
+              LikeSwitchFragment
+            ),
+          } as ResultOf<typeof SimilarVideosFragment>["items"][number]["to"],
+        })),
       },
-    },
+      SimilarVideosFragment
+    ),
   },
 };
