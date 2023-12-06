@@ -1,7 +1,5 @@
 "use client";
 
-import "client-only";
-
 import { useQuery } from "urql";
 
 import { graphql } from "~/gql";

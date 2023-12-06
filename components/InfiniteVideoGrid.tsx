@@ -1,7 +1,5 @@
 "use client";
 
-import "client-only";
-
 import clsx from "clsx";
 import React, { ReactNode, useCallback, useEffect, useState } from "react";
 import { useIntersection } from "react-use";

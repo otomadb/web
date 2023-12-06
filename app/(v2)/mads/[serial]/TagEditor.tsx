@@ -1,7 +1,5 @@
 "use client";
 
-import "client-only";
-
 import { useAuth0 } from "@auth0/auth0-react";
 import clsx from "clsx";
 import { useCallback } from "react";

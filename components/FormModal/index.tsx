@@ -1,7 +1,5 @@
 "use client";
 
-import "client-only";
-
 import clsx from "clsx";
 import React, { ReactNode, useContext, useReducer } from "react";
 

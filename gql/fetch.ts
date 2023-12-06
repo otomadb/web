@@ -1,5 +1,3 @@
-import "server-only";
-
 import { GraphQLClient } from "graphql-request";
 import { RequestConfig } from "graphql-request/build/esm/types";
 
