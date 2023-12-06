@@ -72,6 +72,7 @@ export default async function Page({ params }: { params: PageParams }) {
       query VideoPage($serial: Int!) {
         findVideo(input: { serial: $serial }) {
           id
+          ...MadPage_SimilarVideosSection
         }
       }
     `),
@@ -90,7 +91,7 @@ export default async function Page({ params }: { params: PageParams }) {
               <p className={clsx("text-sm text-snow-darkest")}>Loading...</p>
             }
           >
-            <SimilarVideos videoId={result.findVideo.id} />
+            <SimilarVideos fragment={result.findVideo} />
           </Suspense>
         </div>
       </section>

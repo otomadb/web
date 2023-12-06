@@ -1,49 +1,30 @@
-import { ResultOf } from "@graphql-typed-document-node/core";
 import clsx from "clsx";
 
-import CommonTagLink from "~/components/CommonTagLink";
-import { VideoThumbnail } from "~/components/VideoThumbnail";
-import { graphql } from "~/gql";
+import CommonMadBlock from "~/components/CommonMadBlock";
+import { FragmentType, graphql, useFragment } from "~/gql";
 import { makeGraphQLClient } from "~/gql/fetch";
 
-import { MadPageLink } from "./Link";
-
-const SimilarVideosQuery = graphql(`
-  query VideoPage_SimilarVideosSection($id: ID!) {
-    getVideo(id: $id) {
-      similarVideos(input: { limit: 12 }) {
-        items {
-          to {
-            ...Link_Video
-            ...VideoThumbnail
-            id
-            title
-            taggings(first: 3) {
-              nodes {
-                id
-                tag {
-                  ...CommonTagLink
-                }
-              }
-            }
-          }
-        }
+export const SimilarVideosFragment = graphql(`
+  fragment VideoPage_SimilarVideosSectionPresentation on VideoSimilarVideosPayload {
+    items {
+      to {
+        id
+        ...CommonMadBlock
       }
     }
   }
 `);
-
 export function SimilarVideosPresentation({
   className,
-  data,
+  fragment,
 }: {
   className?: string;
-  data: ResultOf<typeof SimilarVideosQuery>;
+  fragment: FragmentType<typeof SimilarVideosFragment>;
 }) {
-  const { similarVideos } = data.getVideo;
+  const { items } = useFragment(SimilarVideosFragment, fragment);
   return (
     <div className={clsx(className, "@container")}>
-      {similarVideos.items.length === 0 && (
+      {items.length === 0 && (
         <p className={clsx("text-sm text-snow-darkest")}>
           似ている動画を見つけられませんでした。
         </p>
@@ -53,66 +34,43 @@ export function SimilarVideosPresentation({
           "grid w-full grid-cols-1 gap-x-2 gap-y-4 @[384px]:grid-cols-2 @[512px]:grid-cols-3 @[768px]:grid-cols-4 @[768px]:gap-x-4 @[1024px]:grid-cols-6 @[1536px]:grid-cols-8"
         )}
       >
-        {similarVideos.items.map((item) => (
-          <div
-            key={item.to.id}
-            className={clsx(
-              "shrink-0 overflow-hidden rounded border border-obsidian-lighter bg-obsidian-primary"
-            )}
-          >
-            <MadPageLink fragment={item.to} className={clsx(["block"])}>
-              <VideoThumbnail
-                fragment={item.to}
-                className={clsx("h-32 w-full")}
-                imageSize="medium"
-              />
-            </MadPageLink>
-            <div className={clsx("flex flex-col gap-y-2 p-2")}>
-              <MadPageLink
-                fragment={item.to}
-                className={clsx(
-                  "line-clamp-1 text-xs font-bold text-snow-primary hover:text-vivid-primary hover:underline"
-                )}
-              >
-                {item.to.title}
-              </MadPageLink>
-              <div className={clsx([])}>
-                {item.to.taggings.nodes.length === 0 && (
-                  <div className={clsx("text-xxs text-slate-500")}>
-                    タグ付けがありません
-                  </div>
-                )}
-                <div className={clsx("flex flex-wrap gap-0.5")}>
-                  {item.to.taggings.nodes.map((tagging) => (
-                    <CommonTagLink
-                      key={tagging.id}
-                      fragment={tagging.tag}
-                      size="xs"
-                    />
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
+        {items.map((item) => (
+          <CommonMadBlock key={item.to.id} fragment={item.to} size="small" />
         ))}
       </div>
     </div>
   );
 }
 
+export const SimilarVideosFragment2 = graphql(`
+  fragment MadPage_SimilarVideosSection on Video {
+    id
+  }
+`);
 export default async function SimilarVideos({
-  videoId,
+  fragment,
   ...props
 }: {
   className?: string;
-  videoId: string;
+  fragment: FragmentType<typeof SimilarVideosFragment2>;
 }) {
+  const { id: videoId } = useFragment(SimilarVideosFragment2, fragment);
+  const data = await makeGraphQLClient({}).request(
+    graphql(`
+      query VideoPage_SimilarVideosSection($id: ID!) {
+        getVideo(id: $id) {
+          similarVideos(input: { limit: 12 }) {
+            ...VideoPage_SimilarVideosSectionPresentation
+          }
+        }
+      }
+    `),
+    { id: videoId }
+  );
   return (
     <SimilarVideosPresentation
       {...props}
-      data={await makeGraphQLClient({}).request(SimilarVideosQuery, {
-        id: videoId,
-      })}
+      fragment={data.getVideo.similarVideos}
     />
   );
 }
