@@ -1,11 +1,4 @@
 import {
-  faGithub,
-  faSoundcloud,
-  faTwitter,
-  faYoutube,
-} from "@fortawesome/free-brands-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
   ArrowLeftOnRectangleIcon,
   ArrowTopRightOnSquareIcon,
   CheckIcon,
@@ -27,7 +20,11 @@ import {
 import clsx from "clsx";
 
 import BilibiliSVG from "./bilibili.svg";
+import GithubSVG from "./github.svg";
 import NicovideoSVG from "./nicovideo.svg";
+import SoundcloudSVG from "./soundcloud.svg";
+import TwitterSVG from "./twitter.svg";
+import YoutubeSVG from "./youtube.svg";
 
 export type PictogramType = (props: {
   className?: string;
@@ -91,11 +88,11 @@ export const ExternalLinkPictogram = (props: { className?: string }) => (
 );
 
 export const TwitterPictogram: PictogramType = (props) => (
-  <FontAwesomeIcon icon={faTwitter} {...props} />
+  <TwitterSVG {...props} />
 );
 
 export const GithubPictogram: PictogramType = (props) => (
-  <FontAwesomeIcon icon={faGithub} {...props} />
+  <GithubSVG {...props} />
 );
 
 export const NicovideoPictogram: PictogramType = (props) => (
@@ -107,9 +104,9 @@ export const BilibiliPictogram: PictogramType = (props) => (
 );
 
 export const YoutubePictogram: PictogramType = (props) => (
-  <FontAwesomeIcon icon={faYoutube} {...props} />
+  <YoutubeSVG {...props} />
 );
 
 export const SoundcloudPictogram: PictogramType = (props) => (
-  <FontAwesomeIcon icon={faSoundcloud} {...props} />
+  <SoundcloudSVG {...props} />
 );
