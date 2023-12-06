@@ -5,6 +5,7 @@ import { graphql as mswGql } from "msw";
 import { makeFragmentData } from "~/gql";
 
 import { TimelineEventFragment } from "./TimelineEvent";
+import { TimelineEventWrapperFragment } from "./TimelineEventWrapper";
 import TimelineSegment, { Query } from "./TimelineSegment";
 
 const meta = {
@@ -25,16 +26,6 @@ const meta = {
                 makeFragmentData(
                   {
                     __typename: "NicovideoMadRequestedTimelineEvent",
-                    createdAt: "2021-01-01T00:00:00.000Z",
-                    event: {
-                      id: "event:1",
-                      user: {
-                        id: "user:1",
-                        displayName: "User1",
-                        name: "user1",
-                        icon: "/icon.png",
-                      } as any, // eslint-disable-line @typescript-eslint/no-explicit-any -- 面倒なので
-                    },
                     request: {
                       id: "request:1",
                       title: "Title 1",
@@ -42,22 +33,27 @@ const meta = {
                       thumbnailUrl: "/960x540.jpg",
                       originalUrl: "https://www.nicovideo.jp/watch/sm2057168",
                     },
-                  },
+                    ...makeFragmentData(
+                      {
+                        createdAt: "2021-01-01T00:00:00.000Z",
+                        event: {
+                          id: "event:1",
+                          user: {
+                            id: "user:1",
+                            displayName: "User1",
+                            name: "user1",
+                            icon: "/icon.png",
+                          } as any,
+                        },
+                      } as any,
+                      TimelineEventWrapperFragment
+                    ),
+                  } as any,
                   TimelineEventFragment
                 ) as any, // eslint-disable-line @typescript-eslint/no-explicit-any -- なぜか型があってない
                 makeFragmentData(
                   {
                     __typename: "NicovideoMadRequestedTimelineEvent",
-                    createdAt: "2021-01-01T00:00:00.000Z",
-                    event: {
-                      id: "event:2",
-                      user: {
-                        id: "user:1",
-                        displayName: "User1",
-                        name: "user1",
-                        icon: "/icon.png",
-                      } as any, // eslint-disable-line @typescript-eslint/no-explicit-any -- 面倒なので
-                    },
                     request: {
                       id: "request:2",
                       title: "Title 2",
@@ -65,22 +61,27 @@ const meta = {
                       thumbnailUrl: "/960x540.jpg",
                       originalUrl: "https://www.nicovideo.jp/watch/sm2057168",
                     },
-                  },
+                    ...makeFragmentData(
+                      {
+                        createdAt: "2021-01-01T00:00:00.000Z",
+                        event: {
+                          id: "event:1",
+                          user: {
+                            id: "user:1",
+                            displayName: "User1",
+                            name: "user1",
+                            icon: "/icon.png",
+                          } as any,
+                        },
+                      } as any,
+                      TimelineEventWrapperFragment
+                    ),
+                  } as any,
                   TimelineEventFragment
                 ) as any, // eslint-disable-line @typescript-eslint/no-explicit-any -- なぜか型があってない
                 makeFragmentData(
                   {
                     __typename: "NicovideoMadRequestedTimelineEvent",
-                    createdAt: "2021-01-01T00:00:00.000Z",
-                    event: {
-                      id: "event:3",
-                      user: {
-                        id: "user:1",
-                        displayName: "User1",
-                        name: "user1",
-                        icon: "/icon.png",
-                      } as any, // eslint-disable-line @typescript-eslint/no-explicit-any -- 面倒なので
-                    },
                     request: {
                       id: "request:3",
                       title: "Title 3",
@@ -88,7 +89,22 @@ const meta = {
                       thumbnailUrl: "/960x540.jpg",
                       originalUrl: "https://www.nicovideo.jp/watch/sm2057168",
                     },
-                  },
+                    ...makeFragmentData(
+                      {
+                        createdAt: "2021-01-01T00:00:00.000Z",
+                        event: {
+                          id: "event:1",
+                          user: {
+                            id: "user:1",
+                            displayName: "User1",
+                            name: "user1",
+                            icon: "/icon.png",
+                          } as any,
+                        },
+                      } as any,
+                      TimelineEventWrapperFragment
+                    ),
+                  } as any,
                   TimelineEventFragment
                 ) as any, // eslint-disable-line @typescript-eslint/no-explicit-any -- なぜか型があってない
               ],
@@ -121,39 +137,34 @@ export const LatestNotFulfill: Story = {
                 makeFragmentData(
                   {
                     __typename: "NicovideoMadRequestedTimelineEvent",
-                    createdAt: "2021-01-01T00:00:00.000Z",
-                    event: {
-                      id: "event:1",
-                      user: {
-                        id: "user:1",
-                        displayName: "User1",
-                        name: "user1",
-                        icon: "/icon.png",
-                      } as any, // eslint-disable-line @typescript-eslint/no-explicit-any -- 面倒なので
-                    },
                     request: {
-                      id: "request:2",
-                      title: "Title 2",
+                      id: "request:1",
+                      title: "Title 1",
                       sourceId: "sm2057168",
                       thumbnailUrl: "/960x540.jpg",
                       originalUrl: "https://www.nicovideo.jp/watch/sm2057168",
                     },
-                  },
+                    ...makeFragmentData(
+                      {
+                        createdAt: "2021-01-01T00:00:00.000Z",
+                        event: {
+                          id: "event:1",
+                          user: {
+                            id: "user:1",
+                            displayName: "User1",
+                            name: "user1",
+                            icon: "/icon.png",
+                          } as any,
+                        },
+                      } as any,
+                      TimelineEventWrapperFragment
+                    ),
+                  } as any,
                   TimelineEventFragment
                 ) as any, // eslint-disable-line @typescript-eslint/no-explicit-any -- なぜか型があってない
                 makeFragmentData(
                   {
                     __typename: "NicovideoMadRequestedTimelineEvent",
-                    createdAt: "2021-01-01T00:00:00.000Z",
-                    event: {
-                      id: "event:2",
-                      user: {
-                        id: "user:1",
-                        displayName: "User1",
-                        name: "user1",
-                        icon: "/icon.png",
-                      } as any, // eslint-disable-line @typescript-eslint/no-explicit-any -- 面倒なので
-                    },
                     request: {
                       id: "request:2",
                       title: "Title 2",
@@ -161,7 +172,22 @@ export const LatestNotFulfill: Story = {
                       thumbnailUrl: "/960x540.jpg",
                       originalUrl: "https://www.nicovideo.jp/watch/sm2057168",
                     },
-                  },
+                    ...makeFragmentData(
+                      {
+                        createdAt: "2021-01-01T00:00:00.000Z",
+                        event: {
+                          id: "event:1",
+                          user: {
+                            id: "user:1",
+                            displayName: "User1",
+                            name: "user1",
+                            icon: "/icon.png",
+                          } as any,
+                        },
+                      } as any,
+                      TimelineEventWrapperFragment
+                    ),
+                  } as any,
                   TimelineEventFragment
                 ) as any, // eslint-disable-line @typescript-eslint/no-explicit-any -- なぜか型があってない
               ],
