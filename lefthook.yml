@@ -2,9 +2,9 @@ pre-push:
   parallel: true
   commands:
     typecheck:
-      run: pnpm run typecheck
-    packages-audit:
-      run: pnpm audit
+      run: |
+        pnpm run codegen
+        pnpm run typecheck
 
 pre-commit:
   parallel: true
