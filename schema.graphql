@@ -286,6 +286,17 @@ type BilibiliRegistrationRequestTagging implements Node & RegistrationRequestTag
   tag: Tag!
 }
 
+input CalcMadCountGrowthInput {
+  """終了日時"""
+  end: DateTime!
+
+  """何分割するか"""
+  split: Int!
+
+  """開始日時"""
+  start: DateTime!
+}
+
 input ChangeMylistShareRangeInput {
   mylistId: ID!
   range: MylistShareRange!
@@ -1920,6 +1931,13 @@ type SoundcloudMADSourceEventEdge {
 
 input SoundcloudMADSourceEventsOrderBy {
   createdAt: SortOrder
+}
+
+"""SoundCloudの音MADがリクエストされたことを表すタイムラインイベント"""
+type SoundcloudMadRequestedTimelineEvent implements TimelineEvent {
+  createdAt: DateTime!
+  event: SoundcloudRegistrationRequestRequestEvent!
+  request: SoundcloudRegistrationRequest!
 }
 
 type SoundcloudOriginalSource {

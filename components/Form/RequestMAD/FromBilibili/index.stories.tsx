@@ -2,18 +2,16 @@ import { action } from "@storybook/addon-actions";
 import { Meta, StoryObj } from "@storybook/react";
 import { graphql as mswGql } from "msw";
 
-import { Fragment as VideoLinkFragment } from "~/app/mads/[serial]/Link";
-import { Fragment as CommonTagFragment } from "~/components/CommonTag";
+import { MadPageLinkFragment } from "~/app/(v2)/mads/[serial]/Link";
+import { CommonTagFragment } from "~/components/CommonTag";
 import { Fragment as AlreadyRegisteredFragment } from "~/components/Form/AlreadyRegistered";
-import { Fragment as SourceFragment } from "~/components/Form/RegisterMAD/FromSoundcloud/OriginalSource";
-import { Query as TagSearcherQuery } from "~/components/TagSearcher2";
-import { Fragment as TagSearcherSuggestItemFragment } from "~/components/TagSearcher2/SuggestItem";
-import { Fragment as TagSearcherSuggestsFragment } from "~/components/TagSearcher2/Suggests";
+import { Fragment as SourceFragment } from "~/components/Form/RegisterMAD/FromBilibili/OriginalSource";
+import { Query as TagSearcherQuery } from "~/components/TagSearcher";
+import { SuggestItemFragment as TagSearcherSuggestItemFragment } from "~/components/TagSearcher/SuggestItem";
+import { SuggestsFragment as TagSearcherSuggestsFragment } from "~/components/TagSearcher/Suggests";
 import { Fragment as VideoThumbnailFragment } from "~/components/VideoThumbnail";
 import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
-import { MockedAuth0Provider } from "~/utils/MockedAuth0Provider";
-import { MockedUrqlProvider } from "~/utils/MockedUrqlProvider";
 
 import RequestForm, { Query } from ".";
 
@@ -24,17 +22,8 @@ const meta = {
       width: 640,
       height: 720,
     },
-    url: "sm",
+    sourceId: "sm",
     handleCancel: action("cancel"),
-  },
-  render(args) {
-    return (
-      <MockedAuth0Provider>
-        <MockedUrqlProvider>
-          <RequestForm {...args} />
-        </MockedUrqlProvider>
-      </MockedAuth0Provider>
-    );
   },
   parameters: {
     msw: {
@@ -110,7 +99,7 @@ export const 既に登録済み: Story = {
           mswGql.query(Query, (req, res, ctx) =>
             res(
               ctx.data({
-                findSoundcloudMADSource: {
+                findBilibiliMADSource: {
                   id: "source:1",
                   ...makeFragmentData(
                     {
@@ -119,7 +108,7 @@ export const 既に登録済み: Story = {
                       video: {
                         id: "video:1",
                         title: "Title 1",
-                        ...makeFragmentData({ serial: 1 }, VideoLinkFragment),
+                        ...makeFragmentData({ serial: 1 }, MadPageLinkFragment),
                         ...makeFragmentData(
                           {
                             title: "Title 1",
@@ -132,8 +121,8 @@ export const 既に登録済み: Story = {
                     AlreadyRegisteredFragment
                   ),
                 } as never,
-                findSoundcloudRegistrationRequestByUrl: null,
-                fetchSoundcloud: { source: null },
+                findBilibiliRegistrationRequestBySourceId: null,
+                fetchBilibili: { source: null },
               })
             )
           ),
@@ -152,12 +141,12 @@ export const 既にリクエスト済み: Story = {
           mswGql.query(Query, (req, res, ctx) =>
             res(
               ctx.data({
-                findSoundcloudRegistrationRequestByUrl: {
+                findBilibiliRegistrationRequestBySourceId: {
                   id: "reqreq:1",
                   sourceId: "sm2057168",
                 },
-                findSoundcloudMADSource: null,
-                fetchSoundcloud: { source: null },
+                findBilibiliMADSource: null,
+                fetchBilibili: { source: null },
               })
             )
           ),
@@ -176,9 +165,9 @@ export const 動画が存在しない: Story = {
           mswGql.query(Query, (req, res, ctx) =>
             res(
               ctx.data({
-                fetchSoundcloud: { source: null },
-                findSoundcloudRegistrationRequestByUrl: null,
-                findSoundcloudMADSource: null,
+                fetchBilibili: { source: null },
+                findBilibiliRegistrationRequestBySourceId: null,
+                findBilibiliMADSource: null,
               })
             )
           ),
@@ -197,11 +186,10 @@ export const 登録可能: Story = {
           mswGql.query(Query, (req, res, ctx) =>
             res(
               ctx.data({
-                findSoundcloudRegistrationRequestByUrl: null,
-                findSoundcloudMADSource: null,
-                fetchSoundcloud: {
+                findBilibiliRegistrationRequestBySourceId: null,
+                findBilibiliMADSource: null,
+                fetchBilibili: {
                   source: {
-                    sourceId: "1408289521",
                     thumbnailUrl: "/960x540.jpg",
                     ...makeFragmentData(
                       {

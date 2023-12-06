@@ -10,43 +10,42 @@ import {
 } from "react";
 import { useQuery } from "urql";
 
-import { LinkVideo } from "~/app/mads/[serial]/Link";
+import { MadPageLink } from "~/app/(v2)/mads/[serial]/Link";
+import BilibiliRequestPageLink, {
+  BilibiliRequestLink,
+} from "~/app/(v2)/requests/bilibili/[sourceId]/Link";
 import Button from "~/components/Button";
 import AlreadyRegistered from "~/components/Form/AlreadyRegistered";
 import AlreadyRequested from "~/components/Form/AlreadyRequested";
-import OriginalSource from "~/components/Form/RegisterMAD/FromSoundcloud/OriginalSource";
+import OriginalSource from "~/components/Form/RegisterMAD/FromBilibili/OriginalSource";
 import { SemitagButton } from "~/components/Form/SemitagButton";
 import SourceNotExists from "~/components/Form/SourceNotExists";
 import {
   Fragment as TagButtonFragment,
   TagButton,
 } from "~/components/Form/TagButton";
-import TagSearcher from "~/components/TagSearcher2";
+import TagSearcher from "~/components/TagSearcher";
 import { TextInput2 } from "~/components/TextInput";
-import { useToaster } from "~/components/Toaster";
+import useToaster from "~/components/Toaster/useToaster";
 import { FragmentType, graphql } from "~/gql";
 
-import { SucceededToast } from "./SucceededToast";
-import useRequestFromSoundcloud from "./useRequestFromSoundcloud";
+import useRequestFromBilibili from "./useRequestFromBilibili";
 
 export const Query = graphql(`
-  query RequestMADFromSoundcloudForm_Check($url: String!) {
-    findSoundcloudMADSource(input: { url: $url }) {
+  query RequestMADFromBilibiliForm_Check($sourceId: String!) {
+    findBilibiliMADSource(input: { sourceId: $sourceId }) {
       id
       ...Form_VideoAlreadyRegistered
     }
-    findSoundcloudRegistrationRequestByUrl(url: $url) {
+    findBilibiliRegistrationRequestBySourceId(sourceId: $sourceId) {
       id
       sourceId
       ...Form_VideoAlreadyRequested
-      ...SoundcloudRequestPageLink
     }
-    fetchSoundcloud(input: { url: $url }) {
+    fetchBilibili(input: { bvid: $sourceId }) {
       source {
-        ...RegisterFromSoundcloudForm_OriginalSource
+        ...RegisterFromBilibiliForm_OriginalSource
         thumbnailUrl(scale: LARGE)
-        sourceId
-        originalThumbnailUrl
       }
     }
   }
@@ -54,19 +53,19 @@ export const Query = graphql(`
 export default function RequestForm({
   className,
   style,
-  url,
+  sourceId,
   handleSuccess,
   handleCancel,
 }: {
   className?: string;
   style?: CSSProperties;
-  url: string;
+  sourceId: string;
   handleSuccess?(): void;
   handleCancel(): void;
 }) {
   const [{ data, fetching }] = useQuery({
     query: Query,
-    variables: { url },
+    variables: { sourceId },
     requestPolicy: "cache-and-network",
   });
 
@@ -95,7 +94,7 @@ export default function RequestForm({
     },
     []
   );
-
+  const tagIds = useMemo(() => taggings.map(({ id }) => id), [taggings]);
   const [semitaggings, dispatchSemitags] = useReducer(
     (
       prev: { name: string }[],
@@ -121,16 +120,26 @@ export default function RequestForm({
   );
 
   const callToast = useToaster();
-  const requestVideo = useRequestFromSoundcloud({
+  const requestVideo = useRequestFromBilibili({
     onSuccess(data) {
-      callToast(<SucceededToast fragment={data} />);
+      callToast(
+        <>
+          <BilibiliRequestPageLink
+            className={clsx(["font-bold"], ["text-blue-400"])}
+            fragment={data.request}
+          >
+            {data.request.title}
+          </BilibiliRequestPageLink>
+          <span className={clsx(["text-slate-700"])}>をリクエストしました</span>
+        </>
+      );
       if (handleSuccess) handleSuccess();
     },
     onAlready({ source: { sourceId, video } }) {
       callToast(
         <p>
           <span>{sourceId}</span>は受理されて
-          <LinkVideo fragment={video}>既に登録されています。</LinkVideo>
+          <MadPageLink fragment={video}>既に登録されています。</MadPageLink>
         </p>
       );
     },
@@ -142,17 +151,16 @@ export default function RequestForm({
   const [tab, setTab] = useState<"SOURCE">("SOURCE");
 
   const payload = useMemo(() => {
-    if (!data || !data.fetchSoundcloud.source) return null;
+    if (!data || !data.fetchBilibili.source) return null;
 
     return {
-      sourceId: data.fetchSoundcloud.source.sourceId,
+      sourceId,
       title,
       taggings: taggings.map(({ id }) => ({ tagId: id, note: null })),
       semitaggings: semitaggings.map(({ name }) => ({ name, note: null })),
-      originalThumbnailUrl:
-        data.fetchSoundcloud.source.originalThumbnailUrl || null,
+      thumbnailUrl: data.fetchBilibili.source.thumbnailUrl,
     } satisfies Parameters<typeof requestVideo>[0];
-  }, [data, title, taggings, semitaggings]);
+  }, [data, semitaggings, sourceId, taggings, title]);
   const handleSubmit = useCallback(() => {
     if (!payload) return;
     requestVideo(payload);
@@ -162,7 +170,7 @@ export default function RequestForm({
     <div
       className={clsx(
         className,
-        ["flex-grow"],
+        ["grow"],
         [["px-4"], ["py-4"]],
         ["flex", "flex-col", "gap-y-4"]
       )}
@@ -170,20 +178,18 @@ export default function RequestForm({
     >
       {fetching || !data ? (
         <div className={clsx(["text-slate-400"])}>Loading</div>
-      ) : data.findSoundcloudMADSource ? (
+      ) : data.findBilibiliMADSource ? (
         <AlreadyRegistered
-          fragment={data.findSoundcloudMADSource}
+          fragment={data.findBilibiliMADSource}
           handleCancel={handleCancel}
         />
-      ) : data.findSoundcloudRegistrationRequestByUrl ? (
+      ) : data.findBilibiliRegistrationRequestBySourceId ? (
         <AlreadyRequested
-          fragment={data.findSoundcloudRegistrationRequestByUrl}
-          RequestPageLink={
-            ({ sourceId, ...props }) => <span /> // TODO: そのうち直す
-          }
+          fragment={data.findBilibiliRegistrationRequestBySourceId}
+          RequestPageLink={(props) => <BilibiliRequestLink {...props} />}
           handleCancel={handleCancel}
         />
-      ) : !data.fetchSoundcloud.source ? (
+      ) : !data.fetchBilibili.source ? (
         <SourceNotExists handleCancel={handleCancel} />
       ) : (
         <form
@@ -194,7 +200,7 @@ export default function RequestForm({
           }}
         >
           <div className={clsx(["flex", "flex-col", "gap-y-4"])}>
-            <div className={clsx(["flex-shrink-0"], ["w-full"])}>
+            <div className={clsx(["shrink-0"], ["w-full"])}>
               <label className={clsx(["flex", "flex-col", "gap-y-1"])}>
                 <div
                   className={clsx(["text-xs", "font-bold", "text-slate-400"])}
@@ -214,7 +220,7 @@ export default function RequestForm({
                 <div
                   className={clsx(
                     ["py-0.5"],
-                    ["flex-shrink-0"],
+                    ["shrink-0"],
                     ["text-xs", "font-bold", "text-slate-400"]
                   )}
                 >
@@ -224,7 +230,7 @@ export default function RequestForm({
                   <div
                     className={clsx(
                       ["self-center"],
-                      ["flex-shrink-0"],
+                      ["shrink-0"],
                       ["text-xs", "text-slate-400"]
                     )}
                   >
@@ -259,7 +265,7 @@ export default function RequestForm({
                 <div
                   className={clsx(
                     ["py-0.5"],
-                    ["flex-shrink-0"],
+                    ["shrink-0"],
                     ["text-xs", "font-bold", "text-slate-400"]
                   )}
                 >
@@ -269,7 +275,7 @@ export default function RequestForm({
                   <div
                     className={clsx(
                       ["self-center"],
-                      ["flex-shrink-0"],
+                      ["shrink-0"],
                       ["text-xs", "text-slate-400"]
                     )}
                   >
@@ -301,7 +307,7 @@ export default function RequestForm({
                   </div>
                 )}
               </div>
-              <div className={clsx(["mt-auto"], ["flex-shrink-0"])}>
+              <div className={clsx(["mt-auto"], ["shrink-0"])}>
                 <TagSearcher
                   limit={5}
                   size="small"
@@ -323,7 +329,7 @@ export default function RequestForm({
                       </div>
                       <div
                         className={clsx(
-                          ["flex-shrink-0"],
+                          ["shrink-0"],
                           ["text-sm"],
                           ["text-slate-500"]
                         )}
@@ -380,18 +386,29 @@ export default function RequestForm({
               </div>
             </div>
             <div className={clsx({ hidden: tab !== "SOURCE" })}>
-              {data.fetchSoundcloud.source && (
-                <OriginalSource fragment={data.fetchSoundcloud.source} />
+              {data.fetchBilibili.source && (
+                <OriginalSource
+                  fragment={data.fetchBilibili.source}
+                  selectingTagId={tagIds}
+                  appendTag={({ tagId, fragment }) => {
+                    dispatchTags({ type: "append", tagId, fragment });
+                  }}
+                  removeTag={(tagId) => {
+                    dispatchTags({ type: "remove", tagId });
+                  }}
+                  selectingSemitagNames={semitaggingNames}
+                  appendSemitag={(name) => {
+                    dispatchSemitags({ type: "append", name });
+                  }}
+                  removeSemitag={(name) => {
+                    dispatchSemitags({ type: "remove", name });
+                  }}
+                />
               )}
             </div>
           </div>
           <div
-            className={clsx(
-              ["flex"],
-              ["mt-auto"],
-              ["flex-shrink-0"],
-              ["w-full"]
-            )}
+            className={clsx(["flex"], ["mt-auto"], ["shrink-0"], ["w-full"])}
           >
             <Button submit text="リクエストする" size="medium" color="blue" />
             <Button

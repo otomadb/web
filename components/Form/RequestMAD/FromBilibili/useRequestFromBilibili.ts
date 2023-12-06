@@ -5,12 +5,12 @@ import { useMutation } from "urql";
 import { graphql } from "~/gql";
 
 export const Mutation = graphql(`
-  mutation RequestMADFromYoutubeForm_Request(
-    $input: RequestYoutubeRegistrationInput!
+  mutation BilibiliRequestForm_Request(
+    $input: RequestBilibiliRegistrationInput!
   ) {
-    requestYoutubeRegistration(input: $input) {
+    requestBilibiliRegistration(input: $input) {
       __typename
-      ... on RequestYoutubeRegistrationVideoAlreadyRegisteredError {
+      ... on RequestBilibiliRegistrationVideoAlreadyRegisteredError {
         source {
           id
           sourceId
@@ -20,8 +20,11 @@ export const Mutation = graphql(`
           }
         }
       }
-      ... on RequestYoutubeRegistrationSucceededPayload {
-        ...RequestMADFromYoutubeForm_SucceededToast
+      ... on RequestBilibiliRegistrationSucceededPayload {
+        request {
+          title
+          ...BilibiliRequestPageLink
+        }
       }
     }
   }
@@ -33,14 +36,14 @@ const useRequestFromYoutube = ({
 }: {
   onSuccess(
     data: Extract<
-      ResultOf<typeof Mutation>["requestYoutubeRegistration"],
-      { __typename: "RequestYoutubeRegistrationSucceededPayload" }
+      ResultOf<typeof Mutation>["requestBilibiliRegistration"],
+      { __typename: "RequestBilibiliRegistrationSucceededPayload" }
     >
   ): void;
   onAlready(
     data: Extract<
-      ResultOf<typeof Mutation>["requestYoutubeRegistration"],
-      { __typename: "RequestYoutubeRegistrationVideoAlreadyRegisteredError" }
+      ResultOf<typeof Mutation>["requestBilibiliRegistration"],
+      { __typename: "RequestBilibiliRegistrationVideoAlreadyRegisteredError" }
     >
   ): void;
   onFailure(): void;
@@ -69,12 +72,12 @@ const useRequestFromYoutube = ({
         return;
       }
 
-      switch (data.requestYoutubeRegistration.__typename) {
-        case "RequestYoutubeRegistrationSucceededPayload":
-          onSuccess(data.requestYoutubeRegistration);
+      switch (data.requestBilibiliRegistration.__typename) {
+        case "RequestBilibiliRegistrationSucceededPayload":
+          onSuccess(data.requestBilibiliRegistration);
           break;
-        case "RequestYoutubeRegistrationVideoAlreadyRegisteredError":
-          onAlready(data.requestYoutubeRegistration);
+        case "RequestBilibiliRegistrationVideoAlreadyRegisteredError":
+          onAlready(data.requestBilibiliRegistration);
           break;
         case "MutationInvalidTagIdError":
         case "MutationTagNotFoundError":
