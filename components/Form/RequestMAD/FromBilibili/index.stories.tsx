@@ -190,7 +190,8 @@ export const 登録可能: Story = {
                 findBilibiliMADSource: null,
                 fetchBilibili: {
                   source: {
-                    thumbnailUrl: "/960x540.jpg",
+                    title: "Title",
+                    originalThumbnailUrl: "/960x540.jpg",
                     ...makeFragmentData(
                       {
                         title: "Title",
