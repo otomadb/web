@@ -1,7 +1,6 @@
 "use client";
 
 import clsx from "clsx";
-import { useState } from "react";
 
 import { MadPageLink } from "~/app/(v2)/mads/[serial]/Link";
 import CommonTagLink from "~/components/CommonTagLink";
@@ -39,13 +38,9 @@ export default function CommonMadBlock({
   likeable?: FragmentType<typeof LikeSwitchFragment>;
 }) {
   const fragment = useFragment(CommonMadBlockFragment, props.fragment);
-  const [activate, setActivate] = useState(false);
 
   return (
     <div
-      onMouseOver={() => {
-        setActivate(true);
-      }}
       style={style}
       className={clsx(
         classNames,
@@ -62,7 +57,6 @@ export default function CommonMadBlock({
         </MadPageLink>
         {likeable && (
           <LikeSwitch
-            activate={activate}
             fragment={likeable}
             className={clsx(
               "absolute bottom-2 right-2 z-1 opacity-0 transition-opacity duration-75 group-hover/thumbnail:opacity-100"

@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
 import { graphql } from "~/gql";
-import { makeGraphQLClient } from "~/gql/fetch";
+import { makeGraphQLClient2 } from "~/gql/fetch";
 
 import { LinkVideoEvents } from "./events/Link";
 import LikeButton from "./LikeButton";
@@ -19,7 +19,9 @@ export default async function Layout({
   children: React.ReactNode;
   params: { serial: string };
 }) {
-  const data = await makeGraphQLClient().request(
+  const data = await (
+    await makeGraphQLClient2({ auth: "optional" })
+  ).request(
     graphql(`
       query MadPageLayout($serial: Int!) {
         findMadBySerial(serial: $serial) {

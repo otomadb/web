@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import CommonMadBlock from "~/components/CommonMadBlock";
 import Paginator from "~/components/Paginator";
 import { graphql } from "~/gql";
-import { makeGraphQLClient } from "~/gql/fetch";
+import { makeGraphQLClient2 } from "~/gql/fetch";
 
 export async function generateMetadata({
   searchParams,
@@ -31,7 +31,9 @@ export default async function Page({
   const page = searchParams.page ? parseInt(searchParams.page, 10) : 1;
   if (page < 1) notFound();
 
-  const result = await makeGraphQLClient().request(
+  const result = await (
+    await makeGraphQLClient2({ auth: "optional" })
+  ).request(
     graphql(`
       query MadsPage($offset: Int!) {
         findMadsByOffset(input: { offset: $offset, take: 24 }) {
