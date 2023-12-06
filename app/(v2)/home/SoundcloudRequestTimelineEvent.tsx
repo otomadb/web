@@ -1,20 +1,20 @@
 import clsx from "clsx";
 
 import { CoolImage2 } from "~/components/CoolImage";
-import { useOpenRegisterFromNicovideo } from "~/components/FormModal";
+import { useOpenSoundcloudRegisterModal } from "~/components/FormModal";
 import {
   ExternalLinkPictogram,
-  NicovideoPictogram,
   PlusPictogram,
+  SoundcloudPictogram,
 } from "~/components/Pictogram";
 import useHasRole from "~/components/useHasRole";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-import { NicovideoRegistrationRequestLink } from "../requests/nicovideo/[sourceId]/Link";
+import SoundcloudRequestPageLink from "../requests/soundcloud/[sourceId]/Link";
 import { TimelineEventWrapper } from "./TimelineEventWrapper";
 
-export const NicovideoRequestTimelineEventFragment = graphql(`
-  fragment MyTopPage_TimelineSegment_NicovideoRequestiTimelineEvent on NicovideoMadRequestedTimelineEvent {
+export const SoundcloudRequestTimelineEventFragment = graphql(`
+  fragment MyTopPage_TimelineSegment_SoundcloudRequestiTimelineEvent on SoundcloudMadRequestedTimelineEvent {
     ...MyTopPage_TimelineSegment_TimelineEventWrapper
     request {
       id
@@ -22,25 +22,25 @@ export const NicovideoRequestTimelineEventFragment = graphql(`
       sourceId
       originalUrl
       thumbnailUrl
-      ...Link_NicovideoRegistrationRequest
+      ...SoundcloudRequestPageLink
     }
   }
 `);
-export default function NicovideoRequestTimelineEvent({
+export default function SoundcloudRequestTimelineEvent({
   className,
   style,
   ...props
 }: {
   className?: string;
   style?: React.CSSProperties;
-  fragment: FragmentType<typeof NicovideoRequestTimelineEventFragment>;
+  fragment: FragmentType<typeof SoundcloudRequestTimelineEventFragment>;
 }) {
   const fragment = useFragment(
-    NicovideoRequestTimelineEventFragment,
+    SoundcloudRequestTimelineEventFragment,
     props.fragment
   );
   const registarable = useHasRole();
-  const openRegisterYoutubeForm = useOpenRegisterFromNicovideo();
+  const openRegisterSoundcloudForm = useOpenSoundcloudRegisterModal();
 
   return (
     <TimelineEventWrapper
@@ -48,16 +48,16 @@ export default function NicovideoRequestTimelineEvent({
       style={style}
       className={className}
       Icon={({ className, ...props }) => (
-        <NicovideoPictogram
+        <SoundcloudPictogram
           {...props}
           className={clsx(
             className,
-            "border-nicovideo-primary bg-nicovideo-primary/75 text-black/75"
+            "border-soundcloud-primary bg-soundcloud-primary/75 text-white/75"
           )}
         />
       )}
       Title={({ ...props }) => (
-        <span {...props}>ニコニコ動画からリクエストしました！</span>
+        <span {...props}>SoundCloudからリクエストしました！</span>
       )}
       Main={({ className }) => (
         <div
@@ -66,7 +66,7 @@ export default function NicovideoRequestTimelineEvent({
             "flex w-64 grow flex-col gap-x-4 rounded border border-obsidian-lighter bg-obsidian-primary"
           )}
         >
-          <NicovideoRegistrationRequestLink
+          <SoundcloudRequestPageLink
             className={clsx("block w-full shrink-0")}
             fragment={fragment.request}
           >
@@ -77,17 +77,17 @@ export default function NicovideoRequestTimelineEvent({
               alt={fragment.request.title}
               src={fragment.request.thumbnailUrl}
             />
-          </NicovideoRegistrationRequestLink>
+          </SoundcloudRequestPageLink>
           <div className={clsx("grow p-2")}>
             <p className={clsx("text-sm text-snow-primary")}>
-              <NicovideoRegistrationRequestLink
+              <SoundcloudRequestPageLink
                 fragment={fragment.request}
                 className={clsx(
                   "font-bold text-snow-primary hover:text-vivid-primary hover:underline"
                 )}
               >
                 {fragment.request.title}
-              </NicovideoRegistrationRequestLink>
+              </SoundcloudRequestPageLink>
             </p>
           </div>
         </div>
@@ -120,9 +120,11 @@ export default function NicovideoRequestTimelineEvent({
               "text-snow-darkest hover:text-vivid-primary disabled:text-obsidian-lighter"
             )}
             disabled={!registarable}
-            onClick={() => openRegisterYoutubeForm(fragment.request.sourceId)}
+            onClick={() =>
+              openRegisterSoundcloudForm(fragment.request.sourceId)
+            }
           >
-            <PlusPictogram className={clsx("h-full w-full")} />
+            <PlusPictogram className={clsx("h-6 w-6")} />
           </button>
         ),
       ]}

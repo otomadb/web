@@ -4,13 +4,13 @@ import { graphql as mswGql } from "msw";
 import { $UseHarRoleQuery } from "~/components/useHasRole";
 import { makeFragmentData } from "~/gql";
 
+import SoundcloudRequestTimelineEvent, {
+  SoundcloudRequestTimelineEventFragment,
+} from "./SoundcloudRequestTimelineEvent";
 import { TimelineEventWrapperFragment } from "./TimelineEventWrapper";
-import YoutubeRequestTimelineEvent, {
-  YoutubeRequestTimelineEventFragment,
-} from "./YoutubeRequestTimelineEvent";
 
 const meta = {
-  component: YoutubeRequestTimelineEvent,
+  component: SoundcloudRequestTimelineEvent,
   excludeStories: /^\$mock/,
   args: {
     style: { width: 720 },
@@ -19,9 +19,9 @@ const meta = {
         request: {
           id: "request:1",
           title: "Title 1",
-          sourceId: "Q16KpquGsIc",
+          sourceId: "keigoooo/hyperflip-donaldcore",
           thumbnailUrl: "/960x540.jpg",
-          originalUrl: "https://www.youtube.com/watch?v=Q16KpquGsIc",
+          originalUrl: "https://soundcloud.com/keigoooo/hyperflip-donaldcore",
         },
         ...makeFragmentData(
           {
@@ -35,14 +35,14 @@ const meta = {
                 icon: "/icon.png",
               } as any,
             },
-          } as any,
+          },
           TimelineEventWrapperFragment
         ),
       } as any,
-      YoutubeRequestTimelineEventFragment
+      SoundcloudRequestTimelineEventFragment
     ),
   },
-} as Meta<typeof YoutubeRequestTimelineEvent>;
+} as Meta<typeof SoundcloudRequestTimelineEvent>;
 export default meta;
 
 type Story = StoryObj<typeof meta>;

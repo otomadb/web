@@ -4,6 +4,7 @@ import CommonMadBlock from "~/components/CommonMadBlock";
 import {
   BilibiliPictogram,
   NicovideoPictogram,
+  PlusPictogram,
   SoundcloudPictogram,
   YoutubePictogram,
 } from "~/components/Pictogram";
@@ -57,6 +58,15 @@ export const MadRegisteredTimelineEvent = ({
       style={style}
       className={className}
       Title={({ ...props }) => <span {...props}>音MADを登録しました！</span>}
+      Icon={({ className, ...props }) => (
+        <PlusPictogram
+          {...props}
+          className={clsx(
+            className,
+            "border-vivid-primary bg-vivid-primary/75 text-obsidian-primary"
+          )}
+        />
+      )}
       Main={({ className }) => (
         <CommonMadBlock
           fragment={video}

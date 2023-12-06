@@ -1,13 +1,13 @@
 import clsx from "clsx";
 
 import DateTime2 from "~/components/DateTime2";
+import { PictogramType } from "~/components/Pictogram";
 import UserDisplayNameLink from "~/components/UserLink/UserDisplayNameLink";
 import UserIconLink from "~/components/UserLink/UserIconLink";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const TimelineEventWrapperFragment = graphql(`
   fragment MyTopPage_TimelineSegment_TimelineEventWrapper on TimelineEvent {
-    __typename
     createdAt
     event {
       id
@@ -25,12 +25,14 @@ export const TimelineEventWrapper = ({
   Title,
   Main,
   Details,
+  Icon,
   Widgets,
   ...props
 }: {
   className?: string;
   style?: React.CSSProperties;
   fragment: FragmentType<typeof TimelineEventWrapperFragment>;
+  Icon: PictogramType;
   Title: React.FC<{ className?: string }>;
   Main: React.FC<{ className?: string }>;
   Details: {
@@ -50,18 +52,21 @@ export const TimelineEventWrapper = ({
       )}
       style={style}
     >
-      <div className={clsx("flex")}>
-        <div className={clsx("flex grow items-center gap-x-2")}>
-          <UserIconLink fragment={event.user} size="small" />
-          <p className={clsx("text-sm font-bold text-snow-primary")}>
-            <Title />
-          </p>
-        </div>
-        <div className={clsx("shrink-0")}>
-          <DateTime2
-            date={createdAt}
-            className={clsx("font-mono text-xs text-snow-darkest")}
-          />
+      <div className={clsx("flex items-center")}>
+        <Icon className={clsx("h-8 w-8 rounded border p-1")} />
+        <div className={clsx("flex grow items-center")}>
+          <div className={clsx("ml-4 flex grow items-center gap-x-2")}>
+            <UserIconLink fragment={event.user} size="small" />
+            <p className={clsx("text-sm font-bold text-snow-primary")}>
+              <Title />
+            </p>
+          </div>
+          <div className={clsx("shrink-0")}>
+            <DateTime2
+              date={createdAt}
+              className={clsx("font-mono text-xs text-snow-darkest")}
+            />
+          </div>
         </div>
       </div>
       <div className={clsx("flex gap-x-4")}>

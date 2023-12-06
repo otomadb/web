@@ -2,7 +2,11 @@ import clsx from "clsx";
 
 import { CoolImage2 } from "~/components/CoolImage";
 import { useOpenRegisterFromYoutube } from "~/components/FormModal";
-import { ExternalLinkPictogram, PlusPictogram } from "~/components/Pictogram";
+import {
+  ExternalLinkPictogram,
+  PlusPictogram,
+  YoutubePictogram,
+} from "~/components/Pictogram";
 import useHasRole from "~/components/useHasRole";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
@@ -46,43 +50,45 @@ export default function YoutubeRequestTimelineEvent({
       Title={({ ...props }) => (
         <span {...props}>Youtubeからリクエストしました！</span>
       )}
+      Icon={({ className, ...props }) => (
+        <YoutubePictogram
+          {...props}
+          className={clsx(
+            className,
+            "border-youtube-primary bg-youtube-primary/75 text-white/75"
+          )}
+        />
+      )}
       Main={({ className }) => (
-        <div className={clsx(className, "flex grow gap-x-4")}>
+        <div
+          className={clsx(
+            className,
+            "flex w-64 grow flex-col gap-x-4 rounded border border-obsidian-lighter bg-obsidian-primary"
+          )}
+        >
           <YoutubeRequestPageLink
-            className={clsx("block shrink-0")}
+            className={clsx("block w-full shrink-0")}
             fragment={fragment.request}
           >
             <CoolImage2
-              className={clsx("h-24 w-36")}
+              className={clsx("h-32 w-full")}
               width={144}
               height={96}
               alt={fragment.request.title}
               src={fragment.request.thumbnailUrl}
             />
           </YoutubeRequestPageLink>
-          <div className={clsx("grow py-2")}>
+          <div className={clsx("grow p-2")}>
             <p className={clsx("text-sm text-snow-primary")}>
               <YoutubeRequestPageLink
                 fragment={fragment.request}
-                className={clsx("font-bold text-vivid-primary hover:underline")}
+                className={clsx(
+                  "font-bold text-snow-primary hover:text-vivid-primary hover:underline"
+                )}
               >
                 {fragment.request.title}
               </YoutubeRequestPageLink>
-              がリクエストされました。
             </p>
-            <div className={clsx("mt-2 flex gap-x-1")}>
-              <a
-                className={clsx(
-                  "inline-flex cursor-pointer items-center gap-x-1 font-mono text-sm text-snow-darker"
-                )}
-                href={fragment.request.originalUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <ExternalLinkPictogram className={clsx("h-4")} />
-                <span>{fragment.request.sourceId}</span>
-              </a>
-            </div>
           </div>
         </div>
       )}
