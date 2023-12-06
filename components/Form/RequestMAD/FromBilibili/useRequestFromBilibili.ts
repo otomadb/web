@@ -29,7 +29,7 @@ export const Mutation = graphql(`
     }
   }
 `);
-const useRequestFromYoutube = ({
+const useRequestFromBilibili = ({
   onSuccess,
   onFailure,
   onAlready,
@@ -89,4 +89,4 @@ const useRequestFromYoutube = ({
     [onAlready, onFailure, onSuccess, register]
   );
 };
-export default useRequestFromYoutube;
+export default useRequestFromBilibili;
