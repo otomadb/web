@@ -57,11 +57,11 @@ export default function OriginalSource({
   );
 
   return (
-    <div className={clsx(className, ["flex flex-col gap-y-2"])}>
-      <div className={clsx(["flex gap-x-4"])}>
-        <div className={clsx(["flex shrink-0 flex-col gap-y-4"])}>
+    <div className={clsx(className, "flex flex-col gap-y-2")}>
+      <div className={clsx("flex gap-x-4")}>
+        <div className={clsx("flex shrink-0 flex-col gap-y-4")}>
           <CoolImage
-            className={clsx(["h-[64px] w-[96px]"])}
+            className={clsx("h-[64px] w-[96px]")}
             src={fragment.thumbnailUrl}
             width={96}
             height={64}
@@ -69,11 +69,11 @@ export default function OriginalSource({
             unoptimized={true}
           />
         </div>
-        <div className={clsx(["flex grow flex-col py-2"])}>
-          <div className={clsx(["text-sm font-bold text-slate-300"])}>
+        <div className={clsx("flex grow flex-col py-2")}>
+          <div className={clsx("text-sm font-bold text-slate-300")}>
             {fragment.title}
           </div>
-          <div className={clsx(["mt-auto flex gap-x-2"])}>
+          <div className={clsx("mt-auto flex gap-x-2")}>
             <a
               href={fragment.url}
               target="_blank"
@@ -82,28 +82,28 @@ export default function OriginalSource({
                 ["text-slate-400 hover:text-sky-400"]
               )}
             >
-              <ExternalLinkPictogram className={clsx(["h-4 w-4"])} />
-              <span className={clsx(["font-mono text-sm"])}>
+              <ExternalLinkPictogram className={clsx("h-4 w-4")} />
+              <span className={clsx("font-mono text-sm")}>
                 {fragment.sourceId}
               </span>
             </a>
           </div>
         </div>
       </div>
-      <div className={clsx(["grid grid-cols-2 gap-2"])}>
+      <div className={clsx("grid grid-cols-2 gap-2")}>
         {fragment.tags.map((originalTag) => (
           <div
             key={originalTag.name}
-            className={clsx(["flex flex-col items-start gap-y-1"])}
+            className={clsx("flex flex-col items-start gap-y-1")}
           >
             <div
               role="button"
-              className={clsx([
+              className={clsx(
                 "text-xs",
                 "text-left",
                 "text-slate-400",
-                "font-bold",
-              ])}
+                "font-bold"
+              )}
               onClick={(e) => {
                 e.preventDefault();
                 if (isSelectingSemitag(originalTag.name))
@@ -113,17 +113,17 @@ export default function OriginalSource({
             >
               {originalTag.name}
             </div>
-            <div className={clsx(["grow"])}>
+            <div className={clsx("grow")}>
               {originalTag.searchTags.items.length === 0 && (
-                <div className={clsx(["select-none text-xs text-slate-500"])}>
+                <div className={clsx("select-none text-xs text-slate-500")}>
                   候補なし
                 </div>
               )}
               {originalTag.searchTags.items.length >= 1 && (
                 <div
-                  className={clsx([
-                    "flex flex-wrap items-start gap-x-1 gap-y-0.5",
-                  ])}
+                  className={clsx(
+                    "flex flex-wrap items-start gap-x-1 gap-y-0.5"
+                  )}
                 >
                   {originalTag.searchTags.items.map((item) => (
                     <TagButton

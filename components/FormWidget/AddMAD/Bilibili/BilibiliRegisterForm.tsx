@@ -176,16 +176,16 @@ export default function BilibiliRegisterForm({
       style={style}
     >
       <form
-        className={clsx(["flex h-full flex-col gap-y-6"])}
+        className={clsx("flex h-full flex-col gap-y-6")}
         onSubmit={(e) => {
           e.preventDefault();
           handleSubmit();
         }}
       >
-        <div className={clsx(["flex flex-col gap-y-4"])}>
-          <div className={clsx(["w-full shrink-0"])}>
-            <label className={clsx(["flex flex-col gap-y-1"])}>
-              <div className={clsx(["text-xs font-bold text-slate-400"])}>
+        <div className={clsx("flex flex-col gap-y-4")}>
+          <div className={clsx("w-full shrink-0")}>
+            <label className={clsx("flex flex-col gap-y-1")}>
+              <div className={clsx("text-xs font-bold text-slate-400")}>
                 タイトル
               </div>
               <TextInput2
@@ -196,28 +196,28 @@ export default function BilibiliRegisterForm({
               />
             </label>
           </div>
-          <div className={clsx(["flex flex-col gap-y-2"])}>
-            <div className={clsx(["flex gap-x-2"])}>
+          <div className={clsx("flex flex-col gap-y-2")}>
+            <div className={clsx("flex gap-x-2")}>
               <div
-                className={clsx([
-                  "shrink-0 py-0.5 text-xs font-bold text-slate-400",
-                ])}
+                className={clsx(
+                  "shrink-0 py-0.5 text-xs font-bold text-slate-400"
+                )}
               >
                 追加されるタグ
               </div>
               {tags.length === 0 && (
                 <div
-                  className={clsx([
+                  className={clsx(
                     "shrink-0 self-center text-xs",
-                    "text-slate-400",
-                  ])}
+                    "text-slate-400"
+                  )}
                 >
                   なし
                 </div>
               )}
               {tags.length > 0 && (
                 <div
-                  className={clsx(["flex", "flex-wrap", "gap-x-1", "gap-y-1"])}
+                  className={clsx("flex", "flex-wrap", "gap-x-1", "gap-y-1")}
                 >
                   {tags.map(({ id: tagId, fragment }) => (
                     <TagButton
@@ -232,27 +232,27 @@ export default function BilibiliRegisterForm({
                 </div>
               )}
             </div>
-            <div className={clsx(["flex gap-x-2"])}>
+            <div className={clsx("flex gap-x-2")}>
               <div
-                className={clsx([
-                  "shrink-0 py-0.5 text-xs font-bold text-slate-400",
-                ])}
+                className={clsx(
+                  "shrink-0 py-0.5 text-xs font-bold text-slate-400"
+                )}
               >
                 追加される仮タグ
               </div>
               {semitaggings.length === 0 && (
                 <div
-                  className={clsx([
+                  className={clsx(
                     "shrink-0 self-center text-xs",
-                    "text-slate-400",
-                  ])}
+                    "text-slate-400"
+                  )}
                 >
                   なし
                 </div>
               )}
               {semitaggings.length > 0 && (
                 <div
-                  className={clsx(["flex", "flex-wrap", "gap-x-1", "gap-y-1"])}
+                  className={clsx("flex", "flex-wrap", "gap-x-1", "gap-y-1")}
                 >
                   {semitaggings.map(({ name }) => (
                     <SemitagButton
@@ -266,22 +266,22 @@ export default function BilibiliRegisterForm({
                 </div>
               )}
             </div>
-            <div className={clsx(["mt-auto shrink-0"])}>
+            <div className={clsx("mt-auto shrink-0")}>
               <TagSearcher
                 limit={5}
                 size="small"
-                className={clsx(["z-10 w-full"])}
+                className={clsx("z-10 w-full")}
                 handleSelect={(tagId, fragment) => appendTag(tagId, fragment)}
                 Additional={({ query }) => (
-                  <div className={clsx(["flex items-center"])}>
+                  <div className={clsx("flex items-center")}>
                     <div
-                      className={clsx([
-                        "rounded-sm border border-slate-700 bg-slate-900 px-0.5 py-0.25 text-xs text-slate-300",
-                      ])}
+                      className={clsx(
+                        "rounded-sm border border-slate-700 bg-slate-900 px-0.5 py-0.25 text-xs text-slate-300"
+                      )}
                     >
                       {query}
                     </div>
-                    <div className={clsx(["shrink-0 text-sm text-slate-500"])}>
+                    <div className={clsx("shrink-0 text-sm text-slate-500")}>
                       を仮タグとして追加
                     </div>
                   </div>
@@ -292,8 +292,8 @@ export default function BilibiliRegisterForm({
             </div>
           </div>
         </div>
-        <div className={clsx(["flex flex-col gap-y-2"])}>
-          <div className={clsx(["flex gap-x-2"])}>
+        <div className={clsx("flex flex-col gap-y-2")}>
+          <div className={clsx("flex gap-x-2")}>
             <div
               className={clsx(
                 ["select-none"],
@@ -330,10 +330,10 @@ export default function BilibiliRegisterForm({
             />
           </div>
         </div>
-        <div className={clsx(["mt-auto flex w-full shrink-0"])}>
+        <div className={clsx("mt-auto flex w-full shrink-0")}>
           <Button submit text="登録する" size="medium" color="blue" />
           <Button
-            className={clsx(["ml-auto"])}
+            className={clsx("ml-auto")}
             onClick={() => {
               handleCancel();
             }}

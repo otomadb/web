@@ -56,11 +56,11 @@ export default function NicovideoOriginalSource({
   const fragment = useFragment(NicovideoOriginalSourceFragment, props.fragment);
 
   return (
-    <div className={clsx(className, ["flex flex-col gap-y-2"])}>
-      <div className={clsx(["flex gap-x-4"])}>
-        <div className={clsx(["flex shrink-0 flex-col gap-y-4"])}>
+    <div className={clsx(className, "flex flex-col gap-y-2")}>
+      <div className={clsx("flex gap-x-4")}>
+        <div className={clsx("flex shrink-0 flex-col gap-y-4")}>
           <CoolImage
-            className={clsx(["h-[64px] w-[96px]"])}
+            className={clsx("h-[64px] w-[96px]")}
             src={fragment.info.thumbnailUrl}
             width={96}
             height={64}
@@ -68,35 +68,35 @@ export default function NicovideoOriginalSource({
             unoptimized={true}
           />
         </div>
-        <div className={clsx(["flex grow flex-col py-2"])}>
-          <div className={clsx(["text-sm font-bold text-slate-300"])}>
+        <div className={clsx("flex grow flex-col py-2")}>
+          <div className={clsx("text-sm font-bold text-slate-300")}>
             {fragment.info.title}
           </div>
-          <div className={clsx(["mt-auto flex gap-x-2"])}>
+          <div className={clsx("mt-auto flex gap-x-2")}>
             <a
               href={fragment.url}
               target="_blank"
-              className={clsx([
-                "flex items-center gap-x-1 text-slate-400 hover:text-sky-400",
-              ])}
+              className={clsx(
+                "flex items-center gap-x-1 text-slate-400 hover:text-sky-400"
+              )}
             >
-              <ExternalLinkPictogram className={clsx(["h-4 w-4"])} />
-              <span className={clsx(["font-mono text-sm"])}>
+              <ExternalLinkPictogram className={clsx("h-4 w-4")} />
+              <span className={clsx("font-mono text-sm")}>
                 {fragment.sourceId}
               </span>
             </a>
           </div>
         </div>
       </div>
-      <div className={clsx(["grid grid-cols-2 gap-2"])}>
+      <div className={clsx("grid grid-cols-2 gap-2")}>
         {fragment.info.tags.map((originalTag) => (
           <div
             key={originalTag.name}
-            className={clsx(["flex flex-col items-start gap-y-1"])}
+            className={clsx("flex flex-col items-start gap-y-1")}
           >
             <div
               role="button"
-              className={clsx(["text-left text-xs font-bold text-slate-400"])}
+              className={clsx("text-left text-xs font-bold text-slate-400")}
               onClick={(e) => {
                 e.preventDefault();
                 if (isSelectingTag(originalTag.name))
@@ -106,17 +106,17 @@ export default function NicovideoOriginalSource({
             >
               {originalTag.name}
             </div>
-            <div className={clsx(["grow"])}>
+            <div className={clsx("grow")}>
               {originalTag.searchTags.items.length === 0 && (
-                <div className={clsx(["select-none text-xs text-slate-500"])}>
+                <div className={clsx("select-none text-xs text-slate-500")}>
                   候補なし
                 </div>
               )}
               {originalTag.searchTags.items.length >= 1 && (
                 <div
-                  className={clsx([
-                    "flex flex-wrap items-start gap-x-1 gap-y-0.5",
-                  ])}
+                  className={clsx(
+                    "flex flex-wrap items-start gap-x-1 gap-y-0.5"
+                  )}
                 >
                   {originalTag.searchTags.items.map((item) => (
                     <TagButton

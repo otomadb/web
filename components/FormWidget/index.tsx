@@ -339,7 +339,7 @@ export default function FormModal({
   const close = useCloseFormModal();
 
   return (
-    <div className={clsx(className, ["flex"])} style={style}>
+    <div className={clsx(className, "flex")} style={style}>
       {current && (
         <div
           className={clsx(
@@ -355,7 +355,7 @@ export default function FormModal({
               ["border-b", "border-slate-700"]
             )}
           >
-            <span className={clsx(["text-slate-500", "text-xs", "font-bold"])}>
+            <span className={clsx("text-slate-500", "text-xs", "font-bold")}>
               {current.type === "REGISTER_FROM_NICOVIDEO" &&
                 "ニコニコ動画から登録"}
               {current.type === "REGISTER_FROM_YOUTUBE" && "Youtubeから登録"}
@@ -387,11 +387,11 @@ export default function FormModal({
               <XMarkPictogram />
             </button>
           </div>
-          <div className={clsx(["bg-slate-900"])}>
+          <div className={clsx("bg-slate-900")}>
             {current.type === "SOURCE_INPUT" && (
               <SourceIDForm
                 style={{ width: 640, height: 720 }}
-                className={clsx(["h-full"])}
+                className={clsx("h-full")}
                 mode={current.mode}
                 initProp={current.init}
               />
@@ -402,7 +402,7 @@ export default function FormModal({
                 handleSuccess={() => close()}
                 handleCancel={() => close()}
                 style={{ width: 640, height: 720 }}
-                className={clsx(["h-full"])}
+                className={clsx("h-full")}
               />
             )}
             {current.type === "REGISTER_FROM_BILIBILI" && (

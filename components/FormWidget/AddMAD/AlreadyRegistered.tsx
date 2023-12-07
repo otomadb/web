@@ -34,23 +34,23 @@ export default function AlreadyRegistered({
   const fragment = useFragment(Fragment, props.fragment);
 
   return (
-    <div className={clsx(className, ["flex flex-col gap-y-4"])} style={style}>
-      <div className={clsx(["flex gap-x-4"])}>
-        <MadPageLink className={clsx(["block"])} fragment={fragment.video}>
+    <div className={clsx(className, "flex flex-col gap-y-4")} style={style}>
+      <div className={clsx("flex gap-x-4")}>
+        <MadPageLink className={clsx("block")} fragment={fragment.video}>
           <VideoThumbnail
             fragment={fragment.video}
             imageSize="small"
-            className={clsx(["h-32 w-48"])}
+            className={clsx("h-32 w-48")}
           />
         </MadPageLink>
         <div>
-          <p className={clsx(["text-sm text-slate-400"])}>
-            <span className={clsx(["font-mono text-slate-300"])}>
+          <p className={clsx("text-sm text-slate-400")}>
+            <span className={clsx("font-mono text-slate-300")}>
               {fragment.sourceId}
             </span>
             は
             <MadPageLink
-              className={clsx(["font-bold text-slate-300"])}
+              className={clsx("font-bold text-slate-300")}
               fragment={fragment.video}
             >
               {fragment.video.title}
@@ -61,7 +61,7 @@ export default function AlreadyRegistered({
       </div>
       <div>
         <Button
-          className={clsx(["ml-auto"])}
+          className={clsx("ml-auto")}
           onClick={() => {
             handleCancel();
           }}
