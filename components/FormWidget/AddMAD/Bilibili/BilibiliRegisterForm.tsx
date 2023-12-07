@@ -141,7 +141,7 @@ export default function BilibiliRegisterForm({
           を登録しました．
         </>
       );
-      if (handleSuccess) handleSuccess();
+      handleSuccess();
     },
   });
   const payload = useMemo(() => {

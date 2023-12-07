@@ -14,7 +14,7 @@ export const SoundcloudRegisterOriginalSourceFragment = graphql(`
     thumbnailUrl(scale: LARGE)
   }
 `);
-export default function OriginalSource({
+export default function SoundcloudOriginalSource({
   className,
   ...props
 }: {

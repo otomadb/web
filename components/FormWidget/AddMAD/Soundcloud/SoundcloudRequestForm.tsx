@@ -6,19 +6,16 @@ import { CSSProperties, useCallback, useMemo, useState } from "react";
 import { useMutation } from "urql";
 
 import { MadPageLink } from "~/app/(v2)/mads/[serial]/Link";
-import Button from "~/components/Button";
-import TagSearcher from "~/components/TagSearcher";
-import { TextInput2 } from "~/components/TextInput";
+import SoundcloudRequestPageLink from "~/app/(v2)/requests/soundcloud/[sourceId]/Link";
 import useToaster from "~/components/Toaster/useToaster";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-import { SemitagButton } from "../SemitagButton";
-import { TagButton } from "../TagButton";
+import { ButtonsPart, EditorablePart, Tab } from "../RequestFormCommon";
 import useRequestFormEditSemitaggings from "../useRequestFormEditSemitaggings";
 import useRequestEditTags from "../useRequestFormEditTaggings";
 import SoundcloudOriginalSource from "./SoundcloudOriginalSource";
 
-export const Mutation = graphql(`
+export const SoundcloudRequestMutation = graphql(`
   mutation RequestMADFromSoundcloudForm_Request(
     $input: RequestSoundcloudRegistrationInput!
   ) {
@@ -37,6 +34,8 @@ export const Mutation = graphql(`
       ... on RequestSoundcloudRegistrationSucceededPayload {
         request {
           id
+          sourceId
+          ...SoundcloudRequestPageLink
         }
       }
     }
@@ -49,19 +48,23 @@ const useRequestFromSoundcloud = ({
 }: {
   onSuccess(
     data: Extract<
-      ResultOf<typeof Mutation>["requestSoundcloudRegistration"],
+      ResultOf<
+        typeof SoundcloudRequestMutation
+      >["requestSoundcloudRegistration"],
       { __typename: "RequestSoundcloudRegistrationSucceededPayload" }
     >
   ): void;
   onAlready(
     data: Extract<
-      ResultOf<typeof Mutation>["requestSoundcloudRegistration"],
+      ResultOf<
+        typeof SoundcloudRequestMutation
+      >["requestSoundcloudRegistration"],
       { __typename: "RequestSoundcloudRegistrationVideoAlreadyRegisteredError" }
     >
   ): void;
   onFailure(): void;
 }) => {
-  const [, register] = useMutation(Mutation);
+  const [, register] = useMutation(SoundcloudRequestMutation);
 
   return useCallback(
     async ({
@@ -130,7 +133,7 @@ export default function SoundcloudRequestForm({
 }: {
   className?: string;
   style?: CSSProperties;
-  handleSuccess?(): void;
+  handleSuccess(): void;
   handleCancel(): void;
   sourceFragment: FragmentType<
     typeof SoundcloudRequestFormOriginalSourceFragment
@@ -154,9 +157,19 @@ export default function SoundcloudRequestForm({
 
   const callToast = useToaster();
   const requestVideo = useRequestFromSoundcloud({
-    onSuccess(data) {
-      callToast(<>リクエストしました</>);
-      if (handleSuccess) handleSuccess();
+    onSuccess({ request }) {
+      callToast(
+        <>
+          <SoundcloudRequestPageLink
+            fragment={request}
+            className={clsx("font-mono text-vivid-primary")}
+          >
+            {request.sourceId}
+          </SoundcloudRequestPageLink>
+          リクエストしました
+        </>
+      );
+      handleSuccess();
     },
     onAlready({ source: { sourceId, video } }) {
       callToast(
@@ -174,6 +187,8 @@ export default function SoundcloudRequestForm({
   const [tab, setTab] = useState<"SOURCE">("SOURCE");
 
   const payload = useMemo(() => {
+    if (!title) return null;
+
     return {
       sourceId: source.sourceId,
       title,
@@ -189,150 +204,38 @@ export default function SoundcloudRequestForm({
     title,
   ]);
 
-  const handleSubmit = useCallback(() => {
-    if (!taggingsPayload) return;
-    requestVideo(payload);
-  }, [taggingsPayload, requestVideo, payload]);
-
   return (
-    <div
-      className={clsx(
-        className,
-        ["grow"],
-        [["p-4"]],
-        ["flex flex-col gap-y-4"]
-      )}
+    <form
       style={style}
+      className={clsx(className, "flex flex-col gap-y-6 p-2")}
+      onSubmit={(e) => {
+        e.preventDefault();
+        if (!payload) return;
+        requestVideo(payload);
+      }}
     >
-      <form
-        className={clsx("flex h-full flex-col gap-y-6")}
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleSubmit();
-        }}
-      >
-        <div className={clsx("flex flex-col gap-y-4")}>
-          <div className={clsx("w-full shrink-0")}>
-            <label className={clsx("flex flex-col gap-y-1")}>
-              <div className={clsx("text-xs font-bold text-slate-400")}>
-                タイトル
-              </div>
-              <TextInput2
-                size="small"
-                placeholder={"動画タイトル"}
-                value={title}
-                onChange={(v) => setTitle(v)}
-              />
-            </label>
-          </div>
+      <EditorablePart
+        title={title}
+        setTitle={setTitle}
+        appendSemitag={appendSemitag}
+        appendTag={appendTag}
+        isIncludeSemitag={isIncludeSemitag}
+        removeSemitag={removeSemitag}
+        removeTag={removeTag}
+        taggings={taggings}
+        semitaggings={semitaggings}
+      />
+      <div className={clsx("flex grow flex-col gap-y-2")}>
+        <Tab
+          choices={["SOURCE"]}
+          current="SOURCE"
+          setTab={(tab) => setTab(tab)}
+        />
+        <div className={clsx({ hidden: tab !== "SOURCE" })}>
+          <SoundcloudOriginalSource fragment={source} />
         </div>
-        <div className={clsx("flex flex-col gap-y-2")}>
-          <div className={clsx("flex gap-x-2")}>
-            <div
-              className={clsx(
-                "shrink-0 py-0.5 text-xs font-bold text-slate-400"
-              )}
-            >
-              追加されるタグ
-            </div>
-            {taggings.length > 0 && (
-              <div className={clsx("flex", "flex-wrap", "gap-x-1", "gap-y-1")}>
-                {taggings.map(({ id: tagId, fragment }) => (
-                  <TagButton
-                    key={tagId}
-                    tagId={tagId}
-                    fragment={fragment}
-                    append={(f) => appendTag(tagId, f)}
-                    remove={() => removeTag(tagId)}
-                    selected={taggings.map(({ id }) => id).includes(tagId)}
-                  />
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-        <div className={clsx("flex gap-x-2")}>
-          <div
-            className={clsx("shrink-0 py-0.5 text-xs font-bold text-slate-400")}
-          >
-            追加される仮タグ
-          </div>
-          {semitaggings.length === 0 && (
-            <div
-              className={clsx("shrink-0 self-center text-xs", "text-slate-400")}
-            >
-              なし
-            </div>
-          )}
-          {semitaggings.length > 0 && (
-            <div className={clsx("flex", "flex-wrap", "gap-x-1", "gap-y-1")}>
-              {semitaggings.map(({ name }) => (
-                <SemitagButton
-                  key={name}
-                  name={name}
-                  append={() => appendSemitag(name)}
-                  remove={() => removeSemitag(name)}
-                  selected={isIncludeSemitag(name)}
-                />
-              ))}
-            </div>
-          )}
-        </div>
-        <div className={clsx("mt-auto shrink-0")}>
-          <TagSearcher
-            limit={5}
-            size="small"
-            className={clsx("z-10 w-full")}
-            handleSelect={(tagId, fragment) => {
-              appendTag(tagId, fragment);
-            }}
-            Additional={({ query }) => (
-              <div className={clsx("flex items-center")}>
-                <div
-                  className={clsx(
-                    "rounded-sm border border-slate-700 bg-slate-900 px-0.5 py-0.25 text-xs text-slate-300"
-                  )}
-                >
-                  {query}
-                </div>
-                <div className={clsx("shrink-0 text-sm text-slate-500")}>
-                  を仮タグとして追加
-                </div>
-              </div>
-            )}
-            showAdditional={(query) => !isIncludeSemitag(query)}
-            handleAdditionalClicked={(query) => appendSemitag(query)}
-          />
-        </div>
-        <div className={clsx("flex flex-col gap-y-2")}>
-          <div className={clsx("flex gap-x-2")}>
-            <div
-              className={clsx(
-                "cursor-pointer select-none rounded border border-slate-700 bg-slate-950 px-2 py-1 text-xs font-bold text-slate-400 aria-checked:cursor-default aria-checked:border-slate-600 aria-checked:bg-slate-700 aria-checked:text-slate-400 aria-disabled:cursor-default aria-disabled:border-slate-800 aria-disabled:bg-slate-900 aria-disabled:text-slate-700 hover:bg-slate-800"
-              )}
-              onClick={() => setTab("SOURCE")}
-              aria-checked={tab === "SOURCE"}
-            >
-              ソース情報
-            </div>
-          </div>
-          <div className={clsx({ hidden: tab !== "SOURCE" })}>
-            <SoundcloudOriginalSource fragment={source} />
-          </div>
-        </div>
-        <div className={clsx("mt-auto flex w-full shrink-0 justify-between")}>
-          <Button submit text="リクエストする" size="medium" color="blue" />
-          <Button
-            className={clsx()}
-            onClick={() => {
-              handleCancel();
-            }}
-            text="戻る"
-            size="medium"
-            color="green"
-          />
-        </div>
-      </form>
-    </div>
+      </div>
+      <ButtonsPart disabled={!payload} handleCancel={handleCancel} />
+    </form>
   );
 }

@@ -216,7 +216,7 @@ export default function YoutubeRegisterForm({
           を登録しました．
         </>
       );
-      if (handleSuccess) handleSuccess();
+      handleSuccess();
     },
   });
   const payload = useMemo(() => {

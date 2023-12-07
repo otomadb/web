@@ -27,7 +27,7 @@ export const BilibiliRegisterOriginalSourceFragment = graphql(`
     }
   }
 `);
-export default function OriginalSource({
+export default function BilibiliOriginalSource({
   className,
   removeTag,
   appendTag,

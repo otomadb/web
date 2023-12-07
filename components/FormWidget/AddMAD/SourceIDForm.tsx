@@ -206,15 +206,17 @@ export const NicovideoConfirmForm = ({
   });
   const enable = useMemo(() => {
     if (!data) return false;
-    if (type === "register")
-      return (
-        !data.findNicovideoVideoSource && data.fetchNicovideo.source !== null
-      );
-    else
-      return (
-        !data.findNicovideoRegistrationRequest &&
-        data.fetchNicovideo.source !== null
-      );
+    switch (type) {
+      case "register":
+        return (
+          !data.findNicovideoVideoSource && data.fetchNicovideo.source !== null
+        );
+      case "request":
+        return (
+          !data.findNicovideoRegistrationRequest &&
+          data.fetchNicovideo.source !== null
+        );
+    }
   }, [data, type]);
 
   const handle = useCallback(() => {
@@ -309,7 +311,7 @@ export const NicovideoConfirmForm = ({
           onClick={() => {
             handleCancel();
           }}
-          text="戻る"
+          text="取り消す"
           size="medium"
           color="red"
         />

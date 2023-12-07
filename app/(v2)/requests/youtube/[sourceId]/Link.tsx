@@ -18,7 +18,7 @@ export default function YoutubeRequestLink({
   );
 }
 
-export const Fragment = graphql(`
+export const YoutubeRequestPageLinkFragment = graphql(`
   fragment YoutubeRequestPageLink on YoutubeRegistrationRequest {
     sourceId
   }
@@ -27,9 +27,12 @@ export function YoutubeRequestPageLink({
   children,
   ...props
 }: Omit<ComponentProps<typeof Link>, "href"> & {
-  fragment: FragmentType<typeof Fragment>;
+  fragment: FragmentType<typeof YoutubeRequestPageLinkFragment>;
 }) {
-  const { sourceId } = useFragment(Fragment, props.fragment);
+  const { sourceId } = useFragment(
+    YoutubeRequestPageLinkFragment,
+    props.fragment
+  );
   return (
     <Link href={`/requests/youtube/${sourceId}`} {...props}>
       {children}

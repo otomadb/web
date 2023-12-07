@@ -14,7 +14,7 @@ import { FragmentType, graphql, useFragment } from "~/gql";
 
 import { SemitagButton } from "../SemitagButton";
 import { TagButton, TagButtonFragment } from "../TagButton";
-import OriginalSource from "./SoundcloudOriginalSource";
+import SoundcloudOriginalSource from "./SoundcloudOriginalSource";
 
 const Mutation = graphql(`
   mutation RegisterSoundcloudMADForm_RegisterMAD(
@@ -193,7 +193,7 @@ export default function SoundcloudRegisterForm({
           を登録しました．
         </>
       );
-      if (handleSuccess) handleSuccess();
+      handleSuccess();
     },
   });
   const payload = useMemo<null | Parameters<typeof registerMAD>[0]>(() => {
@@ -371,7 +371,7 @@ export default function SoundcloudRegisterForm({
             </div>
           </div>
           <div className={clsx({ hidden: tab !== "SOURCE" })}>
-            <OriginalSource fragment={source} />
+            <SoundcloudOriginalSource fragment={source} />
           </div>
         </div>
         <div className={clsx("mt-auto flex w-full shrink-0")}>
