@@ -25,6 +25,9 @@ export const NicovideoRegistrationRequestLink: React.FC<
   );
 };
 
+/**
+ * @deprecated
+ */
 export default function NicovideoRequestLink({
   sourceId,
   children,

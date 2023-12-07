@@ -97,7 +97,6 @@ export const Query = graphql(`
     }
     findSoundcloudMADSource(input: { url: $url }) {
       id
-      ...Form_VideoAlreadyRegistered
     }
   }
 `);

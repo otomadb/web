@@ -94,24 +94,6 @@ export const useRegisterVideo = ({
   );
 };
 
-export const Query = graphql(`
-  query RegisterFromYoutubeForm_Check($sourceId: String!) {
-    fetchYoutube(input: { sourceId: $sourceId }) {
-      source {
-        thumbnailUrl
-        ...YoutubeForm_OriginalSource
-      }
-    }
-    findYoutubeRegistrationRequest(input: { sourceId: $sourceId }) {
-      id
-      ...RegisterFromYoutubeForm_Request
-    }
-    findYoutubeVideoSource(input: { sourceId: $sourceId }) {
-      ...Form_VideoAlreadyRegistered
-    }
-  }
-`);
-
 export const YoutubeRegisterOriginalSourceFragment = graphql(`
   fragment YoutubeForm_OriginalSource2 on YoutubeOriginalSource {
     url

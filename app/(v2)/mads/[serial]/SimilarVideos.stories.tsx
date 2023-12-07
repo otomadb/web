@@ -1,7 +1,7 @@
 import { ResultOf } from "@graphql-typed-document-node/core";
 import { Meta, StoryObj } from "@storybook/react";
 
-import { $mockCommonMadBlockFragment } from "~/components/CommonMadBlock/index.stories";
+import { mockCommonMadBlockFragment } from "~/components/CommonMadBlock/index.stories";
 import { LikeSwitchFragment } from "~/components/CommonMadBlock/LikeSwitch";
 import { LikeSwitchSkeltonFragment } from "~/components/LikeToggleSwitchSkelton";
 import { makeFragmentData } from "~/gql";
@@ -33,7 +33,7 @@ export const Similars: Story = {
         items: [...new Array(12)].map((_, i) => ({
           to: {
             id: `video:${i}`,
-            ...$mockCommonMadBlockFragment({
+            ...mockCommonMadBlockFragment({
               id: `video:${i}`,
               title: `Video ${i}`,
               serial: i,

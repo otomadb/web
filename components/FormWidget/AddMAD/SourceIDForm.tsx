@@ -5,6 +5,7 @@ import React, { useCallback, useMemo, useState } from "react";
 import { useQuery } from "urql";
 
 import Button from "~/components/Button";
+import CommonMadBlock from "~/components/CommonMadBlock";
 import { CoolImage2 } from "~/components/CoolImage";
 import {
   ExternalLinkPictogram,
@@ -13,9 +14,10 @@ import {
   SearchPictogram,
 } from "~/components/Pictogram";
 import { TextInput2 } from "~/components/TextInput";
-import { FragmentType, graphql } from "~/gql";
+import { FragmentType, graphql, useFragment } from "~/gql";
 import { estimateUrl } from "~/utils/extractSourceId";
 
+import { RequestPageLinkSwitch } from "../../RequestPageLinkSwitch";
 import {
   useOpenRegisterFromBilibili2,
   useOpenRegisterFromNicovideo2,
@@ -37,6 +39,89 @@ import { SoundcloudRegisterOriginalSourceFragment } from "./Soundcloud/Soundclou
 import { SoundcloudRequestFormOriginalSourceFragment } from "./Soundcloud/SoundcloudRequestForm";
 import { YoutubeRegisterOriginalSourceFragment } from "./Youtube/YoutubeRegisterForm";
 import { YoutubeRequestFormOriginalSourceFragment } from "./Youtube/YoutubeRequestForm";
+
+export const AlreadyRegisteredFragment = graphql(`
+  fragment InputSourceForm_AlreadyRegistered on VideoSource {
+    sourceId
+    video {
+      id
+      ...CommonMadBlock
+    }
+  }
+`);
+export const AlreadyRegistered = ({
+  className,
+  style,
+  ...props
+}: {
+  className?: string;
+  style?: React.CSSProperties;
+  fragment: FragmentType<typeof AlreadyRegisteredFragment>;
+}) => {
+  const { video } = useFragment(AlreadyRegisteredFragment, props.fragment);
+
+  return (
+    <div className={clsx(className, "flex flex-col gap-y-2")} style={style}>
+      <p className={clsx("text-sm font-bold text-snow-primary")}>
+        既に登録済みです
+      </p>
+      <CommonMadBlock fragment={video} size="small" />
+    </div>
+  );
+};
+
+export const AlreadyRequestedFragment = graphql(`
+  fragment InputSourceForm_AlreadyRequested on RegistrationRequest {
+    title
+    thumbnailUrl
+    ...RequestLinkSwitch
+  }
+`);
+export const AlreadyRequested = ({
+  className,
+  style,
+  ...props
+}: {
+  className?: string;
+  style?: React.CSSProperties;
+  fragment: FragmentType<typeof AlreadyRequestedFragment>;
+}) => {
+  const f = useFragment(AlreadyRequestedFragment, props.fragment);
+  const { thumbnailUrl, title } = f;
+
+  return (
+    <div className={clsx(className, "flex flex-col gap-y-2")} style={style}>
+      <p className={clsx("text-sm font-bold text-snow-primary")}>
+        既にリクエスト済みです
+      </p>
+      <div
+        className={clsx(
+          "overflow-hidden rounded border border-obsidian-lighter bg-obsidian-primary"
+        )}
+      >
+        <RequestPageLinkSwitch fragment={f} className={clsx("block")}>
+          <CoolImage2
+            width={96}
+            height={64}
+            alt={title}
+            src={thumbnailUrl}
+            className={clsx("h-32")}
+          />
+        </RequestPageLinkSwitch>
+        <div className={clsx("flex flex-col gap-y-2 p-2")}>
+          <RequestPageLinkSwitch
+            fragment={f}
+            className={clsx(
+              "line-clamp-1 text-xs font-bold text-snow-primary hover:text-vivid-primary hover:underline"
+            )}
+          >
+            {f.title}
+          </RequestPageLinkSwitch>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const SubmitButton = ({
   className,
@@ -63,10 +148,12 @@ const SubmitButton = ({
 export const queryFetchNicovideo = graphql(`
   query SourceIDForm_Nicovideo($sourceId: String!) {
     findNicovideoVideoSource(input: { sourceId: $sourceId }) {
-      ...Form_VideoAlreadyRegistered
+      id
+      ...InputSourceForm_AlreadyRegistered
     }
     findNicovideoRegistrationRequest(input: { sourceId: $sourceId }) {
       id
+      ...InputSourceForm_AlreadyRequested
       ...RegisterFromNicovideoForm_Request
     }
     fetchNicovideo(input: { sourceId: $sourceId }) {
@@ -89,10 +176,12 @@ export const NicovideoConfirmForm = ({
   go,
   type,
   sourceId,
+  handleCancel,
 }: {
   className?: string;
   style?: React.CSSProperties;
   sourceId: string;
+  handleCancel(): void;
   type: "register" | "request";
   go(
     p:
@@ -115,6 +204,18 @@ export const NicovideoConfirmForm = ({
     query: queryFetchNicovideo,
     variables: { sourceId },
   });
+  const enable = useMemo(() => {
+    if (!data) return false;
+    if (type === "register")
+      return (
+        !data.findNicovideoVideoSource && data.fetchNicovideo.source !== null
+      );
+    else
+      return (
+        !data.findNicovideoRegistrationRequest &&
+        data.fetchNicovideo.source !== null
+      );
+  }, [data, type]);
 
   const handle = useCallback(() => {
     if (!data?.fetchNicovideo.source) return;
@@ -136,25 +237,6 @@ export const NicovideoConfirmForm = ({
     }
   }, [data, go, type]);
 
-  if (fetching)
-    return (
-      <p className={clsx("flex items-center gap-x-2 text-sm text-snow-darker")}>
-        <LoadingPictogram className={clsx("inline h-4 w-4")} />
-        検索中
-      </p>
-    );
-  if (!data?.fetchNicovideo.source)
-    return (
-      <p
-        className={clsx("flex items-center gap-x-2 text-sm text-error-primary")}
-      >
-        <NotFoundPictogram className={clsx("inline h-4 w-4")} />
-        <span className={clsx("font-bold")}>
-          ニコニコ動画から情報を取得できませんでした。
-        </span>
-      </p>
-    );
-
   return (
     <form
       className={clsx(className, "flex flex-col gap-y-4")}
@@ -164,40 +246,73 @@ export const NicovideoConfirmForm = ({
         handle();
       }}
     >
-      <div className={clsx("flex grow gap-x-4")}>
-        <div className={clsx("shrink-0")}>
-          <CoolImage2
-            src={data.fetchNicovideo.source.info.thumbnailUrl}
-            alt={data.fetchNicovideo.source.info.title}
-            width={96}
-            height={64}
-            className={clsx("h-[64px] w-[96px]")}
-            unoptimized={true}
-          />
-        </div>
-        <div
-          className={clsx(
-            "flex grow flex-col gap-y-1 border border-obsidian-primary bg-obsidian-darkest px-4 py-2"
-          )}
-        >
-          <p className={clsx("text-sm text-snow-primary")}>
-            {data.fetchNicovideo.source.info.title}
-          </p>
-          <p>
-            <a
-              href={data.fetchNicovideo.source.url}
+      <div className={clsx("grow")}>
+        {data?.findNicovideoVideoSource ? (
+          <AlreadyRegistered fragment={data.findNicovideoVideoSource} />
+        ) : type === "request" && data?.findNicovideoRegistrationRequest ? (
+          <AlreadyRequested fragment={data.findNicovideoRegistrationRequest} />
+        ) : data?.fetchNicovideo.source ? (
+          <div className={clsx("flex gap-x-4")}>
+            <div className={clsx("shrink-0")}>
+              <CoolImage2
+                src={data.fetchNicovideo.source.info.thumbnailUrl}
+                alt={data.fetchNicovideo.source.info.title}
+                width={96}
+                height={64}
+                className={clsx("h-[64px] w-[96px]")}
+                unoptimized={true}
+              />
+            </div>
+            <div
               className={clsx(
-                "inline-flex items-center gap-x-1 font-mono text-xs text-snow-darker hover:text-vivid-primary"
+                "flex grow flex-col gap-y-1 border border-obsidian-primary bg-obsidian-darkest px-4 py-2"
               )}
             >
-              <ExternalLinkPictogram className={clsx("h-4 w-4")} />
-              {data.fetchNicovideo.source.sourceId}
-            </a>
+              <p className={clsx("text-sm text-snow-primary")}>
+                {data.fetchNicovideo.source.info.title}
+              </p>
+              <p>
+                <a
+                  href={data.fetchNicovideo.source.url}
+                  className={clsx(
+                    "inline-flex items-center gap-x-1 font-mono text-xs text-snow-darker hover:text-vivid-primary"
+                  )}
+                >
+                  <ExternalLinkPictogram className={clsx("h-4 w-4")} />
+                  {data.fetchNicovideo.source.sourceId}
+                </a>
+              </p>
+            </div>
+          </div>
+        ) : fetching ? (
+          <p className={clsx("flex gap-x-2 text-sm text-snow-darker")}>
+            <LoadingPictogram className={clsx("inline h-4 w-4")} />
+            検索中
           </p>
-        </div>
+        ) : (
+          <p
+            className={clsx(
+              "flex items-center gap-x-2 text-sm text-error-primary"
+            )}
+          >
+            <NotFoundPictogram className={clsx("inline h-4 w-4")} />
+            <span className={clsx("font-bold")}>
+              ニコニコ動画から情報を取得できませんでした。
+            </span>
+          </p>
+        )}
       </div>
-      <div className={clsx("flex shrink-0 justify-end")}>
-        <SubmitButton type={type} disabled={!data.fetchNicovideo.source} />
+      <div className={clsx("flex shrink-0 justify-between gap-x-2")}>
+        <SubmitButton type={type} disabled={!enable} />
+        <Button
+          className={clsx()}
+          onClick={() => {
+            handleCancel();
+          }}
+          text="戻る"
+          size="medium"
+          color="red"
+        />
       </div>
     </form>
   );
@@ -673,6 +788,7 @@ export default function SourceIDForm({
                 break;
             }
           }}
+          handleCancel={() => setCurrent(undefined)}
           className={clsx("grow")}
         />
       ) : current?.type === "youtube" ? (

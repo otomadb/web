@@ -3,6 +3,9 @@ import { ComponentProps } from "react";
 
 import { FragmentType, graphql, useFragment } from "~/gql";
 
+/**
+ * @deprecated
+ */
 export default function YoutubeRequestLink({
   sourceId,
   children,

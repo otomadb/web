@@ -7,7 +7,7 @@ import { makeFragmentData } from "~/gql";
 import { Fragment as VideoThumbnailFragment } from "../VideoThumbnail";
 import CommonMadBlock, { CommonMadBlockFragment } from ".";
 
-export const $mockCommonMadBlockFragment = ({
+export const mockCommonMadBlockFragment = ({
   id,
   title,
   serial,
@@ -35,13 +35,13 @@ export const $mockCommonMadBlockFragment = ({
 const meta = {
   component: CommonMadBlock,
   args: {
-    fragment: $mockCommonMadBlockFragment({
+    fragment: mockCommonMadBlockFragment({
       id: "video:1",
       title: "Video 1",
       serial: 1,
     }),
   },
-  excludeStories: /^\$/,
+  excludeStories: /^mock/,
 } satisfies Meta<typeof CommonMadBlock>;
 export default meta;
 
