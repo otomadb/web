@@ -9,7 +9,7 @@ import { FragmentType, graphql, useFragment } from "~/gql";
 import { TagButton, TagButtonFragment } from "./TagButton";
 
 export const NicovideoOriginalSourceFragment = graphql(`
-  fragment RegisterFromNicovideoForm_OriginalSource on NicovideoOriginalSource {
+  fragment NicovideoForm_OriginalSource on NicovideoOriginalSource {
     sourceId
     url
     info {
@@ -31,25 +31,25 @@ export const NicovideoOriginalSourceFragment = graphql(`
 `);
 export default function NicovideoOriginalSource({
   className,
-  selectingTagId,
   removeTag,
   appendTag,
-  selectingSemitagNames,
   appendSemitag,
   removeSemitag,
+  isSelectingTag,
+  isSelectingSemitag,
   ...props
 }: {
   className?: string;
   fragment: FragmentType<typeof NicovideoOriginalSourceFragment>;
 
-  selectingTagId: string[];
+  isSelectingTag(tagId: string): boolean;
   appendTag(a: {
     tagId: string;
     fragment: FragmentType<typeof TagButtonFragment>;
   }): void;
   removeTag(tagId: string): void;
 
-  selectingSemitagNames: string[];
+  isSelectingSemitag(name: string): boolean;
   appendSemitag(name: string): void;
   removeSemitag(name: string): void;
 }) {
@@ -99,7 +99,7 @@ export default function NicovideoOriginalSource({
               className={clsx(["text-left text-xs font-bold text-slate-400"])}
               onClick={(e) => {
                 e.preventDefault();
-                if (selectingSemitagNames.includes(originalTag.name))
+                if (isSelectingTag(originalTag.name))
                   removeSemitag(originalTag.name);
                 else appendSemitag(originalTag.name);
               }}
@@ -127,7 +127,7 @@ export default function NicovideoOriginalSource({
                         appendTag({ tagId: item.tag.id, fragment: f })
                       }
                       remove={() => removeTag(item.tag.id)}
-                      selected={selectingTagId.includes(item.tag.id)}
+                      selected={isSelectingSemitag(item.tag.id)}
                     />
                   ))}
                 </div>

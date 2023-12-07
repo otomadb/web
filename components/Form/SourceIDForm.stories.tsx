@@ -214,12 +214,12 @@ export const Nicovideo1 = mkStory(
   }
 );
 
-export const Nicovideo2 = mkStory("ニコニコ動画のIDから sm2057168", {
+export const Nicovideo2 = mkStory("ニコニコ動画のIDから", "sm2057168", {
   type: "REQUEST_FROM_NICOVIDEO",
   sourceId: "sm2057168",
 });
 
-export const Nicovideo3 = mkStory("nico.msから https://nico.ms/sm2057168", {
+export const Nicovideo3 = mkStory("nico.msから", "https://nico.ms/sm2057168", {
   type: "REQUEST_FROM_NICOVIDEO",
   sourceId: "sm2057168",
 });
@@ -261,7 +261,7 @@ export const NicovideoNoSource: Story = {
   },
 };
 
-export const Youtube1 = mkStory("Youtubeの動画IDから Q16KpquGsIc", {
+export const Youtube1 = mkStory("Youtubeの動画IDから", "Q16KpquGsIc", {
   type: "REQUEST_FROM_YOUTUBE",
   sourceId: "Q16KpquGsIc",
 });
@@ -275,7 +275,7 @@ export const Youtube2 = mkStory(
   }
 );
 
-export const Youtube3 = mkStory("youtu.beから http://youtu.be/Q16KpquGsIc", {
+export const Youtube3 = mkStory("youtu.beから", "http://youtu.be/Q16KpquGsIc", {
   type: "REQUEST_FROM_YOUTUBE",
   sourceId: "Q16KpquGsIc",
 });
@@ -316,7 +316,7 @@ export const YoutubeNoSource: Story = {
   },
 };
 
-export const Bilibili1 = mkStory("Bilibiliの動画IDから BV1xx411c7mu", {
+export const Bilibili1 = mkStory("Bilibiliの動画IDから", "BV1xx411c7mu", {
   type: "REQUEST_FROM_BILIBILI",
   sourceId: "BV1xx411c7mu",
 });

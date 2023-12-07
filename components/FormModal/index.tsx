@@ -13,15 +13,12 @@ import { XMarkPictogram } from "~/components/Pictogram";
 import { estimateUrl } from "~/utils/extractSourceId";
 
 import BilibiliRegisterForm from "../Form/BilibiliRegisterForm";
+import BilibiliRequestForm from "../Form/BilibiliRequestForm";
+import NicovideoRequestForm from "../Form/NicovideoRequestForm";
 import SoundcloudRegisterForm from "../Form/SoundcloudRegisterForm";
+import SoundcloudRequestForm from "../Form/SoundcloudRequestForm";
 import YoutubeRegisterForm from "../Form/YoutubeRegisterForm";
-import RegisterMADFromBilibiliFormModal from "./RegisterMADFromBilibili";
-import RegisterMADFromYoutubeFormModal from "./RegisterMADFromYoutube";
-import RequestMADFromBilibiliFormModal from "./RequestMADFromBilibili";
-import RequestMADFromNicovideoFormModal from "./RequestMADFromNicovideo";
-import RequestMADFromSoundcloudFormModal from "./RequestMADFromSoundcloud";
-import RequestMADFromYoutubeFormModal from "./RequestMADFromYoutube";
-import SoundcloudRegisterModal from "./SoundcloudRegisterModal";
+import YoutubeRequestForm from "../Form/YoutubeRequestForm";
 
 export type Current =
   | undefined
@@ -61,10 +58,28 @@ export type Current =
         "sourceFragment"
       >;
     }
-  | { type: "REQUEST_FROM_NICOVIDEO"; sourceId: string | null }
-  | { type: "REQUEST_FROM_YOUTUBE"; sourceId: string | null }
-  | { type: "REQUEST_FROM_SOUNDCLOUD"; url: string | null }
-  | { type: "REQUEST_FROM_BILIBILI"; sourceId: string | null };
+  | {
+      type: "REQUEST_FROM_NICOVIDEO";
+      props: Pick<
+        ComponentProps<typeof NicovideoRequestForm>,
+        "sourceFragment"
+      >;
+    }
+  | {
+      type: "REQUEST_FROM_YOUTUBE";
+      props: Pick<ComponentProps<typeof YoutubeRequestForm>, "sourceFragment">;
+    }
+  | {
+      type: "REQUEST_FROM_SOUNDCLOUD";
+      props: Pick<
+        ComponentProps<typeof SoundcloudRequestForm>,
+        "sourceFragment"
+      >;
+    }
+  | {
+      type: "REQUEST_FROM_BILIBILI";
+      props: Pick<ComponentProps<typeof BilibiliRequestForm>, "sourceFragment">;
+    };
 
 export const FormModalContext = React.createContext<{
   current: Current;
@@ -193,7 +208,10 @@ export const useOpenSoundcloudRegisterModal = () => {
 export const useOpenRequestFromYoutube = () => {
   const { open } = useContext(FormModalContext);
   return (sourceId: string | null) =>
-    open({ type: "REQUEST_FROM_YOUTUBE", sourceId });
+    open({
+      type: "SOURCE_INPUT",
+      init: sourceId ? { type: "youtube", sourceId, r: "register" } : null,
+    });
 };
 
 /**
@@ -201,7 +219,11 @@ export const useOpenRequestFromYoutube = () => {
  */
 export const useOpenRequestFromSoundcloud = () => {
   const { open } = useContext(FormModalContext);
-  return (url: string | null) => open({ type: "REQUEST_FROM_SOUNDCLOUD", url });
+  return (url: string | null) =>
+    open({
+      type: "SOURCE_INPUT",
+      init: url ? { type: "soundcloud", url, r: "request" } : null,
+    });
 };
 
 /**
@@ -210,7 +232,10 @@ export const useOpenRequestFromSoundcloud = () => {
 export const useOpenRequestFromBilibili = () => {
   const { open } = useContext(FormModalContext);
   return (sourceId: string | null) =>
-    open({ type: "REQUEST_FROM_BILIBILI", sourceId });
+    open({
+      type: "SOURCE_INPUT",
+      init: sourceId ? { type: "bilibili", sourceId, r: "register" } : null,
+    });
 };
 
 export const useOpenRegisterFromNicovideo2 = () => {
@@ -250,6 +275,45 @@ export const useOpenRegisterFromBilibili2 = () => {
   ) =>
     open({
       type: "REGISTER_FROM_BILIBILI",
+      props,
+    });
+};
+
+export const useOpenRequestFromNicovideo2 = () => {
+  const { open } = useContext(FormModalContext);
+  return (
+    props: Extract<Current, { type: "REQUEST_FROM_NICOVIDEO" }>["props"]
+  ) =>
+    open({
+      type: "REQUEST_FROM_NICOVIDEO",
+      props,
+    });
+};
+export const useOpenRequestFromYoutube2 = () => {
+  const { open } = useContext(FormModalContext);
+  return (props: Extract<Current, { type: "REQUEST_FROM_YOUTUBE" }>["props"]) =>
+    open({
+      type: "REQUEST_FROM_YOUTUBE",
+      props,
+    });
+};
+export const useOpenRequestFromSoundcloud2 = () => {
+  const { open } = useContext(FormModalContext);
+  return (
+    props: Extract<Current, { type: "REQUEST_FROM_SOUNDCLOUD" }>["props"]
+  ) =>
+    open({
+      type: "REQUEST_FROM_SOUNDCLOUD",
+      props,
+    });
+};
+export const useOpenRequestFromBilibili2 = () => {
+  const { open } = useContext(FormModalContext);
+  return (
+    props: Extract<Current, { type: "REQUEST_FROM_BILIBILI" }>["props"]
+  ) =>
+    open({
+      type: "REQUEST_FROM_BILIBILI",
       props,
     });
 };
@@ -329,73 +393,80 @@ export default function FormModal({
               />
             )}
             {current.type === "REGISTER_FROM_BILIBILI" && (
-              <RegisterMADFromBilibiliFormModal
+              <BilibiliRegisterForm
                 {...current.props}
                 className={clsx()}
                 style={{ width: 640, height: 720 }}
                 handleSuccess={() => {
                   close();
                 }}
+                handleCancel={() => close()}
               />
             )}
             {current.type === "REGISTER_FROM_SOUNDCLOUD" && (
-              <SoundcloudRegisterModal
+              <SoundcloudRegisterForm
                 {...current.props}
                 className={clsx()}
                 style={{ width: 640, height: 720 }}
                 handleSuccess={() => {
                   close();
                 }}
+                handleCancel={() => close()}
               />
             )}
             {current.type === "REGISTER_FROM_YOUTUBE" && (
-              <RegisterMADFromYoutubeFormModal
+              <YoutubeRegisterForm
                 {...current.props}
                 className={clsx()}
                 style={{ width: 640, height: 720 }}
                 handleSuccess={() => {
                   close();
                 }}
+                handleCancel={() => close()}
               />
             )}
             {current.type === "REQUEST_FROM_NICOVIDEO" && (
-              <RequestMADFromNicovideoFormModal
+              <NicovideoRequestForm
                 className={clsx()}
-                initialSourceId={current.sourceId || undefined}
+                {...current.props}
                 style={{ width: 640, height: 720 }}
                 handleSuccess={() => {
                   close();
                 }}
+                handleCancel={() => close()}
               />
             )}
             {current.type === "REQUEST_FROM_YOUTUBE" && (
-              <RequestMADFromYoutubeFormModal
-                initialSourceId={current.sourceId || undefined}
+              <YoutubeRequestForm
+                {...current.props}
                 className={clsx()}
                 style={{ width: 640, height: 720 }}
                 handleSuccess={() => {
                   close();
                 }}
+                handleCancel={() => close()}
               />
             )}
             {current.type === "REQUEST_FROM_SOUNDCLOUD" && (
-              <RequestMADFromSoundcloudFormModal
-                initialUrl={current.url || undefined}
+              <SoundcloudRequestForm
+                {...current.props}
                 className={clsx()}
                 style={{ width: 640, height: 720 }}
                 handleSuccess={() => {
                   close();
                 }}
+                handleCancel={() => close()}
               />
             )}
             {current.type === "REQUEST_FROM_BILIBILI" && (
-              <RequestMADFromBilibiliFormModal
-                initialSourceId={current.sourceId || undefined}
+              <BilibiliRequestForm
+                {...current.props}
                 className={clsx()}
                 style={{ width: 640, height: 720 }}
                 handleSuccess={() => {
                   close();
                 }}
+                handleCancel={() => close()}
               />
             )}
           </div>

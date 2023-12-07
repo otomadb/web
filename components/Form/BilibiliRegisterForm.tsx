@@ -2,7 +2,7 @@
 
 import { ResultOf } from "@graphql-typed-document-node/core";
 import clsx from "clsx";
-import React, { useCallback, useMemo, useReducer, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { useMutation } from "urql";
 
 import { MadPageLink } from "~/app/(v2)/mads/[serial]/Link";
@@ -12,9 +12,11 @@ import { TextInput2 } from "~/components/TextInput";
 import useToaster from "~/components/Toaster/useToaster";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-import OriginalSource from "./BilibiliOriginalSource";
+import BilibiliOriginalSource from "./BilibiliOriginalSource";
 import { SemitagButton } from "./SemitagButton";
-import { TagButton, TagButtonFragment } from "./TagButton";
+import { TagButton } from "./TagButton";
+import useRegisterFormEditSemitaggings from "./useRegisterFormEditSemitaggings";
+import useRegisterFormEditTaggings from "./useRegisterFormEditTaggings";
 
 const Mutation = graphql(`
   mutation RegisterBilibiliMADForm_RegisterMAD(
@@ -86,25 +88,23 @@ export const useRegisterVideo = ({
 };
 
 export const BilibiliRegisterOriginalSourceFragment = graphql(`
-  fragment RegisterFromBilibiliForm_OriginalSource2 on BilibiliOriginalSource {
+  fragment BilibiliForm_OriginalSource2 on BilibiliOriginalSource {
     url
     sourceId
     title
     thumbnailUrl(scale: LARGE)
-    ...RegisterFromBilibiliForm_OriginalSource
+    ...BilibiliForm_OriginalSource
   }
 `);
 export default function BilibiliRegisterForm({
   className,
   style,
-  sourceId,
   handleSuccess,
   handleCancel,
   sourceFragment,
 }: {
   className?: string;
   style?: React.CSSProperties;
-  sourceId: string;
   handleSuccess?(): void;
   handleCancel(): void;
   sourceFragment: FragmentType<typeof BilibiliRegisterOriginalSourceFragment>;
@@ -115,54 +115,15 @@ export default function BilibiliRegisterForm({
   );
 
   const [title, setTitle] = useState<string>(source.title);
-  const [tags, dispatchTags] = useReducer(
-    (
-      prev: { id: string; fragment: FragmentType<typeof TagButtonFragment> }[],
-      action:
-        | {
-            type: "append";
-            tagId: string;
-            fragment: FragmentType<typeof TagButtonFragment>;
-          }
-        | { type: "remove"; tagId: string }
-        | { type: "clear" }
-    ) => {
-      switch (action.type) {
-        case "append":
-          return [
-            ...new Set([
-              ...prev,
-              { id: action.tagId, fragment: action.fragment },
-            ]),
-          ];
-        case "remove":
-          return prev.filter(({ id }) => id !== action.tagId);
-        case "clear":
-          return [];
-      }
-    },
-    []
-  );
-  const tagIds = useMemo(() => tags.map(({ id }) => id), [tags]);
-  const [semitagNames, dispatchSemitags] = useReducer(
-    (
-      prev: string[],
-      action:
-        | { type: "append"; name: string }
-        | { type: "remove"; name: string }
-        | { type: "clear" }
-    ) => {
-      switch (action.type) {
-        case "append":
-          return [...new Set([...prev, action.name])];
-        case "remove":
-          return prev.filter((id) => id !== action.name);
-        case "clear":
-          return [];
-      }
-    },
-    []
-  );
+  const { appendTag, isSelecting, removeTag, taggingsPayload, tags } =
+    useRegisterFormEditTaggings();
+  const {
+    appendSemitag,
+    isIncludeSemitag,
+    removeSemitag,
+    semitaggings,
+    semitaggingsPayload,
+  } = useRegisterFormEditSemitaggings();
 
   const [tab, setTab] = useState<"SOURCE" | "REQUEST">("SOURCE");
 
@@ -185,13 +146,19 @@ export default function BilibiliRegisterForm({
   });
   const payload = useMemo(() => {
     return {
-      sourceId,
+      sourceId: source.sourceId,
       title,
       thumbnailUrl: source.thumbnailUrl,
-      tagIds,
-      semitagNames,
+      tagIds: taggingsPayload,
+      semitagNames: semitaggingsPayload,
     };
-  }, [semitagNames, source, sourceId, tagIds, title]);
+  }, [
+    semitaggingsPayload,
+    source.sourceId,
+    source.thumbnailUrl,
+    taggingsPayload,
+    title,
+  ]);
 
   const handleSubmit = useCallback(() => {
     if (!payload) return;
@@ -257,10 +224,8 @@ export default function BilibiliRegisterForm({
                       key={tagId}
                       tagId={tagId}
                       fragment={fragment}
-                      append={(f) =>
-                        dispatchTags({ type: "append", tagId, fragment: f })
-                      }
-                      remove={() => dispatchTags({ type: "remove", tagId })}
+                      append={(f) => appendTag(tagId, f)}
+                      remove={() => removeTag(tagId)}
                       selected={tags.map(({ id }) => id).includes(tagId)}
                     />
                   ))}
@@ -275,7 +240,7 @@ export default function BilibiliRegisterForm({
               >
                 追加される仮タグ
               </div>
-              {semitagNames.length === 0 && (
+              {semitaggings.length === 0 && (
                 <div
                   className={clsx([
                     "shrink-0 self-center text-xs",
@@ -285,17 +250,17 @@ export default function BilibiliRegisterForm({
                   なし
                 </div>
               )}
-              {semitagNames.length > 0 && (
+              {semitaggings.length > 0 && (
                 <div
                   className={clsx(["flex", "flex-wrap", "gap-x-1", "gap-y-1"])}
                 >
-                  {semitagNames.map((name) => (
+                  {semitaggings.map(({ name }) => (
                     <SemitagButton
                       key={name}
                       name={name}
-                      append={() => dispatchSemitags({ type: "append", name })}
-                      remove={() => dispatchSemitags({ type: "remove", name })}
-                      selected={semitagNames.includes(name)}
+                      append={() => appendSemitag(name)}
+                      remove={() => removeSemitag(name)}
+                      selected={isIncludeSemitag(name)}
                     />
                   ))}
                 </div>
@@ -306,9 +271,7 @@ export default function BilibiliRegisterForm({
                 limit={5}
                 size="small"
                 className={clsx(["z-10 w-full"])}
-                handleSelect={(tagId, fragment) => {
-                  dispatchTags({ type: "append", tagId, fragment });
-                }}
+                handleSelect={(tagId, fragment) => appendTag(tagId, fragment)}
                 Additional={({ query }) => (
                   <div className={clsx(["flex items-center"])}>
                     <div
@@ -323,10 +286,8 @@ export default function BilibiliRegisterForm({
                     </div>
                   </div>
                 )}
-                showAdditional={(query) => !semitagNames.includes(query)}
-                handleAdditionalClicked={(query) =>
-                  dispatchSemitags({ type: "append", name: query })
-                }
+                showAdditional={(query) => !isIncludeSemitag(query)}
+                handleAdditionalClicked={(query) => appendSemitag(query)}
               />
             </div>
           </div>
@@ -358,22 +319,14 @@ export default function BilibiliRegisterForm({
             </div>
           </div>
           <div className={clsx({ hidden: tab !== "SOURCE" })}>
-            <OriginalSource
+            <BilibiliOriginalSource
               fragment={source}
-              selectingTagId={tagIds}
-              appendTag={({ tagId, fragment }) => {
-                dispatchTags({ type: "append", tagId, fragment });
-              }}
-              removeTag={(tagId) => {
-                dispatchTags({ type: "remove", tagId });
-              }}
-              selectingSemitagNames={semitagNames}
-              appendSemitag={(name) => {
-                dispatchSemitags({ type: "append", name });
-              }}
-              removeSemitag={(name) => {
-                dispatchSemitags({ type: "remove", name });
-              }}
+              isSelectingTag={isSelecting}
+              appendTag={({ tagId, fragment }) => appendTag(tagId, fragment)}
+              removeTag={(tagId) => removeTag(tagId)}
+              isSelectingSemitag={isSelecting}
+              appendSemitag={(name) => appendSemitag(name)}
+              removeSemitag={(name) => removeSemitag(name)}
             />
           </div>
         </div>

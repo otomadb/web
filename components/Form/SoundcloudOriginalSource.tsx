@@ -7,7 +7,7 @@ import { ExternalLinkPictogram } from "~/components/Pictogram";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const SoundcloudRegisterOriginalSourceFragment = graphql(`
-  fragment RegisterFromSoundcloudForm_OriginalSource on SoundcloudOriginalSource {
+  fragment SoundcloudForm_OriginalSource on SoundcloudOriginalSource {
     title
     sourceId
     url

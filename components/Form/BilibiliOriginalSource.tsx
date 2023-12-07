@@ -9,7 +9,7 @@ import { FragmentType, graphql, useFragment } from "~/gql";
 import { TagButton, TagButtonFragment } from "./TagButton";
 
 export const BilibiliRegisterOriginalSourceFragment = graphql(`
-  fragment RegisterFromBilibiliForm_OriginalSource on BilibiliOriginalSource {
+  fragment BilibiliForm_OriginalSource on BilibiliOriginalSource {
     sourceId
     title
     url
@@ -29,25 +29,25 @@ export const BilibiliRegisterOriginalSourceFragment = graphql(`
 `);
 export default function OriginalSource({
   className,
-  selectingTagId,
   removeTag,
   appendTag,
-  selectingSemitagNames,
   appendSemitag,
   removeSemitag,
+  isSelectingSemitag,
+  isSelectingTag,
   ...props
 }: {
   className?: string;
   fragment: FragmentType<typeof BilibiliRegisterOriginalSourceFragment>;
 
-  selectingTagId: string[];
+  isSelectingTag(tagId: string): boolean;
   appendTag(a: {
     tagId: string;
     fragment: FragmentType<typeof TagButtonFragment>;
   }): void;
   removeTag(tagId: string): void;
 
-  selectingSemitagNames: string[];
+  isSelectingSemitag(name: string): boolean;
   appendSemitag(name: string): void;
   removeSemitag(name: string): void;
 }) {
@@ -106,7 +106,7 @@ export default function OriginalSource({
               ])}
               onClick={(e) => {
                 e.preventDefault();
-                if (selectingSemitagNames.includes(originalTag.name))
+                if (isSelectingSemitag(originalTag.name))
                   removeSemitag(originalTag.name);
                 else appendSemitag(originalTag.name);
               }}
@@ -134,7 +134,7 @@ export default function OriginalSource({
                         appendTag({ tagId: item.tag.id, fragment: f })
                       }
                       remove={() => removeTag(item.tag.id)}
-                      selected={selectingTagId.includes(item.tag.id)}
+                      selected={isSelectingTag(item.tag.id)}
                     />
                   ))}
                 </div>

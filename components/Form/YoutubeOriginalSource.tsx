@@ -7,13 +7,13 @@ import { ExternalLinkPictogram } from "~/components/Pictogram";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const YoutubeRegisterOriginalSourceFragment = graphql(`
-  fragment RegisterFromYoutubeForm_OriginalSource on YoutubeOriginalSource {
+  fragment YoutubeForm_OriginalSource on YoutubeOriginalSource {
     url
     sourceId
     thumbnailUrl
   }
 `);
-export default function OriginalSource({
+export default function YoutubeOriginalSource({
   className,
   ...props
 }: {

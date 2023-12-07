@@ -16,7 +16,7 @@ import useToaster from "~/components/Toaster/useToaster";
 import { UserIcon } from "~/components/UserIcon";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-import OriginalSource from "./YoutubeOriginalSource";
+import YoutubeOriginalSource from "./YoutubeOriginalSource";
 
 const Mutation = graphql(`
   mutation RegisterFromYoutubeForm_RegisterVideo(
@@ -96,7 +96,7 @@ export const Query = graphql(`
     fetchYoutube(input: { sourceId: $sourceId }) {
       source {
         thumbnailUrl
-        ...RegisterFromYoutubeForm_OriginalSource
+        ...YoutubeForm_OriginalSource
       }
     }
     findYoutubeRegistrationRequest(input: { sourceId: $sourceId }) {
@@ -110,11 +110,11 @@ export const Query = graphql(`
 `);
 
 export const YoutubeRegisterOriginalSourceFragment = graphql(`
-  fragment RegisterFromYoutubeForm_OriginalSource2 on YoutubeOriginalSource {
+  fragment YoutubeForm_OriginalSource2 on YoutubeOriginalSource {
     url
     sourceId
     thumbnailUrl
-    ...RegisterFromYoutubeForm_OriginalSource
+    ...YoutubeForm_OriginalSource
   }
 `);
 export const YoutubeRegisterFormRequestFragment = graphql(`
@@ -151,7 +151,6 @@ export default function YoutubeRegisterForm({
 }: {
   className?: string;
   style?: React.CSSProperties;
-  sourceId: string;
   handleSuccess?(): void;
   handleCancel(): void;
   sourceFragment: FragmentType<typeof YoutubeRegisterOriginalSourceFragment>;
@@ -436,7 +435,7 @@ export default function YoutubeRegisterForm({
             </div>
           </div>
           <div className={clsx({ hidden: tab !== "SOURCE" })}>
-            {source && <OriginalSource fragment={source} />}
+            {source && <YoutubeOriginalSource fragment={source} />}
           </div>
           {request && (
             <div

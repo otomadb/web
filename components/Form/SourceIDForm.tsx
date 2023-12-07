@@ -73,7 +73,8 @@ export const queryFetchNicovideo = graphql(`
           title
           thumbnailUrl
         }
-        ...RegisterFromNicovideoForm_OriginalSource2
+        ...NicovideoForm_OriginalSource2
+        ...NicovideoRequestForm_OriginalSource
       }
     }
   }
@@ -202,7 +203,8 @@ export const queryFetchYoutube = graphql(`
       source {
         thumbnailUrl
         url
-        ...RegisterFromYoutubeForm_OriginalSource2
+        ...YoutubeForm_OriginalSource2
+        ...YoutubeRequestForm_OriginalSource
       }
     }
   }
@@ -325,7 +327,8 @@ export const queryFetchSoundCloud = graphql(`
         title
         originalThumbnailUrl
         url
-        ...RegisterFromSoundcloudForm_OriginalSource2
+        ...SoundcloudForm_OriginalSource2
+        ...SoundcloudRequestForm_OriginalSource
       }
     }
   }
@@ -453,7 +456,8 @@ export const queryFetchBilibili = graphql(`
         title
         originalThumbnailUrl
         url
-        ...RegisterFromBilibiliForm_OriginalSource2
+        ...BilibiliForm_OriginalSource2
+        ...BilibiliRequestForm_OriginalSource
       }
     }
   }

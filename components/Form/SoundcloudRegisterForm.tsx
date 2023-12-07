@@ -92,7 +92,7 @@ export const Query = graphql(`
         sourceId
         title
         originalThumbnailUrl
-        ...RegisterFromSoundcloudForm_OriginalSource
+        ...SoundcloudForm_OriginalSource
       }
     }
     findSoundcloudMADSource(input: { url: $url }) {
@@ -102,12 +102,12 @@ export const Query = graphql(`
   }
 `);
 export const SoundcloudRegisterOriginalSourceFragment = graphql(`
-  fragment RegisterFromSoundcloudForm_OriginalSource2 on SoundcloudOriginalSource {
+  fragment SoundcloudForm_OriginalSource2 on SoundcloudOriginalSource {
     url
     sourceId
     title
     thumbnailUrl(scale: LARGE)
-    ...RegisterFromSoundcloudForm_OriginalSource
+    ...SoundcloudForm_OriginalSource
   }
 `);
 export default function SoundcloudRegisterForm({
@@ -119,7 +119,6 @@ export default function SoundcloudRegisterForm({
 }: {
   className?: string;
   style?: React.CSSProperties;
-  url: string;
   handleSuccess?(): void;
   handleCancel(): void;
   sourceFragment: FragmentType<typeof SoundcloudRegisterOriginalSourceFragment>;
