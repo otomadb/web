@@ -136,7 +136,7 @@ export default function YoutubeRegisterForm({
 }: {
   className?: string;
   style?: React.CSSProperties;
-  handleSuccess?(): void;
+  handleSuccess(): void;
   handleCancel(): void;
   sourceFragment: FragmentType<typeof YoutubeRegisterOriginalSourceFragment>;
   requestFragment?: FragmentType<typeof YoutubeRegisterFormRequestFragment>;

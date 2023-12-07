@@ -118,7 +118,7 @@ export default function SoundcloudRegisterForm({
 }: {
   className?: string;
   style?: React.CSSProperties;
-  handleSuccess?(): void;
+  handleSuccess(): void;
   handleCancel(): void;
   sourceFragment: FragmentType<typeof SoundcloudRegisterOriginalSourceFragment>;
 }) {

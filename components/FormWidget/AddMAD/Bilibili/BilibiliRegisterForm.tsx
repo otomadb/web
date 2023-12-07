@@ -105,7 +105,7 @@ export default function BilibiliRegisterForm({
 }: {
   className?: string;
   style?: React.CSSProperties;
-  handleSuccess?(): void;
+  handleSuccess(): void;
   handleCancel(): void;
   sourceFragment: FragmentType<typeof BilibiliRegisterOriginalSourceFragment>;
 }) {
