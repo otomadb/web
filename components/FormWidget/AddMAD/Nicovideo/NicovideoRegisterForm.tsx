@@ -6,20 +6,17 @@ import React, { useCallback, useMemo, useState } from "react";
 import { useMutation } from "urql";
 
 import { MadPageLink } from "~/app/(v2)/mads/[serial]/Link";
-import UserPageLink from "~/app/(v2)/users/[name]/Link";
 import useToaster from "~/components/Toaster/useToaster";
-import { UserIcon } from "~/components/UserIcon";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 import {
   RegisterFormButtonsPart,
   RegisterFormEditorablePart,
+  RegisterFormRequestPart,
   RegisterFormTabPicker,
   useRegisterFormEditSemitaggings,
   useRegisterFormEditTaggings,
 } from "../RegisterFormCommon";
-import { SemitagButton } from "../SemitagButton";
-import { TagButton } from "../TagButton";
 import NicovideoOriginalSource from "./NicovideoOriginalSource";
 
 export const NicovideoRegisterFormMutation = graphql(`
@@ -111,24 +108,7 @@ export const NicovideoRegisterOriginalSourceFragment = graphql(`
 export const NicovideoRegisterFormRequestFragment = graphql(`
   fragment RegisterFromNicovideoForm_Request on NicovideoRegistrationRequest {
     id
-    title
-    requestedBy {
-      ...Link_User
-      ...UserIcon
-      id
-      displayName
-    }
-    taggings {
-      id
-      tag {
-        id
-        ...CommonTag
-      }
-    }
-    semitaggings {
-      id
-      name
-    }
+    ...RegisterFormRequestPart
   }
 `);
 export default function NicovideoRegisterForm({
@@ -213,7 +193,6 @@ export default function NicovideoRegisterForm({
       className={clsx(className, "flex flex-col gap-y-6 p-2")}
       onSubmit={(e) => {
         e.preventDefault();
-
         if (!payload) return;
         registerVideo(payload);
       }}
@@ -238,87 +217,27 @@ export default function NicovideoRegisterForm({
             REQUEST: !!request,
           }}
         />
-        <div className={clsx({ hidden: tab !== "SOURCE" })}>
-          <NicovideoOriginalSource
-            fragment={source}
+        <NicovideoOriginalSource
+          className={clsx({ hidden: tab !== "SOURCE" })}
+          fragment={source}
+          isSelectingTag={isSelecting}
+          appendTag={({ tagId, fragment }) => appendTag(tagId, fragment)}
+          removeTag={(tagId) => removeTag(tagId)}
+          isSelectingSemitag={isSelecting}
+          appendSemitag={(name) => appendSemitag(name)}
+          removeSemitag={(name) => removeSemitag(name)}
+        />
+        {request && (
+          <RegisterFormRequestPart
+            className={clsx({ hidden: tab !== "REQUEST" })}
+            fragment={request}
             isSelectingTag={isSelecting}
-            appendTag={({ tagId, fragment }) => appendTag(tagId, fragment)}
+            appendTag={(tagId, fragment) => appendTag(tagId, fragment)}
             removeTag={(tagId) => removeTag(tagId)}
             isSelectingSemitag={isSelecting}
             appendSemitag={(name) => appendSemitag(name)}
             removeSemitag={(name) => removeSemitag(name)}
           />
-        </div>
-        {request && (
-          <div
-            className={clsx(
-              { hidden: tab !== "REQUEST" },
-              "flex flex-col gap-y-2"
-            )}
-          >
-            <div className={clsx("flex flex-col gap-y-2")}>
-              <div className={clsx("flex items-center")}>
-                <p className={clsx("grow text-sm text-slate-500")}>
-                  <span className={clsx("font-bold text-slate-400")}>
-                    {request.title}
-                  </span>
-                  としてリクエストされています
-                </p>
-                <div className={clsx("shrink-0")}>
-                  <UserPageLink fragment={request.requestedBy}>
-                    <UserIcon size={24} fragment={request.requestedBy} />
-                  </UserPageLink>
-                </div>
-              </div>
-              <div className={clsx("flex flex-col gap-y-2")}>
-                <div className={clsx("shrink-0 py-0.5 text-xs text-slate-500")}>
-                  タグ
-                </div>
-                {request.taggings.length === 0 && (
-                  <div className={clsx("shrink-0 text-xs text-slate-400")}>
-                    なし
-                  </div>
-                )}
-                {request.taggings.length > 0 && (
-                  <div className={clsx("flex flex-wrap gap-1")}>
-                    {request.taggings.map((tagging) => (
-                      <TagButton
-                        key={tagging.id}
-                        fragment={tagging.tag}
-                        tagId={tagging.tag.id}
-                        append={(f) => appendTag(tagging.tag.id, f)}
-                        remove={() => removeTag(tagging.tag.id)}
-                        selected={isSelecting(tagging.tag.id)}
-                      />
-                    ))}
-                  </div>
-                )}
-              </div>
-              <div className={clsx("flex flex-col gap-y-2")}>
-                <div className={clsx("shrink-0 py-0.5 text-xs text-slate-500")}>
-                  仮タグ
-                </div>
-                {request.semitaggings.length === 0 && (
-                  <div className={clsx("shrink-0 text-xs text-slate-400")}>
-                    なし
-                  </div>
-                )}
-                {request.semitaggings.length > 0 && (
-                  <div className={clsx("flex flex-wrap gap-1")}>
-                    {request.semitaggings.map((semitagging) => (
-                      <SemitagButton
-                        key={semitagging.id}
-                        name={semitagging.name}
-                        append={() => appendSemitag(semitagging.name)}
-                        remove={() => removeSemitag(semitagging.name)}
-                        selected={isIncludeSemitag(semitagging.name)}
-                      />
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
         )}
       </div>
       <RegisterFormButtonsPart

@@ -1,10 +1,12 @@
 import clsx from "clsx";
 import { useMemo, useReducer } from "react";
 
+import UserPageLink from "~/app/(v2)/users/[name]/Link";
 import Button from "~/components/Button";
 import TagSearcher from "~/components/TagSearcher";
 import { TextInput2 } from "~/components/TextInput";
-import { FragmentType } from "~/gql";
+import { UserIcon } from "~/components/UserIcon";
+import { FragmentType, graphql, useFragment } from "~/gql";
 
 import { SemitagButton } from "./SemitagButton";
 import { TagButton, TagButtonFragment } from "./TagButton";
@@ -279,6 +281,118 @@ export const RegisterFormTabPicker = ({
           リクエスト情報
         </div>
       )}
+    </div>
+  );
+};
+
+export const RegisterFormRequestPartFragment = graphql(`
+  fragment RegisterFormRequestPart on RegistrationRequest {
+    title
+    requestedBy {
+      ...Link_User
+      ...UserIcon
+      id
+      displayName
+    }
+    taggings {
+      id
+      tag {
+        id
+        ...CommonTag
+      }
+    }
+    semitaggings {
+      id
+      name
+    }
+  }
+`);
+export const RegisterFormRequestPart = ({
+  className,
+  fragment,
+  appendSemitag,
+  appendTag,
+  isSelectingSemitag: isIncludeSemitag,
+  removeSemitag,
+  removeTag,
+  isSelectingTag: isSelecting,
+}: {
+  className?: string;
+  fragment: FragmentType<typeof RegisterFormRequestPartFragment>;
+  isSelectingTag: ReturnType<typeof useRegisterFormEditTaggings>["isSelecting"];
+  isSelectingSemitag: ReturnType<
+    typeof useRegisterFormEditSemitaggings
+  >["isIncludeSemitag"];
+} & Pick<
+  ReturnType<typeof useRegisterFormEditTaggings>,
+  "appendTag" | "removeTag"
+> &
+  Pick<
+    ReturnType<typeof useRegisterFormEditSemitaggings>,
+    "appendSemitag" | "removeSemitag"
+  >) => {
+  const { title, requestedBy, taggings, semitaggings } = useFragment(
+    RegisterFormRequestPartFragment,
+    fragment
+  );
+  return (
+    <div className={clsx(className, "flex flex-col gap-y-2")}>
+      <div className={clsx("flex flex-col gap-y-2")}>
+        <div className={clsx("flex items-center")}>
+          <p className={clsx("grow text-sm text-slate-500")}>
+            <span className={clsx("font-bold text-slate-400")}>{title}</span>
+            としてリクエストされています
+          </p>
+          <div className={clsx("shrink-0")}>
+            <UserPageLink fragment={requestedBy}>
+              <UserIcon size={24} fragment={requestedBy} />
+            </UserPageLink>
+          </div>
+        </div>
+        <div className={clsx("flex flex-col gap-y-2")}>
+          <div className={clsx("shrink-0 py-0.5 text-xs text-slate-500")}>
+            タグ
+          </div>
+          {taggings.length === 0 && (
+            <div className={clsx("shrink-0 text-xs text-slate-400")}>なし</div>
+          )}
+          {taggings.length > 0 && (
+            <div className={clsx("flex flex-wrap gap-1")}>
+              {taggings.map((tagging) => (
+                <TagButton
+                  key={tagging.id}
+                  fragment={tagging.tag}
+                  tagId={tagging.tag.id}
+                  append={(f) => appendTag(tagging.tag.id, f)}
+                  remove={() => removeTag(tagging.tag.id)}
+                  selected={isSelecting(tagging.tag.id)}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+        <div className={clsx("flex flex-col gap-y-2")}>
+          <div className={clsx("shrink-0 py-0.5 text-xs text-slate-500")}>
+            仮タグ
+          </div>
+          {semitaggings.length === 0 && (
+            <div className={clsx("shrink-0 text-xs text-slate-400")}>なし</div>
+          )}
+          {semitaggings.length > 0 && (
+            <div className={clsx("flex flex-wrap gap-1")}>
+              {semitaggings.map((semitagging) => (
+                <SemitagButton
+                  key={semitagging.id}
+                  name={semitagging.name}
+                  append={() => appendSemitag(semitagging.name)}
+                  remove={() => removeSemitag(semitagging.name)}
+                  selected={isIncludeSemitag(semitagging.name)}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 };
