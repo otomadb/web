@@ -14,7 +14,7 @@ import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
 
 import RegisterForm, { Query } from ".";
-import { Fragment as SourceFragment } from "./OriginalSource";
+import { YoutubeRegisterOriginalSourceFragment as SourceFragment } from "./OriginalSource";
 import { Fragment as RegReqFragment } from "./Request";
 
 const meta = {

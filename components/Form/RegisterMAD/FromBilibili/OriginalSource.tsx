@@ -8,7 +8,7 @@ import { FragmentType, graphql, useFragment } from "~/gql";
 
 import { Fragment as TagButtonFragment, TagButton } from "../../TagButton";
 
-export const Fragment = graphql(`
+export const BilibiliRegisterOriginalSourceFragment = graphql(`
   fragment RegisterFromBilibiliForm_OriginalSource on BilibiliOriginalSource {
     sourceId
     title
@@ -38,7 +38,7 @@ export default function OriginalSource({
   ...props
 }: {
   className?: string;
-  fragment: FragmentType<typeof Fragment>;
+  fragment: FragmentType<typeof BilibiliRegisterOriginalSourceFragment>;
 
   selectingTagId: string[];
   appendTag(a: {
@@ -51,7 +51,10 @@ export default function OriginalSource({
   appendSemitag(name: string): void;
   removeSemitag(name: string): void;
 }) {
-  const fragment = useFragment(Fragment, props.fragment);
+  const fragment = useFragment(
+    BilibiliRegisterOriginalSourceFragment,
+    props.fragment
+  );
 
   return (
     <div className={clsx(className, ["flex", "flex-col", "gap-y-2"])}>

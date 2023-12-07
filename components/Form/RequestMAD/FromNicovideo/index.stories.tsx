@@ -6,7 +6,7 @@ import { MadPageLinkFragment as VideoLinkFragment } from "~/app/(v2)/mads/[seria
 import { CommonTagFragment } from "~/components/CommonTag";
 import { Fragment as AlreadyRegisteredFragment } from "~/components/Form/AlreadyRegistered";
 import { Fragment as AlreadyRequestedFragment } from "~/components/Form/AlreadyRequested";
-import { Fragment as SourceFragment } from "~/components/Form/RegisterMAD/FromNicovideo/OriginalSource";
+import { NicovideoRegisterOriginalSourceFragment as SourceFragment } from "~/components/Form/RegisterMAD/FromNicovideo/OriginalSource";
 import { Query as TagSearcherQuery } from "~/components/TagSearcher";
 import { SuggestItemFragment as TagSearcherSuggestItemFragment } from "~/components/TagSearcher/SuggestItem";
 import { SuggestsFragment as TagSearcherSuggestsFragment } from "~/components/TagSearcher/Suggests";

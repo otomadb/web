@@ -6,7 +6,7 @@ import { CoolImage } from "~/components/CoolImage";
 import { ExternalLinkPictogram } from "~/components/Pictogram";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-export const Fragment = graphql(`
+export const YoutubeRegisterOriginalSourceFragment = graphql(`
   fragment RegisterFromYoutubeForm_OriginalSource on YoutubeOriginalSource {
     url
     sourceId
@@ -18,9 +18,12 @@ export default function OriginalSource({
   ...props
 }: {
   className?: string;
-  fragment: FragmentType<typeof Fragment>;
+  fragment: FragmentType<typeof YoutubeRegisterOriginalSourceFragment>;
 }) {
-  const fragment = useFragment(Fragment, props.fragment);
+  const fragment = useFragment(
+    YoutubeRegisterOriginalSourceFragment,
+    props.fragment
+  );
 
   return (
     <div className={clsx(className, ["flex", "flex-col", "gap-y-2"])}>

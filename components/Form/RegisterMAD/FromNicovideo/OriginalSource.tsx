@@ -8,7 +8,7 @@ import { FragmentType, graphql, useFragment } from "~/gql";
 
 import { Fragment as TagButtonFragment, TagButton } from "../../TagButton";
 
-export const Fragment = graphql(`
+export const NicovideoRegisterOriginalSourceFragment = graphql(`
   fragment RegisterFromNicovideoForm_OriginalSource on NicovideoOriginalSource {
     sourceId
     url
@@ -40,7 +40,7 @@ export default function OriginalSource({
   ...props
 }: {
   className?: string;
-  fragment: FragmentType<typeof Fragment>;
+  fragment: FragmentType<typeof NicovideoRegisterOriginalSourceFragment>;
 
   selectingTagId: string[];
   appendTag(a: {
@@ -53,7 +53,10 @@ export default function OriginalSource({
   appendSemitag(name: string): void;
   removeSemitag(name: string): void;
 }) {
-  const fragment = useFragment(Fragment, props.fragment);
+  const fragment = useFragment(
+    NicovideoRegisterOriginalSourceFragment,
+    props.fragment
+  );
 
   return (
     <div className={clsx(className, ["flex", "flex-col", "gap-y-2"])}>

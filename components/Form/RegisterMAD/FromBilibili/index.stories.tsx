@@ -10,7 +10,7 @@ import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
 
 import RegisterForm, { Query } from ".";
-import { Fragment as SourceFragment } from "./OriginalSource";
+import { BilibiliRegisterOriginalSourceFragment as SourceFragment } from "./OriginalSource";
 
 const meta = {
   component: RegisterForm,
