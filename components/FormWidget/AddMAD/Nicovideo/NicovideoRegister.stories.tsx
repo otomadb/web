@@ -1,4 +1,3 @@
-import { ResultOf } from "@graphql-typed-document-node/core";
 import { action } from "@storybook/addon-actions";
 import { expect } from "@storybook/jest";
 import { Meta, StoryObj } from "@storybook/react";
@@ -88,7 +87,7 @@ export const mockRequestFragment = makeFragmentData(
         { displayName: "User 1", icon: "/icon.png" },
         UserIconFragment
       ),
-    } as ResultOf<typeof NicovideoRegisterFormRequestFragment>["requestedBy"],
+    },
     taggings: [
       {
         id: "tagging:1",
