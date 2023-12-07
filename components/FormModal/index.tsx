@@ -1,12 +1,18 @@
 "use client";
 
 import clsx from "clsx";
-import React, { ReactNode, useContext, useReducer } from "react";
+import React, {
+  ComponentProps,
+  ReactNode,
+  useContext,
+  useReducer,
+} from "react";
 
+import NicovideoRegisterForm from "~/components/Form/NicovideoRegisterForm";
 import { XMarkPictogram } from "~/components/Pictogram";
+import { estimateUrl } from "~/utils/extractSourceId";
 
 import RegisterMADFromBilibiliFormModal from "./RegisterMADFromBilibili";
-import RegisterMADFromNicovideoFormModal from "./RegisterMADFromNicovideo";
 import RegisterMADFromYoutubeFormModal from "./RegisterMADFromYoutube";
 import RequestMADFromBilibiliFormModal from "./RequestMADFromBilibili";
 import RequestMADFromNicovideoFormModal from "./RequestMADFromNicovideo";
@@ -16,7 +22,21 @@ import SoundcloudRegisterModal from "./SoundcloudRegisterModal";
 
 export type Current =
   | undefined
-  | { type: "REGISTER_FROM_NICOVIDEO"; sourceId: string | null }
+  | {
+      type: "SOURCE_INPUT";
+      init:
+        | (Exclude<ReturnType<typeof estimateUrl>, null> & {
+            r: "request" | "register";
+          })
+        | null;
+    }
+  | {
+      type: "REGISTER_FROM_NICOVIDEO";
+      props: Pick<
+        ComponentProps<typeof NicovideoRegisterForm>,
+        "sourceFragment" | "requestFragment"
+      >;
+    }
   | { type: "REGISTER_FROM_YOUTUBE"; sourceId: string | null }
   | { type: "REGISTER_FROM_BILIBILI"; sourceId: string | null }
   | { type: "REGISTER_FROM_SOUNDCLOUD"; url: string | null }
@@ -73,51 +93,105 @@ export const FormModalProvider: React.FC<{
   );
 };
 
+export const useOpenInput = () => {
+  const { open } = useContext(FormModalContext);
+  return (
+    props?: Exclude<ReturnType<typeof estimateUrl>, null> & {
+      r: "request" | "register";
+    }
+  ) =>
+    open({
+      type: "SOURCE_INPUT",
+      init: props || null,
+    });
+};
+
+/**
+ * @deprecated
+ */
 export const useOpenRegisterFromNicovideo = () => {
   const { open } = useContext(FormModalContext);
   return (sourceId: string | null) =>
-    open({ type: "REGISTER_FROM_NICOVIDEO", sourceId });
+    open({
+      type: "SOURCE_INPUT",
+      init: sourceId ? { type: "nicovideo", sourceId, r: "register" } : null,
+    });
 };
 
+/**
+ * @deprecated
+ */
 export const useOpenRequestFromNicovideo = () => {
   const { open } = useContext(FormModalContext);
   return (sourceId: string | null) =>
-    open({ type: "REQUEST_FROM_NICOVIDEO", sourceId });
+    open({
+      type: "SOURCE_INPUT",
+      init: sourceId ? { type: "nicovideo", sourceId, r: "request" } : null,
+    });
 };
 
+/**
+ * @deprecated
+ */
 export const useOpenRegisterFromYoutube = () => {
   const { open } = useContext(FormModalContext);
   return (sourceId: string | null) =>
     open({ type: "REGISTER_FROM_YOUTUBE", sourceId });
 };
 
+/**
+ * @deprecated
+ */
 export const useOpenRegisterFromBilibili = () => {
   const { open } = useContext(FormModalContext);
   return (sourceId: string | null) =>
     open({ type: "REGISTER_FROM_BILIBILI", sourceId });
 };
 
+/**
+ * @deprecated
+ */
 export const useOpenSoundcloudRegisterModal = () => {
   const { open } = useContext(FormModalContext);
   return (url: string | null) =>
     open({ type: "REGISTER_FROM_SOUNDCLOUD", url });
 };
 
+/**
+ * @deprecated
+ */
 export const useOpenRequestFromYoutube = () => {
   const { open } = useContext(FormModalContext);
   return (sourceId: string | null) =>
     open({ type: "REQUEST_FROM_YOUTUBE", sourceId });
 };
 
+/**
+ * @deprecated
+ */
 export const useOpenRequestFromSoundcloud = () => {
   const { open } = useContext(FormModalContext);
   return (url: string | null) => open({ type: "REQUEST_FROM_SOUNDCLOUD", url });
 };
 
+/**
+ * @deprecated
+ */
 export const useOpenRequestFromBilibili = () => {
   const { open } = useContext(FormModalContext);
   return (sourceId: string | null) =>
     open({ type: "REQUEST_FROM_BILIBILI", sourceId });
+};
+
+export const useOpenRegisterFromNicovideo2 = () => {
+  const { open } = useContext(FormModalContext);
+  return (
+    props: Extract<Current, { type: "REGISTER_FROM_NICOVIDEO" }>["props"]
+  ) =>
+    open({
+      type: "REGISTER_FROM_NICOVIDEO",
+      props,
+    });
 };
 
 export const useCloseFormModal = () => {
@@ -186,13 +260,12 @@ export default function FormModal({
           </div>
           <div className={clsx(["bg-slate-900"])}>
             {current.type === "REGISTER_FROM_NICOVIDEO" && (
-              <RegisterMADFromNicovideoFormModal
-                initialSourceId={current.sourceId || undefined}
-                className={clsx()}
+              <NicovideoRegisterForm
+                {...current.props}
+                handleSuccess={() => close()}
+                handleCancel={() => close()}
                 style={{ width: 640, height: 720 }}
-                handleSuccess={() => {
-                  close();
-                }}
+                className={clsx(["h-full"])}
               />
             )}
             {current.type === "REGISTER_FROM_BILIBILI" && (

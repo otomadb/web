@@ -16,7 +16,6 @@ import NicovideoRequestLink from "~/app/(v2)/requests/nicovideo/[sourceId]/Link"
 import Button from "~/components/Button";
 import AlreadyRegistered from "~/components/Form/AlreadyRegistered";
 import AlreadyRequested from "~/components/Form/AlreadyRequested";
-import OriginalSource from "~/components/Form/RegisterMAD/FromNicovideo/OriginalSource";
 import { SemitagButton } from "~/components/Form/SemitagButton";
 import SourceNotExists from "~/components/Form/SourceNotExists";
 import {
@@ -28,6 +27,7 @@ import { TextInput2 } from "~/components/TextInput";
 import useToaster from "~/components/Toaster/useToaster";
 import { FragmentType, graphql } from "~/gql";
 
+import NicovideoOriginalSource from "../../NicovideoOriginalSource";
 import { SucceededToast } from "./SucceededToast";
 import useRequestFromNicovideo from "./useRequestFromNicovideo";
 
@@ -387,7 +387,7 @@ export default function RequestForm({
             </div>
             <div className={clsx({ hidden: tab !== "SOURCE" })}>
               {data.fetchNicovideo.source && (
-                <OriginalSource
+                <NicovideoOriginalSource
                   fragment={data.fetchNicovideo.source}
                   selectingTagId={tagIds}
                   appendTag={({ tagId, fragment }) => {

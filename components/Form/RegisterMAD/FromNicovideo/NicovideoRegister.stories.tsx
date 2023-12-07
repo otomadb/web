@@ -13,12 +13,10 @@ import { Fragment as VideoThumbnailFragment } from "~/components/VideoThumbnail"
 import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
 
-import RegisterForm, { Query } from ".";
-import { NicovideoRegisterOriginalSourceFragment as SourceFragment } from "./OriginalSource";
-import { Fragment as RegReqFragment } from "./Request";
+import NicovideoRegisterForm, { Query } from "../../NicovideoRegisterForm";
 
 const meta = {
-  component: RegisterForm,
+  component: NicovideoRegisterForm,
   args: {
     style: {
       width: 640,
@@ -165,7 +163,7 @@ const meta = {
       },
     },
   },
-} as Meta<typeof RegisterForm>;
+} as Meta<typeof NicovideoRegisterForm>;
 export default meta;
 
 type Story = StoryObj<typeof meta>;

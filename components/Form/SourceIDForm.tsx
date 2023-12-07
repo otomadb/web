@@ -12,7 +12,7 @@ import { estimateUrl } from "~/utils/extractSourceId";
 import { CoolImage2 } from "../CoolImage";
 import {
   useOpenRegisterFromBilibili,
-  useOpenRegisterFromNicovideo,
+  useOpenRegisterFromNicovideo2,
   useOpenRegisterFromYoutube,
   useOpenRequestFromBilibili,
   useOpenRequestFromNicovideo,
@@ -25,8 +25,11 @@ import {
   NotFoundPictogram,
   SearchPictogram,
 } from "../Pictogram";
+import {
+  NicovideoRegisterFormRequestFragment,
+  NicovideoRegisterOriginalSourceFragment,
+} from "./NicovideoRegisterForm";
 import { BilibiliRegisterOriginalSourceFragment } from "./RegisterMAD/FromBilibili/OriginalSource";
-import { NicovideoRegisterOriginalSourceFragment } from "./RegisterMAD/FromNicovideo/OriginalSource";
 import { SoundcloudRegisterOriginalSourceFragment } from "./RegisterMAD/FromSoundcloud/OriginalSource";
 import { YoutubeRegisterOriginalSourceFragment } from "./RegisterMAD/FromYoutube/OriginalSource";
 
@@ -54,6 +57,13 @@ const SubmitButton = ({
 
 export const queryFetchNicovideo = graphql(`
   query SourceIDForm_Nicovideo($sourceId: String!) {
+    findNicovideoVideoSource(input: { sourceId: $sourceId }) {
+      ...Form_VideoAlreadyRegistered
+    }
+    findNicovideoRegistrationRequest(input: { sourceId: $sourceId }) {
+      id
+      ...RegisterFromNicovideoForm_Request
+    }
     fetchNicovideo(input: { sourceId: $sourceId }) {
       source {
         sourceId
@@ -62,7 +72,7 @@ export const queryFetchNicovideo = graphql(`
           title
           thumbnailUrl
         }
-        ...RegisterFromNicovideoForm_OriginalSource
+        ...RegisterFromNicovideoForm_OriginalSource2
       }
     }
   }
@@ -77,20 +87,22 @@ export const NicovideoConfirmForm = ({
   className?: string;
   style?: React.CSSProperties;
   sourceId: string;
-} & (
-  | {
-      type: "register";
-      go(
-        type: FragmentType<typeof NicovideoRegisterOriginalSourceFragment>
-      ): void;
-    }
-  | {
-      type: "request";
-      go(
-        type: FragmentType<typeof NicovideoRegisterOriginalSourceFragment>
-      ): void;
-    }
-)) => {
+  type: "register" | "request";
+  go(
+    p:
+      | {
+          type: "register";
+          request:
+            | FragmentType<typeof NicovideoRegisterFormRequestFragment>
+            | undefined;
+          source: FragmentType<typeof NicovideoRegisterOriginalSourceFragment>;
+        }
+      | {
+          type: "request";
+          source: FragmentType<typeof NicovideoRegisterOriginalSourceFragment>;
+        }
+  ): void;
+}) => {
   const [{ fetching, data }] = useQuery({
     query: queryFetchNicovideo,
     variables: { sourceId },
@@ -99,9 +111,22 @@ export const NicovideoConfirmForm = ({
   const handle = useCallback(() => {
     if (!data?.fetchNicovideo.source) return;
 
-    if (type === "register") go(data.fetchNicovideo.source);
-    else go(data.fetchNicovideo.source);
-  }, [data?.fetchNicovideo.source, go, type]);
+    switch (type) {
+      case "register":
+        go({
+          type: "register",
+          request: data.findNicovideoRegistrationRequest || undefined,
+          source: data.fetchNicovideo.source,
+        });
+        break;
+      case "request":
+        go({
+          type: "request",
+          source: data.fetchNicovideo.source,
+        });
+        break;
+    }
+  }, [data, go, type]);
 
   if (fetching)
     return (
@@ -171,11 +196,11 @@ export const NicovideoConfirmForm = ({
 };
 
 export const queryFetchYoutube = graphql(`
-  query SourceIDForm_Youtube($sourceId: String!) {
+  query InputIDForm_Youtube($sourceId: String!) {
     fetchYoutube(input: { sourceId: $sourceId }) {
       source {
-        url
         thumbnailUrl
+        url
         ...RegisterFromYoutubeForm_OriginalSource
       }
     }
@@ -522,7 +547,7 @@ export default function SourceIDForm({
   type: "request" | "register";
 }) {
   const openNicovideoRequest = useOpenRequestFromNicovideo();
-  const openNicovideoRegister = useOpenRegisterFromNicovideo();
+  const openNicovideoRegister = useOpenRegisterFromNicovideo2();
 
   const openYoutubeRequest = useOpenRequestFromYoutube();
   const openYoutubeRegister = useOpenRegisterFromYoutube();
@@ -585,10 +610,18 @@ export default function SourceIDForm({
         <NicovideoConfirmForm
           sourceId={current.sourceId}
           type={type}
-          go={() => {
-            // TODO: fix
-            if (type === "register") openNicovideoRegister(current.sourceId);
-            else openNicovideoRequest(current.sourceId);
+          go={(p) => {
+            switch (p.type) {
+              case "register":
+                openNicovideoRegister({
+                  sourceFragment: p.source,
+                  requestFragment: p.request,
+                });
+                break;
+              case "request":
+                openNicovideoRequest("");
+                break;
+            }
           }}
           className={clsx("grow")}
         />

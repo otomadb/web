@@ -6,9 +6,9 @@ import { CoolImage } from "~/components/CoolImage";
 import { ExternalLinkPictogram } from "~/components/Pictogram";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-import { Fragment as TagButtonFragment, TagButton } from "../../TagButton";
+import { Fragment as TagButtonFragment, TagButton } from "./TagButton";
 
-export const NicovideoRegisterOriginalSourceFragment = graphql(`
+export const NicovideoOriginalSourceFragment = graphql(`
   fragment RegisterFromNicovideoForm_OriginalSource on NicovideoOriginalSource {
     sourceId
     url
@@ -29,7 +29,7 @@ export const NicovideoRegisterOriginalSourceFragment = graphql(`
     }
   }
 `);
-export default function OriginalSource({
+export default function NicovideoOriginalSource({
   className,
   selectingTagId,
   removeTag,
@@ -40,7 +40,7 @@ export default function OriginalSource({
   ...props
 }: {
   className?: string;
-  fragment: FragmentType<typeof NicovideoRegisterOriginalSourceFragment>;
+  fragment: FragmentType<typeof NicovideoOriginalSourceFragment>;
 
   selectingTagId: string[];
   appendTag(a: {
@@ -53,17 +53,14 @@ export default function OriginalSource({
   appendSemitag(name: string): void;
   removeSemitag(name: string): void;
 }) {
-  const fragment = useFragment(
-    NicovideoRegisterOriginalSourceFragment,
-    props.fragment
-  );
+  const fragment = useFragment(NicovideoOriginalSourceFragment, props.fragment);
 
   return (
     <div className={clsx(className, ["flex", "flex-col", "gap-y-2"])}>
-      <div className={clsx(["flex"], ["gap-x-4"])}>
-        <div className={clsx(["shrink-0"], ["flex", "flex-col", "gap-y-4"])}>
+      <div className={clsx(["flex gap-x-4"])}>
+        <div className={clsx(["flex shrink-0", "flex-col", "gap-y-4"])}>
           <CoolImage
-            className={clsx(["w-[96px]"], ["h-[64px]"])}
+            className={clsx(["h-[64px] w-[96px]"])}
             src={fragment.info.thumbnailUrl}
             width={96}
             height={64}
@@ -71,18 +68,17 @@ export default function OriginalSource({
             unoptimized={true}
           />
         </div>
-        <div className={clsx(["py-2"], ["grow"], ["flex", "flex-col"])}>
-          <div className={clsx(["text-slate-300"], ["text-sm", "font-bold"])}>
+        <div className={clsx(["flex grow py-2", "flex-col"])}>
+          <div className={clsx(["text-sm text-slate-300", "font-bold"])}>
             {fragment.info.title}
           </div>
-          <div className={clsx(["mt-auto"], ["flex", "gap-x-2"])}>
+          <div className={clsx(["mt-auto flex", "gap-x-2"])}>
             <a
               href={fragment.url}
               target="_blank"
-              className={clsx(
-                ["flex", "items-center", "gap-x-1"],
-                ["text-slate-400", "hover:text-sky-400"]
-              )}
+              className={clsx([
+                "flex items-center gap-x-1 text-slate-400 hover:text-sky-400",
+              ])}
             >
               <ExternalLinkPictogram className={clsx(["w-4", "h-4"])} />
               <span className={clsx(["text-sm", "font-mono"])}>
@@ -96,16 +92,11 @@ export default function OriginalSource({
         {fragment.info.tags.map((originalTag) => (
           <div
             key={originalTag.name}
-            className={clsx(["flex", "flex-col", "items-start"], ["gap-y-1"])}
+            className={clsx(["flex", "flex-col", "items-start gap-y-1"])}
           >
             <div
               role="button"
-              className={clsx([
-                "text-xs",
-                "text-left",
-                "text-slate-400",
-                "font-bold",
-              ])}
+              className={clsx(["text-left text-xs font-bold text-slate-400"])}
               onClick={(e) => {
                 e.preventDefault();
                 if (selectingSemitagNames.includes(originalTag.name))
@@ -126,11 +117,7 @@ export default function OriginalSource({
               {originalTag.searchTags.items.length >= 1 && (
                 <div
                   className={clsx([
-                    "flex",
-                    "flex-wrap",
-                    "items-start",
-                    "gap-x-1",
-                    "gap-y-0.5",
+                    "flex flex-wrap items-start gap-x-1 gap-y-0.5",
                   ])}
                 >
                   {originalTag.searchTags.items.map((item) => (
