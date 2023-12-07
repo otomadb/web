@@ -1,10 +1,10 @@
 import { action } from "@storybook/addon-actions";
 import { Meta, StoryObj } from "@storybook/react";
 
+import { CommonTagFragment } from "~/components/CommonTag";
 import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
 
-import { CommonTagFragment } from "../CommonTag";
 import { TagButton } from "./TagButton";
 
 const meta = {

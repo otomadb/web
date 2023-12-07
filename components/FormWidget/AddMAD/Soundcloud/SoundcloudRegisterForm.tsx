@@ -2,7 +2,7 @@
 
 import { ResultOf } from "@graphql-typed-document-node/core";
 import clsx from "clsx";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useReducer, useState } from "react";
 import { useMutation } from "urql";
 
 import { MadPageLink } from "~/app/(v2)/mads/[serial]/Link";
@@ -12,20 +12,18 @@ import { TextInput2 } from "~/components/TextInput";
 import useToaster from "~/components/Toaster/useToaster";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-import BilibiliOriginalSource from "./BilibiliOriginalSource";
-import { SemitagButton } from "./SemitagButton";
-import { TagButton } from "./TagButton";
-import useRegisterFormEditSemitaggings from "./useRegisterFormEditSemitaggings";
-import useRegisterFormEditTaggings from "./useRegisterFormEditTaggings";
+import { SemitagButton } from "../SemitagButton";
+import { TagButton, TagButtonFragment } from "../TagButton";
+import OriginalSource from "./SoundcloudOriginalSource";
 
 const Mutation = graphql(`
-  mutation RegisterBilibiliMADForm_RegisterMAD(
-    $input: RegisterBilibiliMADInput!
+  mutation RegisterSoundcloudMADForm_RegisterMAD(
+    $input: RegisterSoundcloudMADInput!
   ) {
-    registerBilibiliMAD(input: $input) {
+    registerSoundcloudMAD(input: $input) {
       __typename
-      ... on RegisterBilibiliMADSucceededPayload {
-        video {
+      ... on RegisterSoundcloudMADSucceededPayload {
+        mad {
           ...Link_Video
           id
           title
@@ -39,8 +37,8 @@ export const useRegisterVideo = ({
 }: {
   onSuccess(
     data: Extract<
-      ResultOf<typeof Mutation>["registerBilibiliMAD"],
-      { __typename: "RegisterBilibiliMADSucceededPayload" }
+      ResultOf<typeof Mutation>["registerSoundcloudMAD"],
+      { __typename: "RegisterSoundcloudMADSucceededPayload" }
     >
   ): void;
 }) => {
@@ -56,7 +54,7 @@ export const useRegisterVideo = ({
     }: {
       sourceId: string;
       title: string;
-      thumbnailUrl: string;
+      thumbnailUrl: string | null;
       tagIds: string[];
       semitagNames: string[];
     }) => {
@@ -74,9 +72,9 @@ export const useRegisterVideo = ({
         return;
       }
 
-      switch (data.registerBilibiliMAD.__typename) {
-        case "RegisterBilibiliMADSucceededPayload":
-          onSuccess(data.registerBilibiliMAD);
+      switch (data.registerSoundcloudMAD.__typename) {
+        case "RegisterSoundcloudMADSucceededPayload":
+          onSuccess(data.registerSoundcloudMAD);
           return;
         default:
           // TODO: 何かしら出す
@@ -87,16 +85,32 @@ export const useRegisterVideo = ({
   );
 };
 
-export const BilibiliRegisterOriginalSourceFragment = graphql(`
-  fragment BilibiliForm_OriginalSource2 on BilibiliOriginalSource {
+export const Query = graphql(`
+  query RegisterFromSoundcloudForm_Check($url: String!) {
+    fetchSoundcloud(input: { url: $url }) {
+      source {
+        sourceId
+        title
+        originalThumbnailUrl
+        ...SoundcloudForm_OriginalSource
+      }
+    }
+    findSoundcloudMADSource(input: { url: $url }) {
+      id
+      ...Form_VideoAlreadyRegistered
+    }
+  }
+`);
+export const SoundcloudRegisterOriginalSourceFragment = graphql(`
+  fragment SoundcloudForm_OriginalSource2 on SoundcloudOriginalSource {
     url
     sourceId
     title
     thumbnailUrl(scale: LARGE)
-    ...BilibiliForm_OriginalSource
+    ...SoundcloudForm_OriginalSource
   }
 `);
-export default function BilibiliRegisterForm({
+export default function SoundcloudRegisterForm({
   className,
   style,
   handleSuccess,
@@ -107,36 +121,75 @@ export default function BilibiliRegisterForm({
   style?: React.CSSProperties;
   handleSuccess?(): void;
   handleCancel(): void;
-  sourceFragment: FragmentType<typeof BilibiliRegisterOriginalSourceFragment>;
+  sourceFragment: FragmentType<typeof SoundcloudRegisterOriginalSourceFragment>;
 }) {
   const source = useFragment(
-    BilibiliRegisterOriginalSourceFragment,
+    SoundcloudRegisterOriginalSourceFragment,
     sourceFragment
   );
 
   const [title, setTitle] = useState<string>(source.title);
-  const { appendTag, isSelecting, removeTag, taggingsPayload, tags } =
-    useRegisterFormEditTaggings();
-  const {
-    appendSemitag,
-    isIncludeSemitag,
-    removeSemitag,
-    semitaggings,
-    semitaggingsPayload,
-  } = useRegisterFormEditSemitaggings();
+  const [tags, dispatchTags] = useReducer(
+    (
+      prev: { id: string; fragment: FragmentType<typeof TagButtonFragment> }[],
+      action:
+        | {
+            type: "append";
+            tagId: string;
+            fragment: FragmentType<typeof TagButtonFragment>;
+          }
+        | { type: "remove"; tagId: string }
+        | { type: "clear" }
+    ) => {
+      switch (action.type) {
+        case "append":
+          return [
+            ...new Set([
+              ...prev,
+              { id: action.tagId, fragment: action.fragment },
+            ]),
+          ];
+        case "remove":
+          return prev.filter(({ id }) => id !== action.tagId);
+        case "clear":
+          return [];
+      }
+    },
+    []
+  );
+  const tagIds = useMemo(() => tags.map(({ id }) => id), [tags]);
+  const [semitagNames, dispatchSemitags] = useReducer(
+    (
+      prev: string[],
+      action:
+        | { type: "append"; name: string }
+        | { type: "remove"; name: string }
+        | { type: "clear" }
+    ) => {
+      switch (action.type) {
+        case "append":
+          return [...new Set([...prev, action.name])];
+        case "remove":
+          return prev.filter((id) => id !== action.name);
+        case "clear":
+          return [];
+      }
+    },
+    []
+  );
 
   const [tab, setTab] = useState<"SOURCE" | "REQUEST">("SOURCE");
 
   const callToast = useToaster();
   const registerMAD = useRegisterVideo({
-    onSuccess({ video }) {
+    onSuccess({ mad }) {
       callToast(
         <>
           <MadPageLink
-            fragment={video}
+            fragment={mad}
             className={clsx("font-bold text-vivid-primary")}
           >
-            {video.title}
+            {mad.title}
           </MadPageLink>
           を登録しました．
         </>
@@ -144,21 +197,15 @@ export default function BilibiliRegisterForm({
       if (handleSuccess) handleSuccess();
     },
   });
-  const payload = useMemo(() => {
+  const payload = useMemo<null | Parameters<typeof registerMAD>[0]>(() => {
     return {
-      sourceId: source.sourceId,
+      sourceId: source.url,
       title,
-      thumbnailUrl: source.thumbnailUrl,
-      tagIds: taggingsPayload,
-      semitagNames: semitaggingsPayload,
+      thumbnailUrl: source.thumbnailUrl || null,
+      tagIds,
+      semitagNames,
     };
-  }, [
-    semitaggingsPayload,
-    source.sourceId,
-    source.thumbnailUrl,
-    taggingsPayload,
-    title,
-  ]);
+  }, [semitagNames, source.thumbnailUrl, source.url, tagIds, title]);
 
   const handleSubmit = useCallback(() => {
     if (!payload) return;
@@ -224,8 +271,10 @@ export default function BilibiliRegisterForm({
                       key={tagId}
                       tagId={tagId}
                       fragment={fragment}
-                      append={(f) => appendTag(tagId, f)}
-                      remove={() => removeTag(tagId)}
+                      append={(f) =>
+                        dispatchTags({ type: "append", tagId, fragment: f })
+                      }
+                      remove={() => dispatchTags({ type: "remove", tagId })}
                       selected={tags.map(({ id }) => id).includes(tagId)}
                     />
                   ))}
@@ -240,7 +289,7 @@ export default function BilibiliRegisterForm({
               >
                 追加される仮タグ
               </div>
-              {semitaggings.length === 0 && (
+              {semitagNames.length === 0 && (
                 <div
                   className={clsx([
                     "shrink-0 self-center text-xs",
@@ -250,17 +299,17 @@ export default function BilibiliRegisterForm({
                   なし
                 </div>
               )}
-              {semitaggings.length > 0 && (
+              {semitagNames.length > 0 && (
                 <div
                   className={clsx(["flex", "flex-wrap", "gap-x-1", "gap-y-1"])}
                 >
-                  {semitaggings.map(({ name }) => (
+                  {semitagNames.map((name) => (
                     <SemitagButton
                       key={name}
                       name={name}
-                      append={() => appendSemitag(name)}
-                      remove={() => removeSemitag(name)}
-                      selected={isIncludeSemitag(name)}
+                      append={() => dispatchSemitags({ type: "append", name })}
+                      remove={() => dispatchSemitags({ type: "remove", name })}
+                      selected={semitagNames.includes(name)}
                     />
                   ))}
                 </div>
@@ -271,7 +320,9 @@ export default function BilibiliRegisterForm({
                 limit={5}
                 size="small"
                 className={clsx(["z-10 w-full"])}
-                handleSelect={(tagId, fragment) => appendTag(tagId, fragment)}
+                handleSelect={(tagId, fragment) => {
+                  dispatchTags({ type: "append", tagId, fragment });
+                }}
                 Additional={({ query }) => (
                   <div className={clsx(["flex items-center"])}>
                     <div
@@ -286,8 +337,10 @@ export default function BilibiliRegisterForm({
                     </div>
                   </div>
                 )}
-                showAdditional={(query) => !isIncludeSemitag(query)}
-                handleAdditionalClicked={(query) => appendSemitag(query)}
+                showAdditional={(query) => !semitagNames.includes(query)}
+                handleAdditionalClicked={(query) =>
+                  dispatchSemitags({ type: "append", name: query })
+                }
               />
             </div>
           </div>
@@ -319,15 +372,7 @@ export default function BilibiliRegisterForm({
             </div>
           </div>
           <div className={clsx({ hidden: tab !== "SOURCE" })}>
-            <BilibiliOriginalSource
-              fragment={source}
-              isSelectingTag={isSelecting}
-              appendTag={({ tagId, fragment }) => appendTag(tagId, fragment)}
-              removeTag={(tagId) => removeTag(tagId)}
-              isSelectingSemitag={isSelecting}
-              appendSemitag={(name) => appendSemitag(name)}
-              removeSemitag={(name) => removeSemitag(name)}
-            />
+            <OriginalSource fragment={source} />
           </div>
         </div>
         <div className={clsx(["mt-auto flex w-full shrink-0"])}>

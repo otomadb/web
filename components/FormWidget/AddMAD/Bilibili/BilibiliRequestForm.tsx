@@ -12,19 +12,19 @@ import { TextInput2 } from "~/components/TextInput";
 import useToaster from "~/components/Toaster/useToaster";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-import { SemitagButton } from "./SemitagButton";
-import { TagButton } from "./TagButton";
-import useRequestFormEditSemitaggings from "./useRequestFormEditSemitaggings";
-import useRequestEditTags from "./useRequestFormEditTaggings";
-import YoutubeOriginalSource from "./YoutubeOriginalSource";
+import { SemitagButton } from "../SemitagButton";
+import { TagButton } from "../TagButton";
+import useRequestFormEditSemitaggings from "../useRequestFormEditSemitaggings";
+import useRequestEditTags from "../useRequestFormEditTaggings";
+import BilibiliOriginalSource from "./BilibiliOriginalSource";
 
 export const Mutation = graphql(`
-  mutation RequestMADFromYoutubeForm_Request(
-    $input: RequestYoutubeRegistrationInput!
+  mutation RequestMADFromBilibiliForm_Request(
+    $input: RequestBilibiliRegistrationInput!
   ) {
-    requestYoutubeRegistration(input: $input) {
+    requestBilibiliRegistration(input: $input) {
       __typename
-      ... on RequestYoutubeRegistrationVideoAlreadyRegisteredError {
+      ... on RequestBilibiliRegistrationVideoAlreadyRegisteredError {
         source {
           id
           sourceId
@@ -34,7 +34,7 @@ export const Mutation = graphql(`
           }
         }
       }
-      ... on RequestYoutubeRegistrationSucceededPayload {
+      ... on RequestBilibiliRegistrationSucceededPayload {
         request {
           id
         }
@@ -42,21 +42,21 @@ export const Mutation = graphql(`
     }
   }
 `);
-const useRequestFromYoutube = ({
+const useRequestFromBilibili = ({
   onSuccess,
   onFailure,
   onAlready,
 }: {
   onSuccess(
     data: Extract<
-      ResultOf<typeof Mutation>["requestYoutubeRegistration"],
-      { __typename: "RequestYoutubeRegistrationSucceededPayload" }
+      ResultOf<typeof Mutation>["requestBilibiliRegistration"],
+      { __typename: "RequestBilibiliRegistrationSucceededPayload" }
     >
   ): void;
   onAlready(
     data: Extract<
-      ResultOf<typeof Mutation>["requestYoutubeRegistration"],
-      { __typename: "RequestYoutubeRegistrationVideoAlreadyRegisteredError" }
+      ResultOf<typeof Mutation>["requestBilibiliRegistration"],
+      { __typename: "RequestBilibiliRegistrationVideoAlreadyRegisteredError" }
     >
   ): void;
   onFailure(): void;
@@ -85,12 +85,12 @@ const useRequestFromYoutube = ({
         return;
       }
 
-      switch (data.requestYoutubeRegistration.__typename) {
-        case "RequestYoutubeRegistrationSucceededPayload":
-          onSuccess(data.requestYoutubeRegistration);
+      switch (data.requestBilibiliRegistration.__typename) {
+        case "RequestBilibiliRegistrationSucceededPayload":
+          onSuccess(data.requestBilibiliRegistration);
           break;
-        case "RequestYoutubeRegistrationVideoAlreadyRegisteredError":
-          onAlready(data.requestYoutubeRegistration);
+        case "RequestBilibiliRegistrationVideoAlreadyRegisteredError":
+          onAlready(data.requestBilibiliRegistration);
           break;
         case "MutationInvalidTagIdError":
         case "MutationTagNotFoundError":
@@ -103,15 +103,16 @@ const useRequestFromYoutube = ({
   );
 };
 
-export const YoutubeRequestFormOriginalSourceFragment = graphql(`
-  fragment YoutubeRequestForm_OriginalSource on YoutubeOriginalSource {
-    url
+export const BilibiliRequestFormOriginalSourceFragment = graphql(`
+  fragment BilibiliRequestForm_OriginalSource on BilibiliOriginalSource {
     sourceId
-    thumbnailUrl
-    ...YoutubeForm_OriginalSource
+    title
+    url
+    thumbnailUrl(scale: LARGE)
+    ...BilibiliForm_OriginalSource
   }
 `);
-export default function YoutubeRequestForm({
+export default function BilibiliRequestForm({
   className,
   style,
   handleSuccess,
@@ -122,13 +123,15 @@ export default function YoutubeRequestForm({
   style?: CSSProperties;
   handleSuccess?(): void;
   handleCancel(): void;
-  sourceFragment: FragmentType<typeof YoutubeRequestFormOriginalSourceFragment>;
+  sourceFragment: FragmentType<
+    typeof BilibiliRequestFormOriginalSourceFragment
+  >;
 }) {
   const source = useFragment(
-    YoutubeRequestFormOriginalSourceFragment,
+    BilibiliRequestFormOriginalSourceFragment,
     sourceFragment
   );
-  const [title, setTitle] = useState<string>("");
+  const [title, setTitle] = useState<string>(source.title);
 
   const { appendTag, removeTag, taggings, taggingsPayload, isSelecting } =
     useRequestEditTags();
@@ -141,9 +144,9 @@ export default function YoutubeRequestForm({
   } = useRequestFormEditSemitaggings();
 
   const callToast = useToaster();
-  const requestVideo = useRequestFromYoutube({
+  const requestVideo = useRequestFromBilibili({
     onSuccess(data) {
-      callToast(<>リクエストしました</>);
+      callToast(<span>リクエストしました</span>);
       if (handleSuccess) handleSuccess();
     },
     onAlready({ source: { sourceId, video } }) {
@@ -312,7 +315,15 @@ export default function YoutubeRequestForm({
             </div>
           </div>
           <div className={clsx({ hidden: tab !== "SOURCE" })}>
-            <YoutubeOriginalSource fragment={source} />
+            <BilibiliOriginalSource
+              fragment={source}
+              appendTag={({ tagId, fragment }) => appendTag(tagId, fragment)}
+              removeTag={(tagId) => removeTag(tagId)}
+              isSelectingTag={isSelecting}
+              isSelectingSemitag={isIncludeSemitag}
+              appendSemitag={(name) => appendSemitag(name)}
+              removeSemitag={(name) => removeSemitag(name)}
+            />
           </div>
         </div>
         <div className={clsx("mt-auto flex w-full shrink-0 justify-between")}>

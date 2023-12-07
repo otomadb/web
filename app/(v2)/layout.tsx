@@ -3,7 +3,7 @@ import clsx from "clsx";
 import React from "react";
 
 import AppSideNav from "~/components/AppSideNav";
-import FormModal, { FormModalProvider } from "~/components/FormModal";
+import FormModal, { FormModalProvider } from "~/components/FormWidget";
 import GlobalFooter from "~/components/GlobalFooter";
 import GlobalNav from "~/components/GlovalNav";
 import { ToastProvider } from "~/components/Toaster";

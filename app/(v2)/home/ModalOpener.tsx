@@ -12,7 +12,7 @@ import {
   useOpenRequestFromSoundcloud,
   useOpenRequestFromYoutube,
   useOpenSoundcloudRegisterModal,
-} from "~/components/FormModal";
+} from "~/components/FormWidget";
 
 const schemaParams = z.union([
   z.object({

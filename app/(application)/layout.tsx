@@ -2,7 +2,7 @@ import { UserProvider } from "@auth0/nextjs-auth0/client";
 import clsx from "clsx";
 import React from "react";
 
-import FormModal, { FormModalProvider } from "~/components/FormModal";
+import FormModal, { FormModalProvider } from "~/components/FormWidget";
 import GlobalNav from "~/components/GlovalNav";
 
 export default function ApplicationLayout({

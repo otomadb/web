@@ -12,11 +12,11 @@ import { TextInput2 } from "~/components/TextInput";
 import useToaster from "~/components/Toaster/useToaster";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-import { SemitagButton } from "./SemitagButton";
+import { SemitagButton } from "../SemitagButton";
+import { TagButton } from "../TagButton";
+import useRequestFormEditSemitaggings from "../useRequestFormEditSemitaggings";
+import useRequestEditTags from "../useRequestFormEditTaggings";
 import SoundcloudOriginalSource from "./SoundcloudOriginalSource";
-import { TagButton } from "./TagButton";
-import useRequestFormEditSemitaggings from "./useRequestFormEditSemitaggings";
-import useRequestEditTags from "./useRequestFormEditTaggings";
 
 export const Mutation = graphql(`
   mutation RequestMADFromSoundcloudForm_Request(

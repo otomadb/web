@@ -2,7 +2,7 @@ import { useMemo, useReducer } from "react";
 
 import { FragmentType } from "~/gql";
 
-import { TagButtonFragment } from "./TagButton";
+import { TagButtonFragment } from "../AddMAD/TagButton";
 
 const useRequestEditTags = () => {
   const [taggings, dispatchTags] = useReducer(

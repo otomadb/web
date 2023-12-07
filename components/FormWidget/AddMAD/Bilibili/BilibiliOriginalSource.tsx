@@ -6,7 +6,7 @@ import { CoolImage } from "~/components/CoolImage";
 import { ExternalLinkPictogram } from "~/components/Pictogram";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-import { TagButton, TagButtonFragment } from "./TagButton";
+import { TagButton, TagButtonFragment } from "../TagButton";
 
 export const BilibiliRegisterOriginalSourceFragment = graphql(`
   fragment BilibiliForm_OriginalSource on BilibiliOriginalSource {

@@ -12,7 +12,7 @@ import { UserIcon } from "~/components/UserIcon";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { graphql } from "~/gql";
 
-import { useOpenRequestFromNicovideo } from "../FormModal";
+import { useOpenRequestFromNicovideo } from "../FormWidget";
 
 export const SearchNicovideoQuery = graphql(`
   query SearchContents_SearchNicovideo($sourceId: String!) {

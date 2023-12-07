@@ -6,24 +6,29 @@ import React, { useCallback, useMemo, useReducer, useState } from "react";
 import { useMutation } from "urql";
 
 import { MadPageLink } from "~/app/(v2)/mads/[serial]/Link";
+import UserPageLink from "~/app/(v2)/users/[name]/Link";
 import Button from "~/components/Button";
+import { SemitagButton } from "~/components/FormWidget/AddMAD/SemitagButton";
+import {
+  TagButton,
+  TagButtonFragment,
+} from "~/components/FormWidget/AddMAD/TagButton";
 import TagSearcher from "~/components/TagSearcher";
 import { TextInput2 } from "~/components/TextInput";
 import useToaster from "~/components/Toaster/useToaster";
+import { UserIcon } from "~/components/UserIcon";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-import { SemitagButton } from "./SemitagButton";
-import OriginalSource from "./SoundcloudOriginalSource";
-import { TagButton, TagButtonFragment } from "./TagButton";
+import YoutubeOriginalSource from "./YoutubeOriginalSource";
 
 const Mutation = graphql(`
-  mutation RegisterSoundcloudMADForm_RegisterMAD(
-    $input: RegisterSoundcloudMADInput!
+  mutation RegisterFromYoutubeForm_RegisterVideo(
+    $input: RegisterVideoFromYoutubeInput!
   ) {
-    registerSoundcloudMAD(input: $input) {
+    registerVideoFromYoutube(input: $input) {
       __typename
-      ... on RegisterSoundcloudMADSucceededPayload {
-        mad {
+      ... on RegisterVideoFromYoutubeSucceededPayload {
+        video {
           ...Link_Video
           id
           title
@@ -37,8 +42,8 @@ export const useRegisterVideo = ({
 }: {
   onSuccess(
     data: Extract<
-      ResultOf<typeof Mutation>["registerSoundcloudMAD"],
-      { __typename: "RegisterSoundcloudMADSucceededPayload" }
+      ResultOf<typeof Mutation>["registerVideoFromYoutube"],
+      { __typename: "RegisterVideoFromYoutubeSucceededPayload" }
     >
   ): void;
 }) => {
@@ -51,20 +56,24 @@ export const useRegisterVideo = ({
       thumbnailUrl,
       tagIds,
       semitagNames,
+      YoutubeRequestId,
     }: {
       sourceId: string;
       title: string;
-      thumbnailUrl: string | null;
+      thumbnailUrl: string;
       tagIds: string[];
       semitagNames: string[];
+      YoutubeRequestId: string | undefined;
     }) => {
       const { data, error } = await register({
         input: {
           primaryTitle: title,
+          extraTitles: [],
           primaryThumbnailUrl: thumbnailUrl,
           tagIds,
           semitagNames,
           sourceIds: [sourceId],
+          requestId: YoutubeRequestId,
         },
       });
       if (error || !data) {
@@ -72,9 +81,9 @@ export const useRegisterVideo = ({
         return;
       }
 
-      switch (data.registerSoundcloudMAD.__typename) {
-        case "RegisterSoundcloudMADSucceededPayload":
-          onSuccess(data.registerSoundcloudMAD);
+      switch (data.registerVideoFromYoutube.__typename) {
+        case "RegisterVideoFromYoutubeSucceededPayload":
+          onSuccess(data.registerVideoFromYoutube);
           return;
         default:
           // TODO: 何かしら出す
@@ -86,49 +95,80 @@ export const useRegisterVideo = ({
 };
 
 export const Query = graphql(`
-  query RegisterFromSoundcloudForm_Check($url: String!) {
-    fetchSoundcloud(input: { url: $url }) {
+  query RegisterFromYoutubeForm_Check($sourceId: String!) {
+    fetchYoutube(input: { sourceId: $sourceId }) {
       source {
-        sourceId
-        title
-        originalThumbnailUrl
-        ...SoundcloudForm_OriginalSource
+        thumbnailUrl
+        ...YoutubeForm_OriginalSource
       }
     }
-    findSoundcloudMADSource(input: { url: $url }) {
+    findYoutubeRegistrationRequest(input: { sourceId: $sourceId }) {
       id
+      ...RegisterFromYoutubeForm_Request
+    }
+    findYoutubeVideoSource(input: { sourceId: $sourceId }) {
       ...Form_VideoAlreadyRegistered
     }
   }
 `);
-export const SoundcloudRegisterOriginalSourceFragment = graphql(`
-  fragment SoundcloudForm_OriginalSource2 on SoundcloudOriginalSource {
+
+export const YoutubeRegisterOriginalSourceFragment = graphql(`
+  fragment YoutubeForm_OriginalSource2 on YoutubeOriginalSource {
     url
     sourceId
-    title
-    thumbnailUrl(scale: LARGE)
-    ...SoundcloudForm_OriginalSource
+    thumbnailUrl
+    ...YoutubeForm_OriginalSource
   }
 `);
-export default function SoundcloudRegisterForm({
+export const YoutubeRegisterFormRequestFragment = graphql(`
+  fragment RegisterFromYoutubeForm_Request on YoutubeRegistrationRequest {
+    id
+    title
+    checked
+    requestedBy {
+      ...Link_User
+      ...UserIcon
+      id
+      displayName
+    }
+    taggings {
+      id
+      tag {
+        id
+        ...CommonTag
+      }
+    }
+    semitaggings {
+      id
+      name
+    }
+  }
+`);
+export default function YoutubeRegisterForm({
   className,
   style,
   handleSuccess,
   handleCancel,
   sourceFragment,
+  requestFragment,
 }: {
   className?: string;
   style?: React.CSSProperties;
   handleSuccess?(): void;
   handleCancel(): void;
-  sourceFragment: FragmentType<typeof SoundcloudRegisterOriginalSourceFragment>;
+  sourceFragment: FragmentType<typeof YoutubeRegisterOriginalSourceFragment>;
+  requestFragment?: FragmentType<typeof YoutubeRegisterFormRequestFragment>;
 }) {
   const source = useFragment(
-    SoundcloudRegisterOriginalSourceFragment,
+    YoutubeRegisterOriginalSourceFragment,
     sourceFragment
   );
+  const request = useFragment(
+    YoutubeRegisterFormRequestFragment,
+    requestFragment
+  );
 
-  const [title, setTitle] = useState<string>(source.title);
+  const [title, setTitle] = useState<string>("");
   const [tags, dispatchTags] = useReducer(
     (
       prev: { id: string; fragment: FragmentType<typeof TagButtonFragment> }[],
@@ -181,15 +221,15 @@ export default function SoundcloudRegisterForm({
   const [tab, setTab] = useState<"SOURCE" | "REQUEST">("SOURCE");
 
   const callToast = useToaster();
-  const registerMAD = useRegisterVideo({
-    onSuccess({ mad }) {
+  const registerVideo = useRegisterVideo({
+    onSuccess({ video }) {
       callToast(
         <>
           <MadPageLink
-            fragment={mad}
+            fragment={video}
             className={clsx("font-bold text-vivid-primary")}
           >
-            {mad.title}
+            {video.title}
           </MadPageLink>
           を登録しました．
         </>
@@ -197,20 +237,21 @@ export default function SoundcloudRegisterForm({
       if (handleSuccess) handleSuccess();
     },
   });
-  const payload = useMemo<null | Parameters<typeof registerMAD>[0]>(() => {
+  const payload = useMemo(() => {
     return {
-      sourceId: source.url,
+      sourceId: source.sourceId,
       title,
-      thumbnailUrl: source.thumbnailUrl || null,
+      thumbnailUrl: source.thumbnailUrl,
+      YoutubeRequestId: request?.id,
       tagIds,
       semitagNames,
     };
-  }, [semitagNames, source.thumbnailUrl, source.url, tagIds, title]);
+  }, [request?.id, semitagNames, source, tagIds, title]);
 
   const handleSubmit = useCallback(() => {
     if (!payload) return;
-    registerMAD(payload);
-  }, [payload, registerMAD]);
+    registerVideo(payload);
+  }, [payload, registerVideo]);
 
   return (
     <div
@@ -370,10 +411,139 @@ export default function SoundcloudRegisterForm({
             >
               ソース情報
             </div>
+            <div
+              className={clsx(
+                ["select-none"],
+                ["px-2 py-1"],
+                [
+                  "bg-slate-950 aria-checked:bg-slate-700 aria-disabled:bg-slate-900 hover:bg-slate-800",
+                ],
+                [
+                  "text-xs font-bold text-slate-400 aria-checked:text-slate-400 aria-disabled:text-slate-700",
+                ],
+                [
+                  "rounded border border-slate-700 aria-checked:border-slate-600 aria-disabled:border-slate-800",
+                ],
+                [
+                  "cursor-pointer aria-checked:cursor-default aria-disabled:cursor-default",
+                ]
+              )}
+              onClick={() => {
+                if (request) setTab("REQUEST");
+              }}
+              aria-checked={tab === "REQUEST"}
+              aria-disabled={!request}
+            >
+              リクエスト情報
+            </div>
           </div>
           <div className={clsx({ hidden: tab !== "SOURCE" })}>
-            <OriginalSource fragment={source} />
+            {source && <YoutubeOriginalSource fragment={source} />}
           </div>
+          {request && (
+            <div
+              className={clsx(
+                { hidden: tab !== "REQUEST" },
+                "flex flex-col gap-y-2"
+              )}
+            >
+              <div className={clsx(className, ["flex flex-col gap-y-2"])}>
+                <div className={clsx(["flex items-center"])}>
+                  <p className={clsx(["grow text-sm text-slate-500"])}>
+                    <span className={clsx(["font-bold text-slate-400"])}>
+                      {request.title}
+                    </span>
+                    としてリクエストされています
+                  </p>
+                  <div className={clsx(["shrink-0"])}>
+                    <UserPageLink fragment={request.requestedBy}>
+                      <UserIcon size={24} fragment={request.requestedBy} />
+                    </UserPageLink>
+                  </div>
+                </div>
+                <div className={clsx(["flex flex-col gap-y-2"])}>
+                  <div
+                    className={clsx(
+                      ["py-0.5"],
+                      ["shrink-0"],
+                      ["text-xs text-slate-500"]
+                    )}
+                  >
+                    タグ
+                  </div>
+                  {request.taggings.length === 0 && (
+                    <div className={clsx(["shrink-0 text-xs text-slate-400"])}>
+                      なし
+                    </div>
+                  )}
+                  {request.taggings.length > 0 && (
+                    <div className={clsx(["flex flex-wrap gap-1"])}>
+                      {request.taggings.map((tagging) => (
+                        <TagButton
+                          key={tagging.id}
+                          fragment={tagging.tag}
+                          tagId={tagging.tag.id}
+                          append={(f) =>
+                            dispatchTags({
+                              type: "append",
+                              tagId: tagging.tag.id,
+                              fragment: f,
+                            })
+                          }
+                          remove={() =>
+                            dispatchTags({
+                              type: "remove",
+                              tagId: tagging.tag.id,
+                            })
+                          }
+                          selected={tagIds.includes(tagging.tag.id)}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </div>
+                <div className={clsx(["flex flex-col gap-y-2"])}>
+                  <div
+                    className={clsx(
+                      ["py-0.5"],
+                      ["shrink-0"],
+                      ["text-xs text-slate-500"]
+                    )}
+                  >
+                    仮タグ
+                  </div>
+                  {request.semitaggings.length === 0 && (
+                    <div className={clsx(["shrink-0 text-xs text-slate-400"])}>
+                      なし
+                    </div>
+                  )}
+                  {request.semitaggings.length > 0 && (
+                    <div className={clsx(["flex flex-wrap gap-1"])}>
+                      {request.semitaggings.map((semitagging) => (
+                        <SemitagButton
+                          key={semitagging.id}
+                          name={semitagging.name}
+                          append={() =>
+                            dispatchSemitags({
+                              type: "append",
+                              name: semitagging.name,
+                            })
+                          }
+                          remove={() =>
+                            dispatchSemitags({
+                              type: "remove",
+                              name: semitagging.name,
+                            })
+                          }
+                          selected={semitagNames.includes(semitagging.name)}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
         <div className={clsx(["mt-auto flex w-full shrink-0"])}>
           <Button submit text="登録する" size="medium" color="blue" />

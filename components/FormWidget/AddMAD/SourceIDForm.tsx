@@ -5,34 +5,38 @@ import React, { useCallback, useMemo, useState } from "react";
 import { useQuery } from "urql";
 
 import Button from "~/components/Button";
-import { TextInput2 } from "~/components/TextInput";
-import { FragmentType, graphql } from "~/gql";
-import { estimateUrl } from "~/utils/extractSourceId";
-
-import { CoolImage2 } from "../CoolImage";
-import {
-  useOpenRegisterFromBilibili2,
-  useOpenRegisterFromNicovideo2,
-  useOpenRegisterFromSoundcloud2,
-  useOpenRegisterFromYoutube2,
-  useOpenRequestFromBilibili,
-  useOpenRequestFromNicovideo,
-  useOpenRequestFromSoundcloud,
-  useOpenRequestFromYoutube,
-} from "../FormModal";
+import { CoolImage2 } from "~/components/CoolImage";
 import {
   ExternalLinkPictogram,
   LoadingPictogram,
   NotFoundPictogram,
   SearchPictogram,
-} from "../Pictogram";
-import { BilibiliRegisterOriginalSourceFragment } from "./BilibiliRegisterForm";
+} from "~/components/Pictogram";
+import { TextInput2 } from "~/components/TextInput";
+import { FragmentType, graphql } from "~/gql";
+import { estimateUrl } from "~/utils/extractSourceId";
+
+import {
+  useOpenRegisterFromBilibili2,
+  useOpenRegisterFromNicovideo2,
+  useOpenRegisterFromSoundcloud2,
+  useOpenRegisterFromYoutube2,
+  useOpenRequestFromBilibili2,
+  useOpenRequestFromNicovideo2,
+  useOpenRequestFromSoundcloud2,
+  useOpenRequestFromYoutube2,
+} from "..";
+import { BilibiliRegisterOriginalSourceFragment } from "./Bilibili/BilibiliRegisterForm";
+import { BilibiliRequestFormOriginalSourceFragment } from "./Bilibili/BilibiliRequestForm";
 import {
   NicovideoRegisterFormRequestFragment,
   NicovideoRegisterOriginalSourceFragment,
-} from "./NicovideoRegisterForm";
-import { SoundcloudRegisterOriginalSourceFragment } from "./SoundcloudRegisterForm";
-import { YoutubeRegisterOriginalSourceFragment } from "./YoutubeRegisterForm";
+} from "./Nicovideo/NicovideoRegisterForm";
+import { NicovideoRequestFormOriginalSourceFragment } from "./Nicovideo/NicovideoRequestForm";
+import { SoundcloudRegisterOriginalSourceFragment } from "./Soundcloud/SoundcloudRegisterForm";
+import { SoundcloudRequestFormOriginalSourceFragment } from "./Soundcloud/SoundcloudRequestForm";
+import { YoutubeRegisterOriginalSourceFragment } from "./Youtube/YoutubeRegisterForm";
+import { YoutubeRequestFormOriginalSourceFragment } from "./Youtube/YoutubeRequestForm";
 
 const SubmitButton = ({
   className,
@@ -101,7 +105,9 @@ export const NicovideoConfirmForm = ({
         }
       | {
           type: "request";
-          source: FragmentType<typeof NicovideoRegisterOriginalSourceFragment>;
+          source: FragmentType<
+            typeof NicovideoRequestFormOriginalSourceFragment
+          >;
         }
   ): void;
 }) => {
@@ -228,7 +234,7 @@ export const YoutubeConfirmForm = ({
         }
       | {
           type: "request";
-          source: FragmentType<typeof YoutubeRegisterOriginalSourceFragment>;
+          source: FragmentType<typeof YoutubeRequestFormOriginalSourceFragment>;
         }
   ): void;
 }) => {
@@ -352,7 +358,9 @@ export const SoundcloudConfirmForm = ({
         }
       | {
           type: "request";
-          source: FragmentType<typeof SoundcloudRegisterOriginalSourceFragment>;
+          source: FragmentType<
+            typeof SoundcloudRequestFormOriginalSourceFragment
+          >;
         }
   ): void;
 }) => {
@@ -481,7 +489,9 @@ export const BilibiliConfirmForm = ({
         }
       | {
           type: "request";
-          source: FragmentType<typeof BilibiliRegisterOriginalSourceFragment>;
+          source: FragmentType<
+            typeof BilibiliRequestFormOriginalSourceFragment
+          >;
         }
   ): void;
 }) => {
@@ -576,24 +586,24 @@ export const BilibiliConfirmForm = ({
 export default function SourceIDForm({
   className,
   style,
+  mode,
   initProp,
-  type,
 }: {
   className?: string;
   style?: React.CSSProperties;
+  mode: "register" | "request";
   initProp?: Exclude<ReturnType<typeof estimateUrl>, null>;
-  type: "request" | "register";
 }) {
-  const openNicovideoRequest = useOpenRequestFromNicovideo();
+  const openNicovideoRequest = useOpenRequestFromNicovideo2();
   const openNicovideoRegister = useOpenRegisterFromNicovideo2();
 
-  const openYoutubeRequest = useOpenRequestFromYoutube();
+  const openYoutubeRequest = useOpenRequestFromYoutube2();
   const openYoutubeRegister = useOpenRegisterFromYoutube2();
 
-  const openSoundcloudRequest = useOpenRequestFromSoundcloud();
+  const openSoundcloudRequest = useOpenRequestFromSoundcloud2();
   const openSoundcloudRegister = useOpenRegisterFromSoundcloud2();
 
-  const openBilibiliRequest = useOpenRequestFromBilibili();
+  const openBilibiliRequest = useOpenRequestFromBilibili2();
   const openBilibiliRegister = useOpenRegisterFromBilibili2();
 
   const [input, setInput] = useState(
@@ -647,7 +657,7 @@ export default function SourceIDForm({
       {current?.type === "nicovideo" ? (
         <NicovideoConfirmForm
           sourceId={current.sourceId}
-          type={type}
+          type={mode}
           go={(p) => {
             switch (p.type) {
               case "register":
@@ -657,7 +667,9 @@ export default function SourceIDForm({
                 });
                 break;
               case "request":
-                openNicovideoRequest("");
+                openNicovideoRequest({
+                  sourceFragment: p.source,
+                });
                 break;
             }
           }}
@@ -666,7 +678,7 @@ export default function SourceIDForm({
       ) : current?.type === "youtube" ? (
         <YoutubeConfirmForm
           sourceId={current.sourceId}
-          type={type}
+          type={mode}
           go={(p) => {
             switch (p.type) {
               case "register":
@@ -675,7 +687,9 @@ export default function SourceIDForm({
                 });
                 break;
               case "request":
-                openNicovideoRequest("");
+                openYoutubeRequest({
+                  sourceFragment: p.source,
+                });
                 break;
             }
           }}
@@ -684,7 +698,7 @@ export default function SourceIDForm({
       ) : current?.type === "soundcloud" ? (
         <SoundcloudConfirmForm
           url={current.url}
-          type={type}
+          type={mode}
           go={(p) => {
             switch (p.type) {
               case "register":
@@ -693,7 +707,9 @@ export default function SourceIDForm({
                 });
                 break;
               case "request":
-                openNicovideoRequest("");
+                openSoundcloudRequest({
+                  sourceFragment: p.source,
+                });
                 break;
             }
           }}
@@ -702,7 +718,7 @@ export default function SourceIDForm({
       ) : current?.type === "bilibili" ? (
         <BilibiliConfirmForm
           sourceId={current.sourceId}
-          type={type}
+          type={mode}
           go={(p) => {
             switch (p.type) {
               case "register":
@@ -711,7 +727,9 @@ export default function SourceIDForm({
                 });
                 break;
               case "request":
-                openNicovideoRequest("");
+                openBilibiliRequest({
+                  sourceFragment: p.source,
+                });
                 break;
             }
           }}

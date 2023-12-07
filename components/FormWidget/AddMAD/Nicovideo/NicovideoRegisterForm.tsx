@@ -14,11 +14,11 @@ import useToaster from "~/components/Toaster/useToaster";
 import { UserIcon } from "~/components/UserIcon";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
+import { SemitagButton } from "../SemitagButton";
+import { TagButton } from "../TagButton";
+import useRegisterFormEditSemitaggings from "../useRegisterFormEditSemitaggings";
+import useRegisterFormEditTaggings from "../useRegisterFormEditTaggings";
 import NicovideoOriginalSource from "./NicovideoOriginalSource";
-import { SemitagButton } from "./SemitagButton";
-import { TagButton } from "./TagButton";
-import useRegisterFormEditSemitaggings from "./useRegisterFormEditSemitaggings";
-import useRegisterFormEditTaggings from "./useRegisterFormEditTaggings";
 
 const Mutation = graphql(`
   mutation RegisterFromNicovideoForm_RegisterVideo(

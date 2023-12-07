@@ -4,7 +4,7 @@ import { Meta, StoryObj } from "@storybook/react";
 import { userEvent, waitFor, within } from "@storybook/testing-library";
 import { graphql as mockGql } from "msw";
 
-import { FormModalContext } from "../FormModal";
+import { FormModalContext } from "..";
 import SourceIDForm, {
   queryFetchBilibili,
   queryFetchNicovideo,
@@ -15,7 +15,7 @@ import SourceIDForm, {
 const meta = {
   component: SourceIDForm,
   args: {
-    type: "register",
+    mode: "register",
     style: { width: 512, height: 384 },
   },
   decorators: [
@@ -120,7 +120,7 @@ export const Register: Story = {
       type: "nicovideo",
       sourceId: "sm2057168",
     },
-    type: "register",
+    mode: "register",
   },
   parameters: {
     openFormModal: jest.fn(),
@@ -150,7 +150,7 @@ export const Request: Story = {
       type: "nicovideo",
       sourceId: "sm2057168",
     },
-    type: "request",
+    mode: "request",
   },
   parameters: {
     openFormModal: jest.fn(),
@@ -178,7 +178,7 @@ export const Request: Story = {
 const mkStory = (name: string, url: string, expected: unknown): Story => ({
   name,
   args: {
-    type: "request",
+    mode: "request",
   },
   parameters: {
     openFormModal: jest.fn(),

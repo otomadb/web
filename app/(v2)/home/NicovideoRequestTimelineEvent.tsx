@@ -1,7 +1,7 @@
 import clsx from "clsx";
 
 import { CoolImage2 } from "~/components/CoolImage";
-import { useOpenRegisterFromNicovideo } from "~/components/FormModal";
+import { useOpenRegisterFromNicovideo } from "~/components/FormWidget";
 import {
   ExternalLinkPictogram,
   NicovideoPictogram,

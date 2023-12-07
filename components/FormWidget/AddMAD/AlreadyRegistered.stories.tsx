@@ -4,7 +4,7 @@ import { Meta, StoryObj } from "@storybook/react";
 import { MadPageLinkFragment as VideoLinkFragment } from "~/app/(v2)/mads/[serial]/Link";
 import AlreadyRegistered, {
   Fragment,
-} from "~/components/Form/AlreadyRegistered";
+} from "~/components/FormWidget/AddMAD/AlreadyRegistered";
 import { Fragment as VideoThumbnailFragment } from "~/components/VideoThumbnail";
 import { makeFragmentData } from "~/gql";
 

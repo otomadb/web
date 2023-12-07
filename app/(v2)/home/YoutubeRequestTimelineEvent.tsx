@@ -1,7 +1,7 @@
 import clsx from "clsx";
 
 import { CoolImage2 } from "~/components/CoolImage";
-import { useOpenRegisterFromYoutube } from "~/components/FormModal";
+import { useOpenRegisterFromYoutube } from "~/components/FormWidget";
 import {
   ExternalLinkPictogram,
   PlusPictogram,
