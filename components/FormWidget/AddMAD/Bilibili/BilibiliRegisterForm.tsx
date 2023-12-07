@@ -12,10 +12,12 @@ import { TextInput2 } from "~/components/TextInput";
 import useToaster from "~/components/Toaster/useToaster";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
+import {
+  useRegisterFormEditSemitaggings,
+  useRegisterFormEditTaggings,
+} from "../RegisterFormCommon";
 import { SemitagButton } from "../SemitagButton";
 import { TagButton } from "../TagButton";
-import useRegisterFormEditSemitaggings from "../useRegisterFormEditSemitaggings";
-import useRegisterFormEditTaggings from "../useRegisterFormEditTaggings";
 import BilibiliOriginalSource from "./BilibiliOriginalSource";
 
 const Mutation = graphql(`

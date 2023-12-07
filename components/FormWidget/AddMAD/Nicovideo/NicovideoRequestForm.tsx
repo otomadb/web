@@ -10,9 +10,13 @@ import NicovideoRequestLink from "~/app/(v2)/requests/nicovideo/[sourceId]/Link"
 import useToaster from "~/components/Toaster/useToaster";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-import { ButtonsPart, EditorablePart, Tab } from "../RequestFormCommon";
-import useRequestFormEditSemitaggings from "../useRequestFormEditSemitaggings";
-import useRequestEditTags from "../useRequestFormEditTaggings";
+import {
+  RequestsFormButtonsPart,
+  RequestsFormEditorablePart,
+  RequestsFormTabPicker,
+  useRequestFormEditSemitaggings,
+  useRequestFormEditTaggings,
+} from "../RequestFormCommon";
 import NicovideoOriginalSource from "./NicovideoOriginalSource";
 
 export const Mutation = graphql(`
@@ -135,7 +139,7 @@ export default function NicovideoRequestForm({
   const [title, setTitle] = useState<string>(source.info.title);
 
   const { appendTag, removeTag, taggings, taggingsPayload, isSelecting } =
-    useRequestEditTags();
+    useRequestFormEditTaggings();
   const {
     semitaggings,
     semitaggingsPayload,
@@ -204,7 +208,7 @@ export default function NicovideoRequestForm({
         requestVideo(payload);
       }}
     >
-      <EditorablePart
+      <RequestsFormEditorablePart
         title={title}
         setTitle={setTitle}
         appendSemitag={appendSemitag}
@@ -214,9 +218,10 @@ export default function NicovideoRequestForm({
         removeTag={removeTag}
         taggings={taggings}
         semitaggings={semitaggings}
+        className={clsx("w-full shrink-0")}
       />
       <div className={clsx("flex grow flex-col gap-y-2")}>
-        <Tab
+        <RequestsFormTabPicker
           choices={["SOURCE"]}
           current="SOURCE"
           setTab={(tab) => setTab(tab)}
@@ -233,7 +238,11 @@ export default function NicovideoRequestForm({
           />
         </div>
       </div>
-      <ButtonsPart disabled={!payload} handleCancel={handleCancel} />
+      <RequestsFormButtonsPart
+        disabled={!payload}
+        handleCancel={handleCancel}
+        className={clsx("w-full shrink-0")}
+      />
     </form>
   );
 }

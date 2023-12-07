@@ -10,9 +10,13 @@ import { YoutubeRequestPageLink } from "~/app/(v2)/requests/youtube/[sourceId]/L
 import useToaster from "~/components/Toaster/useToaster";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-import { ButtonsPart, EditorablePart, Tab } from "../RequestFormCommon";
-import useRequestFormEditSemitaggings from "../useRequestFormEditSemitaggings";
-import useRequestEditTags from "../useRequestFormEditTaggings";
+import {
+  RequestsFormButtonsPart,
+  RequestsFormEditorablePart,
+  RequestsFormTabPicker,
+} from "../RequestFormCommon";
+import { useRequestFormEditTaggings } from "../RequestFormCommon";
+import { useRequestFormEditSemitaggings } from "../RequestFormCommon";
 import YoutubeOriginalSource from "./YoutubeOriginalSource";
 
 export const YoutubeRequestMutation = graphql(`
@@ -130,7 +134,7 @@ export default function YoutubeRequestForm({
   const [title, setTitle] = useState<string>("");
 
   const { appendTag, removeTag, taggings, taggingsPayload, isSelecting } =
-    useRequestEditTags();
+    useRequestFormEditTaggings();
   const {
     semitaggings,
     semitaggingsPayload,
@@ -198,7 +202,7 @@ export default function YoutubeRequestForm({
         requestVideo(payload);
       }}
     >
-      <EditorablePart
+      <RequestsFormEditorablePart
         title={title}
         setTitle={setTitle}
         appendSemitag={appendSemitag}
@@ -208,9 +212,10 @@ export default function YoutubeRequestForm({
         removeTag={removeTag}
         taggings={taggings}
         semitaggings={semitaggings}
+        className={clsx("w-full shrink-0")}
       />
       <div className={clsx("flex grow flex-col gap-y-2")}>
-        <Tab
+        <RequestsFormTabPicker
           choices={["SOURCE"]}
           current="SOURCE"
           setTab={(tab) => setTab(tab)}
@@ -219,7 +224,11 @@ export default function YoutubeRequestForm({
           <YoutubeOriginalSource fragment={source} />
         </div>
       </div>
-      <ButtonsPart disabled={!payload} handleCancel={handleCancel} />
+      <RequestsFormButtonsPart
+        disabled={!payload}
+        handleCancel={handleCancel}
+        className={clsx("w-full shrink-0")}
+      />
     </form>
   );
 }

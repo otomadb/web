@@ -9,8 +9,8 @@ import { FragmentType } from "~/gql";
 import { SemitagButton } from "./SemitagButton";
 import { TagButton, TagButtonFragment } from "./TagButton";
 
-export const useRequestFormEditTaggings = () => {
-  const [taggings, dispatchTags] = useReducer(
+export const useRegisterFormEditTaggings = () => {
+  const [tags, dispatchTags] = useReducer(
     (
       prev: { id: string; fragment: FragmentType<typeof TagButtonFragment> }[],
       action:
@@ -24,8 +24,12 @@ export const useRequestFormEditTaggings = () => {
     ) => {
       switch (action.type) {
         case "append":
-          if (prev.map(({ id }) => id).includes(action.tagId)) return prev;
-          return [...prev, { id: action.tagId, fragment: action.fragment }];
+          return [
+            ...new Set([
+              ...prev,
+              { id: action.tagId, fragment: action.fragment },
+            ]),
+          ];
         case "remove":
           return prev.filter(({ id }) => id !== action.tagId);
         case "clear":
@@ -34,16 +38,12 @@ export const useRequestFormEditTaggings = () => {
     },
     []
   );
-  const payload = useMemo(
-    () => taggings.map(({ id }) => ({ tagId: id, note: null })),
-    [taggings]
-  );
+  const tagIds = useMemo(() => tags.map(({ id }) => id), [tags]);
 
   return {
-    taggings,
-    taggingsPayload: payload,
-    isSelecting: (tagId: string) =>
-      taggings.map(({ id }) => id).includes(tagId),
+    tags,
+    taggingsPayload: tagIds,
+    isSelecting: (tagId: string) => tagIds.includes(tagId),
     appendTag: (
       tagId: string,
       fragment: FragmentType<typeof TagButtonFragment>
@@ -53,7 +53,7 @@ export const useRequestFormEditTaggings = () => {
   };
 };
 
-export const useRequestFormEditSemitaggings = () => {
+export const useRegisterFormEditSemitaggings = () => {
   const [semitaggings, dispatchSemitags] = useReducer(
     (
       prev: { name: string }[],
@@ -74,7 +74,7 @@ export const useRequestFormEditSemitaggings = () => {
     []
   );
   const payload = useMemo(
-    () => semitaggings.map(({ name }) => ({ name, note: null })),
+    () => semitaggings.map(({ name }) => name),
     [semitaggings]
   );
 
@@ -89,12 +89,12 @@ export const useRequestFormEditSemitaggings = () => {
   };
 };
 
-export const RequestsFormEditorablePart = ({
+export const RegisterFormEditorablePart = ({
   className,
   style,
   title,
   setTitle,
-  taggings,
+  tags,
   appendTag,
   removeTag,
   semitaggings,
@@ -107,20 +107,17 @@ export const RequestsFormEditorablePart = ({
   title: string;
   setTitle(v: string): void;
 } & Pick<
-  ReturnType<typeof useRequestFormEditTaggings>,
-  "taggings" | "appendTag" | "removeTag"
+  ReturnType<typeof useRegisterFormEditTaggings>,
+  "tags" | "appendTag" | "removeTag"
 > &
   Pick<
-    ReturnType<typeof useRequestFormEditSemitaggings>,
+    ReturnType<typeof useRegisterFormEditSemitaggings>,
     "semitaggings" | "appendSemitag" | "removeSemitag" | "isIncludeSemitag"
   >) => {
   return (
     <div
       style={style}
-      className={clsx(
-        className,
-        "mt-auto flex w-full shrink-0 flex-col justify-between gap-y-2"
-      )}
+      className={clsx(className, "flex flex-col justify-between gap-y-2")}
     >
       <label className={clsx("flex flex-col gap-y-1")}>
         <div className={clsx("text-xs font-bold text-slate-400")}>タイトル</div>
@@ -138,16 +135,16 @@ export const RequestsFormEditorablePart = ({
           >
             追加されるタグ
           </div>
-          {taggings.length > 0 && (
+          {tags.length > 0 && (
             <div className={clsx("flex flex-wrap gap-1")}>
-              {taggings.map(({ id: tagId, fragment }) => (
+              {tags.map(({ id: tagId, fragment }) => (
                 <TagButton
                   key={tagId}
                   tagId={tagId}
                   fragment={fragment}
                   append={(f) => appendTag(tagId, f)}
                   remove={() => removeTag(tagId)}
-                  selected={taggings.map(({ id }) => id).includes(tagId)}
+                  selected={tags.map(({ id }) => id).includes(tagId)}
                 />
               ))}
             </div>
@@ -207,7 +204,7 @@ export const RequestsFormEditorablePart = ({
   );
 };
 
-export const RequestsFormButtonsPart = ({
+export const RegisterFormButtonsPart = ({
   className,
   style,
   handleCancel,
@@ -219,10 +216,16 @@ export const RequestsFormButtonsPart = ({
   disabled: boolean;
 }) => {
   return (
-    <div style={style} className={clsx(className, "flex justify-between")}>
+    <div
+      style={style}
+      className={clsx(
+        className,
+        "mt-auto flex w-full shrink-0 justify-between"
+      )}
+    >
       <Button
         submit
-        text="リクエストする"
+        text="登録する"
         size="medium"
         color="blue"
         disabled={disabled}
@@ -240,21 +243,21 @@ export const RequestsFormButtonsPart = ({
   );
 };
 
-export type TabChoice = "SOURCE";
-export const RequestsFormTabPicker = ({
+export type RegisterFormTabChoice = "SOURCE" | "REQUEST";
+export const RegisterFormTabPicker = ({
   className,
   choices,
   setTab,
   current,
 }: {
   className?: string;
-  choices: TabChoice[];
-  current: TabChoice;
-  setTab(p: TabChoice): void;
+  choices: Record<RegisterFormTabChoice, boolean>;
+  current: RegisterFormTabChoice;
+  setTab(p: RegisterFormTabChoice): void;
 }) => {
   return (
     <div className={clsx(className, "flex gap-x-2")}>
-      {choices.includes("SOURCE") && (
+      {choices.SOURCE && (
         <div
           className={clsx(
             "cursor-pointer select-none rounded border border-slate-700 bg-slate-950 px-2 py-1 text-xs font-bold text-slate-400 aria-checked:cursor-default aria-checked:border-slate-600 aria-checked:bg-slate-700 aria-checked:text-slate-400 aria-disabled:cursor-default aria-disabled:border-slate-800 aria-disabled:bg-slate-900 aria-disabled:text-slate-700 hover:bg-slate-800"
@@ -263,6 +266,17 @@ export const RequestsFormTabPicker = ({
           aria-checked={current === "SOURCE"}
         >
           ソース情報
+        </div>
+      )}
+      {choices.REQUEST && (
+        <div
+          className={clsx(
+            "cursor-pointer select-none rounded border border-slate-700 bg-slate-950 px-2 py-1 text-xs font-bold text-slate-400 aria-checked:cursor-default aria-checked:border-slate-600 aria-checked:bg-slate-700 aria-checked:text-slate-400 aria-disabled:cursor-default aria-disabled:border-slate-800 aria-disabled:bg-slate-900 aria-disabled:text-slate-700 hover:bg-slate-800"
+          )}
+          onClick={() => setTab("REQUEST")}
+          aria-checked={current === "REQUEST"}
+        >
+          リクエスト情報
         </div>
       )}
     </div>
