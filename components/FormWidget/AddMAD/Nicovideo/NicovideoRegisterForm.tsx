@@ -137,14 +137,14 @@ export default function NicovideoRegisterForm({
 
   const [title, setTitle] = useState<string>(source.info.title);
 
-  const { appendTag, isSelecting, removeTag, taggingsPayload, tags } =
+  const { appendTag, isSelecting, removeTag, tagIds, tags } =
     useRegisterFormEditTaggings();
   const {
     appendSemitag,
     isIncludeSemitag,
     removeSemitag,
     semitaggings,
-    semitaggingsPayload,
+    semitagNames,
   } = useRegisterFormEditSemitaggings();
 
   const [tab, setTab] = useState<"SOURCE" | "REQUEST">("SOURCE");
@@ -158,15 +158,15 @@ export default function NicovideoRegisterForm({
       sourceId: source.sourceId,
       thumbnailUrl: source.info.thumbnailUrl,
       nicovideoRequestId: request?.id,
-      tagIds: taggingsPayload,
-      semitagNames: semitaggingsPayload,
+      tagIds,
+      semitagNames,
     };
   }, [
     request?.id,
-    semitaggingsPayload,
+    semitagNames,
     source.info.thumbnailUrl,
     source.sourceId,
-    taggingsPayload,
+    tagIds,
     title,
   ]);
   const callToast = useToaster();

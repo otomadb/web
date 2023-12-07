@@ -45,14 +45,14 @@ export type Current =
       type: "REGISTER_FROM_BILIBILI";
       props: Pick<
         ComponentProps<typeof BilibiliRegisterForm>,
-        "sourceFragment"
+        "sourceFragment" | "requestFragment"
       >;
     }
   | {
       type: "REGISTER_FROM_SOUNDCLOUD";
       props: Pick<
         ComponentProps<typeof SoundcloudRegisterForm>,
-        "sourceFragment"
+        "sourceFragment" | "requestFragment"
       >;
     }
   | {

@@ -28,16 +28,25 @@ import {
   useOpenRequestFromSoundcloud2,
   useOpenRequestFromYoutube2,
 } from "..";
-import { BilibiliRegisterOriginalSourceFragment } from "./Bilibili/BilibiliRegisterForm";
+import {
+  BilibiliRegisterFormRequestFragment,
+  BilibiliRegisterOriginalSourceFragment,
+} from "./Bilibili/BilibiliRegisterForm";
 import { BilibiliRequestFormOriginalSourceFragment } from "./Bilibili/BilibiliRequestForm";
 import {
   NicovideoRegisterFormRequestFragment,
   NicovideoRegisterOriginalSourceFragment,
 } from "./Nicovideo/NicovideoRegisterForm";
 import { NicovideoRequestFormOriginalSourceFragment } from "./Nicovideo/NicovideoRequestForm";
-import { SoundcloudRegisterOriginalSourceFragment } from "./Soundcloud/SoundcloudRegisterForm";
+import {
+  SoundcloudRegisterFormRequestFragment,
+  SoundcloudRegisterOriginalSourceFragment,
+} from "./Soundcloud/SoundcloudRegisterForm";
 import { SoundcloudRequestFormOriginalSourceFragment } from "./Soundcloud/SoundcloudRequestForm";
-import { YoutubeRegisterOriginalSourceFragment } from "./Youtube/YoutubeRegisterForm";
+import {
+  YoutubeRegisterFormRequestFragment,
+  YoutubeRegisterOriginalSourceFragment,
+} from "./Youtube/YoutubeRegisterForm";
 import { YoutubeRequestFormOriginalSourceFragment } from "./Youtube/YoutubeRequestForm";
 
 export const AlreadyRegisteredFragment = graphql(`
@@ -287,21 +296,25 @@ export const NicovideoConfirmForm = ({
             </div>
           </div>
         ) : fetching ? (
-          <p className={clsx("flex gap-x-2 text-sm text-snow-darker")}>
-            <LoadingPictogram className={clsx("inline h-4 w-4")} />
-            検索中
-          </p>
+          <div
+            className={clsx(
+              "flex items-center gap-x-2 text-sm text-snow-darker"
+            )}
+          >
+            <LoadingPictogram className={clsx("h-4 w-4")} />
+            <div>ニコニコ動画から検索中</div>
+          </div>
         ) : (
-          <p
+          <div
             className={clsx(
               "flex items-center gap-x-2 text-sm text-error-primary"
             )}
           >
-            <NotFoundPictogram className={clsx("inline h-4 w-4")} />
-            <span className={clsx("font-bold")}>
+            <NotFoundPictogram className={clsx("h-4 w-4")} />
+            <div className={clsx("font-bold")}>
               ニコニコ動画から情報を取得できませんでした。
-            </span>
-          </p>
+            </div>
+          </div>
         )}
       </div>
       <div className={clsx("flex shrink-0 justify-between gap-x-2")}>
@@ -322,10 +335,20 @@ export const NicovideoConfirmForm = ({
 
 export const queryFetchYoutube = graphql(`
   query InputIDForm_Youtube($sourceId: String!) {
+    findYoutubeVideoSource(input: { sourceId: $sourceId }) {
+      id
+      ...InputSourceForm_AlreadyRegistered
+    }
+    findYoutubeRegistrationRequest(input: { sourceId: $sourceId }) {
+      id
+      ...InputSourceForm_AlreadyRequested
+      ...RegisterFromYoutubeForm_Request
+    }
     fetchYoutube(input: { sourceId: $sourceId }) {
       source {
         thumbnailUrl
         url
+        sourceId
         ...YoutubeForm_OriginalSource2
         ...YoutubeRequestForm_OriginalSource
       }
@@ -338,15 +361,20 @@ export const YoutubeConfirmForm = ({
   go,
   type,
   sourceId,
+  handleCancel,
 }: {
   className?: string;
   style?: React.CSSProperties;
+  handleCancel(): void;
   sourceId: string;
   type: "register" | "request";
   go(
     p:
       | {
           type: "register";
+          request:
+            | FragmentType<typeof YoutubeRegisterFormRequestFragment>
+            | undefined;
           source: FragmentType<typeof YoutubeRegisterOriginalSourceFragment>;
         }
       | {
@@ -359,6 +387,20 @@ export const YoutubeConfirmForm = ({
     query: queryFetchYoutube,
     variables: { sourceId },
   });
+  const enable = useMemo(() => {
+    if (!data) return false;
+    switch (type) {
+      case "register":
+        return (
+          !data.findYoutubeVideoSource && data.fetchYoutube.source !== null
+        );
+      case "request":
+        return (
+          !data.findYoutubeRegistrationRequest &&
+          data.fetchYoutube.source !== null
+        );
+    }
+  }, [data, type]);
 
   const handle = useCallback(() => {
     if (!data?.fetchYoutube.source) return;
@@ -367,6 +409,7 @@ export const YoutubeConfirmForm = ({
       case "register":
         go({
           type: "register",
+          request: data.findYoutubeRegistrationRequest || undefined,
           source: data.fetchYoutube.source,
         });
         break;
@@ -377,26 +420,7 @@ export const YoutubeConfirmForm = ({
         });
         break;
     }
-  }, [data?.fetchYoutube.source, go, type]);
-
-  if (fetching)
-    return (
-      <p className={clsx("flex items-center gap-x-2 text-sm text-snow-darker")}>
-        <LoadingPictogram className={clsx("inline h-4 w-4")} />
-        検索中
-      </p>
-    );
-  if (!data?.fetchYoutube.source)
-    return (
-      <p
-        className={clsx("flex items-center gap-x-2 text-sm text-error-primary")}
-      >
-        <NotFoundPictogram className={clsx("inline h-4 w-4")} />
-        <span className={clsx("font-bold")}>
-          Youtubeから情報を取得できませんでした。
-        </span>
-      </p>
-    );
+  }, [data, go, type]);
 
   return (
     <form
@@ -407,47 +431,94 @@ export const YoutubeConfirmForm = ({
         handle();
       }}
     >
-      <div className={clsx("flex grow gap-x-4")}>
-        <div className={clsx("shrink-0")}>
-          <CoolImage2
-            src={data.fetchYoutube.source.thumbnailUrl}
-            alt={data.fetchYoutube.source.url}
-            width={96}
-            height={64}
-            className={clsx("h-[64px] w-[96px]")}
-            unoptimized={true}
-          />
-        </div>
-        <div
-          className={clsx(
-            "flex grow flex-col gap-y-1 border border-obsidian-primary bg-obsidian-darkest px-4 py-2"
-          )}
-        >
-          <p>
-            <a
-              href={data.fetchYoutube.source.url}
+      <div className={clsx("grow")}>
+        {data?.findYoutubeVideoSource ? (
+          <AlreadyRegistered fragment={data.findYoutubeVideoSource} />
+        ) : type === "request" && data?.findYoutubeRegistrationRequest ? (
+          <AlreadyRequested fragment={data.findYoutubeRegistrationRequest} />
+        ) : data?.fetchYoutube.source ? (
+          <div className={clsx("flex gap-x-4")}>
+            <div className={clsx("shrink-0")}>
+              <CoolImage2
+                src={data.fetchYoutube.source.thumbnailUrl}
+                alt={data.fetchYoutube.source.thumbnailUrl}
+                width={96}
+                height={64}
+                className={clsx("h-[64px] w-[96px]")}
+                unoptimized={true}
+              />
+            </div>
+            <div
               className={clsx(
-                "inline-flex items-center gap-x-1 font-mono text-xs text-snow-darker hover:text-vivid-primary"
+                "flex grow flex-col gap-y-1 border border-obsidian-primary bg-obsidian-darkest px-4 py-2"
               )}
             >
-              <ExternalLinkPictogram className={clsx("h-4 w-4")} />
-              {data.fetchYoutube.source.url}
-            </a>
-          </p>
-        </div>
+              <p>
+                <a
+                  href={data.fetchYoutube.source.url}
+                  className={clsx(
+                    "inline-flex items-center gap-x-1 font-mono text-xs text-snow-darker hover:text-vivid-primary"
+                  )}
+                >
+                  <ExternalLinkPictogram className={clsx("h-4 w-4")} />
+                  {data.fetchYoutube.source.sourceId}
+                </a>
+              </p>
+            </div>
+          </div>
+        ) : fetching ? (
+          <div
+            className={clsx(
+              "flex items-center gap-x-2 text-sm text-snow-darker"
+            )}
+          >
+            <LoadingPictogram className={clsx("h-4 w-4")} />
+            <div>Bilibiliから検索中</div>
+          </div>
+        ) : (
+          <div
+            className={clsx(
+              "flex items-center gap-x-2 text-sm text-error-primary"
+            )}
+          >
+            <NotFoundPictogram className={clsx("h-4 w-4")} />
+            <div className={clsx("font-bold")}>
+              Bilibiliから情報を取得できませんでした。
+            </div>
+          </div>
+        )}
       </div>
-      <div className={clsx("flex shrink-0 justify-end")}>
-        <SubmitButton type={type} disabled={!data.fetchYoutube.source} />
+      <div className={clsx("flex shrink-0 justify-between gap-x-2")}>
+        <SubmitButton type={type} disabled={!enable} />
+        <Button
+          className={clsx()}
+          onClick={() => {
+            handleCancel();
+          }}
+          text="取り消す"
+          size="medium"
+          color="red"
+        />
       </div>
     </form>
   );
 };
 
-export const queryFetchSoundCloud = graphql(`
+export const queryFetchSoundcloud = graphql(`
   query SourceIDForm_Soundcloud($url: String!) {
+    findSoundcloudMADSource(input: { url: $url }) {
+      id
+      ...InputSourceForm_AlreadyRegistered
+    }
+    findSoundcloudRegistrationRequestByUrl(url: $url) {
+      id
+      ...InputSourceForm_AlreadyRequested
+      ...RegisterFromSoundcloudForm_Request
+    }
     fetchSoundcloud(input: { url: $url }) {
       source {
         title
+        sourceId
         originalThumbnailUrl
         url
         ...SoundcloudForm_OriginalSource2
@@ -461,17 +532,22 @@ export const SoundcloudConfirmForm = ({
   style,
   go,
   type,
+  handleCancel,
   url,
 }: {
   className?: string;
   style?: React.CSSProperties;
   url: string;
+  handleCancel(): void;
   type: "register" | "request";
   go(
     p:
       | {
           type: "register";
           source: FragmentType<typeof SoundcloudRegisterOriginalSourceFragment>;
+          request:
+            | FragmentType<typeof SoundcloudRegisterFormRequestFragment>
+            | undefined;
         }
       | {
           type: "request";
@@ -482,9 +558,23 @@ export const SoundcloudConfirmForm = ({
   ): void;
 }) => {
   const [{ fetching, data }] = useQuery({
-    query: queryFetchSoundCloud,
+    query: queryFetchSoundcloud,
     variables: { url },
   });
+  const enable = useMemo(() => {
+    if (!data) return false;
+    switch (type) {
+      case "register":
+        return (
+          !data.findSoundcloudMADSource && data.fetchSoundcloud.source !== null
+        );
+      case "request":
+        return (
+          !data.findSoundcloudRegistrationRequestByUrl &&
+          data.fetchSoundcloud.source !== null
+        );
+    }
+  }, [data, type]);
 
   const handle = useCallback(() => {
     if (!data?.fetchSoundcloud.source) return;
@@ -493,6 +583,7 @@ export const SoundcloudConfirmForm = ({
       case "register":
         go({
           type: "register",
+          request: data.findSoundcloudRegistrationRequestByUrl || undefined,
           source: data.fetchSoundcloud.source,
         });
         break;
@@ -503,26 +594,7 @@ export const SoundcloudConfirmForm = ({
         });
         break;
     }
-  }, [data?.fetchSoundcloud, go, type]);
-
-  if (fetching)
-    return (
-      <p className={clsx("flex items-center gap-x-2 text-sm text-snow-darker")}>
-        <LoadingPictogram className={clsx("inline h-4 w-4")} />
-        検索中
-      </p>
-    );
-  if (!data?.fetchSoundcloud.source)
-    return (
-      <p
-        className={clsx("flex items-center gap-x-2 text-sm text-error-primary")}
-      >
-        <NotFoundPictogram className={clsx("inline h-4 w-4")} />
-        <span className={clsx("font-bold")}>
-          SoundCloudから情報を取得できませんでした。
-        </span>
-      </p>
-    );
+  }, [data, go, type]);
 
   return (
     <form
@@ -533,42 +605,82 @@ export const SoundcloudConfirmForm = ({
         handle();
       }}
     >
-      <div className={clsx("flex grow gap-x-4")}>
-        <div className={clsx("shrink-0")}>
-          {
-            // TODO: 画像がない場合の挙動
-            data.fetchSoundcloud.source.originalThumbnailUrl && (
-              <CoolImage2
-                src={data.fetchSoundcloud.source.originalThumbnailUrl}
-                alt={data.fetchSoundcloud.source.url}
-                width={96}
-                height={64}
-                className={clsx("h-[64px] w-[96px]")}
-                unoptimized={true}
-              />
-            )
-          }
-        </div>
-        <div
-          className={clsx(
-            "flex grow flex-col gap-y-1 border border-obsidian-primary bg-obsidian-darkest px-4 py-2"
-          )}
-        >
-          <p>
-            <a
-              href={data.fetchSoundcloud.source.url}
+      <div className={clsx("grow")}>
+        {data?.findSoundcloudMADSource ? (
+          <AlreadyRegistered fragment={data.findSoundcloudMADSource} />
+        ) : type === "request" &&
+          data?.findSoundcloudRegistrationRequestByUrl ? (
+          <AlreadyRequested
+            fragment={data.findSoundcloudRegistrationRequestByUrl}
+          />
+        ) : data?.fetchSoundcloud.source ? (
+          <div className={clsx("flex gap-x-4")}>
+            <div className={clsx("shrink-0")}>
+              {data.fetchSoundcloud.source.originalThumbnailUrl && (
+                <CoolImage2
+                  src={data.fetchSoundcloud.source.originalThumbnailUrl}
+                  alt={data.fetchSoundcloud.source.title}
+                  width={96}
+                  height={64}
+                  className={clsx("h-[64px] w-[96px]")}
+                  unoptimized={true}
+                />
+              )}
+            </div>
+            <div
               className={clsx(
-                "inline-flex items-center gap-x-1 font-mono text-xs text-snow-darker hover:text-vivid-primary"
+                "flex grow flex-col gap-y-1 border border-obsidian-primary bg-obsidian-darkest px-4 py-2"
               )}
             >
-              <ExternalLinkPictogram className={clsx("h-4 w-4")} />
-              {data.fetchSoundcloud.source.url}
-            </a>
-          </p>
-        </div>
+              <p className={clsx("text-sm text-snow-primary")}>
+                {data.fetchSoundcloud.source.title}
+              </p>
+              <p>
+                <a
+                  href={data.fetchSoundcloud.source.url}
+                  className={clsx(
+                    "inline-flex items-center gap-x-1 font-mono text-xs text-snow-darker hover:text-vivid-primary"
+                  )}
+                >
+                  <ExternalLinkPictogram className={clsx("h-4 w-4")} />
+                  {data.fetchSoundcloud.source.sourceId}
+                </a>
+              </p>
+            </div>
+          </div>
+        ) : fetching ? (
+          <div
+            className={clsx(
+              "flex items-center gap-x-2 text-sm text-snow-darker"
+            )}
+          >
+            <LoadingPictogram className={clsx("h-4 w-4")} />
+            <div>SoundCloudから検索中</div>
+          </div>
+        ) : (
+          <div
+            className={clsx(
+              "flex items-center gap-x-2 text-sm text-error-primary"
+            )}
+          >
+            <NotFoundPictogram className={clsx("h-4 w-4")} />
+            <div className={clsx("font-bold")}>
+              SoundCloudから情報を取得できませんでした。
+            </div>
+          </div>
+        )}
       </div>
-      <div className={clsx("flex shrink-0 justify-end")}>
-        <SubmitButton type={type} disabled={!data.fetchSoundcloud.source} />
+      <div className={clsx("flex shrink-0 justify-between gap-x-2")}>
+        <SubmitButton type={type} disabled={!enable} />
+        <Button
+          className={clsx()}
+          onClick={() => {
+            handleCancel();
+          }}
+          text="取り消す"
+          size="medium"
+          color="red"
+        />
       </div>
     </form>
   );
@@ -576,6 +688,15 @@ export const SoundcloudConfirmForm = ({
 
 export const queryFetchBilibili = graphql(`
   query SourceIDForm_Bilibili($sourceId: String!) {
+    findBilibiliMADSource(input: { sourceId: $sourceId }) {
+      id
+      ...InputSourceForm_AlreadyRegistered
+    }
+    findBilibiliRegistrationRequestBySourceId(sourceId: $sourceId) {
+      id
+      ...InputSourceForm_AlreadyRequested
+      ...RegisterFromBilibiliForm_Request
+    }
     fetchBilibili(input: { bvid: $sourceId }) {
       source {
         title
@@ -592,17 +713,22 @@ export const BilibiliConfirmForm = ({
   style,
   go,
   type,
+  handleCancel,
   sourceId,
 }: {
   className?: string;
   style?: React.CSSProperties;
   sourceId: string;
+  handleCancel(): void;
   type: "register" | "request";
   go(
     p:
       | {
           type: "register";
           source: FragmentType<typeof BilibiliRegisterOriginalSourceFragment>;
+          request:
+            | FragmentType<typeof BilibiliRegisterFormRequestFragment>
+            | undefined;
         }
       | {
           type: "request";
@@ -617,6 +743,21 @@ export const BilibiliConfirmForm = ({
     variables: { sourceId },
   });
 
+  const enable = useMemo(() => {
+    if (!data) return false;
+    switch (type) {
+      case "register":
+        return (
+          !data.findBilibiliMADSource && data.fetchBilibili.source !== null
+        );
+      case "request":
+        return (
+          !data.findBilibiliRegistrationRequestBySourceId &&
+          data.fetchBilibili.source !== null
+        );
+    }
+  }, [data, type]);
+
   const handle = useCallback(() => {
     if (!data?.fetchBilibili.source) return;
 
@@ -625,6 +766,7 @@ export const BilibiliConfirmForm = ({
         go({
           type: "register",
           source: data.fetchBilibili.source,
+          request: data.findBilibiliRegistrationRequestBySourceId || undefined,
         });
         break;
       case "request":
@@ -634,26 +776,7 @@ export const BilibiliConfirmForm = ({
         });
         break;
     }
-  }, [data?.fetchBilibili.source, go, type]);
-
-  if (fetching)
-    return (
-      <p className={clsx("flex items-center gap-x-2 text-sm text-snow-darker")}>
-        <LoadingPictogram className={clsx("inline h-4 w-4")} />
-        検索中
-      </p>
-    );
-  if (!data?.fetchBilibili.source)
-    return (
-      <p
-        className={clsx("flex items-center gap-x-2 text-sm text-error-primary")}
-      >
-        <NotFoundPictogram className={clsx("inline h-4 w-4")} />
-        <span className={clsx("font-bold")}>
-          Bilibiliから情報を取得できませんでした。
-        </span>
-      </p>
-    );
+  }, [data, go, type]);
 
   return (
     <form
@@ -664,37 +787,80 @@ export const BilibiliConfirmForm = ({
         handle();
       }}
     >
-      <div className={clsx("flex grow gap-x-4")}>
-        <div className={clsx("shrink-0")}>
-          <CoolImage2
-            src={data.fetchBilibili.source.originalThumbnailUrl}
-            alt={data.fetchBilibili.source.url}
-            width={96}
-            height={64}
-            className={clsx("h-[64px] w-[96px]")}
-            unoptimized={true}
+      <div className={clsx("grow")}>
+        {data?.findBilibiliMADSource ? (
+          <AlreadyRegistered fragment={data.findBilibiliMADSource} />
+        ) : type === "request" &&
+          data?.findBilibiliRegistrationRequestBySourceId ? (
+          <AlreadyRequested
+            fragment={data.findBilibiliRegistrationRequestBySourceId}
           />
-        </div>
-        <div
-          className={clsx(
-            "flex grow flex-col gap-y-1 border border-obsidian-primary bg-obsidian-darkest px-4 py-2"
-          )}
-        >
-          <p>
-            <a
-              href={data.fetchBilibili.source.url}
+        ) : data?.fetchBilibili.source ? (
+          <div className={clsx("flex gap-x-4")}>
+            <div className={clsx("shrink-0")}>
+              <CoolImage2
+                src={data.fetchBilibili.source.originalThumbnailUrl}
+                alt={data.fetchBilibili.source.title}
+                width={96}
+                height={64}
+                className={clsx("h-[64px] w-[96px]")}
+                unoptimized={true}
+              />
+            </div>
+            <div
               className={clsx(
-                "inline-flex items-center gap-x-1 font-mono text-xs text-snow-darker hover:text-vivid-primary"
+                "flex grow flex-col gap-y-1 border border-obsidian-primary bg-obsidian-darkest px-4 py-2"
               )}
             >
-              <ExternalLinkPictogram className={clsx("h-4 w-4")} />
-              {data.fetchBilibili.source.url}
-            </a>
-          </p>
-        </div>
+              <p className={clsx("text-sm text-snow-primary")}>
+                {data.fetchBilibili.source.title}
+              </p>
+              <p>
+                <a
+                  href={data.fetchBilibili.source.url}
+                  className={clsx(
+                    "inline-flex items-center gap-x-1 font-mono text-xs text-snow-darker hover:text-vivid-primary"
+                  )}
+                >
+                  <ExternalLinkPictogram className={clsx("h-4 w-4")} />
+                  {data.fetchBilibili.source.originalThumbnailUrl}
+                </a>
+              </p>
+            </div>
+          </div>
+        ) : fetching ? (
+          <div
+            className={clsx(
+              "flex items-center gap-x-2 text-sm text-snow-darker"
+            )}
+          >
+            <LoadingPictogram className={clsx("h-4 w-4")} />
+            <div>Bilibiliから検索中</div>
+          </div>
+        ) : (
+          <div
+            className={clsx(
+              "flex items-center gap-x-2 text-sm text-error-primary"
+            )}
+          >
+            <NotFoundPictogram className={clsx("h-4 w-4")} />
+            <div className={clsx("font-bold")}>
+              Bilibiliから情報を取得できませんでした。
+            </div>
+          </div>
+        )}
       </div>
-      <div className={clsx("flex shrink-0 justify-end")}>
-        <SubmitButton type={type} disabled={!data.fetchBilibili.source} />
+      <div className={clsx("flex shrink-0 justify-between gap-x-2")}>
+        <SubmitButton type={type} disabled={!enable} />
+        <Button
+          className={clsx()}
+          onClick={() => {
+            handleCancel();
+          }}
+          text="取り消す"
+          size="medium"
+          color="red"
+        />
       </div>
     </form>
   );
@@ -802,6 +968,7 @@ export default function SourceIDForm({
               case "register":
                 openYoutubeRegister({
                   sourceFragment: p.source,
+                  requestFragment: p.request,
                 });
                 break;
               case "request":
@@ -811,6 +978,7 @@ export default function SourceIDForm({
                 break;
             }
           }}
+          handleCancel={() => setCurrent(undefined)}
           className={clsx("grow")}
         />
       ) : current?.type === "soundcloud" ? (
@@ -822,6 +990,7 @@ export default function SourceIDForm({
               case "register":
                 openSoundcloudRegister({
                   sourceFragment: p.source,
+                  requestFragment: p.request,
                 });
                 break;
               case "request":
@@ -831,6 +1000,7 @@ export default function SourceIDForm({
                 break;
             }
           }}
+          handleCancel={() => setCurrent(undefined)}
           className={clsx("grow")}
         />
       ) : current?.type === "bilibili" ? (
@@ -842,6 +1012,7 @@ export default function SourceIDForm({
               case "register":
                 openBilibiliRegister({
                   sourceFragment: p.source,
+                  requestFragment: p.request,
                 });
                 break;
               case "request":
@@ -851,6 +1022,7 @@ export default function SourceIDForm({
                 break;
             }
           }}
+          handleCancel={() => setCurrent(undefined)}
           className={clsx("grow")}
         />
       ) : (

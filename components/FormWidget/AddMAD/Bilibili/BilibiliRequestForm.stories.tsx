@@ -10,7 +10,7 @@ import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
 
 import { mockTagSearcher } from "../Nicovideo/NicovideoRegister.stories";
-import { BilibiliRegisterOriginalSourceFragment } from "./BilibiliOriginalSource";
+import { BilibiliOriginalSourceFragment } from "./BilibiliOriginalSource";
 import BilibiliRequestForm, {
   BilibiliRequestFormOriginalSourceFragment,
   BilibiliRequestMutation,
@@ -63,7 +63,7 @@ export const mockSourceFragment = makeFragmentData(
           },
         })),
       },
-      BilibiliRegisterOriginalSourceFragment
+      BilibiliOriginalSourceFragment
     ),
   },
   BilibiliRequestFormOriginalSourceFragment

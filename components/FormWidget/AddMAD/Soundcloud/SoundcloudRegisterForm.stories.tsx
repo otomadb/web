@@ -11,22 +11,21 @@ import { Fragment as UserIconFragment } from "~/components/UserIcon";
 import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
 
-import { BilibiliOriginalSourceFragment } from "./BilibiliOriginalSource";
-import BilibiliRegisterForm, {
-  BilibiliRegisterFormMutation,
-  BilibiliRegisterFormRequestFragment,
-  BilibiliRegisterOriginalSourceFragment as BilibiliRegisterFormSourceFragment,
-} from "./BilibiliRegisterForm";
+import { SoundcloudRegisterOriginalSourceFragment } from "./SoundcloudOriginalSource";
+import SoundcloudRegisterForm, {
+  SoundcloudRegisterFormRequestFragment,
+  SoundcloudRegisterMutation,
+} from "./SoundcloudRegisterForm";
 
 export const mockMutationSuccess = mockGql.mutation(
-  BilibiliRegisterFormMutation,
+  SoundcloudRegisterMutation,
   (req, res, ctx) =>
     res(
       ctx.data({
-        registerBilibiliMAD: {
-          __typename: "RegisterBilibiliMADSucceededPayload",
-          video: {
-            id: "video:1",
+        registerSoundcloudMAD: {
+          __typename: "RegisterSoundcloudMADSucceededPayload",
+          mad: {
+            id: "mad:1",
             title: "Title 1",
             ...makeFragmentData({ serial: 1 }, MadPageLinkFragment),
           },
@@ -39,33 +38,19 @@ export const mockSourceFragment = makeFragmentData(
   {
     title: "Title 1",
     thumbnailUrl: "/thumbnail.jpg",
-    sourceId: "sm2057168",
-    url: "https://www.nicovideo.jp/watch/sm2057168",
+    sourceId: "keigoooo/hyperflip-donaldcore",
+    url: "https://soundcloud.com/keigoooo/hyperflip-donaldcore",
     ...makeFragmentData(
       {
-        sourceId: "sm2057168",
-        url: "https://www.nicovideo.jp/watch/sm2057168",
+        sourceId: "keigoooo/hyperflip-donaldcore",
+        url: "https://soundcloud.com/keigoooo/hyperflip-donaldcore",
         title: "Title 1",
         thumbnailUrl: "/thumbnail.jpg",
-        tags: [...new Array(11)].map((_, i) => ({
-          name: `source tag ${i}`,
-          searchTags: {
-            items: [...new Array(3)].map((_, j) => ({
-              tag: {
-                id: `tag:${i}:${j}`,
-                ...makeFragmentData(
-                  { name: `Tag.${i}.${j}`, type: TagType.Character },
-                  CommonTagFragment
-                ),
-              },
-            })),
-          },
-        })),
       },
-      BilibiliOriginalSourceFragment
+      SoundcloudRegisterOriginalSourceFragment
     ),
   },
-  BilibiliRegisterFormSourceFragment
+  SoundcloudRegisterOriginalSourceFragment
 );
 
 export const mockRequestFragment = makeFragmentData(
@@ -99,12 +84,12 @@ export const mockRequestFragment = makeFragmentData(
       { id: "semitagging:3", name: "Requested Semitag 3" },
     ],
   },
-  BilibiliRegisterFormRequestFragment
+  SoundcloudRegisterFormRequestFragment
 );
 
 const meta = {
   excludeStories: /^mock/,
-  component: BilibiliRegisterForm,
+  component: SoundcloudRegisterForm,
   args: {
     style: {
       width: 640,
@@ -115,7 +100,7 @@ const meta = {
     sourceFragment: mockSourceFragment,
     requestFragment: mockRequestFragment,
   },
-} as Meta<typeof BilibiliRegisterForm>;
+} as Meta<typeof SoundcloudRegisterForm>;
 export default meta;
 
 type Story = StoryObj<typeof meta>;

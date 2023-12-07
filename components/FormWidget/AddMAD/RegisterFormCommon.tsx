@@ -44,7 +44,7 @@ export const useRegisterFormEditTaggings = () => {
 
   return {
     tags,
-    taggingsPayload: tagIds,
+    tagIds,
     isSelecting: (tagId: string) => tagIds.includes(tagId),
     appendTag: (
       tagId: string,
@@ -82,7 +82,7 @@ export const useRegisterFormEditSemitaggings = () => {
 
   return {
     semitaggings,
-    semitaggingsPayload: payload,
+    semitagNames: payload,
     isIncludeSemitag: (name: string) =>
       semitaggings.map(({ name }) => name).includes(name),
     appendSemitag: (name: string) => dispatchSemitags({ type: "append", name }),
