@@ -3,7 +3,7 @@
 import clsx from "clsx";
 import { ComponentProps, useState } from "react";
 
-import RegisterForm from "~/components/Form/RegisterMAD/FromSoundcloud";
+import SoundcloudRegisterForm from "~/components/Form/SoundcloudRegisterForm";
 import SoundcloudURLForm from "~/components/Form/SoundCloudURLForm";
 
 import { useCloseFormModal } from ".";
@@ -17,7 +17,9 @@ export default function RegisterSoundcloudMADFormModal({
   className?: string;
   style?: React.CSSProperties;
   initialSourceId?: string;
-  handleSuccess?: ComponentProps<typeof RegisterForm>["handleSuccess"];
+  handleSuccess?: ComponentProps<
+    typeof SoundcloudRegisterForm
+  >["handleSuccess"];
 }) {
   const [sourceId, setSourceId] = useState<string | undefined>(initialSourceId);
   const closeModal = useCloseFormModal();
@@ -31,7 +33,7 @@ export default function RegisterSoundcloudMADFormModal({
         />
       )}
       {sourceId && (
-        <RegisterForm
+        <SoundcloudRegisterForm
           className={clsx(["h-full"])}
           url={sourceId}
           handleSuccess={handleSuccess}

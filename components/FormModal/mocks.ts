@@ -1,15 +1,15 @@
 import { graphql as mswGql } from "msw";
 
 import { CommonTagFragment } from "~/components/CommonTag";
+import { BilibiliRegisterOriginalSourceFragment as BilibiliOriginalSourceFragment } from "~/components/Form/BilibiliOriginalSource";
+import { Query as RegisterFromBilibiliFormCheckQuery } from "~/components/Form/BilibiliRegisterForm";
 import { Query as RegisterFromNicovideoFormCheckQuery } from "~/components/Form/NicovideoRegisterForm";
-import { Query as RegisterFromBilibiliFormCheckQuery } from "~/components/Form/RegisterMAD/FromBilibili";
-import { BilibiliRegisterOriginalSourceFragment as BilibiliOriginalSourceFragment } from "~/components/Form/RegisterMAD/FromBilibili/OriginalSource";
 import { NicovideoRegisterOriginalSourceFragment as NicovideoOriginalSourceFragment } from "~/components/Form/RegisterMAD/FromNicovideo/OriginalSource";
 import { NicovideoRegisterFormRequestFragment as NicovideoRegReqFragment } from "~/components/Form/RegisterMAD/FromNicovideo/Request";
-import { Query as RegisterFromYoutubeFormCheckQuery } from "~/components/Form/RegisterMAD/FromYoutube";
-import { YoutubeRegisterOriginalSourceFragment as YoutubeOriginalSourceFragment } from "~/components/Form/RegisterMAD/FromYoutube/OriginalSource";
 import { Fragment as YoutubeRegReqFragment } from "~/components/Form/RegisterMAD/FromYoutube/Request";
 import { Query as RequestFromNicovideoFormCheckQuery } from "~/components/Form/RequestMAD/FromNicovideo";
+import { YoutubeRegisterOriginalSourceFragment as YoutubeOriginalSourceFragment } from "~/components/Form/YoutubeOriginalSource";
+import { Query as RegisterFromYoutubeFormCheckQuery } from "~/components/Form/YoutubeRegisterForm";
 import { Fragment as UserIconFragment } from "~/components/UserIcon";
 import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";

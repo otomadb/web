@@ -6,13 +6,13 @@ import { CommonTagFragment } from "~/components/CommonTag";
 import CommonTag from "~/components/CommonTag";
 import { FragmentType } from "~/gql";
 
-export const Fragment = CommonTagFragment;
+export const TagButtonFragment = CommonTagFragment;
 export const TagButton: React.FC<{
   className?: string;
-  fragment: FragmentType<typeof Fragment>;
+  fragment: FragmentType<typeof TagButtonFragment>;
   tagId: string;
   selected: boolean;
-  append(f: FragmentType<typeof Fragment>): void;
+  append(f: FragmentType<typeof TagButtonFragment>): void;
   remove(): void;
   size?: "xs" | "small";
 }> = ({ className, selected, remove, append, size = "xs", ...props }) => {

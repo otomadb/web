@@ -8,23 +8,23 @@ import { useMutation } from "urql";
 import { MadPageLink } from "~/app/(v2)/mads/[serial]/Link";
 import UserPageLink from "~/app/(v2)/users/[name]/Link";
 import Button from "~/components/Button";
+import { SemitagButton } from "~/components/Form/SemitagButton";
+import { TagButton, TagButtonFragment } from "~/components/Form/TagButton";
 import TagSearcher from "~/components/TagSearcher";
 import { TextInput2 } from "~/components/TextInput";
 import useToaster from "~/components/Toaster/useToaster";
 import { UserIcon } from "~/components/UserIcon";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-import NicovideoOriginalSource from "./NicovideoOriginalSource";
-import { SemitagButton } from "./SemitagButton";
-import { TagButton, TagButtonFragment } from "./TagButton";
+import OriginalSource from "./YoutubeOriginalSource";
 
 const Mutation = graphql(`
-  mutation RegisterFromNicovideoForm_RegisterVideo(
-    $input: RegisterVideoFromNicovideoInput!
+  mutation RegisterFromYoutubeForm_RegisterVideo(
+    $input: RegisterVideoFromYoutubeInput!
   ) {
-    registerVideoFromNicovideo(input: $input) {
+    registerVideoFromYoutube(input: $input) {
       __typename
-      ... on RegisterVideoFromNicovideoSucceededPayload {
+      ... on RegisterVideoFromYoutubeSucceededPayload {
         video {
           ...Link_Video
           id
@@ -39,8 +39,8 @@ export const useRegisterVideo = ({
 }: {
   onSuccess(
     data: Extract<
-      ResultOf<typeof Mutation>["registerVideoFromNicovideo"],
-      { __typename: "RegisterVideoFromNicovideoSucceededPayload" }
+      ResultOf<typeof Mutation>["registerVideoFromYoutube"],
+      { __typename: "RegisterVideoFromYoutubeSucceededPayload" }
     >
   ): void;
 }) => {
@@ -53,14 +53,14 @@ export const useRegisterVideo = ({
       thumbnailUrl,
       tagIds,
       semitagNames,
-      nicovideoRequestId,
+      YoutubeRequestId,
     }: {
       sourceId: string;
       title: string;
       thumbnailUrl: string;
       tagIds: string[];
       semitagNames: string[];
-      nicovideoRequestId: string | undefined;
+      YoutubeRequestId: string | undefined;
     }) => {
       const { data, error } = await register({
         input: {
@@ -70,7 +70,7 @@ export const useRegisterVideo = ({
           tagIds,
           semitagNames,
           sourceIds: [sourceId],
-          requestId: nicovideoRequestId,
+          requestId: YoutubeRequestId,
         },
       });
       if (error || !data) {
@@ -78,9 +78,9 @@ export const useRegisterVideo = ({
         return;
       }
 
-      switch (data.registerVideoFromNicovideo.__typename) {
-        case "RegisterVideoFromNicovideoSucceededPayload":
-          onSuccess(data.registerVideoFromNicovideo);
+      switch (data.registerVideoFromYoutube.__typename) {
+        case "RegisterVideoFromYoutubeSucceededPayload":
+          onSuccess(data.registerVideoFromYoutube);
           return;
         default:
           // TODO: 何かしら出す
@@ -91,19 +91,34 @@ export const useRegisterVideo = ({
   );
 };
 
-export const NicovideoRegisterOriginalSourceFragment = graphql(`
-  fragment RegisterFromNicovideoForm_OriginalSource2 on NicovideoOriginalSource {
-    sourceId
-    url
-    info {
-      title
-      thumbnailUrl
+export const Query = graphql(`
+  query RegisterFromYoutubeForm_Check($sourceId: String!) {
+    fetchYoutube(input: { sourceId: $sourceId }) {
+      source {
+        thumbnailUrl
+        ...RegisterFromYoutubeForm_OriginalSource
+      }
     }
-    ...RegisterFromNicovideoForm_OriginalSource
+    findYoutubeRegistrationRequest(input: { sourceId: $sourceId }) {
+      id
+      ...RegisterFromYoutubeForm_Request
+    }
+    findYoutubeVideoSource(input: { sourceId: $sourceId }) {
+      ...Form_VideoAlreadyRegistered
+    }
   }
 `);
-export const NicovideoRegisterFormRequestFragment = graphql(`
-  fragment RegisterFromNicovideoForm_Request on NicovideoRegistrationRequest {
+
+export const YoutubeRegisterOriginalSourceFragment = graphql(`
+  fragment RegisterFromYoutubeForm_OriginalSource2 on YoutubeOriginalSource {
+    url
+    sourceId
+    thumbnailUrl
+    ...RegisterFromYoutubeForm_OriginalSource
+  }
+`);
+export const YoutubeRegisterFormRequestFragment = graphql(`
+  fragment RegisterFromYoutubeForm_Request on YoutubeRegistrationRequest {
     id
     title
     checked
@@ -126,7 +141,7 @@ export const NicovideoRegisterFormRequestFragment = graphql(`
     }
   }
 `);
-export default function NicovideoRegisterForm({
+export default function YoutubeRegisterForm({
   className,
   style,
   handleSuccess,
@@ -136,21 +151,22 @@ export default function NicovideoRegisterForm({
 }: {
   className?: string;
   style?: React.CSSProperties;
+  sourceId: string;
   handleSuccess?(): void;
   handleCancel(): void;
-  sourceFragment: FragmentType<typeof NicovideoRegisterOriginalSourceFragment>;
-  requestFragment?: FragmentType<typeof NicovideoRegisterFormRequestFragment>;
+  sourceFragment: FragmentType<typeof YoutubeRegisterOriginalSourceFragment>;
+  requestFragment?: FragmentType<typeof YoutubeRegisterFormRequestFragment>;
 }) {
   const source = useFragment(
-    NicovideoRegisterOriginalSourceFragment,
+    YoutubeRegisterOriginalSourceFragment,
     sourceFragment
   );
   const request = useFragment(
-    NicovideoRegisterFormRequestFragment,
+    YoutubeRegisterFormRequestFragment,
     requestFragment
   );
 
-  const [title, setTitle] = useState<string>(source.info.title);
+  const [title, setTitle] = useState<string>("");
   const [tags, dispatchTags] = useReducer(
     (
       prev: { id: string; fragment: FragmentType<typeof TagButtonFragment> }[],
@@ -221,10 +237,10 @@ export default function NicovideoRegisterForm({
   });
   const payload = useMemo(() => {
     return {
-      title,
       sourceId: source.sourceId,
-      thumbnailUrl: source.info.thumbnailUrl,
-      nicovideoRequestId: request?.id,
+      title,
+      thumbnailUrl: source.thumbnailUrl,
+      YoutubeRequestId: request?.id,
       tagIds,
       semitagNames,
     };
@@ -236,18 +252,26 @@ export default function NicovideoRegisterForm({
   }, [payload, registerVideo]);
 
   return (
-    <div className={clsx(className, "flex flex-col gap-y-4 p-4")} style={style}>
+    <div
+      className={clsx(
+        className,
+        ["grow"],
+        [["p-4"]],
+        ["flex flex-col gap-y-4"]
+      )}
+      style={style}
+    >
       <form
-        className={clsx("flex h-full flex-col gap-y-6")}
+        className={clsx(["flex h-full flex-col gap-y-6"])}
         onSubmit={(e) => {
           e.preventDefault();
           handleSubmit();
         }}
       >
-        <div className={clsx("flex flex-col gap-y-4")}>
-          <div className={clsx("w-full shrink-0")}>
-            <label className={clsx("flex flex-col gap-y-1")}>
-              <div className={clsx("text-xs font-bold text-slate-400")}>
+        <div className={clsx(["flex flex-col gap-y-4"])}>
+          <div className={clsx(["w-full shrink-0"])}>
+            <label className={clsx(["flex flex-col gap-y-1"])}>
+              <div className={clsx(["text-xs font-bold text-slate-400"])}>
                 タイトル
               </div>
               <TextInput2
@@ -258,26 +282,29 @@ export default function NicovideoRegisterForm({
               />
             </label>
           </div>
-          <div className={clsx("flex flex-col gap-y-2")}>
-            <div className={clsx("flex gap-x-2")}>
+          <div className={clsx(["flex flex-col gap-y-2"])}>
+            <div className={clsx(["flex gap-x-2"])}>
               <div
-                className={clsx(
-                  "shrink-0 py-0.5 text-xs font-bold text-slate-400"
-                )}
+                className={clsx([
+                  "shrink-0 py-0.5 text-xs font-bold text-slate-400",
+                ])}
               >
                 追加されるタグ
               </div>
               {tags.length === 0 && (
                 <div
-                  className={clsx(
-                    "shrink-0 self-center text-xs text-slate-400"
-                  )}
+                  className={clsx([
+                    "shrink-0 self-center text-xs",
+                    "text-slate-400",
+                  ])}
                 >
                   なし
                 </div>
               )}
               {tags.length > 0 && (
-                <div className={clsx("flex flex-wrap gap-1")}>
+                <div
+                  className={clsx(["flex", "flex-wrap", "gap-x-1", "gap-y-1"])}
+                >
                   {tags.map(({ id: tagId, fragment }) => (
                     <TagButton
                       key={tagId}
@@ -293,25 +320,28 @@ export default function NicovideoRegisterForm({
                 </div>
               )}
             </div>
-            <div className={clsx("flex gap-x-2")}>
+            <div className={clsx(["flex gap-x-2"])}>
               <div
-                className={clsx(
-                  "shrink-0 py-0.5 text-xs font-bold text-slate-400"
-                )}
+                className={clsx([
+                  "shrink-0 py-0.5 text-xs font-bold text-slate-400",
+                ])}
               >
                 追加される仮タグ
               </div>
               {semitagNames.length === 0 && (
                 <div
-                  className={clsx(
-                    "shrink-0 self-center text-xs text-slate-400"
-                  )}
+                  className={clsx([
+                    "shrink-0 self-center text-xs",
+                    "text-slate-400",
+                  ])}
                 >
                   なし
                 </div>
               )}
               {semitagNames.length > 0 && (
-                <div className={clsx("flex flex-wrap gap-1")}>
+                <div
+                  className={clsx(["flex", "flex-wrap", "gap-x-1", "gap-y-1"])}
+                >
                   {semitagNames.map((name) => (
                     <SemitagButton
                       key={name}
@@ -324,24 +354,24 @@ export default function NicovideoRegisterForm({
                 </div>
               )}
             </div>
-            <div className={clsx("mt-auto shrink-0")}>
+            <div className={clsx(["mt-auto shrink-0"])}>
               <TagSearcher
                 limit={5}
                 size="small"
-                className={clsx("z-10 w-full")}
+                className={clsx(["z-10 w-full"])}
                 handleSelect={(tagId, fragment) => {
                   dispatchTags({ type: "append", tagId, fragment });
                 }}
                 Additional={({ query }) => (
-                  <div className={clsx("flex items-center")}>
+                  <div className={clsx(["flex items-center"])}>
                     <div
-                      className={clsx(
-                        "rounded-sm border border-slate-700 bg-slate-900 px-0.5 py-0.25 text-xs text-slate-300"
-                      )}
+                      className={clsx([
+                        "rounded-sm border border-slate-700 bg-slate-900 px-0.5 py-0.25 text-xs text-slate-300",
+                      ])}
                     >
                       {query}
                     </div>
-                    <div className={clsx("shrink-0 text-sm text-slate-500")}>
+                    <div className={clsx(["shrink-0 text-sm text-slate-500"])}>
                       を仮タグとして追加
                     </div>
                   </div>
@@ -354,11 +384,25 @@ export default function NicovideoRegisterForm({
             </div>
           </div>
         </div>
-        <div className={clsx("flex flex-col gap-y-2")}>
-          <div className={clsx("flex gap-x-2")}>
+        <div className={clsx(["flex flex-col gap-y-2"])}>
+          <div className={clsx(["flex gap-x-2"])}>
             <div
               className={clsx(
-                "cursor-pointer select-none rounded border border-slate-700 bg-slate-950 px-2 py-1 text-xs font-bold text-slate-400 aria-checked:cursor-default aria-checked:border-slate-600 aria-checked:bg-slate-700 aria-checked:text-slate-400 aria-disabled:cursor-default aria-disabled:border-slate-800 aria-disabled:bg-slate-900 aria-disabled:text-slate-700 hover:bg-slate-800"
+                ["select-none"],
+                ["px-2 py-1"],
+                [
+                  "bg-slate-950 aria-checked:bg-slate-700 aria-disabled:bg-slate-900 hover:bg-slate-800",
+                ],
+                [
+                  "text-xs font-bold text-slate-400 aria-checked:text-slate-400 aria-disabled:text-slate-700",
+                ],
+                [
+                  "rounded border border-slate-700 aria-checked:border-slate-600 aria-disabled:border-slate-800",
+                ],
+                [
+                  "cursor-pointer aria-checked:cursor-default aria-disabled:cursor-default",
+                ],
+                ["cursor-pointer aria-checked:cursor-default"]
               )}
               onClick={() => setTab("SOURCE")}
               aria-checked={tab === "SOURCE"}
@@ -367,7 +411,20 @@ export default function NicovideoRegisterForm({
             </div>
             <div
               className={clsx(
-                "cursor-pointer select-none rounded border border-slate-700 bg-slate-950 px-2 py-1 text-xs font-bold text-slate-400 aria-checked:cursor-default aria-checked:border-slate-600 aria-checked:bg-slate-700 aria-checked:text-slate-400 aria-disabled:cursor-default aria-disabled:border-slate-800 aria-disabled:bg-slate-900 aria-disabled:text-slate-700 hover:bg-slate-800"
+                ["select-none"],
+                ["px-2 py-1"],
+                [
+                  "bg-slate-950 aria-checked:bg-slate-700 aria-disabled:bg-slate-900 hover:bg-slate-800",
+                ],
+                [
+                  "text-xs font-bold text-slate-400 aria-checked:text-slate-400 aria-disabled:text-slate-700",
+                ],
+                [
+                  "rounded border border-slate-700 aria-checked:border-slate-600 aria-disabled:border-slate-800",
+                ],
+                [
+                  "cursor-pointer aria-checked:cursor-default aria-disabled:cursor-default",
+                ]
               )}
               onClick={() => {
                 if (request) setTab("REQUEST");
@@ -379,21 +436,7 @@ export default function NicovideoRegisterForm({
             </div>
           </div>
           <div className={clsx({ hidden: tab !== "SOURCE" })}>
-            <NicovideoOriginalSource
-              fragment={source}
-              selectingTagId={tagIds}
-              appendTag={({ tagId, fragment }) =>
-                dispatchTags({ type: "append", tagId, fragment })
-              }
-              removeTag={(tagId) => dispatchTags({ type: "remove", tagId })}
-              selectingSemitagNames={semitagNames}
-              appendSemitag={(name) =>
-                dispatchSemitags({ type: "append", name })
-              }
-              removeSemitag={(name) =>
-                dispatchSemitags({ type: "remove", name })
-              }
-            />
+            {source && <OriginalSource fragment={source} />}
           </div>
           {request && (
             <div
@@ -402,33 +445,37 @@ export default function NicovideoRegisterForm({
                 "flex flex-col gap-y-2"
               )}
             >
-              <div className={clsx("flex flex-col gap-y-2")}>
-                <div className={clsx("flex items-center")}>
-                  <p className={clsx("grow text-sm text-slate-500")}>
-                    <span className={clsx("font-bold text-slate-400")}>
+              <div className={clsx(className, ["flex flex-col gap-y-2"])}>
+                <div className={clsx(["flex items-center"])}>
+                  <p className={clsx(["grow text-sm text-slate-500"])}>
+                    <span className={clsx(["font-bold text-slate-400"])}>
                       {request.title}
                     </span>
                     としてリクエストされています
                   </p>
-                  <div className={clsx("shrink-0")}>
+                  <div className={clsx(["shrink-0"])}>
                     <UserPageLink fragment={request.requestedBy}>
                       <UserIcon size={24} fragment={request.requestedBy} />
                     </UserPageLink>
                   </div>
                 </div>
-                <div className={clsx("flex flex-col gap-y-2")}>
+                <div className={clsx(["flex flex-col gap-y-2"])}>
                   <div
-                    className={clsx("shrink-0 py-0.5 text-xs text-slate-500")}
+                    className={clsx(
+                      ["py-0.5"],
+                      ["shrink-0"],
+                      ["text-xs text-slate-500"]
+                    )}
                   >
                     タグ
                   </div>
                   {request.taggings.length === 0 && (
-                    <div className={clsx("shrink-0 text-xs text-slate-400")}>
+                    <div className={clsx(["shrink-0 text-xs text-slate-400"])}>
                       なし
                     </div>
                   )}
                   {request.taggings.length > 0 && (
-                    <div className={clsx("flex flex-wrap gap-1")}>
+                    <div className={clsx(["flex flex-wrap gap-1"])}>
                       {request.taggings.map((tagging) => (
                         <TagButton
                           key={tagging.id}
@@ -453,19 +500,23 @@ export default function NicovideoRegisterForm({
                     </div>
                   )}
                 </div>
-                <div className={clsx("flex flex-col gap-y-2")}>
+                <div className={clsx(["flex flex-col gap-y-2"])}>
                   <div
-                    className={clsx("shrink-0 py-0.5 text-xs text-slate-500")}
+                    className={clsx(
+                      ["py-0.5"],
+                      ["shrink-0"],
+                      ["text-xs text-slate-500"]
+                    )}
                   >
                     仮タグ
                   </div>
                   {request.semitaggings.length === 0 && (
-                    <div className={clsx("shrink-0 text-xs text-slate-400")}>
+                    <div className={clsx(["shrink-0 text-xs text-slate-400"])}>
                       なし
                     </div>
                   )}
                   {request.semitaggings.length > 0 && (
-                    <div className={clsx("flex flex-wrap gap-1")}>
+                    <div className={clsx(["flex flex-wrap gap-1"])}>
                       {request.semitaggings.map((semitagging) => (
                         <SemitagButton
                           key={semitagging.id}
@@ -492,10 +543,10 @@ export default function NicovideoRegisterForm({
             </div>
           )}
         </div>
-        <div className={clsx("mt-auto flex w-full shrink-0")}>
+        <div className={clsx(["mt-auto flex w-full shrink-0"])}>
           <Button submit text="登録する" size="medium" color="blue" />
           <Button
-            className={clsx("ml-auto")}
+            className={clsx(["ml-auto"])}
             onClick={() => {
               handleCancel();
             }}

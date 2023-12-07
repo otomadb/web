@@ -9,11 +9,11 @@ import { SuggestsFragment as TagSearcherSuggestsFragment } from "~/components/Ta
 import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
 
-import RegisterForm, { Query } from ".";
-import { BilibiliRegisterOriginalSourceFragment as SourceFragment } from "./OriginalSource";
+import { BilibiliRegisterOriginalSourceFragment as SourceFragment } from "../../BilibiliOriginalSource";
+import BilibiliRegisterForm, { Query } from "../../BilibiliRegisterForm";
 
 const meta = {
-  component: RegisterForm,
+  component: BilibiliRegisterForm,
   args: {
     style: {
       width: 640,
@@ -113,7 +113,7 @@ const meta = {
       },
     },
   },
-} as Meta<typeof RegisterForm>;
+} as Meta<typeof BilibiliRegisterForm>;
 export default meta;
 
 type Story = StoryObj<typeof meta>;

@@ -13,12 +13,12 @@ import { Fragment as VideoThumbnailFragment } from "~/components/VideoThumbnail"
 import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
 
-import RegisterForm, { Query } from ".";
-import { YoutubeRegisterOriginalSourceFragment as SourceFragment } from "./OriginalSource";
+import { YoutubeRegisterOriginalSourceFragment as SourceFragment } from "../../YoutubeOriginalSource";
+import YoutubeRegisterForm, { Query } from "../../YoutubeRegisterForm";
 import { Fragment as RegReqFragment } from "./Request";
 
 const meta = {
-  component: RegisterForm,
+  component: YoutubeRegisterForm,
   args: {
     style: {
       width: 640,
@@ -138,7 +138,7 @@ const meta = {
       },
     },
   },
-} as Meta<typeof RegisterForm>;
+} as Meta<typeof YoutubeRegisterForm>;
 export default meta;
 
 type Story = StoryObj<typeof meta>;

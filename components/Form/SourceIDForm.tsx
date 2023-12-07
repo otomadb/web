@@ -11,9 +11,10 @@ import { estimateUrl } from "~/utils/extractSourceId";
 
 import { CoolImage2 } from "../CoolImage";
 import {
-  useOpenRegisterFromBilibili,
+  useOpenRegisterFromBilibili2,
   useOpenRegisterFromNicovideo2,
-  useOpenRegisterFromYoutube,
+  useOpenRegisterFromSoundcloud2,
+  useOpenRegisterFromYoutube2,
   useOpenRequestFromBilibili,
   useOpenRequestFromNicovideo,
   useOpenRequestFromSoundcloud,
@@ -25,13 +26,13 @@ import {
   NotFoundPictogram,
   SearchPictogram,
 } from "../Pictogram";
+import { BilibiliRegisterOriginalSourceFragment } from "./BilibiliRegisterForm";
 import {
   NicovideoRegisterFormRequestFragment,
   NicovideoRegisterOriginalSourceFragment,
 } from "./NicovideoRegisterForm";
-import { BilibiliRegisterOriginalSourceFragment } from "./RegisterMAD/FromBilibili/OriginalSource";
-import { SoundcloudRegisterOriginalSourceFragment } from "./RegisterMAD/FromSoundcloud/OriginalSource";
-import { YoutubeRegisterOriginalSourceFragment } from "./RegisterMAD/FromYoutube/OriginalSource";
+import { SoundcloudRegisterOriginalSourceFragment } from "./SoundcloudRegisterForm";
+import { YoutubeRegisterOriginalSourceFragment } from "./YoutubeRegisterForm";
 
 const SubmitButton = ({
   className,
@@ -201,7 +202,7 @@ export const queryFetchYoutube = graphql(`
       source {
         thumbnailUrl
         url
-        ...RegisterFromYoutubeForm_OriginalSource
+        ...RegisterFromYoutubeForm_OriginalSource2
       }
     }
   }
@@ -216,20 +217,19 @@ export const YoutubeConfirmForm = ({
   className?: string;
   style?: React.CSSProperties;
   sourceId: string;
-} & (
-  | {
-      type: "register";
-      go(
-        type: FragmentType<typeof YoutubeRegisterOriginalSourceFragment>
-      ): void;
-    }
-  | {
-      type: "request";
-      go(
-        type: FragmentType<typeof YoutubeRegisterOriginalSourceFragment>
-      ): void;
-    }
-)) => {
+  type: "register" | "request";
+  go(
+    p:
+      | {
+          type: "register";
+          source: FragmentType<typeof YoutubeRegisterOriginalSourceFragment>;
+        }
+      | {
+          type: "request";
+          source: FragmentType<typeof YoutubeRegisterOriginalSourceFragment>;
+        }
+  ): void;
+}) => {
   const [{ fetching, data }] = useQuery({
     query: queryFetchYoutube,
     variables: { sourceId },
@@ -238,8 +238,20 @@ export const YoutubeConfirmForm = ({
   const handle = useCallback(() => {
     if (!data?.fetchYoutube.source) return;
 
-    if (type === "register") go(data.fetchYoutube.source);
-    else go(data.fetchYoutube.source);
+    switch (type) {
+      case "register":
+        go({
+          type: "register",
+          source: data.fetchYoutube.source,
+        });
+        break;
+      case "request":
+        go({
+          type: "request",
+          source: data.fetchYoutube.source,
+        });
+        break;
+    }
   }, [data?.fetchYoutube.source, go, type]);
 
   if (fetching)
@@ -313,7 +325,7 @@ export const queryFetchSoundCloud = graphql(`
         title
         originalThumbnailUrl
         url
-        ...RegisterFromSoundcloudForm_OriginalSource
+        ...RegisterFromSoundcloudForm_OriginalSource2
       }
     }
   }
@@ -328,20 +340,19 @@ export const SoundcloudConfirmForm = ({
   className?: string;
   style?: React.CSSProperties;
   url: string;
-} & (
-  | {
-      type: "register";
-      go(
-        type: FragmentType<typeof SoundcloudRegisterOriginalSourceFragment>
-      ): void;
-    }
-  | {
-      type: "request";
-      go(
-        type: FragmentType<typeof SoundcloudRegisterOriginalSourceFragment>
-      ): void;
-    }
-)) => {
+  type: "register" | "request";
+  go(
+    p:
+      | {
+          type: "register";
+          source: FragmentType<typeof SoundcloudRegisterOriginalSourceFragment>;
+        }
+      | {
+          type: "request";
+          source: FragmentType<typeof SoundcloudRegisterOriginalSourceFragment>;
+        }
+  ): void;
+}) => {
   const [{ fetching, data }] = useQuery({
     query: queryFetchSoundCloud,
     variables: { url },
@@ -350,9 +361,21 @@ export const SoundcloudConfirmForm = ({
   const handle = useCallback(() => {
     if (!data?.fetchSoundcloud.source) return;
 
-    if (type === "register") go(data.fetchSoundcloud.source);
-    else go(data.fetchSoundcloud.source);
-  }, [data?.fetchSoundcloud.source, go, type]);
+    switch (type) {
+      case "register":
+        go({
+          type: "register",
+          source: data.fetchSoundcloud.source,
+        });
+        break;
+      case "request":
+        go({
+          type: "request",
+          source: data.fetchSoundcloud.source,
+        });
+        break;
+    }
+  }, [data?.fetchSoundcloud, go, type]);
 
   if (fetching)
     return (
@@ -430,7 +453,7 @@ export const queryFetchBilibili = graphql(`
         title
         originalThumbnailUrl
         url
-        ...RegisterFromBilibiliForm_OriginalSource
+        ...RegisterFromBilibiliForm_OriginalSource2
       }
     }
   }
@@ -445,20 +468,19 @@ export const BilibiliConfirmForm = ({
   className?: string;
   style?: React.CSSProperties;
   sourceId: string;
-} & (
-  | {
-      type: "register";
-      go(
-        type: FragmentType<typeof BilibiliRegisterOriginalSourceFragment>
-      ): void;
-    }
-  | {
-      type: "request";
-      go(
-        type: FragmentType<typeof BilibiliRegisterOriginalSourceFragment>
-      ): void;
-    }
-)) => {
+  type: "register" | "request";
+  go(
+    p:
+      | {
+          type: "register";
+          source: FragmentType<typeof BilibiliRegisterOriginalSourceFragment>;
+        }
+      | {
+          type: "request";
+          source: FragmentType<typeof BilibiliRegisterOriginalSourceFragment>;
+        }
+  ): void;
+}) => {
   const [{ fetching, data }] = useQuery({
     query: queryFetchBilibili,
     variables: { sourceId },
@@ -467,8 +489,20 @@ export const BilibiliConfirmForm = ({
   const handle = useCallback(() => {
     if (!data?.fetchBilibili.source) return;
 
-    if (type === "register") go(data.fetchBilibili.source);
-    else go(data.fetchBilibili.source);
+    switch (type) {
+      case "register":
+        go({
+          type: "register",
+          source: data.fetchBilibili.source,
+        });
+        break;
+      case "request":
+        go({
+          type: "request",
+          source: data.fetchBilibili.source,
+        });
+        break;
+    }
   }, [data?.fetchBilibili.source, go, type]);
 
   if (fetching)
@@ -550,13 +584,13 @@ export default function SourceIDForm({
   const openNicovideoRegister = useOpenRegisterFromNicovideo2();
 
   const openYoutubeRequest = useOpenRequestFromYoutube();
-  const openYoutubeRegister = useOpenRegisterFromYoutube();
+  const openYoutubeRegister = useOpenRegisterFromYoutube2();
 
   const openSoundcloudRequest = useOpenRequestFromSoundcloud();
-  const openSoundcloudRegister = useOpenRequestFromSoundcloud();
+  const openSoundcloudRegister = useOpenRegisterFromSoundcloud2();
 
   const openBilibiliRequest = useOpenRequestFromBilibili();
-  const openBilibiliRegister = useOpenRegisterFromBilibili();
+  const openBilibiliRegister = useOpenRegisterFromBilibili2();
 
   const [input, setInput] = useState(
     initProp?.type === "soundcloud"
@@ -629,10 +663,17 @@ export default function SourceIDForm({
         <YoutubeConfirmForm
           sourceId={current.sourceId}
           type={type}
-          go={() => {
-            // TODO: fix
-            if (type === "register") openYoutubeRegister(current.sourceId);
-            else openYoutubeRequest(current.sourceId);
+          go={(p) => {
+            switch (p.type) {
+              case "register":
+                openYoutubeRegister({
+                  sourceFragment: p.source,
+                });
+                break;
+              case "request":
+                openNicovideoRequest("");
+                break;
+            }
           }}
           className={clsx("grow")}
         />
@@ -640,10 +681,17 @@ export default function SourceIDForm({
         <SoundcloudConfirmForm
           url={current.url}
           type={type}
-          go={() => {
-            // TODO: fix
-            if (type === "register") openSoundcloudRegister(current.url);
-            else openSoundcloudRequest(current.url);
+          go={(p) => {
+            switch (p.type) {
+              case "register":
+                openSoundcloudRegister({
+                  sourceFragment: p.source,
+                });
+                break;
+              case "request":
+                openNicovideoRequest("");
+                break;
+            }
           }}
           className={clsx("grow")}
         />
@@ -651,10 +699,17 @@ export default function SourceIDForm({
         <BilibiliConfirmForm
           sourceId={current.sourceId}
           type={type}
-          go={() => {
-            // TODO: fix
-            if (type === "register") openBilibiliRegister(current.sourceId);
-            else openBilibiliRequest(current.sourceId);
+          go={(p) => {
+            switch (p.type) {
+              case "register":
+                openBilibiliRegister({
+                  sourceFragment: p.source,
+                });
+                break;
+              case "request":
+                openNicovideoRequest("");
+                break;
+            }
           }}
           className={clsx("grow")}
         />

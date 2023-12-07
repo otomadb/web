@@ -3,8 +3,8 @@
 import clsx from "clsx";
 import { ComponentProps, useState } from "react";
 
-import RegisterForm from "~/components/Form/RegisterMAD/FromYoutube";
 import YoutubeIDForm from "~/components/Form/YoutubeIDForm";
+import YoutubeRegisterForm from "~/components/Form/YoutubeRegisterForm";
 
 import { useCloseFormModal } from ".";
 
@@ -17,7 +17,7 @@ export default function RegisterMADFromYoutubeFormModal({
   className?: string;
   style?: React.CSSProperties;
   initialSourceId?: string;
-  handleSuccess: ComponentProps<typeof RegisterForm>["handleSuccess"];
+  handleSuccess: ComponentProps<typeof YoutubeRegisterForm>["handleSuccess"];
 }) {
   const [sourceId, setSourceId] = useState<string | undefined>(initialSourceId);
   const closeModal = useCloseFormModal();
@@ -31,7 +31,7 @@ export default function RegisterMADFromYoutubeFormModal({
         />
       )}
       {sourceId && (
-        <RegisterForm
+        <YoutubeRegisterForm
           className={clsx(["h-full"])}
           sourceId={sourceId}
           handleSuccess={handleSuccess}

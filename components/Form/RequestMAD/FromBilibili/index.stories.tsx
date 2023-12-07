@@ -5,7 +5,7 @@ import { graphql as mswGql } from "msw";
 import { MadPageLinkFragment } from "~/app/(v2)/mads/[serial]/Link";
 import { CommonTagFragment } from "~/components/CommonTag";
 import { Fragment as AlreadyRegisteredFragment } from "~/components/Form/AlreadyRegistered";
-import { Fragment as SourceFragment } from "~/components/Form/RegisterMAD/FromBilibili/OriginalSource";
+import { Fragment as SourceFragment } from "~/components/Form/BilibiliOriginalSource";
 import { Query as TagSearcherQuery } from "~/components/TagSearcher";
 import { SuggestItemFragment as TagSearcherSuggestItemFragment } from "~/components/TagSearcher/SuggestItem";
 import { SuggestsFragment as TagSearcherSuggestsFragment } from "~/components/TagSearcher/Suggests";

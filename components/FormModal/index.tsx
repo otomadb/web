@@ -12,6 +12,9 @@ import NicovideoRegisterForm from "~/components/Form/NicovideoRegisterForm";
 import { XMarkPictogram } from "~/components/Pictogram";
 import { estimateUrl } from "~/utils/extractSourceId";
 
+import BilibiliRegisterForm from "../Form/BilibiliRegisterForm";
+import SoundcloudRegisterForm from "../Form/SoundcloudRegisterForm";
+import YoutubeRegisterForm from "../Form/YoutubeRegisterForm";
 import RegisterMADFromBilibiliFormModal from "./RegisterMADFromBilibili";
 import RegisterMADFromYoutubeFormModal from "./RegisterMADFromYoutube";
 import RequestMADFromBilibiliFormModal from "./RequestMADFromBilibili";
@@ -37,9 +40,27 @@ export type Current =
         "sourceFragment" | "requestFragment"
       >;
     }
-  | { type: "REGISTER_FROM_YOUTUBE"; sourceId: string | null }
-  | { type: "REGISTER_FROM_BILIBILI"; sourceId: string | null }
-  | { type: "REGISTER_FROM_SOUNDCLOUD"; url: string | null }
+  | {
+      type: "REGISTER_FROM_YOUTUBE";
+      props: Pick<
+        ComponentProps<typeof YoutubeRegisterForm>,
+        "sourceFragment" | "requestFragment"
+      >;
+    }
+  | {
+      type: "REGISTER_FROM_BILIBILI";
+      props: Pick<
+        ComponentProps<typeof BilibiliRegisterForm>,
+        "sourceFragment"
+      >;
+    }
+  | {
+      type: "REGISTER_FROM_SOUNDCLOUD";
+      props: Pick<
+        ComponentProps<typeof SoundcloudRegisterForm>,
+        "sourceFragment"
+      >;
+    }
   | { type: "REQUEST_FROM_NICOVIDEO"; sourceId: string | null }
   | { type: "REQUEST_FROM_YOUTUBE"; sourceId: string | null }
   | { type: "REQUEST_FROM_SOUNDCLOUD"; url: string | null }
@@ -136,7 +157,10 @@ export const useOpenRequestFromNicovideo = () => {
 export const useOpenRegisterFromYoutube = () => {
   const { open } = useContext(FormModalContext);
   return (sourceId: string | null) =>
-    open({ type: "REGISTER_FROM_YOUTUBE", sourceId });
+    open({
+      type: "SOURCE_INPUT",
+      init: sourceId ? { type: "youtube", sourceId, r: "register" } : null,
+    });
 };
 
 /**
@@ -145,7 +169,10 @@ export const useOpenRegisterFromYoutube = () => {
 export const useOpenRegisterFromBilibili = () => {
   const { open } = useContext(FormModalContext);
   return (sourceId: string | null) =>
-    open({ type: "REGISTER_FROM_BILIBILI", sourceId });
+    open({
+      type: "SOURCE_INPUT",
+      init: sourceId ? { type: "bilibili", sourceId, r: "register" } : null,
+    });
 };
 
 /**
@@ -154,7 +181,10 @@ export const useOpenRegisterFromBilibili = () => {
 export const useOpenSoundcloudRegisterModal = () => {
   const { open } = useContext(FormModalContext);
   return (url: string | null) =>
-    open({ type: "REGISTER_FROM_SOUNDCLOUD", url });
+    open({
+      type: "SOURCE_INPUT",
+      init: url ? { type: "soundcloud", url, r: "register" } : null,
+    });
 };
 
 /**
@@ -190,6 +220,36 @@ export const useOpenRegisterFromNicovideo2 = () => {
   ) =>
     open({
       type: "REGISTER_FROM_NICOVIDEO",
+      props,
+    });
+};
+export const useOpenRegisterFromYoutube2 = () => {
+  const { open } = useContext(FormModalContext);
+  return (
+    props: Extract<Current, { type: "REGISTER_FROM_YOUTUBE" }>["props"]
+  ) =>
+    open({
+      type: "REGISTER_FROM_YOUTUBE",
+      props,
+    });
+};
+export const useOpenRegisterFromSoundcloud2 = () => {
+  const { open } = useContext(FormModalContext);
+  return (
+    props: Extract<Current, { type: "REGISTER_FROM_SOUNDCLOUD" }>["props"]
+  ) =>
+    open({
+      type: "REGISTER_FROM_SOUNDCLOUD",
+      props,
+    });
+};
+export const useOpenRegisterFromBilibili2 = () => {
+  const { open } = useContext(FormModalContext);
+  return (
+    props: Extract<Current, { type: "REGISTER_FROM_BILIBILI" }>["props"]
+  ) =>
+    open({
+      type: "REGISTER_FROM_BILIBILI",
       props,
     });
 };
@@ -270,7 +330,7 @@ export default function FormModal({
             )}
             {current.type === "REGISTER_FROM_BILIBILI" && (
               <RegisterMADFromBilibiliFormModal
-                initialSourceId={current.sourceId || undefined}
+                {...current.props}
                 className={clsx()}
                 style={{ width: 640, height: 720 }}
                 handleSuccess={() => {
@@ -280,7 +340,7 @@ export default function FormModal({
             )}
             {current.type === "REGISTER_FROM_SOUNDCLOUD" && (
               <SoundcloudRegisterModal
-                initialSourceId={current.url || undefined}
+                {...current.props}
                 className={clsx()}
                 style={{ width: 640, height: 720 }}
                 handleSuccess={() => {
@@ -290,7 +350,7 @@ export default function FormModal({
             )}
             {current.type === "REGISTER_FROM_YOUTUBE" && (
               <RegisterMADFromYoutubeFormModal
-                initialSourceId={current.sourceId || undefined}
+                {...current.props}
                 className={clsx()}
                 style={{ width: 640, height: 720 }}
                 handleSuccess={() => {

@@ -4,7 +4,7 @@ import clsx from "clsx";
 import { ComponentProps, useState } from "react";
 
 import BilibiliIDForm from "~/components/Form/BilibiliIDForm";
-import RegisterForm from "~/components/Form/RegisterMAD/FromBilibili";
+import RegisterForm from "~/components/Form/BilibiliRegisterForm";
 
 import { useCloseFormModal } from ".";
 

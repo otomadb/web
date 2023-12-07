@@ -24,7 +24,7 @@ export const SucceededToast: React.FC<{
       <p>
         <NicovideoRegistrationRequestLink
           fragment={fragment.request}
-          className={clsx(["font-bold"], ["text-blue-400"])}
+          className={clsx(["font-bold text-blue-400"])}
         >
           {fragment.request.sourceId}
         </NicovideoRegistrationRequestLink>

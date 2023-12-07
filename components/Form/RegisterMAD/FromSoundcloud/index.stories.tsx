@@ -9,11 +9,11 @@ import { SuggestsFragment as TagSearcherSuggestsFragment } from "~/components/Ta
 import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
 
-import RegisterForm, { Query } from ".";
-import { SoundcloudRegisterOriginalSourceFragment as SourceFragment } from "./OriginalSource";
+import { SoundcloudRegisterOriginalSourceFragment as SourceFragment } from "../../SoundcloudOriginalSource";
+import SoundcloudRegisterForm, { Query } from "../../SoundcloudRegisterForm";
 
 const meta = {
-  component: RegisterForm,
+  component: SoundcloudRegisterForm,
   args: {
     style: {
       width: 640,
@@ -114,7 +114,7 @@ const meta = {
       },
     },
   },
-} as Meta<typeof RegisterForm>;
+} as Meta<typeof SoundcloudRegisterForm>;
 export default meta;
 
 type Story = StoryObj<typeof meta>;

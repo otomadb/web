@@ -18,13 +18,10 @@ import BilibiliRequestPageLink, {
 import Button from "~/components/Button";
 import AlreadyRegistered from "~/components/Form/AlreadyRegistered";
 import AlreadyRequested from "~/components/Form/AlreadyRequested";
-import OriginalSource from "~/components/Form/RegisterMAD/FromBilibili/OriginalSource";
+import OriginalSource from "~/components/Form/BilibiliOriginalSource";
 import { SemitagButton } from "~/components/Form/SemitagButton";
 import SourceNotExists from "~/components/Form/SourceNotExists";
-import {
-  Fragment as TagButtonFragment,
-  TagButton,
-} from "~/components/Form/TagButton";
+import { TagButton, TagButtonFragment } from "~/components/Form/TagButton";
 import TagSearcher from "~/components/TagSearcher";
 import { TextInput2 } from "~/components/TextInput";
 import useToaster from "~/components/Toaster/useToaster";
@@ -127,7 +124,7 @@ export default function RequestForm({
       callToast(
         <>
           <BilibiliRequestPageLink
-            className={clsx(["font-bold"], ["text-blue-400"])}
+            className={clsx(["font-bold text-blue-400"])}
             fragment={data.request}
           >
             {data.request.title}
@@ -179,8 +176,8 @@ export default function RequestForm({
       className={clsx(
         className,
         ["grow"],
-        [["px-4"], ["py-4"]],
-        ["flex", "flex-col", "gap-y-4"]
+        [["p-4"]],
+        ["flex flex-col gap-y-4"]
       )}
       style={style}
     >
@@ -201,18 +198,16 @@ export default function RequestForm({
         <SourceNotExists handleCancel={handleCancel} />
       ) : (
         <form
-          className={clsx(["h-full"], ["flex", "flex-col", "gap-y-6"])}
+          className={clsx(["flex h-full flex-col gap-y-6"])}
           onSubmit={(e) => {
             e.preventDefault();
             handleSubmit();
           }}
         >
-          <div className={clsx(["flex", "flex-col", "gap-y-4"])}>
-            <div className={clsx(["shrink-0"], ["w-full"])}>
-              <label className={clsx(["flex", "flex-col", "gap-y-1"])}>
-                <div
-                  className={clsx(["text-xs", "font-bold", "text-slate-400"])}
-                >
+          <div className={clsx(["flex flex-col gap-y-4"])}>
+            <div className={clsx(["w-full shrink-0"])}>
+              <label className={clsx(["flex flex-col gap-y-1"])}>
+                <div className={clsx(["text-xs font-bold text-slate-400"])}>
                   タイトル
                 </div>
                 <TextInput2
@@ -223,24 +218,21 @@ export default function RequestForm({
                 />
               </label>
             </div>
-            <div className={clsx(["flex", "flex-col", "gap-y-2"])}>
-              <div className={clsx(["flex", "gap-x-2"])}>
+            <div className={clsx(["flex flex-col gap-y-2"])}>
+              <div className={clsx(["flex gap-x-2"])}>
                 <div
-                  className={clsx(
-                    ["py-0.5"],
-                    ["shrink-0"],
-                    ["text-xs", "font-bold", "text-slate-400"]
-                  )}
+                  className={clsx([
+                    "shrink-0 py-0.5 text-xs font-bold text-slate-400",
+                  ])}
                 >
                   追加されるタグ
                 </div>
                 {taggings.length === 0 && (
                   <div
-                    className={clsx(
-                      ["self-center"],
-                      ["shrink-0"],
-                      ["text-xs", "text-slate-400"]
-                    )}
+                    className={clsx([
+                      "shrink-0 self-center text-xs",
+                      "text-slate-400",
+                    ])}
                   >
                     なし
                   </div>
@@ -269,23 +261,20 @@ export default function RequestForm({
                   </div>
                 )}
               </div>
-              <div className={clsx(["flex", "gap-x-2"])}>
+              <div className={clsx(["flex gap-x-2"])}>
                 <div
-                  className={clsx(
-                    ["py-0.5"],
-                    ["shrink-0"],
-                    ["text-xs", "font-bold", "text-slate-400"]
-                  )}
+                  className={clsx([
+                    "shrink-0 py-0.5 text-xs font-bold text-slate-400",
+                  ])}
                 >
                   追加される仮タグ
                 </div>
                 {semitaggings.length === 0 && (
                   <div
-                    className={clsx(
-                      ["self-center"],
-                      ["shrink-0"],
-                      ["text-xs", "text-slate-400"]
-                    )}
+                    className={clsx([
+                      "shrink-0 self-center text-xs",
+                      "text-slate-400",
+                    ])}
                   >
                     なし
                   </div>
@@ -315,32 +304,25 @@ export default function RequestForm({
                   </div>
                 )}
               </div>
-              <div className={clsx(["mt-auto"], ["shrink-0"])}>
+              <div className={clsx(["mt-auto shrink-0"])}>
                 <TagSearcher
                   limit={5}
                   size="small"
-                  className={clsx(["w-full"], ["z-10"])}
+                  className={clsx(["z-10 w-full"])}
                   handleSelect={(tagId, fragment) => {
                     dispatchTags({ type: "append", tagId, fragment });
                   }}
                   Additional={({ query }) => (
-                    <div className={clsx(["flex", "items-center"])}>
+                    <div className={clsx(["flex items-center"])}>
                       <div
-                        className={clsx(
-                          ["px-0.5", "py-0.25"],
-                          ["bg-slate-900"],
-                          ["border", "border-slate-700", "rounded-sm"],
-                          ["text-xs", "text-slate-300"]
-                        )}
+                        className={clsx([
+                          "rounded-sm border border-slate-700 bg-slate-900 px-0.5 py-0.25 text-xs text-slate-300",
+                        ])}
                       >
                         {query}
                       </div>
                       <div
-                        className={clsx(
-                          ["shrink-0"],
-                          ["text-sm"],
-                          ["text-slate-500"]
-                        )}
+                        className={clsx(["shrink-0 text-sm text-slate-500"])}
                       >
                         を仮タグとして追加
                       </div>
@@ -354,38 +336,25 @@ export default function RequestForm({
               </div>
             </div>
           </div>
-          <div className={clsx(["flex", "flex-col", "gap-y-2"])}>
-            <div className={clsx(["flex", "gap-x-2"])}>
+          <div className={clsx(["flex flex-col gap-y-2"])}>
+            <div className={clsx(["flex gap-x-2"])}>
               <div
                 className={clsx(
                   ["select-none"],
-                  ["px-2", "py-1"],
+                  ["px-2 py-1"],
                   [
-                    "bg-slate-950",
-                    "hover:bg-slate-800",
-                    "aria-checked:bg-slate-700",
-                    "aria-disabled:bg-slate-900",
+                    "bg-slate-950 aria-checked:bg-slate-700 aria-disabled:bg-slate-900 hover:bg-slate-800",
                   ],
                   [
-                    "text-xs",
-                    "font-bold",
-                    "text-slate-400",
-                    "aria-checked:text-slate-400",
-                    "aria-disabled:text-slate-700",
+                    "text-xs font-bold text-slate-400 aria-checked:text-slate-400 aria-disabled:text-slate-700",
                   ],
                   [
-                    "border",
-                    "border-slate-700",
-                    "aria-checked:border-slate-600",
-                    "aria-disabled:border-slate-800",
-                    "rounded",
+                    "rounded border border-slate-700 aria-checked:border-slate-600 aria-disabled:border-slate-800",
                   ],
                   [
-                    "cursor-pointer",
-                    "aria-checked:cursor-default",
-                    "aria-disabled:cursor-default",
+                    "cursor-pointer aria-checked:cursor-default aria-disabled:cursor-default",
                   ],
-                  ["cursor-pointer", "aria-checked:cursor-default"]
+                  ["cursor-pointer aria-checked:cursor-default"]
                 )}
                 onClick={() => setTab("SOURCE")}
                 aria-checked={tab === "SOURCE"}
@@ -415,9 +384,7 @@ export default function RequestForm({
               )}
             </div>
           </div>
-          <div
-            className={clsx(["flex"], ["mt-auto"], ["shrink-0"], ["w-full"])}
-          >
+          <div className={clsx(["mt-auto flex w-full shrink-0"])}>
             <Button submit text="リクエストする" size="medium" color="blue" />
             <Button
               className={clsx(["ml-auto"])}

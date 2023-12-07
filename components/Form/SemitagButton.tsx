@@ -13,15 +13,15 @@ export const SemitagButton: React.FC<{
       className={clsx(
         className,
         ["select-none"],
-        ["px-0.5", "py-0.25"],
-        ["bg-slate-900", "aria-disabled:bg-slate-950"],
+        ["px-0.5 py-0.25"],
+        ["bg-slate-900 aria-disabled:bg-slate-950"],
         [
           "border",
           "border-slate-700",
           "aria-disabled:border-slate-800",
           "rounded-sm",
         ],
-        ["text-xs", "text-slate-300", "group-aria-disabled:text-slate-600"]
+        ["text-xs text-slate-300 group-aria-disabled:text-slate-600"]
       )}
       onClick={() => {
         if (selected) remove();
