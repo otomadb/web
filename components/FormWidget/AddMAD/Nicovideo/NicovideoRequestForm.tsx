@@ -6,7 +6,7 @@ import { CSSProperties, useCallback, useMemo, useState } from "react";
 import { useMutation } from "urql";
 
 import { MadPageLink } from "~/app/(v2)/mads/[serial]/Link";
-import { NicovideoRegistrationRequestLink } from "~/app/(v2)/requests/nicovideo/[sourceId]/Link";
+import NicovideoRequestLink from "~/app/(v2)/requests/nicovideo/[sourceId]/Link";
 import useToaster from "~/components/Toaster/useToaster";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
@@ -149,12 +149,12 @@ export default function NicovideoRequestForm({
     onSuccess({ request }) {
       callToast(
         <>
-          <NicovideoRegistrationRequestLink
+          <NicovideoRequestLink
             fragment={request}
             className={clsx("font-mono text-vivid-primary")}
           >
             {request.sourceId}
-          </NicovideoRegistrationRequestLink>
+          </NicovideoRequestLink>
           リクエストしました
         </>
       );

@@ -4,7 +4,7 @@ import React from "react";
 import { useQuery } from "urql";
 
 import { MadPageLink } from "~/app/(v2)/mads/[serial]/Link";
-import { NicovideoRegistrationRequestLink } from "~/app/(v2)/requests/nicovideo/[sourceId]/Link";
+import NicovideoRequestLink from "~/app/(v2)/requests/nicovideo/[sourceId]/Link";
 import CommonTag from "~/components/CommonTag";
 import { CoolImage } from "~/components/CoolImage";
 import { LoadingPictogram } from "~/components/Pictogram";
@@ -154,7 +154,7 @@ const SearchNicovideo: React.FC<{
               </div>
             </MadPageLink>
           ) : data.findNicovideoRegistrationRequest ? (
-            <NicovideoRegistrationRequestLink
+            <NicovideoRequestLink
               className={clsx(
                 className,
                 "group flex gap-x-4 p-2 hover:bg-vivid-primary"
@@ -212,7 +212,7 @@ const SearchNicovideo: React.FC<{
                   </div>
                 </div>
               </div>
-            </NicovideoRegistrationRequestLink>
+            </NicovideoRequestLink>
           ) : (
             <div
               className={clsx(

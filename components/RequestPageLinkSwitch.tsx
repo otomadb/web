@@ -3,7 +3,7 @@ import Link from "next/link";
 import React, { ComponentProps, ReactNode } from "react";
 
 import BilibiliRequestPageLink from "~/app/(v2)/requests/bilibili/[sourceId]/Link";
-import { NicovideoRegistrationRequestLink } from "~/app/(v2)/requests/nicovideo/[sourceId]/Link";
+import NicovideoRequestLink from "~/app/(v2)/requests/nicovideo/[sourceId]/Link";
 import SoundcloudRequestPageLink from "~/app/(v2)/requests/soundcloud/[sourceId]/Link";
 import { YoutubeRequestPageLink } from "~/app/(v2)/requests/youtube/[sourceId]/Link";
 import { FragmentType, graphql, useFragment } from "~/gql";
@@ -43,9 +43,9 @@ export const RequestPageLinkSwitch = ({
       );
     case "NicovideoRegistrationRequest":
       return (
-        <NicovideoRegistrationRequestLink fragment={f} {...props}>
+        <NicovideoRequestLink fragment={f} {...props}>
           {children}
-        </NicovideoRegistrationRequestLink>
+        </NicovideoRequestLink>
       );
     case "BilibiliRegistrationRequest":
       return (

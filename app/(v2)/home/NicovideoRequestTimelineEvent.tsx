@@ -10,7 +10,7 @@ import {
 import useHasRole from "~/components/useHasRole";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-import { NicovideoRegistrationRequestLink } from "../requests/nicovideo/[sourceId]/Link";
+import NicovideoRequestLink from "../requests/nicovideo/[sourceId]/Link";
 import { TimelineEventWrapper } from "./TimelineEventWrapper";
 
 export const NicovideoRequestTimelineEventFragment = graphql(`
@@ -66,7 +66,7 @@ export default function NicovideoRequestTimelineEvent({
             "flex w-64 grow flex-col gap-x-4 rounded border border-obsidian-lighter bg-obsidian-primary"
           )}
         >
-          <NicovideoRegistrationRequestLink
+          <NicovideoRequestLink
             className={clsx("block w-full shrink-0")}
             fragment={fragment.request}
           >
@@ -77,17 +77,17 @@ export default function NicovideoRequestTimelineEvent({
               alt={fragment.request.title}
               src={fragment.request.thumbnailUrl}
             />
-          </NicovideoRegistrationRequestLink>
+          </NicovideoRequestLink>
           <div className={clsx("grow p-2")}>
             <p className={clsx("text-sm text-snow-primary")}>
-              <NicovideoRegistrationRequestLink
+              <NicovideoRequestLink
                 fragment={fragment.request}
                 className={clsx(
                   "font-bold text-snow-primary hover:text-vivid-primary hover:underline"
                 )}
               >
                 {fragment.request.title}
-              </NicovideoRegistrationRequestLink>
+              </NicovideoRequestLink>
             </p>
           </div>
         </div>

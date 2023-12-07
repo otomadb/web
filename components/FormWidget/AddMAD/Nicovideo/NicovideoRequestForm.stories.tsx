@@ -4,7 +4,7 @@ import { Meta, StoryObj } from "@storybook/react";
 import { userEvent, within } from "@storybook/testing-library";
 import { graphql as mockGql } from "msw";
 
-import { NicovideoRegistrationRequestLinkFragment } from "~/app/(v2)/requests/nicovideo/[sourceId]/Link";
+import { NicovideoRequestLinkFragment } from "~/app/(v2)/requests/nicovideo/[sourceId]/Link";
 import { CommonTagFragment } from "~/components/CommonTag";
 import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
@@ -28,7 +28,7 @@ export const mockMutationSuccess = mockGql.mutation(
             sourceId: "sm2057168",
             ...makeFragmentData(
               { sourceId: "sm2057168" },
-              NicovideoRegistrationRequestLinkFragment
+              NicovideoRequestLinkFragment
             ),
           },
         },
