@@ -42,6 +42,7 @@ export const mockSourceFragment = makeFragmentData(
     url: "https://www.bilibili.com/video/BV1xx411c7mu",
     title: "Title 1",
     thumbnailUrl: "/thumbnail.jpg",
+    originalThumbnailUrl: "/thumbnail.jpg",
     ...makeFragmentData(
       {
         sourceId: "BV1xx411c7mu",

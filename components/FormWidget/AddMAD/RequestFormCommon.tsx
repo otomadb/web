@@ -81,7 +81,7 @@ export const useRequestFormEditSemitaggings = () => {
   return {
     semitaggings,
     semitaggingsPayload: payload,
-    isIncludeSemitag: (name: string) =>
+    isSelectingSemitag: (name: string) =>
       semitaggings.map(({ name }) => name).includes(name),
     appendSemitag: (name: string) => dispatchSemitags({ type: "append", name }),
     removeSemitag: (name: string) => dispatchSemitags({ type: "remove", name }),
@@ -100,7 +100,7 @@ export const RequestsFormEditorablePart = ({
   semitaggings,
   appendSemitag,
   removeSemitag,
-  isIncludeSemitag,
+  isSelectingSemitag,
 }: {
   className?: string;
   style?: React.CSSProperties;
@@ -112,7 +112,7 @@ export const RequestsFormEditorablePart = ({
 > &
   Pick<
     ReturnType<typeof useRequestFormEditSemitaggings>,
-    "semitaggings" | "appendSemitag" | "removeSemitag" | "isIncludeSemitag"
+    "semitaggings" | "appendSemitag" | "removeSemitag" | "isSelectingSemitag"
   >) => {
   return (
     <div
@@ -179,7 +179,7 @@ export const RequestsFormEditorablePart = ({
                 name={name}
                 append={() => appendSemitag(name)}
                 remove={() => removeSemitag(name)}
-                selected={isIncludeSemitag(name)}
+                selected={isSelectingSemitag(name)}
               />
             ))}
           </div>
@@ -205,7 +205,7 @@ export const RequestsFormEditorablePart = ({
               を仮タグとして追加
             </div>
           )}
-          showAdditional={(query) => !isIncludeSemitag(query)}
+          showAdditional={(query) => !isSelectingSemitag(query)}
           handleAdditionalClicked={(query) => appendSemitag(query)}
         />
       </div>

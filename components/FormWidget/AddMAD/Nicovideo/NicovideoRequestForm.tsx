@@ -144,7 +144,7 @@ export default function NicovideoRequestForm({
   const {
     semitaggings,
     semitaggingsPayload,
-    isIncludeSemitag,
+    isSelectingSemitag: isIncludeSemitag,
     appendSemitag,
     removeSemitag,
   } = useRequestFormEditSemitaggings();
@@ -160,7 +160,7 @@ export default function NicovideoRequestForm({
           >
             {request.sourceId}
           </NicovideoRequestLink>
-          リクエストしました
+          をリクエストしました
         </>
       );
       handleSuccess();
@@ -219,7 +219,7 @@ export default function NicovideoRequestForm({
             setTitle={setTitle}
             appendSemitag={appendSemitag}
             appendTag={appendTag}
-            isIncludeSemitag={isIncludeSemitag}
+            isSelectingSemitag={isIncludeSemitag}
             removeSemitag={removeSemitag}
             removeTag={removeTag}
             taggings={taggings}

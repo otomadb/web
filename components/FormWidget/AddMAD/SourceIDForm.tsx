@@ -701,7 +701,8 @@ export const queryFetchBilibili = graphql(`
     fetchBilibili(input: { bvid: $sourceId }) {
       source {
         title
-        originalThumbnailUrl
+        sourceId
+        thumbnailUrl(scale: LARGE)
         url
         ...BilibiliForm_OriginalSource2
         ...BilibiliRequestForm_OriginalSource
@@ -800,7 +801,7 @@ export const BilibiliConfirmForm = ({
           <div className={clsx("flex gap-x-4")}>
             <div className={clsx("shrink-0")}>
               <CoolImage2
-                src={data.fetchBilibili.source.originalThumbnailUrl}
+                src={data.fetchBilibili.source.thumbnailUrl}
                 alt={data.fetchBilibili.source.title}
                 width={96}
                 height={64}
@@ -824,7 +825,7 @@ export const BilibiliConfirmForm = ({
                   )}
                 >
                   <ExternalLinkPictogram className={clsx("h-4 w-4")} />
-                  {data.fetchBilibili.source.originalThumbnailUrl}
+                  {data.fetchBilibili.source.sourceId}
                 </a>
               </p>
             </div>

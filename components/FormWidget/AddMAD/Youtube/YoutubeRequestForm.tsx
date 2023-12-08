@@ -139,7 +139,7 @@ export default function YoutubeRequestForm({
   const {
     semitaggings,
     semitaggingsPayload,
-    isIncludeSemitag,
+    isSelectingSemitag: isIncludeSemitag,
     appendSemitag,
     removeSemitag,
   } = useRequestFormEditSemitaggings();
@@ -155,7 +155,7 @@ export default function YoutubeRequestForm({
           >
             {request.sourceId}
           </YoutubeRequestPageLink>
-          リクエストしました
+          をリクエストしました
         </>
       );
       handleSuccess();
@@ -213,7 +213,7 @@ export default function YoutubeRequestForm({
             setTitle={setTitle}
             appendSemitag={appendSemitag}
             appendTag={appendTag}
-            isIncludeSemitag={isIncludeSemitag}
+            isSelectingSemitag={isIncludeSemitag}
             removeSemitag={removeSemitag}
             removeTag={removeTag}
             taggings={taggings}

@@ -133,7 +133,7 @@ export default function BilibiliRegisterForm({
     useRegisterFormEditTaggings();
   const {
     appendSemitag,
-    isIncludeSemitag,
+    isSelectingSemitag,
     removeSemitag,
     semitaggings,
     semitagNames,
@@ -159,7 +159,7 @@ export default function BilibiliRegisterForm({
     },
   });
   const payload = useMemo(() => {
-    if (title !== "") return undefined;
+    if (title === "") return undefined;
 
     return {
       sourceId: source.sourceId,
@@ -190,7 +190,7 @@ export default function BilibiliRegisterForm({
             setTitle={setTitle}
             appendSemitag={appendSemitag}
             appendTag={appendTag}
-            isIncludeSemitag={isIncludeSemitag}
+            isSelectingSemitag={isSelectingSemitag}
             removeSemitag={removeSemitag}
             removeTag={removeTag}
             tags={tags}
@@ -211,7 +211,7 @@ export default function BilibiliRegisterForm({
               isSelectingTag={isSelecting}
               appendTag={({ tagId, fragment }) => appendTag(tagId, fragment)}
               removeTag={(tagId) => removeTag(tagId)}
-              isSelectingSemitag={isSelecting}
+              isSelectingSemitag={isSelectingSemitag}
               appendSemitag={(name) => appendSemitag(name)}
               removeSemitag={(name) => removeSemitag(name)}
             />
@@ -222,7 +222,7 @@ export default function BilibiliRegisterForm({
                 isSelectingTag={isSelecting}
                 appendTag={(tagId, fragment) => appendTag(tagId, fragment)}
                 removeTag={(tagId) => removeTag(tagId)}
-                isSelectingSemitag={isIncludeSemitag}
+                isSelectingSemitag={isSelectingSemitag}
                 appendSemitag={(name) => appendSemitag(name)}
                 removeSemitag={(name) => removeSemitag(name)}
               />

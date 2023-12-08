@@ -112,7 +112,8 @@ const meta = {
             ctx.data({
               fetchBilibili: {
                 source: {
-                  originalThumbnailUrl: "/thumbnail.jpg",
+                  sourceId: "BV1xx411c7mu",
+                  thumbnailUrl: "/thumbnail.jpg",
                   title: "Title",
                   url: "https://www.bilibili.com/video/BV1xx411c7mu",
                 },

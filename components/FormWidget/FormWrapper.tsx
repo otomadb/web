@@ -29,7 +29,7 @@ export const FormWrapper = ({
     >
       <div
         className={clsx(
-          "flex shrink-0 items-center bg-obsidian-darkest px-4 py-2"
+          "flex shrink-0 items-center bg-obsidian-darker px-4 py-2"
         )}
       >
         <div className={clsx("grow text-sm font-bold text-snow-primary")}>
@@ -54,7 +54,7 @@ export const FormWrapper = ({
       </div>
       <div
         className={clsx(
-          "grow border-t border-t-obsidian-primary bg-obsidian-darker p-4"
+          "grow border-t border-t-obsidian-primary bg-obsidian-darkest p-4"
         )}
       >
         <Form className={clsx("h-full")} />

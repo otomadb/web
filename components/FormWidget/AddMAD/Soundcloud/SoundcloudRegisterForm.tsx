@@ -133,7 +133,7 @@ export default function SoundcloudRegisterForm({
     useRegisterFormEditTaggings();
   const {
     appendSemitag,
-    isIncludeSemitag,
+    isSelectingSemitag: isIncludeSemitag,
     removeSemitag,
     semitaggings,
     semitagNames,
@@ -189,7 +189,7 @@ export default function SoundcloudRegisterForm({
             setTitle={setTitle}
             appendSemitag={appendSemitag}
             appendTag={appendTag}
-            isIncludeSemitag={isIncludeSemitag}
+            isSelectingSemitag={isIncludeSemitag}
             removeSemitag={removeSemitag}
             removeTag={removeTag}
             tags={tags}

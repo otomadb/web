@@ -155,7 +155,7 @@ export default function SoundcloudRequestForm({
   const {
     semitaggings,
     semitaggingsPayload,
-    isIncludeSemitag,
+    isSelectingSemitag: isIncludeSemitag,
     appendSemitag,
     removeSemitag,
   } = useRequestFormEditSemitaggings();
@@ -171,7 +171,7 @@ export default function SoundcloudRequestForm({
           >
             {request.sourceId}
           </SoundcloudRequestPageLink>
-          リクエストしました
+          をリクエストしました
         </>
       );
       handleSuccess();
@@ -229,7 +229,7 @@ export default function SoundcloudRequestForm({
             setTitle={setTitle}
             appendSemitag={appendSemitag}
             appendTag={appendTag}
-            isIncludeSemitag={isIncludeSemitag}
+            isSelectingSemitag={isIncludeSemitag}
             removeSemitag={removeSemitag}
             removeTag={removeTag}
             taggings={taggings}

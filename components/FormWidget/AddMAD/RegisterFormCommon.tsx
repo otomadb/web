@@ -83,7 +83,7 @@ export const useRegisterFormEditSemitaggings = () => {
   return {
     semitaggings,
     semitagNames: payload,
-    isIncludeSemitag: (name: string) =>
+    isSelectingSemitag: (name: string) =>
       semitaggings.map(({ name }) => name).includes(name),
     appendSemitag: (name: string) => dispatchSemitags({ type: "append", name }),
     removeSemitag: (name: string) => dispatchSemitags({ type: "remove", name }),
@@ -102,7 +102,7 @@ export const RegisterFormEditorablePart = ({
   semitaggings,
   appendSemitag,
   removeSemitag,
-  isIncludeSemitag,
+  isSelectingSemitag,
 }: {
   className?: string;
   style?: React.CSSProperties;
@@ -114,7 +114,7 @@ export const RegisterFormEditorablePart = ({
 > &
   Pick<
     ReturnType<typeof useRegisterFormEditSemitaggings>,
-    "semitaggings" | "appendSemitag" | "removeSemitag" | "isIncludeSemitag"
+    "semitaggings" | "appendSemitag" | "removeSemitag" | "isSelectingSemitag"
   >) => {
   return (
     <div
@@ -178,7 +178,7 @@ export const RegisterFormEditorablePart = ({
                 name={name}
                 append={() => appendSemitag(name)}
                 remove={() => removeSemitag(name)}
-                selected={isIncludeSemitag(name)}
+                selected={isSelectingSemitag(name)}
               />
             ))}
           </div>
@@ -204,7 +204,7 @@ export const RegisterFormEditorablePart = ({
               を仮タグとして追加
             </div>
           )}
-          showAdditional={(query) => !isIncludeSemitag(query)}
+          showAdditional={(query) => !isSelectingSemitag(query)}
           handleAdditionalClicked={(query) => appendSemitag(query)}
         />
       </div>
@@ -332,7 +332,7 @@ export const RegisterFormRequestPart = ({
   isSelectingTag: ReturnType<typeof useRegisterFormEditTaggings>["isSelecting"];
   isSelectingSemitag: ReturnType<
     typeof useRegisterFormEditSemitaggings
-  >["isIncludeSemitag"];
+  >["isSelectingSemitag"];
 } & Pick<
   ReturnType<typeof useRegisterFormEditTaggings>,
   "appendTag" | "removeTag"

@@ -136,7 +136,7 @@ export default function YoutubeRegisterForm({
     useRegisterFormEditTaggings();
   const {
     appendSemitag,
-    isIncludeSemitag,
+    isSelectingSemitag: isIncludeSemitag,
     removeSemitag,
     semitagNames,
     semitaggings,
@@ -200,7 +200,7 @@ export default function YoutubeRegisterForm({
             setTitle={setTitle}
             appendSemitag={appendSemitag}
             appendTag={appendTag}
-            isIncludeSemitag={isIncludeSemitag}
+            isSelectingSemitag={isIncludeSemitag}
             removeSemitag={removeSemitag}
             removeTag={removeTag}
             tags={tags}

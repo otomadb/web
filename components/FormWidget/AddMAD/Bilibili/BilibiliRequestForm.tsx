@@ -113,6 +113,7 @@ export const BilibiliRequestFormOriginalSourceFragment = graphql(`
     title
     url
     thumbnailUrl(scale: LARGE)
+    originalThumbnailUrl
     ...BilibiliForm_OriginalSource
   }
 `);
@@ -142,7 +143,7 @@ export default function BilibiliRequestForm({
   const {
     semitaggings,
     semitaggingsPayload,
-    isIncludeSemitag,
+    isSelectingSemitag,
     appendSemitag,
     removeSemitag,
   } = useRequestFormEditSemitaggings();
@@ -158,7 +159,7 @@ export default function BilibiliRequestForm({
           >
             {request.sourceId}
           </BilibiliRequestPageLink>
-          リクエストしました
+          をリクエストしました
         </>
       );
       handleSuccess();
@@ -185,13 +186,13 @@ export default function BilibiliRequestForm({
     return {
       sourceId: source.sourceId,
       title,
-      thumbnailUrl: source.thumbnailUrl,
+      thumbnailUrl: source.originalThumbnailUrl,
       taggings: taggingsPayload,
       semitaggings: semitaggingsPayload,
     };
   }, [
     semitaggingsPayload,
-    source.thumbnailUrl,
+    source.originalThumbnailUrl,
     source.sourceId,
     taggingsPayload,
     title,
@@ -217,7 +218,7 @@ export default function BilibiliRequestForm({
             setTitle={setTitle}
             appendSemitag={appendSemitag}
             appendTag={appendTag}
-            isIncludeSemitag={isIncludeSemitag}
+            isSelectingSemitag={isSelectingSemitag}
             removeSemitag={removeSemitag}
             removeTag={removeTag}
             taggings={taggings}
@@ -236,7 +237,7 @@ export default function BilibiliRequestForm({
                 appendTag={({ tagId, fragment }) => appendTag(tagId, fragment)}
                 removeTag={(tagId) => removeTag(tagId)}
                 isSelectingTag={isSelecting}
-                isSelectingSemitag={isIncludeSemitag}
+                isSelectingSemitag={isSelectingSemitag}
                 appendSemitag={(name) => appendSemitag(name)}
                 removeSemitag={(name) => removeSemitag(name)}
               />

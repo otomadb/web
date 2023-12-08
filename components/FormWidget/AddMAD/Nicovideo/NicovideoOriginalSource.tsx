@@ -99,7 +99,7 @@ export default function NicovideoOriginalSource({
               className={clsx("text-left text-xs font-bold text-snow-darker")}
               onClick={(e) => {
                 e.preventDefault();
-                if (isSelectingTag(originalTag.name))
+                if (isSelectingSemitag(originalTag.name))
                   removeSemitag(originalTag.name);
                 else appendSemitag(originalTag.name);
               }}
@@ -127,7 +127,7 @@ export default function NicovideoOriginalSource({
                         appendTag({ tagId: item.tag.id, fragment: f })
                       }
                       remove={() => removeTag(item.tag.id)}
-                      selected={isSelectingSemitag(item.tag.id)}
+                      selected={isSelectingTag(item.tag.id)}
                     />
                   ))}
                 </div>

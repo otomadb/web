@@ -142,7 +142,7 @@ export default function NicovideoRegisterForm({
     useRegisterFormEditTaggings();
   const {
     appendSemitag,
-    isIncludeSemitag,
+    isSelectingSemitag,
     removeSemitag,
     semitaggings,
     semitagNames,
@@ -192,7 +192,7 @@ export default function NicovideoRegisterForm({
     <FormWrapper
       style={style}
       className={clsx(className)}
-      Title={<>ニコニコ動画から音MADをリクエスト</>}
+      Title={<>ニコニコ動画から音MADを登録</>}
       Form={({ className, ...rest }) => (
         <form
           {...rest}
@@ -208,7 +208,7 @@ export default function NicovideoRegisterForm({
             setTitle={setTitle}
             appendSemitag={appendSemitag}
             appendTag={appendTag}
-            isIncludeSemitag={isIncludeSemitag}
+            isSelectingSemitag={isSelectingSemitag}
             removeSemitag={removeSemitag}
             removeTag={removeTag}
             tags={tags}
@@ -229,7 +229,7 @@ export default function NicovideoRegisterForm({
               isSelectingTag={isSelecting}
               appendTag={({ tagId, fragment }) => appendTag(tagId, fragment)}
               removeTag={(tagId) => removeTag(tagId)}
-              isSelectingSemitag={isSelecting}
+              isSelectingSemitag={isSelectingSemitag}
               appendSemitag={(name) => appendSemitag(name)}
               removeSemitag={(name) => removeSemitag(name)}
             />
@@ -240,7 +240,7 @@ export default function NicovideoRegisterForm({
                 isSelectingTag={isSelecting}
                 appendTag={(tagId, fragment) => appendTag(tagId, fragment)}
                 removeTag={(tagId) => removeTag(tagId)}
-                isSelectingSemitag={isSelecting}
+                isSelectingSemitag={isSelectingSemitag}
                 appendSemitag={(name) => appendSemitag(name)}
                 removeSemitag={(name) => removeSemitag(name)}
               />
