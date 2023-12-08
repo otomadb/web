@@ -3,6 +3,9 @@
 import clsx from "clsx";
 import { ReactNode } from "react";
 
+import { XMarkPictogram } from "../Pictogram";
+import { useCloseFormWidget } from ".";
+
 export const FormWrapper = ({
   className,
   style,
@@ -14,12 +17,14 @@ export const FormWrapper = ({
   Title: ReactNode;
   Form: React.FC<{ className?: string }>;
 }) => {
+  const close = useCloseFormWidget();
+
   return (
     <div
       style={style}
       className={clsx(
         className,
-        "flex flex-col border border-obsidian-primary"
+        "flex flex-col rounded border border-obsidian-primary"
       )}
     >
       <div
@@ -30,7 +35,22 @@ export const FormWrapper = ({
         <div className={clsx("grow text-sm font-bold text-snow-primary")}>
           {Title}
         </div>
-        <div className={clsx("shrink-0")}></div>
+        <div className={clsx("flex shrink-0 items-center")}>
+          <button
+            type="button"
+            className={clsx(
+              "h-6 w-6 rounded-full p-0.5 hover:bg-obsidian-primary"
+            )}
+            onClick={(e) => {
+              e.preventDefault();
+              close();
+            }}
+          >
+            <XMarkPictogram
+              className={clsx("h-full w-full text-snow-darkest")}
+            />
+          </button>
+        </div>
       </div>
       <div
         className={clsx(

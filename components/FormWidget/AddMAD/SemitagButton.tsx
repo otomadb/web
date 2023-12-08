@@ -12,16 +12,8 @@ export const SemitagButton: React.FC<{
       role="button"
       className={clsx(
         className,
-        ["select-none"],
-        ["px-0.5 py-0.25"],
-        ["bg-slate-900 aria-disabled:bg-slate-950"],
-        [
-          "border",
-          "border-slate-700",
-          "aria-disabled:border-slate-800",
-          "rounded-sm",
-        ],
-        ["text-xs text-slate-300 group-aria-disabled:text-slate-600"]
+        "select-none rounded-sm border border-obsidian-primary bg-obsidian-darker px-0.5 py-0.25 text-xs text-snow-darker",
+        "aria-disabled:border-obsidian-darker aria-disabled:bg-obsidian-primary group-aria-disabled:text-snow-darkest"
       )}
       onClick={() => {
         if (selected) remove();

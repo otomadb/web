@@ -8,8 +8,6 @@ import React, {
   useReducer,
 } from "react";
 
-import { XMarkPictogram } from "~/components/Pictogram";
-
 import BilibiliRegisterForm from "./AddMAD/Bilibili/BilibiliRegisterForm";
 import BilibiliRequestForm from "./AddMAD/Bilibili/BilibiliRequestForm";
 import NicovideoRegisterForm from "./AddMAD/Nicovideo/NicovideoRegisterForm";
@@ -243,7 +241,7 @@ export const useOpenRequestFromBilibili = () => {
     });
 };
 
-export const useOpenRegisterFromNicovideo2 = () => {
+export const useOpenNicovideoRegisterForm = () => {
   const { open } = useContext(FormModalContext);
   return (
     props: Extract<Current, { type: "REGISTER_FROM_NICOVIDEO" }>["props"]
@@ -253,7 +251,19 @@ export const useOpenRegisterFromNicovideo2 = () => {
       props,
     });
 };
-export const useOpenRegisterFromYoutube2 = () => {
+
+export const useOpenNicovideoRequestForm = () => {
+  const { open } = useContext(FormModalContext);
+  return (
+    props: Extract<Current, { type: "REQUEST_FROM_NICOVIDEO" }>["props"]
+  ) =>
+    open({
+      type: "REQUEST_FROM_NICOVIDEO",
+      props,
+    });
+};
+
+export const useOpenYoutubeRegisterForm = () => {
   const { open } = useContext(FormModalContext);
   return (
     props: Extract<Current, { type: "REGISTER_FROM_YOUTUBE" }>["props"]
@@ -263,7 +273,17 @@ export const useOpenRegisterFromYoutube2 = () => {
       props,
     });
 };
-export const useOpenRegisterFromSoundcloud2 = () => {
+
+export const useOpenYoutubeRequestForm = () => {
+  const { open } = useContext(FormModalContext);
+  return (props: Extract<Current, { type: "REQUEST_FROM_YOUTUBE" }>["props"]) =>
+    open({
+      type: "REQUEST_FROM_YOUTUBE",
+      props,
+    });
+};
+
+export const useOpenSoundcloudRegisterForm = () => {
   const { open } = useContext(FormModalContext);
   return (
     props: Extract<Current, { type: "REGISTER_FROM_SOUNDCLOUD" }>["props"]
@@ -273,7 +293,19 @@ export const useOpenRegisterFromSoundcloud2 = () => {
       props,
     });
 };
-export const useOpenRegisterFromBilibili2 = () => {
+
+export const useOpenSoundcloudRequestForm = () => {
+  const { open } = useContext(FormModalContext);
+  return (
+    props: Extract<Current, { type: "REQUEST_FROM_SOUNDCLOUD" }>["props"]
+  ) =>
+    open({
+      type: "REQUEST_FROM_SOUNDCLOUD",
+      props,
+    });
+};
+
+export const useOpenBilibiliRegisterForm = () => {
   const { open } = useContext(FormModalContext);
   return (
     props: Extract<Current, { type: "REGISTER_FROM_BILIBILI" }>["props"]
@@ -284,35 +316,7 @@ export const useOpenRegisterFromBilibili2 = () => {
     });
 };
 
-export const useOpenRequestFromNicovideo2 = () => {
-  const { open } = useContext(FormModalContext);
-  return (
-    props: Extract<Current, { type: "REQUEST_FROM_NICOVIDEO" }>["props"]
-  ) =>
-    open({
-      type: "REQUEST_FROM_NICOVIDEO",
-      props,
-    });
-};
-export const useOpenRequestFromYoutube2 = () => {
-  const { open } = useContext(FormModalContext);
-  return (props: Extract<Current, { type: "REQUEST_FROM_YOUTUBE" }>["props"]) =>
-    open({
-      type: "REQUEST_FROM_YOUTUBE",
-      props,
-    });
-};
-export const useOpenRequestFromSoundcloud2 = () => {
-  const { open } = useContext(FormModalContext);
-  return (
-    props: Extract<Current, { type: "REQUEST_FROM_SOUNDCLOUD" }>["props"]
-  ) =>
-    open({
-      type: "REQUEST_FROM_SOUNDCLOUD",
-      props,
-    });
-};
-export const useOpenRequestFromBilibili2 = () => {
+export const useOpenBilibiliRequestForm = () => {
   const { open } = useContext(FormModalContext);
   return (
     props: Extract<Current, { type: "REQUEST_FROM_BILIBILI" }>["props"]
@@ -323,12 +327,12 @@ export const useOpenRequestFromBilibili2 = () => {
     });
 };
 
-export const useCloseFormModal = () => {
+export const useCloseFormWidget = () => {
   const { close } = useContext(FormModalContext);
   return close;
 };
 
-export default function FormModal({
+export default function FormWidgetSwitch({
   className,
   style,
 }: {
@@ -336,154 +340,88 @@ export default function FormModal({
   style?: React.CSSProperties;
 }) {
   const { current } = useContext(FormModalContext);
-  const close = useCloseFormModal();
+  const close = useCloseFormWidget();
 
   return (
     <div className={clsx(className, "flex")} style={style}>
-      {current && (
-        <div
-          className={clsx(
-            ["flex", "flex-col"],
-            ["border", "border-slate-700", "rounded"]
-          )}
-        >
-          <div
-            className={clsx(
-              ["flex", "items-center"],
-              [["px-4"], ["py-2"]],
-              ["bg-slate-800"],
-              ["border-b", "border-slate-700"]
-            )}
-          >
-            <span className={clsx("text-slate-500", "text-xs", "font-bold")}>
-              {current.type === "REGISTER_FROM_NICOVIDEO" &&
-                "ニコニコ動画から登録"}
-              {current.type === "REGISTER_FROM_YOUTUBE" && "Youtubeから登録"}
-              {current.type === "REGISTER_FROM_BILIBILI" &&
-                "ビリビリ動画から登録"}
-              {current.type === "REGISTER_FROM_SOUNDCLOUD" &&
-                "SoundCloudから登録"}
-              {current.type === "REQUEST_FROM_NICOVIDEO" &&
-                "ニコニコ動画からリクエスト"}
-              {current.type === "REQUEST_FROM_YOUTUBE" &&
-                "YouTubeからリクエスト"}
-              {current.type === "REQUEST_FROM_SOUNDCLOUD" &&
-                "Soundcloudからリクエスト"}
-              {current.type === "REQUEST_FROM_BILIBILI" &&
-                "Bilibiliからリクエスト"}
-            </span>
-            <button
-              type="button"
-              className={clsx(
-                ["ml-auto"],
-                ["w-4", "h-4"],
-                ["text-slate-500", "hover:text-slate-400"]
-              )}
-              onClick={(e) => {
-                e.preventDefault();
-                close();
-              }}
-            >
-              <XMarkPictogram />
-            </button>
-          </div>
-          <div className={clsx("bg-slate-900")}>
-            {current.type === "SOURCE_INPUT" && (
-              <SourceIDForm
-                style={{ width: 640, height: 720 }}
-                className={clsx("h-full")}
-                mode={current.mode}
-                initProp={current.init}
-              />
-            )}
-            {current.type === "REGISTER_FROM_NICOVIDEO" && (
-              <NicovideoRegisterForm
-                {...current.props}
-                handleSuccess={() => close()}
-                handleCancel={() => close()}
-                style={{ width: 640, height: 720 }}
-                className={clsx("h-full")}
-              />
-            )}
-            {current.type === "REGISTER_FROM_BILIBILI" && (
-              <BilibiliRegisterForm
-                {...current.props}
-                className={clsx()}
-                style={{ width: 640, height: 720 }}
-                handleSuccess={() => {
-                  close();
-                }}
-                handleCancel={() => close()}
-              />
-            )}
-            {current.type === "REGISTER_FROM_SOUNDCLOUD" && (
-              <SoundcloudRegisterForm
-                {...current.props}
-                className={clsx()}
-                style={{ width: 640, height: 720 }}
-                handleSuccess={() => {
-                  close();
-                }}
-                handleCancel={() => close()}
-              />
-            )}
-            {current.type === "REGISTER_FROM_YOUTUBE" && (
-              <YoutubeRegisterForm
-                {...current.props}
-                className={clsx()}
-                style={{ width: 640, height: 720 }}
-                handleSuccess={() => {
-                  close();
-                }}
-                handleCancel={() => close()}
-              />
-            )}
-            {current.type === "REQUEST_FROM_NICOVIDEO" && (
-              <NicovideoRequestForm
-                className={clsx()}
-                {...current.props}
-                style={{ width: 640, height: 720 }}
-                handleSuccess={() => {
-                  close();
-                }}
-                handleCancel={() => close()}
-              />
-            )}
-            {current.type === "REQUEST_FROM_YOUTUBE" && (
-              <YoutubeRequestForm
-                {...current.props}
-                className={clsx()}
-                style={{ width: 640, height: 720 }}
-                handleSuccess={() => {
-                  close();
-                }}
-                handleCancel={() => close()}
-              />
-            )}
-            {current.type === "REQUEST_FROM_SOUNDCLOUD" && (
-              <SoundcloudRequestForm
-                {...current.props}
-                className={clsx()}
-                style={{ width: 640, height: 720 }}
-                handleSuccess={() => {
-                  close();
-                }}
-                handleCancel={() => close()}
-              />
-            )}
-            {current.type === "REQUEST_FROM_BILIBILI" && (
-              <BilibiliRequestForm
-                {...current.props}
-                className={clsx()}
-                style={{ width: 640, height: 720 }}
-                handleSuccess={() => {
-                  close();
-                }}
-                handleCancel={() => close()}
-              />
-            )}
-          </div>
-        </div>
+      {current?.type === "SOURCE_INPUT" ? (
+        <SourceIDForm
+          className={clsx("min-h-[480px] w-[640px]")}
+          mode={current.mode}
+          initProp={current.init}
+        />
+      ) : current?.type === "REGISTER_FROM_NICOVIDEO" ? (
+        <NicovideoRegisterForm
+          {...current.props}
+          handleSuccess={() => close()}
+          handleCancel={() => close()}
+          className={clsx("min-h-[720px] w-[640px]")}
+        />
+      ) : current?.type === "REQUEST_FROM_NICOVIDEO" ? (
+        <NicovideoRequestForm
+          {...current.props}
+          className={clsx("min-h-[720px] w-[640px]")}
+          handleSuccess={() => {
+            close();
+          }}
+          handleCancel={() => close()}
+        />
+      ) : current?.type === "REGISTER_FROM_BILIBILI" ? (
+        <BilibiliRegisterForm
+          {...current.props}
+          className={clsx("min-h-[720px] w-[640px]")}
+          handleSuccess={() => {
+            close();
+          }}
+          handleCancel={() => close()}
+        />
+      ) : current?.type === "REQUEST_FROM_BILIBILI" ? (
+        <BilibiliRequestForm
+          {...current.props}
+          className={clsx("min-h-[720px] w-[640px]")}
+          handleSuccess={() => {
+            close();
+          }}
+          handleCancel={() => close()}
+        />
+      ) : current?.type === "REGISTER_FROM_YOUTUBE" ? (
+        <YoutubeRegisterForm
+          {...current.props}
+          className={clsx("min-h-[720px] w-[640px]")}
+          handleSuccess={() => {
+            close();
+          }}
+          handleCancel={() => close()}
+        />
+      ) : current?.type === "REQUEST_FROM_YOUTUBE" ? (
+        <YoutubeRequestForm
+          {...current.props}
+          className={clsx("min-h-[720px] w-[640px]")}
+          handleSuccess={() => {
+            close();
+          }}
+          handleCancel={() => close()}
+        />
+      ) : current?.type === "REQUEST_FROM_SOUNDCLOUD" ? (
+        <SoundcloudRequestForm
+          {...current.props}
+          className={clsx("min-h-[720px] w-[640px]")}
+          handleSuccess={() => {
+            close();
+          }}
+          handleCancel={() => close()}
+        />
+      ) : current?.type === "REGISTER_FROM_SOUNDCLOUD" ? (
+        <SoundcloudRegisterForm
+          {...current.props}
+          className={clsx("min-h-[720px] w-[640px]")}
+          handleSuccess={() => {
+            close();
+          }}
+          handleCancel={() => close()}
+        />
+      ) : (
+        <></>
       )}
     </div>
   );

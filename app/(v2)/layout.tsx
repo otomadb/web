@@ -3,7 +3,7 @@ import clsx from "clsx";
 import React from "react";
 
 import AppSideNav from "~/components/AppSideNav";
-import FormModal, { FormModalProvider } from "~/components/FormWidget";
+import FormWidgetSwitch, { FormModalProvider } from "~/components/FormWidget";
 import GlobalFooter from "~/components/GlobalFooter";
 import GlobalNav from "~/components/GlovalNav";
 import { ToastProvider } from "~/components/Toaster";
@@ -28,7 +28,7 @@ export default function ApplicationLayout({
               <GlobalFooter />
             </div>
           </div>
-          <FormModal className={clsx("fixed bottom-1 right-4")} />
+          <FormWidgetSwitch className={clsx("fixed bottom-1 right-4")} />
           <div
             id="toast2"
             className={clsx(

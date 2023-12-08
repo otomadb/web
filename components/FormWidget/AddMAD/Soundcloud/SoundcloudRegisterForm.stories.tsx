@@ -11,6 +11,7 @@ import { Fragment as UserIconFragment } from "~/components/UserIcon";
 import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
 
+import { mockTagSearcher } from "../Nicovideo/NicovideoRegister.stories";
 import { SoundcloudRegisterOriginalSourceFragment } from "./SoundcloudOriginalSource";
 import SoundcloudRegisterForm, {
   SoundcloudRegisterFormRequestFragment,
@@ -99,6 +100,14 @@ const meta = {
     handleCancel: action("cancel"),
     sourceFragment: mockSourceFragment,
     requestFragment: mockRequestFragment,
+  },
+  parameters: {
+    msw: {
+      handlers: {
+        primary: [mockMutationSuccess],
+        misc: [mockTagSearcher],
+      },
+    },
   },
 } as Meta<typeof SoundcloudRegisterForm>;
 export default meta;

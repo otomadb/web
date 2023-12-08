@@ -69,7 +69,7 @@ export default function NicovideoOriginalSource({
           />
         </div>
         <div className={clsx("flex grow flex-col py-2")}>
-          <div className={clsx("text-sm font-bold text-slate-300")}>
+          <div className={clsx("text-sm font-bold text-snow-primary")}>
             {fragment.info.title}
           </div>
           <div className={clsx("mt-auto flex gap-x-2")}>
@@ -77,7 +77,7 @@ export default function NicovideoOriginalSource({
               href={fragment.url}
               target="_blank"
               className={clsx(
-                "flex items-center gap-x-1 text-slate-400 hover:text-sky-400"
+                "flex items-center gap-x-1 text-snow-darker hover:text-vivid-primary"
               )}
             >
               <ExternalLinkPictogram className={clsx("h-4 w-4")} />
@@ -96,7 +96,7 @@ export default function NicovideoOriginalSource({
           >
             <div
               role="button"
-              className={clsx("text-left text-xs font-bold text-slate-400")}
+              className={clsx("text-left text-xs font-bold text-snow-darker")}
               onClick={(e) => {
                 e.preventDefault();
                 if (isSelectingTag(originalTag.name))
@@ -108,7 +108,7 @@ export default function NicovideoOriginalSource({
             </div>
             <div className={clsx("grow")}>
               {originalTag.searchTags.items.length === 0 && (
-                <div className={clsx("select-none text-xs text-slate-500")}>
+                <div className={clsx("select-none text-xs text-snow-darkest")}>
                   候補なし
                 </div>
               )}

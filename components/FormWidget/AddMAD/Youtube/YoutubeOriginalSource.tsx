@@ -39,7 +39,7 @@ export default function YoutubeOriginalSource({
           />
         </div>
         <div className={clsx("flex grow flex-col py-2")}>
-          <div className={clsx("text-sm font-bold text-slate-300")}>
+          <div className={clsx("text-sm font-bold text-snow-primary")}>
             {/* 無いので */}
             <span>タイトルを取得できませんでした</span>
           </div>
@@ -49,7 +49,7 @@ export default function YoutubeOriginalSource({
               target="_blank"
               className={clsx(
                 ["flex items-center gap-x-1"],
-                ["text-slate-400 hover:text-sky-400"]
+                ["text-snow-darker hover:text-vivid-primary"]
               )}
             >
               <ExternalLinkPictogram className={clsx("h-4 w-4")} />

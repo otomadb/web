@@ -123,7 +123,9 @@ export const RequestsFormEditorablePart = ({
       )}
     >
       <label className={clsx("flex flex-col gap-y-1")}>
-        <div className={clsx("text-xs font-bold text-slate-400")}>タイトル</div>
+        <div className={clsx("text-xs font-bold text-snow-darker")}>
+          タイトル
+        </div>
         <TextInput2
           size="small"
           placeholder={"動画タイトル"}
@@ -134,7 +136,9 @@ export const RequestsFormEditorablePart = ({
       <div className={clsx("flex flex-col gap-y-2")}>
         <div className={clsx("flex gap-x-2")}>
           <div
-            className={clsx("shrink-0 py-0.5 text-xs font-bold text-slate-400")}
+            className={clsx(
+              "shrink-0 py-0.5 text-xs font-bold text-snow-darker"
+            )}
           >
             追加されるタグ
           </div>
@@ -156,12 +160,14 @@ export const RequestsFormEditorablePart = ({
       </div>
       <div className={clsx("flex gap-x-2")}>
         <div
-          className={clsx("shrink-0 py-0.5 text-xs font-bold text-slate-400")}
+          className={clsx("shrink-0 py-0.5 text-xs font-bold text-snow-darker")}
         >
           追加される仮タグ
         </div>
         {semitaggings.length === 0 && (
-          <div className={clsx("shrink-0 self-center text-xs text-slate-400")}>
+          <div
+            className={clsx("shrink-0 self-center text-xs text-snow-darker")}
+          >
             なし
           </div>
         )}
@@ -257,7 +263,9 @@ export const RequestsFormTabPicker = ({
       {choices.includes("SOURCE") && (
         <div
           className={clsx(
-            "cursor-pointer select-none rounded border border-slate-700 bg-slate-950 px-2 py-1 text-xs font-bold text-slate-400 aria-checked:cursor-default aria-checked:border-slate-600 aria-checked:bg-slate-700 aria-checked:text-slate-400 aria-disabled:cursor-default aria-disabled:border-slate-800 aria-disabled:bg-slate-900 aria-disabled:text-slate-700 hover:bg-slate-800"
+            "cursor-pointer select-none rounded border px-2 py-1 text-xs font-bold",
+            "border-obsidian-lighter bg-obsidian-primary text-snow-darker hover:bg-obsidian-lighter",
+            "aria-checked:cursor-default aria-checked:border-obsidian-lightest aria-checked:bg-obsidian-lighter aria-checked:text-snow-primary"
           )}
           onClick={() => setTab("SOURCE")}
           aria-checked={current === "SOURCE"}

@@ -19,14 +19,14 @@ import { estimateUrl } from "~/utils/extractSourceId";
 
 import { RequestPageLinkSwitch } from "../../RequestPageLinkSwitch";
 import {
-  useOpenRegisterFromBilibili2,
-  useOpenRegisterFromNicovideo2,
-  useOpenRegisterFromSoundcloud2,
-  useOpenRegisterFromYoutube2,
-  useOpenRequestFromBilibili2,
-  useOpenRequestFromNicovideo2,
-  useOpenRequestFromSoundcloud2,
-  useOpenRequestFromYoutube2,
+  useOpenBilibiliRegisterForm,
+  useOpenBilibiliRequestForm,
+  useOpenNicovideoRegisterForm,
+  useOpenNicovideoRequestForm,
+  useOpenSoundcloudRegisterForm,
+  useOpenSoundcloudRequestForm,
+  useOpenYoutubeRegisterForm,
+  useOpenYoutubeRequestForm,
 } from "..";
 import { FormWrapper } from "../FormWrapper";
 import {
@@ -878,17 +878,17 @@ export default function SourceIDForm({
   mode: "register" | "request";
   initProp?: Exclude<ReturnType<typeof estimateUrl>, null>;
 }) {
-  const openNicovideoRequest = useOpenRequestFromNicovideo2();
-  const openNicovideoRegister = useOpenRegisterFromNicovideo2();
+  const openNicovideoRequest = useOpenNicovideoRequestForm();
+  const openNicovideoRegister = useOpenNicovideoRegisterForm();
 
-  const openYoutubeRequest = useOpenRequestFromYoutube2();
-  const openYoutubeRegister = useOpenRegisterFromYoutube2();
+  const openYoutubeRequest = useOpenYoutubeRequestForm();
+  const openYoutubeRegister = useOpenYoutubeRegisterForm();
 
-  const openSoundcloudRequest = useOpenRequestFromSoundcloud2();
-  const openSoundcloudRegister = useOpenRegisterFromSoundcloud2();
+  const openSoundcloudRequest = useOpenSoundcloudRequestForm();
+  const openSoundcloudRegister = useOpenSoundcloudRegisterForm();
 
-  const openBilibiliRequest = useOpenRequestFromBilibili2();
-  const openBilibiliRegister = useOpenRegisterFromBilibili2();
+  const openBilibiliRequest = useOpenBilibiliRequestForm();
+  const openBilibiliRegister = useOpenBilibiliRegisterForm();
 
   const [input, setInput] = useState(
     initProp?.type === "soundcloud"
