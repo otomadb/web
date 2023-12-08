@@ -1,5 +1,4 @@
 import clsx from "clsx";
-import { request } from "graphql-request";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
@@ -47,6 +46,7 @@ export async function generateMetadata({
 
 type PageParams = { serial: string };
 
+/*
 export async function generateStaticParams() {
   return request(
     process.env.GRAPHQL_API_ENDPOINT,
@@ -65,6 +65,7 @@ export async function generateStaticParams() {
     )
   );
 }
+*/
 
 export default async function Page({ params }: { params: PageParams }) {
   const result = await makeGraphQLClient().request(
