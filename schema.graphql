@@ -128,6 +128,13 @@ input BilibiliMADSourceEventsOrderBy {
   createdAt: SortOrder
 }
 
+"""Bilibiliの音MADがリクエストされたことを表すタイムラインイベント"""
+type BilibiliMadRequestedTimelineEvent implements TimelineEvent {
+  createdAt: DateTime!
+  event: BilibiliRegistrationRequestRequestEvent!
+  request: BilibiliRegistrationRequest!
+}
+
 type BilibiliOriginalSource {
   originalThumbnailUrl: String!
   sourceId: String!
@@ -1960,7 +1967,7 @@ type SoundcloudRegistrationRequest implements Node & RegistrationRequest {
 
   """
   Soundcloud側のサムネイル画像のURL
-
+  
   **無い場合もある場合に注意.**
   """
   originalThumbnailUrl: String
@@ -1972,7 +1979,7 @@ type SoundcloudRegistrationRequest implements Node & RegistrationRequest {
 
   """
   OtoMADB側でプロキシしているサムネイル画像のURL
-
+  
   **無い場合は適当にダミー画像を返す．**
   """
   thumbnailUrl: String!
@@ -2444,6 +2451,8 @@ type Video implements Node {
   events(input: VideoEventsInput!): VideoEventsConnection!
   hasTag(id: ID!): Boolean!
   id: ID!
+
+  """現在ログイン中のユーザがいいね済みかどうか．認証していない場合は`null`"""
   isLiked: Boolean
   like: MylistRegistration
   nicovideoSources: [NicovideoVideoSource!]!
