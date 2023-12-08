@@ -28,6 +28,7 @@ export const TagButton: React.FC<{
       <CommonTag
         size={size}
         fragment={props.fragment}
+        hoverable
         selectable
         selected={selected}
       />

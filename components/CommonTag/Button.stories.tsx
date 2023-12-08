@@ -5,7 +5,7 @@ import { CommonTagFragment } from "~/components/CommonTag";
 import { makeFragmentData } from "~/gql";
 import { TagType } from "~/gql/graphql";
 
-import { TagButton } from "./TagButton";
+import { TagButton } from "./Button";
 
 const meta = {
   component: TagButton,
@@ -24,6 +24,9 @@ const meta = {
     append: action("append"),
     remove: action("remove"),
     size: "small",
+  },
+  parameters: {
+    layout: "centered",
   },
 } as Meta<typeof TagButton>;
 export default meta;

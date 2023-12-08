@@ -154,7 +154,7 @@ const meta = {
   args: {
     style: {
       width: 640,
-      height: 640,
+      height: 720,
     },
     handleSuccess: action("success"),
     handleCancel: action("cancel"),

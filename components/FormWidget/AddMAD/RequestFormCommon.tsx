@@ -6,8 +6,8 @@ import TagSearcher from "~/components/TagSearcher";
 import { TextInput2 } from "~/components/TextInput";
 import { FragmentType } from "~/gql";
 
+import { TagButton, TagButtonFragment } from "../../CommonTag/Button";
 import { SemitagButton } from "./SemitagButton";
-import { TagButton, TagButtonFragment } from "./TagButton";
 
 export const useRequestFormEditTaggings = () => {
   const [taggings, dispatchTags] = useReducer(

@@ -9,6 +9,7 @@ import { MadPageLink } from "~/app/(v2)/mads/[serial]/Link";
 import useToaster from "~/components/Toaster/useToaster";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
+import { FormWrapper } from "../../FormWrapper";
 import {
   RegisterFormButtonsPart,
   RegisterFormEditorablePart,
@@ -169,56 +170,63 @@ export default function SoundcloudRegisterForm({
   }, [semitagNames, source.thumbnailUrl, source.url, tagIds, title]);
 
   return (
-    <form
+    <FormWrapper
       style={style}
-      className={clsx(className, "flex flex-col gap-y-6 p-2")}
-      onSubmit={(e) => {
-        e.preventDefault();
-        if (!payload) return;
-        registerMAD(payload);
-      }}
-    >
-      <RegisterFormEditorablePart
-        title={title}
-        setTitle={setTitle}
-        appendSemitag={appendSemitag}
-        appendTag={appendTag}
-        isIncludeSemitag={isIncludeSemitag}
-        removeSemitag={removeSemitag}
-        removeTag={removeTag}
-        tags={tags}
-        semitaggings={semitaggings}
-      />
-      <div className={clsx("flex grow flex-col gap-y-2")}>
-        <RegisterFormTabPicker
-          current={tab}
-          setTab={setTab}
-          choices={{
-            SOURCE: true,
-            REQUEST: !!request,
+      className={clsx(className)}
+      Title={<>SoundCloudから音MADをリクエスト</>}
+      Form={({ className, ...rest }) => (
+        <form
+          {...rest}
+          className={clsx(className, "flex flex-col gap-y-6")}
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (!payload) return;
+            registerMAD(payload);
           }}
-        />
-        <SoundcloudOriginalSource
-          className={clsx({ hidden: tab !== "SOURCE" })}
-          fragment={source}
-        />
-        {request && (
-          <RegisterFormRequestPart
-            className={clsx({ hidden: tab !== "REQUEST" })}
-            fragment={request}
-            isSelectingTag={isSelecting}
-            appendTag={(tagId, fragment) => appendTag(tagId, fragment)}
-            removeTag={(tagId) => removeTag(tagId)}
-            isSelectingSemitag={isIncludeSemitag}
-            appendSemitag={(name) => appendSemitag(name)}
-            removeSemitag={(name) => removeSemitag(name)}
+        >
+          <RegisterFormEditorablePart
+            title={title}
+            setTitle={setTitle}
+            appendSemitag={appendSemitag}
+            appendTag={appendTag}
+            isIncludeSemitag={isIncludeSemitag}
+            removeSemitag={removeSemitag}
+            removeTag={removeTag}
+            tags={tags}
+            semitaggings={semitaggings}
           />
-        )}
-      </div>
-      <RegisterFormButtonsPart
-        disabled={!payload}
-        handleCancel={handleCancel}
-      />
-    </form>
+          <div className={clsx("flex grow flex-col gap-y-2")}>
+            <RegisterFormTabPicker
+              current={tab}
+              setTab={setTab}
+              choices={{
+                SOURCE: true,
+                REQUEST: !!request,
+              }}
+            />
+            <SoundcloudOriginalSource
+              className={clsx({ hidden: tab !== "SOURCE" })}
+              fragment={source}
+            />
+            {request && (
+              <RegisterFormRequestPart
+                className={clsx({ hidden: tab !== "REQUEST" })}
+                fragment={request}
+                isSelectingTag={isSelecting}
+                appendTag={(tagId, fragment) => appendTag(tagId, fragment)}
+                removeTag={(tagId) => removeTag(tagId)}
+                isSelectingSemitag={isIncludeSemitag}
+                appendSemitag={(name) => appendSemitag(name)}
+                removeSemitag={(name) => removeSemitag(name)}
+              />
+            )}
+          </div>
+          <RegisterFormButtonsPart
+            disabled={!payload}
+            handleCancel={handleCancel}
+          />
+        </form>
+      )}
+    />
   );
 }

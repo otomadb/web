@@ -10,6 +10,7 @@ import SoundcloudRequestPageLink from "~/app/(v2)/requests/soundcloud/[sourceId]
 import useToaster from "~/components/Toaster/useToaster";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
+import { FormWrapper } from "../../FormWrapper";
 import {
   RequestsFormButtonsPart,
   RequestsFormEditorablePart,
@@ -209,42 +210,49 @@ export default function SoundcloudRequestForm({
   ]);
 
   return (
-    <form
+    <FormWrapper
       style={style}
-      className={clsx(className, "flex flex-col gap-y-6 p-2")}
-      onSubmit={(e) => {
-        e.preventDefault();
-        if (!payload) return;
-        requestVideo(payload);
-      }}
-    >
-      <RequestsFormEditorablePart
-        title={title}
-        setTitle={setTitle}
-        appendSemitag={appendSemitag}
-        appendTag={appendTag}
-        isIncludeSemitag={isIncludeSemitag}
-        removeSemitag={removeSemitag}
-        removeTag={removeTag}
-        taggings={taggings}
-        semitaggings={semitaggings}
-        className={clsx("w-full shrink-0")}
-      />
-      <div className={clsx("flex grow flex-col gap-y-2")}>
-        <RequestsFormTabPicker
-          choices={["SOURCE"]}
-          current="SOURCE"
-          setTab={(tab) => setTab(tab)}
-        />
-        <div className={clsx({ hidden: tab !== "SOURCE" })}>
-          <SoundcloudOriginalSource fragment={source} />
-        </div>
-      </div>
-      <RequestsFormButtonsPart
-        disabled={!payload}
-        handleCancel={handleCancel}
-        className={clsx("w-full shrink-0")}
-      />
-    </form>
+      className={clsx(className)}
+      Title={<>SoundCloudから音MADをリクエスト</>}
+      Form={({ className, ...rest }) => (
+        <form
+          {...rest}
+          className={clsx(className, "flex flex-col gap-y-6")}
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (!payload) return;
+            requestVideo(payload);
+          }}
+        >
+          <RequestsFormEditorablePart
+            title={title}
+            setTitle={setTitle}
+            appendSemitag={appendSemitag}
+            appendTag={appendTag}
+            isIncludeSemitag={isIncludeSemitag}
+            removeSemitag={removeSemitag}
+            removeTag={removeTag}
+            taggings={taggings}
+            semitaggings={semitaggings}
+            className={clsx("w-full shrink-0")}
+          />
+          <div className={clsx("flex grow flex-col gap-y-2")}>
+            <RequestsFormTabPicker
+              choices={["SOURCE"]}
+              current="SOURCE"
+              setTab={(tab) => setTab(tab)}
+            />
+            <div className={clsx({ hidden: tab !== "SOURCE" })}>
+              <SoundcloudOriginalSource fragment={source} />
+            </div>
+          </div>
+          <RequestsFormButtonsPart
+            disabled={!payload}
+            handleCancel={handleCancel}
+            className={clsx("w-full shrink-0")}
+          />
+        </form>
+      )}
+    />
   );
 }
