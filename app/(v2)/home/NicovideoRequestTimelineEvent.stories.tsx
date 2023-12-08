@@ -7,8 +7,8 @@ import NicovideoRequestTimelineEvent, {
 } from "./NicovideoRequestTimelineEvent";
 import { TimelineEventWrapperFragment } from "./TimelineEventWrapper";
 import {
-  $mockHasNoRole,
-  $mockHasRole,
+  mockHasNoRole,
+  mockHasRole,
 } from "./YoutubeRequestTimelineEvent.stories";
 
 const meta = {
@@ -54,7 +54,7 @@ export const NotEditor: Story = {
   parameters: {
     msw: {
       handlers: {
-        roles: $mockHasNoRole,
+        roles: mockHasNoRole,
       },
     },
   },
@@ -66,7 +66,7 @@ export const Editor: Story = {
   parameters: {
     msw: {
       handlers: {
-        roles: $mockHasRole,
+        roles: mockHasRole,
       },
     },
   },
