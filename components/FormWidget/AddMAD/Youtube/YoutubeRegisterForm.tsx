@@ -214,7 +214,7 @@ export default function YoutubeRegisterForm({
               setTab={setTab}
               choices={{
                 SOURCE: true,
-                REQUEST: false,
+                REQUEST: !!request,
               }}
             />
             <YoutubeOriginalSource
