@@ -17,7 +17,7 @@ import {
   useOpenRequestFromSoundcloud,
   useOpenRequestFromYoutube,
   useOpenSoundcloudRegisterModal,
-} from "~/components/FormModal";
+} from "~/components/FormWidget";
 import Logo from "~/components/Logo";
 import {
   BilibiliPictogram,

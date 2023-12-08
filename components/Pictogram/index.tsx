@@ -9,6 +9,7 @@ import {
   ArrowPathIcon,
   CheckCircleIcon,
   ClipboardDocumentIcon,
+  ExclamationCircleIcon,
   HeartIcon as FilledHeartIcon,
   NoSymbolIcon,
   PencilIcon,
@@ -85,6 +86,10 @@ export const SignUpPictogram: PictogramType = (props) => (
 
 export const ExternalLinkPictogram = (props: { className?: string }) => (
   <ArrowTopRightOnSquareIcon {...props} />
+);
+
+export const NotFoundPictogram = (props: { className?: string }) => (
+  <ExclamationCircleIcon {...props} />
 );
 
 export const TwitterPictogram: PictogramType = (props) => (

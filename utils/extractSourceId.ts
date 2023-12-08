@@ -77,3 +77,26 @@ export const normalizeSoundcloud = (input: string) => {
 
   return null;
 };
+
+export const estimateUrl = (
+  input: string
+):
+  | { type: "youtube"; sourceId: string }
+  | { type: "nicovideo"; sourceId: string }
+  | { type: "bilibili"; sourceId: string }
+  | { type: "soundcloud"; url: string }
+  | null => {
+  const nicovideo = extractNicovideoSourceId(input);
+  if (nicovideo) return { type: "nicovideo", sourceId: nicovideo };
+
+  const bilibili = extractBilibiliSourceId(input);
+  if (bilibili) return { type: "bilibili", sourceId: bilibili };
+
+  const youtube = extractYoutubeSourceId(input);
+  if (youtube) return { type: "youtube", sourceId: youtube };
+
+  const soundcloud = normalizeSoundcloud(input);
+  if (soundcloud) return { type: "soundcloud", url: soundcloud };
+
+  return null;
+};

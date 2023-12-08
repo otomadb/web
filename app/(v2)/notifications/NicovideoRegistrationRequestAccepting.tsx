@@ -3,7 +3,7 @@
 import clsx from "clsx";
 
 import { MadPageLink } from "~/app/(v2)/mads/[serial]/Link";
-import { NicovideoRegistrationRequestLink } from "~/app/(v2)/requests/nicovideo/[sourceId]/Link";
+import NicovideoRequestLink from "~/app/(v2)/requests/nicovideo/[sourceId]/Link";
 import UserPageLink from "~/app/(v2)/users/[name]/Link";
 import CommonMadBlock from "~/components/CommonMadBlock";
 import { AcceptPictogram } from "~/components/Pictogram";
@@ -96,14 +96,14 @@ export default function NicovideoRegistrationRequestAcceptingNotification({
               "flex items-center justify-between border-l border-obsidian-lighter px-2"
             )}
           >
-            <NicovideoRegistrationRequestLink
+            <NicovideoRequestLink
               fragment={request}
               className={clsx(
                 "text-xs text-snow-darker hover:text-vivid-primary hover:underline"
               )}
             >
               リクエスト
-            </NicovideoRegistrationRequestLink>
+            </NicovideoRequestLink>
           </div>
           <div
             className={clsx(

@@ -1,7 +1,7 @@
 import clsx from "clsx";
 
 import { CoolImage2 } from "~/components/CoolImage";
-import { useOpenSoundcloudRegisterModal } from "~/components/FormModal";
+import { useOpenSoundcloudRegisterModal } from "~/components/FormWidget";
 import {
   ExternalLinkPictogram,
   PlusPictogram,

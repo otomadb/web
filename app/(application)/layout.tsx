@@ -2,7 +2,7 @@ import { UserProvider } from "@auth0/nextjs-auth0/client";
 import clsx from "clsx";
 import React from "react";
 
-import FormModal, { FormModalProvider } from "~/components/FormModal";
+import FormWidgetSwitch, { FormModalProvider } from "~/components/FormWidget";
 import GlobalNav from "~/components/GlovalNav";
 
 export default function ApplicationLayout({
@@ -31,7 +31,7 @@ export default function ApplicationLayout({
         >
           {children}
         </div>
-        <FormModal className={clsx(["fixed", "bottom-1", "right-4"])} />
+        <FormWidgetSwitch className={clsx(["fixed", "bottom-1", "right-4"])} />
       </FormModalProvider>
     </UserProvider>
   );

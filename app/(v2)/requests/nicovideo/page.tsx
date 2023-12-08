@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { NicovideoRegistrationRequestLink } from "~/app/(v2)/requests/nicovideo/[sourceId]/Link";
+import NicovideoRequestLink from "~/app/(v2)/requests/nicovideo/[sourceId]/Link";
 import UserPageLink from "~/app/(v2)/users/[name]/Link";
 import CommonTag from "~/components/CommonTag";
 import { CoolImage } from "~/components/CoolImage";
@@ -123,7 +123,7 @@ export default async function Page({
               )}
             >
               <div className={clsx("flex gap-x-4 p-2")}>
-                <NicovideoRegistrationRequestLink
+                <NicovideoRequestLink
                   className={clsx("flex shrink-0 self-center")}
                   fragment={node}
                 >
@@ -135,17 +135,17 @@ export default async function Page({
                     unoptimized={true}
                     className={clsx("h-[96px] w-[128px]")}
                   />
-                </NicovideoRegistrationRequestLink>
+                </NicovideoRequestLink>
                 <div className={clsx("flex grow flex-col gap-y-1")}>
                   <div className={clsx("flex")}>
-                    <NicovideoRegistrationRequestLink
+                    <NicovideoRequestLink
                       fragment={node}
                       className={clsx(
                         "line-clamp-1 text-base font-bold text-snow-primary hover:text-vivid-primary hover:underline"
                       )}
                     >
                       {node.title}
-                    </NicovideoRegistrationRequestLink>
+                    </NicovideoRequestLink>
                   </div>
                   <div>
                     <a

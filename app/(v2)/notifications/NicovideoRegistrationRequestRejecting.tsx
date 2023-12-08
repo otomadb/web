@@ -6,7 +6,7 @@ import { RejectPictogram } from "~/components/Pictogram";
 import { UserIcon } from "~/components/UserIcon";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-import { NicovideoRegistrationRequestLink } from "../requests/nicovideo/[sourceId]/Link";
+import NicovideoRequestLink from "../requests/nicovideo/[sourceId]/Link";
 import UserPageLink from "../users/[name]/Link";
 import NotificationWrapper from "./NotificationWrapper";
 
@@ -73,14 +73,14 @@ export default function NicovideoRegistrationRequestRejectingNotification({
               "flex items-center justify-between border-l border-obsidian-lighter px-2"
             )}
           >
-            <NicovideoRegistrationRequestLink
+            <NicovideoRequestLink
               fragment={request}
               className={clsx(
                 "text-xs text-snow-darker hover:text-vivid-primary hover:underline"
               )}
             >
               リクエスト
-            </NicovideoRegistrationRequestLink>
+            </NicovideoRequestLink>
           </div>
           <div
             className={clsx(

@@ -2,7 +2,7 @@
 
 import clsx from "clsx";
 
-import { useOpenRegisterFromNicovideo } from "~/components/FormModal";
+import { useOpenRegisterFromNicovideo } from "~/components/FormWidget";
 import { PlusPictogram } from "~/components/Pictogram";
 import useHasRole from "~/components/useHasRole";
 import { FragmentType, graphql, useFragment } from "~/gql";

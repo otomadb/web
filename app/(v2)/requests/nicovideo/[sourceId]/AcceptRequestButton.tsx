@@ -4,7 +4,7 @@ import clsx from "clsx";
 import { useQuery } from "urql";
 
 import Button from "~/components/Button";
-import { useOpenRegisterFromNicovideo } from "~/components/FormModal";
+import { useOpenRegisterFromNicovideo } from "~/components/FormWidget";
 import { PlusPictogram } from "~/components/Pictogram";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
