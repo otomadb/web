@@ -475,7 +475,7 @@ export const YoutubeConfirmForm = ({
             )}
           >
             <LoadingPictogram className={clsx("h-4 w-4")} />
-            <div>ニコニコ動画から検索中</div>
+            <div>Youtubeから検索中</div>
           </div>
         ) : (
           <div
@@ -485,7 +485,7 @@ export const YoutubeConfirmForm = ({
           >
             <NotFoundPictogram className={clsx("h-4 w-4")} />
             <div className={clsx("font-bold")}>
-              ニコニコ動画から情報を取得できませんでした。
+              Youtubeから情報を取得できませんでした。
             </div>
           </div>
         )}
@@ -657,7 +657,7 @@ export const SoundcloudConfirmForm = ({
             )}
           >
             <LoadingPictogram className={clsx("h-4 w-4")} />
-            <div>ニコニコ動画から検索中</div>
+            <div>SoundCloudから検索中</div>
           </div>
         ) : (
           <div
@@ -667,7 +667,7 @@ export const SoundcloudConfirmForm = ({
           >
             <NotFoundPictogram className={clsx("h-4 w-4")} />
             <div className={clsx("font-bold")}>
-              ニコニコ動画から情報を取得できませんでした。
+              SoundCloudから情報を取得できませんでした。
             </div>
           </div>
         )}
@@ -838,7 +838,7 @@ export const BilibiliConfirmForm = ({
             )}
           >
             <LoadingPictogram className={clsx("h-4 w-4")} />
-            <div>ニコニコ動画から検索中</div>
+            <div>Bilibiliから検索中</div>
           </div>
         ) : (
           <div
@@ -848,7 +848,7 @@ export const BilibiliConfirmForm = ({
           >
             <NotFoundPictogram className={clsx("h-4 w-4")} />
             <div className={clsx("font-bold")}>
-              ニコニコ動画から情報を取得できませんでした。
+              Bilibiliから情報を取得できませんでした。
             </div>
           </div>
         )}

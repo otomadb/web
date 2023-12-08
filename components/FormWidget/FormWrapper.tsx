@@ -34,13 +34,13 @@ export const FormWrapper = ({
           "flex shrink-0 items-center bg-obsidian-darker px-4 py-2"
         )}
       >
-        <div className={clsx("flex grow items-center")}>
+        <div className={clsx("flex grow items-center gap-x-2")}>
           <Icon className={clsx("h-4 w-4 text-snow-darker")} />
           <div className={clsx("text-sm font-bold text-snow-primary")}>
             {Title}
           </div>
         </div>
-        <div className={clsx("flex shrink-0 items-center")}>
+        <div className={clsx("flex shrink-0 items-center gap-x-2")}>
           <button
             type="button"
             className={clsx(

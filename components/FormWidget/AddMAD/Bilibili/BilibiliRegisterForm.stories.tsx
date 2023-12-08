@@ -41,6 +41,7 @@ export const mockSourceFragment = makeFragmentData(
     thumbnailUrl: "/thumbnail.jpg",
     sourceId: "sm2057168",
     url: "https://www.nicovideo.jp/watch/sm2057168",
+    originalThumbnailUrl: "/thumbnail.jpg",
     ...makeFragmentData(
       {
         sourceId: "sm2057168",
