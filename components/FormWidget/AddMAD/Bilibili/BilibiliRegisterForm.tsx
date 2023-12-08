@@ -6,6 +6,7 @@ import React, { useCallback, useMemo, useState } from "react";
 import { useMutation } from "urql";
 
 import { MadPageLink } from "~/app/(v2)/mads/[serial]/Link";
+import { BilibiliPictogram } from "~/components/Pictogram";
 import useToaster from "~/components/Toaster/useToaster";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
@@ -175,6 +176,7 @@ export default function BilibiliRegisterForm({
       style={style}
       className={clsx(className)}
       Title={<>Bilibiliから音MADを登録</>}
+      Icon={BilibiliPictogram}
       Form={({ className, ...rest }) => (
         <form
           {...rest}

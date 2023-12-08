@@ -3,17 +3,19 @@
 import clsx from "clsx";
 import { ReactNode } from "react";
 
-import { XMarkPictogram } from "../Pictogram";
+import { PictogramType, XMarkPictogram } from "../Pictogram";
 import { useCloseFormWidget } from ".";
 
 export const FormWrapper = ({
   className,
   style,
+  Icon,
   Title,
   Form,
 }: {
   className?: string;
   style?: React.CSSProperties;
+  Icon: PictogramType;
   Title: ReactNode;
   Form: React.FC<{ className?: string }>;
 }) => {
@@ -32,8 +34,11 @@ export const FormWrapper = ({
           "flex shrink-0 items-center bg-obsidian-darker px-4 py-2"
         )}
       >
-        <div className={clsx("grow text-sm font-bold text-snow-primary")}>
-          {Title}
+        <div className={clsx("flex grow items-center")}>
+          <Icon className={clsx("h-4 w-4 text-snow-darker")} />
+          <div className={clsx("text-sm font-bold text-snow-primary")}>
+            {Title}
+          </div>
         </div>
         <div className={clsx("flex shrink-0 items-center")}>
           <button

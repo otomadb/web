@@ -7,6 +7,7 @@ import { useMutation } from "urql";
 
 import { MadPageLink } from "~/app/(v2)/mads/[serial]/Link";
 import { YoutubeRequestPageLink } from "~/app/(v2)/requests/youtube/[sourceId]/Link";
+import { YoutubePictogram } from "~/components/Pictogram";
 import useToaster from "~/components/Toaster/useToaster";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
@@ -198,6 +199,7 @@ export default function YoutubeRequestForm({
       style={style}
       className={clsx(className)}
       Title={<>Youtubeから音MADをリクエスト</>}
+      Icon={YoutubePictogram}
       Form={({ className, ...rest }) => (
         <form
           {...rest}

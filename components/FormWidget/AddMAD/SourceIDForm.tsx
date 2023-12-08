@@ -11,6 +11,7 @@ import {
   ExternalLinkPictogram,
   LoadingPictogram,
   NotFoundPictogram,
+  PlusPictogram,
   SearchPictogram,
 } from "~/components/Pictogram";
 import { TextInput2 } from "~/components/TextInput";
@@ -908,6 +909,7 @@ export default function SourceIDForm({
       style={style}
       className={clsx(className)}
       Title={mode === "register" ? <>音MADの登録</> : <>音MADのリクエスト</>}
+      Icon={PlusPictogram}
       Form={({ className, ...rest }) => (
         <div
           {...rest}

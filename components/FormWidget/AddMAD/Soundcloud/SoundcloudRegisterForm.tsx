@@ -6,6 +6,7 @@ import React, { useCallback, useMemo, useState } from "react";
 import { useMutation } from "urql";
 
 import { MadPageLink } from "~/app/(v2)/mads/[serial]/Link";
+import { SoundcloudPictogram } from "~/components/Pictogram";
 import useToaster from "~/components/Toaster/useToaster";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
@@ -174,6 +175,7 @@ export default function SoundcloudRegisterForm({
       style={style}
       className={clsx(className)}
       Title={<>SoundCloudから音MADをリクエスト</>}
+      Icon={SoundcloudPictogram}
       Form={({ className, ...rest }) => (
         <form
           {...rest}

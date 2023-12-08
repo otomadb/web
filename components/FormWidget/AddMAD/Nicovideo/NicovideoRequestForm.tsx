@@ -7,6 +7,7 @@ import { useMutation } from "urql";
 
 import { MadPageLink } from "~/app/(v2)/mads/[serial]/Link";
 import NicovideoRequestLink from "~/app/(v2)/requests/nicovideo/[sourceId]/Link";
+import { NicovideoPictogram } from "~/components/Pictogram";
 import useToaster from "~/components/Toaster/useToaster";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
@@ -204,6 +205,7 @@ export default function NicovideoRequestForm({
       style={style}
       className={clsx(className)}
       Title={<>ニコニコ動画から音MADをリクエスト</>}
+      Icon={NicovideoPictogram}
       Form={({ className, ...rest }) => (
         <form
           {...rest}

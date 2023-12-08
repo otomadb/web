@@ -7,6 +7,7 @@ import { useMutation } from "urql";
 
 import { MadPageLink } from "~/app/(v2)/mads/[serial]/Link";
 import BilibiliRequestPageLink from "~/app/(v2)/requests/bilibili/[sourceId]/Link";
+import { BilibiliPictogram } from "~/components/Pictogram";
 import useToaster from "~/components/Toaster/useToaster";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
@@ -203,6 +204,7 @@ export default function BilibiliRequestForm({
       style={style}
       className={clsx(className)}
       Title={<>Bilibiliから音MADをリクエスト</>}
+      Icon={BilibiliPictogram}
       Form={({ className, ...rest }) => (
         <form
           {...rest}

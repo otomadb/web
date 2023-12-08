@@ -6,6 +6,7 @@ import React, { useCallback, useMemo, useState } from "react";
 import { useMutation } from "urql";
 
 import { MadPageLink } from "~/app/(v2)/mads/[serial]/Link";
+import { NicovideoPictogram } from "~/components/Pictogram";
 import useToaster from "~/components/Toaster/useToaster";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
@@ -193,6 +194,7 @@ export default function NicovideoRegisterForm({
       style={style}
       className={clsx(className)}
       Title={<>ニコニコ動画から音MADを登録</>}
+      Icon={NicovideoPictogram}
       Form={({ className, ...rest }) => (
         <form
           {...rest}
