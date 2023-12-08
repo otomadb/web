@@ -14,7 +14,7 @@ import NicovideoRegisterForm from "./AddMAD/Nicovideo/NicovideoRegisterForm";
 import NicovideoRequestForm from "./AddMAD/Nicovideo/NicovideoRequestForm";
 import SoundcloudRegisterForm from "./AddMAD/Soundcloud/SoundcloudRegisterForm";
 import SoundcloudRequestForm from "./AddMAD/Soundcloud/SoundcloudRequestForm";
-import SourceIDForm from "./AddMAD/SourceIDForm";
+import SourceIDForm from "./AddMAD/SourceID";
 import YoutubeRegisterForm from "./AddMAD/Youtube/YoutubeRegisterForm";
 import YoutubeRequestForm from "./AddMAD/Youtube/YoutubeRequestForm";
 

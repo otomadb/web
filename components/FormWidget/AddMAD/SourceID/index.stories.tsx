@@ -8,15 +8,14 @@ import { graphql as mockGql } from "msw";
 import { mockCommonMadBlockFragment } from "~/components/CommonMadBlock/index.stories";
 import { makeFragmentData } from "~/gql";
 
-import { Current, FormModalContext } from "..";
-import SourceIDForm, {
-  AlreadyRegisteredFragment,
-  AlreadyRequestedFragment,
-  queryFetchBilibili,
-  queryFetchNicovideo,
-  queryFetchSoundcloud,
-  queryFetchYoutube,
-} from "./SourceIDForm";
+import { Current, FormModalContext } from "../..";
+import SourceIDForm from ".";
+import { AlreadyRegisteredFragment } from "./AlreadyRegistered";
+import { AlreadyRequestedFragment } from "./AlreadyRequested";
+import { queryFetchBilibili } from "./BilibiliConfirmForm";
+import { queryFetchNicovideo } from "./NicovideoConfirmForm";
+import { queryFetchSoundcloudByUrl } from "./SoundcloudConfirmForm";
+import { queryFetchYoutube } from "./YoutubeConfirmForm";
 
 const mkStory = (name: string, url: string, expected: unknown): Story => ({
   name,
@@ -121,12 +120,11 @@ const meta = {
             })
           )
         ),
-        mockGql.query(queryFetchSoundcloud, (req, res, ctx) =>
+        mockGql.query(queryFetchSoundcloudByUrl, (req, res, ctx) =>
           res(
             ctx.data({
-              fetchSoundcloud: {
+              fetchSoundcloudByUrl: {
                 source: {
-                  sourceId: "keigoooo/hyperflip-donaldcore",
                   originalThumbnailUrl: "/thumbnail.jpg",
                   title: "Title",
                   url: "https://soundcloud.com/keigoooo/hyperflip-donaldcore",
@@ -626,10 +624,10 @@ export const SoundcloudAlreadyRegistered: Story = {
   parameters: {
     msw: {
       handlers: [
-        mockGql.query(queryFetchSoundcloud, (req, res, ctx) =>
+        mockGql.query(queryFetchSoundcloudByUrl, (req, res, ctx) =>
           res(
             ctx.data({
-              findSoundcloudMADSource: {
+              findSoundcloudMADSourceByUrl: {
                 id: "1",
                 ...makeFragmentData(
                   {
@@ -646,9 +644,9 @@ export const SoundcloudAlreadyRegistered: Story = {
                   AlreadyRegisteredFragment
                 ),
               } as ResultOf<
-                typeof queryFetchSoundcloud
-              >["findSoundcloudMADSource"],
-            } as ResultOf<typeof queryFetchSoundcloud>)
+                typeof queryFetchSoundcloudByUrl
+              >["findSoundcloudMADSourceByUrl"],
+            } as ResultOf<typeof queryFetchSoundcloudByUrl>)
           )
         ),
       ],
@@ -668,7 +666,7 @@ export const SoundcloudAlreadyRequested: Story = {
   parameters: {
     msw: {
       handlers: [
-        mockGql.query(queryFetchSoundcloud, (req, res, ctx) =>
+        mockGql.query(queryFetchSoundcloudByUrl, (req, res, ctx) =>
           res(
             ctx.data({
               findSoundcloudRegistrationRequestByUrl: {
@@ -683,9 +681,9 @@ export const SoundcloudAlreadyRequested: Story = {
                   AlreadyRequestedFragment
                 ),
               } as ResultOf<
-                typeof queryFetchSoundcloud
+                typeof queryFetchSoundcloudByUrl
               >["findSoundcloudRegistrationRequestByUrl"],
-            } as ResultOf<typeof queryFetchSoundcloud>)
+            } as ResultOf<typeof queryFetchSoundcloudByUrl>)
           )
         ),
       ],
@@ -704,7 +702,7 @@ export const SoundcloudLoading: Story = {
   parameters: {
     msw: {
       handlers: [
-        mockGql.query(queryFetchSoundcloud, (req, res, ctx) =>
+        mockGql.query(queryFetchSoundcloudByUrl, (req, res, ctx) =>
           res(ctx.delay("infinite"))
         ),
       ],
@@ -723,8 +721,8 @@ export const SoundcloudNoSource: Story = {
   parameters: {
     msw: {
       handlers: [
-        mockGql.query(queryFetchSoundcloud, (req, res, ctx) =>
-          res(ctx.data({ fetchSoundcloud: { source: null } }))
+        mockGql.query(queryFetchSoundcloudByUrl, (req, res, ctx) =>
+          res(ctx.data({ fetchSoundcloudByUrl: { source: null } }))
         ),
       ],
     },
