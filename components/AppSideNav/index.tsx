@@ -8,24 +8,12 @@ import { TagRegisterPageLink } from "~/app/(application)/(editor)/editor/tags/Li
 import TopPageLink from "~/app/(landing)/Link";
 import { AllVideosPageLink } from "~/app/(v2)/mads/Link";
 import AllNicovideoRequestsPageLink from "~/app/(v2)/requests/nicovideo/Link";
-import {
-  useOpenRegisterFromBilibili,
-  useOpenRegisterFromNicovideo,
-  useOpenRegisterFromYoutube,
-  useOpenRequestFromBilibili,
-  useOpenRequestFromNicovideo,
-  useOpenRequestFromSoundcloud,
-  useOpenRequestFromYoutube,
-  useOpenSoundcloudRegisterModal,
-} from "~/components/FormWidget";
+import { useOpenInput } from "~/components/FormWidget";
 import Logo from "~/components/Logo";
 import {
-  BilibiliPictogram,
   NicovideoPictogram,
   PlusPictogram,
-  SoundcloudPictogram,
   TagPictogram,
-  YoutubePictogram,
 } from "~/components/Pictogram";
 import { graphql } from "~/gql";
 
@@ -49,15 +37,7 @@ export default function AppSideNav({
     query: AppSideNavQuery,
   });
 
-  const openRequestFromNicovideo = useOpenRequestFromNicovideo();
-  const openRequestFromYoutube = useOpenRequestFromYoutube();
-  const openRequestFromSoundcloud = useOpenRequestFromSoundcloud();
-  const openRequestFromBilibili = useOpenRequestFromBilibili();
-
-  const openNicovideoRegisterModal = useOpenRegisterFromNicovideo();
-  const openYoutubeRegisterModal = useOpenRegisterFromYoutube();
-  const openBilibiliRegisterModal = useOpenRegisterFromBilibili();
-  const openSoundcloudRegisterModal = useOpenSoundcloudRegisterModal();
+  const openSourceInput = useOpenInput();
 
   return (
     <nav
@@ -97,7 +77,7 @@ export default function AppSideNav({
             </div>
             <div
               className={clsx(
-                "grid animate-[fade-slide-l-to-r_0.5s_0.2s_ease-out_both] grid-cols-1 group-[&[data-active=false]]/sect:animation-paused"
+                "grid animate-[fade-slide-l-to-r_0.5s_0.15s_ease-out_both] grid-cols-1 group-[&[data-active=false]]/sect:animation-paused"
               )}
             >
               <AllVideosPageLink
@@ -152,70 +132,22 @@ export default function AppSideNav({
             </div>
             <div
               className={clsx(
-                "relative ml-4 py-1 before:absolute before:inset-0 before:h-full before:origin-top before:animate-[stretch-t-to-b_0.2s_0.15s_ease-out_both] before:border-l before:border-obsidian-primary group-[&[data-active=false]]/sect:before:animation-paused"
+                "grid animate-[fade-slide-l-to-r_0.5s_0.15s_ease-out_both] grid-cols-1 group-[&[data-active=false]]/sect:animation-paused"
               )}
             >
-              <div
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  openSourceInput("request");
+                }}
                 className={clsx(
-                  "animate-[fade-slide-l-to-r_0.5s_0.15s_ease-out_both] pl-4 text-xs font-bold text-snow-darker group-[&[data-active=false]]/sect:animation-paused"
+                  "group flex items-center gap-x-2 px-4 py-1 text-left text-snow-darkest hover:bg-vivid-primary hover:text-obsidian-primary"
                 )}
               >
-                音MADをリクエストする
-              </div>
-              <div
-                className={clsx(
-                  "mt-1 grid animate-[fade-slide-l-to-r_0.5s_0.2s_ease-out_both] grid-cols-1 group-[&[data-active=false]]/sect:animation-paused"
-                )}
-              >
-                <button
-                  type="button"
-                  onClick={() => {
-                    openRequestFromNicovideo(null);
-                  }}
-                  className={clsx(
-                    "group flex items-center gap-x-2 px-4 py-1 text-left text-snow-darkest hover:bg-vivid-primary hover:text-obsidian-primary"
-                  )}
-                >
-                  <NicovideoPictogram className={clsx("h-4 w-4")} />
-                  <span className={clsx("text-sm")}>ニコニコ動画</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    openRequestFromYoutube(null);
-                  }}
-                  className={clsx(
-                    "group flex items-center gap-x-2 px-4 py-1 text-left text-snow-darkest hover:bg-vivid-primary hover:text-obsidian-primary"
-                  )}
-                >
-                  <YoutubePictogram className={clsx("h-4 w-4 ")} />
-                  <span className={clsx("text-sm")}>YouTube</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    openRequestFromSoundcloud(null);
-                  }}
-                  className={clsx(
-                    "group flex items-center gap-x-2 px-4 py-1 text-left text-snow-darkest hover:bg-vivid-primary hover:text-obsidian-primary"
-                  )}
-                >
-                  <SoundcloudPictogram className={clsx("h-4 w-4 ")} />
-                  <span className={clsx("text-sm")}>SoundCloud</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    openRequestFromBilibili(null);
-                  }}
-                  className={clsx(
-                    "group flex items-center gap-x-2 px-4 py-1 text-left text-snow-darkest hover:bg-vivid-primary hover:text-obsidian-primary"
-                  )}
-                >
-                  <BilibiliPictogram className={clsx("h-4 w-4")} />
-                  <span className={clsx("text-sm")}>Bilibili</span>
-                </button>
-              </div>
+                <PlusPictogram className={clsx("h-4 w-4")} />
+                <span className={clsx("text-sm")}>音MADをリクエストする</span>
+              </button>
             </div>
           </div>
           <div
@@ -233,70 +165,22 @@ export default function AppSideNav({
             </div>
             <div
               className={clsx(
-                "relative ml-4 py-1 before:absolute before:inset-0 before:h-full before:origin-top before:animate-[stretch-t-to-b_0.2s_0.15s_ease-out_both] before:border-l before:border-obsidian-primary group-[&[data-active=false]]/sect:before:animation-paused"
+                "grid animate-[fade-slide-l-to-r_0.5s_0.15s_ease-out_both] grid-cols-1 group-[&[data-active=false]]/sect:animation-paused"
               )}
             >
-              <div
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  openSourceInput("register");
+                }}
                 className={clsx(
-                  "animate-[fade-slide-l-to-r_0.5s_0.15s_ease-out_both] pl-4 text-xs font-bold text-snow-darker group-[&[data-active=false]]/sect:animation-paused"
+                  "group flex items-center gap-x-2 px-4 py-1 text-left text-snow-darkest hover:bg-vivid-primary hover:text-obsidian-primary"
                 )}
               >
-                音MADを登録する
-              </div>
-              <div
-                className={clsx(
-                  "mt-1 grid animate-[fade-slide-l-to-r_0.5s_0.2s_ease-out_both] grid-cols-1 group-[&[data-active=false]]/sect:animation-paused"
-                )}
-              >
-                <button
-                  type="button"
-                  onClick={() => {
-                    openNicovideoRegisterModal(null);
-                  }}
-                  className={clsx(
-                    "group flex items-center gap-x-2 px-4 py-1 text-left text-snow-darkest hover:bg-vivid-primary hover:text-obsidian-primary"
-                  )}
-                >
-                  <NicovideoPictogram className={clsx("h-4 w-4")} />
-                  <span className={clsx("text-sm")}>ニコニコ動画</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    openYoutubeRegisterModal(null);
-                  }}
-                  className={clsx(
-                    "group flex items-center gap-x-2 px-4 py-1 text-left text-snow-darkest hover:bg-vivid-primary hover:text-obsidian-primary"
-                  )}
-                >
-                  <YoutubePictogram className={clsx("h-4 w-4 ")} />
-                  <span className={clsx("text-sm")}>YouTube</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    openSoundcloudRegisterModal(null);
-                  }}
-                  className={clsx(
-                    "group flex items-center gap-x-2 px-4 py-1 text-left text-snow-darkest hover:bg-vivid-primary hover:text-obsidian-primary"
-                  )}
-                >
-                  <SoundcloudPictogram className={clsx("h-4 w-4 ")} />
-                  <span className={clsx("text-sm")}>SoundCloud</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    openBilibiliRegisterModal(null);
-                  }}
-                  className={clsx(
-                    "group flex items-center gap-x-2 px-4 py-1 text-left text-snow-darkest hover:bg-vivid-primary hover:text-obsidian-primary"
-                  )}
-                >
-                  <BilibiliPictogram className={clsx("h-4 w-4 ")} />
-                  <span className={clsx("text-sm")}>Bilibili</span>
-                </button>
-              </div>
+                <PlusPictogram className={clsx("h-4 w-4")} />
+                <span className={clsx("text-sm")}>音MADを登録する</span>
+              </button>
             </div>
             <div
               className={clsx(
