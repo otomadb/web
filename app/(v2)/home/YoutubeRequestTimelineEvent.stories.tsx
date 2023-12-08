@@ -9,9 +9,21 @@ import YoutubeRequestTimelineEvent, {
   YoutubeRequestTimelineEventFragment,
 } from "./YoutubeRequestTimelineEvent";
 
+export const mockHasRole = [
+  mswGql.query($UseHarRoleQuery, (req, res, ctx) =>
+    res(ctx.data({ whoami: { id: "user:1", hasRole: true } }))
+  ),
+];
+
+export const mockHasNoRole = [
+  mswGql.query($UseHarRoleQuery, (req, res, ctx) =>
+    res(ctx.data({ whoami: { id: "user:1", hasRole: false } }))
+  ),
+];
+
 const meta = {
   component: YoutubeRequestTimelineEvent,
-  excludeStories: /^\$mock/,
+  excludeStories: /^mock/,
   args: {
     style: { width: 720 },
     fragment: makeFragmentData(
@@ -47,25 +59,13 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const $mockHasRole = [
-  mswGql.query($UseHarRoleQuery, (req, res, ctx) =>
-    res(ctx.data({ whoami: { id: "user:1", hasRole: true } }))
-  ),
-];
-
-export const $mockHasNoRole = [
-  mswGql.query($UseHarRoleQuery, (req, res, ctx) =>
-    res(ctx.data({ whoami: { id: "user:1", hasRole: false } }))
-  ),
-];
-
 export const NotEditor: Story = {
   name: "編集者権限なし",
 
   parameters: {
     msw: {
       handlers: {
-        roles: $mockHasNoRole,
+        roles: mockHasNoRole,
       },
     },
   },
@@ -77,7 +77,7 @@ export const Editor: Story = {
   parameters: {
     msw: {
       handlers: {
-        roles: $mockHasRole,
+        roles: mockHasRole,
       },
     },
   },
