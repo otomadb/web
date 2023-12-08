@@ -65,7 +65,7 @@ export default function RequestsPageCommon({
         "mx-auto flex max-w-full flex-col gap-y-4 px-8 py-4 @container/page"
       )}
     >
-      <div className={clsx("flex w-full items-center px-4 py-2")}>
+      <header className={clsx("flex w-full items-center px-4 py-2")}>
         <div className="shrink-0 grow">
           <h1 className="text-xl font-bold text-snow-primary">{Title}</h1>
         </div>
@@ -76,7 +76,7 @@ export default function RequestsPageCommon({
           currentPage={page}
           pathname={paginatorPathname}
         />
-      </div>
+      </header>
       <div
         className={clsx(
           "grid w-full grid-cols-1 gap-2 @[1024px]:grid-cols-2 @[1536px]:grid-cols-3"
