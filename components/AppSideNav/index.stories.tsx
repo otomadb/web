@@ -1,6 +1,8 @@
+import { action } from "@storybook/addon-actions";
 import { Meta, StoryObj } from "@storybook/react";
 import { graphql } from "msw";
 
+import { FormModalContext } from "../FormWidget";
 import SearchContents, { AppSideNavQuery } from ".";
 import AppSideNav from ".";
 
@@ -12,6 +14,22 @@ const meta = {
       height: 640,
     },
   },
+  decorators: [
+    (Story, { parameters }) => (
+      <FormModalContext.Provider
+        value={{
+          current: undefined,
+          open: () =>
+            parameters.openFormModal === "function"
+              ? parameters.openFormModal
+              : action("Open FormWidget"),
+          close: () => action("Close FormWidget"),
+        }}
+      >
+        <Story />
+      </FormModalContext.Provider>
+    ),
+  ],
 } satisfies Meta<typeof SearchContents>;
 export default meta;
 
