@@ -16,9 +16,9 @@ export async function generateMetadata({
   const page = searchParams.page ? parseInt(searchParams.page, 10) : 1;
 
   return {
-    title: `リクエストされているニコニコ動画の音MAD(${page}ページ目) | OtoMADB`,
+    title: `リクエストされているSoundCloudの音MAD(${page}ページ目) | OtoMADB`,
     openGraph: {
-      title: `リクエストされているニコニコ動画の音MAD(${page}ページ目) | OtoMADB`,
+      title: `リクエストされているSoundCloudの音MAD(${page}ページ目) | OtoMADB`,
       url: `https://otomadb.com/requests/nicovideo${
         page === 1 ? "" : `?page=${page}`
       }`,
@@ -36,8 +36,8 @@ export default async function Page({
 
   const result = await makeGraphQLClient().request(
     graphql(`
-      query NicovideoRequestsPage2($offset: Int!, $take: Int!) {
-        findUncheckedNicovideoRegistrationRequestsByOffset(
+      query SoundcloudRequestsPage2($offset: Int!, $take: Int!) {
+        findUncheckedSoundcloudRegistrationRequestsByOffset(
           input: { skip: $offset, take: $take }
         ) {
           ...RequestsPageCommon
@@ -50,27 +50,28 @@ export default async function Page({
     { offset: (page - 1) * PER_PAGE, take: PER_PAGE }
   );
   if (
-    !result.findUncheckedNicovideoRegistrationRequestsByOffset ||
-    result.findUncheckedNicovideoRegistrationRequestsByOffset.nodes.length === 0
+    !result.findUncheckedSoundcloudRegistrationRequestsByOffset ||
+    result.findUncheckedSoundcloudRegistrationRequestsByOffset.nodes.length ===
+      0
   )
     notFound();
 
-  const { findUncheckedNicovideoRegistrationRequestsByOffset } = result;
+  const { findUncheckedSoundcloudRegistrationRequestsByOffset } = result;
 
   return (
     <RequestsPageCommon
       page={page}
-      fragment={findUncheckedNicovideoRegistrationRequestsByOffset}
-      Title={"リクエストされているニコニコ動画の音MAD"}
+      fragment={findUncheckedSoundcloudRegistrationRequestsByOffset}
+      Title={"リクエストされているSoundCloudの音MAD"}
       Link={({ children, sourceId, ...rest }) => (
-        <Link href={`/requests/nicovideo/${sourceId}`} {...rest}>
+        <Link href={`/requests/soundcloud/${sourceId}`} {...rest}>
           {children}
         </Link>
       )}
       Button={({ ...rest }) => (
-        <RegisterButton platform="nicovideo" {...rest} />
+        <RegisterButton platform="soundcloud" {...rest} />
       )}
-      paginatorPathname="/requests/nicovideo"
+      paginatorPathname="/requests/soundcloud"
     />
   );
 }
