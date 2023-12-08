@@ -974,6 +974,7 @@ export default function SourceIDForm({
                   case "register":
                     openYoutubeRegister({
                       sourceFragment: p.source,
+                      requestFragment: p.request,
                     });
                     break;
                   case "request":
@@ -995,6 +996,7 @@ export default function SourceIDForm({
                   case "register":
                     openSoundcloudRegister({
                       sourceFragment: p.source,
+                      requestFragment: p.request,
                     });
                     break;
                   case "request":
@@ -1016,6 +1018,7 @@ export default function SourceIDForm({
                   case "register":
                     openBilibiliRegister({
                       sourceFragment: p.source,
+                      requestFragment: p.request,
                     });
                     break;
                   case "request":
