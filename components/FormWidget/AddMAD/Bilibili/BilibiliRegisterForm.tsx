@@ -56,12 +56,14 @@ export const useRegisterVideo = ({
       thumbnailUrl,
       tagIds,
       semitagNames,
+      requestId,
     }: {
       sourceId: string;
       title: string;
       thumbnailUrl: string;
       tagIds: string[];
       semitagNames: string[];
+      requestId: string | null;
     }) => {
       const { data, error } = await register({
         input: {
@@ -70,6 +72,7 @@ export const useRegisterVideo = ({
           tagIds,
           semitagNames,
           sourceIds: [sourceId],
+          requestId,
         },
       });
       if (error || !data) {
@@ -169,8 +172,10 @@ export default function BilibiliRegisterForm({
       thumbnailUrl: source.originalThumbnailUrl,
       tagIds,
       semitagNames,
+      requestId: request?.id || null,
     };
   }, [
+    request?.id,
     semitagNames,
     source.originalThumbnailUrl,
     source.sourceId,

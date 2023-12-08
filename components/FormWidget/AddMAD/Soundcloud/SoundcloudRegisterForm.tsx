@@ -56,12 +56,14 @@ export const useRegisterVideo = ({
       thumbnailUrl,
       tagIds,
       semitagNames,
+      requestId,
     }: {
       sourceId: string;
       title: string;
       thumbnailUrl: string | null;
       tagIds: string[];
       semitagNames: string[];
+      requestId: string | null;
     }) => {
       const { data, error } = await register({
         input: {
@@ -70,6 +72,7 @@ export const useRegisterVideo = ({
           tagIds,
           semitagNames,
           sourceIds: [sourceId],
+          requestId,
         },
       });
       if (error || !data) {
@@ -167,8 +170,16 @@ export default function SoundcloudRegisterForm({
       thumbnailUrl: source.thumbnailUrl || null,
       tagIds,
       semitagNames,
+      requestId: request?.id || null,
     };
-  }, [semitagNames, source.thumbnailUrl, source.url, tagIds, title]);
+  }, [
+    request?.id,
+    semitagNames,
+    source.thumbnailUrl,
+    source.url,
+    tagIds,
+    title,
+  ]);
 
   return (
     <FormWrapper

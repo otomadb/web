@@ -1387,6 +1387,7 @@ input RegisterBilibiliMADInput {
   semitagNames: [String!]! = []
   sourceIds: [String!]!
   tagIds: [ID!]!
+  requestId: ID
 }
 
 union RegisterBilibiliMADResult = MutationInternalServerError | MutationTagNotFoundError | RegisterBilibiliMADSucceededPayload
@@ -1437,6 +1438,7 @@ input RegisterSoundcloudMADInput {
   semitagNames: [String!]! = []
   sourceIds: [String!]!
   tagIds: [ID!]!
+  requestId: ID
 }
 
 union RegisterSoundcloudMADResult = MutationInternalServerError | MutationTagNotFoundError | RegisterSoundcloudMADSucceededPayload
@@ -2040,7 +2042,7 @@ type SoundcloudRegistrationRequest implements Node & RegistrationRequest {
 
   """
   SoundCloud側のオリジナルのサムネイル画像のURL
-  
+
   **無い場合もあることに注意.**
   """
   originalThumbnailUrl: String
@@ -2052,7 +2054,7 @@ type SoundcloudRegistrationRequest implements Node & RegistrationRequest {
 
   """
   OtoMADB側でプロキシしているサムネイル画像のURL
-  
+
   **無い場合は適当にダミー画像を返す．**
   """
   thumbnailUrl(scale: RegistrationRequestThumbnailScale! = LARGE): String!
