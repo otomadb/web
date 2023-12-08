@@ -1399,10 +1399,10 @@ type Query {
 input RegisterBilibiliMADInput {
   primaryThumbnailUrl: String!
   primaryTitle: String!
+  requestId: ID
   semitagNames: [String!]! = []
   sourceIds: [String!]!
   tagIds: [ID!]!
-  requestId: ID
 }
 
 union RegisterBilibiliMADResult = MutationInternalServerError | MutationTagNotFoundError | RegisterBilibiliMADSucceededPayload
@@ -1450,10 +1450,10 @@ type RegisterCategoryTagTypingSucceededPayload {
 input RegisterSoundcloudMADInput {
   primaryThumbnailUrl: String
   primaryTitle: String!
+  requestId: ID
   semitagNames: [String!]! = []
   sourceIds: [String!]!
   tagIds: [ID!]!
-  requestId: ID
 }
 
 union RegisterSoundcloudMADResult = MutationInternalServerError | MutationTagNotFoundError | RegisterSoundcloudMADSucceededPayload
@@ -2038,12 +2038,12 @@ type SoundcloudMadRequestedTimelineEvent implements TimelineEvent {
 }
 
 type SoundcloudOriginalSource {
-  """SoundCloud側のサムネイル画像（場合によってはない可能性がある）"""
-  originalThumbnailUrl: String
+  """SoundCloud側のサムネイル画像．ない場合は投稿者のユーザー画像になる．"""
+  originalThumbnailUrl: String!
   sourceId: String!
 
   """プロキシしたサムネイル画像"""
-  thumbnailUrl(scale: FetchExternalSourceThumbnailScale! = LARGE): String
+  thumbnailUrl(scale: FetchExternalSourceThumbnailScale! = LARGE): String!
   title: String!
   url: String!
 }
@@ -2057,7 +2057,7 @@ type SoundcloudRegistrationRequest implements Node & RegistrationRequest {
 
   """
   SoundCloud側のオリジナルのサムネイル画像のURL
-
+  
   **無い場合もあることに注意.**
   """
   originalThumbnailUrl: String
@@ -2069,7 +2069,7 @@ type SoundcloudRegistrationRequest implements Node & RegistrationRequest {
 
   """
   OtoMADB側でプロキシしているサムネイル画像のURL
-
+  
   **無い場合は適当にダミー画像を返す．**
   """
   thumbnailUrl(scale: RegistrationRequestThumbnailScale! = LARGE): String!

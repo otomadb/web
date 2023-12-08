@@ -99,6 +99,7 @@ export const SoundcloudRegisterOriginalSourceFragment = graphql(`
     sourceId
     title
     thumbnailUrl(scale: LARGE)
+    originalThumbnailUrl
     ...SoundcloudForm_OriginalSource
   }
 `);
@@ -165,9 +166,9 @@ export default function SoundcloudRegisterForm({
     if (title === "") return null;
 
     return {
-      sourceId: source.url,
+      sourceId: source.sourceId,
       title,
-      thumbnailUrl: source.thumbnailUrl || null,
+      thumbnailUrl: source.originalThumbnailUrl,
       tagIds,
       semitagNames,
       requestId: request?.id || null,
@@ -175,8 +176,8 @@ export default function SoundcloudRegisterForm({
   }, [
     request?.id,
     semitagNames,
-    source.thumbnailUrl,
-    source.url,
+    source.originalThumbnailUrl,
+    source.sourceId,
     tagIds,
     title,
   ]);
