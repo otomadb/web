@@ -128,6 +128,13 @@ input BilibiliMADSourceEventsOrderBy {
   createdAt: SortOrder
 }
 
+"""Bilibiliの音MADがリクエストされたことを表すタイムラインイベント"""
+type BilibiliMadRequestedTimelineEvent implements TimelineEvent {
+  createdAt: DateTime!
+  event: BilibiliRegistrationRequestRequestEvent!
+  request: BilibiliRegistrationRequest!
+}
+
 type BilibiliOriginalSource {
   originalThumbnailUrl: String!
   sourceId: String!
@@ -158,7 +165,7 @@ type BilibiliRegistrationRequest implements Node & RegistrationRequest {
   events(input: BilibiliRegistrationRequestEventsInput!): BilibiliRegistrationRequestEventConnection!
   id: ID!
 
-  """Bilibili側のサムネイル画像のURL"""
+  """Bilibili側のオリジナルのサムネイル画像のURL"""
   originalThumbnailUrl: String!
   originalUrl: String!
   requestedBy: User!
@@ -167,7 +174,7 @@ type BilibiliRegistrationRequest implements Node & RegistrationRequest {
   taggings: [BilibiliRegistrationRequestTagging!]!
 
   """OtoMADB側でプロキシしているサムネイル画像のURL"""
-  thumbnailUrl: String!
+  thumbnailUrl(scale: RegistrationRequestThumbnailScale! = LARGE): String!
   title: String!
 }
 
@@ -519,6 +526,21 @@ input FindTagsInputOrder {
   updatedAt: SortOrder
 }
 
+input FindUncheckedBilibiliRegistrationRequestsByOffsetInput {
+  orderBy: FindUncheckedBilibiliRegistrationRequestsByOffsetOrderBy! = {createdAt: DESC}
+  skip: Int! = 0
+  take: Int! = 20
+}
+
+input FindUncheckedBilibiliRegistrationRequestsByOffsetOrderBy {
+  createdAt: SortOrder
+}
+
+type FindUncheckedBilibiliRegistrationRequestsByOffsetPayload implements FindUncheckedRequestsByOffsetPayload {
+  nodes: [BilibiliRegistrationRequest!]!
+  totalCount: Int!
+}
+
 input FindUncheckedBilibiliRegistrationRequestsInput {
   after: String
   before: String
@@ -531,7 +553,17 @@ input FindUncheckedBilibiliRegistrationRequestsOrderBy {
   createdAt: SortOrder
 }
 
-type FindUncheckedNicovideoRegistrationRequestsByOffsetPayload {
+input FindUncheckedNicovideoRegistrationRequestsByOffsetInput {
+  orderBy: FindUncheckedNicovideoRegistrationRequestsByOffsetOrderBy! = {createdAt: DESC}
+  skip: Int! = 0
+  take: Int! = 20
+}
+
+input FindUncheckedNicovideoRegistrationRequestsByOffsetOrderBy {
+  createdAt: SortOrder
+}
+
+type FindUncheckedNicovideoRegistrationRequestsByOffsetPayload implements FindUncheckedRequestsByOffsetPayload {
   nodes: [NicovideoRegistrationRequest!]!
   totalCount: Int!
 }
@@ -548,6 +580,26 @@ input FindUncheckedNicovideoRegistrationRequestsOrderBy {
   createdAt: SortOrder
 }
 
+interface FindUncheckedRequestsByOffsetPayload {
+  nodes: [RegistrationRequest!]!
+  totalCount: Int!
+}
+
+input FindUncheckedSoundcloudRegistrationRequestsByOffsetInput {
+  orderBy: FindUncheckedSoundcloudRegistrationRequestsByOffsetOrderBy! = {createdAt: DESC}
+  skip: Int! = 0
+  take: Int! = 20
+}
+
+input FindUncheckedSoundcloudRegistrationRequestsByOffsetOrderBy {
+  createdAt: SortOrder
+}
+
+type FindUncheckedSoundcloudRegistrationRequestsByOffsetPayload implements FindUncheckedRequestsByOffsetPayload {
+  nodes: [SoundcloudRegistrationRequest!]!
+  totalCount: Int!
+}
+
 input FindUncheckedSoundcloudRegistrationRequestsInput {
   after: String
   before: String
@@ -558,6 +610,21 @@ input FindUncheckedSoundcloudRegistrationRequestsInput {
 
 input FindUncheckedSoundcloudRegistrationRequestsOrderBy {
   createdAt: SortOrder
+}
+
+input FindUncheckedYoutubeRegistrationRequestsByOffsetInput {
+  orderBy: FindUncheckedYoutubeRegistrationRequestsByOffsetOrderBy! = {createdAt: DESC}
+  skip: Int! = 0
+  take: Int! = 20
+}
+
+input FindUncheckedYoutubeRegistrationRequestsByOffsetOrderBy {
+  createdAt: SortOrder
+}
+
+type FindUncheckedYoutubeRegistrationRequestsByOffsetPayload implements FindUncheckedRequestsByOffsetPayload {
+  nodes: [YoutubeRegistrationRequest!]!
+  totalCount: Int!
 }
 
 input FindUncheckedYoutubeRegistrationRequestsInput {
@@ -1032,12 +1099,17 @@ type NicovideoRegistrationRequest implements Node & RegistrationRequest {
   embedUrl: String!
   events(input: NicovideoRegistrationRequestEventsInput!): NicovideoRegistrationRequestEventConnection!
   id: ID!
+
+  """Nicovideo側のオリジナルのサムネイル画像のURL"""
+  originalThumbnailUrl: String!
   originalUrl: String!
   requestedBy: User!
   semitaggings: [NicovideoRegistrationRequestSemitagging!]!
   sourceId: String!
   taggings: [NicovideoRegistrationRequestTagging!]!
-  thumbnailUrl: String!
+
+  """OtoMADB側でプロキシしているサムネイル画像のURL"""
+  thumbnailUrl(scale: RegistrationRequestThumbnailScale! = LARGE): String!
   title: String!
 }
 
@@ -1265,10 +1337,13 @@ type Query {
   findTagBySerial(serial: Int!): Tag
   findTags(input: FindTagsInput!): TagConnection!
   findUncheckedBilibiliRegistrationRequests(input: FindUncheckedBilibiliRegistrationRequestsInput!): BilibiliRegistrationRequestConnection!
+  findUncheckedBilibiliRegistrationRequestsByOffset(input: FindUncheckedBilibiliRegistrationRequestsByOffsetInput!): FindUncheckedBilibiliRegistrationRequestsByOffsetPayload!
   findUncheckedNicovideoRegistrationRequests(input: FindUncheckedNicovideoRegistrationRequestsInput!): NicovideoRegistrationRequestConnection!
-  findUncheckedNicovideoRegistrationRequestsByOffset(input: findUncheckedNicovideoRegistrationRequestsByOffsetInput!): FindUncheckedNicovideoRegistrationRequestsByOffsetPayload!
+  findUncheckedNicovideoRegistrationRequestsByOffset(input: FindUncheckedNicovideoRegistrationRequestsByOffsetInput!): FindUncheckedNicovideoRegistrationRequestsByOffsetPayload!
   findUncheckedSoundcloudRegistrationRequests(input: FindUncheckedSoundcloudRegistrationRequestsInput!): SoundcloudRegistrationRequestConnection!
+  findUncheckedSoundcloudRegistrationRequestsByOffset(input: FindUncheckedSoundcloudRegistrationRequestsByOffsetInput!): FindUncheckedSoundcloudRegistrationRequestsByOffsetPayload!
   findUncheckedYoutubeRegistrationRequests(input: FindUncheckedYoutubeRegistrationRequestsInput!): YoutubeRegistrationRequestConnection!
+  findUncheckedYoutubeRegistrationRequestsByOffset(input: FindUncheckedYoutubeRegistrationRequestsByOffsetInput!): FindUncheckedYoutubeRegistrationRequestsByOffsetPayload!
   findUser(input: FindUserInput!): User
   findVideo(input: FindVideoInput!): Video @deprecated(reason: "Use `Query.findMadBySerial` instead")
   findVideos(after: String, before: String, first: Int, last: Int, orderBy: FindVideosOrderBy! = {createdAt: DESC}): VideoConnection!
@@ -1545,6 +1620,11 @@ interface RegistrationRequestTagging implements Node {
   id: ID!
   note: String
   tag: Tag!
+}
+
+enum RegistrationRequestThumbnailScale {
+  LARGE
+  OGP
 }
 
 input RejectNicovideoRegistrationRequestInput {
@@ -1959,9 +2039,9 @@ type SoundcloudRegistrationRequest implements Node & RegistrationRequest {
   id: ID!
 
   """
-  Soundcloud側のサムネイル画像のURL
-
-  **無い場合もある場合に注意.**
+  SoundCloud側のオリジナルのサムネイル画像のURL
+  
+  **無い場合もあることに注意.**
   """
   originalThumbnailUrl: String
   originalUrl: String!
@@ -1972,10 +2052,10 @@ type SoundcloudRegistrationRequest implements Node & RegistrationRequest {
 
   """
   OtoMADB側でプロキシしているサムネイル画像のURL
-
+  
   **無い場合は適当にダミー画像を返す．**
   """
-  thumbnailUrl: String!
+  thumbnailUrl(scale: RegistrationRequestThumbnailScale! = LARGE): String!
   title: String!
 }
 
@@ -2444,6 +2524,8 @@ type Video implements Node {
   events(input: VideoEventsInput!): VideoEventsConnection!
   hasTag(id: ID!): Boolean!
   id: ID!
+
+  """現在ログイン中のユーザがいいね済みかどうか．認証していない場合は`null`"""
   isLiked: Boolean
   like: MylistRegistration
   nicovideoSources: [NicovideoVideoSource!]!
@@ -2453,6 +2535,8 @@ type Video implements Node {
   similarVideos(input: VideoSimilarVideosInput!): VideoSimilarVideosPayload!
   soundcloudSources: [SoundcloudMADSource!]!
   taggings(after: String, before: String, first: Int, last: Int, orderBy: VideoTaggingsOrderBy! = {createdAt: DESC}): VideoTagConnection!
+
+  """プロキシされた最も優先されるサムネイルのURL"""
   thumbnailUrl(size: VideoThumbnailScale! = LARGE): String!
   thumbnails: [VideoThumbnail!]!
   title: String!
@@ -2723,12 +2807,17 @@ type YoutubeRegistrationRequest implements Node & RegistrationRequest {
   embedUrl: String!
   events(input: YoutubeRegistrationRequestEventsInput!): YoutubeRegistrationRequestEventConnection!
   id: ID!
+
+  """Youtube側のオリジナルのサムネイル画像のURL"""
+  originalThumbnailUrl: String!
   originalUrl: String!
   requestedBy: User!
   semitaggings: [YoutubeRegistrationRequestSemitagging!]!
   sourceId: String!
   taggings: [YoutubeRegistrationRequestTagging!]!
-  thumbnailUrl: String!
+
+  """OtoMADB側でプロキシしているサムネイル画像のURL"""
+  thumbnailUrl(scale: RegistrationRequestThumbnailScale! = LARGE): String!
   title: String!
 }
 
@@ -2885,15 +2974,5 @@ type YoutubeVideoSourceEventEdge {
 }
 
 input YoutubeVideoSourceEventsOrderBy {
-  createdAt: SortOrder
-}
-
-input findUncheckedNicovideoRegistrationRequestsByOffsetInput {
-  orderBy: findUncheckedNicovideoRegistrationRequestsByOffsetOrderBy! = {createdAt: DESC}
-  skip: Int! = 0
-  take: Int! = 20
-}
-
-input findUncheckedNicovideoRegistrationRequestsByOffsetOrderBy {
   createdAt: SortOrder
 }

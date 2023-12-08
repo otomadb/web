@@ -7,13 +7,19 @@ import { LinkRegisterSemitag } from "~/app/(application)/(editor)/editor/semitag
 import { TagRegisterPageLink } from "~/app/(application)/(editor)/editor/tags/Link";
 import TopPageLink from "~/app/(landing)/Link";
 import { AllVideosPageLink } from "~/app/(v2)/mads/Link";
+import AllBilibiliRequestLink from "~/app/(v2)/requests/bilibili/Link";
 import AllNicovideoRequestsPageLink from "~/app/(v2)/requests/nicovideo/Link";
+import AllSoundcloudRequestLink from "~/app/(v2)/requests/soundcloud/Link";
+import AllYoutubeRequestLink from "~/app/(v2)/requests/youtube/Link";
 import { useOpenInput } from "~/components/FormWidget";
 import Logo from "~/components/Logo";
 import {
+  BilibiliPictogram,
   NicovideoPictogram,
   PlusPictogram,
+  SoundcloudPictogram,
   TagPictogram,
+  YoutubePictogram,
 } from "~/components/Pictogram";
 import { graphql } from "~/gql";
 
@@ -114,6 +120,30 @@ export default function AppSideNav({
                   <NicovideoPictogram className={clsx("h-4 w-4")} />
                   <span className={clsx("text-sm")}>ニコニコ動画</span>
                 </AllNicovideoRequestsPageLink>
+                <AllBilibiliRequestLink
+                  className={clsx(
+                    "group flex items-center gap-x-2 px-4 py-1 text-left text-snow-darkest hover:bg-vivid-primary hover:text-obsidian-primary"
+                  )}
+                >
+                  <BilibiliPictogram className={clsx("h-4 w-4")} />
+                  <span className={clsx("text-sm")}>Bilibili</span>
+                </AllBilibiliRequestLink>
+                <AllYoutubeRequestLink
+                  className={clsx(
+                    "group flex items-center gap-x-2 px-4 py-1 text-left text-snow-darkest hover:bg-vivid-primary hover:text-obsidian-primary"
+                  )}
+                >
+                  <YoutubePictogram className={clsx("h-4 w-4")} />
+                  <span className={clsx("text-sm")}>Youtube</span>
+                </AllYoutubeRequestLink>
+                <AllSoundcloudRequestLink
+                  className={clsx(
+                    "group flex items-center gap-x-2 px-4 py-1 text-left text-snow-darkest hover:bg-vivid-primary hover:text-obsidian-primary"
+                  )}
+                >
+                  <SoundcloudPictogram className={clsx("h-4 w-4")} />
+                  <span className={clsx("text-sm")}>SoundCloud</span>
+                </AllSoundcloudRequestLink>
               </div>
             </div>
           </div>

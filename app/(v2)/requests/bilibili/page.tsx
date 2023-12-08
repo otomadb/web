@@ -16,9 +16,9 @@ export async function generateMetadata({
   const page = searchParams.page ? parseInt(searchParams.page, 10) : 1;
 
   return {
-    title: `リクエストされているニコニコ動画の音MAD(${page}ページ目) | OtoMADB`,
+    title: `リクエストされているbilibiliの音MAD(${page}ページ目) | OtoMADB`,
     openGraph: {
-      title: `リクエストされているニコニコ動画の音MAD(${page}ページ目) | OtoMADB`,
+      title: `リクエストされているbilibiliの音MAD(${page}ページ目) | OtoMADB`,
       url: `https://otomadb.com/requests/nicovideo${
         page === 1 ? "" : `?page=${page}`
       }`,
@@ -36,8 +36,8 @@ export default async function Page({
 
   const result = await makeGraphQLClient().request(
     graphql(`
-      query NicovideoRequestsPage2($offset: Int!, $take: Int!) {
-        findUncheckedNicovideoRegistrationRequestsByOffset(
+      query BilibiliRequestsPage2($offset: Int!, $take: Int!) {
+        findUncheckedBilibiliRegistrationRequestsByOffset(
           input: { skip: $offset, take: $take }
         ) {
           ...RequestsPageCommon
@@ -50,27 +50,25 @@ export default async function Page({
     { offset: (page - 1) * PER_PAGE, take: PER_PAGE }
   );
   if (
-    !result.findUncheckedNicovideoRegistrationRequestsByOffset ||
-    result.findUncheckedNicovideoRegistrationRequestsByOffset.nodes.length === 0
+    !result.findUncheckedBilibiliRegistrationRequestsByOffset ||
+    result.findUncheckedBilibiliRegistrationRequestsByOffset.nodes.length === 0
   )
     notFound();
 
-  const { findUncheckedNicovideoRegistrationRequestsByOffset } = result;
+  const { findUncheckedBilibiliRegistrationRequestsByOffset } = result;
 
   return (
     <RequestsPageCommon
       page={page}
-      fragment={findUncheckedNicovideoRegistrationRequestsByOffset}
-      Title={"リクエストされているニコニコ動画の音MAD"}
+      Title={"リクエストされているbilibiliの音MAD"}
+      fragment={findUncheckedBilibiliRegistrationRequestsByOffset}
       Link={({ children, sourceId, ...rest }) => (
-        <Link href={`/requests/nicovideo/${sourceId}`} {...rest}>
+        <Link href={`/requests/bilibili/${sourceId}`} {...rest}>
           {children}
         </Link>
       )}
-      Button={({ ...rest }) => (
-        <RegisterButton platform="nicovideo" {...rest} />
-      )}
-      paginatorPathname="/requests/nicovideo"
+      Button={({ ...rest }) => <RegisterButton platform="bilibili" {...rest} />}
+      paginatorPathname="/requests/bilibili"
     />
   );
 }
