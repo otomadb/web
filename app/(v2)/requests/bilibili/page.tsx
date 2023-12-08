@@ -1,10 +1,11 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 import { graphql } from "~/gql";
 import { makeGraphQLClient } from "~/gql/fetch";
 
+import NoRequests from "../NoRequests";
 import RegisterButton from "../RegisterButton";
 import RequestsPageCommon, { PER_PAGE } from "../RequestsPageCommon";
 
@@ -49,13 +50,17 @@ export default async function Page({
     `),
     { offset: (page - 1) * PER_PAGE, take: PER_PAGE }
   );
-  if (
-    !result.findUncheckedBilibiliRegistrationRequestsByOffset ||
-    result.findUncheckedBilibiliRegistrationRequestsByOffset.nodes.length === 0
-  )
-    notFound();
 
   const { findUncheckedBilibiliRegistrationRequestsByOffset } = result;
+
+  if (findUncheckedBilibiliRegistrationRequestsByOffset.nodes.length === 0)
+    if (page > 1) redirect("/requests/bilibili");
+    else
+      return (
+        <NoRequests
+          Title={"現在リクエストされているbilibiliの音MADはありません"}
+        />
+      );
 
   return (
     <RequestsPageCommon
