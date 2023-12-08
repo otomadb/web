@@ -96,6 +96,7 @@ export const BilibiliRegisterOriginalSourceFragment = graphql(`
     sourceId
     title
     thumbnailUrl(scale: LARGE)
+    originalThumbnailUrl
     ...BilibiliForm_OriginalSource
   }
 `);
@@ -165,11 +166,17 @@ export default function BilibiliRegisterForm({
     return {
       sourceId: source.sourceId,
       title,
-      thumbnailUrl: source.thumbnailUrl,
+      thumbnailUrl: source.originalThumbnailUrl,
       tagIds,
       semitagNames,
     };
-  }, [semitagNames, source.sourceId, source.thumbnailUrl, tagIds, title]);
+  }, [
+    semitagNames,
+    source.originalThumbnailUrl,
+    source.sourceId,
+    tagIds,
+    title,
+  ]);
 
   return (
     <FormWrapper
