@@ -29,7 +29,7 @@ export default function RegisterButton({
       disabled={!registarable}
       onClick={() => {
         if (platform === "soundcloud") {
-          a("register", { type: platform, url: sourceId });
+          a("register", { type: platform, sourceId });
         } else {
           a("register", { type: platform, sourceId });
         }

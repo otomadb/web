@@ -430,6 +430,14 @@ type FetchNicovideoPayload {
   source: NicovideoOriginalSource
 }
 
+type FetchSoundcloudBySourceIdPayload {
+  source: SoundcloudOriginalSource
+}
+
+type FetchSoundcloudByUrlPayload {
+  source: SoundcloudOriginalSource
+}
+
 input FetchSoundcloudInput {
   """SoundCloudのURL"""
   url: String!
@@ -1317,7 +1325,13 @@ type Query {
   fetchNicovideo(input: FetchNicovideoInput!): FetchNicovideoPayload!
 
   """SoundCloudから動画情報を取得する"""
-  fetchSoundcloud(input: FetchSoundcloudInput!): FetchSoundcloudPayload!
+  fetchSoundcloud(input: FetchSoundcloudInput!): FetchSoundcloudPayload! @deprecated(reason: "use `fetchSoundcloudByUrl`")
+
+  """SoundCloudのIDから情報を取得する"""
+  fetchSoundcloudBySourceId(sourceId: String!): FetchSoundcloudBySourceIdPayload!
+
+  """SoundCloudのURLから情報を取得する"""
+  fetchSoundcloudByUrl(url: String!): FetchSoundcloudByUrlPayload!
 
   """Youtubeから動画情報を取得する"""
   fetchYoutube(input: FetchYoutubeInput!): FetchYoutubePayload!
@@ -1332,6 +1346,7 @@ type Query {
   findSemitags(after: String, before: String, checked: Boolean, first: Int, last: Int, orderBy: FindSemitagsOrderBy! = {name: ASC}): SemitagConnection!
   findSoundcloudMADSource(input: FindSoundcloudMADSourceInput!): SoundcloudMADSource
   findSoundcloudRegistrationRequest(input: FindSoundcloudRegistrationRequestInput): SoundcloudRegistrationRequest
+  findSoundcloudRegistrationRequestBySourceId(sourceId: String!): SoundcloudRegistrationRequest
   findSoundcloudRegistrationRequestByUrl(url: String!): SoundcloudRegistrationRequest
   findTag(input: FindTagInput!): Tag @deprecated(reason: "Use `Query.findTagBySerial` instead.")
   findTagBySerial(serial: Int!): Tag
