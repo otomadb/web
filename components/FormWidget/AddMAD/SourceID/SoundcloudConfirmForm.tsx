@@ -268,7 +268,6 @@ export function SoundcloudConfirmFormByUrl({
     query: queryFetchSoundcloudByUrl,
     variables: { url },
   });
-  console.log(data);
   const enable = useMemo(() => {
     if (!data) return false;
     switch (type) {
