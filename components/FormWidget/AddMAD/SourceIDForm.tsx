@@ -926,7 +926,7 @@ export default function SourceIDForm({
           >
             <TextInput2
               size="small"
-              placeholder="https://www.nicovideo.jp/watch/sm2057168"
+              placeholder="ニコニコ動画やYouTube、Bilibiliの動画URLを入力"
               value={input}
               onChange={(s) => setInput(s)}
               className={clsx("w-full grow")}
