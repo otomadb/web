@@ -7,6 +7,8 @@ import { TagType } from "~/components/TagType";
 import { graphql } from "~/gql";
 import { makeGraphQLClient, makeGraphQLClient2 } from "~/gql/fetch";
 
+import EditorPanel from "./Editor";
+
 export async function generateMetadata({
   params,
 }: {
@@ -50,6 +52,7 @@ export default async function Layout({
     graphql(`
       query TagPageLayout($serial: Int!) {
         findTagBySerial(serial: $serial) {
+          ...TagPageLayout_EditorPanel
           ...TagType
           id
           name
@@ -193,6 +196,7 @@ export default async function Layout({
               </div>
             </div>
           )}
+          <EditorPanel fragment={findTagBySerial} className={clsx("w-full")} />
         </section>
         <div className={clsx("w-full grow")}>{children}</div>
       </div>

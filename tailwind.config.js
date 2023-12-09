@@ -33,6 +33,9 @@ module.exports = {
       w320: "80rem",
     },
     extend: {
+      aria: {
+        "disabled-false": 'disabled="false"',
+      },
       fontSize: {
         xxs: ["0.6rem", "0.725rem"],
       },
