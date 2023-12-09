@@ -104,7 +104,7 @@ export default async function Layout({
     children: childTags,
   } = findTagBySerial;
   return (
-    <div className={clsx("mx-auto max-w-screen-2xl @container/layout")}>
+    <div className={clsx("mx-auto max-w-screen-2xl p-8 @container/layout")}>
       <header className={clsx("flex flex-col gap-y-1 px-4")}>
         <h1 className={clsx("text-2xl")}>
           <span className={clsx("font-bold text-snow-primary")}>{name}</span>

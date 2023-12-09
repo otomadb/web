@@ -43,7 +43,7 @@ export default async function Layout({
   const { findMadBySerial: video } = data;
 
   return (
-    <main className={clsx("container mx-auto flex grow flex-col gap-y-4")}>
+    <main className={clsx("container mx-auto flex grow flex-col gap-y-4 p-8")}>
       <section className={clsx("@container/details")}>
         <div
           className={clsx(

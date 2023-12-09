@@ -37,7 +37,9 @@ export default async function Layout({
       className={clsx("mx-auto flex grow flex-col gap-y-4 @container/layout")}
     >
       <UserPageHeader isMyPage fragment={viewer} />
-      <div className="mx-auto w-full max-w-screen-2xl">{children}</div>
+      <div className="mx-auto w-full max-w-screen-2xl px-8 py-4">
+        {children}
+      </div>
     </div>
   );
 }

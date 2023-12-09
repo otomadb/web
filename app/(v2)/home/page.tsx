@@ -46,7 +46,7 @@ export default withPageAuthRequired(
     return (
       <>
         <ModalOpener />
-        <main className={clsx("mx-auto max-w-screen-2xl @container/page")}>
+        <main className={clsx("mx-auto max-w-screen-2xl p-8 @container/page")}>
           <div className={clsx("flex flex-col gap-4 @[1280px]/page:flex-row")}>
             <Timeline
               className={clsx(
