@@ -1399,6 +1399,7 @@ type Query {
 input RegisterBilibiliMADInput {
   primaryThumbnailUrl: String!
   primaryTitle: String!
+  requestId: ID
   semitagNames: [String!]! = []
   sourceIds: [String!]!
   tagIds: [ID!]!
@@ -1449,6 +1450,7 @@ type RegisterCategoryTagTypingSucceededPayload {
 input RegisterSoundcloudMADInput {
   primaryThumbnailUrl: String
   primaryTitle: String!
+  requestId: ID
   semitagNames: [String!]! = []
   sourceIds: [String!]!
   tagIds: [ID!]!
@@ -2036,12 +2038,12 @@ type SoundcloudMadRequestedTimelineEvent implements TimelineEvent {
 }
 
 type SoundcloudOriginalSource {
-  """SoundCloud側のサムネイル画像（場合によってはない可能性がある）"""
-  originalThumbnailUrl: String
+  """SoundCloud側のサムネイル画像．ない場合は投稿者のユーザー画像になる．"""
+  originalThumbnailUrl: String!
   sourceId: String!
 
   """プロキシしたサムネイル画像"""
-  thumbnailUrl(scale: FetchExternalSourceThumbnailScale! = LARGE): String
+  thumbnailUrl(scale: FetchExternalSourceThumbnailScale! = LARGE): String!
   title: String!
   url: String!
 }

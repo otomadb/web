@@ -127,6 +127,7 @@ export const SoundcloudRequestFormOriginalSourceFragment = graphql(`
     title
     url
     thumbnailUrl(scale: LARGE)
+    originalThumbnailUrl
     ...SoundcloudForm_OriginalSource
   }
 `);
@@ -198,14 +199,14 @@ export default function SoundcloudRequestForm({
     return {
       sourceId: source.sourceId,
       title,
-      originalThumbnailUrl: source.thumbnailUrl || null,
+      originalThumbnailUrl: source.originalThumbnailUrl,
       taggings: taggingsPayload,
       semitaggings: semitaggingsPayload,
     } satisfies Parameters<typeof requestVideo>[0];
   }, [
     semitaggingsPayload,
+    source.originalThumbnailUrl,
     source.sourceId,
-    source.thumbnailUrl,
     taggingsPayload,
     title,
   ]);

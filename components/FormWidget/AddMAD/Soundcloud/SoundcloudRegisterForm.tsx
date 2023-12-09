@@ -56,12 +56,14 @@ export const useRegisterVideo = ({
       thumbnailUrl,
       tagIds,
       semitagNames,
+      requestId,
     }: {
       sourceId: string;
       title: string;
       thumbnailUrl: string | null;
       tagIds: string[];
       semitagNames: string[];
+      requestId: string | null;
     }) => {
       const { data, error } = await register({
         input: {
@@ -70,6 +72,7 @@ export const useRegisterVideo = ({
           tagIds,
           semitagNames,
           sourceIds: [sourceId],
+          requestId,
         },
       });
       if (error || !data) {
@@ -96,6 +99,7 @@ export const SoundcloudRegisterOriginalSourceFragment = graphql(`
     sourceId
     title
     thumbnailUrl(scale: LARGE)
+    originalThumbnailUrl
     ...SoundcloudForm_OriginalSource
   }
 `);
@@ -162,13 +166,21 @@ export default function SoundcloudRegisterForm({
     if (title === "") return null;
 
     return {
-      sourceId: source.url,
+      sourceId: source.sourceId,
       title,
-      thumbnailUrl: source.thumbnailUrl || null,
+      thumbnailUrl: source.originalThumbnailUrl,
       tagIds,
       semitagNames,
+      requestId: request?.id || null,
     };
-  }, [semitagNames, source.thumbnailUrl, source.url, tagIds, title]);
+  }, [
+    request?.id,
+    semitagNames,
+    source.originalThumbnailUrl,
+    source.sourceId,
+    tagIds,
+    title,
+  ]);
 
   return (
     <FormWrapper

@@ -42,6 +42,7 @@ export const mockSourceFragment = makeFragmentData(
     title: "Title 1",
     url: "https://soundcloud.com/keigoooo/hyperflip-donaldcore",
     thumbnailUrl: "/thumbnail.jpg",
+    originalThumbnailUrl: "/thumbnail.jpg",
     ...makeFragmentData(
       {
         sourceId: "keigoooo/hyperflip-donaldcore",
