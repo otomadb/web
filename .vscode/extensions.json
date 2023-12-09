@@ -1,13 +1,10 @@
 {
   "recommendations": [
     "editorconfig.editorconfig",
-    "jnoortheen.nix-ide",
-    "tamasfe.even-better-toml",
-    "arrterian.nix-env-selector",
-    "jkillian.custom-local-formatters",
-    "mkhl.direnv",
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
-    "GraphQL.vscode-graphql"
+    "GraphQL.vscode-graphql",
+    "unifiedjs.vscode-mdx",
+    "bradlc.vscode-tailwindcss"
   ]
 }
