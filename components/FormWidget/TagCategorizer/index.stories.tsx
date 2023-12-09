@@ -5,7 +5,7 @@ import { CommonTagFragment } from "~/components/CommonTag";
 import { makeFragmentData } from "~/gql";
 import { TagType, TypeCategoryTagType } from "~/gql/graphql";
 
-import { QueryFetchCategories, TagCategorizerForm } from ".";
+import TagCategorizerForm, { QueryFetchCategories } from ".";
 
 export const mockMutationSuccess = mockGql.query(
   QueryFetchCategories,
