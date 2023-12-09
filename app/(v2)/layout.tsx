@@ -24,7 +24,7 @@ export default function ApplicationLayout({
             <AppSideNav className="sticky top-0 h-screen w-[320px] shrink-0" />
             <div className="shrink-0 grow bg-obsidian-darkest">
               <GlobalNav className={clsx("sticky top-0 z-1 h-[64px] w-full")} />
-              <div className="min-h-[calc(100vh-64px)] p-8">{children}</div>
+              <div className="min-h-[calc(100vh-64px)]">{children}</div>
               <GlobalFooter />
             </div>
           </div>

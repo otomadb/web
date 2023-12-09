@@ -32,7 +32,7 @@ export default withPageAuthRequired(
     return (
       <main
         className={clsx(
-          "mx-auto flex max-w-[768px] flex-col flex-wrap gap-y-4"
+          "mx-auto flex max-w-[768px] flex-col flex-wrap gap-y-4 px-8 py-4"
         )}
       >
         <h1 className={clsx("px-2 text-xl font-bold text-snow-primary")}>
