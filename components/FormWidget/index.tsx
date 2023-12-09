@@ -1,6 +1,7 @@
 "use client";
 
 import clsx from "clsx";
+import { useRouter } from "next/navigation";
 import React, {
   ComponentProps,
   ReactNode,
@@ -17,6 +18,7 @@ import SoundcloudRequestForm from "./AddMAD/Soundcloud/SoundcloudRequestForm";
 import SourceIDForm from "./AddMAD/SourceID";
 import YoutubeRegisterForm from "./AddMAD/Youtube/YoutubeRegisterForm";
 import YoutubeRequestForm from "./AddMAD/Youtube/YoutubeRequestForm";
+import TagCategorizerForm from "./TagCategorizer";
 
 export type Current =
   | undefined
@@ -74,6 +76,10 @@ export type Current =
   | {
       type: "REQUEST_FROM_BILIBILI";
       props: Pick<ComponentProps<typeof BilibiliRequestForm>, "sourceFragment">;
+    }
+  | {
+      type: "CATEGORIZE_TAG";
+      props: { tagId: string };
     };
 
 export const FormModalContext = React.createContext<{
@@ -327,6 +333,15 @@ export const useOpenBilibiliRequestForm = () => {
     });
 };
 
+export const useOpenTagCategorizerForm = () => {
+  const { open } = useContext(FormModalContext);
+  return (props: Extract<Current, { type: "CATEGORIZE_TAG" }>["props"]) =>
+    open({
+      type: "CATEGORIZE_TAG",
+      props,
+    });
+};
+
 export const useCloseFormWidget = () => {
   const { close } = useContext(FormModalContext);
   return close;
@@ -341,6 +356,7 @@ export default function FormWidgetSwitch({
 }) {
   const { current } = useContext(FormModalContext);
   const close = useCloseFormWidget();
+  const router = useRouter();
 
   return (
     <div className={clsx(className, "flex")} style={style}>
@@ -419,6 +435,15 @@ export default function FormWidgetSwitch({
             close();
           }}
           handleCancel={() => close()}
+        />
+      ) : current?.type === "CATEGORIZE_TAG" ? (
+        <TagCategorizerForm
+          className={clsx("min-h-[360px] w-[640px]")}
+          closeMe={() => {
+            close();
+            router.refresh();
+          }}
+          tagId={current.props.tagId}
         />
       ) : (
         <></>

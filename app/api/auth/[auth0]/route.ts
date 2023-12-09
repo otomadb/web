@@ -9,8 +9,6 @@ export const GET = handleAuth({
   login: handleLogin({
     authorizationParams: {
       scope: [
-        "openid",
-        "email",
         "check:semitag",
         "create:mylist",
         "create:registration_request",
@@ -18,6 +16,9 @@ export const GET = handleAuth({
         "create:tagging",
         "create:video",
         "edit:mylist",
+        "edit:tag",
+        "email",
+        "openid",
         "remove:tagging",
         "update:mylist_registration",
       ].join(" "),
