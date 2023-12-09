@@ -13,8 +13,8 @@ export default async function Page({
 }) {
   const result = await makeGraphQLClient().request(
     graphql(`
-      query NicovideoRegistrationRequestPage($sourceId: String!) {
-        findNicovideoRegistrationRequest(input: { sourceId: $sourceId }) {
+      query SoundcloudRegistrationRequestPage($sourceId: String!) {
+        findSoundcloudRegistrationRequestBySourceId(sourceId: $sourceId) {
           ...RequestPageCommon
           embedUrl
         }
@@ -23,18 +23,17 @@ export default async function Page({
     { sourceId: params.sourceId }
   );
 
-  if (!result.findNicovideoRegistrationRequest) return notFound();
-
-  const { findNicovideoRegistrationRequest } = result;
+  if (!result.findSoundcloudRegistrationRequestBySourceId) return notFound();
+  const { findSoundcloudRegistrationRequestBySourceId } = result;
 
   return (
     <RequestPageCommon
-      platform="nicovideo"
-      fragment={findNicovideoRegistrationRequest}
+      platform="soundcloud"
+      fragment={findSoundcloudRegistrationRequestBySourceId}
       Embed={({ className }) => (
         <iframe
           className={clsx(className)}
-          src={findNicovideoRegistrationRequest.embedUrl}
+          src={findSoundcloudRegistrationRequestBySourceId.embedUrl}
           width={384}
           height={192}
         />

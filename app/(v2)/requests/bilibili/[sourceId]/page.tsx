@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 
 import { graphql } from "~/gql";
 import { makeGraphQLClient } from "~/gql/fetch";
+import { mkBilibiliAutoplayDisabled } from "~/utils/mkBilibiliAutoplayDisabled";
 
 import RequestPageCommon from "../../RequestPageCommon";
 
@@ -13,8 +14,8 @@ export default async function Page({
 }) {
   const result = await makeGraphQLClient().request(
     graphql(`
-      query NicovideoRegistrationRequestPage($sourceId: String!) {
-        findNicovideoRegistrationRequest(input: { sourceId: $sourceId }) {
+      query BilibiliRegistrationRequestPage($sourceId: String!) {
+        findBilibiliRegistrationRequestBySourceId(sourceId: $sourceId) {
           ...RequestPageCommon
           embedUrl
         }
@@ -23,18 +24,19 @@ export default async function Page({
     { sourceId: params.sourceId }
   );
 
-  if (!result.findNicovideoRegistrationRequest) return notFound();
-
-  const { findNicovideoRegistrationRequest } = result;
+  if (!result.findBilibiliRegistrationRequestBySourceId) return notFound();
+  const { findBilibiliRegistrationRequestBySourceId } = result;
 
   return (
     <RequestPageCommon
-      platform="nicovideo"
-      fragment={findNicovideoRegistrationRequest}
+      platform="bilibili"
+      fragment={findBilibiliRegistrationRequestBySourceId}
       Embed={({ className }) => (
         <iframe
           className={clsx(className)}
-          src={findNicovideoRegistrationRequest.embedUrl}
+          src={mkBilibiliAutoplayDisabled(
+            findBilibiliRegistrationRequestBySourceId.embedUrl
+          )}
           width={384}
           height={192}
         />
