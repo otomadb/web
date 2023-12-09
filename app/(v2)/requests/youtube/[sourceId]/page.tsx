@@ -13,8 +13,8 @@ export default async function Page({
 }) {
   const result = await makeGraphQLClient().request(
     graphql(`
-      query NicovideoRegistrationRequestPage($sourceId: String!) {
-        findNicovideoRegistrationRequest(input: { sourceId: $sourceId }) {
+      query YoutubeRegistrationRequestPage($sourceId: String!) {
+        findYoutubeRegistrationRequest(input: { sourceId: $sourceId }) {
           ...RequestPageCommon
           embedUrl
         }
@@ -23,18 +23,17 @@ export default async function Page({
     { sourceId: params.sourceId }
   );
 
-  if (!result.findNicovideoRegistrationRequest) return notFound();
-
-  const { findNicovideoRegistrationRequest } = result;
+  if (!result.findYoutubeRegistrationRequest) return notFound();
+  const { findYoutubeRegistrationRequest } = result;
 
   return (
     <RequestPageCommon
-      platform="nicovideo"
-      fragment={findNicovideoRegistrationRequest}
+      platform="youtube"
+      fragment={findYoutubeRegistrationRequest}
       Embed={({ className }) => (
         <iframe
           className={clsx(className)}
-          src={findNicovideoRegistrationRequest.embedUrl}
+          src={findYoutubeRegistrationRequest.embedUrl}
           width={384}
           height={192}
         />
