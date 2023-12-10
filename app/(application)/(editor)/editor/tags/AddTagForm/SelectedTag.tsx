@@ -9,7 +9,6 @@ import CommonTag from "~/components/CommonTag";
 import { CommonTagFragment } from "~/components/CommonTag";
 import { XMarkPictogram } from "~/components/Pictogram";
 import { graphql, makeFragmentData } from "~/gql";
-import { TagType } from "~/gql/graphql";
 
 export const Query = graphql(`
   query RegisterTagPage_SelectedTag($id: ID!) {
@@ -50,7 +49,7 @@ export const commonMock = mswGql.query(Query, (req, res, ctx) =>
         ...makeFragmentData(
           {
             name: `Tag ${req.variables.id.split(":")[1]}`,
-            type: TagType.Character,
+            belongTo: { keyword: "character" },
             explicitParent: null,
           },
           CommonTagFragment

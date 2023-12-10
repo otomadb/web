@@ -2,7 +2,6 @@ import { graphql } from "msw";
 
 import { CommonTagFragment } from "~/components/CommonTag";
 import { makeFragmentData } from "~/gql";
-import { TagType } from "~/gql/graphql";
 
 import { Query } from ".";
 import { SuggestItemFragment } from "./SuggestItem";
@@ -28,7 +27,9 @@ export const mockTagSearcher = graphql.query(Query, (req, res, ctx) =>
                       ...makeFragmentData(
                         {
                           name: "ぼっち・ざ・ろっく！",
-                          type: TagType.Copyright,
+                          belongTo: {
+                            keyword: "copyright",
+                          },
                           explicitParent: null,
                         },
                         CommonTagFragment
@@ -51,7 +52,7 @@ export const mockTagSearcher = graphql.query(Query, (req, res, ctx) =>
                       ...makeFragmentData(
                         {
                           name: "後藤ひとり",
-                          type: TagType.Character,
+                          belongTo: { keyword: "character" },
                           explicitParent: {
                             id: "tag:1",
                             name: "ぼっち・ざ・ろっく！",
@@ -77,7 +78,7 @@ export const mockTagSearcher = graphql.query(Query, (req, res, ctx) =>
                       ...makeFragmentData(
                         {
                           name: "伊地知虹夏",
-                          type: TagType.Character,
+                          belongTo: { keyword: "character" },
                           explicitParent: {
                             id: "tag:1",
                             name: "ぼっち・ざ・ろっく！",

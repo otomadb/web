@@ -3,7 +3,6 @@ import { graphql as mockGql } from "msw";
 
 import { CommonTagFragment } from "~/components/CommonTag";
 import { makeFragmentData } from "~/gql";
-import { TagType, TypeCategoryTagType } from "~/gql/graphql";
 
 import TagCategorizerForm, { QueryFetchCategories } from ".";
 
@@ -14,63 +13,32 @@ export const mockMutationSuccess = mockGql.query(
       ctx.data({
         getTag: {
           id: "tag:1",
-          parents: {
-            nodes: [
-              {
-                parent: {
-                  id: "ctag:charactor",
-                  name: "ctag",
-                  isCategoryTag: true,
-                },
+          allBelongTo: [
+            {
+              group: {
+                keyword: "character",
               },
-            ],
-          },
+            },
+          ],
           ...makeFragmentData(
             {
               name: "tag",
-              type: TagType.Character,
               explicitParent: null,
+              belongTo: { keyword: "character" },
             },
             CommonTagFragment
           ),
         },
-        getAllTypeCategoryTag: [
-          {
-            type: TypeCategoryTagType.Character,
-            tag: { id: "ctag:charactor", name: "キャラクター" },
-          },
-          {
-            type: TypeCategoryTagType.Class,
-            tag: { id: "ctag:music", name: "クラス" },
-          },
-          {
-            type: TypeCategoryTagType.Copyright,
-            tag: { id: "ctag:copyright", name: "作品" },
-          },
-          {
-            type: TypeCategoryTagType.Event,
-            tag: { id: "ctag:event", name: "イベント" },
-          },
-          {
-            type: TypeCategoryTagType.Music,
-            tag: { id: "ctag:music", name: "曲" },
-          },
-          {
-            type: TypeCategoryTagType.Phrase,
-            tag: { id: "ctag:phrase", name: "フレーズ" },
-          },
-          {
-            type: TypeCategoryTagType.Series,
-            tag: { id: "ctag:series", name: "シリーズ" },
-          },
-          {
-            type: TypeCategoryTagType.Style,
-            tag: { id: "ctag:style", name: "スタイル" },
-          },
-          {
-            type: TypeCategoryTagType.Tactics,
-            tag: { id: "ctag:tactics", name: "戦術" },
-          },
+        getAllAbstractGroups: [
+          { keyword: "character", name: "キャラクター" },
+          { keyword: "class", name: "クラス" },
+          { keyword: "music", name: "楽曲" },
+          { keyword: "copyright", name: "作品" },
+          { keyword: "event", name: "イベント" },
+          { keyword: "phrase", name: "フレーズ" },
+          { keyword: "series", name: "シリーズ" },
+          { keyword: "style", name: "スタイル" },
+          { keyword: "tactics", name: "戦術" },
         ],
       })
     )

@@ -7,7 +7,6 @@ import { graphql as mockGql } from "msw";
 import { NicovideoRequestLinkFragment } from "~/app/(v2)/requests/nicovideo/[sourceId]/Link";
 import { CommonTagFragment } from "~/components/CommonTag";
 import { makeFragmentData } from "~/gql";
-import { TagType } from "~/gql/graphql";
 
 import { NicovideoOriginalSourceFragment } from "./NicovideoOriginalSource";
 import { mockTagSearcher } from "./NicovideoRegister.stories";
@@ -58,7 +57,10 @@ export const mockSourceFragment = makeFragmentData(
                 tag: {
                   id: `tag:${i}:${j}`,
                   ...makeFragmentData(
-                    { name: `Tag.${i}.${j}`, type: TagType.Character },
+                    {
+                      name: `Tag.${i}.${j}`,
+                      belongTo: { keyword: "character" },
+                    },
                     CommonTagFragment
                   ),
                 },

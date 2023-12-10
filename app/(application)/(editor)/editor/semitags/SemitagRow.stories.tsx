@@ -41,7 +41,10 @@ const meta = {
                         tag: {
                           id: "t1",
                           ...makeFragmentData(
-                            { name: "Tag 1", type: TagType.Character },
+                            {
+                              name: "Tag 1",
+                              belongTo: { keyword: "character" },
+                            },
                             CommonTagFragment
                           ),
                         },

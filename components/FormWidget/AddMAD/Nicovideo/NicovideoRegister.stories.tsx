@@ -12,7 +12,6 @@ import { SuggestItemFragment } from "~/components/TagSearcher/SuggestItem";
 import { SuggestsFragment } from "~/components/TagSearcher/Suggests";
 import { Fragment as UserIconFragment } from "~/components/UserIcon";
 import { makeFragmentData } from "~/gql";
-import { TagType } from "~/gql/graphql";
 
 import { NicovideoOriginalSourceFragment } from "./NicovideoOriginalSource";
 import NicovideoRegisterForm, {
@@ -60,7 +59,10 @@ export const mockSourceFragment = makeFragmentData(
                 tag: {
                   id: `tag:${i}:${j}`,
                   ...makeFragmentData(
-                    { name: `Tag.${i}.${j}`, type: TagType.Character },
+                    {
+                      name: `Tag.${i}.${j}`,
+                      belongTo: { keyword: "character" },
+                    },
                     CommonTagFragment
                   ),
                 },
@@ -94,7 +96,7 @@ export const mockRequestFragment = makeFragmentData(
         tag: {
           id: "tag:1",
           ...makeFragmentData(
-            { name: "Requested Tag 1", type: TagType.Character },
+            { name: "Requested Tag 1", belongTo: { keyword: "character" } },
             CommonTagFragment
           ),
         },
@@ -130,7 +132,7 @@ export const mockTagSearcher = mockGql.query(
                       ...makeFragmentData(
                         {
                           name: `Searched Tag ${i}`,
-                          type: TagType.Character,
+                          belongTo: { keyword: "character" },
                           explicitParent: null,
                         },
                         CommonTagFragment

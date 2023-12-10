@@ -7,7 +7,6 @@ import { createClient, fetchExchange, Provider as UrqlProvider } from "urql";
 import { CommonTagFragment } from "~/components/CommonTag";
 import { mockTagSearcher } from "~/components/TagSearcher/index.mocks";
 import { makeFragmentData } from "~/gql";
-import { TagType } from "~/gql/graphql";
 
 import Component, { Mutation, Query, TagsListFragment } from "./TagEditor";
 
@@ -22,7 +21,7 @@ const mockTagList = makeFragmentData(
             ...makeFragmentData(
               {
                 name: "Tag1",
-                type: TagType.Copyright,
+                belongTo: { keyword: "character" },
                 explicitParent: null,
               },
               CommonTagFragment
@@ -36,11 +35,11 @@ const mockTagList = makeFragmentData(
             ...makeFragmentData(
               {
                 name: "Tag2",
-                type: TagType.Character,
+                belongTo: { keyword: "character" },
                 explicitParent: {
                   id: "tag1",
                   name: "Tag1",
-                  type: TagType.Character,
+                  belongTo: { keyword: "character" },
                 },
               },
               CommonTagFragment
