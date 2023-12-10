@@ -17,7 +17,7 @@ export async function generateMetadata({
   const result = await makeGraphQLClient().request(
     graphql(`
       query TagPageLayout_Metadata($serial: Int!) {
-        findTag(input: { serial: $serial }) {
+        findTagBySerial(serial: $serial) {
           name
           serial
         }
@@ -26,10 +26,10 @@ export async function generateMetadata({
     { serial: parseInt(params.serial, 10) }
   );
 
-  const { findTag } = result;
-  if (!findTag) notFound();
+  const { findTagBySerial } = result;
+  if (!findTagBySerial) notFound();
 
-  const { name, serial } = findTag;
+  const { name, serial } = findTagBySerial;
   return {
     title: `tag:${name} | OtoMADB`,
     openGraph: {
@@ -56,9 +56,7 @@ export default async function Layout({
           ...TagType
           id
           name
-          type
           serial
-          isCategoryTag
           totalTaggedVideos
           explicitParent {
             id
@@ -95,7 +93,6 @@ export default async function Layout({
     { serial: parseInt(params.serial, 10) }
   );
   if (!result.findTagBySerial) notFound();
-  if (result.findTagBySerial.isCategoryTag) return notFound(); // TODO: `/category/`とかに飛ばすとかでも良いと思う
 
   const { findTagBySerial } = result;
   const {

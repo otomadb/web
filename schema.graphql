@@ -149,6 +149,7 @@ type BilibiliMadRequestedTimelineEvent implements TimelineEvent {
 type BilibiliOriginalSource {
   """
   bilibili側のオリジナルの画像URL
+  
   bilibili側の制約上、別のオリジンから直接埋め込んだりすることはほとんど出来ないことに注意．
   """
   originalThumbnailUrl: String!
@@ -783,8 +784,6 @@ type Mutation {
   includeTagToGroup(input: IncludeTagToGroupInput!): IncludeTagToGroupPayload!
   likeVideo(input: LikeVideoInput!): LikeVideoReturnUnion!
   registerBilibiliMAD(input: RegisterBilibiliMADInput!): RegisterBilibiliMADResult!
-  registerCategoryTag(input: RegisterCategoryTagInput!): RegisterCategoryTagResultUnion!
-  registerCategoryTagTyping(input: RegisterCategoryTagTypingInput!): RegisterCategoryTagTypingResultUnion!
   registerSoundcloudMAD(input: RegisterSoundcloudMADInput!): RegisterSoundcloudMADResult!
   registerTag(input: RegisterTagInput!): RegisterTagReturnUnion!
   registerTagParentRelation(input: RegisterTagParentRelationInput!): RegisterTagParentRelationResultUnion!
@@ -1410,10 +1409,6 @@ type Query {
   findYoutubeVideoSource(input: FindYoutubeVideoSourceInput!): YoutubeVideoSource
   getAbstractGroup(keyword: ID!): AbstractGroup!
   getAllAbstractGroups: [AbstractGroup!]!
-  getAllCategoryTag: [Tag!]!
-
-  """全てのTypeCategoryTagを取得する"""
-  getAllTypeCategoryTag: [TypeCategoryTag!]!
   getBilibiliMADSource(id: ID!): BilibiliMADSource!
   getBilibiliRegistrationRequest(id: ID!): BilibiliRegistrationRequest!
   getMylist(id: ID!): Mylist!
@@ -1455,42 +1450,6 @@ union RegisterBilibiliMADResult = MutationInternalServerError | MutationTagNotFo
 
 type RegisterBilibiliMADSucceededPayload {
   video: Video!
-}
-
-input RegisterCategoryTagInput {
-  primaryName: String!
-}
-
-union RegisterCategoryTagResultUnion = RegisterCategoryTagSucceededPayload
-
-type RegisterCategoryTagSucceededPayload {
-  tag: Tag!
-}
-
-"""指定されたタイプのカテゴリータグが既に存在する場合のエラー"""
-type RegisterCategoryTagTypingAlreadyTypeExistsError {
-  already: Tag!
-}
-
-"""指定されたカテゴリータグに既にタイプがある場合のエラー"""
-type RegisterCategoryTagTypingAlreadyTypedError {
-  tag: Tag!
-}
-
-input RegisterCategoryTagTypingInput {
-  tagId: ID!
-  type: TypeCategoryTagType!
-}
-
-"""指定されたタグはカテゴリータグでは無い場合のエラー"""
-type RegisterCategoryTagTypingNotCategoryTagError {
-  tag: Tag!
-}
-
-union RegisterCategoryTagTypingResultUnion = MutationInvalidTagIdError | MutationTagNotFoundError | RegisterCategoryTagTypingAlreadyTypeExistsError | RegisterCategoryTagTypingAlreadyTypedError | RegisterCategoryTagTypingNotCategoryTagError | RegisterCategoryTagTypingSucceededPayload
-
-type RegisterCategoryTagTypingSucceededPayload {
-  tag: Tag!
 }
 
 input RegisterSoundcloudMADInput {
@@ -2114,7 +2073,7 @@ type SoundcloudRegistrationRequest implements Node & RegistrationRequest {
 
   """
   OtoMADB側でプロキシしているサムネイル画像のURL
-
+  
   **無い場合は適当にダミー画像を返す．**
   """
   thumbnailUrl(scale: RegistrationRequestThumbnailScale! = LARGE): String!
@@ -2245,6 +2204,7 @@ type Tag implements Node {
 
   """このタグが帰属するAbstractGroup．ない場合または複数の場合は`null`を返す．"""
   belongTo: AbstractGroup
+
   """動画に対してタグを付けることができるか"""
   canTagTo(
     """動画のID"""
@@ -2254,8 +2214,6 @@ type Tag implements Node {
   events(input: TagEventsInput!): TagEventsConnection!
   explicitParent: Tag
   id: ID!
-  isCategoryTag: Boolean! @deprecated
-  meaningless: Boolean! @deprecated
   name: String!
   names(primary: Boolean): [TagName!]!
   parents(after: String, before: String, categoryTag: Boolean, first: Int, last: Int, orderBy: TagParentsOrderBy! = {createdAt: DESC}): TagParentConnection!
@@ -2265,7 +2223,6 @@ type Tag implements Node {
   """offsetベースでタグ付けされた動画を取得する"""
   taggedVideosByOffset(input: TaggedVideosByOffsetInput!): TagTaggedVideosByOffsetPayload!
   totalTaggedVideos: Int!
-  type: TagType!
 }
 
 input TagChildrenOrderBy {
@@ -2430,44 +2387,6 @@ input TagTaggedVideosOrderBy {
   createdAt: SortOrder
 }
 
-enum TagType {
-  """カテゴリー"""
-  CATEGORY
-
-  """キャラクター"""
-  CHARACTER
-
-  """動画の内容に依らない情報，分類など"""
-  CLASS
-
-  """作品名"""
-  COPYRIGHT
-
-  """合作などのイベント"""
-  EVENT
-
-  """曲"""
-  MUSIC
-
-  """特徴的なセリフなど"""
-  PHRASE
-
-  """シリーズ"""
-  SERIES
-
-  """動画そのものに対しての性質，作風など"""
-  STYLE
-
-  """2つ以上のタイプが算出された場合"""
-  SUBTLE
-
-  """戦法"""
-  TACTICS
-
-  """タイプを算出できなかった場合"""
-  UNKNOWN
-}
-
 input TaggedVideosByOffsetInput {
   offset: Int!
   orderBy: TagTaggedVideosOrderBy! = {createdAt: DESC}
@@ -2477,41 +2396,6 @@ input TaggedVideosByOffsetInput {
 interface TimelineEvent {
   createdAt: DateTime!
   event: Event!
-}
-
-"""タグにタイプを与えることが出来るカテゴリータグ"""
-type TypeCategoryTag {
-  tag: Tag!
-  type: TypeCategoryTagType!
-}
-
-enum TypeCategoryTagType {
-  """キャラクター"""
-  CHARACTER
-
-  """動画の内容に依らない情報，分類など"""
-  CLASS
-
-  """作品名"""
-  COPYRIGHT
-
-  """合作などのイベント"""
-  EVENT
-
-  """曲"""
-  MUSIC
-
-  """特徴的なセリフなど"""
-  PHRASE
-
-  """シリーズ"""
-  SERIES
-
-  """動画そのものに対しての性質，作風など"""
-  STYLE
-
-  """戦法"""
-  TACTICS
 }
 
 input UndoLikeVideoInput {
