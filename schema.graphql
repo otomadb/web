@@ -1845,7 +1845,7 @@ input RequestSoundcloudRegistrationInput {
   taggings: [RequestSoundcloudRegistrationInputTagging!]!
 
   """**プラットフォーム側の**サムネイル画像のURL"""
-  thumbnailUrl: String!
+  thumbnailUrl: String
   title: String!
 }
 
