@@ -38,7 +38,8 @@ export const mockMutationSuccess = mockGql.query(
           { keyword: "phrase", name: "フレーズ" },
           { keyword: "series", name: "シリーズ" },
           { keyword: "style", name: "スタイル" },
-          { keyword: "tactics", name: "戦術" },
+          { keyword: "technique", name: "戦術" },
+          { keyword: "realperson", name: "実在人物" },
         ],
       })
     )
