@@ -125,26 +125,43 @@ const TagCategorizerForm = ({
                   }}
                   className={clsx(
                     "group/button flex cursor-pointer items-center rounded border border-obsidian-lighter bg-obsidian-darker p-2 aria-disabled:cursor-auto",
-                    "aria-disabled:bg-obsidian-primary",
+                    "aria-disabled:bg-obsidian-primary aria-disabled:text-snow-darkest",
                     {
                       character:
                         "aria-checked:bg-tag-character-bg aria-checked:border-tag-character-frame aria-disabled-false:hover:border-tag-character-frame aria-disabled-false:hover:bg-tag-character-bg",
-                      class:
-                        "aria-checked:bg-tag-class-bg aria-checked:border-tag-class-frame aria-disabled-false:hover:bg-tag-class-bg aria-disabled-false:hover:border-tag-class-frame",
                       copyright:
                         "aria-checked:bg-tag-copyright-bg aria-checked:border-tag-copyright-frame aria-disabled-false:hover:bg-tag-copyright-bg aria-disabled-false:hover:border-tag-copyright-frame",
-                      event:
-                        "aria-checked:bg-tag-event-bg aria-checked:border-tag-event-frame aria-disabled-false:hover:bg-tag-event-bg aria-disabled-false:hover:border-tag-event-frame",
                       music:
                         "aria-checked:bg-tag-music-bg aria-checked:border-tag-music-frame aria-disabled-false:hover:bg-tag-music-bg aria-disabled-false:hover:border-tag-music-frame",
                       phrase:
                         "aria-checked:bg-tag-phrase-bg aria-checked:border-tag-phrase-frame aria-disabled-false:hover:bg-tag-phrase-bg aria-disabled-false:hover:border-tag-phrase-frame",
                       series:
                         "aria-checked:bg-tag-series-bg aria-checked:border-tag-series-frame aria-disabled-false:hover:bg-tag-series-bg aria-disabled-false:hover:border-tag-series-frame",
-                      style:
-                        "aria-checked:bg-tag-style-bg aria-checked:border-tag-style-frame aria-disabled-false:hover:bg-tag-style-bg aria-disabled-false:hover:border-tag-style-frame",
-                      tactics:
-                        "aria-checked:bg-tag-tactics-bg aria-checked:border-tag-tactics-frame aria-disabled-false:hover:bg-tag-tactics-bg aria-disabled-false:hover:border-tag-tactics-frame",
+                      realperson: [
+                        "aria-checked:bg-tag-realperson-back aria-checked:border-tag-realperson-secondary",
+                        "aria-disabled-false:hover:bg-tag-realperson-back-vivid aria-disabled-false:hover:border-tag-realperson-secondary-vivid",
+                        "text-tag-realperson-primary",
+                      ],
+                      class: [
+                        "aria-checked:bg-tag-class-back aria-checked:border-tag-class-secondary",
+                        "aria-disabled-false:hover:bg-tag-class-back-vivid aria-disabled-false:hover:border-tag-class-secondary-vivid",
+                        "text-tag-class-primary",
+                      ],
+                      style: [
+                        "aria-checked:bg-tag-style-back aria-checked:border-tag-style-secondary",
+                        "aria-disabled-false:hover:bg-tag-style-back-vivid aria-disabled-false:hover:border-tag-style-secondary-vivid",
+                        "text-tag-style-primary",
+                      ],
+                      technique: [
+                        "aria-checked:bg-tag-technique-back aria-checked:border-tag-technique-secondary",
+                        "aria-disabled-false:hover:bg-tag-technique-back-vivid aria-disabled-false:hover:border-tag-technique-secondary-vivid",
+                        "text-tag-technique-primary",
+                      ],
+                      event: [
+                        "aria-checked:bg-tag-event-back aria-checked:border-tag-event-secondary",
+                        "aria-disabled-false:hover:bg-tag-event-back-vivid aria-disabled-false:hover:border-tag-event-secondary-vivid",
+                        "text-tag-event-primary",
+                      ],
                     }[keyword]
                   )}
                 >
@@ -153,14 +170,10 @@ const TagCategorizerForm = ({
                       "text-sm group-aria-checked/button:font-bold group-aria-disabled/button:text-snow-darkest",
                       {
                         character: "text-tag-character-vivid",
-                        class: "text-tag-class-vivid",
                         copyright: "text-tag-copyright-vivid",
-                        event: "text-tag-event-primary",
                         music: "text-tag-music-primary",
                         phrase: "text-tag-phrase-primary",
                         series: "text-tag-series-primary",
-                        style: "text-tag-style-primary",
-                        tactics: "text-tag-tactics-primary",
                       }[keyword]
                     )}
                   >

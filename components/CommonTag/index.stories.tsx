@@ -5,142 +5,74 @@ import { makeFragmentData } from "~/gql";
 
 import CommonTag, { CommonTagFragment } from ".";
 
+export const mockCommonTag = ({ belongTo }: { belongTo: undefined | string }) =>
+  makeFragmentData(
+    {
+      id: "tag:1",
+      name: "Tag 1",
+      belongTo: belongTo ? { keyword: belongTo } : undefined,
+      explicitParent: { id: "tag:1:ex-parent:1", name: "Tag 1 Parent" },
+    },
+    CommonTagFragment
+  );
+
 const meta = {
   component: CommonTag,
+  tags: ["autodocs"],
   args: {
     handleToggle: action("handleToggle"),
     size: "small",
-    hoverable: true,
+    hoverable: false,
     disabled: false,
   },
   parameters: {
     layout: "centered",
+    docs: {
+      toc: true, // 👈 Enables the table of contents
+    },
   },
+  excludeStories: /^mock/,
 } as Meta<typeof CommonTag>;
 export default meta;
 
-export const Character: StoryObj<typeof meta> = {
-  args: {
-    fragment: makeFragmentData(
-      {
-        id: "t1",
-        name: "Tag 1",
-        belongTo: { keyword: "character" },
-        explicitParent: { id: "t2", name: "Tag 2" },
-      },
-      CommonTagFragment
-    ),
-  },
+type Story = StoryObj<typeof meta>;
+
+export const Character: Story = {
+  args: { fragment: mockCommonTag({ belongTo: "character" }) },
 };
 
-export const Class: StoryObj<typeof meta> = {
-  args: {
-    fragment: makeFragmentData(
-      {
-        id: "t1",
-        name: "Tag 1",
-        belongTo: { keyword: "class" },
-        explicitParent: { id: "t2", name: "Tag 2" },
-      },
-      CommonTagFragment
-    ),
-  },
+export const Class: Story = {
+  args: { fragment: mockCommonTag({ belongTo: "class" }) },
 };
 
-export const Copyright: StoryObj<typeof meta> = {
-  args: {
-    fragment: makeFragmentData(
-      {
-        id: "t1",
-        name: "Tag 1",
-        belongTo: { keyword: "copyright" },
-        explicitParent: { id: "t2", name: "Tag 2" },
-      },
-      CommonTagFragment
-    ),
-  },
+export const Copyright: Story = {
+  args: { fragment: mockCommonTag({ belongTo: "copyright" }) },
 };
 
-export const Event: StoryObj<typeof meta> = {
-  args: {
-    fragment: makeFragmentData(
-      {
-        id: "t1",
-        name: "Tag 1",
-        belongTo: { keyword: "event" },
-        explicitParent: { id: "t2", name: "Tag 2" },
-      },
-      CommonTagFragment
-    ),
-  },
+export const Event: Story = {
+  args: { fragment: mockCommonTag({ belongTo: "event" }) },
 };
 
-export const Music: StoryObj<typeof meta> = {
-  args: {
-    fragment: makeFragmentData(
-      {
-        id: "t1",
-        name: "Tag 1",
-        belongTo: { keyword: "music" },
-        explicitParent: { id: "t2", name: "Tag 2" },
-      },
-      CommonTagFragment
-    ),
-  },
+export const Music: Story = {
+  args: { fragment: mockCommonTag({ belongTo: "music" }) },
 };
 
-export const Phrase: StoryObj<typeof meta> = {
-  args: {
-    fragment: makeFragmentData(
-      {
-        id: "t1",
-        name: "Tag 1",
-        belongTo: { keyword: "phrase" },
-        explicitParent: { id: "t2", name: "Tag 2" },
-      },
-      CommonTagFragment
-    ),
-  },
+export const Phrase: Story = {
+  args: { fragment: mockCommonTag({ belongTo: "phrase" }) },
 };
 
-export const Series: StoryObj<typeof meta> = {
-  args: {
-    fragment: makeFragmentData(
-      {
-        id: "t1",
-        name: "Tag 1",
-        belongTo: { keyword: "series" },
-        explicitParent: { id: "t2", name: "Tag 2" },
-      },
-      CommonTagFragment
-    ),
-  },
+export const Series: Story = {
+  args: { fragment: mockCommonTag({ belongTo: "series" }) },
 };
 
-export const Style: StoryObj<typeof meta> = {
-  args: {
-    fragment: makeFragmentData(
-      {
-        id: "t1",
-        name: "Tag 1",
-        belongTo: { keyword: "style" },
-        explicitParent: { id: "t2", name: "Tag 2" },
-      },
-      CommonTagFragment
-    ),
-  },
+export const Style: Story = {
+  args: { fragment: mockCommonTag({ belongTo: "style" }) },
 };
 
-export const Tactics: StoryObj<typeof meta> = {
-  args: {
-    fragment: makeFragmentData(
-      {
-        id: "t1",
-        name: "Tag 1",
-        belongTo: { keyword: "tactics" },
-        explicitParent: { id: "t2", name: "Tag 2" },
-      },
-      CommonTagFragment
-    ),
-  },
+export const Technique: Story = {
+  args: { fragment: mockCommonTag({ belongTo: "technique" }) },
+};
+
+export const RealPerson: Story = {
+  args: { fragment: mockCommonTag({ belongTo: "realperson" }) },
 };

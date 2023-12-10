@@ -15,6 +15,10 @@ module.exports = {
     name: "@storybook/nextjs",
     options: {},
   },
+  docs: {
+    autodocs: "tag",
+    defaultName: "Documentation",
+  },
   webpackFinal: async (config) => {
     config.module.rules = config.module.rules.map((rule) => {
       if (/svg/.test(rule.test)) return { ...rule, exclude: /\.svg$/i };

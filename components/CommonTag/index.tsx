@@ -63,20 +63,6 @@ export default function CommonTag({
                 selectable &&
                   "group-aria-selected:border-tag-character-frameHover group-aria-selected:bg-tag-character-bgHover",
               ],
-              class: [
-                "border-tag-class-frame bg-tag-class-bgDisabled aria-disabled:border-tag-class-frameDisabled aria-disabled:bg-tag-class-bgDisabled",
-                hoverable &&
-                  "group-hover:border-tag-class-frameHover group-hover:bg-tag-class-bgHover",
-                selectable &&
-                  "group-aria-selected:border-tag-class-frameHover group-aria-selected:bg-tag-class-bgHover",
-              ],
-              event: [
-                "border-tag-event-frame bg-tag-event-bgDisabled aria-disabled:border-tag-event-frameDisabled aria-disabled:bg-tag-event-bgDisabled",
-                hoverable &&
-                  "group-hover:border-tag-event-frameHover group-hover:bg-tag-event-bgHover",
-                selectable &&
-                  "group-aria-selected:border-tag-event-frameHover group-aria-selected:bg-tag-event-bgHover",
-              ],
               music: [
                 "border-tag-music-frame bg-tag-music-bg aria-disabled:border-tag-music-frameDisabled aria-disabled:bg-tag-music-bgDisabled",
                 hoverable &&
@@ -98,19 +84,40 @@ export default function CommonTag({
                 selectable &&
                   "group-aria-selected:border-tag-series-frameHover group-aria-selected:bg-tag-series-bgHover",
               ],
-              style: [
-                "border-tag-style-disabled bg-tag-style-bgDisabled aria-disabled:border-tag-style-frameDisabled aria-disabled:bg-tag-style-bgDisabled",
+              class: [
+                "border-tag-class-secondary bg-tag-class-back",
                 hoverable &&
-                  "group-hover:border-tag-style-frameHover group-hover:bg-tag-style-bgHover",
-                selectable &&
-                  "group-aria-selected:border-tag-style-frameHover group-aria-selected:bg-tag-style-bgHover",
+                  "hover:border-tag-class-secondary-vivid hover:bg-tag-class-back-vivid",
+                "aria-selected:border-tag-class-secondary-vivid aria-selected:bg-tag-class-back-vivid",
+                "aria-disabled:border-tag-class-secondary-muted aria-disabled:bg-tag-class-back-muted",
               ],
-              tactics: [
-                "border-tag-tactics-disabled bg-tag-tactics-bgDisabled aria-disabled:border-tag-tactics-frameDisabled aria-disabled:bg-tag-tactics-bgDisabled",
+              realperson: [
+                "border-tag-realperson-secondary bg-tag-realperson-back",
                 hoverable &&
-                  "group-hover:border-tag-tactics-frameHover group-hover:bg-tag-tactics-bgHover",
-                selectable &&
-                  "group-aria-selected:border-tag-tactics-frameHover group-aria-selected:bg-tag-tactics-bgHover",
+                  "hover:border-tag-realperson-secondary-vivid hover:bg-tag-realperson-back-vivid",
+                "aria-selected:border-tag-realperson-secondary-vivid aria-selected:bg-tag-realperson-back-vivid",
+                "aria-disabled:border-tag-realperson-secondary-muted aria-disabled:bg-tag-realperson-back-muted",
+              ],
+              style: [
+                "border-tag-style-secondary bg-tag-style-back",
+                hoverable &&
+                  "hover:border-tag-style-secondary-vivid hover:bg-tag-style-back-vivid",
+                "aria-selected:border-tag-style-secondary-vivid aria-selected:bg-tag-style-back-vivid",
+                "aria-disabled:border-tag-style-secondary-muted aria-disabled:bg-tag-style-back-muted",
+              ],
+              technique: [
+                "border-tag-technique-secondary bg-tag-technique-back",
+                hoverable &&
+                  "hover:border-tag-technique-secondary-vivid hover:bg-tag-technique-back-vivid",
+                "aria-selected:border-tag-technique-secondary-vivid aria-selected:bg-tag-technique-back-vivid",
+                "aria-disabled:border-tag-technique-secondary-muted aria-disabled:bg-tag-technique-back-muted",
+              ],
+              event: [
+                "border-tag-event-secondary bg-tag-event-back",
+                hoverable &&
+                  "hover:border-tag-event-secondary-vivid hover:bg-tag-event-back-vivid",
+                "aria-selected:border-tag-event-secondary-vivid aria-selected:bg-tag-event-back-vivid",
+                "aria-disabled:border-tag-event-secondary-muted aria-disabled:bg-tag-event-back-muted",
               ],
             }[belongTo.keyword]
           : [
@@ -138,16 +145,6 @@ export default function CommonTag({
                   hoverable && "group-hover:text-tag-character-vivid",
                   selectable && "group-aria-selected:text-tag-character-vivid",
                 ],
-                class: [
-                  "text-tag-class-primary group-aria-disabled:text-tag-class-disabled",
-                  hoverable && "group-hover:text-tag-class-vivid",
-                  selectable && "group-aria-selected:text-tag-class-vivid",
-                ],
-                event: [
-                  "text-tag-event-primary group-aria-disabled:text-tag-event-disabled",
-                  hoverable && "group-hover:text-tag-event-vivid",
-                  selectable && "group-aria-selected:text-tag-event-vivid",
-                ],
                 music: [
                   "text-tag-music-primary group-aria-disabled:text-tag-music-disabled",
                   hoverable && "group-hover:text-tag-music-vivid",
@@ -163,15 +160,35 @@ export default function CommonTag({
                   hoverable && "group-hover:text-tag-series-vivid",
                   selectable && "group-aria-selected:text-tag-series-vivid",
                 ],
-                style: [
-                  "text-tag-style-primary group-aria-disabled:text-tag-style-disabled",
-                  hoverable && "group-hover:text-tag-style-vivid",
-                  selectable && "group-aria-selected:text-tag-style-vivid",
+                class: [
+                  "text-tag-class-primary",
+                  "group-aria-selected:text-tag-class-primary-vivid",
+                  "group-aria-disabled:text-tag-class-primary-muted",
+                  hoverable && "group-hover:text-tag-class-primary-vivid",
                 ],
-                tactics: [
-                  "text-tag-tactics-primary group-aria-disabled:text-tag-tactics-disabled",
-                  hoverable && "group-hover:text-tag-tactics-vivid",
-                  selectable && "group-aria-selected:text-tag-tactics-vivid",
+                realperson: [
+                  "text-tag-realperson-primary",
+                  "group-aria-selected:text-tag-realperson-primary-vivid",
+                  "group-aria-disabled:text-tag-realperson-primary-muted",
+                  hoverable && "group-hover:text-tag-realperson-primary-vivid",
+                ],
+                style: [
+                  "text-tag-style-primary",
+                  "group-aria-selected:text-tag-style-primary-vivid",
+                  "group-aria-disabled:text-tag-style-primary-muted",
+                  hoverable && "group-hover:text-tag-style-primary-vivid",
+                ],
+                technique: [
+                  "text-tag-technique-primary",
+                  "group-aria-selected:text-tag-technique-primary-vivid",
+                  "group-aria-disabled:text-tag-technique-primary-muted",
+                  hoverable && "group-hover:text-tag-technique-primary-vivid",
+                ],
+                event: [
+                  "text-tag-event-primary",
+                  "group-aria-selected:text-tag-event-primary-vivid",
+                  "group-aria-disabled:text-tag-event-primary-muted",
+                  hoverable && "group-hover:text-tag-event-primary-vivid",
                 ],
               }[belongTo.keyword]
             : [
@@ -201,16 +218,6 @@ export default function CommonTag({
                     selectable &&
                       "group-aria-selected:text-tag-character-vivid",
                   ],
-                  class: [
-                    "text-tag-class-secondary group-aria-disabled:text-tag-class-disabled",
-                    hoverable && "group-hover:text-tag-class-vivid",
-                    selectable && "group-aria-selected:text-tag-class-vivid",
-                  ],
-                  event: [
-                    "text-tag-event-secondary group-aria-disabled:text-tag-event-disabled",
-                    hoverable && "group-hover:text-tag-event-vivid",
-                    selectable && "group-aria-selected:text-tag-event-vivid",
-                  ],
                   music: [
                     "text-tag-music-secondary group-aria-disabled:text-tag-music-disabled",
                     hoverable && "group-hover:text-tag-music-vivid",
@@ -226,15 +233,37 @@ export default function CommonTag({
                     hoverable && "group-hover:text-tag-series-vivid",
                     selectable && "group-aria-selected:text-tag-series-vivid",
                   ],
-                  style: [
-                    "text-tag-style-secondary group-aria-disabled:text-tag-style-disabled",
-                    hoverable && "group-hover:text-tag-style-vivid",
-                    selectable && "group-aria-selected:text-tag-style-vivid",
+                  realperson: [
+                    "text-tag-realperson-secondary",
+                    "group-aria-selected:text-tag-realperson-secondary-vivid",
+                    "group-aria-disabled:text-tag-realperson-secondary-muted",
+                    hoverable &&
+                      "group-hover:text-tag-realperson-secondary-vivid",
                   ],
-                  tactics: [
-                    "text-tag-tactics-secondary group-aria-disabled:text-tag-tactics-disabled",
-                    hoverable && "group-hover:text-tag-tactics-vivid",
-                    selectable && "group-aria-selected:text-tag-tactics-vivid",
+                  class: [
+                    "text-tag-class-secondary",
+                    "group-aria-selected:text-tag-class-secondary-vivid",
+                    "group-aria-disabled:text-tag-class-secondary-muted",
+                    hoverable && "group-hover:text-tag-class-secondary-vivid",
+                  ],
+                  style: [
+                    "text-tag-style-secondary",
+                    "group-aria-selected:text-tag-style-secondary-vivid",
+                    "group-aria-disabled:text-tag-style-secondary-muted",
+                    hoverable && "group-hover:text-tag-style-secondary-vivid",
+                  ],
+                  technique: [
+                    "text-tag-technique-secondary",
+                    "group-aria-selected:text-tag-technique-secondary-vivid",
+                    "group-aria-disabled:text-tag-technique-secondary-muted",
+                    hoverable &&
+                      "group-hover:text-tag-technique-secondary-vivid",
+                  ],
+                  event: [
+                    "text-tag-event-secondary",
+                    "group-aria-selected:text-tag-event-secondary-vivid",
+                    "group-aria-disabled:text-tag-event-secondary-muted",
+                    hoverable && "group-hover:text-tag-event-secondary-vivid",
                   ],
                 }[belongTo.keyword]
               : [

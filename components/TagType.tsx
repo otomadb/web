@@ -29,7 +29,8 @@ export const TagType: React.FC<{
               phrase: "text-tag-phrase-primary",
               series: "text-tag-series-primary",
               style: "text-tag-style-primary",
-              tactics: "text-tag-tactics-primary",
+              technique: "text-tag-technique-primary",
+              realperson: "text-tag-realperson-primary",
             }[belongTo.keyword]
           : "text-tag-subtle-primary"
       )}
