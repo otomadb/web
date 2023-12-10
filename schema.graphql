@@ -149,7 +149,6 @@ type BilibiliMadRequestedTimelineEvent implements TimelineEvent {
 type BilibiliOriginalSource {
   """
   bilibili側のオリジナルの画像URL
-
   bilibili側の制約上、別のオリジンから直接埋め込んだりすることはほとんど出来ないことに注意．
   """
   originalThumbnailUrl: String!
@@ -1845,7 +1844,7 @@ input RequestSoundcloudRegistrationInput {
   taggings: [RequestSoundcloudRegistrationInputTagging!]!
 
   """**プラットフォーム側の**サムネイル画像のURL"""
-  thumbnailUrl: String
+  thumbnailUrl: String!
   title: String!
 }
 
@@ -2246,7 +2245,6 @@ type Tag implements Node {
 
   """このタグが帰属するAbstractGroup．ない場合または複数の場合は`null`を返す．"""
   belongTo: AbstractGroup
-
   """動画に対してタグを付けることができるか"""
   canTagTo(
     """動画のID"""
