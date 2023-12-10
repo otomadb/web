@@ -85,7 +85,7 @@ const useRequestFromSoundcloud = ({
       /**
        * Soundcloud側のサムネイル画像のURL
        */
-      originalThumbnailUrl: string | null;
+      originalThumbnailUrl: string;
       taggings: { tagId: string; note: null }[];
       semitaggings: { name: string; note: null }[];
     }) => {
