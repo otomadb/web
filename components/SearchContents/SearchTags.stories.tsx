@@ -3,7 +3,6 @@ import { graphql } from "msw";
 
 import { TagPageLinkFragment } from "~/app/(v2)/tags/[serial]/Link";
 import { makeFragmentData } from "~/gql";
-import { TagType } from "~/gql/graphql";
 
 import { CommonTagFragment } from "../CommonTag";
 import SearchTags, { SearchTagsQuery } from "./SearchTags";
@@ -47,7 +46,7 @@ export const $handlerSomeTagsHit = graphql.query(
                 ...makeFragmentData(
                   {
                     name: "Name 1",
-                    type: TagType.Character,
+                    belongTo: { keyword: "character" },
                     explicitParent: null,
                   },
                   CommonTagFragment
@@ -61,7 +60,7 @@ export const $handlerSomeTagsHit = graphql.query(
                 ...makeFragmentData(
                   {
                     name: "Name 2",
-                    type: TagType.Character,
+                    belongTo: { keyword: "character" },
                     explicitParent: null,
                   },
                   CommonTagFragment

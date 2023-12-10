@@ -9,7 +9,6 @@ import { UserPageLinkFragment } from "~/app/(v2)/users/[name]/Link";
 import { CommonTagFragment } from "~/components/CommonTag";
 import { Fragment as UserIconFragment } from "~/components/UserIcon";
 import { makeFragmentData } from "~/gql";
-import { TagType } from "~/gql/graphql";
 
 import { BilibiliOriginalSourceFragment } from "./BilibiliOriginalSource";
 import BilibiliRegisterForm, {
@@ -55,7 +54,7 @@ export const mockSourceFragment = makeFragmentData(
               tag: {
                 id: `tag:${i}:${j}`,
                 ...makeFragmentData(
-                  { name: `Tag.${i}.${j}`, type: TagType.Character },
+                  { name: `Tag.${i}.${j}`, belongTo: { keyword: "character" } },
                   CommonTagFragment
                 ),
               },
@@ -88,7 +87,7 @@ export const mockRequestFragment = makeFragmentData(
         tag: {
           id: "tag:1",
           ...makeFragmentData(
-            { name: "Requested Tag 1", type: TagType.Character },
+            { name: "Requested Tag 1", belongTo: { keyword: "character" } },
             CommonTagFragment
           ),
         },

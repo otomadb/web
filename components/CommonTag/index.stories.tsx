@@ -2,7 +2,6 @@ import { action } from "@storybook/addon-actions";
 import { Meta, StoryObj } from "@storybook/react";
 
 import { makeFragmentData } from "~/gql";
-import { TagType } from "~/gql/graphql";
 
 import CommonTag, { CommonTagFragment } from ".";
 
@@ -26,7 +25,7 @@ export const Character: StoryObj<typeof meta> = {
       {
         id: "t1",
         name: "Tag 1",
-        type: TagType.Character,
+        belongTo: { keyword: "character" },
         explicitParent: { id: "t2", name: "Tag 2" },
       },
       CommonTagFragment
@@ -40,7 +39,7 @@ export const Class: StoryObj<typeof meta> = {
       {
         id: "t1",
         name: "Tag 1",
-        type: TagType.Class,
+        belongTo: { keyword: "class" },
         explicitParent: { id: "t2", name: "Tag 2" },
       },
       CommonTagFragment
@@ -54,7 +53,7 @@ export const Copyright: StoryObj<typeof meta> = {
       {
         id: "t1",
         name: "Tag 1",
-        type: TagType.Copyright,
+        belongTo: { keyword: "copyright" },
         explicitParent: { id: "t2", name: "Tag 2" },
       },
       CommonTagFragment
@@ -68,7 +67,7 @@ export const Event: StoryObj<typeof meta> = {
       {
         id: "t1",
         name: "Tag 1",
-        type: TagType.Event,
+        belongTo: { keyword: "event" },
         explicitParent: { id: "t2", name: "Tag 2" },
       },
       CommonTagFragment
@@ -82,7 +81,7 @@ export const Music: StoryObj<typeof meta> = {
       {
         id: "t1",
         name: "Tag 1",
-        type: TagType.Music,
+        belongTo: { keyword: "music" },
         explicitParent: { id: "t2", name: "Tag 2" },
       },
       CommonTagFragment
@@ -96,7 +95,7 @@ export const Phrase: StoryObj<typeof meta> = {
       {
         id: "t1",
         name: "Tag 1",
-        type: TagType.Phrase,
+        belongTo: { keyword: "phrase" },
         explicitParent: { id: "t2", name: "Tag 2" },
       },
       CommonTagFragment
@@ -110,7 +109,7 @@ export const Series: StoryObj<typeof meta> = {
       {
         id: "t1",
         name: "Tag 1",
-        type: TagType.Series,
+        belongTo: { keyword: "series" },
         explicitParent: { id: "t2", name: "Tag 2" },
       },
       CommonTagFragment
@@ -124,21 +123,7 @@ export const Style: StoryObj<typeof meta> = {
       {
         id: "t1",
         name: "Tag 1",
-        type: TagType.Style,
-        explicitParent: { id: "t2", name: "Tag 2" },
-      },
-      CommonTagFragment
-    ),
-  },
-};
-
-export const Subtle: StoryObj<typeof meta> = {
-  args: {
-    fragment: makeFragmentData(
-      {
-        id: "t1",
-        name: "Tag 1",
-        type: TagType.Subtle,
+        belongTo: { keyword: "style" },
         explicitParent: { id: "t2", name: "Tag 2" },
       },
       CommonTagFragment
@@ -152,21 +137,7 @@ export const Tactics: StoryObj<typeof meta> = {
       {
         id: "t1",
         name: "Tag 1",
-        type: TagType.Tactics,
-        explicitParent: { id: "t2", name: "Tag 2" },
-      },
-      CommonTagFragment
-    ),
-  },
-};
-
-export const Unknown: StoryObj<typeof meta> = {
-  args: {
-    fragment: makeFragmentData(
-      {
-        id: "t1",
-        name: "Tag 1",
-        type: TagType.Unknown,
+        belongTo: { keyword: "tactics" },
         explicitParent: { id: "t2", name: "Tag 2" },
       },
       CommonTagFragment

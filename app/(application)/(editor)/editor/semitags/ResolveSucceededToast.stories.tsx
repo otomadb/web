@@ -3,7 +3,6 @@ import { Meta, StoryObj } from "@storybook/react";
 import { Fragment as CommonSemitagFragment } from "~/components/CommonSemitag";
 import { CommonTagFragment } from "~/components/CommonTag";
 import { makeFragmentData } from "~/gql";
-import { TagType } from "~/gql/graphql";
 
 import SucceededResolveToast, { Fragment } from "./ResolveSucceededToast";
 
@@ -29,7 +28,7 @@ export const Primary: StoryObj<typeof meta> = {
             tag: {
               id: "t1",
               ...makeFragmentData(
-                { name: "Tag 1", type: TagType.Character },
+                { name: "Tag 1", belongTo: { keyword: "character" } },
                 CommonTagFragment
               ),
             },

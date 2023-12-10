@@ -9,7 +9,6 @@ import { UserPageLinkFragment } from "~/app/(v2)/users/[name]/Link";
 import { CommonTagFragment } from "~/components/CommonTag";
 import { Fragment as UserIconFragment } from "~/components/UserIcon";
 import { makeFragmentData } from "~/gql";
-import { TagType } from "~/gql/graphql";
 
 import { YoutubeRegisterOriginalSourceFragment } from "./YoutubeOriginalSource";
 import YoutubeRegisterForm, {
@@ -72,7 +71,7 @@ export const mockRequestFragment = makeFragmentData(
         tag: {
           id: "tag:1",
           ...makeFragmentData(
-            { name: "Requested Tag 1", type: TagType.Character },
+            { name: "Requested Tag 1", belongTo: { keyword: "character" } },
             CommonTagFragment
           ),
         },

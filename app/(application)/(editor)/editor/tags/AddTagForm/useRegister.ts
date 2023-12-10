@@ -7,7 +7,6 @@ import { useMutation } from "urql";
 
 import { CommonTagFragment } from "~/components/CommonTag";
 import { graphql, makeFragmentData } from "~/gql";
-import { TagType } from "~/gql/graphql";
 
 import { Fragment as SucceededToastFragment } from "./SucceededToast";
 
@@ -86,7 +85,7 @@ export const mockSuccessful = mswGraphQL.mutation(Mutation, (req, res, ctx) => {
               ...makeFragmentData(
                 {
                   name: "Tag 1",
-                  type: TagType.Character,
+                  belongTo: { keyword: "character" },
                   explicitParent: null,
                 },
                 CommonTagFragment

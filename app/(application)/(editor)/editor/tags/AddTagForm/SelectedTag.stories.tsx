@@ -4,7 +4,6 @@ import { graphql as mockGql } from "msw";
 
 import { CommonTagFragment } from "~/components/CommonTag";
 import { makeFragmentData } from "~/gql";
-import { TagType } from "~/gql/graphql";
 
 import { RegisterTagForm } from "../Form";
 import { Query, SelectedTag } from "./SelectedTag";
@@ -35,7 +34,7 @@ export const Primary: Story = {
                 ...makeFragmentData(
                   {
                     name: "Tag 1",
-                    type: TagType.Character,
+                    belongTo: { keyword: "character" },
                     explicitParent: {
                       id: "id:tag2",
                       name: "Tag 2",

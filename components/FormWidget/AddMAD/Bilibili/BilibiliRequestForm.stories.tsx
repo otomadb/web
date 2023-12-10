@@ -7,7 +7,6 @@ import { graphql as mockGql } from "msw";
 import { BilibiliRequestPageLinkFragment } from "~/app/(v2)/requests/bilibili/[sourceId]/Link";
 import { CommonTagFragment } from "~/components/CommonTag";
 import { makeFragmentData } from "~/gql";
-import { TagType } from "~/gql/graphql";
 
 import { mockTagSearcher } from "../Nicovideo/NicovideoRegister.stories";
 import { BilibiliOriginalSourceFragment } from "./BilibiliOriginalSource";
@@ -56,7 +55,7 @@ export const mockSourceFragment = makeFragmentData(
               tag: {
                 id: `tag:${i}:${j}`,
                 ...makeFragmentData(
-                  { name: `Tag.${i}.${j}`, type: TagType.Character },
+                  { name: `Tag.${i}.${j}`, belongTo: { keyword: "character" } },
                   CommonTagFragment
                 ),
               },

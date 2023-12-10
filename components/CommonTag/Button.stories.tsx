@@ -3,7 +3,6 @@ import { Meta, StoryObj } from "@storybook/react";
 
 import { CommonTagFragment } from "~/components/CommonTag";
 import { makeFragmentData } from "~/gql";
-import { TagType } from "~/gql/graphql";
 
 import { TagButton } from "./Button";
 
@@ -14,7 +13,7 @@ const meta = {
       {
         id: "t1",
         name: "Tag 1",
-        type: TagType.Character,
+        belongTo: { keyword: "character" },
         explicitParent: { id: "t2", name: "Tag 2" },
       },
       CommonTagFragment

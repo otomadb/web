@@ -30,7 +30,9 @@ export default async function Taggings({
                 ...CommonTagLink
                 ...TagType
                 id
-                type
+                belongTo {
+                  keyword
+                }
               }
             }
           }
@@ -45,12 +47,12 @@ export default async function Taggings({
       <div className={clsx("flex gap-x-2 gap-y-1")}>
         {taggings.nodes
           .filter(
-            ({ tag: { type: t1 } }, i, arr) =>
-              i === arr.findIndex(({ tag: { type: t2 } }) => t1 === t2)
+            ({ tag: { belongTo: k1 } }, i, arr) =>
+              i === arr.findIndex(({ tag: { belongTo: k2 } }) => k1 === k2)
           )
           .map((node) => (
             <TagType
-              key={node.tag.type}
+              key={node.tag.belongTo?.keyword}
               className={clsx("text-xs")}
               fragment={node.tag}
             />

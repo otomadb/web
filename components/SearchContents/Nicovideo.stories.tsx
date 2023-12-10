@@ -6,7 +6,6 @@ import { MadPageLinkFragment } from "~/app/(v2)/mads/[serial]/Link";
 import { TagPageLinkFragment } from "~/app/(v2)/tags/[serial]/Link";
 import { UserPageLinkFragment } from "~/app/(v2)/users/[name]/Link";
 import { makeFragmentData } from "~/gql";
-import { TagType } from "~/gql/graphql";
 
 import { CommonTagFragment } from "../CommonTag";
 import { Fragment as UserIconFragment } from "../UserIcon";
@@ -60,7 +59,11 @@ const source: Exclude<
           tag: {
             id: "t1",
             ...makeFragmentData(
-              { name: "name 1", type: TagType.Character, explicitParent: null },
+              {
+                name: "name 1",
+                belongTo: { keyword: "character" },
+                explicitParent: null,
+              },
               CommonTagFragment
             ),
             ...makeFragmentData({ serial: 1 }, TagPageLinkFragment),
@@ -71,7 +74,11 @@ const source: Exclude<
           tag: {
             id: "t2",
             ...makeFragmentData(
-              { name: "name 2", type: TagType.Character, explicitParent: null },
+              {
+                name: "name 2",
+                belongTo: { keyword: "character" },
+                explicitParent: null,
+              },
               CommonTagFragment
             ),
             ...makeFragmentData({ serial: 2 }, TagPageLinkFragment),

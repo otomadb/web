@@ -6,7 +6,6 @@ import { ComponentProps } from "react";
 
 import { CommonTagFragment } from "~/components/CommonTag";
 import { makeFragmentData } from "~/gql";
-import { TagType } from "~/gql/graphql";
 
 import TagSearcher, { Query } from ".";
 import { SuggestItemFragment } from "./SuggestItem";
@@ -41,7 +40,7 @@ const meta = {
                             ...makeFragmentData(
                               {
                                 name: `Tag ${i + 1}`,
-                                type: TagType.Character,
+                                belongTo: { keyword: "character" },
                                 explicitParent: {
                                   id: "tag:0",
                                   name: "Tag 0",
