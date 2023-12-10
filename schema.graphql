@@ -1,5 +1,16 @@
 directive @auth(optional: Boolean = false, scopes: [String!]) on FIELD_DEFINITION
 
+type AbstractGroup {
+  keyword: ID!
+  name(locale: String! = "ja"): String!
+}
+
+type AbstractGrouping {
+  group: AbstractGroup!
+  id: ID!
+  tag: Tag!
+}
+
 input AddMylistToMylistGroupInput {
   groupId: ID!
   mylistId: ID!
@@ -136,10 +147,20 @@ type BilibiliMadRequestedTimelineEvent implements TimelineEvent {
 }
 
 type BilibiliOriginalSource {
+  """
+  bilibili側のオリジナルの画像URL
+  
+  bilibili側の制約上、別のオリジンから直接埋め込んだりすることはほとんど出来ないことに注意．
+  """
   originalThumbnailUrl: String!
+
+  """プロキシされた画像URL"""
+  proxiedThumbnailUrl(scale: FetchExternalSourceThumbnailScale! = LARGE): String!
   sourceId: String!
   tags: [BilibiliOriginalSourceTag!]!
-  thumbnailUrl(scale: FetchExternalSourceThumbnailScale! = LARGE): String!
+
+  """プロキシされた画像URL"""
+  thumbnailUrl(scale: FetchExternalSourceThumbnailScale! = LARGE): String! @deprecated(reason: "Use `proxiedThumbnailUrl`")
   title: String!
   url: String!
 }
@@ -377,6 +398,17 @@ interface Event implements Node {
   """createdAtでのソートが不可能なので，別のEvent同士を混合してソートする際に必要．"""
   series: String!
   user: User!
+}
+
+input ExcludeTagToGroupInput {
+  groupKeyword: ID!
+  tagId: ID!
+}
+
+union ExcludeTagToGroupPayload = ExcludeTagToGroupSuccessfulPayload
+
+type ExcludeTagToGroupSuccessfulPayload {
+  grouping: AbstractGrouping!
 }
 
 """その他のエラー"""
@@ -694,6 +726,17 @@ type ImplicitizeTagSucceededPayload {
   relation: TagParent!
 }
 
+input IncludeTagToGroupInput {
+  groupKeyword: ID!
+  tagId: ID!
+}
+
+union IncludeTagToGroupPayload = IncludeTagToGroupSuccessfulPayload
+
+type IncludeTagToGroupSuccessfulPayload {
+  grouping: AbstractGrouping!
+}
+
 input LikeVideoInput {
   videoId: ID!
 }
@@ -731,12 +774,14 @@ type Mutation {
   changeUserDisplayName(renameTo: String!): ChangeUserDisplayNameReturnUnion!
   createMylist(input: CreateMylistInput!): CreateMylistReturnUnion!
   createMylistGroup(input: CreateMylistGroupInput!): CreateMylistGroupPayload!
+  excludeTagToGroup(input: ExcludeTagToGroupInput!): ExcludeTagToGroupPayload!
 
   """非明示的なタグの親子関係を明示的に昇格する"""
   explicitizeTagParent(input: ExplicitizeTagParentInput!): ExplicitizeTagParentReturnUnion!
 
   """明示的なタグの親子関係を非明示的に降格する"""
   implicitizeTagParent(input: ImplicitizeTagParentInput!): ImplicitizeTagParentReturnUnion!
+  includeTagToGroup(input: IncludeTagToGroupInput!): IncludeTagToGroupPayload!
   likeVideo(input: LikeVideoInput!): LikeVideoReturnUnion!
   registerBilibiliMAD(input: RegisterBilibiliMADInput!): RegisterBilibiliMADResult!
   registerCategoryTag(input: RegisterCategoryTagInput!): RegisterCategoryTagResultUnion!
@@ -1364,6 +1409,7 @@ type Query {
   findVideos(after: String, before: String, first: Int, last: Int, orderBy: FindVideosOrderBy! = {createdAt: DESC}): VideoConnection!
   findYoutubeRegistrationRequest(input: FindYoutubeRegistrationRequestInput): YoutubeRegistrationRequest
   findYoutubeVideoSource(input: FindYoutubeVideoSourceInput!): YoutubeVideoSource
+  getAbstractGroup(keyword: ID!): AbstractGroup!
   getAllCategoryTag: [Tag!]!
 
   """全てのTypeCategoryTagを取得する"""
@@ -1797,8 +1843,8 @@ input RequestSoundcloudRegistrationInput {
   sourceId: String!
   taggings: [RequestSoundcloudRegistrationInputTagging!]!
 
-  """プラットフォーム側のサムネイル画像のURL（無い場合もある）"""
-  thumbnailUrl: String
+  """**プラットフォーム側の**サムネイル画像のURL"""
+  thumbnailUrl: String!
   title: String!
 }
 
@@ -2040,10 +2086,13 @@ type SoundcloudMadRequestedTimelineEvent implements TimelineEvent {
 type SoundcloudOriginalSource {
   """SoundCloud側のサムネイル画像．ない場合は投稿者のユーザー画像になる．"""
   originalThumbnailUrl: String!
+
+  """プロキシしたサムネイル画像URL"""
+  proxiedThumbnailUrl(scale: FetchExternalSourceThumbnailScale! = LARGE): String!
   sourceId: String!
 
   """プロキシしたサムネイル画像"""
-  thumbnailUrl(scale: FetchExternalSourceThumbnailScale! = LARGE): String!
+  thumbnailUrl(scale: FetchExternalSourceThumbnailScale! = LARGE): String! @deprecated(reason: "Use `proxiedThumbnailUrl`")
   title: String!
   url: String!
 }
@@ -2055,12 +2104,8 @@ type SoundcloudRegistrationRequest implements Node & RegistrationRequest {
   events(input: SoundcloudRegistrationRequestEventsInput!): SoundcloudRegistrationRequestEventConnection!
   id: ID!
 
-  """
-  SoundCloud側のオリジナルのサムネイル画像のURL
-  
-  **無い場合もあることに注意.**
-  """
-  originalThumbnailUrl: String
+  """SoundCloud側のオリジナルのサムネイル画像または投稿者のユーザ画像のURL"""
+  originalThumbnailUrl: String!
   originalUrl: String!
   requestedBy: User!
   semitaggings: [SoundcloudRegistrationRequestSemitagging!]!
@@ -2192,6 +2237,15 @@ type SoundcloudRegistrationRequestTagging implements Node & RegistrationRequestT
 }
 
 type Tag implements Node {
+  """
+  このタグが帰属するAbstractGroupを全て取得する．
+  常に1つであることが望ましいが，場合によっては複数または存在しないこともある．
+  """
+  allBelongTo: [AbstractGrouping!]!
+
+  """このタグが帰属するAbstractGroup．ない場合または複数の場合は`null`を返す．"""
+  belongTo: ID
+
   """動画に対してタグを付けることができるか"""
   canTagTo(
     """動画のID"""
@@ -2813,8 +2867,10 @@ type YoutubeMadRequestedTimelineEvent implements TimelineEvent {
 }
 
 type YoutubeOriginalSource {
+  originalThumbnailUrl: String!
+  proxiedThumbnailUrl(scale: FetchExternalSourceThumbnailScale! = LARGE): String!
   sourceId: String!
-  thumbnailUrl: String!
+  thumbnailUrl: String! @deprecated(reason: "Use `originalThumbnailUrl`")
   url: String!
 }
 
