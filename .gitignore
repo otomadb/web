@@ -40,5 +40,5 @@ storybook-static
 # GraphQL Inspector
 .inspector-validate-report.json
 
-# husky
-.huskyrc
+# lefthook
+lefthook-local.yml
