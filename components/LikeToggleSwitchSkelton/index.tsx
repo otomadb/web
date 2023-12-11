@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useMutation } from "urql";
 
@@ -34,6 +35,8 @@ export const LikeSwitchSkelton: React.FC<
   );
   const [isLiked, setIsLiked] = useState(isLikedInit);
 
+  const router = useRouter();
+
   const [, mutateLike] = useMutation(
     graphql(`
       mutation LikeSwitchSkelton_mutateLike($videoId: ID!) {
@@ -62,6 +65,7 @@ export const LikeSwitchSkelton: React.FC<
 
         setIsLiked(true);
         mutateLike({ videoId }).then((result) => {
+          router.refresh();
           switch (result.data?.likeVideo.__typename) {
             case "LikeVideoSucceededPayload":
               setIsLiked(true);
@@ -77,6 +81,7 @@ export const LikeSwitchSkelton: React.FC<
 
         setIsLiked(false);
         mutateUnlike({ videoId }).then((result) => {
+          router.refresh();
           switch (result.data?.undoLikeVideo.__typename) {
             case "UndoLikeVideoSucceededPayload":
               setIsLiked(false);
