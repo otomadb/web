@@ -14,6 +14,7 @@ import {
   NoSymbolIcon,
   PencilIcon,
   PlusIcon,
+  RectangleGroupIcon,
   TagIcon,
   UserPlusIcon,
   XMarkIcon,
@@ -91,6 +92,10 @@ export const ExternalLinkPictogram = (props: { className?: string }) => (
 export const NotFoundPictogram = (props: { className?: string }) => (
   <ExclamationCircleIcon {...props} />
 );
+
+export const GroupPictogram: PictogramType = (props: {
+  className?: string;
+}) => <RectangleGroupIcon {...props} />;
 
 export const TwitterPictogram: PictogramType = (props) => (
   <TwitterSVG {...props} />

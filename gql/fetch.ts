@@ -6,10 +6,10 @@ export const makeGraphQLClient = (config: RequestConfig = {}) =>
   new GraphQLClient(process.env.GRAPHQL_API_ENDPOINT, config);
 
 export const makeGraphQLClient2 = async ({
-  auth,
+  auth = "optional",
   ...fetchOptions
 }: {
-  auth: "optional" | "required";
+  auth?: "optional" | "required";
   next?: RequestInit["next"];
 }) => {
   const accessToken = await getAccessToken()
