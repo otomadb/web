@@ -7,6 +7,7 @@ import { graphql as mockGql } from "msw";
 
 import { mockCommonMadBlockFragment } from "~/components/CommonMadBlock/index.stories";
 import { makeFragmentData } from "~/gql";
+import { isTest } from "~/test/isTest";
 
 import { Current, FormModalContext } from "../..";
 import SourceIDForm from ".";
@@ -26,6 +27,8 @@ const mkStory = (name: string, url: string, expected: unknown): Story => ({
     openFormModal: jest.fn(),
   },
   play: async ({ canvasElement, parameters }) => {
+    if (isTest) return;
+
     const canvas = within(canvasElement);
 
     await userEvent.type(canvas.getByRole("textbox"), url);

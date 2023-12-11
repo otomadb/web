@@ -27,7 +27,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     ".storybook/preview.tsx",
-    ".storybook/main.ts"
+    ".storybook/main.ts",
+    "vitest.config.mts"
   ],
   "exclude": ["node_modules", ".next", "storybook-static"]
 }
