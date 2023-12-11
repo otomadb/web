@@ -2,6 +2,7 @@
 
 import { ResultOf } from "@graphql-typed-document-node/core";
 import clsx from "clsx";
+import { useRouter } from "next/navigation";
 import React, { useCallback, useMemo, useState } from "react";
 import { useMutation } from "urql";
 
@@ -146,6 +147,8 @@ export default function SoundcloudRegisterForm({
   const [tab, setTab] = useState<"SOURCE" | "REQUEST">("SOURCE");
 
   const callToast = useToaster();
+  const router = useRouter();
+
   const registerMAD = useRegisterVideo({
     onSuccess({ mad }) {
       callToast(
@@ -159,9 +162,11 @@ export default function SoundcloudRegisterForm({
           を登録しました．
         </>
       );
+      router.refresh();
       handleSuccess();
     },
   });
+
   const payload = useMemo<null | Parameters<typeof registerMAD>[0]>(() => {
     if (title === "") return null;
 

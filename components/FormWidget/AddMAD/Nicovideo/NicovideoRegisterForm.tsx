@@ -2,6 +2,7 @@
 
 import { ResultOf } from "@graphql-typed-document-node/core";
 import clsx from "clsx";
+import { useRouter } from "next/navigation";
 import React, { useCallback, useMemo, useState } from "react";
 import { useMutation } from "urql";
 
@@ -171,7 +172,10 @@ export default function NicovideoRegisterForm({
     tagIds,
     title,
   ]);
+
   const callToast = useToaster();
+  const router = useRouter();
+
   const registerVideo = useRegisterVideo({
     onSuccess({ video }) {
       callToast(
@@ -185,6 +189,7 @@ export default function NicovideoRegisterForm({
           を登録しました．
         </>
       );
+      router.refresh();
       handleSuccess();
     },
   });

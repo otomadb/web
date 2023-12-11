@@ -2,6 +2,7 @@
 
 import { ResultOf } from "@graphql-typed-document-node/core";
 import clsx from "clsx";
+import { useRouter } from "next/navigation";
 import { CSSProperties, useCallback, useMemo, useState } from "react";
 import { useMutation } from "urql";
 
@@ -150,6 +151,8 @@ export default function BilibiliRequestForm({
   } = useRequestFormEditSemitaggings();
 
   const callToast = useToaster();
+  const router = useRouter();
+
   const requestVideo = useRequestFromBilibili({
     onSuccess({ request }) {
       callToast(
@@ -163,6 +166,7 @@ export default function BilibiliRequestForm({
           をリクエストしました
         </>
       );
+      router.refresh();
       handleSuccess();
     },
     onAlready({ source: { sourceId, video } }) {
