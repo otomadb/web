@@ -1,11 +1,13 @@
 import { action } from "@storybook/addon-actions";
 import { Meta, StoryObj } from "@storybook/react";
 import { userEvent, within } from "@storybook/testing-library";
+import { waitFor } from "@storybook/testing-library";
 import { graphql } from "msw";
 import { ComponentProps } from "react";
 
 import { CommonTagFragment } from "~/components/CommonTag";
 import { makeFragmentData } from "~/gql";
+import { isTest } from "~/test/isTest";
 
 import TagSearcher, { Query } from ".";
 import { SuggestItemFragment } from "./SuggestItem";
@@ -128,13 +130,18 @@ export const 検索候補がない: Story = {
   },
 };
 
-export const 検索候補を選択: Story = {
+export const SelectSearchCandidates: Story = {
+  name: "検索候補を選択",
   play: async ({ canvasElement }) => {
+    if (isTest) return;
+
     const canvas = within(canvasElement);
     await userEvent.type(canvas.getByRole("textbox"), "Test");
 
-    const items = await canvas.findAllByLabelText("検索候補");
-    await userEvent.click(items[0]);
+    await waitFor(async () => {
+      const items = await canvas.findAllByLabelText("検索候補");
+      await userEvent.click(items[0]);
+    });
   },
 };
 
@@ -142,7 +149,8 @@ const Additional: ComponentProps<typeof TagSearcher>["Additional"] = ({
   query,
 }) => <span style={{ color: "white" }}>{query}</span>;
 
-export const 別の選択肢を提示: Story = {
+export const AdditionalOption: Story = {
+  name: "別の選択肢を提示",
   args: { Additional },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);

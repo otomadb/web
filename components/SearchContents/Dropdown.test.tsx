@@ -7,9 +7,9 @@ import * as stories from "./Dropdown.stories";
 describe("Storybook", () => {
   it.each(Object.entries(composeStories(stories)))(
     "renders %s",
-    (name, Story) => {
+    async (name, Story) => {
       const screen = render(<Story />);
-      Story.play?.({ canvasElement: screen.container });
+      await Story.play?.({ canvasElement: screen.container });
     }
   );
 });

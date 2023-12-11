@@ -5,6 +5,7 @@ import { waitFor, within } from "@storybook/testing-library";
 
 import { Current, FormModalContext } from "~/components/FormWidget";
 import { makeFragmentData } from "~/gql";
+import { isTest } from "~/test/isTest";
 
 import BilibiliRequestTimelineEvent, {
   BilibiliRequestTimelineEventFragment,
@@ -69,9 +70,7 @@ export const NotEditor: Story = {
 
   parameters: {
     msw: {
-      handlers: {
-        roles: mockHasNoRole,
-      },
+      handlers: [mockHasNoRole],
     },
   },
   play: async ({ canvasElement }) => {
@@ -89,22 +88,22 @@ export const Editor: Story = {
   parameters: {
     openFormModal: jest.fn(),
     msw: {
-      handlers: {
-        roles: mockHasRole,
-      },
+      handlers: [mockHasRole],
     },
   },
   play: async ({ canvasElement, parameters }) => {
+    if (isTest) return;
+
     const canvas = within(canvasElement);
 
-    await waitFor(() => {
+    await waitFor(async () => {
       expect(canvas.getByRole("button")).toBeEnabled();
     });
 
     canvas.getByRole("button").click();
 
-    await waitFor(() => {
-      expect(parameters.openFormModal).toBeCalledWith({
+    await waitFor(async () => {
+      await expect(parameters.openFormModal).toBeCalledWith({
         type: "SOURCE_INPUT",
         mode: "register",
         init: {

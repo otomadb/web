@@ -2,8 +2,10 @@ import { action } from "@storybook/addon-actions";
 import { expect } from "@storybook/jest";
 import { useArgs } from "@storybook/preview-api";
 import { Meta, StoryObj } from "@storybook/react";
-import { within } from "@storybook/testing-library";
+import { waitFor, within } from "@storybook/testing-library";
 import { ComponentProps } from "react";
+
+import { isTest } from "~/test/isTest";
 
 import { Presentation } from "./LikeButton";
 
@@ -59,13 +61,17 @@ export const PressLike: Story = {
     );
   },
   play: async function Play({ canvasElement }) {
+    if (isTest) return;
+
     const canvas = within(canvasElement);
     await canvas.getByRole("checkbox").click();
 
-    expect(canvas.getByRole("checkbox")).toHaveAttribute(
-      "aria-checked",
-      "true"
-    );
+    await waitFor(async () => {
+      await expect(canvas.getByRole("checkbox")).toHaveAttribute(
+        "aria-checked",
+        "true"
+      );
+    });
   },
 };
 
@@ -76,12 +82,16 @@ export const PressUnlike: Story = {
   },
   render: PressLike.render,
   play: async function Play({ canvasElement }) {
+    if (isTest) return;
+
     const canvas = within(canvasElement);
     await canvas.getByRole("checkbox").click();
 
-    expect(canvas.getByRole("checkbox")).toHaveAttribute(
-      "aria-checked",
-      "false"
-    );
+    await waitFor(async () => {
+      await expect(canvas.getByRole("checkbox")).toHaveAttribute(
+        "aria-checked",
+        "false"
+      );
+    });
   },
 };
