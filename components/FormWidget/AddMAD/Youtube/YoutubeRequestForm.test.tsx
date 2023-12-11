@@ -2,7 +2,7 @@ import { composeStories } from "@storybook/react";
 import { render } from "@testing-library/react";
 import { describe, it } from "vitest";
 
-import * as stories from "./YoutubeRequest.stories";
+import * as stories from "./YoutubeRequestForm.stories";
 
 describe("Storybook", () => {
   it.each(Object.entries(composeStories(stories)))(
