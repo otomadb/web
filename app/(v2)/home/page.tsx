@@ -1,48 +1,14 @@
-import { getAccessToken, withPageAuthRequired } from "@auth0/nextjs-auth0";
+import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import clsx from "clsx";
-
-import CommonMadBlock from "~/components/CommonMadBlock";
-import { graphql } from "~/gql";
-import { makeGraphQLClient } from "~/gql/fetch";
+import { Suspense } from "react";
 
 import MyLikesPageLink from "../me/likes/Link";
+import LikesSectionInner from "./LikesSectionInner";
 import { ModalOpener } from "./ModalOpener";
 import Timeline from "./Timeline";
 
-export const dynamic = "force-dynamic";
-
 export default withPageAuthRequired(
   async () => {
-    const { accessToken } = await getAccessToken();
-    if (!accessToken) throw new Error("accessToken is null");
-
-    const result = await makeGraphQLClient({}).request(
-      graphql(`
-        query HomePage {
-          viewer {
-            id
-            likes {
-              registrations(first: 8) {
-                nodes {
-                  id
-                  video {
-                    id
-                    ...CommonMadBlock
-                  }
-                }
-              }
-            }
-          }
-        }
-      `),
-      {},
-      { Authorization: `Bearer ${accessToken}` }
-    );
-    const { viewer } = result;
-    if (!viewer) throw new Error("viewer is null");
-
-    const { likes } = viewer;
-
     return (
       <>
         <ModalOpener />
@@ -80,21 +46,9 @@ export default withPageAuthRequired(
                   </MyLikesPageLink>
                 </div>
                 <div className={clsx("mt-2 flex flex-col items-stretch")}>
-                  <div
-                    className={clsx(
-                      "grid grid-cols-2 gap-2 scrollbar-thin scrollbar-track-obsidian-primary scrollbar-thumb-obsidian-lighter scrollbar-w-[4px] @[512px]/likes:flex @[512px]/likes:overflow-x-scroll @[512px]/likes:pb-4"
-                    )}
-                  >
-                    {likes.registrations.nodes.map((node) => (
-                      <div key={node.id} className={clsx("shrink-0")}>
-                        <CommonMadBlock
-                          size="small"
-                          fragment={node.video}
-                          classNames={clsx("h-full @[512px]/likes:w-48")}
-                        />
-                      </div>
-                    ))}
-                  </div>
+                  <Suspense fallback={<p>Loading</p>}>
+                    <LikesSectionInner />
+                  </Suspense>
                 </div>
               </section>
             </div>
