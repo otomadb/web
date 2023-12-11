@@ -1,8 +1,24 @@
 directive @auth(optional: Boolean = false, scopes: [String!]) on FIELD_DEFINITION
 
 type AbstractGroup {
+  """このグループに属しているタグの一覧"""
+  belongingTags(input: AbstractGroupBelongingTagsInput!): TagConnection!
   keyword: ID!
   name(locale: String! = "ja"): String!
+}
+
+"""**全取得が許容されています．**"""
+input AbstractGroupBelongingTagsInput {
+  after: String
+  before: String
+  first: Int
+  last: Int
+  orderBy: AbstractGroupBelongingTagsInputOrderBy! = {taggedMads: DESC}
+}
+
+input AbstractGroupBelongingTagsInputOrderBy {
+  """タグ付いている音MADの数でソート"""
+  taggedMads: SortOrder
 }
 
 type AbstractGrouping {
@@ -552,18 +568,16 @@ input FindTagInput {
 }
 
 input FindTagsInput {
-  limit: Int! = 10
-
-  """正確に一致"""
-  name: String
-  order: FindTagsInputOrder! = {updatedAt: DESC}
-  parents: [ID!]
-  skip: Int! = 0
+  after: String
+  before: String
+  first: Int
+  last: Int
+  orderBy: FindTagsInputOrderBy! = {taggedMads: DESC}
 }
 
-input FindTagsInputOrder {
-  createdAt: SortOrder
-  updatedAt: SortOrder
+input FindTagsInputOrderBy {
+  """タグ付いている音MADの数でソート"""
+  taggedMads: SortOrder
 }
 
 input FindUncheckedBilibiliRegistrationRequestsByOffsetInput {
@@ -2230,7 +2244,15 @@ input TagChildrenOrderBy {
 }
 
 type TagConnection {
+  edges: [TagEdge!]!
   nodes: [Tag!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type TagEdge {
+  cursor: String!
+  node: Tag!
 }
 
 interface TagEvent implements Event & Node {

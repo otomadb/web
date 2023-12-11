@@ -1,6 +1,7 @@
 "use client";
 
 import clsx from "clsx";
+import Link from "next/link";
 import { useQuery } from "urql";
 
 import { LinkRegisterSemitag } from "~/app/(application)/(editor)/editor/semitags/Link";
@@ -15,6 +16,7 @@ import { useOpenInput } from "~/components/FormWidget";
 import Logo from "~/components/Logo";
 import {
   BilibiliPictogram,
+  GroupPictogram,
   NicovideoPictogram,
   PlusPictogram,
   SoundcloudPictogram,
@@ -94,6 +96,15 @@ export default function AppSideNav({
                 <PlusPictogram className={clsx("h-4 w-4")} />
                 <span className={clsx("text-sm")}>最近追加された音MAD</span>
               </AllVideosPageLink>
+              <Link
+                href="/groups"
+                className={clsx(
+                  "group flex items-center gap-x-2 px-4 py-1 text-left text-snow-darkest hover:bg-vivid-primary hover:text-obsidian-primary"
+                )}
+              >
+                <GroupPictogram className={clsx("h-4 w-4")} />
+                <span className={clsx("text-sm")}>タグのグループ</span>
+              </Link>
             </div>
             <div
               className={clsx(
