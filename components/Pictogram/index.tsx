@@ -2,6 +2,7 @@ import {
   ArrowLeftOnRectangleIcon,
   ArrowTopRightOnSquareIcon,
   CheckIcon,
+  Cog6ToothIcon,
   HeartIcon as OutlineHeartIcon,
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
@@ -60,6 +61,10 @@ export const OutlineHeartPictogram: PictogramType = (props) => (
 );
 
 export const TagPictogram: PictogramType = (props) => <TagIcon {...props} />;
+
+export const EditTaggingPictogram: PictogramType = (props) => (
+  <Cog6ToothIcon {...props} />
+);
 
 export const CheckPictogram: PictogramType = (props) => (
   <CheckIcon {...props} />

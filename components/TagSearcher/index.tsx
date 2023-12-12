@@ -208,6 +208,7 @@ export default function TagSearcher({
                                 className={clsx()}
                                 size={size === "large" ? "small" : "xs"}
                                 fragment={item.tag}
+                                block={false}
                               />
                             }
                           />
@@ -218,6 +219,7 @@ export default function TagSearcher({
                                 className={clsx()}
                                 size={size === "large" ? "small" : "xs"}
                                 fragment={item.tag}
+                                block={false}
                               />
                             }
                           />

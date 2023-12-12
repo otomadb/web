@@ -165,7 +165,7 @@ type BilibiliMadRequestedTimelineEvent implements TimelineEvent {
 type BilibiliOriginalSource {
   """
   bilibili側のオリジナルの画像URL
-  
+
   bilibili側の制約上、別のオリジンから直接埋め込んだりすることはほとんど出来ないことに注意．
   """
   originalThumbnailUrl: String!
@@ -2087,7 +2087,7 @@ type SoundcloudRegistrationRequest implements Node & RegistrationRequest {
 
   """
   OtoMADB側でプロキシしているサムネイル画像のURL
-  
+
   **無い場合は適当にダミー画像を返す．**
   """
   thumbnailUrl(scale: RegistrationRequestThumbnailScale! = LARGE): String!
@@ -2519,6 +2519,8 @@ type Video implements Node {
   title: String!
   titles: [VideoTitle!]!
   youtubeSources: [YoutubeVideoSource!]!
+
+  allTaggings: [VideoTag!]!
 }
 
 type VideoConnection {
