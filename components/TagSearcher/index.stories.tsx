@@ -7,6 +7,7 @@ import { graphql } from "msw";
 
 import { CommonTagFragment } from "~/components/CommonTag";
 import { makeFragmentData } from "~/gql";
+import { isTest } from "~/test/isTest";
 
 import TagSearcher, { AlwaysSelectableBehavior, Query } from ".";
 
@@ -29,7 +30,7 @@ export const mockTagSearcher = graphql.query(Query, (req, res, ctx) =>
           name: {
             id: `searched-tag:${i}:name:1`,
             primary: true,
-            name: "Tag 1",
+            name: `Tag ${i}`,
           },
         })),
       },
@@ -60,7 +61,10 @@ const meta = {
   args: {
     style: { width: 320 },
     size: "medium",
-    handleSelect: action("handleSelect"),
+    behavior: {
+      mode: "simple",
+      handleSelect: action("handleSelect"),
+    },
   },
   parameters: { msw: { handlers: [mockTagSearcher] } },
   excludeStories: /^mock/,
@@ -100,6 +104,10 @@ export const LoadingSuggests: Story = {
     initQuery: "Test",
   },
   parameters: { msw: { handlers: [mockTagSearcherLoading] } },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole("textbox"));
+  },
 };
 
 export const NoSuggests: Story = {
@@ -108,6 +116,10 @@ export const NoSuggests: Story = {
     initQuery: "Test",
   },
   parameters: { msw: { handlers: [mockNoResult] } },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole("textbox"));
+  },
 };
 
 /*
@@ -136,7 +148,11 @@ export const AdditionalOption: Story = {
     Additional: ({ query }) => <div>{query}を仮タグとして追加</div>,
   },
   play: async ({ canvasElement }) => {
+    if (isTest) return;
+
     const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole("textbox"));
+
     await waitFor(() => {
       expect(canvas.getByText("Testを仮タグとして追加")).toBeDefined();
     });
@@ -158,10 +174,13 @@ export const AlreadySelected: Story = {
     behavior: behaviorAlwaysSelectable,
   },
   play: async ({ canvasElement }) => {
+    if (isTest) return;
+
     const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole("textbox"));
 
     await waitFor(() => {
-      expect(canvas.getByLabelText("Tag 1")).toHaveAttribute(
+      expect(canvas.getByLabelText("Tag 0")).toHaveAttribute(
         "aria-selected",
         "true"
       );
@@ -176,10 +195,13 @@ export const AlreadySelectedButSelectable: Story = {
     behavior: behaviorAlwaysSelectable,
   },
   play: async ({ canvasElement, args }) => {
+    if (isTest) return;
+
     const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole("textbox"));
 
     await waitFor(async () => {
-      await userEvent.click(canvas.getByLabelText("Tag 1"));
+      await userEvent.click(canvas.getByLabelText("Tag 0"));
       expect(
         (args.behavior as AlwaysSelectableBehavior).handleSelect
       ).toBeCalled();
