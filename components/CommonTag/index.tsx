@@ -23,10 +23,15 @@ export default function CommonTag({
   hoverable = false,
   selectable = false,
   selected,
+  block = true,
   ...props
 }: {
   className?: string;
   size: "xs" | "small";
+  /**
+   * @deprecated
+   */
+  block?: boolean;
   fragment: FragmentType<typeof CommonTagFragment>;
   disabled?: boolean;
   hoverable?: boolean;
@@ -41,7 +46,8 @@ export default function CommonTag({
       aria-selected={selected}
       className={clsx(
         className,
-        "group inline-flex border",
+        "group border",
+        block ? "flex" : "inline-flex",
         {
           xs: "gap-x-0.5 px-1 py-0.5 text-xxs",
           small: "gap-x-1 px-2 py-1 text-sm",
