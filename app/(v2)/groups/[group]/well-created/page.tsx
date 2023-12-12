@@ -38,6 +38,7 @@ export async function generateMetadata({
   };
 }
 
+/*
 export async function generateStaticParams() {
   return await (
     await makeGraphQLClient2({})
@@ -57,6 +58,7 @@ export async function generateStaticParams() {
       )
     );
 }
+*/
 
 const Page = async ({ params: { group } }: { params: PageParams }) => {
   const result = await (
@@ -75,7 +77,7 @@ const Page = async ({ params: { group } }: { params: PageParams }) => {
             nodes {
               ...CommonTagLink
               id
-              taggedVideos(first: 12) {
+              taggedVideos(first: 10) {
                 totalCount
                 nodes {
                   id
