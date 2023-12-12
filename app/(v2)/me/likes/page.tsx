@@ -5,7 +5,6 @@ import { notFound } from "next/navigation";
 import * as z from "zod";
 
 import MylistRegistrations from "~/app/(v2)/users/[name]/mylists/[slug]/MylistRegistrations";
-import SideNav from "~/app/(v2)/users/[name]/SideNav";
 import { graphql } from "~/gql";
 import { makeGraphQLClient } from "~/gql/fetch";
 
@@ -64,29 +63,22 @@ export default withPageAuthRequired(
       notFound();
 
     return (
-      <div className={clsx("flex flex-wrap gap-x-4 @container/page")}>
-        <SideNav
-          className={clsx("w-72")}
-          primaryFragment={viewer}
-          isMyPage={true}
-        />
-        <div
-          className={clsx(
-            "grow border border-obsidian-primary bg-obsidian-darker p-4"
+      <main
+        className={clsx(
+          "grow border border-obsidian-primary bg-obsidian-darker p-4 @container/page"
+        )}
+      >
+        <MylistRegistrations
+          title="あなたがいいねした音MAD"
+          noc="あなたがいいねした音MADはありませんでした。"
+          pathname="/me/likes"
+          currentPage={page}
+          pageMax={Math.ceil(
+            viewer.likes.registrationsByOffset.totalCount / PER_PAGE
           )}
-        >
-          <MylistRegistrations
-            title="あなたがいいねした音MAD"
-            noc="あなたがいいねした音MADはありませんでした。"
-            pathname="/me/likes"
-            currentPage={page}
-            pageMax={Math.ceil(
-              viewer.likes.registrationsByOffset.totalCount / PER_PAGE
-            )}
-            fragment={viewer.likes.registrationsByOffset}
-          />
-        </div>
-      </div>
+          fragment={viewer.likes.registrationsByOffset}
+        />
+      </main>
     );
   },
   { returnTo: "/" }
