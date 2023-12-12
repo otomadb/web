@@ -22,7 +22,7 @@ export default async function Page({
         findUser(input: { name: $name }) {
           name
           displayName
-          likes {
+          publicLikes {
             id
             registrationsByOffset(input: { offset: $offset, take: $take }) {
               ...UserPage_MylistRegistrations
@@ -43,15 +43,10 @@ export default async function Page({
   );
 
   const { findUser } = result;
-  if (
-    !findUser ||
-    !findUser.likes ||
-    (page !== 1 && findUser.likes.registrationsByOffset.nodes.length === 0)
-  )
-    notFound();
+  if (!findUser || !findUser.publicLikes) notFound();
 
   const pageMax = Math.ceil(
-    findUser.likes.registrationsByOffset.totalCount / PER_PAGE
+    findUser.publicLikes.registrationsByOffset.totalCount / PER_PAGE
   );
 
   return (
@@ -61,7 +56,7 @@ export default async function Page({
       pathname={`/users/${findUser.name}/likes`}
       title={`${findUser.displayName}が良いと思った音MAD`}
       noc="このユーザーはまだ何も良いと思った音MADがありません。"
-      fragment={findUser.likes.registrationsByOffset}
+      fragment={findUser.publicLikes.registrationsByOffset}
     />
   );
 }
