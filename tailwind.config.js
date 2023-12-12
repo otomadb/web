@@ -2,19 +2,23 @@ const plugin = require("tailwindcss/plugin");
 const colors = require("tailwindcss/colors");
 
 const mkTagTheme = (color) => ({
-  primary: color[300],
-  secondary: color[400],
-  vivid: color[200],
+  "primary": color[300],
+  "primary-vivid": color[200],
+  "secondary": color[400],
 
-  disabled: color[700],
+  "disabled": color[700],
 
-  bg: color[950],
-  bgHover: color[900],
-  bgDisabled: color[800],
+  "bg": color[950],
+  "bgHover": color[900],
+  "bgDisabled": color[800],
 
-  frame: color[700],
-  frameHover: color[600],
-  frameDisabled: color[400],
+  "frame": color[700],
+  "frameHover": color[600],
+  "frameDisabled": color[400],
+
+  "back": color[950],
+  "back-vivid": color[900],
+  "back-muted": color[800],
 });
 
 /** @type {import('tailwindcss').Config} */

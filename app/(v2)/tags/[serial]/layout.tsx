@@ -1,43 +1,18 @@
-import clsx from "clsx";
-import { Metadata } from "next";
+import clsx, { ClassValue } from "clsx";
 import { notFound } from "next/navigation";
 
 import CommonTagLink from "~/components/CommonTagLink";
 import { TagType } from "~/components/TagType";
 import { graphql } from "~/gql";
-import { makeGraphQLClient, makeGraphQLClient2 } from "~/gql/fetch";
+import { makeGraphQLClient2 } from "~/gql/fetch";
 
 import EditorPanel from "./Editor";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { serial: string };
-}): Promise<Metadata> {
-  const result = await makeGraphQLClient().request(
-    graphql(`
-      query TagPageLayout_Metadata($serial: Int!) {
-        findTagBySerial(serial: $serial) {
-          name
-          serial
-        }
-      }
-    `),
-    { serial: parseInt(params.serial, 10) }
-  );
-
-  const { findTagBySerial } = result;
-  if (!findTagBySerial) notFound();
-
-  const { name, serial } = findTagBySerial;
-  return {
-    title: `tag:${name} | OtoMADB`,
-    openGraph: {
-      url: `https://otomadb.com/tags/${serial}`,
-      title: `tag:${name} | OtoMADB`,
-    },
+const a =
+  (ts: Record<string, ClassValue>, f: ClassValue) =>
+  (t: string | undefined) => {
+    return typeof t === "string" && Object.keys(ts).includes(t) ? ts[t] : f;
   };
-}
 
 export default async function Layout({
   children,
@@ -58,6 +33,10 @@ export default async function Layout({
           name
           serial
           totalTaggedVideos
+          belongTo {
+            keyword
+            name
+          }
           explicitParent {
             id
             name
@@ -102,20 +81,86 @@ export default async function Layout({
     totalTaggedVideos,
     parents: parentTags,
     children: childTags,
+    belongTo,
   } = findTagBySerial;
   return (
-    <div className={clsx("mx-auto max-w-screen-2xl p-8 @container/layout")}>
-      <header className={clsx("flex flex-col gap-y-1 px-4")}>
-        <h1 className={clsx("text-2xl")}>
-          <span className={clsx("font-bold text-snow-primary")}>{name}</span>
-          {explicitParent && (
-            <span className={clsx("ml-1 text-snow-darker")}>
-              ({explicitParent.name})
+    <div className={clsx("mx-auto @container/layout")}>
+      <header
+        className={clsx(
+          "flex h-48 flex-col justify-center gap-y-1 border-b px-12",
+          a(
+            {
+              event: "bg-tag-event-back border-b-tag-event-secondary",
+              technique:
+                "bg-tag-technique-back border-b-tag-technique-secondary",
+              style: "bg-tag-style-back border-b-tag-style-secondary",
+              realperson:
+                "bg-tag-realperson-back border-b-tag-realperson-secondary",
+              class: "bg-tag-class-back border-b-tag-class-secondary",
+              character:
+                "bg-tag-character-back border-b-tag-character-secondary",
+              series: "bg-tag-series-back border-b-tag-series-secondary",
+              music: "bg-tag-music-back border-b-tag-music-secondary",
+              phrase: "bg-tag-phrase-back border-b-tag-phrase-secondary",
+              copyright:
+                "bg-tag-copyright-back border-b-tag-copyright-secondary",
+            },
+            "bg-obsidian-primary border-b-obsidian-lighter"
+          )(belongTo?.keyword)
+        )}
+      >
+        <div className={clsx("mx-auto w-full max-w-screen-xl")}>
+          <h1 className={clsx("text-2xl")}>
+            <span
+              className={clsx(
+                "font-bold",
+                a(
+                  {
+                    event: "text-tag-event-primary-vivid",
+                    technique: "text-tag-technique-primary-vivid",
+                    style: "text-tag-style-primary-vivid",
+                    realperson: "text-tag-realperson-primary-vivid",
+                    class: "text-tag-class-primary-vivid",
+                    character: "text-tag-character-primary-vivid",
+                    series: "text-tag-series-primary-vivid",
+                    music: "text-tag-music-primary-vivid",
+                    phrase: "text-tag-phrase-primary-vivid",
+                    copyright: "text-tag-copyright-primary-vivid",
+                  },
+                  "text-snow-primary"
+                )(belongTo?.keyword)
+              )}
+            >
+              {name}
             </span>
-          )}
-        </h1>
+            {explicitParent && (
+              <span
+                className={clsx(
+                  "ml-1 text-snow-darker",
+                  a(
+                    {
+                      event: "text-tag-event-primary",
+                      technique: "text-tag-technique-primary",
+                      style: "text-tag-style-primary",
+                      realperson: "text-tag-realperson-primary",
+                      class: "text-tag-class-primary",
+                      character: "text-tag-character-primary",
+                      series: "text-tag-series-primary",
+                      music: "text-tag-music-primary",
+                      phrase: "text-tag-phrase-primary",
+                      copyright: "text-tag-copyright-primary",
+                    },
+                    "text-snow-primary"
+                  )(belongTo?.keyword)
+                )}
+              >
+                ({explicitParent.name})
+              </span>
+            )}
+          </h1>
+        </div>
       </header>
-      <div className="mt-4 flex w-full flex-col items-start gap-4 @[768px]/layout:flex-row">
+      <div className="flex w-full flex-col items-start gap-4 px-8 py-4 @[768px]/layout:flex-row">
         <section
           className={clsx(
             "flex w-full shrink-0 flex-col gap-y-4 rounded border border-obsidian-primary bg-obsidian-darker px-2 py-4 @[768px]/layout:w-64"
@@ -195,7 +240,7 @@ export default async function Layout({
           )}
           <EditorPanel fragment={findTagBySerial} className={clsx("w-full")} />
         </section>
-        <div className={clsx("w-full grow")}>{children}</div>
+        {children}
       </div>
     </div>
   );
