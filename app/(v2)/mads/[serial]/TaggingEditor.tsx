@@ -32,7 +32,7 @@ const TaggingEditor = async ({
   if (!viewer?.hasRole) return null;
 
   return (
-    <details className={clsx("group relative h-6 w-6 p-1")}>
+    <details className={clsx(className, "group relative h-6 w-6 p-1")}>
       <summary
         className={clsx(
           "z-0 cursor-pointer list-none",

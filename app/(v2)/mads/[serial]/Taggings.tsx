@@ -19,7 +19,6 @@ export default async function Taggings({
 }) {
   const {
     getVideo: { taggings },
-    viewer,
   } = await (
     await makeGraphQLClient2({ auth: "optional" })
   ).request(
@@ -39,9 +38,6 @@ export default async function Taggings({
               }
             }
           }
-        }
-        viewer {
-          hasRole(role: EDITOR)
         }
       }
     `),
@@ -74,11 +70,6 @@ export default async function Taggings({
           </div>
         ))}
       </div>
-      {viewer?.hasRole && (
-        <div className={clsx("mt-2 text-xs text-snow-darkest")}>
-          タグを編集する
-        </div>
-      )}
     </div>
   );
 }
