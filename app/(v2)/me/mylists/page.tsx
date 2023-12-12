@@ -2,7 +2,6 @@ import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import clsx from "clsx";
 import type { Metadata } from "next";
 
-import SideNav from "~/app/(v2)/users/[name]/SideNav";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { graphql } from "~/gql";
 import { makeGraphQLClient2 } from "~/gql/fetch";
@@ -50,74 +49,67 @@ export default withPageAuthRequired(
     if (!viewer) throw new Error("viewer is null");
 
     return (
-      <div className={clsx("flex flex-wrap gap-x-4 @container/page")}>
-        <SideNav
-          className={clsx("w-72")}
-          primaryFragment={viewer}
-          isMyPage={true}
-        />
-        <main
-          className={clsx(
-            "grow border border-obsidian-primary bg-obsidian-darker p-4"
+      <main
+        className={clsx(
+          "grow border border-obsidian-primary bg-obsidian-darker p-4"
+        )}
+      >
+        <header className={clsx("flex w-full items-center px-2")}>
+          <h1 className={clsx("px-2 text-xl font-bold text-snow-primary")}>
+            あなたのマイリスト
+          </h1>
+        </header>
+        <div className={clsx("mt-4 flex flex-col gap-y-4")}>
+          {viewer.mylists.nodes.length === 0 && (
+            <p className={clsx("text-sm font-bold text-snow-darkest")}>
+              マイリストを1件も作成していません
+            </p>
           )}
-        >
-          <header className={clsx("flex w-full items-center px-2")}>
-            <h1 className={clsx("px-2 text-xl font-bold text-snow-primary")}>
-              あなたのマイリスト
-            </h1>
-          </header>
-          <div className={clsx("mt-4 flex flex-col gap-y-4")}>
-            {viewer.mylists.nodes.length === 0 && (
-              <p className={clsx("text-sm font-bold text-snow-darkest")}>
-                マイリストを1件も作成していません
-              </p>
-            )}
-            {viewer.mylists.nodes.map((mylist) => (
-              <div
-                key={mylist.id}
+          {viewer.mylists.nodes.map((mylist) => (
+            <div
+              key={mylist.id}
+              className={clsx(
+                "flex flex-col rounded border border-obsidian-lighter bg-obsidian-primary p-4 @container/mylist"
+              )}
+            >
+              <h2
                 className={clsx(
-                  "flex flex-col rounded border border-obsidian-lighter bg-obsidian-primary p-4 @container/mylist"
+                  "self-start px-2 text-lg font-bold text-snow-primary hover:text-vivid-primary hover:underline"
                 )}
               >
-                <h2
-                  className={clsx(
-                    "self-start px-2 text-lg font-bold text-snow-primary hover:text-vivid-primary hover:underline"
-                  )}
-                >
-                  <YouMylistPageLink fragment={mylist}>
-                    {mylist.title}
-                  </YouMylistPageLink>
-                </h2>
-                <div
-                  className={clsx(
-                    "relative mt-2 flex h-[96px] overflow-x-hidden border border-obsidian-darker bg-obsidian-darkest px-4 py-2",
-                    mylist.registrationsByOffset.nodes.length > 0 &&
-                      "before:absolute before:inset-0 before:z-infinity before:bg-gradient-to-r before:from-transparent before:from-50% before:to-obsidian-darkest"
-                  )}
-                >
-                  {mylist.registrationsByOffset.nodes.length === 0 && (
-                    <div
-                      className={clsx(
-                        "self-center text-xs font-bold text-snow-darkest"
-                      )}
-                    >
-                      まだ音MADを一つも登録していません
-                    </div>
-                  )}
-                  {mylist.registrationsByOffset.nodes.map((node) => (
-                    <VideoThumbnail
-                      key={node.id}
-                      fragment={node.video}
-                      imageSize="small"
-                      className={clsx("h-full w-[128px] shrink-0")}
-                    />
-                  ))}
-                </div>
+                <YouMylistPageLink fragment={mylist}>
+                  {mylist.title}
+                </YouMylistPageLink>
+              </h2>
+              <div
+                className={clsx(
+                  "relative mt-2 flex h-[96px] overflow-x-hidden border border-obsidian-darker bg-obsidian-darkest px-4 py-2",
+                  mylist.registrationsByOffset.nodes.length > 0 &&
+                    "before:absolute before:inset-0 before:z-infinity before:bg-gradient-to-r before:from-transparent before:from-50% before:to-obsidian-darkest"
+                )}
+              >
+                {mylist.registrationsByOffset.nodes.length === 0 && (
+                  <div
+                    className={clsx(
+                      "self-center text-xs font-bold text-snow-darkest"
+                    )}
+                  >
+                    まだ音MADを一つも登録していません
+                  </div>
+                )}
+                {mylist.registrationsByOffset.nodes.map((node) => (
+                  <VideoThumbnail
+                    key={node.id}
+                    fragment={node.video}
+                    imageSize="small"
+                    className={clsx("h-full w-[128px] shrink-0")}
+                  />
+                ))}
               </div>
-            ))}
-          </div>
-        </main>
-      </div>
+            </div>
+          ))}
+        </div>
+      </main>
     );
   },
   { returnTo: "/" }
