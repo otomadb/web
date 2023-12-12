@@ -1,18 +1,13 @@
-import clsx, { ClassValue } from "clsx";
+import clsx from "clsx";
 import { notFound } from "next/navigation";
 
 import CommonTagLink from "~/components/CommonTagLink";
 import { TagType } from "~/components/TagType";
 import { graphql } from "~/gql";
 import { makeGraphQLClient2 } from "~/gql/fetch";
+import clsxSwitch from "~/utils/clsxSwitch";
 
 import EditorPanel from "./Editor";
-
-const a =
-  (ts: Record<string, ClassValue>, f: ClassValue) =>
-  (t: string | undefined) => {
-    return typeof t === "string" && Object.keys(ts).includes(t) ? ts[t] : f;
-  };
 
 export default async function Layout({
   children,
@@ -88,7 +83,7 @@ export default async function Layout({
       <header
         className={clsx(
           "flex h-48 flex-col justify-center gap-y-1 border-b px-12",
-          a(
+          clsxSwitch(
             {
               event: "bg-tag-event-back border-b-tag-event-secondary",
               technique:
@@ -114,7 +109,7 @@ export default async function Layout({
             <span
               className={clsx(
                 "font-bold",
-                a(
+                clsxSwitch(
                   {
                     event: "text-tag-event-primary-vivid",
                     technique: "text-tag-technique-primary-vivid",
@@ -137,7 +132,7 @@ export default async function Layout({
               <span
                 className={clsx(
                   "ml-1 text-snow-darker",
-                  a(
+                  clsxSwitch(
                     {
                       event: "text-tag-event-primary",
                       technique: "text-tag-technique-primary",

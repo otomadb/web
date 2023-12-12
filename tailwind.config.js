@@ -3,6 +3,7 @@ const colors = require("tailwindcss/colors");
 
 const mkTagTheme = (color) => ({
   "primary": color[300],
+  "vivid": color[200],
   "primary-vivid": color[200],
   "secondary": color[400],
 
