@@ -2,6 +2,7 @@
 
 import { ResultOf } from "@graphql-typed-document-node/core";
 import clsx from "clsx";
+import { useRouter } from "next/navigation";
 import React, { useCallback, useMemo, useState } from "react";
 import { useMutation } from "urql";
 
@@ -145,6 +146,8 @@ export default function YoutubeRegisterForm({
   const [tab, setTab] = useState<"SOURCE" | "REQUEST">("SOURCE");
 
   const callToast = useToaster();
+  const router = useRouter();
+
   const registerVideo = useRegisterVideo({
     onSuccess({ video }) {
       callToast(
@@ -158,6 +161,7 @@ export default function YoutubeRegisterForm({
           を登録しました．
         </>
       );
+      router.refresh();
       handleSuccess();
     },
   });

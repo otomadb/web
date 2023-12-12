@@ -2,6 +2,7 @@
 
 import { ResultOf } from "@graphql-typed-document-node/core";
 import clsx from "clsx";
+import { useRouter } from "next/navigation";
 import { CSSProperties, useCallback, useMemo, useState } from "react";
 import { useMutation } from "urql";
 
@@ -163,6 +164,8 @@ export default function SoundcloudRequestForm({
   } = useRequestFormEditSemitaggings();
 
   const callToast = useToaster();
+  const router = useRouter();
+
   const requestVideo = useRequestFromSoundcloud({
     onSuccess({ request }) {
       callToast(
@@ -176,6 +179,7 @@ export default function SoundcloudRequestForm({
           をリクエストしました
         </>
       );
+      router.refresh();
       handleSuccess();
     },
     onAlready({ source: { sourceId, video } }) {

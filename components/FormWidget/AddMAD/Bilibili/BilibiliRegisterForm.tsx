@@ -2,6 +2,7 @@
 
 import { ResultOf } from "@graphql-typed-document-node/core";
 import clsx from "clsx";
+import { useRouter } from "next/navigation";
 import React, { useCallback, useMemo, useState } from "react";
 import { useMutation } from "urql";
 
@@ -147,6 +148,8 @@ export default function BilibiliRegisterForm({
   const [tab, setTab] = useState<"SOURCE" | "REQUEST">("SOURCE");
 
   const callToast = useToaster();
+  const router = useRouter();
+
   const registerMAD = useRegisterVideo({
     onSuccess({ video }) {
       callToast(
@@ -160,9 +163,11 @@ export default function BilibiliRegisterForm({
           を登録しました．
         </>
       );
+      router.refresh();
       handleSuccess();
     },
   });
+
   const payload = useMemo(() => {
     if (title === "") return undefined;
 
