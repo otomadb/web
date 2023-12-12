@@ -139,7 +139,7 @@ devDependencies:
     specifier: 7.6.4
     version: 7.6.4(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)
   '@storybook/test':
-    specifier: ^7.6.4
+    specifier: 7.6.4
     version: 7.6.4(vitest@1.0.4)
   '@storybook/testing-library':
     specifier: 0.2.2
