@@ -48,7 +48,10 @@ export default async function Taggings({
         {taggings.nodes
           .filter(
             ({ tag: { belongTo: k1 } }, i, arr) =>
-              i === arr.findIndex(({ tag: { belongTo: k2 } }) => k1 === k2)
+              i ===
+              arr.findIndex(
+                ({ tag: { belongTo: k2 } }) => k1?.keyword === k2?.keyword
+              )
           )
           .map((node) => (
             <TagType
