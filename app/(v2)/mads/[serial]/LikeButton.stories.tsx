@@ -1,7 +1,7 @@
 import { action } from "@storybook/addon-actions";
-import { expect } from "@storybook/jest";
 import { useArgs } from "@storybook/preview-api";
 import { Meta, StoryObj } from "@storybook/react";
+import { expect } from "@storybook/test";
 import { waitFor, within } from "@storybook/testing-library";
 import { ComponentProps } from "react";
 
