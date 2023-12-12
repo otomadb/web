@@ -190,8 +190,11 @@ export const RequestsFormEditorablePart = ({
           limit={5}
           size="small"
           className={clsx("z-10 w-full")}
-          handleSelect={(tagId, fragment) => {
-            appendTag(tagId, fragment);
+          behavior={{
+            mode: "simple",
+            handleSelect: (tagId, fragment) => {
+              appendTag(tagId, fragment);
+            },
           }}
           Additional={({ query }) => (
             <div className={clsx("flex items-center text-sm text-snow-darker")}>

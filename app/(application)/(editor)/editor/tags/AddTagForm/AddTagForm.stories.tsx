@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 
-import { mockTagSearcher } from "~/components/TagSearcher/index.mocks";
+import { mockTagSearcher } from "~/components/TagSearcher/index.stories";
 
 import { AddTagForm } from "./AddTagForm";
 import { commonMock as mockAddTagFormSelectedTag } from "./SelectedTag";

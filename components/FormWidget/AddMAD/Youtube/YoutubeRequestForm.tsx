@@ -2,6 +2,7 @@
 
 import { ResultOf } from "@graphql-typed-document-node/core";
 import clsx from "clsx";
+import { useRouter } from "next/navigation";
 import { CSSProperties, useCallback, useMemo, useState } from "react";
 import { useMutation } from "urql";
 
@@ -146,6 +147,8 @@ export default function YoutubeRequestForm({
   } = useRequestFormEditSemitaggings();
 
   const callToast = useToaster();
+  const router = useRouter();
+
   const requestVideo = useRequestFromYoutube({
     onSuccess({ request }) {
       callToast(
@@ -159,6 +162,7 @@ export default function YoutubeRequestForm({
           をリクエストしました
         </>
       );
+      router.refresh();
       handleSuccess();
     },
     onAlready({ source: { sourceId, video } }) {

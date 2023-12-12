@@ -1,12 +1,13 @@
 import { action } from "@storybook/addon-actions";
-import { expect } from "@storybook/jest";
 import { Meta, StoryObj } from "@storybook/react";
+import { expect } from "@storybook/test";
 import { userEvent, within } from "@storybook/testing-library";
 import { graphql as mockGql } from "msw";
 
 import { MadPageLinkFragment } from "~/app/(v2)/mads/[serial]/Link";
 import { UserPageLinkFragment } from "~/app/(v2)/users/[name]/Link";
 import { CommonTagFragment } from "~/components/CommonTag";
+import { mockTagSearcher } from "~/components/TagSearcher/index.stories";
 import { Fragment as UserIconFragment } from "~/components/UserIcon";
 import { makeFragmentData } from "~/gql";
 
@@ -114,6 +115,14 @@ const meta = {
     handleCancel: action("cancel"),
     sourceFragment: mockSourceFragment,
     requestFragment: mockRequestFragment,
+  },
+  parameters: {
+    msw: {
+      handlers: {
+        primary: [mockMutationSuccess],
+        misc: [mockTagSearcher],
+      },
+    },
   },
 } as Meta<typeof BilibiliRegisterForm>;
 export default meta;

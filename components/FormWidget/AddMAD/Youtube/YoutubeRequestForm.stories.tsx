@@ -1,13 +1,13 @@
 import { action } from "@storybook/addon-actions";
-import { expect } from "@storybook/jest";
 import { Meta, StoryObj } from "@storybook/react";
+import { expect } from "@storybook/test";
 import { userEvent, within } from "@storybook/testing-library";
 import { graphql as mockGql } from "msw";
 
 import { YoutubeRequestPageLinkFragment } from "~/app/(v2)/requests/youtube/[sourceId]/Link";
+import { mockTagSearcher } from "~/components/TagSearcher/index.stories";
 import { makeFragmentData } from "~/gql";
 
-import { mockTagSearcher } from "../Nicovideo/NicovideoRegister.stories";
 import { YoutubeRegisterOriginalSourceFragment } from "./YoutubeOriginalSource";
 import YoutubeRequestForm, {
   YoutubeRequestFormOriginalSourceFragment,
