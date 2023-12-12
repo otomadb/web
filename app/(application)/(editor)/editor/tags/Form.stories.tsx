@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { graphql as mswGql } from "msw";
 
-import { mockTagSearcher } from "~/components/TagSearcher/index.mocks";
+import { mockTagSearcher } from "~/components/TagSearcher/index.stories";
 import { makeFragmentData } from "~/gql";
 
 import { commonMock as mockAddTagFormSelectedTag } from "./AddTagForm/SelectedTag";

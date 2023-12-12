@@ -6,9 +6,9 @@ import { graphql as mockGql } from "msw";
 
 import { BilibiliRequestPageLinkFragment } from "~/app/(v2)/requests/bilibili/[sourceId]/Link";
 import { CommonTagFragment } from "~/components/CommonTag";
+import { mockTagSearcher } from "~/components/TagSearcher/index.stories";
 import { makeFragmentData } from "~/gql";
 
-import { mockTagSearcher } from "../Nicovideo/NicovideoRegister.stories";
 import { BilibiliOriginalSourceFragment } from "./BilibiliOriginalSource";
 import BilibiliRequestForm, {
   BilibiliRequestFormOriginalSourceFragment,

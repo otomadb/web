@@ -98,7 +98,7 @@ devDependencies:
     version: 7.23.6
   '@graphql-codegen/cli':
     specifier: 5.0.0
-    version: 5.0.0(@parcel/watcher@2.3.0)(@types/node@18.18.14)(encoding@0.1.13)(graphql@16.8.1)(typescript@5.3.3)
+    version: 5.0.0(@types/node@18.18.14)(encoding@0.1.13)(graphql@16.8.1)(typescript@5.3.3)
   '@graphql-codegen/client-preset':
     specifier: 4.1.0
     version: 4.1.0(encoding@0.1.13)(graphql@16.8.1)
@@ -141,6 +141,9 @@ devDependencies:
   '@storybook/react':
     specifier: 7.6.4
     version: 7.6.4(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)
+  '@storybook/test':
+    specifier: ^7.6.4
+    version: 7.6.4(vitest@1.0.4)
   '@storybook/testing-library':
     specifier: 0.2.2
     version: 0.2.2
@@ -2335,7 +2338,7 @@ packages:
       tslib: 2.5.3
     dev: true
 
-  /@graphql-codegen/cli@5.0.0(@parcel/watcher@2.3.0)(@types/node@18.18.14)(encoding@0.1.13)(graphql@16.8.1)(typescript@5.3.3):
+  /@graphql-codegen/cli@5.0.0(@types/node@18.18.14)(encoding@0.1.13)(graphql@16.8.1)(typescript@5.3.3):
     resolution: {integrity: sha512-A7J7+be/a6e+/ul2KI5sfJlpoqeqwX8EzktaKCeduyVKgOLA6W5t+NUGf6QumBDXU8PEOqXk3o3F+RAwCWOiqA==}
     hasBin: true
     peerDependencies:
@@ -2360,7 +2363,6 @@ packages:
       '@graphql-tools/prisma-loader': 8.0.2(@types/node@18.18.14)(encoding@0.1.13)(graphql@16.8.1)
       '@graphql-tools/url-loader': 8.0.1(@types/node@18.18.14)(encoding@0.1.13)(graphql@16.8.1)
       '@graphql-tools/utils': 10.0.11(graphql@16.8.1)
-      '@parcel/watcher': 2.3.0
       '@whatwg-node/fetch': 0.8.8
       chalk: 4.1.2
       cosmiconfig: 8.3.6(typescript@5.3.3)
@@ -3837,6 +3839,7 @@ packages:
     cpu: [arm64]
     os: [android]
     requiresBuild: true
+    dev: false
     optional: true
 
   /@parcel/watcher-darwin-arm64@2.3.0:
@@ -3845,6 +3848,7 @@ packages:
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
+    dev: false
     optional: true
 
   /@parcel/watcher-darwin-x64@2.3.0:
@@ -3853,6 +3857,7 @@ packages:
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
+    dev: false
     optional: true
 
   /@parcel/watcher-freebsd-x64@2.3.0:
@@ -3861,6 +3866,7 @@ packages:
     cpu: [x64]
     os: [freebsd]
     requiresBuild: true
+    dev: false
     optional: true
 
   /@parcel/watcher-linux-arm-glibc@2.3.0:
@@ -3869,6 +3875,7 @@ packages:
     cpu: [arm]
     os: [linux]
     requiresBuild: true
+    dev: false
     optional: true
 
   /@parcel/watcher-linux-arm64-glibc@2.3.0:
@@ -3877,6 +3884,7 @@ packages:
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
+    dev: false
     optional: true
 
   /@parcel/watcher-linux-arm64-musl@2.3.0:
@@ -3885,6 +3893,7 @@ packages:
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
+    dev: false
     optional: true
 
   /@parcel/watcher-linux-x64-glibc@2.3.0:
@@ -3893,6 +3902,7 @@ packages:
     cpu: [x64]
     os: [linux]
     requiresBuild: true
+    dev: false
     optional: true
 
   /@parcel/watcher-linux-x64-musl@2.3.0:
@@ -3901,6 +3911,7 @@ packages:
     cpu: [x64]
     os: [linux]
     requiresBuild: true
+    dev: false
     optional: true
 
   /@parcel/watcher-win32-arm64@2.3.0:
@@ -3909,6 +3920,7 @@ packages:
     cpu: [arm64]
     os: [win32]
     requiresBuild: true
+    dev: false
     optional: true
 
   /@parcel/watcher-win32-ia32@2.3.0:
@@ -3917,6 +3929,7 @@ packages:
     cpu: [ia32]
     os: [win32]
     requiresBuild: true
+    dev: false
     optional: true
 
   /@parcel/watcher-win32-x64@2.3.0:
@@ -3925,6 +3938,7 @@ packages:
     cpu: [x64]
     os: [win32]
     requiresBuild: true
+    dev: false
     optional: true
 
   /@parcel/watcher@2.3.0:
@@ -3948,6 +3962,7 @@ packages:
       '@parcel/watcher-win32-arm64': 2.3.0
       '@parcel/watcher-win32-ia32': 2.3.0
       '@parcel/watcher-win32-x64': 2.3.0
+    dev: false
 
   /@peculiar/asn1-schema@2.3.8:
     resolution: {integrity: sha512-ULB1XqHKx1WBU/tTFIA+uARuRoBVZ4pNdOA878RDrRbBfBGcSzi5HBkdScC6ZbHn8z7L8gmKCgPC1LHRrP46tA==}
@@ -5687,6 +5702,18 @@ packages:
     resolution: {integrity: sha512-FcOqPAXACP0I3oJ/ws6/rrPT9WGhu915Cg8D02a9YxLo0DE9zI+a9A5gRGvmQ09fiWPukqI8ZAEoQEdWUKMQdQ==}
     dev: true
 
+  /@storybook/instrumenter@7.6.4:
+    resolution: {integrity: sha512-sfEXZbCy7orP2A7dYmSrCYGPnbwJcFAa55N+YBQEYhoyJkohGC//nd5LbuPjLj23uixgB9iOw4E0fGp5w8cf+w==}
+    dependencies:
+      '@storybook/channels': 7.6.4
+      '@storybook/client-logger': 7.6.4
+      '@storybook/core-events': 7.6.4
+      '@storybook/global': 5.0.0
+      '@storybook/preview-api': 7.6.4
+      '@vitest/utils': 0.34.7
+      util: 0.12.5
+    dev: true
+
   /@storybook/jest@0.2.3(vitest@1.0.4):
     resolution: {integrity: sha512-ov5izrmbAFObzKeh9AOC5MlmFxAcf0o5i6YFGae9sDx6DGh6alXsRM+chIbucVkUwVHVlSzdfbLDEFGY/ShaYw==}
     dependencies:
@@ -5987,6 +6014,28 @@ packages:
     transitivePeerDependencies:
       - encoding
       - supports-color
+    dev: true
+
+  /@storybook/test@7.6.4(vitest@1.0.4):
+    resolution: {integrity: sha512-Ns9IpGsUcu1eQ6Dp6oprjRyis5NPgoHYQ4owR4hnxArtgW0djeKj2yb1fgdEIy0cVcU0F368zfL+ofX0ijy1Rg==}
+    dependencies:
+      '@storybook/client-logger': 7.6.4
+      '@storybook/core-events': 7.6.4
+      '@storybook/instrumenter': 7.6.4
+      '@storybook/preview-api': 7.6.4
+      '@testing-library/dom': 9.3.3
+      '@testing-library/jest-dom': 6.1.5(@types/jest@28.1.3)(vitest@1.0.4)
+      '@testing-library/user-event': 14.3.0(@testing-library/dom@9.3.3)
+      '@types/chai': 4.3.11
+      '@vitest/expect': 0.34.7
+      '@vitest/spy': 0.34.7
+      chai: 4.3.10
+      util: 0.12.5
+    transitivePeerDependencies:
+      - '@jest/globals'
+      - '@types/jest'
+      - jest
+      - vitest
     dev: true
 
   /@storybook/testing-library@0.2.2:
@@ -6349,6 +6398,15 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: true
 
+  /@testing-library/user-event@14.3.0(@testing-library/dom@9.3.3):
+    resolution: {integrity: sha512-P02xtBBa8yMaLhK8CzJCIns8rqwnF6FxhR9zs810flHOBXUYCFjLd8Io1rQrAkQRWEmW2PGdZIEdMxf/KLsqFA==}
+    engines: {node: '>=12', npm: '>=6'}
+    peerDependencies:
+      '@testing-library/dom': '>=7.21.4'
+    dependencies:
+      '@testing-library/dom': 9.3.3
+    dev: true
+
   /@testing-library/user-event@14.5.1(@testing-library/dom@9.3.3):
     resolution: {integrity: sha512-UCcUKrUYGj7ClomOo2SpNVvx4/fkd/2BbIHDCle8A0ax+P3bU7yJwDBDrS6ZwdTMARWTGODX1hEsCcO+7beJjg==}
     engines: {node: '>=12', npm: '>=6'}
@@ -6411,6 +6469,10 @@ packages:
     dependencies:
       '@types/connect': 3.4.38
       '@types/node': 18.18.14
+    dev: true
+
+  /@types/chai@4.3.11:
+    resolution: {integrity: sha512-qQR1dr2rGIHYlJulmr8Ioq3De0Le9E4MJ5AiaeAETJJpndT1uUNHsGFK3L/UIu+rbkQSdj8J/w2bCsBZc/Y5fQ==}
     dev: true
 
   /@types/concat-stream@2.0.3:
@@ -7009,6 +7071,14 @@ packages:
       - supports-color
     dev: true
 
+  /@vitest/expect@0.34.7:
+    resolution: {integrity: sha512-G9iEtwrD6ZQ4MVHZufif9Iqz3eLtuwBBNx971fNAGPaugM7ftAWjQN+ob2zWhtzURp8RK3zGXOxVb01mFo3zAQ==}
+    dependencies:
+      '@vitest/spy': 0.34.7
+      '@vitest/utils': 0.34.7
+      chai: 4.3.10
+    dev: true
+
   /@vitest/expect@1.0.4:
     resolution: {integrity: sha512-/NRN9N88qjg3dkhmFcCBwhn/Ie4h064pY3iv7WLRsDJW7dXnEgeoa8W9zy7gIPluhz6CkgqiB3HmpIXgmEY5dQ==}
     dependencies:
@@ -7033,10 +7103,24 @@ packages:
       pretty-format: 29.7.0
     dev: true
 
+  /@vitest/spy@0.34.7:
+    resolution: {integrity: sha512-NMMSzOY2d8L0mcOt4XcliDOS1ISyGlAXuQtERWVOoVHnKwmG+kKhinAiGw3dTtMQWybfa89FG8Ucg9tiC/FhTQ==}
+    dependencies:
+      tinyspy: 2.2.0
+    dev: true
+
   /@vitest/spy@1.0.4:
     resolution: {integrity: sha512-9ojTFRL1AJVh0hvfzAQpm0QS6xIS+1HFIw94kl/1ucTfGCaj1LV/iuJU4Y6cdR03EzPDygxTHwE1JOm+5RCcvA==}
     dependencies:
       tinyspy: 2.2.0
+    dev: true
+
+  /@vitest/utils@0.34.7:
+    resolution: {integrity: sha512-ziAavQLpCYS9sLOorGrFFKmy2gnfiNU0ZJ15TsMz/K92NAPS/rp9K4z6AJQQk5Y8adCy4Iwpxy7pQumQ/psnRg==}
+    dependencies:
+      diff-sequences: 29.6.3
+      loupe: 2.3.7
+      pretty-format: 29.7.0
     dev: true
 
   /@vitest/utils@1.0.4:
@@ -9052,6 +9136,7 @@ packages:
     resolution: {integrity: sha512-pGjwhsmsp4kL2RTz08wcOlGN83otlqHeD/Z5T8GXZB+/YcpQ/dgo+lbU8ZsGxV0HIvqqxo9l7mqYwyYMD9bKDg==}
     engines: {node: '>=0.10'}
     hasBin: true
+    dev: false
 
   /detect-libc@2.0.2:
     resolution: {integrity: sha512-UX6sGumvvqSaXgdKGUsgZWqcUyIXZ/vZTrlRT/iobiKhGL0zL4d3osHj3uqllWJK+i+sixDS/3COVEOFbupFyw==}
@@ -13066,6 +13151,7 @@ packages:
 
   /node-addon-api@7.0.0:
     resolution: {integrity: sha512-vgbBJTS4m5/KkE16t5Ly0WW9hz46swAstv0hYYwMtbG7AznRhNyfLRe8HZAiWIpcHzoO7HxhLuBQj9rJ/Ho0ZA==}
+    dev: false
 
   /node-dir@0.1.17:
     resolution: {integrity: sha512-tmPX422rYgofd4epzrNoOXiE8XFZYOcCq1vD7MAXCDO+O+zndlA2ztdKKMa+EeuBG5tHETpr4ml4RGgpqDCCAg==}
