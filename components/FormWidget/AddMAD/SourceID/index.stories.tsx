@@ -1,7 +1,7 @@
 import { ResultOf } from "@graphql-typed-document-node/core";
 import { action } from "@storybook/addon-actions";
-import { expect, jest } from "@storybook/jest";
 import { Meta, StoryObj } from "@storybook/react";
+import { expect, fn } from "@storybook/test";
 import { userEvent, waitFor, within } from "@storybook/testing-library";
 import { graphql as mockGql } from "msw";
 
@@ -24,7 +24,7 @@ const mkStory = (name: string, url: string, expected: unknown): Story => ({
     mode: "request",
   },
   parameters: {
-    openFormModal: jest.fn(),
+    openFormModal: fn(),
   },
   play: async ({ canvasElement, parameters }) => {
     if (isTest) return;
@@ -156,7 +156,7 @@ export const RegisterNicovideo: Story = {
     mode: "register",
   },
   parameters: {
-    openFormModal: jest.fn(),
+    openFormModal: fn(),
   },
   play: async ({ canvasElement, parameters }) => {
     const canvas = within(canvasElement);
@@ -189,7 +189,7 @@ export const RequestNicovideo: Story = {
     mode: "request",
   },
   parameters: {
-    openFormModal: jest.fn(),
+    openFormModal: fn(),
   },
   play: async ({ canvasElement, parameters }) => {
     const canvas = within(canvasElement);
@@ -358,7 +358,7 @@ export const RegisterYoutube: Story = {
     mode: "register",
   },
   parameters: {
-    openFormModal: jest.fn(),
+    openFormModal: fn(),
   },
   play: async ({ canvasElement, parameters }) => {
     const canvas = within(canvasElement);
@@ -391,7 +391,7 @@ export const RequestYoutube: Story = {
     mode: "request",
   },
   parameters: {
-    openFormModal: jest.fn(),
+    openFormModal: fn(),
   },
   play: async ({ canvasElement, parameters }) => {
     const canvas = within(canvasElement);
@@ -558,7 +558,7 @@ export const RegisterSoundcloud: Story = {
     mode: "register",
   },
   parameters: {
-    openFormModal: jest.fn(),
+    openFormModal: fn(),
   },
   play: async ({ canvasElement, parameters }) => {
     const canvas = within(canvasElement);
@@ -591,7 +591,7 @@ export const RequestSoundcloud: Story = {
     mode: "request",
   },
   parameters: {
-    openFormModal: jest.fn(),
+    openFormModal: fn(),
   },
   play: async ({ canvasElement, parameters }) => {
     const canvas = within(canvasElement);
@@ -769,7 +769,7 @@ export const RegisterBilibili: Story = {
     mode: "register",
   },
   parameters: {
-    openFormModal: jest.fn(),
+    openFormModal: fn(),
   },
   play: async ({ canvasElement, parameters }) => {
     const canvas = within(canvasElement);
@@ -802,7 +802,7 @@ export const RequestBilibili: Story = {
     mode: "request",
   },
   parameters: {
-    openFormModal: jest.fn(),
+    openFormModal: fn(),
   },
   play: async ({ canvasElement, parameters }) => {
     const canvas = within(canvasElement);
