@@ -52,6 +52,11 @@ const nextConfig = {
         destination: "/mads/:serial*",
         permanent: true,
       },
+      {
+        source: "/me/mylist/likes",
+        destination: "/me/likes",
+        permanent: true,
+      },
     ];
   },
   webpack: (config) => {
