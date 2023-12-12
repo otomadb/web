@@ -69,7 +69,6 @@
     "@storybook/addon-interactions": "7.6.4",
     "@storybook/addon-links": "7.6.4",
     "@storybook/cli": "7.6.4",
-    "@storybook/jest": "0.2.3",
     "@storybook/nextjs": "7.6.4",
     "@storybook/preview-api": "7.6.4",
     "@storybook/react": "7.6.4",

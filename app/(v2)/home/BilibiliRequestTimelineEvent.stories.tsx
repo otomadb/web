@@ -1,6 +1,6 @@
 import { action } from "@storybook/addon-actions";
-import { expect, jest } from "@storybook/jest";
 import { Meta, StoryObj } from "@storybook/react";
+import { expect, fn } from "@storybook/test";
 import { waitFor, within } from "@storybook/testing-library";
 
 import { Current, FormModalContext } from "~/components/FormWidget";
@@ -86,7 +86,7 @@ export const Editor: Story = {
   name: "編集者権限あり",
 
   parameters: {
-    openFormModal: jest.fn(),
+    openFormModal: fn(),
     msw: {
       handlers: [mockHasRole],
     },
