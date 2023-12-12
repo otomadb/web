@@ -189,26 +189,39 @@ export default function TagSearcher({
                           size={size === "large" ? "small" : "xs"}
                           fragment={item.tag}
                         />
-                      ) : behavior.isSelected(item.tag.id) ? (
-                        <behavior.Selected
-                          Tag={
-                            <CommonTag
-                              className={clsx()}
-                              size={size === "large" ? "small" : "xs"}
-                              fragment={item.tag}
-                            />
-                          }
-                        />
                       ) : (
-                        <behavior.NotSelected
-                          Tag={
-                            <CommonTag
-                              className={clsx()}
-                              size={size === "large" ? "small" : "xs"}
-                              fragment={item.tag}
+                        <div
+                          className={clsx(
+                            "text-snow-primary",
+                            {
+                              small: "text-xs",
+                              medium: "text-sm",
+                              large: "text-sm",
+                            }[size]
+                          )}
+                        >
+                          {behavior.isSelected(item.tag.id) ? (
+                            <behavior.Selected
+                              Tag={
+                                <CommonTag
+                                  className={clsx()}
+                                  size={size === "large" ? "small" : "xs"}
+                                  fragment={item.tag}
+                                />
+                              }
                             />
-                          }
-                        />
+                          ) : (
+                            <behavior.NotSelected
+                              Tag={
+                                <CommonTag
+                                  className={clsx()}
+                                  size={size === "large" ? "small" : "xs"}
+                                  fragment={item.tag}
+                                />
+                              }
+                            />
+                          )}
+                        </div>
                       )}
                     </div>
                     {!item.name.primary && (
