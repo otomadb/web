@@ -55,7 +55,7 @@ export default async function Taggings({
           )
           .map((node) => (
             <TagType
-              key={node.tag.belongTo?.keyword}
+              key={node.tag.belongTo?.keyword || "_UNDEFINED"}
               className={clsx("text-xs")}
               fragment={node.tag}
             />
