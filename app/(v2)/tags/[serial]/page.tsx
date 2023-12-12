@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 import CommonMadBlock from "~/components/CommonMadBlock";
 import Paginator from "~/components/Paginator";
@@ -45,10 +45,12 @@ export default async function Page({
     }
   );
   if (!result.findTagBySerial) notFound();
-  if (result.findTagBySerial.taggedVideosByOffset.nodes.length === 0)
-    notFound();
 
   const { findTagBySerial } = result;
+
+  if (1 < page && findTagBySerial.taggedVideosByOffset.nodes.length === 0)
+    redirect(`/tags/${findTagBySerial.serial}`);
+
   const pageMax = Math.ceil(
     findTagBySerial.taggedVideosByOffset.totalCount / 24
   );
