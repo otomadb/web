@@ -56,9 +56,17 @@ export default async function Page({
   return (
     <div>
       <div className={clsx("@container")}>
+        <div className={clsx("flex")}>
+          <Paginator
+            pageMax={pageMax}
+            currentPage={page}
+            size="sm"
+            pathname={`/tags/${findTagBySerial.serial}`}
+          />
+        </div>
         <div
           className={clsx(
-            "grid w-full grid-cols-1 gap-2 @[384px]:grid-cols-2 @[512px]:grid-cols-3 @[768px]:grid-cols-4 @[1024px]:grid-cols-6"
+            "grid w-full grid-cols-1 gap-2 py-2 @[384px]:grid-cols-2 @[512px]:grid-cols-3 @[768px]:grid-cols-4 @[1024px]:grid-cols-6"
           )}
         >
           {findTagBySerial.taggedVideosByOffset.nodes.map((item) => (
@@ -69,13 +77,15 @@ export default async function Page({
             />
           ))}
         </div>
+        <div className={clsx("flex")}>
+          <Paginator
+            pageMax={pageMax}
+            currentPage={page}
+            size="sm"
+            pathname={`/tags/${findTagBySerial.serial}`}
+          />
+        </div>
       </div>
-      <Paginator
-        pageMax={pageMax}
-        currentPage={page}
-        size="sm"
-        pathname={`/tags/${findTagBySerial.serial}`}
-      />
     </div>
   );
 }
