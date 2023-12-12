@@ -1,5 +1,7 @@
-const plugin = require("tailwindcss/plugin");
-const colors = require("tailwindcss/colors");
+import plugin from "tailwindcss/plugin";
+import colors from "tailwindcss/colors";
+import pluginContainers from "@tailwindcss/container-queries";
+import pluginScroll from "tailwind-scrollbar";
 
 const mkTagTheme = (color) => ({
   primary: color[300],
@@ -184,8 +186,8 @@ module.exports = {
     },
   },
   plugins: [
-    require("@tailwindcss/container-queries"),
-    require("tailwind-scrollbar")({ nocompatible: true }),
+    pluginContainers,
+    pluginScroll({ nocompatible: true }),
     plugin(({ addUtilities, addVariant }) => {
       addVariant("aria-current-page", '&[aria-current="page"]');
       addUtilities({
