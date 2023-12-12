@@ -71,7 +71,7 @@ const Page = async ({ params: { group } }: { params: PageParams }) => {
       query GroupsWellcreatedPage($group: ID!) {
         getAbstractGroup(keyword: $group) {
           name
-          belongingTags(input: {}) {
+          belongingTags(input: { first: 15 }) {
             nodes {
               ...CommonTagLink
               id
