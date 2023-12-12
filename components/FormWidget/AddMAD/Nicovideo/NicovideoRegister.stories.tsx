@@ -7,9 +7,7 @@ import { graphql as mockGql } from "msw";
 import { MadPageLinkFragment } from "~/app/(v2)/mads/[serial]/Link";
 import { UserPageLinkFragment } from "~/app/(v2)/users/[name]/Link";
 import { CommonTagFragment } from "~/components/CommonTag";
-import { Query as TagSearcherQuery } from "~/components/TagSearcher";
-import { SuggestItemFragment } from "~/components/TagSearcher/SuggestItem";
-import { SuggestsFragment } from "~/components/TagSearcher/Suggests";
+import { mockTagSearcher } from "~/components/TagSearcher/index.stories";
 import { Fragment as UserIconFragment } from "~/components/UserIcon";
 import { makeFragmentData } from "~/gql";
 
@@ -109,45 +107,6 @@ export const mockRequestFragment = makeFragmentData(
     ],
   },
   NicovideoRegisterFormRequestFragment
-);
-
-export const mockTagSearcher = mockGql.query(
-  TagSearcherQuery,
-  (req, res, ctx) =>
-    res(
-      ctx.data({
-        searchTags: {
-          ...makeFragmentData(
-            {
-              items: [...new Array(3)].map((_, i) => ({
-                ...makeFragmentData(
-                  {
-                    name: {
-                      id: `searched-tag:${i}:name`,
-                      primary: false,
-                      name: `Searched Tag ${i}`,
-                    },
-                    tag: {
-                      id: `searched-tag:${i}`,
-                      ...makeFragmentData(
-                        {
-                          name: `Searched Tag ${i}`,
-                          belongTo: { keyword: "character" },
-                          explicitParent: null,
-                        },
-                        CommonTagFragment
-                      ),
-                    },
-                  },
-                  SuggestItemFragment
-                ),
-              })),
-            },
-            SuggestsFragment
-          ),
-        },
-      })
-    )
 );
 
 const meta = {

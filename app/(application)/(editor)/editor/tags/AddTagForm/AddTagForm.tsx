@@ -231,9 +231,11 @@ export const AddTagForm: React.FC<{
               size="medium"
               limit={3}
               className={clsx(["mt-1"])}
-              handleSelect={(tagId) =>
-                dispatchExplicitParentTag({ type: "set", tagId })
-              }
+              behavior={{
+                mode: "simple",
+                handleSelect: (tagId: string) =>
+                  dispatchExplicitParentTag({ type: "set", tagId }),
+              }}
               disabled={!!selectingExplicitParentTag}
             />
           </label>
@@ -254,9 +256,11 @@ export const AddTagForm: React.FC<{
               size="medium"
               limit={3}
               className={clsx(["mt-1"])}
-              handleSelect={(tagId) =>
-                dispatchImplicitParentTags({ type: "append", tagId })
-              }
+              behavior={{
+                mode: "simple",
+                handleSelect: (tagId: string) =>
+                  dispatchImplicitParentTags({ type: "append", tagId }),
+              }}
             />
           </label>
           {selectingImplicitParentTags.length >= 1 && (

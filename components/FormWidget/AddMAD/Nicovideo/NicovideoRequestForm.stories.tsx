@@ -6,10 +6,10 @@ import { graphql as mockGql } from "msw";
 
 import { NicovideoRequestLinkFragment } from "~/app/(v2)/requests/nicovideo/[sourceId]/Link";
 import { CommonTagFragment } from "~/components/CommonTag";
+import { mockTagSearcher } from "~/components/TagSearcher/index.stories";
 import { makeFragmentData } from "~/gql";
 
 import { NicovideoOriginalSourceFragment } from "./NicovideoOriginalSource";
-import { mockTagSearcher } from "./NicovideoRegister.stories";
 import NicovideoRequestForm, {
   Mutation as NicovideoRequestMutation,
   NicovideoRequestFormOriginalSourceFragment,
