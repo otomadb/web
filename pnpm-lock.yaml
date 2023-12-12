@@ -76,9 +76,6 @@ dependencies:
   sass:
     specifier: ^1.69.5
     version: 1.69.5
-  server-only:
-    specifier: ^0.0.1
-    version: 0.0.1
   urql:
     specifier: ^4.0.6
     version: 4.0.6(graphql@16.8.1)(react@18.2.0)
@@ -15044,10 +15041,6 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
-
-  /server-only@0.0.1:
-    resolution: {integrity: sha512-qepMx2JxAa5jjfzxG79yPPq+8BuFToHd1hm7kI+Z4zAq1ftQiP7HcxMhDDItrbtwVeLg/cY2JnKnrcFkmiswNA==}
-    dev: false
 
   /set-blocking@2.0.0:
     resolution: {integrity: sha512-KiKBS8AnWGEyLzofFfmvKwpdPzqiy16LvQfK3yv/fVH7Bj13/wl3JSR1J+rfgRE9q7xUJK4qvgS8raSOeLUehw==}
