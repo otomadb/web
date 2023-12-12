@@ -10,6 +10,7 @@ import LikeButton from "./LikeButton";
 import { MadPageLink } from "./Link";
 import Preview from "./Preview";
 import Semitags from "./Semitags";
+import TaggingEditor from "./TaggingEditor";
 import Taggings from "./Taggings";
 
 export default async function Layout({
@@ -68,10 +69,19 @@ export default async function Layout({
         </div>
       </section>
       <div className={clsx("flex gap-x-4")}>
-        <div className={clsx("flex w-[256px] shrink-0 flex-col gap-y-6")}>
+        <div
+          className={clsx(
+            "z-infinity flex w-[256px] shrink-0 flex-col gap-y-6"
+          )}
+        >
           <LikeButton fragment={video} className={clsx("w-full")} />
           <section className={clsx("flex flex-col gap-y-1")}>
-            <h2 className={clsx("text-base text-snow-darker")}>タグ</h2>
+            <div className={clsx("flex items-center")}>
+              <h2 className={clsx("grow text-base text-snow-darker")}>タグ</h2>
+              <Suspense>
+                <TaggingEditor madId={data.findMadBySerial.id} />
+              </Suspense>
+            </div>
             <Suspense
               fallback={
                 <p className={clsx("text-sm text-snow-darkest")}>Loading...</p>
@@ -81,7 +91,9 @@ export default async function Layout({
             </Suspense>
           </section>
           <section className={clsx("flex flex-col gap-y-1")}>
-            <h2 className={clsx("text-base text-snow-darker")}>仮タグ</h2>
+            <div>
+              <h2 className={clsx("text-base text-snow-darker")}>仮タグ</h2>
+            </div>
             <Suspense
               fallback={
                 <p className={clsx("text-sm text-snow-darkest")}>Loading...</p>
@@ -91,7 +103,7 @@ export default async function Layout({
             </Suspense>
           </section>
         </div>
-        <div className={clsx("grow")}>{children}</div>
+        <div className={clsx("z-0 grow")}>{children}</div>
       </div>
     </main>
   );

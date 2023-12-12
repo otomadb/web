@@ -41,7 +41,7 @@ export default function CommonTag({
       aria-selected={selected}
       className={clsx(
         className,
-        "group flex border",
+        "group inline-flex border",
         {
           xs: "gap-x-0.5 px-1 py-0.5 text-xxs",
           small: "gap-x-1 px-2 py-1 text-sm",

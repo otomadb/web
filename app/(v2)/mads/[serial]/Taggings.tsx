@@ -3,7 +3,7 @@ import clsx from "clsx";
 import CommonTagLink from "~/components/CommonTagLink";
 import { TagType } from "~/components/TagType";
 import { FragmentType, graphql, useFragment } from "~/gql";
-import { makeGraphQLClient } from "~/gql/fetch";
+import { makeGraphQLClient2 } from "~/gql/fetch";
 
 export const Fragment = graphql(`
   fragment MadPageLayout_Taggings on Video {
@@ -19,7 +19,10 @@ export default async function Taggings({
 }) {
   const {
     getVideo: { taggings },
-  } = await makeGraphQLClient({ next: { revalidate: 0 } }).request(
+    viewer,
+  } = await (
+    await makeGraphQLClient2({ auth: "optional" })
+  ).request(
     graphql(`
       query MadPageLayout_TaggingsQuery($id: ID!) {
         getVideo(id: $id) {
@@ -37,13 +40,16 @@ export default async function Taggings({
             }
           }
         }
+        viewer {
+          hasRole(role: EDITOR)
+        }
       }
     `),
     { id: useFragment(Fragment, fragment).id }
   );
 
   return (
-    <div className={clsx(className, "flex flex-col gap-y-1")}>
+    <div className={clsx(className, "flex flex-col")}>
       <div className={clsx("flex gap-x-2 gap-y-1")}>
         {taggings.nodes
           .filter(
@@ -61,13 +67,18 @@ export default async function Taggings({
             />
           ))}
       </div>
-      <div className={clsx("flex flex-col items-start gap-y-0.5")}>
+      <div className={clsx("mt-2 flex flex-col items-start gap-y-0.5")}>
         {taggings.nodes.map((tagging) => (
           <div key={tagging.id} className={clsx("flex")}>
             <CommonTagLink size="xs" fragment={tagging.tag} />
           </div>
         ))}
       </div>
+      {viewer?.hasRole && (
+        <div className={clsx("mt-2 text-xs text-snow-darkest")}>
+          タグを編集する
+        </div>
+      )}
     </div>
   );
 }
