@@ -165,7 +165,7 @@ type BilibiliMadRequestedTimelineEvent implements TimelineEvent {
 type BilibiliOriginalSource {
   """
   bilibili側のオリジナルの画像URL
-
+  
   bilibili側の制約上、別のオリジンから直接埋め込んだりすることはほとんど出来ないことに注意．
   """
   originalThumbnailUrl: String!
@@ -1354,6 +1354,15 @@ input NotificationsFilter {
   watched: Boolean
 }
 
+input NotificationsInput {
+  after: String
+  before: String
+  filter: NotificationsFilter! = {}
+  first: Int
+  last: Int
+  orderBy: NotificationsOrderBy! = {createdAt: DESC}
+}
+
 input NotificationsOrderBy {
   createdAt: SortOrder
 }
@@ -1374,6 +1383,8 @@ type Query {
 
   """全てのタグの個数を数える"""
   countAllTags: Int!
+  countUnwatchedNotifications: Int
+  ensuredViewer: User
 
   """Bilibiliから動画情報を取得する"""
   fetchBilibili(input: FetchBilibiliInput!): FetchBilibiliPayload!
@@ -1441,14 +1452,16 @@ type Query {
 
   """自動的に検知したニコニコ動画の音MADを列挙する"""
   listNicovideoBotRegistrationRequests(input: ListNicovideoBotRegistrationRequestsInput!): [NicovideoOriginalSource!]!
-  notifications(after: String, before: String, filter: NotificationsFilter! = {}, first: Int, last: Int, orderBy: NotificationsOrderBy! = {createdAt: DESC}): NotificationConnection! @deprecated(reason: "Use `User.notifications` instead")
+
+  """通知を取得する．未ログインなら`null`を返す．"""
+  notifications(input: NotificationsInput!): NotificationConnection
   searchTags(input: SearchTagInput!): SearchTagsPayload!
   searchVideos(input: SearchVideoInput!): SearchVideosPayload!
 
   """ユーザーのタイムラインを取得する"""
   showTimeline(input: ShowTimelineInput!): [TimelineEvent!]!
   viewer: User
-  whoami: User! @deprecated(reason: "Use `Query.viewer` instead")
+  whoami: User! @deprecated(reason: "Use `Query.ensuredViewer` instead")
 }
 
 input RegisterBilibiliMADInput {
@@ -2087,7 +2100,7 @@ type SoundcloudRegistrationRequest implements Node & RegistrationRequest {
 
   """
   OtoMADB側でプロキシしているサムネイル画像のURL
-
+  
   **無い場合は適当にダミー画像を返す．**
   """
   thumbnailUrl(scale: RegistrationRequestThumbnailScale! = LARGE): String!
@@ -2439,6 +2452,8 @@ type User implements Node {
   isEditor: Boolean! @deprecated(reason: "Use hasRole instead.")
   like(videoId: ID!): MylistRegistration
   likes: Mylist!
+
+  """非公開なものも含めてマイリストを取得する．見つからなかった場合は`null`．"""
   mylist(slug: String!): Mylist
   mylists(after: String, before: String, first: Int, last: Int, orderBy: UserMylistsOrderBy! = {createdAt: DESC}, range: [MylistShareRange!]! = [PUBLIC]): MylistConnection!
   name: String!
@@ -2447,6 +2462,8 @@ type User implements Node {
   """現在このユーザに届いている通知．"""
   notifications(input: UserNotificationsInput!): NotificationConnection!
   publicLikes: Mylist
+
+  """公開されているマイリストを取得する．見つからなかった場合は`null`．"""
   publicMylist(slug: String!): Mylist
 
   """公開マイリストの一覧をoffsetベースで取得する"""
@@ -2519,8 +2536,6 @@ type Video implements Node {
   title: String!
   titles: [VideoTitle!]!
   youtubeSources: [YoutubeVideoSource!]!
-
-  allTaggings: [VideoTag!]!
 }
 
 type VideoConnection {
