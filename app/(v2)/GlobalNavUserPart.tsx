@@ -20,6 +20,7 @@ export const GlobalNavUserPartFragment = graphql(`
       name
       displayName
     }
+    countUnwatchedNotifications
   }
 `);
 export default function GlobalNavUserPart({
@@ -30,8 +31,9 @@ export default function GlobalNavUserPart({
   fragment: FragmentType<typeof GlobalNavUserPartFragment>;
 }) {
   const f = useFragment(GlobalNavUserPartFragment, fragment);
+  const { viewer, countUnwatchedNotifications } = f;
 
-  if (!f.viewer)
+  if (!viewer || typeof countUnwatchedNotifications !== "number")
     return (
       <LoginLink
         className={clsx(
@@ -43,14 +45,6 @@ export default function GlobalNavUserPart({
       </LoginLink>
     );
 
-  const { viewer } = f;
-  const {
-    displayName,
-    name,
-    // notifications: { totalCount: totalNotifications },
-  } = viewer;
-  const totalNotifications = 0;
-
   return (
     <div className={clsx("group/user relative")}>
       <div className={clsx("relative")} tabIndex={0}>
@@ -59,7 +53,7 @@ export default function GlobalNavUserPart({
           size={32}
           className={clsx("h-full w-full")}
         />
-        {0 < totalNotifications && (
+        {0 < countUnwatchedNotifications && (
           <div
             className={clsx(
               "absolute left-[75%] top-[75%] flex select-none rounded-full bg-vivid-primary px-2 py-1 shadow-[0_0_8px] shadow-vivid-primary/25"
@@ -70,7 +64,7 @@ export default function GlobalNavUserPart({
                 "text-xxs font-bold leading-none text-obsidian-primary"
               )}
             >
-              {totalNotifications}
+              {countUnwatchedNotifications}
             </span>
           </div>
         )}
@@ -92,27 +86,27 @@ export default function GlobalNavUserPart({
               "text-sm font-bold text-snow-primary group-hover/link:text-obsidian-primary"
             )}
           >
-            {displayName}
+            {viewer.displayName}
           </div>
           <div
             className={clsx(
               "text-xs text-snow-darker group-hover/link:text-obsidian-primary"
             )}
           >
-            @{name}
+            @{viewer.name}
           </div>
         </MyTopPageLink>
         <NotificationsPageLink
           className={clsx("group/link block px-4 py-2 hover:bg-vivid-primary")}
         >
-          {0 < totalNotifications ? (
+          {0 < countUnwatchedNotifications ? (
             <span
               className={clsx(
                 "text-xs text-snow-primary group-hover/link:text-obsidian-primary"
               )}
             >
               通知が
-              <span>{totalNotifications}</span>
+              <span>{countUnwatchedNotifications}</span>
               件来ています
             </span>
           ) : (

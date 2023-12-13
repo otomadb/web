@@ -15,7 +15,7 @@ import GlobalNavUserPart from "./GlobalNavUserPart";
 import { NotifyEmailVerifycation } from "./NotifyVerification";
 
 const getGlobalNavUserPart = async () =>
-  makeGraphQLClient2({ auth: "optional" }).then((c) =>
+  makeGraphQLClient2({ auth: "optional", next: { revalidate: 0 } }).then((c) =>
     c.request(
       graphql(`
         query GlobalNav {
@@ -26,7 +26,7 @@ const getGlobalNavUserPart = async () =>
   );
 
 const getAppSideNav = async () =>
-  makeGraphQLClient2({ auth: "optional" }).then((c) =>
+  makeGraphQLClient2({ auth: "optional", next: { revalidate: 0 } }).then((c) =>
     c.request(
       graphql(`
         query AppSideNav {
