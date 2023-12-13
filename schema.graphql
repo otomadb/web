@@ -1383,6 +1383,8 @@ type Query {
 
   """全てのタグの個数を数える"""
   countAllTags: Int!
+
+  """未読の通知を数える．未ログインなら`null`を返す．"""
   countUnwatchedNotifications: Int
   ensuredViewer: User
 
@@ -2460,7 +2462,7 @@ type User implements Node {
   nicovideoRegistrationRequests(after: String, before: String, first: Int, last: Int, orderBy: UserNicovideoRegistrationRequestsOrderBy! = {createdAt: DESC}): NicovideoRegistrationRequestConnection!
 
   """現在このユーザに届いている通知．"""
-  notifications(input: UserNotificationsInput!): NotificationConnection!
+  notifications(input: UserNotificationsInput!): NotificationConnection! @deprecated(reason: "Use `Query.notifications` instead.")
   publicLikes: Mylist
 
   """公開されているマイリストを取得する．見つからなかった場合は`null`．"""
