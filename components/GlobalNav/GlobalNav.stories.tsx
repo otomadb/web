@@ -5,7 +5,7 @@ import { $handlerSourceAndRequests } from "~/components/SearchContents/Nicovideo
 import { $handlerSomeMadsHit } from "~/components/SearchContents/SearchMads.stories";
 import { $handlerSomeTagsHit } from "~/components/SearchContents/SearchTags.stories";
 
-import GlobalNav, { GlobalNavQuery } from ".";
+import GlobalNav, { GlobalNavQuery } from "./GlobalNav";
 
 const meta = {
   component: GlobalNav,

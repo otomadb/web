@@ -4,7 +4,6 @@ import clsx from "clsx";
 import Link from "next/link";
 import { useQuery } from "urql";
 
-import TopPageLink from "~/app/(landing)/Link";
 import LinkRegisterSemitag from "~/app/(v2)/editor/semitags/Link";
 import TagRegisterPageLink from "~/app/(v2)/editor/tags/Link";
 import { AllVideosPageLink } from "~/app/(v2)/mads/Link";
@@ -13,7 +12,6 @@ import AllNicovideoRequestsPageLink from "~/app/(v2)/requests/nicovideo/Link";
 import AllSoundcloudRequestLink from "~/app/(v2)/requests/soundcloud/Link";
 import AllYoutubeRequestLink from "~/app/(v2)/requests/youtube/Link";
 import { useOpenInput } from "~/components/FormWidget";
-import Logo from "~/components/Logo";
 import {
   BilibiliPictogram,
   GroupPictogram,
@@ -55,19 +53,6 @@ export default function AppSideNav({
         "overflow-y-hidden border-r border-r-obsidian-primary bg-obsidian-darker"
       )}
     >
-      <div
-        className={clsx(
-          "flex h-[64px] items-center justify-center border-b border-obsidian-primary p-4"
-        )}
-      >
-        <TopPageLink
-          className={clsx(
-            "block h-full shrink-0 fill-snow-primary transition-colors duration-75 hover:fill-vivid-primary"
-          )}
-        >
-          <Logo className={clsx("h-full")} />
-        </TopPageLink>
-      </div>
       <div className="h-[calc(100%-64px)] overflow-y-scroll scrollbar-thin scrollbar-track-obsidian-primary scrollbar-thumb-obsidian-lighter scrollbar-w-[4px]">
         <div className={clsx("flex flex-col gap-y-4 px-2 py-4")}>
           <div

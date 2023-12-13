@@ -2,9 +2,9 @@ import { action } from "@storybook/addon-actions";
 import { Meta, StoryObj } from "@storybook/react";
 import { graphql } from "msw";
 
-import { FormModalContext } from "../FormWidget";
-import SearchContents, { AppSideNavQuery } from ".";
-import AppSideNav from ".";
+import { FormModalContext } from "~/components/FormWidget";
+
+import AppSideNav, { AppSideNavQuery } from "./AppSideNav";
 
 const meta = {
   component: AppSideNav,
@@ -30,7 +30,7 @@ const meta = {
       </FormModalContext.Provider>
     ),
   ],
-} satisfies Meta<typeof SearchContents>;
+} satisfies Meta<typeof AppSideNav>;
 export default meta;
 
 type Story = StoryObj<typeof meta>;

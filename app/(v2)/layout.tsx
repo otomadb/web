@@ -1,13 +1,11 @@
-import { UserProvider } from "@auth0/nextjs-auth0/client";
-import clsx from "clsx";
 import React from "react";
 
-import AppSideNav from "~/components/AppSideNav";
 import FormWidgetSwitch, { FormModalProvider } from "~/components/FormWidget";
 import GlobalFooter from "~/components/GlobalFooter";
-import GlobalNav from "~/components/GlovalNav";
+import GlobalNav from "~/components/GlobalNav/GlobalNav";
 import { ToastProvider } from "~/components/Toaster";
 
+import AppSideNav from "./AppSideNav";
 import { NotifyEmailVerifycation } from "./NotifyVerification";
 
 export default function ApplicationLayout({
@@ -16,27 +14,23 @@ export default function ApplicationLayout({
   children: React.ReactNode;
 }) {
   return (
-    <UserProvider>
-      <ToastProvider selector="#toast2">
-        <NotifyEmailVerifycation />
-        <FormModalProvider>
-          <div className={clsx("flex @container/app")}>
-            <AppSideNav className="sticky top-0 h-screen w-[320px] shrink-0" />
-            <div className="shrink-0 grow bg-obsidian-darkest">
-              <GlobalNav className={clsx("sticky top-0 z-1 h-[64px] w-full")} />
-              <div className="min-h-[calc(100vh-64px)]">{children}</div>
-              <GlobalFooter />
-            </div>
+    <ToastProvider selector="#toast2">
+      <NotifyEmailVerifycation />
+      <FormModalProvider>
+        <GlobalNav className={"sticky top-0 z-1 h-[64px] w-full"} />
+        <div className="flex bg-obsidian-darkest">
+          <AppSideNav className="sticky top-[64px] h-[calc(100vh-64px)] w-[320px] shrink-0" />
+          <div className="grow bg-obsidian-darkest">
+            <div className="min-h-[calc(100vh-64px)]">{children}</div>
+            <GlobalFooter />
           </div>
-          <FormWidgetSwitch className={clsx("fixed bottom-1 right-4")} />
-          <div
-            id="toast2"
-            className={clsx(
-              "fixed right-4 top-[64px] z-infinity max-h-[calc(100vh-64px)] min-w-[320px]"
-            )}
-          />
-        </FormModalProvider>
-      </ToastProvider>
-    </UserProvider>
+        </div>
+        <FormWidgetSwitch className={"fixed bottom-1 right-4"} />
+        <div
+          id="toast2"
+          className="fixed right-4 top-[64px] z-infinity max-h-[calc(100vh-64px)] min-w-[320px]"
+        />
+      </FormModalProvider>
+    </ToastProvider>
   );
 }
