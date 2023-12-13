@@ -4,13 +4,11 @@ import clsx from "clsx";
 import { CSSProperties } from "react";
 import { useQuery } from "urql";
 
-import TopPageLink from "~/app/(landing)/Link";
 import { LoginLink } from "~/components/AuthLink";
 import { SignInPictogram } from "~/components/Pictogram";
 import SearchContents from "~/components/SearchContents";
 import { graphql } from "~/gql";
 
-import Logo from "../Logo";
 import ProfileAccordion from "./ProfileAccordion";
 import UserIndicator from "./UserIndicator";
 
@@ -47,13 +45,6 @@ export default function GlobalNav({
           "mx-auto flex h-full max-w-[1024px] items-center justify-between gap-x-8 px-8"
         )}
       >
-        <TopPageLink
-          className={clsx(
-            "block shrink-0 fill-snow-primary px-2 transition-colors duration-75 hover:fill-vivid-primary"
-          )}
-        >
-          <Logo className={clsx("h-6")} />
-        </TopPageLink>
         <SearchContents className={clsx("z-0 grow")} />
         <div className={clsx("z-1 flex shrink-0 justify-center")}>
           {fetching ? (
