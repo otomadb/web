@@ -45,41 +45,21 @@ export default async function ApplicationLayout({
     <ToastProvider selector="#toast2">
       <NotifyEmailVerifycation />
       <FormModalProvider>
-        <nav
-          className={clsx(
-            "sticky top-0 z-1 h-[64px] w-full border-b border-b-obsidian-primary bg-obsidian-darker/80 backdrop-blur-md"
-          )}
-        >
-          <div
-            className={clsx(
-              "mx-auto flex h-full max-w-[1280px] items-center justify-between gap-x-8 px-8"
-            )}
-          >
-            <TopPageLink
+        <div className={clsx("flex @container/app")}>
+          <nav className="sticky top-0 h-screen w-[320px] shrink-0 border-r border-obsidian-primary bg-obsidian-darker">
+            <div
               className={clsx(
-                "block h-[24px] shrink-0 fill-snow-darkest transition-colors duration-200 hover:fill-vivid-primary"
+                "flex h-[64px] items-center justify-center border-b border-obsidian-primary"
               )}
             >
-              <Logo className={clsx("h-full")} />
-            </TopPageLink>
-            <SearchContents className={clsx("z-0 grow")} />
-            <div className={clsx("w-[128px] shrink-0")}>
-              <Suspense
-                fallback={
-                  <div
-                    className={
-                      "h-[32px] w-[32px] animate-pulse rounded-sm bg-obsidian-lighter"
-                    }
-                  />
-                }
+              <TopPageLink
+                className={clsx(
+                  "border-b border-obsidian-primary fill-snow-darkest transition-colors duration-50 hover:fill-vivid-primary"
+                )}
               >
-                <GlobalNavUserPart fragment={await getGlobalNavUserPart()} />
-              </Suspense>
+                <Logo className={clsx("mx-auto h-[32px]")} />
+              </TopPageLink>
             </div>
-          </div>
-        </nav>
-        <div className="relative z-0 flex bg-obsidian-darkest">
-          <nav className="sticky top-[64px] h-[calc(100vh-64px)] w-[320px] shrink-0 border-r border-obsidian-primary bg-obsidian-darker">
             <Suspense>
               <AppSideNavMenu
                 fragment={await getAppSideNav()}
@@ -87,7 +67,35 @@ export default async function ApplicationLayout({
               />
             </Suspense>
           </nav>
-          <div className="grow bg-obsidian-darkest">
+          <div className="relative z-0 grow bg-obsidian-darkest">
+            <nav
+              className={clsx(
+                "sticky top-0 z-1 h-[64px] w-full border-b border-b-obsidian-primary bg-obsidian-darker/80 backdrop-blur-md"
+              )}
+            >
+              <div
+                className={clsx(
+                  "mx-auto flex h-full max-w-[1280px] items-center justify-between gap-x-8 px-8"
+                )}
+              >
+                <SearchContents className={clsx("z-0 grow")} />
+                <div className={clsx("w-[128px] shrink-0")}>
+                  <Suspense
+                    fallback={
+                      <div
+                        className={
+                          "h-[32px] w-[32px] animate-pulse rounded-sm bg-obsidian-lighter"
+                        }
+                      />
+                    }
+                  >
+                    <GlobalNavUserPart
+                      fragment={await getGlobalNavUserPart()}
+                    />
+                  </Suspense>
+                </div>
+              </div>
+            </nav>
             <div className="min-h-[calc(100vh-64px)]">{children}</div>
             <GlobalFooter />
           </div>
