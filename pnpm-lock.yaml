@@ -10,9 +10,6 @@ patchedDependencies:
     path: patches/tailwind-scrollbar@3.0.5.patch
 
 dependencies:
-  '@auth0/auth0-react':
-    specifier: ^2.2.3
-    version: 2.2.3(react-dom@18.2.0)(react@18.2.0)
   '@auth0/nextjs-auth0':
     specifier: ^3.3.0
     version: 3.5.0(next@14.0.4)
@@ -79,9 +76,6 @@ dependencies:
   sass:
     specifier: ^1.69.5
     version: 1.69.5
-  server-only:
-    specifier: ^0.0.1
-    version: 0.0.1
   urql:
     specifier: ^4.0.6
     version: 4.0.6(graphql@16.8.1)(react@18.2.0)
@@ -333,21 +327,6 @@ packages:
     transitivePeerDependencies:
       - encoding
     dev: true
-
-  /@auth0/auth0-react@2.2.3(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-3B0KA/ky1yA6iQK8045N8U0ZBkmDB3ElCSwJuxNbAoKmZBc4+DjzZhWRxYsgb9PrfHC14Lr2h4950A3PEFDULA==}
-    peerDependencies:
-      react: ^16.11.0 || ^17 || ^18
-      react-dom: ^16.11.0 || ^17 || ^18
-    dependencies:
-      '@auth0/auth0-spa-js': 2.1.2
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
-    dev: false
-
-  /@auth0/auth0-spa-js@2.1.2:
-    resolution: {integrity: sha512-xdA65Z/U7++Y7L9Uwh8Q8OVOs6qgFz+fb7GAzHFjpr1icO37B//xdzLXm7ZRgA19RWrsNe1nme3h896igJSvvw==}
-    dev: false
 
   /@auth0/nextjs-auth0@3.5.0(next@14.0.4):
     resolution: {integrity: sha512-uFZEE2QQf1zU+jRK2fwqxRQt+WSqDPYF2tnr7d6BEa7b6L6tpPJ3evzoImbWSY1a7gFdvD7RD/Rvrsx7B5CKVg==}
@@ -15062,10 +15041,6 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
-
-  /server-only@0.0.1:
-    resolution: {integrity: sha512-qepMx2JxAa5jjfzxG79yPPq+8BuFToHd1hm7kI+Z4zAq1ftQiP7HcxMhDDItrbtwVeLg/cY2JnKnrcFkmiswNA==}
-    dev: false
 
   /set-blocking@2.0.0:
     resolution: {integrity: sha512-KiKBS8AnWGEyLzofFfmvKwpdPzqiy16LvQfK3yv/fVH7Bj13/wl3JSR1J+rfgRE9q7xUJK4qvgS8raSOeLUehw==}

@@ -4,9 +4,9 @@ import clsx from "clsx";
 import Link from "next/link";
 import { useQuery } from "urql";
 
-import { LinkRegisterSemitag } from "~/app/(application)/(editor)/editor/semitags/Link";
-import { TagRegisterPageLink } from "~/app/(application)/(editor)/editor/tags/Link";
 import TopPageLink from "~/app/(landing)/Link";
+import LinkRegisterSemitag from "~/app/(v2)/editor/semitags/Link";
+import TagRegisterPageLink from "~/app/(v2)/editor/tags/Link";
 import { AllVideosPageLink } from "~/app/(v2)/mads/Link";
 import AllBilibiliRequestLink from "~/app/(v2)/requests/bilibili/Link";
 import AllNicovideoRequestsPageLink from "~/app/(v2)/requests/nicovideo/Link";
