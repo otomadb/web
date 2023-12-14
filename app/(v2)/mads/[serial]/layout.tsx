@@ -113,7 +113,11 @@ export default async function Layout({
         "flex w-full flex-col gap-x-4 px-8 py-4 @container/layout"
       )}
     >
-      <header className={clsx("col-span-full p-4 @[1024px]/layout:p-8")}>
+      <header
+        className={clsx(
+          "col-span-full mx-auto max-w-[1536px] p-4 @[1024px]/layout:p-8"
+        )}
+      >
         <h1 className={clsx("text-2xl font-bold text-snow-primary")}>
           <MadPageLink fragment={video}>{video.title}</MadPageLink>
         </h1>
