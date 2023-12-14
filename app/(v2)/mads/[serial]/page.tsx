@@ -70,7 +70,7 @@ export default async function Page({ params }: { params: PageParams }) {
   const result = await makeGraphQLClient().request(
     graphql(`
       query VideoPage($serial: Int!) {
-        findVideo(input: { serial: $serial }) {
+        findMadBySerial(serial: $serial) {
           id
           ...MadPage_SimilarVideosSection
         }
@@ -79,22 +79,26 @@ export default async function Page({ params }: { params: PageParams }) {
     { serial: parseInt(params.serial, 10) }
   );
 
-  if (!result.findVideo) notFound();
+  if (!result.findMadBySerial) notFound();
 
   return (
-    <div className={clsx("flex flex-col gap-y-4")}>
-      <section>
-        <h2 className={clsx("text-base text-snow-darker")}>似ている動画</h2>
-        <div className={clsx("mt-2")}>
-          <Suspense
-            fallback={
-              <p className={clsx("text-sm text-snow-darkest")}>Loading...</p>
-            }
-          >
-            <SimilarVideos fragment={result.findVideo} />
-          </Suspense>
-        </div>
-      </section>
-    </div>
+    <section
+      className={clsx(
+        "col-span-full flex flex-col gap-y-2 rounded-md border border-obsidian-primary bg-obsidian-darker p-4"
+      )}
+    >
+      <h2 className={clsx("block text-lg font-bold text-snow-darker")}>
+        似ている動画
+      </h2>
+      <div>
+        <Suspense
+          fallback={
+            <p className={clsx("text-sm text-snow-darkest")}>Loading...</p>
+          }
+        >
+          <SimilarVideos fragment={result.findMadBySerial} />
+        </Suspense>
+      </div>
+    </section>
   );
 }
