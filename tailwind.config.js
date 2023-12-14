@@ -190,6 +190,7 @@ module.exports = {
   },
   plugins: [
     require("@tailwindcss/container-queries"),
+    require("@tailwindcss/aspect-ratio"),
     require("tailwind-scrollbar")({ nocompatible: true }),
     plugin(({ addUtilities, addVariant }) => {
       addVariant("aria-current-page", '&[aria-current="page"]');

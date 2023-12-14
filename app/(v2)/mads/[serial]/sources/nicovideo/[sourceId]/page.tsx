@@ -1,13 +1,9 @@
-import clsx from "clsx";
 import { request } from "graphql-request";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
 
 import { graphql } from "~/gql";
 import { makeGraphQLClient } from "~/gql/fetch";
-
-import SimilarVideos from "./SimilarVideos";
 
 export async function generateMetadata({
   params,
@@ -81,24 +77,5 @@ export default async function Page({ params }: { params: PageParams }) {
 
   if (!result.findMadBySerial) notFound();
 
-  return (
-    <section
-      className={clsx(
-        "col-span-full flex flex-col gap-y-2 rounded-md border border-obsidian-primary bg-obsidian-darker p-4"
-      )}
-    >
-      <h2 className={clsx("block text-lg font-bold text-snow-darker")}>
-        似ている動画
-      </h2>
-      <div>
-        <Suspense
-          fallback={
-            <p className={clsx("text-sm text-snow-darkest")}>Loading...</p>
-          }
-        >
-          <SimilarVideos fragment={result.findMadBySerial} />
-        </Suspense>
-      </div>
-    </section>
-  );
+  return <></>;
 }
