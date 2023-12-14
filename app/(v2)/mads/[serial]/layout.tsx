@@ -30,12 +30,6 @@ export default async function Layout({
   params: { serial: string };
   searchParams: Record<string, unknown>;
 }) {
-  /*
-  const sp = z
-    .union([z.undefined(), z.object({})])
-    .safeParse(unparsedSearchParams);
-    */
-
   const data = await (
     await makeGraphQLClient2({ auth: "optional" })
   ).request(
@@ -49,9 +43,6 @@ export default async function Layout({
           ...Link_Video
           ...Link_VideoEvents
           ...MadPageLayout_LikeSwitch
-          ...MadPageLayout_Taggings
-          ...MadPageLayout_Semitags
-          ...MadPageLayout_Preview
           taggings {
             nodes {
               id
@@ -115,7 +106,7 @@ export default async function Layout({
     >
       <header
         className={clsx(
-          "col-span-full mx-auto max-w-[1536px] p-4 @[1024px]/layout:p-8"
+          "col-span-full mx-auto w-full max-w-[1536px] p-4 @[1024px]/layout:p-8"
         )}
       >
         <h1 className={clsx("text-2xl font-bold text-snow-primary")}>
