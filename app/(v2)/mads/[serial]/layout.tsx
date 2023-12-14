@@ -7,6 +7,7 @@ import { CommonSemitag2 } from "~/components/CommonSemitag";
 import CommonTagLink from "~/components/CommonTagLink";
 import {
   BilibiliPictogram,
+  ExternalLinkPictogram,
   NicovideoPictogram,
   SoundcloudPictogram,
   YoutubePictogram,
@@ -72,25 +73,21 @@ export default async function Layout({
             id
             sourceId
             url
-            embedUrl
           }
           youtubeSources {
             id
             sourceId
             url
-            embedUrl
           }
           soundcloudSources {
             id
             sourceId
             url
-            embedUrl
           }
           bilibiliSources {
             id
             sourceId
             url
-            embedUrl
           }
         }
       }
@@ -154,7 +151,7 @@ export default async function Layout({
           <div
             className={clsx(
               "group/sources relative flex items-center justify-center @[1024px]/layout:w-full",
-              "px-4 @[1024px]/layer:px-0",
+              "px-4 @[1024px]/layout:px-0",
               "hover:bg-obsidian-lighter @[1024px]/layout:hover:bg-transparent"
             )}
           >
@@ -167,7 +164,7 @@ export default async function Layout({
             </div>
             <div
               className={clsx(
-                "left-0 top-full z-1 flex flex-col @[1024px]/layout:top-auto @[1024px]/layout:gap-y-2",
+                "right-0 top-full z-1 flex flex-col @[1024px]/layout:top-auto @[1024px]/layout:gap-y-2",
                 "w-64 @[1024px]/layout:w-full",
                 "absolute @[1024px]/layout:relative",
                 "invisible group-hover/sources:visible @[1024px]/layout:visible",
@@ -180,20 +177,16 @@ export default async function Layout({
                 <div
                   key={source.id}
                   className={clsx(
-                    "flex items-center gap-x-2 border-l-2 !border-l-nicovideo-primary"
+                    "flex items-center border-l-2 !border-l-nicovideo-primary @[1024px]/layout:h-8"
                   )}
                 >
                   <Link
                     href={{
-                      pathname: `/videos/${serial}`,
-                      query: {
-                        platform: "nicovideo",
-                        sourceId: source.sourceId,
-                      },
+                      pathname: `/videos/${serial}/sources/nicovideo/${source.sourceId}`,
                     }}
                     className={clsx(
                       "group/source flex grow items-center gap-x-2 hover:bg-vivid-primary @[1024px]/layout:hover:bg-obsidian-lighter",
-                      "p-4 @[1024px]/layout:py-2"
+                      "p-4 @[1024px]/layout:h-8"
                     )}
                   >
                     <NicovideoPictogram
@@ -209,6 +202,16 @@ export default async function Layout({
                       {source.sourceId}
                     </div>
                   </Link>
+                  <a
+                    href={source.url}
+                    target="_blank"
+                    rel="noopener"
+                    className={clsx(
+                      "mx-2 block h-8 w-8 rounded-md p-2 text-snow-primary @[1024px]/layout:mx-0 hover:bg-vivid-primary hover:text-obsidian-primary @[1024px]/layout:hover:bg-obsidian-lighter @[1024px]/layout:hover:text-snow-lighter"
+                    )}
+                  >
+                    <ExternalLinkPictogram className={clsx("h-full w-full ")} />
+                  </a>
                 </div>
               ))}
               {youtubeSources.map((source) => (
@@ -220,12 +223,11 @@ export default async function Layout({
                 >
                   <Link
                     href={{
-                      pathname: `/videos/${serial}`,
-                      query: { platform: "youtube", sourceId: source.sourceId },
+                      pathname: `/videos/${serial}/sources/youtube/${source.sourceId}`,
                     }}
                     className={clsx(
                       "group/source flex grow items-center gap-x-2 hover:bg-vivid-primary @[1024px]/layout:hover:bg-obsidian-lighter",
-                      "p-4 @[1024px]/layout:py-2"
+                      "p-4 @[1024px]/layout:h-8"
                     )}
                   >
                     <YoutubePictogram
@@ -241,6 +243,16 @@ export default async function Layout({
                       {source.sourceId}
                     </div>
                   </Link>
+                  <a
+                    href={source.url}
+                    target="_blank"
+                    rel="noopener"
+                    className={clsx(
+                      "mx-2 block h-8 w-8 rounded-md p-2 text-snow-primary @[1024px]/layout:mx-0 hover:bg-vivid-primary hover:text-obsidian-primary @[1024px]/layout:hover:bg-obsidian-lighter @[1024px]/layout:hover:text-snow-lighter"
+                    )}
+                  >
+                    <ExternalLinkPictogram className={clsx("h-full w-full ")} />
+                  </a>
                 </div>
               ))}
               {bilibiliSources.map((source) => (
@@ -252,15 +264,11 @@ export default async function Layout({
                 >
                   <Link
                     href={{
-                      pathname: `/videos/${serial}`,
-                      query: {
-                        platform: "bilibili",
-                        sourceId: source.sourceId,
-                      },
+                      pathname: `/videos/${serial}/sources/bilibili/${source.sourceId}`,
                     }}
                     className={clsx(
                       "group/source flex grow items-center gap-x-2 hover:bg-vivid-primary @[1024px]/layout:hover:bg-obsidian-lighter",
-                      "p-4 @[1024px]/layout:py-2"
+                      "p-4 @[1024px]/layout:h-8"
                     )}
                   >
                     <BilibiliPictogram
@@ -276,6 +284,16 @@ export default async function Layout({
                       {source.sourceId}
                     </div>
                   </Link>
+                  <a
+                    href={source.url}
+                    target="_blank"
+                    rel="noopener"
+                    className={clsx(
+                      "mx-2 block h-8 w-8 rounded-md p-2 text-snow-primary @[1024px]/layout:mx-0 hover:bg-vivid-primary hover:text-obsidian-primary @[1024px]/layout:hover:bg-obsidian-lighter @[1024px]/layout:hover:text-snow-lighter"
+                    )}
+                  >
+                    <ExternalLinkPictogram className={clsx("h-full w-full ")} />
+                  </a>
                 </div>
               ))}
               {soundcloudSources.map((source) => (
@@ -287,15 +305,11 @@ export default async function Layout({
                 >
                   <Link
                     href={{
-                      pathname: `/videos/${serial}`,
-                      query: {
-                        platform: "soundcloud",
-                        sourceId: source.sourceId,
-                      },
+                      pathname: `/videos/${serial}/sources/soundcloud/${source.sourceId}`,
                     }}
                     className={clsx(
                       "group/source flex grow items-center gap-x-2 hover:bg-vivid-primary @[1024px]/layout:hover:bg-obsidian-lighter",
-                      "p-4 @[1024px]/layout:py-2"
+                      "p-4 @[1024px]/layout:h-8"
                     )}
                   >
                     <SoundcloudPictogram
@@ -311,6 +325,16 @@ export default async function Layout({
                       {source.sourceId}
                     </div>
                   </Link>
+                  <a
+                    href={source.url}
+                    target="_blank"
+                    rel="noopener"
+                    className={clsx(
+                      "mx-2 block h-8 w-8 rounded-md p-2 text-snow-primary @[1024px]/layout:mx-0 hover:bg-vivid-primary hover:text-obsidian-primary @[1024px]/layout:hover:bg-obsidian-lighter @[1024px]/layout:hover:text-snow-lighter"
+                    )}
+                  >
+                    <ExternalLinkPictogram className={clsx("h-full w-full ")} />
+                  </a>
                 </div>
               ))}
             </div>

@@ -11,8 +11,8 @@ export default async function Page({ params }: { params: PageParams }) {
     await makeGraphQLClient2({ auth: "optional" })
   ).request(
     graphql(`
-      query NicovideoSourcePage($sourceId: String!) {
-        findNicovideoVideoSource(input: { sourceId: $sourceId }) {
+      query BilibiliSourcePage($sourceId: String!) {
+        findBilibiliMADSource(input: { sourceId: $sourceId }) {
           id
           sourceId
           embedUrl
@@ -24,8 +24,8 @@ export default async function Page({ params }: { params: PageParams }) {
     }
   );
 
-  if (!result.findNicovideoVideoSource) notFound();
-  const { embedUrl, sourceId } = result.findNicovideoVideoSource;
+  if (!result.findBilibiliMADSource) notFound();
+  const { embedUrl, sourceId } = result.findBilibiliMADSource;
 
   return (
     <section
@@ -35,7 +35,7 @@ export default async function Page({ params }: { params: PageParams }) {
     >
       <div className={clsx("flex items-center gap-x-4 px-2")}>
         <h2 className={clsx("block text-lg font-bold text-snow-darker")}>
-          ニコニコ動画の<span className={clsx("font-mono")}>{sourceId}</span>
+          Bilibiliの<span className={clsx("font-mono")}>{sourceId}</span>
           としての情報
         </h2>
       </div>
