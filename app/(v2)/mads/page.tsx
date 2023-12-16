@@ -28,6 +28,8 @@ export default async function Page({
 }: {
   searchParams: { page?: string };
 }) {
+  const PER_PAGE = 24;
+
   const page = searchParams.page ? parseInt(searchParams.page, 10) : 1;
   if (page < 1) notFound();
 
@@ -46,13 +48,13 @@ export default async function Page({
         }
       }
     `),
-    { offset: (page - 1) * 24 }
+    { offset: (page - 1) * PER_PAGE }
   );
   if (!result.findMadsByOffset) notFound();
   if (result.findMadsByOffset.nodes.length === 0) notFound();
 
   const { findMadsByOffset } = result;
-  const pageMax = Math.ceil(findMadsByOffset.totalCount / 24);
+  const pageMax = Math.ceil(findMadsByOffset.totalCount / PER_PAGE);
 
   return (
     <main
@@ -76,7 +78,8 @@ export default async function Page({
       </div>
       <div
         className={clsx(
-          "grid w-full grid-cols-1 gap-2 @[384px]:grid-cols-2 @[512px]:grid-cols-3 @[768px]:grid-cols-4 @[1024px]:grid-cols-6"
+          "grid w-full grid-cols-1 gap-2",
+          " @[384px]:grid-cols-2 @[512px]:grid-cols-3 @[768px]:grid-cols-4 @[1024px]:grid-cols-6 @[1536px]:grid-cols-8"
         )}
       >
         {findMadsByOffset.nodes.map((node) => (
