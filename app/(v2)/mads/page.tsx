@@ -28,7 +28,7 @@ export default async function Page({
 }: {
   searchParams: { page?: string };
 }) {
-  const PER_PAGE = 24;
+  const PER_PAGE = 48;
 
   const page = searchParams.page ? parseInt(searchParams.page, 10) : 1;
   if (page < 1) notFound();
@@ -37,8 +37,8 @@ export default async function Page({
     await makeGraphQLClient2({ auth: "optional" })
   ).request(
     graphql(`
-      query MadsPage($offset: Int!) {
-        findMadsByOffset(input: { offset: $offset, take: 24 }) {
+      query MadsPage($offset: Int!, $take: Int!) {
+        findMadsByOffset(input: { offset: $offset, take: $take }) {
           nodes {
             id
             ...CommonMadBlock
@@ -48,7 +48,10 @@ export default async function Page({
         }
       }
     `),
-    { offset: (page - 1) * PER_PAGE }
+    {
+      take: PER_PAGE,
+      offset: (page - 1) * PER_PAGE,
+    }
   );
   if (!result.findMadsByOffset) notFound();
   if (result.findMadsByOffset.nodes.length === 0) notFound();
@@ -59,10 +62,14 @@ export default async function Page({
   return (
     <main
       className={clsx(
-        "mx-auto flex max-w-screen-2xl flex-col gap-y-4 px-8 py-4 @container/page"
+        "mx-auto flex flex-col gap-y-4 px-8 py-4 @container/page"
       )}
     >
-      <div className={clsx("flex w-full items-center px-4 py-2")}>
+      <div
+        className={clsx(
+          "mx-auto flex w-full max-w-screen-2xl items-center px-4 py-2"
+        )}
+      >
         <div className="shrink-0 grow">
           <h1 className="text-xl font-bold text-snow-primary">
             登録されている音MAD一覧
@@ -86,7 +93,11 @@ export default async function Page({
           <CommonMadBlock key={node.id} fragment={node} likeable={node} />
         ))}
       </div>
-      <div className={clsx("flex w-full justify-end px-4 py-2")}>
+      <div
+        className={clsx(
+          "mx-auto flex w-full max-w-screen-2xl justify-end px-4 py-2"
+        )}
+      >
         <Paginator
           size="sm"
           pageMax={pageMax}
