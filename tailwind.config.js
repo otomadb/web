@@ -97,6 +97,7 @@ module.exports = {
         "youtube": { primary: "#FF0000" },
         "bilibili": { primary: "#22A8DE" },
         "soundcloud": { primary: "#FF5500" },
+        "twitter-x": { primary: "#000" },
         // tags
         "tag-copyright": mkTagTheme(colors.rose),
         "tag-character": mkTagTheme(colors.green),
