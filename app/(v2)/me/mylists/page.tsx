@@ -6,6 +6,7 @@ import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { graphql } from "~/gql";
 import { makeGraphQLClient2 } from "~/gql/fetch";
 
+import CreateMylistButton from "../likes/CreateMylistButton";
 import YouMylistPageLink from "./[slug]/Link";
 
 export const dynamic = "force-dynamic";
@@ -58,6 +59,7 @@ export default withPageAuthRequired(
           <h1 className={clsx("px-2 text-xl font-bold text-snow-primary")}>
             あなたのマイリスト
           </h1>
+          <CreateMylistButton className={clsx("ml-auto")} />
         </header>
         <div className={clsx("mt-4 flex flex-col gap-y-4")}>
           {viewer.mylists.nodes.length === 0 && (
