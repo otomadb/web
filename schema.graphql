@@ -509,9 +509,26 @@ input FindBilibiliMADSourceInput {
 }
 
 input FindMadsByOffsetInput {
+  filter: FindMadsByOffsetInputFilter! = {}
   offset: Int!
   orderBy: FindMadsByOffsetInputOrderBy! = {createdAt: DESC}
   take: Int!
+}
+
+input FindMadsByOffsetInputFilter {
+  """
+  (ソース元の投稿時刻) ≧ (入力)
+  
+  *ソース元の投稿時刻が不明な場合，このフィルターを入れると全て無視されることに注意．*
+  """
+  registeredAtGte: DateTime
+
+  """
+  (ソース元の投稿時刻) ≦ (入力)
+  
+  *ソース元の投稿時刻が不明な場合，このフィルターを入れると全て無視されることに注意．*
+  """
+  registeredAtLte: DateTime
 }
 
 input FindMadsByOffsetInputOrderBy {
@@ -811,6 +828,7 @@ type Mutation {
   requestNicovideoRegistration(input: RequestNicovideoRegistrationInput!): RequestNicovideoRegistrationReturnUnion!
   requestSoundcloudRegistration(input: RequestSoundcloudRegistrationInput!): RequestSoundcloudRegistrationReturnUnion!
   requestYoutubeRegistration(input: RequestYoutubeRegistrationInput!): RequestYoutubeRegistrationReturnUnion!
+  resolveYoutubeRegistrationRequest(input: ResolveYoutubeRegistrationRequestInput!): ResolveYoutubeRegistrationRequestResult!
   resovleSemitag(semitagId: ID!, tagId: ID!): ResolveSemitagReturnUnion!
   undoLikeVideo(input: UndoLikeVideoInput!): UndoLikeVideoReturnUnion!
 
@@ -1297,6 +1315,9 @@ type NicovideoVideoSource implements Node & VideoSource {
   embedUrl: String!
   events(input: NicovideoVideoSourceEventsInput!): NicovideoVideoSourceEventConnection!
   id: ID!
+
+  """ニコニコ動画側における投稿時刻"""
+  registeredAt: DateTime
   sourceId: String!
   url: String!
   video: Video!
@@ -1354,6 +1375,15 @@ input NotificationsFilter {
   watched: Boolean
 }
 
+input NotificationsInput {
+  after: String
+  before: String
+  filter: NotificationsFilter! = {}
+  first: Int
+  last: Int
+  orderBy: NotificationsOrderBy! = {createdAt: DESC}
+}
+
 input NotificationsOrderBy {
   createdAt: SortOrder
 }
@@ -1374,6 +1404,10 @@ type Query {
 
   """全てのタグの個数を数える"""
   countAllTags: Int!
+
+  """未読の通知を数える．未ログインなら`null`を返す．"""
+  countUnwatchedNotifications: Int
+  ensuredViewer: User
 
   """Bilibiliから動画情報を取得する"""
   fetchBilibili(input: FetchBilibiliInput!): FetchBilibiliPayload!
@@ -1441,14 +1475,16 @@ type Query {
 
   """自動的に検知したニコニコ動画の音MADを列挙する"""
   listNicovideoBotRegistrationRequests(input: ListNicovideoBotRegistrationRequestsInput!): [NicovideoOriginalSource!]!
-  notifications(after: String, before: String, filter: NotificationsFilter! = {}, first: Int, last: Int, orderBy: NotificationsOrderBy! = {createdAt: DESC}): NotificationConnection! @deprecated(reason: "Use `User.notifications` instead")
+
+  """通知を取得する．未ログインなら`null`を返す．"""
+  notifications(input: NotificationsInput!): NotificationConnection
   searchTags(input: SearchTagInput!): SearchTagsPayload!
   searchVideos(input: SearchVideoInput!): SearchVideosPayload!
 
   """ユーザーのタイムラインを取得する"""
   showTimeline(input: ShowTimelineInput!): [TimelineEvent!]!
   viewer: User
-  whoami: User! @deprecated(reason: "Use `Query.viewer` instead")
+  whoami: User! @deprecated(reason: "Use `Query.ensuredViewer` instead")
 }
 
 input RegisterBilibiliMADInput {
@@ -1889,6 +1925,18 @@ type ResolveSemitagSucceededPayload {
 """すでに動画に同じタグ付けが行われている場合のエラー"""
 type ResolveSemitagVideoAlreadyTaggedPayload {
   tagging: VideoTag!
+}
+
+input ResolveYoutubeRegistrationRequestInput {
+  madId: ID!
+  requestId: ID!
+}
+
+union ResolveYoutubeRegistrationRequestResult = ResolveYoutubeRegistrationRequestSuccess
+
+type ResolveYoutubeRegistrationRequestSuccess {
+  request: YoutubeRegistrationRequest!
+  source: YoutubeVideoSource!
 }
 
 input SearchTagInput {
@@ -2439,14 +2487,18 @@ type User implements Node {
   isEditor: Boolean! @deprecated(reason: "Use hasRole instead.")
   like(videoId: ID!): MylistRegistration
   likes: Mylist!
-  mylist(id: ID!): Mylist
+
+  """非公開なものも含めてマイリストを取得する．見つからなかった場合は`null`．"""
+  mylist(slug: String!): Mylist
   mylists(after: String, before: String, first: Int, last: Int, orderBy: UserMylistsOrderBy! = {createdAt: DESC}, range: [MylistShareRange!]! = [PUBLIC]): MylistConnection!
   name: String!
   nicovideoRegistrationRequests(after: String, before: String, first: Int, last: Int, orderBy: UserNicovideoRegistrationRequestsOrderBy! = {createdAt: DESC}): NicovideoRegistrationRequestConnection!
 
   """現在このユーザに届いている通知．"""
-  notifications(input: UserNotificationsInput!): NotificationConnection!
+  notifications(input: UserNotificationsInput!): NotificationConnection! @deprecated(reason: "Use `Query.notifications` instead.")
   publicLikes: Mylist
+
+  """公開されているマイリストを取得する．見つからなかった場合は`null`．"""
   publicMylist(slug: String!): Mylist
 
   """公開マイリストの一覧をoffsetベースで取得する"""
@@ -2765,6 +2817,24 @@ type WatchNotificationsSucceededPayload {
   notifications: [Notification!]!
 }
 
+"""Youtubeの音MAD登録リクエストが受理されたことを表すタイムラインイベント"""
+type YoutubeMadRequestAcceptedTimelineEvent implements TimelineEvent {
+  createdAt: DateTime!
+  event: YoutubeRegistrationRequestAcceptedEvent!
+}
+
+"""Youtubeの音MAD登録リクエストが拒否されたことを表すタイムラインイベント"""
+type YoutubeMadRequestRejectedTimelineEvent implements TimelineEvent {
+  createdAt: DateTime!
+  event: YoutubeRegistrationRequestRejectedEvent!
+}
+
+"""Youtubeの音MAD登録リクエストが既存の音MADに解決されたことを表すタイムラインイベント"""
+type YoutubeMadRequestResolvedTimelineEvent implements TimelineEvent {
+  createdAt: DateTime!
+  event: YoutubeRegistrationRequestResolvedEvent!
+}
+
 """Youtubeの音MADがリクエストされたことを表すタイムラインイベント"""
 type YoutubeMadRequestedTimelineEvent implements TimelineEvent {
   createdAt: DateTime!
@@ -2800,11 +2870,11 @@ type YoutubeRegistrationRequest implements Node & RegistrationRequest {
   title: String!
 }
 
-"""Youtubeの動画をリクエストを承認した時に発生するイベント"""
-type YoutubeRegistrationRequestAcceptEvent implements Event & Node & YoutubeRegistrationRequestEvent {
+"""Youtubeの音MAD登録リクエストが承認された時に発生するイベント"""
+type YoutubeRegistrationRequestAcceptedEvent implements Event & Node & YoutubeRegistrationRequestCheckingEvent {
+  checking: YoutubeRegistrationRequestChecking!
   createdAt: DateTime!
   id: ID!
-  request: YoutubeRegistrationRequest!
   series: String!
   user: User!
 }
@@ -2824,7 +2894,18 @@ type YoutubeRegistrationRequestAcceptingNotification implements Node & Notificat
   watched: Boolean!
 }
 
-union YoutubeRegistrationRequestChecking = YoutubeRegistrationRequestAccepting | YoutubeRegistrationRequestRejecting
+type YoutubeRegistrationRequestChecking implements Node {
+  id: ID!
+  request: YoutubeRegistrationRequest!
+}
+
+interface YoutubeRegistrationRequestCheckingEvent implements Event & Node {
+  checking: YoutubeRegistrationRequestChecking!
+  createdAt: DateTime!
+  id: ID! @deprecated(reason: "Use `series`")
+  series: String!
+  user: User!
+}
 
 type YoutubeRegistrationRequestConnection {
   edges: [YoutubeRegistrationRequestEdge!]!
@@ -2841,7 +2922,7 @@ type YoutubeRegistrationRequestEdge {
 """Youtubeの動画リクエスト関連のイベント"""
 interface YoutubeRegistrationRequestEvent implements Event & Node {
   createdAt: DateTime!
-  id: ID!
+  id: ID! @deprecated(reason: "Use `series`")
   request: YoutubeRegistrationRequest!
   series: String!
   user: User!
@@ -2871,11 +2952,11 @@ input YoutubeRegistrationRequestEventsInputOrderBy {
   createdAt: SortOrder
 }
 
-"""Youtubeの動画をリクエストを拒否した時に発生するイベント"""
-type YoutubeRegistrationRequestRejectEvent implements Event & Node & YoutubeRegistrationRequestEvent {
+"""Youtubeの音MAD登録リクエストが拒否された時に発生するイベント"""
+type YoutubeRegistrationRequestRejectedEvent implements Event & Node & YoutubeRegistrationRequestCheckingEvent {
+  checking: YoutubeRegistrationRequestChecking!
   createdAt: DateTime!
   id: ID!
-  request: YoutubeRegistrationRequest!
   series: String!
   user: User!
 }
@@ -2899,6 +2980,15 @@ type YoutubeRegistrationRequestRequestEvent implements Event & Node & YoutubeReg
   createdAt: DateTime!
   id: ID!
   request: YoutubeRegistrationRequest!
+  series: String!
+  user: User!
+}
+
+"""Youtubeの音MAD登録リクエストが既存の音MADに解決された時に発生するイベント"""
+type YoutubeRegistrationRequestResolvedEvent implements Event & Node & YoutubeRegistrationRequestCheckingEvent {
+  checking: YoutubeRegistrationRequestChecking!
+  createdAt: DateTime!
+  id: ID!
   series: String!
   user: User!
 }

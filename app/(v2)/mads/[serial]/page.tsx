@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
 import { graphql } from "~/gql";
-import { makeGraphQLClient } from "~/gql/fetch";
+import { makeGraphQLClient, makeGraphQLClient2 } from "~/gql/fetch";
 
 import SimilarVideos from "./SimilarVideos";
 
@@ -67,34 +67,42 @@ export async function generateStaticParams() {
 }
 
 export default async function Page({ params }: { params: PageParams }) {
-  const result = await makeGraphQLClient().request(
-    graphql(`
-      query VideoPage($serial: Int!) {
-        findVideo(input: { serial: $serial }) {
-          id
-          ...MadPage_SimilarVideosSection
+  const result = (
+    await makeGraphQLClient2({
+      auth: "optional",
+    })
+  )
+    .request(
+      graphql(`
+        query VideoPage($serial: Int!) {
+          findMadBySerial(serial: $serial) {
+            id
+            ...MadPage_SimilarVideosSection
+          }
         }
-      }
-    `),
-    { serial: parseInt(params.serial, 10) }
-  );
-
-  if (!result.findVideo) notFound();
+      `),
+      { serial: parseInt(params.serial, 10) }
+    )
+    .then(({ findMadBySerial }) => findMadBySerial || notFound());
 
   return (
-    <div className={clsx("flex flex-col gap-y-4")}>
-      <section>
-        <h2 className={clsx("text-base text-snow-darker")}>似ている動画</h2>
-        <div className={clsx("mt-2")}>
-          <Suspense
-            fallback={
-              <p className={clsx("text-sm text-snow-darkest")}>Loading...</p>
-            }
-          >
-            <SimilarVideos fragment={result.findVideo} />
-          </Suspense>
-        </div>
-      </section>
-    </div>
+    <section
+      className={clsx(
+        "col-span-full flex flex-col gap-y-2 rounded-md border border-obsidian-primary bg-obsidian-darker p-4"
+      )}
+    >
+      <h2 className={clsx("block text-lg font-bold text-snow-darker")}>
+        似ている動画
+      </h2>
+      <div>
+        <Suspense
+          fallback={
+            <p className={clsx("text-sm text-snow-darkest")}>Loading...</p>
+          }
+        >
+          <SimilarVideos fragment={await result} />
+        </Suspense>
+      </div>
+    </section>
   );
 }

@@ -1,11 +1,12 @@
-import { getAccessToken, withPageAuthRequired } from "@auth0/nextjs-auth0";
+import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import clsx from "clsx";
 import type { Metadata } from "next";
-import * as z from "zod";
 
-import SideNav from "~/app/(v2)/users/[name]/SideNav";
+import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { graphql } from "~/gql";
-import { makeGraphQLClient } from "~/gql/fetch";
+import { makeGraphQLClient2 } from "~/gql/fetch";
+
+import YouMylistPageLink from "./[slug]/Link";
 
 export const dynamic = "force-dynamic";
 
@@ -14,66 +15,101 @@ export const metadata: Metadata = {
 };
 
 export default withPageAuthRequired(
-  async ({ searchParams }) => {
-    const { page } = z
-      .object({
-        page: z
-          .string()
-          .optional()
-          .transform((v) => (v ? parseInt(v, 10) : 1)),
-      })
-      .parse(searchParams);
-
-    const PER_PAGE = 36;
-
-    const { accessToken } = await getAccessToken();
-    if (!accessToken) throw new Error("accessToken is null");
-
-    const a = await makeGraphQLClient({}).request(
+  async () => {
+    const a = await (
+      await makeGraphQLClient2({ auth: "required" })
+    ).request(
       graphql(`
-        query MyMylistsPage($offset: Int!, $take: Int!) {
+        query MyMylistsPage {
           viewer {
             ...UserPage_SideNav
-            name
             displayName
-            likes {
-              id
-              registrationsByOffset(input: { offset: $offset, take: $take }) {
-                totalCount
-                nodes {
-                  id
-                  ...UserMylistPage_Registration
+            mylists(range: [PUBLIC, KNOW_LINK, PRIVATE]) {
+              nodes {
+                ...YouMylistPageLink
+                id
+                title
+                registrationsByOffset(input: { take: 12, offset: 0 }) {
+                  nodes {
+                    id
+                    video {
+                      ...VideoThumbnail
+                      ...CommonMadBlock
+                    }
+                  }
                 }
               }
             }
           }
         }
-      `),
-      {
-        offset: (page - 1) * PER_PAGE,
-        take: PER_PAGE,
-      },
-      { Authorization: `Bearer ${accessToken}` }
+      `)
     );
 
     const { viewer } = a;
     if (!viewer) throw new Error("viewer is null");
 
     return (
-      <div className={clsx("flex flex-wrap gap-x-4 @container/page")}>
-        <SideNav
-          className={clsx("w-72")}
-          primaryFragment={viewer}
-          isMyPage={true}
-        />
-        <div
-          className={clsx(
-            "grow border border-obsidian-primary bg-obsidian-darker p-4"
+      <main
+        className={clsx(
+          "grow border border-obsidian-primary bg-obsidian-darker p-4"
+        )}
+      >
+        <header className={clsx("flex w-full items-center px-2")}>
+          <h1 className={clsx("px-2 text-xl font-bold text-snow-primary")}>
+            あなたのマイリスト
+          </h1>
+        </header>
+        <div className={clsx("mt-4 flex flex-col gap-y-4")}>
+          {viewer.mylists.nodes.length === 0 && (
+            <p className={clsx("text-sm font-bold text-snow-darkest")}>
+              マイリストを1件も作成していません
+            </p>
           )}
-        >
-          <p></p>
+          {viewer.mylists.nodes.map((mylist) => (
+            <div
+              key={mylist.id}
+              className={clsx(
+                "flex flex-col rounded border border-obsidian-lighter bg-obsidian-primary p-4 @container/mylist"
+              )}
+            >
+              <h2
+                className={clsx(
+                  "self-start px-2 text-lg font-bold text-snow-primary hover:text-vivid-primary hover:underline"
+                )}
+              >
+                <YouMylistPageLink fragment={mylist}>
+                  {mylist.title}
+                </YouMylistPageLink>
+              </h2>
+              <div
+                className={clsx(
+                  "relative mt-2 flex h-[96px] overflow-x-hidden border border-obsidian-darker bg-obsidian-darkest px-4 py-2",
+                  mylist.registrationsByOffset.nodes.length > 0 &&
+                    "before:absolute before:inset-0 before:z-infinity before:bg-gradient-to-r before:from-transparent before:from-50% before:to-obsidian-darkest"
+                )}
+              >
+                {mylist.registrationsByOffset.nodes.length === 0 && (
+                  <div
+                    className={clsx(
+                      "self-center text-xs font-bold text-snow-darkest"
+                    )}
+                  >
+                    まだ音MADを一つも登録していません
+                  </div>
+                )}
+                {mylist.registrationsByOffset.nodes.map((node) => (
+                  <VideoThumbnail
+                    key={node.id}
+                    fragment={node.video}
+                    imageSize="small"
+                    className={clsx("h-full w-[128px] shrink-0")}
+                  />
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
-      </div>
+      </main>
     );
   },
   { returnTo: "/" }

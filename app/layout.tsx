@@ -1,5 +1,6 @@
 import "./globals.css";
 
+import { UserProvider } from "@auth0/nextjs-auth0/client";
 import clsx from "clsx";
 import type { Metadata, Viewport } from "next";
 import React from "react";
@@ -39,15 +40,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <UrqlProvider>
-      <ToastProvider selector="#toast">
-        <html lang="ja">
-          <body className={clsx()}>
-            <div id="toast" />
-            <main>{children}</main>
-          </body>
-        </html>
-      </ToastProvider>
-    </UrqlProvider>
+    <UserProvider>
+      <UrqlProvider>
+        <ToastProvider selector="#toast">
+          <html lang="ja">
+            <body className={clsx("bg-obsidian-darkest")}>
+              <div id="toast" />
+              <main>{children}</main>
+            </body>
+          </html>
+        </ToastProvider>
+      </UrqlProvider>
+    </UserProvider>
   );
 }

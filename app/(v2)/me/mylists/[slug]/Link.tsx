@@ -5,7 +5,9 @@ import { FragmentType, graphql, useFragment } from "~/gql";
 
 const Fragment = graphql(`
   fragment YouMylistPageLink on Mylist {
+    isLikeList
     slug
+    isLikeList
   }
 `);
 const YouMylistPageLink: React.FC<
@@ -13,9 +15,10 @@ const YouMylistPageLink: React.FC<
     fragment: FragmentType<typeof Fragment>;
   }
 > = ({ children, fragment, ...props }) => {
-  const { slug } = useFragment(Fragment, fragment);
+  const { slug, isLikeList } = useFragment(Fragment, fragment);
+
   return (
-    <Link href={`/me/mylists/${slug}`} {...props}>
+    <Link href={isLikeList ? `/me/likes` : `/me/mylists/${slug}`} {...props}>
       {children}
     </Link>
   );
