@@ -1,13 +1,11 @@
 import clsx from "clsx";
 import { Suspense } from "react";
 
-import { MadPageLink } from "~/app/(v2)/mads/[serial]/Link";
 import { AllVideosPageLink } from "~/app/(v2)/mads/Link";
 import { LoginLink } from "~/components/AuthLink";
-import CommonTagLink from "~/components/CommonTagLink";
+import CommonMadBlock from "~/components/CommonMadBlock";
 import GlobalFooter from "~/components/GlobalFooter";
 import { SignUpPictogram } from "~/components/Pictogram";
-import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { graphql } from "~/gql";
 import { makeGraphQLClient } from "~/gql/fetch";
 
@@ -21,17 +19,7 @@ const getMADs = () =>
           findVideos(first: 12) {
             nodes {
               id
-              title
-              ...Link_Video
-              ...VideoThumbnail
-              taggings(first: 3) {
-                nodes {
-                  id
-                  tag {
-                    ...CommonTagLink
-                  }
-                }
-              }
+              ...CommonMadBlock
             }
           }
         }
@@ -144,47 +132,7 @@ export default async function Page() {
               )}
             >
               {(await getMADs()).map((node) => (
-                <div
-                  key={node.id}
-                  className={clsx(
-                    "shrink-0 overflow-hidden rounded-sm border border-obsidian-lighter bg-obsidian-primary"
-                  )}
-                >
-                  <MadPageLink className={clsx(["flex"])} fragment={node}>
-                    <VideoThumbnail
-                      fragment={node}
-                      className={clsx(["h-32 w-full"])}
-                      imageSize="large"
-                    />
-                  </MadPageLink>
-                  <div className={clsx("flex flex-col gap-y-2 p-2")}>
-                    <MadPageLink
-                      fragment={node}
-                      className={clsx(
-                        "line-clamp-1 text-xs font-bold text-snow-primary hover:text-vivid-primary hover:underline"
-                      )}
-                    >
-                      {node.title}
-                    </MadPageLink>
-                    <div className={clsx([])}>
-                      {node.taggings.nodes.length === 0 && (
-                        <div className={clsx("text-xxs text-slate-500")}>
-                          タグ付けがありません
-                        </div>
-                      )}
-                      <div className={clsx(["flex flex-wrap gap-0.5"])}>
-                        {node.taggings.nodes.map((tagging) => (
-                          <CommonTagLink
-                            key={tagging.id}
-                            fragment={tagging.tag}
-                            className={clsx(["flex"])}
-                            size="xs"
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <CommonMadBlock key={node.id} fragment={node} />
               ))}
             </div>
           </Suspense>
