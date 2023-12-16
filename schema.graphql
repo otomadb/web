@@ -509,9 +509,26 @@ input FindBilibiliMADSourceInput {
 }
 
 input FindMadsByOffsetInput {
+  filter: FindMadsByOffsetInputFilter! = {}
   offset: Int!
   orderBy: FindMadsByOffsetInputOrderBy! = {createdAt: DESC}
   take: Int!
+}
+
+input FindMadsByOffsetInputFilter {
+  """
+  (ソース元の投稿時刻) ≧ (入力)
+  
+  *ソース元の投稿時刻が不明な場合，このフィルターを入れると全て無視されることに注意．*
+  """
+  registeredAtGte: DateTime
+
+  """
+  (ソース元の投稿時刻) ≦ (入力)
+  
+  *ソース元の投稿時刻が不明な場合，このフィルターを入れると全て無視されることに注意．*
+  """
+  registeredAtLte: DateTime
 }
 
 input FindMadsByOffsetInputOrderBy {
