@@ -18,6 +18,7 @@ import SoundcloudRequestForm from "./AddMAD/Soundcloud/SoundcloudRequestForm";
 import SourceIDForm from "./AddMAD/SourceID";
 import YoutubeRegisterForm from "./AddMAD/Youtube/YoutubeRegisterForm";
 import YoutubeRequestForm from "./AddMAD/Youtube/YoutubeRequestForm";
+import CreateMylistForm from "./CreateMylist";
 import TagCategorizerForm from "./TagCategorizer";
 
 export type Current =
@@ -80,6 +81,9 @@ export type Current =
   | {
       type: "CATEGORIZE_TAG";
       props: { tagId: string };
+    }
+  | {
+      type: "CREATE_MYLIST";
     };
 
 export const FormModalContext = React.createContext<{
@@ -342,6 +346,13 @@ export const useOpenTagCategorizerForm = () => {
     });
 };
 
+export const useOpenCreateMylistForm = () => {
+  const { open } = useContext(FormModalContext);
+  return () => {
+    open({ type: "CREATE_MYLIST" });
+  };
+};
+
 export const useCloseFormWidget = () => {
   const { close } = useContext(FormModalContext);
   return close;
@@ -445,6 +456,8 @@ export default function FormWidgetSwitch({
           }}
           tagId={current.props.tagId}
         />
+      ) : current?.type === "CREATE_MYLIST" ? (
+        <CreateMylistForm className={clsx("min-h-[360px] w-[640px]")} />
       ) : (
         <></>
       )}
