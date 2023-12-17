@@ -7,6 +7,8 @@ import MylistRegistrations from "~/app/(v2)/users/[name]/mylists/[slug]/MylistRe
 import { graphql } from "~/gql";
 import { makeGraphQLClient2 } from "~/gql/fetch";
 
+import { EditButton } from "./Edit";
+
 export default withPageAuthRequired(
   async ({ params: unparsedParams, searchParams: unparsedSearchParams }) => {
     const params = z.object({ slug: z.string() }).safeParse(unparsedParams);
@@ -35,6 +37,7 @@ export default withPageAuthRequired(
           viewer {
             name
             mylist(slug: $slug) {
+              ...EditMylist
               slug
               title
               registrationsByOffset(input: { offset: $offset, take: $take }) {
@@ -68,6 +71,14 @@ export default withPageAuthRequired(
           "grow border border-obsidian-primary bg-obsidian-darker p-4 @container/page"
         )}
       >
+        <div className={clsx("flex w-full items-center px-4 py-2")}>
+          <h1 className={clsx("flex grow text-xl font-bold text-snow-primary")}>
+            {viewer.mylist.title}
+          </h1>
+          <div className={clsx("flex shrink-0")}>
+            <EditButton fragment={viewer.mylist} color="blue" size="small" />
+          </div>
+        </div>
         <MylistRegistrations
           currentPage={page}
           pageMax={pageMax}

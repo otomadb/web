@@ -834,6 +834,8 @@ type Mutation {
 
   """通知を見たことにする"""
   watchNotifications(input: WatchNotificationsInput!): WatchNotificationsReturnUnion!
+
+  updateMylistSlug(input: UpdateMylistSlugInput!): UpdateMylistSlugReturnUnion!
 }
 
 type MutationInternalServerError {
@@ -3046,4 +3048,16 @@ type YoutubeVideoSourceEventEdge {
 
 input YoutubeVideoSourceEventsOrderBy {
   createdAt: SortOrder
+}
+
+input UpdateMylistSlugInput {
+  mylistId: ID!
+  "新しいslug"
+  newSlug: String!
+}
+
+union UpdateMylistSlugReturnUnion = UpdateMylistSlugSucceededPayload
+
+type UpdateMylistSlugSucceededPayload {
+  mylist: Mylist!
 }

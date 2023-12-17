@@ -3,16 +3,7 @@ import React from "react";
 
 import { PictogramType } from "./Pictogram";
 
-export default function Button({
-  className,
-  style,
-  size,
-  color,
-  Pictogram,
-  disabled,
-  ariaLabel,
-  ...props
-}: {
+export type A = {
   children?: React.ReactNode;
   style?: React.CSSProperties;
   className?: string;
@@ -23,8 +14,20 @@ export default function Button({
 } & (
   | { text: string; Pictogram?: PictogramType }
   | { Pictogram: PictogramType }
-) &
-  ({ onClick(): void } | { submit: true })) {
+);
+export type NormalButton = A & { onClick(): void };
+export type SubmitButton = A & { submit: true };
+
+export default function Button({
+  className,
+  style,
+  size,
+  color,
+  Pictogram,
+  disabled,
+  ariaLabel,
+  ...props
+}: NormalButton | SubmitButton) {
   return (
     <button
       type={"submit" in props ? "submit" : "button"}
