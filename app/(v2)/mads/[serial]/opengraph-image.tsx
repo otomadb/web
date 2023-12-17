@@ -70,7 +70,7 @@ export default async function og({ params }: { params: { serial: string } }) {
             width: "100%",
             display: "flex",
             flexDirection: "column",
-            justifyContent: "flex-start",
+            justifyContent: "flex-end",
             background: "linear-gradient(to top, #000000cc, #00000000)",
           }}
         >
