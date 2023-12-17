@@ -67,6 +67,10 @@ export const EditTaggingPictogram: PictogramType = (props) => (
   <Cog6ToothIcon {...props} />
 );
 
+export const EditMylistPictogram: PictogramType = (props) => (
+  <Cog6ToothIcon {...props} />
+);
+
 export const CheckPictogram: PictogramType = (props) => (
   <CheckIcon {...props} />
 );
