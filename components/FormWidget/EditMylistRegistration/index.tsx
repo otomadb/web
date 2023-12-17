@@ -85,6 +85,8 @@ export const AddToMylistFormMadInMutation = graphql(`
           id
           mylist {
             id
+            title
+            ...YouMylistPageLink
             ...EditMylistRegistrationForm_Mylist
           }
         }
@@ -99,6 +101,8 @@ export const AddToMylistFormMadOutMutation = graphql(`
       ... on RemoveVideoFromMylistSucceededPayload {
         mylist {
           id
+          title
+          ...YouMylistPageLink
           ...EditMylistRegistrationForm_Mylist
         }
       }
@@ -182,7 +186,19 @@ const EditMylistRegistrationForm = ({
                         type: "error",
                       });
                     } else {
-                      toast(<>マイリストに追加しました</>);
+                      toast(
+                        <>
+                          <YouMylistPageLink
+                            fragment={
+                              d.data.addVideoToMylist.registration.mylist
+                            }
+                            className={clsx("text-vivid-primary")}
+                          >
+                            {d.data.addVideoToMylist.registration.mylist.title}
+                          </YouMylistPageLink>
+                          に追加しました
+                        </>
+                      );
                     }
                     reload();
                     router.refresh();
@@ -199,7 +215,17 @@ const EditMylistRegistrationForm = ({
                       });
                       return;
                     } else {
-                      toast(<>マイリストから削除しました</>);
+                      toast(
+                        <>
+                          <YouMylistPageLink
+                            fragment={d.data.removeVideoFromMylist.mylist}
+                            className={clsx("text-vivid-primary")}
+                          >
+                            {d.data.removeVideoFromMylist.mylist.title}
+                          </YouMylistPageLink>
+                          から削除しました
+                        </>
+                      );
                     }
                     reload();
                     router.refresh();
