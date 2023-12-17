@@ -1,9 +1,58 @@
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { graphql } from "~/gql";
 import { makeGraphQLClient } from "~/gql/fetch";
 
 import MylistRegistrations from "./MylistRegistrations";
+
+export async function generateMetadata({
+  params,
+  searchParams,
+}: {
+  params: { name: string; slug: string };
+  searchParams: { page?: string };
+}): Promise<Metadata> {
+  const page = searchParams.page ? parseInt(searchParams.page, 10) : 1;
+
+  const result = await makeGraphQLClient().request(
+    graphql(`
+      query UserMylistPage_Metadata($name: String!, $slug: String!) {
+        findUser(input: { name: $name }) {
+          name
+          displayName
+          publicMylist(slug: $slug) {
+            slug
+            title
+          }
+        }
+      }
+    `),
+    {
+      name: params.name,
+      slug: params.slug,
+    }
+  );
+
+  const { findUser } = result;
+  if (!findUser || !findUser.publicMylist) notFound();
+
+  const {
+    name: userName,
+    displayName,
+    publicMylist: { slug: mylistSlug, title: mylistTitle },
+  } = findUser;
+
+  return {
+    title: `「${mylistTitle}」 - ${displayName}さんのマイリスト (${page}ページ目) | OtoMADB`,
+    openGraph: {
+      url: `https://otomadb.com/users/${userName}/mylists/${mylistSlug}`,
+    },
+    twitter: {
+      card: "summary_large_image",
+    },
+  };
+}
 
 export default async function Page({
   params,
