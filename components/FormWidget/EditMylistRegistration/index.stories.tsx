@@ -15,7 +15,7 @@ import EditMylistRegistrationForm, {
 export const mockFetchUser = mockGql.query(QueryFetchMylists, (req, res, ctx) =>
   res(
     ctx.data({
-      ensuredViewer: {
+      viewer: {
         allMylists: [
           {
             id: "mylist:1",
