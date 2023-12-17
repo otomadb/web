@@ -157,24 +157,6 @@ export default async function Layout({
                 return url.toString();
               })()}
               className={clsx(
-                "w-32 @[1024px]/layout:w-full",
-                "shrink-0 @[1024px]/layout:max-w-none"
-              )}
-            />
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href={(() => {
-                const url = new URL("https://twitter.com/intent/tweet");
-                url.searchParams.set(
-                  "url",
-                  `https://www.otomadb.com/mads/${video.serial}`
-                );
-                url.searchParams.set("text", video.title);
-                url.searchParams.set("hashtags", "OtoMADB");
-                return url.toString();
-              })()}
-              className={clsx(
                 "flex items-center justify-center",
                 "col-span-1 gap-x-2 rounded border border-[#222] bg-twitter-x-primary px-4 py-2 text-sm text-white @[1024px]/layout:h-8"
               )}
