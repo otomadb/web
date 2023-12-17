@@ -19,6 +19,7 @@ import SourceIDForm from "./AddMAD/SourceID";
 import YoutubeRegisterForm from "./AddMAD/Youtube/YoutubeRegisterForm";
 import YoutubeRequestForm from "./AddMAD/Youtube/YoutubeRequestForm";
 import CreateMylistForm from "./CreateMylist";
+import EditMylistRegistrationForm from "./EditMylistRegistration";
 import TagCategorizerForm from "./TagCategorizer";
 
 export type Current =
@@ -84,6 +85,12 @@ export type Current =
     }
   | {
       type: "CREATE_MYLIST";
+    }
+  | {
+      type: "EDIT_MYLIST_REGISTRATION";
+      props: {
+        fragment: ComponentProps<typeof EditMylistRegistrationForm>["fragment"];
+      };
     };
 
 export const FormModalContext = React.createContext<{
@@ -353,6 +360,15 @@ export const useOpenCreateMylistForm = () => {
   };
 };
 
+export const useOpenEditMylistRegistrationForm = () => {
+  const { open } = useContext(FormModalContext);
+  return (
+    props: Extract<Current, { type: "EDIT_MYLIST_REGISTRATION" }>["props"]
+  ) => {
+    open({ type: "EDIT_MYLIST_REGISTRATION", props });
+  };
+};
+
 export const useCloseFormWidget = () => {
   const { close } = useContext(FormModalContext);
   return close;
@@ -458,6 +474,11 @@ export default function FormWidgetSwitch({
         />
       ) : current?.type === "CREATE_MYLIST" ? (
         <CreateMylistForm className={clsx("min-h-[360px] w-[640px]")} />
+      ) : current?.type === "EDIT_MYLIST_REGISTRATION" ? (
+        <EditMylistRegistrationForm
+          className={clsx("min-h-[480px] w-[640px]")}
+          fragment={current.props.fragment}
+        />
       ) : (
         <></>
       )}

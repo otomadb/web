@@ -18,6 +18,7 @@ import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { graphql } from "~/gql";
 import { makeGraphQLClient2 } from "~/gql/fetch";
 
+import EditMylistRegistrationButton from "./EditMylistRegistrationButton";
 import { LinkVideoEvents } from "./events/Link";
 import LikeButton from "./LikeButton";
 import { MadPageLink } from "./Link";
@@ -44,7 +45,8 @@ export default async function Layout({
           ...Link_Video
           ...Link_VideoEvents
           ...MadPageLayout_LikeSwitch
-          taggings {
+          ...AddToMylistForm_Mad
+          allTaggings: taggings {
             nodes {
               id
               tag {
@@ -91,7 +93,7 @@ export default async function Layout({
   const { findMadBySerial: video } = data;
   const {
     serial,
-    taggings,
+    allTaggings: taggings,
     semitags,
     bilibiliSources,
     nicovideoSources,
@@ -136,6 +138,28 @@ export default async function Layout({
             <LikeButton
               fragment={video}
               className={clsx("col-span-full @[1024px]/layout:max-w-none")}
+            />
+            <EditMylistRegistrationButton
+              fragment={video}
+              className={clsx("col-span-full @[1024px]/layout:max-w-none")}
+            />
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href={(() => {
+                const url = new URL("https://twitter.com/intent/tweet");
+                url.searchParams.set(
+                  "url",
+                  `https://www.otomadb.com/mads/${video.serial}`
+                );
+                url.searchParams.set("text", video.title);
+                url.searchParams.set("hashtags", "OtoMADB");
+                return url.toString();
+              })()}
+              className={clsx(
+                "w-32 @[1024px]/layout:w-full",
+                "shrink-0 @[1024px]/layout:max-w-none"
+              )}
             />
             <a
               target="_blank"
