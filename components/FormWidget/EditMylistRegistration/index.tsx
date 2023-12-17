@@ -67,7 +67,7 @@ export const AddToMylistFormMadFragment = graphql(`
 `);
 export const QueryFetchMylists = graphql(`
   query AddToMylistForm_User($madId: ID!) {
-    ensuredViewer {
+    viewer {
       allMylists {
         id
         ...EditMylistRegistrationForm_Mylist
@@ -150,89 +150,102 @@ const EditMylistRegistrationForm = ({
       }
     >
       <div className={clsx("flex w-full flex-col gap-y-4")}>
-        <div className={clsx("w-full")}>
-          <div className={clsx("text-xs font-bold text-snow-darker")}>
-            追加する動画
-          </div>
-          <CommonMadBlock
-            fragment={madF}
-            size="small"
-            classNames={clsx("mt-1")}
-          />
-        </div>
-        <div className={clsx("w-full")}>
-          <div className={clsx("text-xs font-bold text-snow-darker")}>
-            マイリスト
-          </div>
-          <div className={clsx("mt-1 flex flex-col")}>
-            {fetching && !data && (
-              <p className={clsx("text-xs text-snow-darkest")}>Loading...</p>
-            )}
-            {data &&
-              data.ensuredViewer.allMylists.map((mylist) => (
-                <Mylist
-                  key={mylist.id}
-                  fragment={mylist}
-                  frozen={frozen}
-                  handleAdd={async () => {
-                    const d = await add({ mylistId: mylist.id, madId });
-                    if (
-                      !d.data ||
-                      d.data.addVideoToMylist.__typename !==
-                        "AddVideoToMylistSucceededPayload"
-                    ) {
-                      toast(<>マイリストへの追加に失敗しました</>, {
-                        type: "error",
-                      });
-                    } else {
-                      toast(
-                        <>
-                          <YouMylistPageLink
-                            fragment={
-                              d.data.addVideoToMylist.registration.mylist
-                            }
-                            className={clsx("text-vivid-primary")}
-                          >
-                            {d.data.addVideoToMylist.registration.mylist.title}
-                          </YouMylistPageLink>
-                          に追加しました
-                        </>
-                      );
-                    }
-                    reload();
-                    router.refresh();
-                  }}
-                  handleRemove={async () => {
-                    const d = await remove({ mylistId: mylist.id, madId });
-                    if (
-                      !d.data ||
-                      d.data.removeVideoFromMylist.__typename !==
-                        "RemoveVideoFromMylistSucceededPayload"
-                    ) {
-                      toast(<>マイリストからの削除に失敗しました</>, {
-                        type: "error",
-                      });
-                      return;
-                    } else {
-                      toast(
-                        <>
-                          <YouMylistPageLink
-                            fragment={d.data.removeVideoFromMylist.mylist}
-                            className={clsx("text-vivid-primary")}
-                          >
-                            {d.data.removeVideoFromMylist.mylist.title}
-                          </YouMylistPageLink>
-                          から削除しました
-                        </>
-                      );
-                    }
-                    reload();
-                    router.refresh();
-                  }}
-                />
-              ))}
-          </div>
-        </div>
+        {!fetching && !data?.viewer && (
+          <p className={clsx("text-xs text-snow-darkest")}>
+            マイリストに追加するためにはログインしてください．
+          </p>
+        )}
+        {data?.viewer && (
+          <>
+            <div className={clsx("w-full")}>
+              <div className={clsx("text-xs font-bold text-snow-darker")}>
+                追加する動画
+              </div>
+              <CommonMadBlock
+                fragment={madF}
+                size="small"
+                classNames={clsx("mt-1")}
+              />
+            </div>
+            <div className={clsx("w-full")}>
+              <div className={clsx("text-xs font-bold text-snow-darker")}>
+                マイリスト
+              </div>
+              <div className={clsx("mt-1 flex flex-col")}>
+                {fetching && !data && (
+                  <p className={clsx("text-xs text-snow-darkest")}>
+                    Loading...
+                  </p>
+                )}
+                {data.viewer.allMylists.map((mylist) => (
+                  <Mylist
+                    key={mylist.id}
+                    fragment={mylist}
+                    frozen={frozen}
+                    handleAdd={async () => {
+                      const d = await add({ mylistId: mylist.id, madId });
+                      if (
+                        !d.data ||
+                        d.data.addVideoToMylist.__typename !==
+                          "AddVideoToMylistSucceededPayload"
+                      ) {
+                        toast(<>マイリストへの追加に失敗しました</>, {
+                          type: "error",
+                        });
+                      } else {
+                        toast(
+                          <>
+                            <YouMylistPageLink
+                              fragment={
+                                d.data.addVideoToMylist.registration.mylist
+                              }
+                              className={clsx("text-vivid-primary")}
+                            >
+                              {
+                                d.data.addVideoToMylist.registration.mylist
+                                  .title
+                              }
+                            </YouMylistPageLink>
+                            に追加しました
+                          </>
+                        );
+                      }
+                      reload();
+                      router.refresh();
+                    }}
+                    handleRemove={async () => {
+                      const d = await remove({ mylistId: mylist.id, madId });
+                      if (
+                        !d.data ||
+                        d.data.removeVideoFromMylist.__typename !==
+                          "RemoveVideoFromMylistSucceededPayload"
+                      ) {
+                        toast(<>マイリストからの削除に失敗しました</>, {
+                          type: "error",
+                        });
+                        return;
+                      } else {
+                        toast(
+                          <>
+                            <YouMylistPageLink
+                              fragment={d.data.removeVideoFromMylist.mylist}
+                              className={clsx("text-vivid-primary")}
+                            >
+                              {d.data.removeVideoFromMylist.mylist.title}
+                            </YouMylistPageLink>
+                            から削除しました
+                          </>
+                        );
+                      }
+                      reload();
+                      router.refresh();
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </FormWrapper2>
   );
