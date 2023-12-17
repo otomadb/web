@@ -10,6 +10,7 @@ import {
   ExternalLinkPictogram,
   NicovideoPictogram,
   SoundcloudPictogram,
+  TwitterXPictogram,
   YoutubePictogram,
 } from "~/components/Pictogram";
 import { TagType } from "~/components/TagType";
@@ -125,14 +126,40 @@ export default async function Layout({
             "@[1024px]/layout:w-72 @[1024px]/layout:flex-col @[1024px]/layout:items-start @[1024px]/layout:justify-start @[1024px]/layout:gap-y-4"
           )}
         >
-          <div className={clsx("col-span-1 @[1024px]/layout:w-full")}>
+          <div
+            className={clsx(
+              "col-span-1 shrink-0",
+              "flex items-stretch gap-2 @[1024px]/layout:grid @[1024px]/layout:grid-cols-2",
+              "@[1024px]/layout:w-full"
+            )}
+          >
             <LikeButton
               fragment={video}
-              className={clsx(
-                "w-32 @[1024px]/layout:w-full",
-                "shrink-0 @[1024px]/layout:max-w-none"
-              )}
+              className={clsx("col-span-full @[1024px]/layout:max-w-none")}
             />
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href={(() => {
+                const url = new URL("https://twitter.com/intent/tweet");
+                url.searchParams.set(
+                  "url",
+                  `https://www.otomadb.com/mads/${video.serial}`
+                );
+                url.searchParams.set("text", video.title);
+                url.searchParams.set("hashtags", "OtoMADB");
+                return url.toString();
+              })()}
+              className={clsx(
+                "flex items-center justify-center",
+                "col-span-1 gap-x-2 rounded border border-[#222] bg-twitter-x-primary px-4 py-2 text-sm text-white @[1024px]/layout:h-8"
+              )}
+            >
+              <TwitterXPictogram className={clsx("w-4")} />
+              <div className={clsx("hidden @[1024px]/layout:block")}>
+                ポスト
+              </div>
+            </a>
           </div>
           <LinkVideoEvents
             fragment={video}

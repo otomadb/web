@@ -31,7 +31,7 @@ export const Presentation: React.FC<{
       style={style}
       className={clsx(
         className,
-        "group flex items-center justify-center gap-x-2 border py-2 transition-colors duration-100 ",
+        "group flex items-center justify-center gap-x-2 border px-4 py-2 transition-colors duration-100 ",
         "disabled:border-obsidian-lightest disabled:bg-obsidian-lighter",
         "border-obsidian-lighter bg-obsidian-primary hover:bg-obsidian-darker",
         "aria-checked:border-like-darker aria-checked:bg-like-darkest aria-checked:hover:bg-like-darker"

@@ -27,6 +27,7 @@ import GithubSVG from "./github.svg";
 import NicovideoSVG from "./nicovideo.svg";
 import SoundcloudSVG from "./soundcloud.svg";
 import TwitterSVG from "./twitter.svg";
+import TwitterXSVG from "./twitter-x.svg";
 import YoutubeSVG from "./youtube.svg";
 
 export type PictogramType = (props: {
@@ -104,6 +105,10 @@ export const GroupPictogram: PictogramType = (props: {
 
 export const TwitterPictogram: PictogramType = (props) => (
   <TwitterSVG {...props} />
+);
+
+export const TwitterXPictogram: PictogramType = (props) => (
+  <TwitterXSVG {...props} />
 );
 
 export const GithubPictogram: PictogramType = (props) => (
