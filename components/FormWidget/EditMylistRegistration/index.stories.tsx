@@ -8,31 +8,50 @@ import EditMylistRegistrationForm, {
   AddToMylistFormMadFragment,
   AddToMylistFormMadInMutation,
   AddToMylistFormMadOutMutation,
-  newLocal,
+  MylistFragment,
+  QueryFetchMylists,
 } from ".";
 
-export const mockFetchUser = mockGql.query(newLocal, (req, res, ctx) =>
+export const mockFetchUser = mockGql.query(QueryFetchMylists, (req, res, ctx) =>
   res(
     ctx.data({
       ensuredViewer: {
         allMylists: [
           {
             id: "mylist:1",
-            slug: "mylist1",
-            title: "Mylist 1",
-            isIncludesVideo: false,
+            ...makeFragmentData(
+              {
+                slug: "mylist1",
+                title: "Mylist 1",
+                isIncludesVideo: false,
+                isLikeList: false,
+              },
+              MylistFragment
+            ),
           },
           {
             id: "mylist:2",
-            slug: "mylist2",
-            title: "Mylist 2",
-            isIncludesVideo: false,
+            ...makeFragmentData(
+              {
+                slug: "mylist2",
+                title: "Mylist 2",
+                isIncludesVideo: true,
+                isLikeList: false,
+              },
+              MylistFragment
+            ),
           },
           {
             id: "mylist:3",
-            slug: "mylist3",
-            title: "Mylist 3",
-            isIncludesVideo: true,
+            ...makeFragmentData(
+              {
+                slug: "mylist3",
+                title: "Mylist 4",
+                isIncludesVideo: false,
+                isLikeList: false,
+              },
+              MylistFragment
+            ),
           },
         ],
       },
@@ -49,8 +68,12 @@ export const mockAddSuccessful = mockGql.mutation(
           registration: {
             id: "registration:1",
             mylist: {
+              id: "mylist:1",
+              title: "Mylist 1",
+              isLikeList: false,
+              slug: "mylist1",
               isIncludesVideo: true,
-            },
+            } as any,
           },
         },
       })
@@ -65,8 +88,8 @@ export const mockRemoveSuccessful = mockGql.mutation(
           __typename: "RemoveVideoFromMylistSucceededPayload",
           mylist: {
             id: "mylist:1",
-            isIncludesVideo: true,
-          },
+            isIncludesVideo: false,
+          } as any,
         },
       })
     )

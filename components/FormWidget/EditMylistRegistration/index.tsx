@@ -13,10 +13,9 @@ import { FragmentType, graphql, useFragment } from "~/gql";
 
 import { FormWrapper2 } from "../FormWrapper";
 
-export const FFF = graphql(`
+export const MylistFragment = graphql(`
   fragment EditMylistRegistrationForm_Mylist on Mylist {
     ...YouMylistPageLink
-    id
     title
     slug
     isIncludesVideo(id: $madId)
@@ -24,11 +23,11 @@ export const FFF = graphql(`
 `);
 export const Mylist: React.FC<{
   frozen: boolean;
-  fragment: FragmentType<typeof FFF>;
+  fragment: FragmentType<typeof MylistFragment>;
   handleAdd(): void;
   handleRemove(): void;
 }> = ({ frozen, fragment, handleAdd, handleRemove }) => {
-  const mylist = useFragment(FFF, fragment);
+  const mylist = useFragment(MylistFragment, fragment);
   const { title, isIncludesVideo } = mylist;
 
   return (
@@ -66,7 +65,7 @@ export const AddToMylistFormMadFragment = graphql(`
     ...CommonMadBlock
   }
 `);
-export const newLocal = graphql(`
+export const QueryFetchMylists = graphql(`
   query AddToMylistForm_User($madId: ID!) {
     ensuredViewer {
       allMylists {
@@ -122,7 +121,7 @@ const EditMylistRegistrationForm = ({
   const { id: madId } = madF;
 
   const [{ data, fetching }, reload] = useQuery({
-    query: newLocal,
+    query: QueryFetchMylists,
     variables: { madId },
   });
   const [{ fetching: fetchingAdd }, add] = useMutation(
