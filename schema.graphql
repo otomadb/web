@@ -165,7 +165,7 @@ type BilibiliMadRequestedTimelineEvent implements TimelineEvent {
 type BilibiliOriginalSource {
   """
   bilibili側のオリジナルの画像URL
-  
+
   bilibili側の制約上、別のオリジンから直接埋め込んだりすることはほとんど出来ないことに注意．
   """
   originalThumbnailUrl: String!
@@ -518,14 +518,14 @@ input FindMadsByOffsetInput {
 input FindMadsByOffsetInputFilter {
   """
   (ソース元の投稿時刻) ≧ (入力)
-  
+
   *ソース元の投稿時刻が不明な場合，このフィルターを入れると全て無視されることに注意．*
   """
   registeredAtGte: DateTime
 
   """
   (ソース元の投稿時刻) ≦ (入力)
-  
+
   *ソース元の投稿時刻が不明な場合，このフィルターを入れると全て無視されることに注意．*
   """
   registeredAtLte: DateTime
@@ -1407,7 +1407,7 @@ type Query {
 
   """未読の通知を数える．未ログインなら`null`を返す．"""
   countUnwatchedNotifications: Int
-  ensuredViewer: User
+  ensuredViewer: User!
 
   """Bilibiliから動画情報を取得する"""
   fetchBilibili(input: FetchBilibiliInput!): FetchBilibiliPayload!
@@ -2135,7 +2135,7 @@ type SoundcloudRegistrationRequest implements Node & RegistrationRequest {
 
   """
   OtoMADB側でプロキシしているサムネイル画像のURL
-  
+
   **無い場合は適当にダミー画像を返す．**
   """
   thumbnailUrl(scale: RegistrationRequestThumbnailScale! = LARGE): String!
@@ -2490,6 +2490,8 @@ type User implements Node {
 
   """非公開なものも含めてマイリストを取得する．見つからなかった場合は`null`．"""
   mylist(slug: String!): Mylist
+  allMylists: [Mylist!]!
+
   mylists(after: String, before: String, first: Int, last: Int, orderBy: UserMylistsOrderBy! = {createdAt: DESC}, range: [MylistShareRange!]! = [PUBLIC]): MylistConnection!
   name: String!
   nicovideoRegistrationRequests(after: String, before: String, first: Int, last: Int, orderBy: UserNicovideoRegistrationRequestsOrderBy! = {createdAt: DESC}): NicovideoRegistrationRequestConnection!
