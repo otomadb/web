@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: "https://otomadb.com",
-    title: "OtoMADB",
+    // title: "OtoMADB",
     siteName: "OtoMADB",
     description:
       "OtoMADBは音MADの体系的なデータベースを目指して開発されています。",
