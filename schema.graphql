@@ -836,6 +836,7 @@ type Mutation {
   watchNotifications(input: WatchNotificationsInput!): WatchNotificationsReturnUnion!
 
   updateMylistSlug(input: UpdateMylistSlugInput!): UpdateMylistSlugReturnUnion!
+  updateMylistTitle(input: UpdateMylistTitleInput!): UpdateMylistTitleReturnUnion!
 }
 
 type MutationInternalServerError {
@@ -3059,5 +3060,17 @@ input UpdateMylistSlugInput {
 union UpdateMylistSlugReturnUnion = UpdateMylistSlugSucceededPayload
 
 type UpdateMylistSlugSucceededPayload {
+  mylist: Mylist!
+}
+
+input UpdateMylistTitleInput {
+  mylistId: ID!
+  "新しいslug"
+  newTitle: String!
+}
+
+union UpdateMylistTitleReturnUnion = UpdateMylistTitleSucceededPayload
+
+type UpdateMylistTitleSucceededPayload {
   mylist: Mylist!
 }

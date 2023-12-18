@@ -8,6 +8,33 @@ import {
   EditMylistUpdateSlugFragment,
   MutationUpdateSlug,
 } from "./UpdateSlugForm";
+import {
+  EditMylistUpdateTitleFragment,
+  MutationUpdateTitle,
+} from "./UpdateTitleForm";
+
+export const mockUpdateTitleSuccessful = mockGql.mutation(
+  MutationUpdateTitle,
+  (req, res, ctx) =>
+    res(
+      ctx.data({
+        updateMylistTitle: {
+          __typename: "UpdateMylistTitleSucceededPayload",
+          mylist: {
+            id: `mylist:${req.variables.newTitle}`,
+            ...makeFragmentData(
+              {
+                id: req.variables.mylistId,
+                slug: req.variables.newTitle,
+                title: "Test 1",
+              } as any,
+              EditMylistFragment
+            ),
+          },
+        },
+      })
+    )
+);
 
 export const mockUpdateSlugSuccessful = mockGql.mutation(
   MutationUpdateSlug,
@@ -43,17 +70,21 @@ const meta = {
     fragment: makeFragmentData(
       {
         ...makeFragmentData(
-          { id: "mad:1", slug: "mad1" },
+          { id: "mylist:1", slug: "mylist1" },
           EditMylistUpdateSlugFragment
         ),
-      },
+        ...makeFragmentData(
+          { id: "mylist:1", title: "Mylist 1" },
+          EditMylistUpdateTitleFragment
+        ),
+      } as any,
       EditMylistFragment
     ),
   },
   parameters: {
     msw: {
       handlers: {
-        primary: [mockUpdateSlugSuccessful],
+        primary: [mockUpdateTitleSuccessful, mockUpdateSlugSuccessful],
       },
     },
   },

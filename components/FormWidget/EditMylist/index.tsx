@@ -8,9 +8,11 @@ import { FragmentType, graphql, useFragment } from "~/gql";
 
 import { FormWrapper2 } from "../FormWrapper";
 import UpdateSlugForm from "./UpdateSlugForm";
+import UpdateTitleForm from "./UpdateTitleForm";
 
 export const EditMylistFragment = graphql(`
   fragment EditMylist on Mylist {
+    ...EditMylist_UpdateTitleForm
     ...EditMylist_UpdateSlugForm
   }
 `);
@@ -33,6 +35,7 @@ const EditMylist = ({
       Title={<>マイリストを編集する</>}
     >
       <div className={clsx("flex h-full w-full flex-col gap-y-6")}>
+        <UpdateTitleForm className={clsx("w-full")} fragment={a} />
         <UpdateSlugForm className={clsx("w-full")} fragment={a} />
       </div>
     </FormWrapper2>
