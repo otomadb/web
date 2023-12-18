@@ -26,7 +26,7 @@ export default async function og({
           publicMylist(slug: $slug) {
             slug
             title
-            registrationsByOffset(input: { take: 1, offset: 0 }) {
+            registrationsByOffset(input: { take: 8, offset: 0 }) {
               nodes {
                 id
                 video {
@@ -43,8 +43,6 @@ export default async function og({
       slug: params.slug,
     }
   );
-
-  console.dir(result);
 
   const { findUser } = result;
   if (!findUser || !findUser.publicMylist) notFound();
