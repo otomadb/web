@@ -9,24 +9,24 @@ import Button from "~/components/Button";
 import useToaster from "~/components/Toaster/useToaster";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
-import { checkSlug } from "../CreateMylist";
+import { checkTitle } from "../CreateMylist";
 
 const formSchema = z.object({
-  slug: checkSlug,
+  title: checkTitle,
 });
 type FormSchema = z.infer<typeof formSchema>;
 
-export const EditMylistUpdateSlugFragment = graphql(`
-  fragment EditMylist_UpdateSlugForm on Mylist {
+export const EditMylistUpdateTitleFragment = graphql(`
+  fragment EditMylist_UpdateTitleForm on Mylist {
     id
-    slug
+    title
   }
 `);
-export const MutationUpdateSlug = graphql(`
-  mutation EditMylist_UpdateSlug($mylistId: ID!, $newSlug: String!) {
-    updateMylistSlug(input: { mylistId: $mylistId, newSlug: $newSlug }) {
+export const MutationUpdateTitle = graphql(`
+  mutation EditMylist_UpdateTitle($mylistId: ID!, $newTitle: String!) {
+    updateMylistTitle(input: { mylistId: $mylistId, newTitle: $newTitle }) {
       __typename
-      ... on UpdateMylistSlugSucceededPayload {
+      ... on UpdateMylistTitleSucceededPayload {
         mylist {
           id
           ...EditMylist
@@ -35,12 +35,12 @@ export const MutationUpdateSlug = graphql(`
     }
   }
 `);
-const UpdateSlugForm: React.FC<{
+const UpdateTitleForm: React.FC<{
   className?: string;
   style?: React.CSSProperties;
-  fragment: FragmentType<typeof EditMylistUpdateSlugFragment>;
+  fragment: FragmentType<typeof EditMylistUpdateTitleFragment>;
 }> = ({ className, style, fragment }) => {
-  const F = useFragment(EditMylistUpdateSlugFragment, fragment);
+  const F = useFragment(EditMylistUpdateTitleFragment, fragment);
   const {
     register,
     handleSubmit,
@@ -49,10 +49,10 @@ const UpdateSlugForm: React.FC<{
     resolver: zodResolver(formSchema),
     mode: "onBlur",
     defaultValues: {
-      slug: F.slug,
+      title: F.title,
     },
   });
-  const [, update] = useMutation(MutationUpdateSlug);
+  const [, update] = useMutation(MutationUpdateTitle);
   const toast = useToaster();
   const router = useRouter();
 
@@ -60,37 +60,37 @@ const UpdateSlugForm: React.FC<{
     <form
       style={style}
       onSubmit={handleSubmit(async (data) => {
-        const rr = await update({ mylistId: F.id, newSlug: data.slug });
+        const rr = await update({ mylistId: F.id, newTitle: data.title });
         if (
           rr.error ||
           !rr.data ||
-          rr.data.updateMylistSlug.__typename !==
-            "UpdateMylistSlugSucceededPayload"
+          rr.data.updateMylistTitle.__typename !==
+            "UpdateMylistTitleSucceededPayload"
         ) {
           toast(<>マイリストの変更に失敗しました</>, { type: "error" });
           return;
         }
 
         toast(<>マイリストの変更に成功しました</>);
-        router.push(`/me/mylists/${data.slug}`);
+        router.refresh();
       })}
       className={clsx(className, "flex items-start gap-x-2")}
     >
       <label className={clsx("flex grow flex-col gap-y-1")}>
         <div className={clsx("text-xs font-bold text-snow-darker")}>
-          管理しやすいキーワード
+          タイトル
         </div>
         <div className={clsx("grow gap-y-2")}>
           <input
-            {...register("slug")}
+            {...register("title")}
             placeholder="例: mads-2023"
             className={clsx(
               "w-full border-b border-obsidian-lightest bg-transparent px-2 py-0.5 text-snow-primary placeholder:text-obsidian-lightest"
             )}
           ></input>
-          {errors.slug && (
+          {errors.title && (
             <p className={clsx("text-xs text-error-primary")}>
-              {errors.slug.message}
+              {errors.title.message}
             </p>
           )}
         </div>
@@ -106,4 +106,4 @@ const UpdateSlugForm: React.FC<{
     </form>
   );
 };
-export default UpdateSlugForm;
+export default UpdateTitleForm;
