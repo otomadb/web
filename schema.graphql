@@ -89,26 +89,13 @@ type AddTagToVideoSucceededPayload {
   video: Video!
 }
 
-type AddVideoToMylistAlreadyRegisteredError {
-  registration: MylistRegistration!
-}
-
 input AddVideoToMylistInput {
   mylistId: ID!
   note: String
   videoId: ID!
 }
 
-enum AddVideoToMylistOtherErrorMessage {
-  INTERNAL_SERVER_ERROR
-}
-
-"""その他のエラー"""
-type AddVideoToMylistOtherErrorsFallback {
-  message: AddVideoToMylistOtherErrorMessage!
-}
-
-union AddVideoToMylistReturnUnion = AddVideoToMylistAlreadyRegisteredError | AddVideoToMylistOtherErrorsFallback | AddVideoToMylistSucceededPayload | MutationInvalidMylistIdError | MutationInvalidVideoIdError | MutationMylistNotFoundError | MutationVideoNotFoundError | MutationWrongMylistHolderError
+union AddVideoToMylistReturnUnion = AddVideoToMylistSucceededPayload
 
 type AddVideoToMylistSucceededPayload {
   registration: MylistRegistration!
@@ -165,7 +152,7 @@ type BilibiliMadRequestedTimelineEvent implements TimelineEvent {
 type BilibiliOriginalSource {
   """
   bilibili側のオリジナルの画像URL
-
+  
   bilibili側の制約上、別のオリジンから直接埋め込んだりすることはほとんど出来ないことに注意．
   """
   originalThumbnailUrl: String!
@@ -518,14 +505,14 @@ input FindMadsByOffsetInput {
 input FindMadsByOffsetInputFilter {
   """
   (ソース元の投稿時刻) ≧ (入力)
-
+  
   *ソース元の投稿時刻が不明な場合，このフィルターを入れると全て無視されることに注意．*
   """
   registeredAtGte: DateTime
 
   """
   (ソース元の投稿時刻) ≦ (入力)
-
+  
   *ソース元の投稿時刻が不明な場合，このフィルターを入れると全て無視されることに注意．*
   """
   registeredAtLte: DateTime
@@ -831,12 +818,11 @@ type Mutation {
   resolveYoutubeRegistrationRequest(input: ResolveYoutubeRegistrationRequestInput!): ResolveYoutubeRegistrationRequestResult!
   resovleSemitag(semitagId: ID!, tagId: ID!): ResolveSemitagReturnUnion!
   undoLikeVideo(input: UndoLikeVideoInput!): UndoLikeVideoReturnUnion!
+  updateMylistSlug(input: UpdateMylistSlugInput!): UpdateMylistSlugReturnUnion!
+  updateMylistTitle(input: UpdateMylistTitleInput!): UpdateMylistTitleReturnUnion!
 
   """通知を見たことにする"""
   watchNotifications(input: WatchNotificationsInput!): WatchNotificationsReturnUnion!
-
-  updateMylistSlug(input: UpdateMylistSlugInput!): UpdateMylistSlugReturnUnion!
-  updateMylistTitle(input: UpdateMylistTitleInput!): UpdateMylistTitleReturnUnion!
 }
 
 type MutationInternalServerError {
@@ -1762,28 +1748,12 @@ type RemoveTagFromVideoSucceededPayload {
   video: Video!
 }
 
-enum RemoveVideoFromMylistFailedMessage {
-  ALREADY_UNREGISTERED
-  FORBIDDEN
-  INVALID_MYLIST_ID
-  INVALID_VIDEO_ID
-  MYLIST_NOT_FOUND
-  NOT_REGISTERED
-  UNKNOWN
-  VIDEO_NOT_FOUND
-  WRONG_MYLIST_HOLDER
-}
-
-type RemoveVideoFromMylistFailedPayload {
-  message: RemoveVideoFromMylistFailedMessage!
-}
-
 input RemoveVideoFromMylistInput {
   mylistId: ID!
   videoId: ID!
 }
 
-union RemoveVideoFromMylistPayload = RemoveVideoFromMylistFailedPayload | RemoveVideoFromMylistSucceededPayload
+union RemoveVideoFromMylistPayload = RemoveVideoFromMylistSucceededPayload
 
 type RemoveVideoFromMylistSucceededPayload {
   mylist: Mylist!
@@ -2138,7 +2108,7 @@ type SoundcloudRegistrationRequest implements Node & RegistrationRequest {
 
   """
   OtoMADB側でプロキシしているサムネイル画像のURL
-
+  
   **無い場合は適当にダミー画像を返す．**
   """
   thumbnailUrl(scale: RegistrationRequestThumbnailScale! = LARGE): String!
@@ -2481,7 +2451,35 @@ type UndoLikeVideoSucceededPayload {
   user: User!
 }
 
+input UpdateMylistSlugInput {
+  mylistId: ID!
+
+  """新しいslug"""
+  newSlug: String!
+}
+
+union UpdateMylistSlugReturnUnion = UpdateMylistSlugSucceededPayload
+
+type UpdateMylistSlugSucceededPayload {
+  mylist: Mylist!
+}
+
+input UpdateMylistTitleInput {
+  mylistId: ID!
+
+  """新しいタイトル"""
+  newTitle: String!
+}
+
+union UpdateMylistTitleReturnUnion = UpdateMylistTitleSucceededPayload
+
+type UpdateMylistTitleSucceededPayload {
+  mylist: Mylist!
+}
+
 type User implements Node {
+  """非公開なものも含めて**全ての**マイリストを取得する．"""
+  allMylists: [Mylist!]!
   displayName: String!
   hasRole(role: UserRole!): Boolean
   icon: String!
@@ -2493,8 +2491,6 @@ type User implements Node {
 
   """非公開なものも含めてマイリストを取得する．見つからなかった場合は`null`．"""
   mylist(slug: String!): Mylist
-  allMylists: [Mylist!]!
-
   mylists(after: String, before: String, first: Int, last: Int, orderBy: UserMylistsOrderBy! = {createdAt: DESC}, range: [MylistShareRange!]! = [PUBLIC]): MylistConnection!
   name: String!
   nicovideoRegistrationRequests(after: String, before: String, first: Int, last: Int, orderBy: UserNicovideoRegistrationRequestsOrderBy! = {createdAt: DESC}): NicovideoRegistrationRequestConnection!
@@ -3049,28 +3045,4 @@ type YoutubeVideoSourceEventEdge {
 
 input YoutubeVideoSourceEventsOrderBy {
   createdAt: SortOrder
-}
-
-input UpdateMylistSlugInput {
-  mylistId: ID!
-  "新しいslug"
-  newSlug: String!
-}
-
-union UpdateMylistSlugReturnUnion = UpdateMylistSlugSucceededPayload
-
-type UpdateMylistSlugSucceededPayload {
-  mylist: Mylist!
-}
-
-input UpdateMylistTitleInput {
-  mylistId: ID!
-  "新しいslug"
-  newTitle: String!
-}
-
-union UpdateMylistTitleReturnUnion = UpdateMylistTitleSucceededPayload
-
-type UpdateMylistTitleSucceededPayload {
-  mylist: Mylist!
 }
