@@ -28,7 +28,7 @@ export const VideoThumbnail: React.FC<{
       alt={fragment.title}
       width={imageSizes[imageSize] * 1.5}
       height={imageSizes[imageSize]}
-      unoptimized={false}
+      unoptimized={true}
     />
   );
 };
@@ -49,7 +49,7 @@ export const VideoThumbnail2: React.FC<{
       alt={fragment.title}
       width={imageSizes[imageSize] * 1.5}
       height={imageSizes[imageSize]}
-      unoptimized={false}
+      unoptimized={true}
     />
   );
 };
