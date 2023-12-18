@@ -47,9 +47,11 @@ export async function generateMetadata({
     title: `「${mylistTitle}」 - ${displayName}さんのマイリスト (${page}ページ目) | OtoMADB`,
     openGraph: {
       url: `https://otomadb.com/users/${userName}/mylists/${mylistSlug}`,
+      title: `「${mylistTitle}」 - ${displayName}さんのマイリスト | OtoMADB`,
     },
     twitter: {
       card: "summary_large_image",
+      title: `「${mylistTitle}」 - ${displayName}さんのマイリスト | OtoMADB`,
     },
   };
 }
