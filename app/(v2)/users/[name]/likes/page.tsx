@@ -63,7 +63,7 @@ export default async function Page({
             <TwitterShareButton
               size="small"
               payload={{
-                url: `https://www.otomadb.com/${findUser.name}/mylists/${findUser.publicMylist.slug}`,
+                url: `https://www.otomadb.com/${findUser.name}/mylists/likes`,
                 text: `${findUser.displayName}が良いと思った音MAD`,
               }}
             />
