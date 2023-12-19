@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import * as z from "zod";
 
 import MylistRegistrations from "~/app/(v2)/users/[name]/mylists/[slug]/MylistRegistrations";
+import TwitterShareButton from "~/components/TwitterShareButton";
 import { graphql } from "~/gql";
 import { makeGraphQLClient2 } from "~/gql/fetch";
 
@@ -40,6 +41,7 @@ export default withPageAuthRequired(
               ...EditMylist
               slug
               title
+              range
               registrationsByOffset(input: { offset: $offset, take: $take }) {
                 ...UserPage_MylistRegistrations
                 totalCount
@@ -59,10 +61,11 @@ export default withPageAuthRequired(
     );
 
     const { viewer } = result;
-    if (!viewer?.mylist) notFound();
+    const mylist = viewer?.mylist;
+    if (!mylist) notFound();
 
     const pageMax = Math.ceil(
-      viewer.mylist.registrationsByOffset.totalCount / PER_PAGE
+      mylist.registrationsByOffset.totalCount / PER_PAGE
     );
 
     return (
@@ -73,19 +76,28 @@ export default withPageAuthRequired(
       >
         <div className={clsx("flex w-full items-center px-4 py-2")}>
           <h1 className={clsx("flex grow text-xl font-bold text-snow-primary")}>
-            {viewer.mylist.title}
+            {mylist.title}
           </h1>
-          <div className={clsx("flex shrink-0")}>
-            <EditButton fragment={viewer.mylist} color="blue" size="small" />
+          <div className={clsx("flex h-8 shrink-0 items-center gap-x-2")}>
+            {mylist.range && (
+              <TwitterShareButton
+                size="small"
+                payload={{
+                  url: `https://www.otomadb.com/${viewer.name}/mylists/${mylist.slug}`,
+                  text: mylist.title,
+                }}
+              />
+            )}
+            <EditButton fragment={mylist} color="blue" size="small" />
           </div>
         </div>
         <MylistRegistrations
           currentPage={page}
           pageMax={pageMax}
-          pathname={`/me/mylists/${viewer.mylist.slug}`}
-          title={viewer.mylist.title}
+          pathname={`/me/mylists/${mylist.slug}`}
+          title={mylist.title}
           noc="このマイリストにはまだ何も登録されていません"
-          fragment={viewer.mylist.registrationsByOffset}
+          fragment={mylist.registrationsByOffset}
         />
       </main>
     );

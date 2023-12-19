@@ -1,6 +1,8 @@
+import clsx from "clsx";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import TwitterShareButton from "~/components/TwitterShareButton";
 import { graphql } from "~/gql";
 import { makeGraphQLClient } from "~/gql/fetch";
 
@@ -81,6 +83,7 @@ export default async function Page({
           publicMylist(slug: $slug) {
             slug
             title
+            range
             registrationsByOffset(input: { offset: $offset, take: $take }) {
               ...UserPage_MylistRegistrations
               totalCount
@@ -114,13 +117,31 @@ export default async function Page({
   );
 
   return (
-    <MylistRegistrations
-      currentPage={page}
-      pageMax={pageMax}
-      pathname={`/users/${findUser.name}/mylists/${findUser.publicMylist.slug}`}
-      title={findUser.publicMylist.title}
-      noc="このマイリストにはまだ何も登録されていません"
-      fragment={findUser.publicMylist.registrationsByOffset}
-    />
+    <main>
+      <div className={clsx("flex w-full items-center px-4 py-2")}>
+        <h1 className={clsx("flex grow text-xl font-bold text-snow-primary")}>
+          {findUser.publicMylist.title}
+        </h1>
+        <div className={clsx("flex h-8 shrink-0 items-center gap-x-2")}>
+          {findUser.publicMylist.range && (
+            <TwitterShareButton
+              size="small"
+              payload={{
+                url: `https://www.otomadb.com/${findUser.name}/mylists/${findUser.publicMylist.slug}`,
+                text: findUser.publicMylist.title,
+              }}
+            />
+          )}
+        </div>
+      </div>
+      <MylistRegistrations
+        currentPage={page}
+        pageMax={pageMax}
+        pathname={`/users/${findUser.name}/mylists/${findUser.publicMylist.slug}`}
+        title={findUser.publicMylist.title}
+        noc="このマイリストにはまだ何も登録されていません"
+        fragment={findUser.publicMylist.registrationsByOffset}
+      />
+    </main>
   );
 }
