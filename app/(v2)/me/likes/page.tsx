@@ -79,7 +79,7 @@ export default withPageAuthRequired(
               <TwitterShareButton
                 size="small"
                 payload={{
-                  url: `https://www.otomadb.com/${viewer.name}/likes`,
+                  url: `https://www.otomadb.com/users/${viewer.name}/likes`,
                   text: `${viewer.displayName}が良いと思った音MAD`,
                 }}
               />

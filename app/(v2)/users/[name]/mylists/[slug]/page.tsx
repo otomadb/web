@@ -127,7 +127,7 @@ export default async function Page({
             <TwitterShareButton
               size="small"
               payload={{
-                url: `https://www.otomadb.com/${findUser.name}/mylists/${findUser.publicMylist.slug}`,
+                url: `https://www.otomadb.com/users/${findUser.name}/mylists/${findUser.publicMylist.slug}`,
                 text: findUser.publicMylist.title,
               }}
             />

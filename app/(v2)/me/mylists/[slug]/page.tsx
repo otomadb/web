@@ -83,7 +83,7 @@ export default withPageAuthRequired(
               <TwitterShareButton
                 size="small"
                 payload={{
-                  url: `https://www.otomadb.com/${viewer.name}/mylists/${mylist.slug}`,
+                  url: `https://www.otomadb.com/users/${viewer.name}/mylists/${mylist.slug}`,
                   text: mylist.title,
                 }}
               />
