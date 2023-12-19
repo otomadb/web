@@ -10,10 +10,10 @@ import {
   ExternalLinkPictogram,
   NicovideoPictogram,
   SoundcloudPictogram,
-  TwitterXPictogram,
   YoutubePictogram,
 } from "~/components/Pictogram";
 import { TagType } from "~/components/TagType";
+import TwitterShareButton from "~/components/TwitterShareButton";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { graphql } from "~/gql";
 import { makeGraphQLClient2 } from "~/gql/fetch";
@@ -143,29 +143,18 @@ export default async function Layout({
               fragment={video}
               className={clsx("col-span-full @[1024px]/layout:max-w-none")}
             />
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href={(() => {
-                const url = new URL("https://twitter.com/intent/tweet");
-                url.searchParams.set(
-                  "url",
-                  `https://www.otomadb.com/mads/${video.serial}`
-                );
-                url.searchParams.set("text", video.title);
-                url.searchParams.set("hashtags", "OtoMADB");
-                return url.toString();
-              })()}
-              className={clsx(
-                "flex items-center justify-center",
-                "col-span-1 gap-x-2 rounded border border-[#222] bg-twitter-x-primary px-4 py-2 text-sm text-white @[1024px]/layout:h-8"
-              )}
+            <TwitterShareButton
+              size="medium"
+              payload={{
+                url: `https://www.otomadb.com/mads/${video.serial}`,
+                text: video.title,
+              }}
+              className={clsx("col-span-1 @[1024px]/layout:h-12")}
             >
-              <TwitterXPictogram className={clsx("w-4")} />
-              <div className={clsx("hidden @[1024px]/layout:block")}>
+              <span className={clsx("hidden @[1024px]/layout:block")}>
                 ポスト
-              </div>
-            </a>
+              </span>
+            </TwitterShareButton>
           </div>
           <LinkVideoEvents
             fragment={video}
