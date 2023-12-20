@@ -63,6 +63,23 @@ type AddSemitagToVideoSucceededPayload {
   semitag: Semitag!
 }
 
+input AddSourceFromYoutubeInput {
+  """転載などの場合は`false`にする"""
+  isOriginal: Boolean! = true
+  madId: ID!
+
+  """Youtubeの動画ID"""
+  sourceId: String!
+  title: TitleInput!
+}
+
+union AddSourceFromYoutubePayload = AddSourceFromYoutubeSuccess
+
+type AddSourceFromYoutubeSuccess {
+  source: YoutubeVideoSource!
+  video: Video!
+}
+
 enum AddTagToVideoFailedMessage {
   FORBIDDEN
   INVALID_TAG_ID
@@ -786,6 +803,9 @@ type MadRegisteredTimelineEvent implements TimelineEvent {
 type Mutation {
   addMylistToMylistGroup(input: AddMylistToMylistGroupInput!): AddMylistToMylistGroupPayload!
   addSemitagToVideo(input: AddSemitagToVideoInput!): AddSemitagToVideoPayload!
+
+  """既存の音MADに対してYoutubeの動画をソースとして追加する"""
+  addSourceFromYoutube(input: AddSourceFromYoutubeInput!): AddSourceFromYoutubePayload!
   addTagToVideo(input: AddTagToVideoInput!): AddTagToVideoPayload!
   addVideoToMylist(input: AddVideoToMylistInput!): AddVideoToMylistReturnUnion!
   changeMylistShareRange(input: ChangeMylistShareRangeInput!): ChangeMylistShareReturnUnion!
@@ -2439,6 +2459,12 @@ input TaggedVideosByOffsetInput {
 interface TimelineEvent {
   createdAt: DateTime!
   event: Event!
+}
+
+"""タイトル入力時のセット"""
+input TitleInput {
+  locale: String! = "ja"
+  title: String!
 }
 
 input UndoLikeVideoInput {
