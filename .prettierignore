@@ -1,9 +1,6 @@
 # direnv
 .direnv
 
-# Nix
-flake.lock
-
 # deps
 package-lock.json
 pnpm-lock.yaml
