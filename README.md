@@ -34,12 +34,6 @@ GitHub のアカウントがない場合は[開発者の Twitter など](#連絡
 - Node.js v18
 - pnpm
 
-あるいは，[Nix](https://nixos.org/)が入っていて[direnv](https://github.com/direnv/direnv/wiki/Nix)が適切に設定されているなら，次のコマンドで環境が整うはずです．
-
-```shell
-direnv allow
-```
-
 ### npm scripts
 
 #### TL;DR
