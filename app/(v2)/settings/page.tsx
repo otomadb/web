@@ -1,6 +1,7 @@
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import clsx from "clsx";
 
+import IconUpdateController from "./IconUpdateController";
 import RenameForm from "./RenameForm";
 
 export default withPageAuthRequired(async function Page() {
@@ -23,6 +24,16 @@ export default withPageAuthRequired(async function Page() {
             表示名を変える
           </h2>
           <RenameForm className={clsx("w-full")} />
+        </section>
+        <section
+          className={clsx(
+            "flex w-full flex-col gap-y-2 border-l border-l-obsidian-lighter px-8 py-6"
+          )}
+        >
+          <h2 className={clsx("text-lg font-bold text-snow-primary")}>
+            ユーザーアイコンを変える
+          </h2>
+          <IconUpdateController className={clsx("w-full")} />
         </section>
       </main>
     </div>
