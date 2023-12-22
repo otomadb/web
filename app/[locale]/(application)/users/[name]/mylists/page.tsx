@@ -1,14 +1,31 @@
 import clsx from "clsx";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { graphql } from "~/gql";
 import { makeGraphQLClient } from "~/gql/fetch";
+import { getScopedI18n } from "~/locales/server";
 
 import SideNav from "../SideNav";
 import { UserMylistPageLink } from "./[slug]/Link";
+import { PageParams, schemaPageParams } from "./schema";
 
-export default async function Page({ params }: { params: { name: string } }) {
+export async function generateMetadata({
+  params,
+}: {
+  params: PageParams;
+}): Promise<Metadata> {
+  const t = await getScopedI18n("page.userMylists");
+
+  const { name } = schemaPageParams.parse(params);
+
+  return {
+    title: t("title", { name }),
+  };
+}
+
+export default async function Page({ params }: { params: PageParams }) {
   const result = await makeGraphQLClient().request(
     graphql(`
       query UserMylistsPage2($name: String!) {

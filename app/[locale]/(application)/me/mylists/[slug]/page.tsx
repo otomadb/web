@@ -10,6 +10,8 @@ import { makeGraphQLClient2 } from "~/gql/fetch";
 
 import { EditButton } from "./Edit";
 
+export const dynamic = "force-dynamic";
+
 export default withPageAuthRequired(
   async ({ params: unparsedParams, searchParams: unparsedSearchParams }) => {
     const params = z.object({ slug: z.string() }).safeParse(unparsedParams);

@@ -1,11 +1,22 @@
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import clsx from "clsx";
+import { Metadata } from "next";
 import { Suspense } from "react";
+
+import { getScopedI18n } from "~/locales/server";
 
 import MyLikesPageLink from "../me/likes/Link";
 import LikesSectionInner from "./LikesSectionInner";
 import { ModalOpener } from "./ModalOpener";
 import Timeline from "./Timeline";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getScopedI18n("page.home");
+
+  return {
+    title: t("title"),
+  };
+}
 
 export default withPageAuthRequired(
   async () => {

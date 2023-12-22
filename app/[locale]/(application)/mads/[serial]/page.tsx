@@ -6,6 +6,7 @@ import { Suspense } from "react";
 
 import { graphql } from "~/gql";
 import { makeGraphQLClient, makeGraphQLClient2 } from "~/gql/fetch";
+import { getScopedI18n } from "~/locales/server";
 
 import SimilarVideos from "./SimilarVideos";
 
@@ -14,6 +15,7 @@ export async function generateMetadata({
 }: {
   params: { serial: string };
 }): Promise<Metadata> {
+  const t = await getScopedI18n("page.mad");
   const result = await makeGraphQLClient().request(
     graphql(`
       query MadPage_Metadata($serial: Int!) {
@@ -30,16 +32,13 @@ export async function generateMetadata({
   const { title, serial } = result.findMadBySerial;
 
   return {
-    title: `${title} | OtoMADB`,
+    title: t("title", { title }),
     openGraph: {
       type: "website",
-      siteName: "OtoMADB",
       url: `https://otomadb.com/mads/${serial}`,
-      title: `${title} | OtoMADB`,
     },
     twitter: {
       card: "summary_large_image",
-      title: `${title} | OtoMADB`,
       site: "@SnO2WMaN",
     },
   };

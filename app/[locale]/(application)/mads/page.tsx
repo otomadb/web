@@ -6,18 +6,19 @@ import CommonMadBlock from "~/components/CommonMadBlock";
 import Paginator from "~/components/Paginator";
 import { graphql } from "~/gql";
 import { makeGraphQLClient2 } from "~/gql/fetch";
+import { getScopedI18n } from "~/locales/server";
 
 export async function generateMetadata({
   searchParams,
 }: {
   searchParams: { page?: string };
 }): Promise<Metadata> {
+  const t = await getScopedI18n("page.mads");
   const page = searchParams.page ? parseInt(searchParams.page, 10) : 1;
 
   return {
-    title: `登録されている音MAD(${page}ページ目) | OtoMADB`,
+    title: t("title", { page }),
     openGraph: {
-      title: `登録されている音MAD(${page}ページ目) | OtoMADB`,
       url: `https://otomadb.com/mads${page === 1 ? "" : `?page=${page}`}`,
     },
   };

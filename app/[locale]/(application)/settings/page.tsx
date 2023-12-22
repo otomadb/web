@@ -1,7 +1,18 @@
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import clsx from "clsx";
+import { Metadata } from "next";
+
+import { getScopedI18n } from "~/locales/server";
 
 import RenameForm from "./RenameForm";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getScopedI18n("page.settings");
+
+  return {
+    title: t("title"),
+  };
+}
 
 export default withPageAuthRequired(async function Page() {
   return (

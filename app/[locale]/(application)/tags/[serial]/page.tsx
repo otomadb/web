@@ -6,6 +6,7 @@ import CommonMadBlock from "~/components/CommonMadBlock";
 import Paginator from "~/components/Paginator";
 import { graphql } from "~/gql";
 import { makeGraphQLClient, makeGraphQLClient2 } from "~/gql/fetch";
+import { getScopedI18n } from "~/locales/server";
 
 export async function generateMetadata({
   params,
@@ -14,6 +15,8 @@ export async function generateMetadata({
   params: { serial: string };
   searchParams: { page?: string };
 }): Promise<Metadata> {
+  const t = await getScopedI18n("page.tag");
+
   const page = searchParams.page ? parseInt(searchParams.page, 10) : 1;
 
   const result = await makeGraphQLClient().request(
@@ -32,13 +35,11 @@ export async function generateMetadata({
   if (!findTagBySerial) notFound();
 
   const { name, serial } = findTagBySerial;
-  const title = `「${name}」がタグ付けられた音MAD（${page}ページ目） | OtoMADB`;
 
   return {
-    title,
+    title: t("title", { name, page }),
     openGraph: {
       url: `https://otomadb.com/tags/${serial}`,
-      title,
     },
   };
 }

@@ -6,28 +6,28 @@ import type { Metadata, Viewport } from "next";
 import React from "react";
 
 import { ToastProvider } from "~/components/Toaster";
+import { getScopedI18n } from "~/locales/server";
 
 import UrqlProvider from "./UrqlProvider";
 
-export const metadata: Metadata = {
-  metadataBase: new URL("https://otomadb.com"),
-  title: "OtoMADB",
-  description:
-    "OtoMADBは音MADの体系的なデータベースを目指して開発されています。",
-  openGraph: {
-    type: "website",
-    url: "https://otomadb.com",
-    // title: "OtoMADB",
-    siteName: "OtoMADB",
-    description:
-      "OtoMADBは音MADの体系的なデータベースを目指して開発されています。",
-  },
-  twitter: {
-    card: "summary",
-    title: `OtoMADB`,
-    site: "@SnO2WMaN",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getScopedI18n("page");
+
+  return {
+    metadataBase: new URL("https://www.otomadb.com"),
+    title: t("title"),
+    description: t("description"),
+    openGraph: {
+      type: "website",
+      url: "https://www.otomadb.com",
+      siteName: "OtoMADB",
+    },
+    twitter: {
+      card: "summary",
+      site: "@SnO2WMaN",
+    },
+  };
+}
 
 export const viewport: Viewport = {
   width: "device-width",

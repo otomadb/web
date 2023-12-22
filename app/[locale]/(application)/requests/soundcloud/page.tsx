@@ -4,6 +4,7 @@ import { notFound, redirect } from "next/navigation";
 
 import { graphql } from "~/gql";
 import { makeGraphQLClient } from "~/gql/fetch";
+import { getScopedI18n } from "~/locales/server";
 
 import NoRequests from "../NoRequests";
 import RegisterButton from "../RegisterButton";
@@ -14,12 +15,13 @@ export async function generateMetadata({
 }: {
   searchParams: { page?: string };
 }): Promise<Metadata> {
+  const t = await getScopedI18n("page.soundcloudRequests");
+
   const page = searchParams.page ? parseInt(searchParams.page, 10) : 1;
 
   return {
-    title: `リクエストされているSoundCloudの音MAD(${page}ページ目) | OtoMADB`,
+    title: t("title", { page }),
     openGraph: {
-      title: `リクエストされているSoundCloudの音MAD(${page}ページ目) | OtoMADB`,
       url: `https://otomadb.com/requests/nicovideo${
         page === 1 ? "" : `?page=${page}`
       }`,

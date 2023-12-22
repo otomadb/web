@@ -8,12 +8,17 @@ import MylistRegistrations from "~/app/[locale]/(application)/users/[name]/mylis
 import TwitterShareButton from "~/components/TwitterShareButton";
 import { graphql } from "~/gql";
 import { makeGraphQLClient } from "~/gql/fetch";
+import { getScopedI18n } from "~/locales/server";
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title: "あなたがいいねした音MAD",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getScopedI18n("page.meLikes");
+
+  return {
+    title: t("title"),
+  };
+}
 
 export default withPageAuthRequired(
   async ({ searchParams }) => {

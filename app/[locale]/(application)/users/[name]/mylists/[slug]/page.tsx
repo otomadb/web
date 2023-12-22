@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import TwitterShareButton from "~/components/TwitterShareButton";
 import { graphql } from "~/gql";
 import { makeGraphQLClient } from "~/gql/fetch";
+import { getScopedI18n } from "~/locales/server";
 
 import MylistRegistrations from "./MylistRegistrations";
 
@@ -15,6 +16,7 @@ export async function generateMetadata({
   params: { name: string; slug: string };
   searchParams: { page?: string };
 }): Promise<Metadata> {
+  const t = await getScopedI18n("page.userMylist");
   const page = searchParams.page ? parseInt(searchParams.page, 10) : 1;
 
   const result = await makeGraphQLClient().request(
@@ -46,14 +48,12 @@ export async function generateMetadata({
   } = findUser;
 
   return {
-    title: `「${mylistTitle}」 - ${displayName}さんのマイリスト (${page}ページ目) | OtoMADB`,
+    title: t("title", { name: displayName, title: mylistTitle, page }),
     openGraph: {
       url: `https://otomadb.com/users/${userName}/mylists/${mylistSlug}`,
-      title: `「${mylistTitle}」 - ${displayName}さんのマイリスト | OtoMADB`,
     },
     twitter: {
       card: "summary_large_image",
-      title: `「${mylistTitle}」 - ${displayName}さんのマイリスト | OtoMADB`,
     },
   };
 }

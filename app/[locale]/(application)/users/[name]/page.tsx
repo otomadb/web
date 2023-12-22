@@ -1,12 +1,31 @@
 import clsx from "clsx";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { graphql } from "~/gql";
 import { makeGraphQLClient } from "~/gql/fetch";
+import { getScopedI18n } from "~/locales/server";
 
+import { PageParams, schemaPageParams } from "./schema";
 import SideNav from "./SideNav";
 
-export default async function Page({ params }: { params: { name: string } }) {
+export async function generateMetadata({
+  params,
+}: {
+  params: PageParams;
+}): Promise<Metadata> {
+  const t = await getScopedI18n("page.user");
+
+  const { name } = schemaPageParams.parse(params);
+
+  return {
+    title: t("title", { name }),
+  };
+}
+
+export default async function Page({ params }: { params: PageParams }) {
+  const { name } = schemaPageParams.parse(params);
+
   const result = await makeGraphQLClient().request(
     graphql(`
       query UserTopPage($name: String!) {
@@ -15,7 +34,7 @@ export default async function Page({ params }: { params: { name: string } }) {
         }
       }
     `),
-    { name: params.name }
+    { name }
   );
 
   if (!result.findUser) notFound();

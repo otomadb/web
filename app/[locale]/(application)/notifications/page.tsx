@@ -1,12 +1,22 @@
 import { getAccessToken, withPageAuthRequired } from "@auth0/nextjs-auth0";
 import clsx from "clsx";
+import { Metadata } from "next";
 
 import { graphql } from "~/gql";
 import { makeGraphQLClient } from "~/gql/fetch";
+import { getScopedI18n } from "~/locales/server";
 
 import NotificationsSegmentsController from "./NotificationsSegmentsController";
 
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getScopedI18n("page.notifications");
+
+  return {
+    title: t("title"),
+  };
+}
 
 export default withPageAuthRequired(
   async () => {

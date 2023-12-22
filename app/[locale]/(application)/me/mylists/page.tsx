@@ -5,15 +5,20 @@ import type { Metadata } from "next";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { graphql } from "~/gql";
 import { makeGraphQLClient2 } from "~/gql/fetch";
+import { getScopedI18n } from "~/locales/server";
 
 import CreateMylistButton from "../likes/CreateMylistButton";
 import YouMylistPageLink from "./[slug]/Link";
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title: "あなたのマイリスト",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getScopedI18n("page.meMylists");
+
+  return {
+    title: t("title"),
+  };
+}
 
 export default withPageAuthRequired(
   async () => {

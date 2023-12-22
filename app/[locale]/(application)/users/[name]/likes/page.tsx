@@ -1,17 +1,34 @@
 import clsx from "clsx";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import TwitterShareButton from "~/components/TwitterShareButton";
 import { graphql } from "~/gql";
 import { makeGraphQLClient } from "~/gql/fetch";
+import { getScopedI18n } from "~/locales/server";
 
 import MylistRegistrations from "../mylists/[slug]/MylistRegistrations";
+import { PageParams, schemaPageParams } from "./schema";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: PageParams;
+}): Promise<Metadata> {
+  const t = await getScopedI18n("page.userLikes");
+
+  const { name } = schemaPageParams.parse(params);
+
+  return {
+    title: t("title", { name }),
+  };
+}
 
 export default async function Page({
   params,
   searchParams,
 }: {
-  params: { name: string };
+  params: PageParams;
   searchParams: { page?: string };
 }) {
   const page = searchParams.page ? parseInt(searchParams.page, 10) : 1;
