@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { ReactNode } from "react";
 
-import UserPageLink from "~/app/(v2)/users/[name]/Link";
+import UserPageLink from "~/app/[locale]/(application)/users/[name]/Link";
 import CommonTag from "~/components/CommonTag";
 import { CoolImage } from "~/components/CoolImage";
 import Paginator from "~/components/Paginator";

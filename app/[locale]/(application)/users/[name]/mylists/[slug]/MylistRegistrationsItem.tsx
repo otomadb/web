@@ -1,6 +1,6 @@
 import clsx from "clsx";
 
-import { MadPageLink } from "~/app/(v2)/mads/[serial]/Link";
+import { MadPageLink } from "~/app/[locale]/(application)/mads/[serial]/Link";
 import CommonTagLink from "~/components/CommonTagLink";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { FragmentType, graphql, useFragment } from "~/gql";

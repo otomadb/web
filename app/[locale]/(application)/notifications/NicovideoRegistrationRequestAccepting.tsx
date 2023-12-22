@@ -2,9 +2,9 @@
 
 import clsx from "clsx";
 
-import { MadPageLink } from "~/app/(v2)/mads/[serial]/Link";
-import NicovideoRequestLink from "~/app/(v2)/requests/nicovideo/[sourceId]/Link";
-import UserPageLink from "~/app/(v2)/users/[name]/Link";
+import { MadPageLink } from "~/app/[locale]/(application)/mads/[serial]/Link";
+import NicovideoRequestLink from "~/app/[locale]/(application)/requests/nicovideo/[sourceId]/Link";
+import UserPageLink from "~/app/[locale]/(application)/users/[name]/Link";
 import CommonMadBlock from "~/components/CommonMadBlock";
 import { AcceptPictogram } from "~/components/Pictogram";
 import { UserIcon } from "~/components/UserIcon";

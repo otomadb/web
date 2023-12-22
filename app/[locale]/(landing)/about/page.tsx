@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { Suspense } from "react";
 
-import { AllVideosPageLink } from "~/app/(v2)/mads/Link";
+import { AllVideosPageLink } from "~/app/[locale]/(application)/mads/Link";
 import { LoginLink } from "~/components/AuthLink";
 import CommonMadBlock from "~/components/CommonMadBlock";
 import GlobalFooter from "~/components/GlobalFooter";

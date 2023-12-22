@@ -3,13 +3,13 @@
 import clsx from "clsx";
 import Link from "next/link";
 
-import LinkRegisterSemitag from "~/app/(v2)/editor/semitags/Link";
-import TagRegisterPageLink from "~/app/(v2)/editor/tags/Link";
-import { AllVideosPageLink } from "~/app/(v2)/mads/Link";
-import AllBilibiliRequestLink from "~/app/(v2)/requests/bilibili/Link";
-import AllNicovideoRequestsPageLink from "~/app/(v2)/requests/nicovideo/Link";
-import AllSoundcloudRequestLink from "~/app/(v2)/requests/soundcloud/Link";
-import AllYoutubeRequestLink from "~/app/(v2)/requests/youtube/Link";
+import LinkRegisterSemitag from "~/app/[locale]/(application)/editor/semitags/Link";
+import TagRegisterPageLink from "~/app/[locale]/(application)/editor/tags/Link";
+import { AllVideosPageLink } from "~/app/[locale]/(application)/mads/Link";
+import AllBilibiliRequestLink from "~/app/[locale]/(application)/requests/bilibili/Link";
+import AllNicovideoRequestsPageLink from "~/app/[locale]/(application)/requests/nicovideo/Link";
+import AllSoundcloudRequestLink from "~/app/[locale]/(application)/requests/soundcloud/Link";
+import AllYoutubeRequestLink from "~/app/[locale]/(application)/requests/youtube/Link";
 import { useOpenInput } from "~/components/FormWidget";
 import {
   BilibiliPictogram,

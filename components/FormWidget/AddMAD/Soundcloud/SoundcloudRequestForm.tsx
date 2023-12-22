@@ -6,8 +6,8 @@ import { useRouter } from "next/navigation";
 import { CSSProperties, useCallback, useMemo, useState } from "react";
 import { useMutation } from "urql";
 
-import { MadPageLink } from "~/app/(v2)/mads/[serial]/Link";
-import SoundcloudRequestPageLink from "~/app/(v2)/requests/soundcloud/[sourceId]/Link";
+import { MadPageLink } from "~/app/[locale]/(application)/mads/[serial]/Link";
+import SoundcloudRequestPageLink from "~/app/[locale]/(application)/requests/soundcloud/[sourceId]/Link";
 import { SoundcloudPictogram } from "~/components/Pictogram";
 import useToaster from "~/components/Toaster/useToaster";
 import { FragmentType, graphql, useFragment } from "~/gql";

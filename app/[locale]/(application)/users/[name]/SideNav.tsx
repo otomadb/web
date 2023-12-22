@@ -1,10 +1,10 @@
 import clsx from "clsx";
 import { ReactNode } from "react";
 
-import MyLikesPageLink from "~/app/(v2)/me/likes/Link";
-import MyMylistsPageLink from "~/app/(v2)/me/mylists/Link";
-import UserLikesPageLink2 from "~/app/(v2)/users/[name]/likes/Link";
-import UserMylistsPageLink from "~/app/(v2)/users/[name]/mylists/Link";
+import MyLikesPageLink from "~/app/[locale]/(application)/me/likes/Link";
+import MyMylistsPageLink from "~/app/[locale]/(application)/me/mylists/Link";
+import UserLikesPageLink2 from "~/app/[locale]/(application)/users/[name]/likes/Link";
+import UserMylistsPageLink from "~/app/[locale]/(application)/users/[name]/mylists/Link";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const SideNavPrimaryFragment = graphql(`

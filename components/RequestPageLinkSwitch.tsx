@@ -2,10 +2,10 @@
 import Link from "next/link";
 import React, { ComponentProps, ReactNode } from "react";
 
-import BilibiliRequestPageLink from "~/app/(v2)/requests/bilibili/[sourceId]/Link";
-import NicovideoRequestLink from "~/app/(v2)/requests/nicovideo/[sourceId]/Link";
-import SoundcloudRequestPageLink from "~/app/(v2)/requests/soundcloud/[sourceId]/Link";
-import { YoutubeRequestPageLink } from "~/app/(v2)/requests/youtube/[sourceId]/Link";
+import BilibiliRequestPageLink from "~/app/[locale]/(application)/requests/bilibili/[sourceId]/Link";
+import NicovideoRequestLink from "~/app/[locale]/(application)/requests/nicovideo/[sourceId]/Link";
+import SoundcloudRequestPageLink from "~/app/[locale]/(application)/requests/soundcloud/[sourceId]/Link";
+import { YoutubeRequestPageLink } from "~/app/[locale]/(application)/requests/youtube/[sourceId]/Link";
 import { FragmentType, graphql, useFragment } from "~/gql";
 
 export const RequestPageLinkSwitchFragment = graphql(`

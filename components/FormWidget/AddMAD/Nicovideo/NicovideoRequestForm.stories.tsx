@@ -4,7 +4,7 @@ import { expect } from "@storybook/test";
 import { userEvent, within } from "@storybook/testing-library";
 import { graphql as mockGql } from "msw";
 
-import { NicovideoRequestLinkFragment } from "~/app/(v2)/requests/nicovideo/[sourceId]/Link";
+import { NicovideoRequestLinkFragment } from "~/app/[locale]/(application)/requests/nicovideo/[sourceId]/Link";
 import { CommonTagFragment } from "~/components/CommonTag";
 import { mockTagSearcher } from "~/components/TagSearcher/index.stories";
 import { makeFragmentData } from "~/gql";

@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import * as z from "zod";
 
-import MylistRegistrations from "~/app/(v2)/users/[name]/mylists/[slug]/MylistRegistrations";
+import MylistRegistrations from "~/app/[locale]/(application)/users/[name]/mylists/[slug]/MylistRegistrations";
 import TwitterShareButton from "~/components/TwitterShareButton";
 import { graphql } from "~/gql";
 import { makeGraphQLClient } from "~/gql/fetch";

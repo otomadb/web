@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { graphql } from "msw";
 
-import { MadPageLinkFragment } from "~/app/(v2)/mads/[serial]/Link";
+import { MadPageLinkFragment } from "~/app/[locale]/(application)/mads/[serial]/Link";
 import { makeFragmentData } from "~/gql";
 
 import { Fragment } from "../VideoThumbnail";

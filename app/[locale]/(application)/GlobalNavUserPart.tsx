@@ -3,11 +3,11 @@
 import clsx from "clsx";
 import { CSSProperties } from "react";
 
-import MyLikesPageLink from "~/app/(v2)/me/likes/Link";
-import MyTopPageLink from "~/app/(v2)/me/Link";
-import MyMylistsPageLink from "~/app/(v2)/me/mylists/Link";
-import NotificationsPageLink from "~/app/(v2)/notifications/Link";
-import SettingPageLink from "~/app/(v2)/settings/Link";
+import MyLikesPageLink from "~/app/[locale]/(application)/me/likes/Link";
+import MyTopPageLink from "~/app/[locale]/(application)/me/Link";
+import MyMylistsPageLink from "~/app/[locale]/(application)/me/mylists/Link";
+import NotificationsPageLink from "~/app/[locale]/(application)/notifications/Link";
+import SettingPageLink from "~/app/[locale]/(application)/settings/Link";
 import { LoginLink, LogoutLink } from "~/components/AuthLink";
 import { SignInPictogram } from "~/components/Pictogram";
 import { UserIcon } from "~/components/UserIcon";

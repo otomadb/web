@@ -2,7 +2,7 @@ import clsx from "clsx";
 import Image from "next/image";
 import React, { ReactNode } from "react";
 
-import UserPageLink from "~/app/(v2)/users/[name]/Link";
+import UserPageLink from "~/app/[locale]/(application)/users/[name]/Link";
 import Semitag from "~/components/CommonSemitag";
 import CommonTag from "~/components/CommonTag";
 import { UserIcon } from "~/components/UserIcon";

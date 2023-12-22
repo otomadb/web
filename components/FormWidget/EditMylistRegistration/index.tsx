@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { CSSProperties, useMemo } from "react";
 import { useMutation, useQuery } from "urql";
 
-import YouMylistPageLink from "~/app/(v2)/me/mylists/[slug]/Link";
+import YouMylistPageLink from "~/app/[locale]/(application)/me/mylists/[slug]/Link";
 import CommonMadBlock from "~/components/CommonMadBlock";
 import { ExternalLinkPictogram, PlusPictogram } from "~/components/Pictogram";
 import useToaster from "~/components/Toaster/useToaster";

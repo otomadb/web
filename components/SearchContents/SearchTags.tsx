@@ -4,7 +4,7 @@ import clsx from "clsx";
 import React from "react";
 import { useQuery } from "urql";
 
-import { TagPageLink } from "~/app/(v2)/tags/[serial]/Link";
+import { TagPageLink } from "~/app/[locale]/(application)/tags/[serial]/Link";
 import CommonTag from "~/components/CommonTag";
 import { LoadingPictogram } from "~/components/Pictogram";
 import { graphql } from "~/gql";

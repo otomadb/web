@@ -1,8 +1,8 @@
 import { ResultOf } from "@graphql-typed-document-node/core";
 import { Meta, StoryObj } from "@storybook/react";
 
-import { UserLikesPageLinkFragment2 } from "~/app/(v2)/users/[name]/likes/Link";
-import { UserMylistsPageLinkFragment } from "~/app/(v2)/users/[name]/mylists/Link";
+import { UserLikesPageLinkFragment2 } from "~/app/[locale]/(application)/users/[name]/likes/Link";
+import { UserMylistsPageLinkFragment } from "~/app/[locale]/(application)/users/[name]/mylists/Link";
 import { makeFragmentData } from "~/gql";
 
 import SideNav, { SideNavPrimaryFragment } from "./SideNav";

@@ -4,7 +4,7 @@ import { within } from "@storybook/testing-library";
 import { waitFor } from "@storybook/testing-library";
 import { graphql as mockGql } from "msw";
 
-import { YouMylistPageLinkFragment } from "~/app/(v2)/me/mylists/[slug]/Link";
+import { YouMylistPageLinkFragment } from "~/app/[locale]/(application)/me/mylists/[slug]/Link";
 import { makeFragmentData } from "~/gql";
 
 import CreateMylistForm, { MutationCreateMylist } from ".";

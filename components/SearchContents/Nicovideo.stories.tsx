@@ -2,9 +2,9 @@ import { ResultOf } from "@graphql-typed-document-node/core";
 import { Meta, StoryObj } from "@storybook/react";
 import { graphql } from "msw";
 
-import { MadPageLinkFragment } from "~/app/(v2)/mads/[serial]/Link";
-import { TagPageLinkFragment } from "~/app/(v2)/tags/[serial]/Link";
-import { UserPageLinkFragment } from "~/app/(v2)/users/[name]/Link";
+import { MadPageLinkFragment } from "~/app/[locale]/(application)/mads/[serial]/Link";
+import { TagPageLinkFragment } from "~/app/[locale]/(application)/tags/[serial]/Link";
+import { UserPageLinkFragment } from "~/app/[locale]/(application)/users/[name]/Link";
 import { makeFragmentData } from "~/gql";
 
 import { CommonTagFragment } from "../CommonTag";

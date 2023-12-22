@@ -2,8 +2,8 @@ import clsx from "clsx";
 import Link from "next/link";
 import React from "react";
 
-import { AboutPageLink } from "~/app/(landing)/about/Link";
-import TopPageLink from "~/app/(landing)/Link";
+import { AboutPageLink } from "~/app/[locale]/(landing)/about/Link";
+import TopPageLink from "~/app/[locale]/(landing)/Link";
 import Logo from "~/components/Logo";
 import { graphql } from "~/gql";
 import { makeGraphQLClient } from "~/gql/fetch";
