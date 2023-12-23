@@ -63,7 +63,7 @@ module.exports = {
       },
       colors: {
         "vivid": {
-          primary: "hsl(162, 91%, 73%)",
+          primary: "#7bf9d3",
         },
         "warn": {
           primary: colors.yellow[400],
@@ -79,18 +79,18 @@ module.exports = {
           lightest: colors.rose[100],
         },
         "obsidian": {
-          darkest: "hsl(232, 34%, 6%)",
-          darker: "hsl(228, 21%, 9%)",
-          primary: "hsl(222, 17%, 13%)",
-          lighter: "hsl(218, 20%, 21%)",
-          lightest: "hsl(216, 13%, 28%)",
+          darkest: "#0a0b15", // "hsl(232, 34%, 6%)",
+          darker: "#12141c", // "hsl(228, 21%, 9%)",
+          primary: "#1c1f27", // "hsl(222, 17%, 13%)",
+          lighter: "#2b3340", // "hsl(218, 20%, 21%)",
+          lightest: "#3e4651", // "hsl(216, 13%, 28%)",
         },
         "snow": {
-          darkest: "hsl(210, 10.2%, 48.5%)",
-          darker: "hsl(210, 13%, 62%)",
-          primary: "hsl(210, 22%, 84%)",
-          lighter: "hsl(210, 18%, 92%)",
-          lightest: "hsl(210, 14%, 96%)",
+          darkest: "#6e7a87", // "hsl(210, 10.2%, 48.5%)",
+          darker: "#929eab", // "hsl(210, 13%, 62%)",
+          primary: "#cdd6df", // "hsl(210, 22%, 84%)",
+          lighter: "#e7ebee", // "hsl(210, 18%, 92%)",
+          lightest: "#f3f5f6", //  "hsl(210, 14%, 96%)",
         },
         // other services
         "nicovideo": { primary: "#FFF", sub: "#252525" },
