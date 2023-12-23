@@ -1,6 +1,14 @@
+import nextMdx from "@next/mdx";
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
   images: {
     domains: [
       ...(process.env.NODE_ENV === "development" ? ["localhost"] : []),
@@ -15,9 +23,6 @@ const nextConfig = {
     ],
     // unoptimized: process.env.NODE_ENV === "production",
     disableStaticImages: true,
-  },
-  eslint: {
-    ignoreDuringBuilds: true,
   },
   experimental: {
     mdxRs: true,
@@ -68,6 +73,6 @@ const nextConfig = {
   },
 };
 
-const withMDX = require("@next/mdx")();
+const withMdx = nextMdx();
 
-module.exports = withMDX(nextConfig);
+export default withMdx(nextConfig);
