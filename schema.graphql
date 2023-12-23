@@ -169,7 +169,7 @@ type BilibiliMadRequestedTimelineEvent implements TimelineEvent {
 type BilibiliOriginalSource {
   """
   bilibili側のオリジナルの画像URL
-  
+
   bilibili側の制約上、別のオリジンから直接埋め込んだりすることはほとんど出来ないことに注意．
   """
   originalThumbnailUrl: String!
@@ -522,14 +522,14 @@ input FindMadsByOffsetInput {
 input FindMadsByOffsetInputFilter {
   """
   (ソース元の投稿時刻) ≧ (入力)
-  
+
   *ソース元の投稿時刻が不明な場合，このフィルターを入れると全て無視されることに注意．*
   """
   registeredAtGte: DateTime
 
   """
   (ソース元の投稿時刻) ≦ (入力)
-  
+
   *ソース元の投稿時刻が不明な場合，このフィルターを入れると全て無視されることに注意．*
   """
   registeredAtLte: DateTime
@@ -800,6 +800,8 @@ type MadRegisteredTimelineEvent implements TimelineEvent {
   video: Video!
 }
 
+scalar File
+
 type Mutation {
   addMylistToMylistGroup(input: AddMylistToMylistGroupInput!): AddMylistToMylistGroupPayload!
   addSemitagToVideo(input: AddSemitagToVideoInput!): AddSemitagToVideoPayload!
@@ -809,7 +811,10 @@ type Mutation {
   addTagToVideo(input: AddTagToVideoInput!): AddTagToVideoPayload!
   addVideoToMylist(input: AddVideoToMylistInput!): AddVideoToMylistReturnUnion!
   changeMylistShareRange(input: ChangeMylistShareRangeInput!): ChangeMylistShareReturnUnion!
+
   changeUserDisplayName(renameTo: String!): ChangeUserDisplayNameReturnUnion!
+  changeUserIcon(changeTo: File!): ChangeUserIconReturnPayload!
+
   createMylist(input: CreateMylistInput!): CreateMylistReturnUnion!
   createMylistGroup(input: CreateMylistGroupInput!): CreateMylistGroupPayload!
   excludeTagToGroup(input: ExcludeTagToGroupInput!): ExcludeTagToGroupPayload!
@@ -2128,7 +2133,7 @@ type SoundcloudRegistrationRequest implements Node & RegistrationRequest {
 
   """
   OtoMADB側でプロキシしているサムネイル画像のURL
-  
+
   **無い場合は適当にダミー画像を返す．**
   """
   thumbnailUrl(scale: RegistrationRequestThumbnailScale! = LARGE): String!
@@ -3071,4 +3076,10 @@ type YoutubeVideoSourceEventEdge {
 
 input YoutubeVideoSourceEventsOrderBy {
   createdAt: SortOrder
+}
+
+union ChangeUserIconReturnPayload = ChangeUserIconSucceededSuccess
+
+type ChangeUserIconSucceededSuccess {
+  user: User!
 }
