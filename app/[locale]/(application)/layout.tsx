@@ -3,7 +3,7 @@ import React, { Suspense } from "react";
 
 import FormWidgetSwitch, { FormModalProvider } from "~/components/FormWidget";
 import GlobalFooter from "~/components/GlobalFooter";
-import Logo from "~/components/Logo";
+import OtomadbLogo from "~/components/OtomadbLogo";
 import SearchContents from "~/components/SearchContents";
 import { ToastProvider } from "~/components/Toaster";
 import { graphql } from "~/gql";
@@ -38,8 +38,10 @@ const getAppSideNav = async () =>
 
 export default async function ApplicationLayout({
   children,
+  params: { locale },
 }: {
   children: React.ReactNode;
+  params: { locale: string };
 }) {
   return (
     <ToastProvider selector="#toast2">
@@ -54,10 +56,13 @@ export default async function ApplicationLayout({
             >
               <TopPageLink
                 className={clsx(
-                  "border-b border-obsidian-primary fill-snow-darkest transition-colors duration-50 hover:fill-vivid-primary"
+                  "fill-snow-darkest transition-colors duration-50 hover:fill-vivid-primary"
                 )}
               >
-                <Logo className={clsx("mx-auto h-[32px]")} />
+                <OtomadbLogo
+                  locale={locale}
+                  className={clsx("mx-auto h-[24px]")}
+                />
               </TopPageLink>
             </div>
             <Suspense>

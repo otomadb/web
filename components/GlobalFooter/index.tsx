@@ -4,9 +4,10 @@ import React from "react";
 
 import { AboutPageLink } from "~/app/[locale]/(landing)/about/Link";
 import TopPageLink from "~/app/[locale]/(landing)/Link";
-import Logo from "~/components/Logo";
+import Logo from "~/components/OtomadbLogo";
 import { graphql } from "~/gql";
 import { makeGraphQLClient } from "~/gql/fetch";
+import { getCurrentLocale } from "~/locales/server";
 
 import Quote from "./Quote";
 import quotes from "./quotes";
@@ -18,6 +19,8 @@ export const Presentation: React.FC<{
   tagsCount: number;
   quoteIndex: number;
 }> = ({ className, style, madsCount, tagsCount, quoteIndex }) => {
+  const locale = getCurrentLocale();
+
   return (
     <footer
       className={clsx(
@@ -38,7 +41,10 @@ export const Presentation: React.FC<{
         >
           <div className={clsx("flex flex-col")}>
             <TopPageLink className={clsx("block")}>
-              <Logo className={clsx("w-[160px] fill-vivid-primary")} />
+              <Logo
+                locale={locale}
+                className={clsx("w-[160px] fill-vivid-primary")}
+              />
             </TopPageLink>
             <p className={clsx("text-xs text-snow-primary")}>
               音MADの体系的なデータベースを作る

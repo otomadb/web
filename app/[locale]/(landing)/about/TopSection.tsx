@@ -2,11 +2,12 @@ import clsx from "clsx";
 import { Suspense } from "react";
 
 import { LoginLink } from "~/components/AuthLink";
-import Logo from "~/components/Logo";
+import OtomadbLogo from "~/components/OtomadbLogo";
 import { SignUpPictogram } from "~/components/Pictogram";
 import SearchContents from "~/components/SearchContents";
 import { graphql } from "~/gql";
 import { makeGraphQLClient } from "~/gql/fetch";
+import { getCurrentLocale } from "~/locales/server";
 
 import AndesRespect from "./AndesRespect";
 
@@ -33,6 +34,8 @@ const getTagsCount = () =>
     .then((result) => result.countAllTags);
 
 export default async function Top({ className }: { className?: string }) {
+  const locale = getCurrentLocale();
+
   const widget = Math.floor(Math.random() * 1);
 
   return (
@@ -58,7 +61,10 @@ export default async function Top({ className }: { className?: string }) {
       >
         <div className={clsx("flex flex-col items-center gap-x-8 md:flex-row")}>
           <div className={clsx("w-[196px] shrink-0")}>
-            <Logo className={clsx("w-full fill-vivid-primary")} />
+            <OtomadbLogo
+              locale={locale}
+              className={clsx("w-full fill-vivid-primary")}
+            />
           </div>
           <div className={clsx("grow")}>
             <h1
