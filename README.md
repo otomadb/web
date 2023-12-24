@@ -60,12 +60,6 @@ graphql-codegen によって API の型定義が生成されます．
 
 デフォルトでは`localhost:6006`に Storybook が立ち上がります．
 
-## Memo
-
-```shell
-magick -density 256x256 -background transparent ./app/icon.svg -define icon:auto-resize -colors 256 ./app/icon.ico
-```
-
 ## ライセンス
 
 [MIT License](https://github.com/otomadb/web/blob/main/LICENSE)
