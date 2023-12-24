@@ -1,4 +1,4 @@
-export const B = "OtoMADB";
+export const B = "OTOMADB";
 export const pgIndex = "({page}ページ目)";
 
 export const NND = "ニコニコ動画";
