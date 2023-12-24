@@ -6,8 +6,8 @@ import { useRouter } from "next/navigation";
 import { CSSProperties, useCallback, useMemo, useState } from "react";
 import { useMutation } from "urql";
 
-import { MadPageLink } from "~/app/(v2)/mads/[serial]/Link";
-import { YoutubeRequestPageLink } from "~/app/(v2)/requests/youtube/[sourceId]/Link";
+import { MadPageLink } from "~/app/[locale]/(application)/mads/[serial]/Link";
+import { YoutubeRequestPageLink } from "~/app/[locale]/(application)/requests/youtube/[sourceId]/Link";
 import { YoutubePictogram } from "~/components/Pictogram";
 import useToaster from "~/components/Toaster/useToaster";
 import { FragmentType, graphql, useFragment } from "~/gql";

@@ -6,8 +6,8 @@ import { useRouter } from "next/navigation";
 import { CSSProperties, useCallback, useMemo, useState } from "react";
 import { useMutation } from "urql";
 
-import { MadPageLink } from "~/app/(v2)/mads/[serial]/Link";
-import BilibiliRequestPageLink from "~/app/(v2)/requests/bilibili/[sourceId]/Link";
+import { MadPageLink } from "~/app/[locale]/(application)/mads/[serial]/Link";
+import BilibiliRequestPageLink from "~/app/[locale]/(application)/requests/bilibili/[sourceId]/Link";
 import { BilibiliPictogram } from "~/components/Pictogram";
 import useToaster from "~/components/Toaster/useToaster";
 import { FragmentType, graphql, useFragment } from "~/gql";

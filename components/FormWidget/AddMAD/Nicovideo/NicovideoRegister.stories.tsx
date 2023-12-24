@@ -4,8 +4,8 @@ import { expect } from "@storybook/test";
 import { userEvent, within } from "@storybook/testing-library";
 import { graphql as mockGql } from "msw";
 
-import { MadPageLinkFragment } from "~/app/(v2)/mads/[serial]/Link";
-import { UserPageLinkFragment } from "~/app/(v2)/users/[name]/Link";
+import { MadPageLinkFragment } from "~/app/[locale]/(application)/mads/[serial]/Link";
+import { UserPageLinkFragment } from "~/app/[locale]/(application)/users/[name]/Link";
 import { CommonTagFragment } from "~/components/CommonTag";
 import { mockTagSearcher } from "~/components/TagSearcher/index.stories";
 import { Fragment as UserIconFragment } from "~/components/UserIcon";

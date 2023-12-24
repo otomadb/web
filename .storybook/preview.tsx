@@ -1,5 +1,5 @@
 import { action } from "@storybook/addon-actions";
-import "../app/globals.css";
+import "../styles/globals.css";
 import { ToastContext } from "../components/Toaster";
 
 import { Preview } from "@storybook/react";

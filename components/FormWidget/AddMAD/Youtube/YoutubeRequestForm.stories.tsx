@@ -4,7 +4,7 @@ import { expect } from "@storybook/test";
 import { userEvent, within } from "@storybook/testing-library";
 import { graphql as mockGql } from "msw";
 
-import { YoutubeRequestPageLinkFragment } from "~/app/(v2)/requests/youtube/[sourceId]/Link";
+import { YoutubeRequestPageLinkFragment } from "~/app/[locale]/(application)/requests/youtube/[sourceId]/Link";
 import { mockTagSearcher } from "~/components/TagSearcher/index.stories";
 import { makeFragmentData } from "~/gql";
 

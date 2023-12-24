@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { graphql } from "msw";
 
-import { TagPageLinkFragment } from "~/app/(v2)/tags/[serial]/Link";
+import { TagPageLinkFragment } from "~/app/[locale]/(application)/tags/[serial]/Link";
 import { makeFragmentData } from "~/gql";
 
 import { CommonTagFragment } from "../CommonTag";

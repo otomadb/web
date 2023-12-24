@@ -4,7 +4,7 @@ import { expect } from "@storybook/test";
 import { userEvent, within } from "@storybook/testing-library";
 import { graphql as mockGql } from "msw";
 
-import { SoundcloudRequestPageLinkFragment } from "~/app/(v2)/requests/soundcloud/[sourceId]/Link";
+import { SoundcloudRequestPageLinkFragment } from "~/app/[locale]/(application)/requests/soundcloud/[sourceId]/Link";
 import { mockTagSearcher } from "~/components/TagSearcher/index.stories";
 import { makeFragmentData } from "~/gql";
 

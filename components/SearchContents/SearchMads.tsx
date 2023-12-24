@@ -2,7 +2,7 @@ import clsx from "clsx";
 import React from "react";
 import { useQuery } from "urql";
 
-import { MadPageLink } from "~/app/(v2)/mads/[serial]/Link";
+import { MadPageLink } from "~/app/[locale]/(application)/mads/[serial]/Link";
 import { LoadingPictogram } from "~/components/Pictogram";
 import { VideoThumbnail } from "~/components/VideoThumbnail";
 import { graphql } from "~/gql";

@@ -3,8 +3,8 @@ import clsx from "clsx";
 import React from "react";
 import { useQuery } from "urql";
 
-import { MadPageLink } from "~/app/(v2)/mads/[serial]/Link";
-import NicovideoRequestLink from "~/app/(v2)/requests/nicovideo/[sourceId]/Link";
+import { MadPageLink } from "~/app/[locale]/(application)/mads/[serial]/Link";
+import NicovideoRequestLink from "~/app/[locale]/(application)/requests/nicovideo/[sourceId]/Link";
 import CommonTag from "~/components/CommonTag";
 import { CoolImage } from "~/components/CoolImage";
 import { LoadingPictogram } from "~/components/Pictogram";

@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { useMemo, useReducer } from "react";
 
-import UserPageLink from "~/app/(v2)/users/[name]/Link";
+import UserPageLink from "~/app/[locale]/(application)/users/[name]/Link";
 import Button from "~/components/Button";
 import TagSearcher from "~/components/TagSearcher";
 import { TextInput2 } from "~/components/TextInput";
