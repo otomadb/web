@@ -1,19 +1,25 @@
 import clsx from "clsx";
-import { request } from "graphql-request";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { setStaticParamsLocale } from "next-international/server";
 import { Suspense } from "react";
 
+import mkGenerateStaticParams from "~/app/[locale]/mkGenerateStaticParams";
 import { graphql } from "~/gql";
 import { makeGraphQLClient, makeGraphQLClient2 } from "~/gql/fetch";
 import { getScopedI18n } from "~/locales/server";
 
 import SimilarVideos from "./SimilarVideos";
 
+type PageParams = {
+  locale: string;
+  serial: string;
+};
+
 export async function generateMetadata({
   params,
 }: {
-  params: { serial: string };
+  params: PageParams;
 }): Promise<Metadata> {
   const t = await getScopedI18n("page.mad");
   const result = await makeGraphQLClient().request(
@@ -44,28 +50,38 @@ export async function generateMetadata({
   };
 }
 
-type PageParams = { serial: string };
-
 export async function generateStaticParams() {
-  return request(
-    process.env.GRAPHQL_API_ENDPOINT,
-    graphql(`
-      query VideoPage_GenerateStaticParams {
-        findVideos(first: 100) {
-          nodes {
-            serial
+  const pps = await (
+    await makeGraphQLClient2({})
+  )
+    .request(
+      graphql(`
+        query VideoPage_GenerateStaticParams {
+          findVideos(first: 100) {
+            nodes {
+              serial
+            }
           }
         }
-      }
-    `)
-  ).then((v) =>
-    v.findVideos.nodes.map(
-      (v) => ({ serial: v.serial.toString() }) satisfies PageParams
+      `)
     )
-  );
+    .then((r) =>
+      r.findVideos.nodes.map(
+        (v) =>
+          ({ serial: v.serial.toString() }) satisfies Omit<PageParams, "locale">
+      )
+    );
+
+  return mkGenerateStaticParams(pps) satisfies PageParams[];
 }
 
-export default async function Page({ params }: { params: PageParams }) {
+export default async function Page({
+  params: { serial, locale },
+}: {
+  params: PageParams;
+}) {
+  setStaticParamsLocale(locale);
+
   const result = (
     await makeGraphQLClient2({
       auth: "optional",
@@ -80,7 +96,7 @@ export default async function Page({ params }: { params: PageParams }) {
           }
         }
       `),
-      { serial: parseInt(params.serial, 10) }
+      { serial: parseInt(serial, 10) }
     )
     .then(({ findMadBySerial }) => findMadBySerial || notFound());
 
