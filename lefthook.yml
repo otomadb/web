@@ -17,7 +17,7 @@ pre-commit:
         - merge
         - rebase
     prettier:
-      glob: "*.{js,ts,jsx,tsx,md,mdx,html,json,yml,yaml,graphql}"
+      glob: "*.{js,ts,jsx,tsx,md,mdx,html,json,yml,yaml,graphql,svg}"
       run: |
         pnpm prettier --check --ignore-unknown {staged_files}
       skip:
