@@ -9,10 +9,15 @@ export const SC = "SoundCloud";
 const pgIndex = "({page} page)";
 
 export default {
+  音MAD: "otomad",
+  タグ: "tag",
   page: {
     title: B,
     description: `${B} is developed to be a systematic database of otomads.`,
-    landing: {},
+    landing: {
+      音MADのデータベースを作る: `Build a database of otomads.`,
+      参加してみる: `Join`,
+    },
     home: {
       title: `Home | ${B}`,
     },

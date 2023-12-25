@@ -9,10 +9,15 @@ export const SC = "SoundCloud";
 export const TW = "Twitter";
 
 export default {
+  音MAD: "音MAD",
+  タグ: "タグ",
   page: {
     title: B,
     description: `${B}は音MADの体系的なデータベースを目指して開発されています。`,
-    landing: {},
+    landing: {
+      音MADのデータベースを作る: `音MADのデータベースを作る。`,
+      参加してみる: `参加してみる`,
+    },
     home: {
       title: `ホーム | ${B}`,
     },
