@@ -7,7 +7,7 @@ import { SignUpPictogram } from "~/components/Pictogram";
 import SearchContents from "~/components/SearchContents";
 import { graphql } from "~/gql";
 import { makeGraphQLClient } from "~/gql/fetch";
-import { getCurrentLocale } from "~/locales/server";
+import { getCurrentLocale, getI18n } from "~/locales/server";
 
 import AndesRespect from "./AndesRespect";
 
@@ -35,6 +35,7 @@ const getTagsCount = () =>
 
 export default async function Top({ className }: { className?: string }) {
   const locale = getCurrentLocale();
+  const t = await getI18n();
 
   const widget = Math.floor(Math.random() * 1);
 
@@ -52,51 +53,50 @@ export default async function Top({ className }: { className?: string }) {
         )}
       >
         <SignUpPictogram className={clsx("h-4")} />
-        <span className={clsx("text-sm")}>参加してみる</span>
+        <span className={clsx("text-sm")}>
+          {t("page.landing.参加してみる")}
+        </span>
       </LoginLink>
       <div
         className={clsx(
           "relative z-infinity mx-auto mt-[-96px] w-full max-w-screen-md md:-mt-32"
         )}
       >
-        <div className={clsx("flex flex-col items-center gap-x-8 md:flex-row")}>
-          <div className={clsx("w-[196px] shrink-0")}>
+        <div className={clsx("flex gap-x-8")}>
+          <div className={clsx("flex flex-col items-start gap-y-2")}>
             <OtomadbLogo
               locale={locale}
-              className={clsx("w-full fill-vivid-primary")}
+              className={clsx("h-[64px] fill-vivid-primary")}
             />
+            <div>
+              <h1 className={clsx("grow text-snow-primary", "text-xl")}>
+                {t("page.landing.音MADのデータベースを作る")}
+              </h1>
+            </div>
           </div>
-          <div className={clsx("grow")}>
-            <h1
-              className={clsx(
-                "grow text-xl font-light text-snow-primary md:text-2xl"
-              )}
-            >
-              <strong className={clsx("text-vivid-primary")}>音MAD</strong>
-              のデータベースを作る
-            </h1>
-            <div className={clsx(["mt-4 grid grid-cols-4 gap-x-8"])}>
-              <div className={clsx(["flex flex-col"])}>
-                <span className={clsx(["text-xs text-snow-darker"])}>
-                  音MAD
-                </span>
-                <span
-                  className={clsx([
-                    "font-mono text-xl font-thin text-vivid-primary md:text-2xl",
-                  ])}
-                >
-                  <Suspense fallback={"0"}>{await getMadsCount()}</Suspense>
-                </span>
+          <div className={clsx("flex grow flex-col gap-y-2")}>
+            <div className={clsx("flex items-center gap-x-2")}>
+              <div className={clsx(["text-xs text-snow-darker"])}>
+                {t("音MAD")}
               </div>
-              <div className={clsx(["flex flex-col"])}>
-                <span className={clsx(["text-xs text-snow-darker"])}>タグ</span>
-                <span
-                  className={clsx([
-                    "font-mono text-xl font-thin text-vivid-primary md:text-2xl",
-                  ])}
-                >
-                  <Suspense fallback={"0"}>{await getTagsCount()}</Suspense>
-                </span>
+              <div
+                className={clsx(
+                  "font-mono text-xl leading-none text-vivid-primary md:text-2xl"
+                )}
+              >
+                <Suspense fallback={"0"}>{await getMadsCount()}</Suspense>
+              </div>
+            </div>
+            <div className={clsx("flex items-center gap-x-2")}>
+              <div className={clsx("text-xs text-snow-darker")}>
+                {t("タグ")}
+              </div>
+              <div
+                className={clsx(
+                  "font-mono text-xl leading-none text-vivid-primary md:text-2xl"
+                )}
+              >
+                <Suspense fallback={"0"}>{await getTagsCount()}</Suspense>
               </div>
             </div>
           </div>
