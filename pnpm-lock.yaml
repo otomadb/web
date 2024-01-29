@@ -190,8 +190,8 @@ devDependencies:
     specifier: 9.1.3
     version: 9.1.3(@babel/core@7.23.9)(webpack@5.90.0)
   css-loader:
-    specifier: 6.8.1
-    version: 6.8.1(webpack@5.90.0)
+    specifier: 6.9.1
+    version: 6.9.1(webpack@5.90.0)
   encoding:
     specifier: 0.1.13
     version: 0.1.13
@@ -5333,7 +5333,7 @@ packages:
       case-sensitive-paths-webpack-plugin: 2.4.0
       cjs-module-lexer: 1.2.3
       constants-browserify: 1.0.0
-      css-loader: 6.8.1(webpack@5.90.0)
+      css-loader: 6.9.1(webpack@5.90.0)
       es-module-lexer: 1.4.1
       express: 4.18.2
       fork-ts-checker-webpack-plugin: 8.0.0(typescript@5.3.3)(webpack@5.90.0)
@@ -5728,7 +5728,7 @@ packages:
       '@storybook/react': 7.6.10(encoding@0.1.13)(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)
       '@types/node': 18.18.14
       '@types/semver': 7.5.6
-      css-loader: 6.8.1(webpack@5.90.0)
+      css-loader: 6.9.1(webpack@5.90.0)
       find-up: 5.0.0
       fs-extra: 11.2.0
       image-size: 1.1.1
@@ -8713,8 +8713,8 @@ packages:
       hyphenate-style-name: 1.0.4
     dev: false
 
-  /css-loader@6.8.1(webpack@5.90.0):
-    resolution: {integrity: sha512-xDAXtEVGlD0gJ07iclwWVkLoZOpEvAWaSyf6W18S2pOC//K8+qUDIx8IIT3D+HjnmkJPQeesOPv5aiUaJsCM2g==}
+  /css-loader@6.9.1(webpack@5.90.0):
+    resolution: {integrity: sha512-OzABOh0+26JKFdMzlK6PY1u5Zx8+Ck7CVRlcGNZoY9qwJjdfu2VWFuprTIpPW+Av5TZTVViYWcFQaEEQURLknQ==}
     engines: {node: '>= 12.13.0'}
     peerDependencies:
       webpack: ^5.0.0
