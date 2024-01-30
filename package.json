@@ -114,7 +114,7 @@
     "typescript": "5.3.3",
     "vite-plugin-svgr": "4.2.0",
     "vite-tsconfig-paths": "4.3.1",
-    "vitest": "1.2.1"
+    "vitest": "1.2.2"
   },
   "peerDependencies": {
     "@parcel/watcher": "2.4.0",
