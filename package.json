@@ -95,7 +95,7 @@
     "eslint-config-next": "14.1.0",
     "eslint-plugin-eslint-comments": "3.2.0",
     "eslint-plugin-mdx": "3.1.5",
-    "eslint-plugin-simple-import-sort": "10.0.0",
+    "eslint-plugin-simple-import-sort": "11.0.0",
     "eslint-plugin-storybook": "0.6.15",
     "eslint-plugin-tailwindcss": "3.14.2",
     "eslint-plugin-unused-imports": "3.0.0",
