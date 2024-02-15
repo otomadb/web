@@ -28,7 +28,7 @@
   "engines": {
     "node": "18"
   },
-  "packageManager": "pnpm@8.15.2",
+  "packageManager": "pnpm@8.15.3",
   "dependencies": {
     "@auth0/nextjs-auth0": "^3.3.0",
     "@emotion/css": "^11.11.2",
