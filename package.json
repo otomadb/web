@@ -117,7 +117,7 @@
     "vitest": "1.2.2"
   },
   "peerDependencies": {
-    "@parcel/watcher": "2.4.0",
+    "@parcel/watcher": "2.4.1",
     "vite": "^5.0.7"
   },
   "pnpm": {
